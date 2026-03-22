@@ -1,5 +1,5 @@
 # NexusClaw Library
-> Auto-generated index — Last updated: 2026-03-22 23:04 CET
+> Auto-generated index — Last updated: 2026-03-23 00:04 CET
 
 A self-updating knowledge base maintained by the `library-update` skill.
 
@@ -8,15 +8,15 @@ A self-updating knowledge base maintained by the `library-update` skill.
 ### 📁 system/
 | File | Description | Updated |
 |------|-------------|---------|
-| [config.md](system/config.md) | Gateway configuration summary | 2026-03-22 23:04 |
+| [config.md](system/config.md) | Gateway configuration summary | 2026-03-23 00:04 |
 | [skills.md](system/skills.md) | 57 installed skills | 2026-03-22 23:04 |
-| [cron-history.md](system/cron-history.md) | Cron run history & status | 2026-03-22 23:04 |
-| [health.md](system/health.md) | System health check | 2026-03-22 23:04 |
+| [cron-history.md](system/cron-history.md) | Cron run history & status | 2026-03-23 00:04 |
+| [health.md](system/health.md) | System health check | 2026-03-23 00:04 |
 
 ### 📁 agents/
 | File | Description | Updated |
 |------|-------------|---------|
-| [SOUL.md](agents/SOUL.md) | Current agent identity | 2026-03-22 23:04 |
+| [SOUL.md](agents/SOUL.md) | Current agent identity | 2026-03-23 00:04 |
 | [evolution-log.md](agents/evolution-log.md) | Identity change timeline | 2026-03-22 23:04 |
 
 ### 📁 sessions/
@@ -35,7 +35,9 @@ _Per-skill activity logs — populated as skills run._
 ---
 
 ## Health Summary
-- ✅ Gateway: healthy
-- ⚠️ 2 cron jobs failing (channel config needed)
+- ✅ Gateway: healthy (port 19789, loopback)
+- ❌ 2 cron jobs failing persistently (memory-save: 5 errors, evoclaw-heartbeat: 6 errors — channel config needed)
+- ⚠️ library-update: 2 consecutive errors, recovering
+- ✅ memory-autosave: healthy
 - 📊 57 skills installed
 - 🤖 Model: anthropic/claude-opus-4-6
