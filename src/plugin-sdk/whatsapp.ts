@@ -1,12 +1,12 @@
 export type { ChannelMessageActionName } from "../channels/plugins/types.js";
-export type { OpenClawConfig } from "../config/config.js";
+export type { NexusClawConfig } from "../config/config.js";
 export type { DmPolicy, GroupPolicy, WhatsAppAccountConfig } from "../config/types.js";
 export type { WebChannelStatus, WebMonitorTuning } from "../../extensions/whatsapp/api.js";
 export type { WebInboundMessage, WebListenerCloseReason } from "../../extensions/whatsapp/api.js";
 export type {
   ChannelMessageActionContext,
   ChannelPlugin,
-  OpenClawPluginApi,
+  NexusClawPluginApi,
   PluginRuntime,
 } from "./channel-plugin-common.js";
 export {

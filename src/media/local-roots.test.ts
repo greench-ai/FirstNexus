@@ -8,8 +8,8 @@ describe("local media roots", () => {
   });
 
   it("keeps temp, media cache, and workspace roots by default", () => {
-    const stateDir = path.join("/tmp", "openclaw-media-roots-state");
-    vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
+    const stateDir = path.join("/tmp", "nexusclaw-media-roots-state");
+    vi.stubEnv("NEXUSCLAW_STATE_DIR", stateDir);
 
     const roots = getDefaultMediaLocalRoots();
 
@@ -21,8 +21,8 @@ describe("local media roots", () => {
   });
 
   it("adds the active agent workspace without re-opening broad agent state roots", () => {
-    const stateDir = path.join("/tmp", "openclaw-agent-media-roots-state");
-    vi.stubEnv("OPENCLAW_STATE_DIR", stateDir);
+    const stateDir = path.join("/tmp", "nexusclaw-agent-media-roots-state");
+    vi.stubEnv("NEXUSCLAW_STATE_DIR", stateDir);
 
     const roots = getAgentScopedMediaLocalRoots({}, "ops");
 

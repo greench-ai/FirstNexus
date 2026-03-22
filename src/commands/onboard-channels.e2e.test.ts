@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ChannelPluginCatalogEntry } from "../channels/plugins/catalog.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { createEmptyPluginRegistry } from "../plugins/registry.js";
 import { setActivePluginRegistry } from "../plugins/runtime.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
@@ -48,7 +48,7 @@ function createUnexpectedPromptGuards() {
 type SetupChannelsOptions = Parameters<typeof setupChannels>[3];
 
 function runSetupChannels(
-  cfg: OpenClawConfig,
+  cfg: NexusClawConfig,
   prompter: WizardPrompter,
   options?: SetupChannelsOptions,
 ) {
@@ -85,7 +85,7 @@ function createUnexpectedQuickstartPrompter(select: WizardPrompter["select"]) {
   };
 }
 
-function createTelegramCfg(botToken: string, enabled?: boolean): OpenClawConfig {
+function createTelegramCfg(botToken: string, enabled?: boolean): NexusClawConfig {
   return {
     channels: {
       telegram: {
@@ -93,7 +93,7 @@ function createTelegramCfg(botToken: string, enabled?: boolean): OpenClawConfig 
         ...(typeof enabled === "boolean" ? { enabled } : {}),
       },
     },
-  } as OpenClawConfig;
+  } as NexusClawConfig;
 }
 
 function patchTelegramAdapter(overrides: Parameters<typeof patchChannelSetupWizardAdapter>[1]) {
@@ -101,7 +101,7 @@ function patchTelegramAdapter(overrides: Parameters<typeof patchChannelSetupWiza
     ...overrides,
     getStatus:
       overrides.getStatus ??
-      vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+      vi.fn(async ({ cfg }: { cfg: NexusClawConfig }) => ({
         channel: "telegram",
         configured: Boolean(cfg.channels?.telegram?.botToken),
         statusLines: [],
@@ -165,7 +165,7 @@ async function runQuickstartTelegramSetupWithInteractive(params: {
   );
 
   try {
-    const cfg = await runSetupChannels({} as OpenClawConfig, prompter, {
+    const cfg = await runSetupChannels({} as NexusClawConfig, prompter, {
       quickstartDefaults: true,
       onSelection: selection,
       onAccountId,
@@ -218,7 +218,7 @@ vi.mock("./channel-setup/plugin-install.js", async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...(actual as Record<string, unknown>),
-    ensureChannelSetupPluginInstalled: vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+    ensureChannelSetupPluginInstalled: vi.fn(async ({ cfg }: { cfg: NexusClawConfig }) => ({
       cfg,
       installed: true,
     })),
@@ -266,7 +266,7 @@ describe("setupChannels", () => {
       text: text as unknown as WizardPrompter["text"],
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter, {
+    await runSetupChannels({} as NexusClawConfig, prompter, {
       quickstartDefaults: true,
       forceAllowFromChannels: ["whatsapp"],
     });
@@ -292,10 +292,10 @@ describe("setupChannels", () => {
     });
 
     await expect(
-      runSetupChannels({} as OpenClawConfig, prompter, {
+      runSetupChannels({} as NexusClawConfig, prompter, {
         quickstartDefaults: true,
       }),
-    ).resolves.toEqual({} as OpenClawConfig);
+    ).resolves.toEqual({} as NexusClawConfig);
 
     expect(select).toHaveBeenCalledWith(
       expect.objectContaining({ message: "Select channel (QuickStart)" }),
@@ -318,10 +318,10 @@ describe("setupChannels", () => {
     });
 
     await expect(
-      runSetupChannels({} as OpenClawConfig, prompter, {
+      runSetupChannels({} as NexusClawConfig, prompter, {
         quickstartDefaults: true,
       }),
-    ).resolves.toEqual({} as OpenClawConfig);
+    ).resolves.toEqual({} as NexusClawConfig);
 
     expect(select).toHaveBeenCalledWith(
       expect.objectContaining({ message: "Select channel (QuickStart)" }),
@@ -350,7 +350,7 @@ describe("setupChannels", () => {
       text: text as unknown as WizardPrompter["text"],
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter, {
+    await runSetupChannels({} as NexusClawConfig, prompter, {
       quickstartDefaults: true,
     });
 
@@ -379,7 +379,7 @@ describe("setupChannels", () => {
       text,
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter);
+    await runSetupChannels({} as NexusClawConfig, prompter);
 
     const sawPrimer = note.mock.calls.some(
       ([message, title]) =>
@@ -395,7 +395,7 @@ describe("setupChannels", () => {
     catalogMocks.listChannelPluginCatalogEntries.mockReturnValue([
       {
         id: "msteams",
-        pluginId: "@openclaw/msteams-plugin",
+        pluginId: "@nexusclaw/msteams-plugin",
         meta: {
           id: "msteams",
           label: "Microsoft Teams",
@@ -404,7 +404,7 @@ describe("setupChannels", () => {
           blurb: "teams channel",
         },
         install: {
-          npmSpec: "@openclaw/msteams",
+          npmSpec: "@nexusclaw/msteams",
         },
       } satisfies ChannelPluginCatalogEntry,
     ]);
@@ -413,7 +413,7 @@ describe("setupChannels", () => {
         const registry = createEmptyPluginRegistry();
         if (channel === "msteams") {
           registry.channels.push({
-            pluginId: "@openclaw/msteams-plugin",
+            pluginId: "@nexusclaw/msteams-plugin",
             source: "test",
             plugin: {
               id: "msteams",
@@ -463,17 +463,17 @@ describe("setupChannels", () => {
         },
         plugins: {
           entries: {
-            "@openclaw/msteams-plugin": { enabled: true },
+            "@nexusclaw/msteams-plugin": { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as NexusClawConfig,
       prompter,
     );
 
     expect(loadChannelSetupPluginRegistrySnapshotForChannel).toHaveBeenCalledWith(
       expect.objectContaining({
         channel: "msteams",
-        pluginId: "@openclaw/msteams-plugin",
+        pluginId: "@nexusclaw/msteams-plugin",
       }),
     );
     expect(multiselect).not.toHaveBeenCalled();
@@ -484,7 +484,7 @@ describe("setupChannels", () => {
     catalogMocks.listChannelPluginCatalogEntries.mockReturnValue([
       {
         id: "msteams",
-        pluginId: "@openclaw/msteams-plugin",
+        pluginId: "@nexusclaw/msteams-plugin",
         meta: {
           id: "msteams",
           label: "Microsoft Teams",
@@ -493,14 +493,14 @@ describe("setupChannels", () => {
           blurb: "teams channel",
         },
         install: {
-          npmSpec: "@openclaw/msteams",
+          npmSpec: "@nexusclaw/msteams",
         },
       } satisfies ChannelPluginCatalogEntry,
     ]);
     manifestRegistryMocks.loadPluginManifestRegistry.mockReturnValue({
       plugins: [
         {
-          id: "@openclaw/msteams-plugin",
+          id: "@nexusclaw/msteams-plugin",
           channels: ["msteams"],
         } as never,
       ],
@@ -511,7 +511,7 @@ describe("setupChannels", () => {
         const registry = createEmptyPluginRegistry();
         if (channel === "msteams") {
           registry.channelSetups.push({
-            pluginId: "@openclaw/msteams-plugin",
+            pluginId: "@nexusclaw/msteams-plugin",
             source: "test",
             plugin: {
               id: "msteams",
@@ -561,13 +561,13 @@ describe("setupChannels", () => {
       text,
     });
 
-    await runSetupChannels({} as OpenClawConfig, prompter);
+    await runSetupChannels({} as NexusClawConfig, prompter);
 
     expect(ensureChannelSetupPluginInstalled).not.toHaveBeenCalled();
     expect(loadChannelSetupPluginRegistrySnapshotForChannel).toHaveBeenCalledWith(
       expect.objectContaining({
         channel: "msteams",
-        pluginId: "@openclaw/msteams-plugin",
+        pluginId: "@nexusclaw/msteams-plugin",
       }),
     );
     expect(multiselect).not.toHaveBeenCalled();
@@ -581,7 +581,7 @@ describe("setupChannels", () => {
         accountId,
         enabled,
       }: {
-        cfg: OpenClawConfig;
+        cfg: NexusClawConfig;
         accountId: string;
         enabled: boolean;
       }) => ({
@@ -626,12 +626,12 @@ describe("setupChannels", () => {
               },
               capabilities: { chatTypes: ["direct"] },
               config: {
-                listAccountIds: (cfg: OpenClawConfig) =>
+                listAccountIds: (cfg: NexusClawConfig) =>
                   Object.keys(
                     (cfg.channels?.msteams as { accounts?: Record<string, unknown> } | undefined)
                       ?.accounts ?? {},
                   ),
-                resolveAccount: (cfg: OpenClawConfig, accountId: string) =>
+                resolveAccount: (cfg: NexusClawConfig, accountId: string) =>
                   (
                     cfg.channels?.msteams as
                       | {
@@ -646,7 +646,7 @@ describe("setupChannels", () => {
                 status: {
                   configuredLabel: "configured",
                   unconfiguredLabel: "needs setup",
-                  resolveConfigured: ({ cfg }: { cfg: OpenClawConfig }) =>
+                  resolveConfigured: ({ cfg }: { cfg: NexusClawConfig }) =>
                     Boolean((cfg.channels?.msteams as { tenantId?: string } | undefined)?.tenantId),
                   resolveStatusLines: async () => [],
                   resolveSelectionHint: async () => "configured",
@@ -700,7 +700,7 @@ describe("setupChannels", () => {
             msteams: { enabled: true },
           },
         },
-      } as OpenClawConfig,
+      } as NexusClawConfig,
       prompter,
       { allowDisable: true },
     );
@@ -795,14 +795,14 @@ describe("setupChannels", () => {
   });
 
   it("applies configureInteractive result cfg/account updates", async () => {
-    const configureInteractive = vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+    const configureInteractive = vi.fn(async ({ cfg }: { cfg: NexusClawConfig }) => ({
       cfg: {
         ...cfg,
         channels: {
           ...cfg.channels,
           telegram: { ...cfg.channels?.telegram, botToken: "new-token" },
         },
-      } as OpenClawConfig,
+      } as NexusClawConfig,
       accountId: "acct-1",
     }));
     const configure = createUnexpectedConfigureCall(
@@ -821,14 +821,14 @@ describe("setupChannels", () => {
   });
 
   it("uses configureWhenConfigured when channel is already configured", async () => {
-    const configureWhenConfigured = vi.fn(async ({ cfg }: { cfg: OpenClawConfig }) => ({
+    const configureWhenConfigured = vi.fn(async ({ cfg }: { cfg: NexusClawConfig }) => ({
       cfg: {
         ...cfg,
         channels: {
           ...cfg.channels,
           telegram: { ...cfg.channels?.telegram, botToken: "updated-token" },
         },
-      } as OpenClawConfig,
+      } as NexusClawConfig,
       accountId: "acct-2",
     }));
     const { cfg, selection, onAccountId, configure } = await runConfiguredTelegramSetup({

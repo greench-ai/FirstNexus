@@ -13,16 +13,16 @@ afterEach(async () => {
 
 describe("loadEnabledClaudeBundleCommands", () => {
   it("loads enabled Claude bundle markdown commands and skips disabled-model-invocation entries", async () => {
-    const env = captureEnv(["HOME", "USERPROFILE", "OPENCLAW_HOME", "OPENCLAW_STATE_DIR"]);
+    const env = captureEnv(["HOME", "USERPROFILE", "NEXUSCLAW_HOME", "NEXUSCLAW_STATE_DIR"]);
     try {
-      const homeDir = await tempHarness.createTempDir("openclaw-bundle-commands-home-");
-      const workspaceDir = await tempHarness.createTempDir("openclaw-bundle-commands-workspace-");
+      const homeDir = await tempHarness.createTempDir("nexusclaw-bundle-commands-home-");
+      const workspaceDir = await tempHarness.createTempDir("nexusclaw-bundle-commands-workspace-");
       process.env.HOME = homeDir;
       process.env.USERPROFILE = homeDir;
-      delete process.env.OPENCLAW_HOME;
-      delete process.env.OPENCLAW_STATE_DIR;
+      delete process.env.NEXUSCLAW_HOME;
+      delete process.env.NEXUSCLAW_STATE_DIR;
 
-      const pluginRoot = path.join(homeDir, ".openclaw", "extensions", "compound-bundle");
+      const pluginRoot = path.join(homeDir, ".nexusclaw", "extensions", "compound-bundle");
       await fs.mkdir(path.join(pluginRoot, ".claude-plugin"), { recursive: true });
       await fs.mkdir(path.join(pluginRoot, "commands", "workflows"), { recursive: true });
       await fs.writeFile(

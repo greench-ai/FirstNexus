@@ -42,7 +42,7 @@ const DYNAMIC_ARCHIVE_TEMPLATE_PRESETS = [
     packageJson: {
       name: "@evil/..",
       version: "0.0.1",
-      openclaw: { extensions: ["./dist/index.js"] },
+      nexusclaw: { extensions: ["./dist/index.js"] },
     } as Record<string, unknown>,
   },
   {
@@ -51,14 +51,14 @@ const DYNAMIC_ARCHIVE_TEMPLATE_PRESETS = [
     packageJson: {
       name: "@evil/.",
       version: "0.0.1",
-      openclaw: { extensions: ["./dist/index.js"] },
+      nexusclaw: { extensions: ["./dist/index.js"] },
     } as Record<string, unknown>,
   },
   {
     outName: "bad.tgz",
     withDistIndex: false,
     packageJson: {
-      name: "@openclaw/nope",
+      name: "@nexusclaw/nope",
       version: "0.0.1",
     } as Record<string, unknown>,
   },
@@ -70,7 +70,7 @@ function ensureSuiteTempRoot() {
   }
   const bundleTempRoot = path.join(process.cwd(), ".tmp");
   fs.mkdirSync(bundleTempRoot, { recursive: true });
-  suiteTempRoot = fs.mkdtempSync(path.join(bundleTempRoot, "openclaw-plugin-install-"));
+  suiteTempRoot = fs.mkdtempSync(path.join(bundleTempRoot, "nexusclaw-plugin-install-"));
   return suiteTempRoot;
 }
 
@@ -231,7 +231,7 @@ function setupManifestInstallFixture(params: { manifestId: string }) {
   fs.mkdirSync(stateDir, { recursive: true });
   fs.cpSync(manifestInstallTemplateDir, pluginDir, { recursive: true });
   fs.writeFileSync(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "nexusclaw.plugin.json"),
     JSON.stringify({
       id: params.manifestId,
       configSchema: { type: "object", properties: {} },
@@ -313,15 +313,15 @@ function setupDualFormatInstallFixture(params: { bundleFormat: "codex" | "claude
   fs.writeFileSync(
     path.join(pluginDir, "package.json"),
     JSON.stringify({
-      name: "@openclaw/native-dual",
+      name: "@nexusclaw/native-dual",
       version: "0.0.1",
-      openclaw: { extensions: ["./dist/index.js"] },
+      nexusclaw: { extensions: ["./dist/index.js"] },
       dependencies: { "left-pad": "1.3.0" },
     }),
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginDir, "openclaw.plugin.json"),
+    path.join(pluginDir, "nexusclaw.plugin.json"),
     JSON.stringify({
       id: "native-dual",
       configSchema: { type: "object", properties: {} },
@@ -350,7 +350,7 @@ async function expectArchiveInstallReservedSegmentRejection(params: {
     packageJson: {
       name: params.packageName,
       version: "0.0.1",
-      openclaw: { extensions: ["./dist/index.js"] },
+      nexusclaw: { extensions: ["./dist/index.js"] },
     },
     outName: params.outName,
     withDistIndex: true,
@@ -444,9 +444,9 @@ beforeAll(async () => {
   fs.writeFileSync(
     path.join(installPluginFromDirTemplateDir, "package.json"),
     JSON.stringify({
-      name: "@openclaw/test-plugin",
+      name: "@nexusclaw/test-plugin",
       version: "0.0.1",
-      openclaw: { extensions: ["./dist/index.js"] },
+      nexusclaw: { extensions: ["./dist/index.js"] },
       dependencies: { "left-pad": "1.3.0" },
     }),
     "utf-8",
@@ -462,9 +462,9 @@ beforeAll(async () => {
   fs.writeFileSync(
     path.join(manifestInstallTemplateDir, "package.json"),
     JSON.stringify({
-      name: "@openclaw/cognee-openclaw",
+      name: "@nexusclaw/cognee-nexusclaw",
       version: "0.0.1",
-      openclaw: { extensions: ["./dist/index.js"] },
+      nexusclaw: { extensions: ["./dist/index.js"] },
     }),
     "utf-8",
   );
@@ -474,7 +474,7 @@ beforeAll(async () => {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(manifestInstallTemplateDir, "openclaw.plugin.json"),
+    path.join(manifestInstallTemplateDir, "nexusclaw.plugin.json"),
     JSON.stringify({
       id: "manifest-template",
       configSchema: { type: "object", properties: {} },
@@ -497,7 +497,7 @@ beforeEach(() => {
 });
 
 describe("installPluginFromArchive", () => {
-  it("installs into ~/.openclaw/extensions and preserves scoped package ids", async () => {
+  it("installs into ~/.nexusclaw/extensions and preserves scoped package ids", async () => {
     const { stateDir, archivePath, extensionsDir } = await setupVoiceCallArchiveInstall({
       outName: "plugin.tgz",
       version: "0.0.1",
@@ -507,7 +507,7 @@ describe("installPluginFromArchive", () => {
       archivePath,
       extensionsDir,
     });
-    expectSuccessfulArchiveInstall({ result, stateDir, pluginId: "@openclaw/voice-call" });
+    expectSuccessfulArchiveInstall({ result, stateDir, pluginId: "@nexusclaw/voice-call" });
   });
 
   it("rejects installing when plugin already exists", async () => {
@@ -546,7 +546,7 @@ describe("installPluginFromArchive", () => {
       archivePath,
       extensionsDir,
     });
-    expectSuccessfulArchiveInstall({ result, stateDir, pluginId: "@openclaw/zipper" });
+    expectSuccessfulArchiveInstall({ result, stateDir, pluginId: "@nexusclaw/zipper" });
   });
 
   it("allows updates when mode is update", async () => {
@@ -593,31 +593,31 @@ describe("installPluginFromArchive", () => {
     }
   });
 
-  it("rejects packages without openclaw.extensions", async () => {
+  it("rejects packages without nexusclaw.extensions", async () => {
     const result = await installArchivePackageAndReturnResult({
-      packageJson: { name: "@openclaw/nope", version: "0.0.1" },
+      packageJson: { name: "@nexusclaw/nope", version: "0.0.1" },
       outName: "bad.tgz",
     });
     expect(result.ok).toBe(false);
     if (result.ok) {
       return;
     }
-    expect(result.error).toContain("openclaw.extensions");
-    expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_OPENCLAW_EXTENSIONS);
+    expect(result.error).toContain("nexusclaw.extensions");
+    expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_NEXUSCLAW_EXTENSIONS);
   });
 
-  it("rejects legacy plugin package shape when openclaw.extensions is missing", async () => {
+  it("rejects legacy plugin package shape when nexusclaw.extensions is missing", async () => {
     const { pluginDir, extensionsDir } = setupPluginInstallDirs();
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: "@openclaw/legacy-entry-fallback",
+        name: "@nexusclaw/legacy-entry-fallback",
         version: "0.0.1",
       }),
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "openclaw.plugin.json"),
+      path.join(pluginDir, "nexusclaw.plugin.json"),
       JSON.stringify({
         id: "legacy-entry-fallback",
         configSchema: { type: "object", properties: {} },
@@ -633,12 +633,12 @@ describe("installPluginFromArchive", () => {
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.error).toContain("package.json missing openclaw.extensions");
+      expect(result.error).toContain("package.json missing nexusclaw.extensions");
       expect(result.error).toContain("update the plugin package");
-      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_OPENCLAW_EXTENSIONS);
+      expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.MISSING_NEXUSCLAW_EXTENSIONS);
       return;
     }
-    expect.unreachable("expected install to fail without openclaw.extensions");
+    expect.unreachable("expected install to fail without nexusclaw.extensions");
   });
 
   it("warns when plugin contains dangerous code patterns", async () => {
@@ -649,7 +649,7 @@ describe("installPluginFromArchive", () => {
       JSON.stringify({
         name: "dangerous-plugin",
         version: "1.0.0",
-        openclaw: { extensions: ["index.js"] },
+        nexusclaw: { extensions: ["index.js"] },
       }),
     );
     fs.writeFileSync(
@@ -672,7 +672,7 @@ describe("installPluginFromArchive", () => {
       JSON.stringify({
         name: "hidden-entry-plugin",
         version: "1.0.0",
-        openclaw: { extensions: [".hidden/index.js"] },
+        nexusclaw: { extensions: [".hidden/index.js"] },
       }),
     );
     fs.writeFileSync(
@@ -699,7 +699,7 @@ describe("installPluginFromArchive", () => {
       JSON.stringify({
         name: "scan-fail-plugin",
         version: "1.0.0",
-        openclaw: { extensions: ["index.js"] },
+        nexusclaw: { extensions: ["index.js"] },
       }),
     );
     fs.writeFileSync(path.join(pluginDir, "index.js"), "export {};");
@@ -743,7 +743,7 @@ describe("installPluginFromDir", () => {
   it("strips workspace devDependencies before npm install", async () => {
     const { pluginDir, extensionsDir } = setupInstallPluginFromDirFixture({
       devDependencies: {
-        openclaw: "workspace:*",
+        nexusclaw: "workspace:*",
         vitest: "^3.0.0",
       },
     });
@@ -772,21 +772,21 @@ describe("installPluginFromDir", () => {
     ) as {
       devDependencies?: Record<string, string>;
     };
-    expect(manifest.devDependencies?.openclaw).toBeUndefined();
+    expect(manifest.devDependencies?.nexusclaw).toBeUndefined();
     expect(manifest.devDependencies?.vitest).toBe("^3.0.0");
   });
 
   it("rejects plugins whose minHostVersion is newer than the current host", async () => {
-    vi.stubEnv("OPENCLAW_VERSION", "2026.3.13");
+    vi.stubEnv("NEXUSCLAW_VERSION", "2026.3.13");
     const { pluginDir, extensionsDir } = setupInstallPluginFromDirFixture();
     const packageJsonPath = path.join(pluginDir, "package.json");
     const manifest = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")) as {
-      openclaw?: { install?: Record<string, unknown> };
+      nexusclaw?: { install?: Record<string, unknown> };
     };
-    manifest.openclaw = {
-      ...manifest.openclaw,
+    manifest.nexusclaw = {
+      ...manifest.nexusclaw,
       install: {
-        ...manifest.openclaw?.install,
+        ...manifest.nexusclaw?.install,
         minHostVersion: ">=2026.3.14",
       },
     };
@@ -802,7 +802,7 @@ describe("installPluginFromDir", () => {
       return;
     }
     expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INCOMPATIBLE_HOST_VERSION);
-    expect(result.error).toContain("requires OpenClaw >=2026.3.14, but this host is 2026.3.13");
+    expect(result.error).toContain("requires NexusClaw >=2026.3.14, but this host is 2026.3.13");
     expect(vi.mocked(runCommandWithTimeout)).not.toHaveBeenCalled();
   });
 
@@ -810,12 +810,12 @@ describe("installPluginFromDir", () => {
     const { pluginDir, extensionsDir } = setupInstallPluginFromDirFixture();
     const packageJsonPath = path.join(pluginDir, "package.json");
     const manifest = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")) as {
-      openclaw?: { install?: Record<string, unknown> };
+      nexusclaw?: { install?: Record<string, unknown> };
     };
-    manifest.openclaw = {
-      ...manifest.openclaw,
+    manifest.nexusclaw = {
+      ...manifest.nexusclaw,
       install: {
-        ...manifest.openclaw?.install,
+        ...manifest.nexusclaw?.install,
         minHostVersion: "2026.3.14",
       },
     };
@@ -831,21 +831,21 @@ describe("installPluginFromDir", () => {
       return;
     }
     expect(result.code).toBe(PLUGIN_INSTALL_ERROR_CODE.INVALID_MIN_HOST_VERSION);
-    expect(result.error).toContain("invalid package.json openclaw.install.minHostVersion");
+    expect(result.error).toContain("invalid package.json nexusclaw.install.minHostVersion");
     expect(vi.mocked(runCommandWithTimeout)).not.toHaveBeenCalled();
   });
 
   it("reports unknown host versions distinctly for minHostVersion-gated plugins", async () => {
-    vi.stubEnv("OPENCLAW_VERSION", "unknown");
+    vi.stubEnv("NEXUSCLAW_VERSION", "unknown");
     const { pluginDir, extensionsDir } = setupInstallPluginFromDirFixture();
     const packageJsonPath = path.join(pluginDir, "package.json");
     const manifest = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")) as {
-      openclaw?: { install?: Record<string, unknown> };
+      nexusclaw?: { install?: Record<string, unknown> };
     };
-    manifest.openclaw = {
-      ...manifest.openclaw,
+    manifest.nexusclaw = {
+      ...manifest.nexusclaw,
       install: {
-        ...manifest.openclaw?.install,
+        ...manifest.nexusclaw?.install,
         minHostVersion: ">=2026.3.14",
       },
     };
@@ -865,7 +865,7 @@ describe("installPluginFromDir", () => {
     expect(vi.mocked(runCommandWithTimeout)).not.toHaveBeenCalled();
   });
 
-  it("uses openclaw.plugin.json id as install key when it differs from package name", async () => {
+  it("uses nexusclaw.plugin.json id as install key when it differs from package name", async () => {
     const { pluginDir, extensionsDir } = setupManifestInstallFixture({
       manifestId: "memory-cognee",
     });
@@ -881,7 +881,7 @@ describe("installPluginFromDir", () => {
     expect(
       infoMessages.some((msg) =>
         msg.includes(
-          'Plugin manifest id "memory-cognee" differs from npm package name "@openclaw/cognee-openclaw"',
+          'Plugin manifest id "memory-cognee" differs from npm package name "@nexusclaw/cognee-nexusclaw"',
         ),
       ),
     ).toBe(true);
@@ -902,7 +902,7 @@ describe("installPluginFromDir", () => {
       },
       {
         setup: () => setupInstallPluginFromDirFixture(),
-        expectedPluginId: "@openclaw/test-plugin",
+        expectedPluginId: "@nexusclaw/test-plugin",
         install: (pluginDir: string, extensionsDir: string) =>
           installPluginFromDir({
             dirPath: pluginDir,
@@ -911,7 +911,7 @@ describe("installPluginFromDir", () => {
       },
       {
         setup: () => setupInstallPluginFromDirFixture(),
-        expectedPluginId: "@openclaw/test-plugin",
+        expectedPluginId: "@nexusclaw/test-plugin",
         install: (pluginDir: string, extensionsDir: string) =>
           installPluginFromDir({
             dirPath: pluginDir,
@@ -1148,8 +1148,8 @@ describe("installPluginFromNpmSpec", () => {
           code: 0,
           stdout: JSON.stringify([
             {
-              id: "@openclaw/voice-call@0.0.1",
-              name: "@openclaw/voice-call",
+              id: "@nexusclaw/voice-call@0.0.1",
+              name: "@nexusclaw/voice-call",
               version: "0.0.1",
               filename: packedName,
               integrity: "sha512-plugin-test",
@@ -1166,7 +1166,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@openclaw/voice-call@0.0.1",
+      spec: "@nexusclaw/voice-call@0.0.1",
       extensionsDir,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -1174,12 +1174,12 @@ describe("installPluginFromNpmSpec", () => {
     if (!result.ok) {
       return;
     }
-    expect(result.npmResolution?.resolvedSpec).toBe("@openclaw/voice-call@0.0.1");
+    expect(result.npmResolution?.resolvedSpec).toBe("@nexusclaw/voice-call@0.0.1");
     expect(result.npmResolution?.integrity).toBe("sha512-plugin-test");
 
     expectSingleNpmPackIgnoreScriptsCall({
       calls: run.mock.calls,
-      expectedSpec: "@openclaw/voice-call@0.0.1",
+      expectedSpec: "@nexusclaw/voice-call@0.0.1",
     });
 
     expect(packTmpDir).not.toBe("");
@@ -1198,8 +1198,8 @@ describe("installPluginFromNpmSpec", () => {
   it("aborts when integrity drift callback rejects the fetched artifact", async () => {
     const run = vi.mocked(runCommandWithTimeout);
     mockNpmPackMetadataResult(run, {
-      id: "@openclaw/voice-call@0.0.1",
-      name: "@openclaw/voice-call",
+      id: "@nexusclaw/voice-call@0.0.1",
+      name: "@nexusclaw/voice-call",
       version: "0.0.1",
       filename: "voice-call-0.0.1.tgz",
       integrity: "sha512-new",
@@ -1208,7 +1208,7 @@ describe("installPluginFromNpmSpec", () => {
 
     const onIntegrityDrift = vi.fn(async () => false);
     const result = await installPluginFromNpmSpec({
-      spec: "@openclaw/voice-call@0.0.1",
+      spec: "@nexusclaw/voice-call@0.0.1",
       expectedIntegrity: "sha512-old",
       onIntegrityDrift,
     });
@@ -1232,7 +1232,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@openclaw/not-found",
+      spec: "@nexusclaw/not-found",
       logger: { info: () => {}, warn: () => {} },
     });
     expect(result.ok).toBe(false);
@@ -1243,8 +1243,8 @@ describe("installPluginFromNpmSpec", () => {
 
   it("handles prerelease npm specs correctly", async () => {
     const prereleaseMetadata = {
-      id: "@openclaw/voice-call@0.0.2-beta.1",
-      name: "@openclaw/voice-call",
+      id: "@nexusclaw/voice-call@0.0.2-beta.1",
+      name: "@nexusclaw/voice-call",
       version: "0.0.2-beta.1",
       filename: "voice-call-0.0.2-beta.1.tgz",
       integrity: "sha512-beta",
@@ -1256,13 +1256,13 @@ describe("installPluginFromNpmSpec", () => {
       mockNpmPackMetadataResult(run, prereleaseMetadata);
 
       const result = await installPluginFromNpmSpec({
-        spec: "@openclaw/voice-call",
+        spec: "@nexusclaw/voice-call",
         logger: { info: () => {}, warn: () => {} },
       });
       expect(result.ok).toBe(false);
       if (!result.ok) {
         expect(result.error).toContain("prerelease version 0.0.2-beta.1");
-        expect(result.error).toContain('"@openclaw/voice-call@beta"');
+        expect(result.error).toContain('"@nexusclaw/voice-call@beta"');
       }
     }
 
@@ -1294,7 +1294,7 @@ describe("installPluginFromNpmSpec", () => {
         version: "0.0.1",
       });
       const result = await installPluginFromNpmSpec({
-        spec: "@openclaw/voice-call@beta",
+        spec: "@nexusclaw/voice-call@beta",
         extensionsDir,
         logger: { info: () => {}, warn: () => {} },
       });
@@ -1303,10 +1303,10 @@ describe("installPluginFromNpmSpec", () => {
         return;
       }
       expect(result.npmResolution?.version).toBe("0.0.2-beta.1");
-      expect(result.npmResolution?.resolvedSpec).toBe("@openclaw/voice-call@0.0.2-beta.1");
+      expect(result.npmResolution?.resolvedSpec).toBe("@nexusclaw/voice-call@0.0.2-beta.1");
       expectSingleNpmPackIgnoreScriptsCall({
         calls: run.mock.calls,
-        expectedSpec: "@openclaw/voice-call@beta",
+        expectedSpec: "@nexusclaw/voice-call@beta",
       });
       expect(packTmpDir).not.toBe("");
     }

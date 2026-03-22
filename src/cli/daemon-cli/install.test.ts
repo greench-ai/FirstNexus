@@ -23,7 +23,7 @@ const resolveSecretRefValuesMock = vi.hoisted(() => vi.fn());
 const randomTokenMock = vi.hoisted(() => vi.fn(() => "generated-token"));
 const buildGatewayInstallPlanMock = vi.hoisted(() =>
   vi.fn(async () => ({
-    programArguments: ["openclaw", "gateway", "run"],
+    programArguments: ["nexusclaw", "gateway", "run"],
     workingDirectory: "/tmp",
     environment: {},
   })),
@@ -143,10 +143,10 @@ function expectFirstInstallPlanCallOmitsToken() {
 
 function mockResolvedGatewayTokenSecretRef() {
   resolveSecretInputRefMock.mockReturnValue({
-    ref: { source: "env", provider: "default", id: "OPENCLAW_GATEWAY_TOKEN" },
+    ref: { source: "env", provider: "default", id: "NEXUSCLAW_GATEWAY_TOKEN" },
   });
   resolveSecretRefValuesMock.mockResolvedValue(
-    new Map([["env:default:OPENCLAW_GATEWAY_TOKEN", "resolved-from-secretref"]]),
+    new Map([["env:default:NEXUSCLAW_GATEWAY_TOKEN", "resolved-from-secretref"]]),
   );
 }
 
@@ -189,7 +189,7 @@ describe("runDaemonInstall", () => {
     resolveSecretRefValuesMock.mockResolvedValue(new Map());
     randomTokenMock.mockReturnValue("generated-token");
     buildGatewayInstallPlanMock.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["nexusclaw", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {},
     });
@@ -202,7 +202,7 @@ describe("runDaemonInstall", () => {
       NODE_EXTRA_CA_CERTS: undefined,
       NODE_USE_SYSTEM_CA: undefined,
     });
-    delete process.env.OPENCLAW_GATEWAY_TOKEN;
+    delete process.env.NEXUSCLAW_GATEWAY_TOKEN;
     delete process.env.CLAWDBOT_GATEWAY_TOKEN;
   });
 
@@ -212,7 +212,7 @@ describe("runDaemonInstall", () => {
 
   it("fails install when token auth requires an unresolved token SecretRef", async () => {
     resolveSecretInputRefMock.mockReturnValue({
-      ref: { source: "env", provider: "default", id: "OPENCLAW_GATEWAY_TOKEN" },
+      ref: { source: "env", provider: "default", id: "NEXUSCLAW_GATEWAY_TOKEN" },
     });
     resolveSecretRefValuesMock.mockRejectedValue(new Error("secret unavailable"));
 
@@ -242,7 +242,7 @@ describe("runDaemonInstall", () => {
 
   it("does not treat env-template gateway.auth.token as plaintext during install", async () => {
     loadConfigMock.mockReturnValue({
-      gateway: { auth: { mode: "token", token: "${OPENCLAW_GATEWAY_TOKEN}" } },
+      gateway: { auth: { mode: "token", token: "${NEXUSCLAW_GATEWAY_TOKEN}" } },
     });
     mockResolvedGatewayTokenSecretRef();
 
@@ -308,7 +308,7 @@ describe("runDaemonInstall", () => {
       NODE_USE_SYSTEM_CA: undefined,
     });
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["nexusclaw", "gateway", "run"],
       environment: {
         NODE_EXTRA_CA_CERTS: "/etc/ssl/certs/ca-certificates.crt",
       },
@@ -327,7 +327,7 @@ describe("runDaemonInstall", () => {
       NODE_USE_SYSTEM_CA: undefined,
     });
     service.readCommand.mockResolvedValue({
-      programArguments: ["openclaw", "gateway", "run"],
+      programArguments: ["nexusclaw", "gateway", "run"],
       environment: {},
     } as never);
 

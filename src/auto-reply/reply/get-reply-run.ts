@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import { resolveSessionAuthProfileOverride } from "../../agents/auth-profiles/session-override.js";
 import type { ExecToolDefaults } from "../../agents/bash-tools.js";
 import { resolveFastModeState } from "../../agents/fast-mode.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { NexusClawConfig } from "../../config/config.js";
 import { resolveGroupSessionKey } from "../../config/sessions/group.js";
 import {
   resolveSessionFilePath,
@@ -45,7 +45,7 @@ import { resolveRunTypingPolicy } from "./typing-policy.js";
 import type { TypingController } from "./typing.js";
 import { appendUntrustedContext } from "./untrusted-context.js";
 
-type AgentDefaults = NonNullable<OpenClawConfig["agents"]>["defaults"];
+type AgentDefaults = NonNullable<NexusClawConfig["agents"]>["defaults"];
 type ExecOverrides = Pick<ExecToolDefaults, "host" | "security" | "ask" | "node">;
 
 let piEmbeddedRuntimePromise: Promise<typeof import("../../agents/pi-embedded.runtime.js")> | null =
@@ -112,7 +112,7 @@ async function sendResetSessionNotice(params: {
   ctx: MsgContext;
   command: ReturnType<typeof buildCommandContext>;
   sessionKey: string;
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   accountId: string | undefined;
   threadId: string | number | undefined;
   provider: string;
@@ -149,11 +149,11 @@ async function sendResetSessionNotice(params: {
 type RunPreparedReplyParams = {
   ctx: MsgContext;
   sessionCtx: TemplateContext;
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   agentId: string;
   agentDir: string;
   agentCfg: AgentDefaults;
-  sessionCfg: OpenClawConfig["session"];
+  sessionCfg: NexusClawConfig["session"];
   commandAuthorized: boolean;
   command: ReturnType<typeof buildCommandContext>;
   commandSource: string;

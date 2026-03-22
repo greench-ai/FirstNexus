@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { MsgContext } from "../auto-reply/templating.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import {
   buildProviderRegistry,
   createMediaAttachmentCache,
@@ -38,7 +38,7 @@ describe("runCapability image skip", () => {
     const ctx: MsgContext = { MediaPath: "/tmp/image.png", MediaType: "image/png" };
     const media = normalizeMediaAttachments(ctx);
     const cache = createMediaAttachmentCache(media);
-    const cfg = {} as OpenClawConfig;
+    const cfg = {} as NexusClawConfig;
 
     try {
       const result = await runCapability({

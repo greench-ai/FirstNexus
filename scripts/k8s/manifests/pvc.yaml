@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: openclaw-home-pvc
+  name: nexusclaw-home-pvc
   labels:
-    app: openclaw
+    app: nexusclaw
 spec:
   accessModes:
     - ReadWriteOnce

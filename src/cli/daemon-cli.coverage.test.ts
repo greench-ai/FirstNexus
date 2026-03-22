@@ -27,8 +27,8 @@ const buildGatewayInstallPlan = vi.fn(
     programArguments: ["/bin/node", "cli", "gateway", "--port", String(params.port)],
     workingDirectory: process.cwd(),
     environment: {
-      OPENCLAW_GATEWAY_PORT: String(params.port),
-      ...(params.token ? { OPENCLAW_GATEWAY_TOKEN: params.token } : {}),
+      NEXUSCLAW_GATEWAY_PORT: String(params.port),
+      ...(params.token ? { NEXUSCLAW_GATEWAY_TOKEN: params.token } : {}),
     },
   }),
 );
@@ -123,15 +123,15 @@ describe("daemon-cli coverage", () => {
   beforeEach(() => {
     daemonProgram = createDaemonProgram();
     envSnapshot = captureEnv([
-      "OPENCLAW_STATE_DIR",
-      "OPENCLAW_CONFIG_PATH",
-      "OPENCLAW_GATEWAY_PORT",
-      "OPENCLAW_PROFILE",
+      "NEXUSCLAW_STATE_DIR",
+      "NEXUSCLAW_CONFIG_PATH",
+      "NEXUSCLAW_GATEWAY_PORT",
+      "NEXUSCLAW_PROFILE",
     ]);
-    process.env.OPENCLAW_STATE_DIR = "/tmp/openclaw-cli-state";
-    process.env.OPENCLAW_CONFIG_PATH = "/tmp/openclaw-cli-state/openclaw.json";
-    delete process.env.OPENCLAW_GATEWAY_PORT;
-    delete process.env.OPENCLAW_PROFILE;
+    process.env.NEXUSCLAW_STATE_DIR = "/tmp/nexusclaw-cli-state";
+    process.env.NEXUSCLAW_CONFIG_PATH = "/tmp/nexusclaw-cli-state/nexusclaw.json";
+    delete process.env.NEXUSCLAW_GATEWAY_PORT;
+    delete process.env.NEXUSCLAW_PROFILE;
     serviceReadCommand.mockResolvedValue(null);
     resolveGatewayProbeAuthWithSecretInputs.mockClear();
     buildGatewayInstallPlan.mockClear();
@@ -161,12 +161,12 @@ describe("daemon-cli coverage", () => {
     serviceReadCommand.mockResolvedValueOnce({
       programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
       environment: {
-        OPENCLAW_PROFILE: "dev",
-        OPENCLAW_STATE_DIR: "/tmp/openclaw-daemon-state",
-        OPENCLAW_CONFIG_PATH: "/tmp/openclaw-daemon-state/openclaw.json",
-        OPENCLAW_GATEWAY_PORT: "19001",
+        NEXUSCLAW_PROFILE: "dev",
+        NEXUSCLAW_STATE_DIR: "/tmp/nexusclaw-daemon-state",
+        NEXUSCLAW_CONFIG_PATH: "/tmp/nexusclaw-daemon-state/nexusclaw.json",
+        NEXUSCLAW_GATEWAY_PORT: "19001",
       },
-      sourcePath: "/tmp/ai.openclaw.gateway.plist",
+      sourcePath: "/tmp/ai.nexusclaw.gateway.plist",
     });
 
     await runDaemonCommand(["daemon", "status", "--json"]);

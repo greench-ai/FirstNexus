@@ -5,7 +5,7 @@ import type {
   ChannelOutboundAdapter,
   ChannelPlugin,
 } from "../../channels/plugins/types.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { NexusClawConfig } from "../../config/config.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
 import {
   createChannelTestPluginBase,
@@ -21,7 +21,7 @@ const slackConfig = {
       appToken: "xapp-test",
     },
   },
-} as OpenClawConfig;
+} as NexusClawConfig;
 
 const whatsappConfig = {
   channels: {
@@ -29,10 +29,10 @@ const whatsappConfig = {
       allowFrom: ["*"],
     },
   },
-} as OpenClawConfig;
+} as NexusClawConfig;
 
 const runDryAction = (params: {
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   action: "send" | "thread-reply" | "broadcast";
   actionParams: Record<string, unknown>;
   toolContext?: Record<string, unknown>;
@@ -50,7 +50,7 @@ const runDryAction = (params: {
   });
 
 const runDrySend = (params: {
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   actionParams: Record<string, unknown>;
   toolContext?: Record<string, unknown>;
   abortSignal?: AbortSignal;
@@ -88,7 +88,7 @@ function normalizeSlackTarget(raw: string): string {
 
 function createConfiguredTestPlugin(params: {
   id: "slack" | "telegram" | "whatsapp";
-  isConfigured: (cfg: OpenClawConfig) => boolean;
+  isConfigured: (cfg: NexusClawConfig) => boolean;
   normalizeTarget: (raw: string) => string | undefined;
   resolveTarget: (input: string) => ResolvedTestTarget | null;
 }): ChannelPlugin {
@@ -283,7 +283,7 @@ describe("runMessageAction context isolation", () => {
             botToken: "telegram-test",
           },
         },
-      } as OpenClawConfig,
+      } as NexusClawConfig,
       actionParams: {
         channel: "telegram",
         target: "123456",
@@ -460,7 +460,7 @@ describe("runMessageAction context isolation", () => {
             token: "tg-test",
           },
         },
-      } as OpenClawConfig,
+      } as NexusClawConfig,
       action: "send" as const,
       actionParams: {
         message: "hi",
@@ -530,7 +530,7 @@ describe("runMessageAction context isolation", () => {
             },
           },
         },
-      } as OpenClawConfig,
+      } as NexusClawConfig,
       actionParams: {
         channel: "slack",
         target: "channel:C99999999",

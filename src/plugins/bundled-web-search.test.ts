@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { bundledWebSearchPluginRegistrations } from "../bundled-web-search-registry.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { BUNDLED_WEB_SEARCH_PLUGIN_IDS } from "./bundled-web-search-ids.js";
 import {
   listBundledWebSearchProviders,
@@ -126,8 +126,8 @@ describe("bundled web search metadata", () => {
         contractProvider.getCredentialValue(contractSearchConfig),
       );
 
-      const fastConfig = {} as OpenClawConfig;
-      const contractConfig = {} as OpenClawConfig;
+      const fastConfig = {} as NexusClawConfig;
+      const contractConfig = {} as NexusClawConfig;
       fastPathProvider.setConfiguredCredentialValue?.(fastConfig, "test-key");
       contractProvider.setConfiguredCredentialValue?.(contractConfig, "test-key");
       expect(fastConfig).toEqual(contractConfig);
@@ -136,8 +136,8 @@ describe("bundled web search metadata", () => {
       );
 
       if (fastPathProvider.applySelectionConfig || contractProvider.applySelectionConfig) {
-        expect(fastPathProvider.applySelectionConfig?.({} as OpenClawConfig)).toEqual(
-          contractProvider.applySelectionConfig?.({} as OpenClawConfig),
+        expect(fastPathProvider.applySelectionConfig?.({} as NexusClawConfig)).toEqual(
+          contractProvider.applySelectionConfig?.({} as NexusClawConfig),
         );
       }
 

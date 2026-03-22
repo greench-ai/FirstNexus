@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openclaw-config
+  name: nexusclaw-config
   labels:
-    app: openclaw
+    app: nexusclaw
 data:
-  openclaw.json: |
+  nexusclaw.json: |
     {
       "gateway": {
         "mode": "local",
@@ -20,19 +20,19 @@ data:
       },
       "agents": {
         "defaults": {
-          "workspace": "~/.openclaw/workspace"
+          "workspace": "~/.nexusclaw/workspace"
         },
         "list": [
           {
             "id": "default",
-            "name": "OpenClaw Assistant",
-            "workspace": "~/.openclaw/workspace"
+            "name": "NexusClaw Assistant",
+            "workspace": "~/.nexusclaw/workspace"
           }
         ]
       },
       "cron": { "enabled": false }
     }
   AGENTS.md: |
-    # OpenClaw Assistant
+    # NexusClaw Assistant
 
     You are a helpful AI assistant running in Kubernetes.

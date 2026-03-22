@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import type { PluginWebSearchProviderEntry } from "../plugins/types.js";
 
 const mocks = vi.hoisted(() => ({
   resolvePluginWebSearchProviders: vi.fn<
-    (params?: { config?: OpenClawConfig }) => PluginWebSearchProviderEntry[]
+    (params?: { config?: NexusClawConfig }) => PluginWebSearchProviderEntry[]
   >(() => []),
   listBundledWebSearchProviders: vi.fn<() => PluginWebSearchProviderEntry[]>(() => []),
   resolveBundledWebSearchPluginId: vi.fn<(providerId?: string) => string | undefined>(
@@ -89,7 +89,7 @@ describe("onboard-search provider resolution", () => {
     );
 
     const mod = await import("./onboard-search.js");
-    const cfg: OpenClawConfig = {
+    const cfg: NexusClawConfig = {
       tools: {
         web: {
           search: {
@@ -130,7 +130,7 @@ describe("onboard-search provider resolution", () => {
     );
 
     const mod = await import("./onboard-search.js");
-    const cfg: OpenClawConfig = {
+    const cfg: NexusClawConfig = {
       plugins: {
         installs: {
           "custom-plugin": {
@@ -181,7 +181,7 @@ describe("onboard-search provider resolution", () => {
     mocks.resolveBundledWebSearchPluginId.mockReturnValue("firecrawl");
 
     const mod = await import("./onboard-search.js");
-    const cfg: OpenClawConfig = {
+    const cfg: NexusClawConfig = {
       tools: {
         web: {
           search: {

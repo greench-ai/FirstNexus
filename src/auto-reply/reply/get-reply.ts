@@ -8,7 +8,7 @@ import { resolveModelRefFromString } from "../../agents/model-selection.js";
 import { resolveAgentTimeoutMs } from "../../agents/timeout.js";
 import { DEFAULT_AGENT_WORKSPACE_DIR, ensureAgentWorkspace } from "../../agents/workspace.js";
 import { resolveChannelModelOverride } from "../../channels/model-overrides.js";
-import { type OpenClawConfig, loadConfig } from "../../config/config.js";
+import { type NexusClawConfig, loadConfig } from "../../config/config.js";
 import { defaultRuntime } from "../../runtime.js";
 import { normalizeStringEntries } from "../../shared/string-normalization.js";
 import { resolveCommandAuthorization } from "../command-auth.js";
@@ -27,7 +27,7 @@ import { stageSandboxMedia } from "./stage-sandbox-media.js";
 import { createTypingController } from "./typing.js";
 
 function shouldLogCoreIngressTiming(): boolean {
-  return process.env.OPENCLAW_DEBUG_INGRESS_TIMING === "1";
+  return process.env.NEXUSCLAW_DEBUG_INGRESS_TIMING === "1";
 }
 
 type ResetCommandAction = "new" | "reset";
@@ -79,7 +79,7 @@ function hasLinkCandidate(ctx: MsgContext): boolean {
 
 async function applyMediaUnderstandingIfNeeded(params: {
   ctx: MsgContext;
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   agentDir?: string;
   activeModel: { provider: string; model: string };
 }): Promise<boolean> {
@@ -93,7 +93,7 @@ async function applyMediaUnderstandingIfNeeded(params: {
 
 async function applyLinkUnderstandingIfNeeded(params: {
   ctx: MsgContext;
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
 }): Promise<boolean> {
   if (!hasLinkCandidate(params.ctx)) {
     return false;
@@ -106,7 +106,7 @@ async function applyLinkUnderstandingIfNeeded(params: {
 export async function getReplyFromConfig(
   ctx: MsgContext,
   opts?: GetReplyOptions,
-  configOverride?: OpenClawConfig,
+  configOverride?: NexusClawConfig,
 ): Promise<ReplyPayload | ReplyPayload[] | undefined> {
   const ingressTimingEnabled = shouldLogCoreIngressTiming();
   const ingressStartMs = ingressTimingEnabled ? Date.now() : 0;
@@ -120,7 +120,7 @@ export async function getReplyFromConfig(
       `[ingress] session=${sessionKey} stage=${stage} elapsedMs=${Date.now() - ingressStartMs}${suffix}`,
     );
   };
-  const isFastTestEnv = process.env.OPENCLAW_TEST_FAST === "1";
+  const isFastTestEnv = process.env.NEXUSCLAW_TEST_FAST === "1";
   const cfg = configOverride ?? loadConfig();
   const targetSessionKey =
     ctx.CommandSource === "native" ? ctx.CommandTargetSessionKey?.trim() : undefined;

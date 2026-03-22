@@ -4,7 +4,7 @@ import { primeConfiguredBindingRegistry } from "../channels/plugins/binding-regi
 import type { loadConfig } from "../config/config.js";
 import { resolveGatewayStartupPluginIds } from "../plugins/channel-plugin-ids.js";
 import { normalizePluginsConfig } from "../plugins/config-state.js";
-import { loadOpenClawPlugins } from "../plugins/loader.js";
+import { loadNexusClawPlugins } from "../plugins/loader.js";
 import { getPluginRuntimeGatewayRequestScope } from "../plugins/runtime/gateway-request-scope.js";
 import { setGatewaySubagentRuntime } from "../plugins/runtime/index.js";
 import type { PluginRuntime } from "../plugins/runtime/types.js";
@@ -26,7 +26,7 @@ import type {
 // dispatchGatewayMethod can use it as a fallback.
 
 const FALLBACK_GATEWAY_CONTEXT_STATE_KEY: unique symbol = Symbol.for(
-  "openclaw.fallbackGatewayContextState",
+  "nexusclaw.fallbackGatewayContextState",
 );
 
 type FallbackGatewayContextState = {
@@ -63,7 +63,7 @@ type PluginSubagentPolicyState = {
 };
 
 const PLUGIN_SUBAGENT_POLICY_STATE_KEY: unique symbol = Symbol.for(
-  "openclaw.pluginSubagentOverridePolicyState",
+  "nexusclaw.pluginSubagentOverridePolicyState",
 );
 
 const pluginSubagentPolicyState: PluginSubagentPolicyState = (() => {
@@ -158,7 +158,7 @@ function authorizeFallbackModelOverride(params: {
       allowed: false,
       reason:
         `plugin "${pluginId}" is not trusted for fallback provider/model override requests. ` +
-        "See https://docs.openclaw.ai/tools/plugin#runtime-helpers and search for: " +
+        "See https://docs.nexusclaw.ai/tools/plugin#runtime-helpers and search for: " +
         "plugins.entries.<id>.subagent.allowModelOverride",
     };
   }
@@ -406,7 +406,7 @@ export function loadGatewayPlugins(params: {
   const gatewaySubagent = createGatewaySubagentRuntime();
   setGatewaySubagentRuntime(gatewaySubagent);
 
-  const pluginRegistry = loadOpenClawPlugins({
+  const pluginRegistry = loadNexusClawPlugins({
     config: params.cfg,
     workspaceDir: params.workspaceDir,
     onlyPluginIds: resolveGatewayStartupPluginIds({

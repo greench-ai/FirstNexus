@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import {
   clearConfigCache,
   clearRuntimeConfigSnapshot,
@@ -11,7 +11,7 @@ import {
   installModelsConfigTestHooks,
   withModelsTempHome as withTempHome,
 } from "./models-config.e2e-harness.js";
-import { ensureOpenClawModelsJson, resetModelsJsonReadyCacheForTest } from "./models-config.js";
+import { ensureNexusClawModelsJson, resetModelsJsonReadyCacheForTest } from "./models-config.js";
 import { readGeneratedModelsJson } from "./models-config.test-utils.js";
 
 installModelsConfigTestHooks();
@@ -20,7 +20,7 @@ afterEach(() => {
   resetModelsJsonReadyCacheForTest();
 });
 
-function createOpenAiApiKeySourceConfig(): OpenClawConfig {
+function createOpenAiApiKeySourceConfig(): NexusClawConfig {
   return {
     models: {
       providers: {
@@ -35,7 +35,7 @@ function createOpenAiApiKeySourceConfig(): OpenClawConfig {
   };
 }
 
-function createOpenAiApiKeyRuntimeConfig(): OpenClawConfig {
+function createOpenAiApiKeyRuntimeConfig(): NexusClawConfig {
   return {
     models: {
       providers: {
@@ -50,7 +50,7 @@ function createOpenAiApiKeyRuntimeConfig(): OpenClawConfig {
   };
 }
 
-function createOpenAiHeaderSourceConfig(): OpenClawConfig {
+function createOpenAiHeaderSourceConfig(): NexusClawConfig {
   return {
     models: {
       providers: {
@@ -76,7 +76,7 @@ function createOpenAiHeaderSourceConfig(): OpenClawConfig {
   };
 }
 
-function createOpenAiHeaderRuntimeConfig(): OpenClawConfig {
+function createOpenAiHeaderRuntimeConfig(): NexusClawConfig {
   return {
     models: {
       providers: {
@@ -94,7 +94,7 @@ function createOpenAiHeaderRuntimeConfig(): OpenClawConfig {
   };
 }
 
-function withGatewayTokenMode(config: OpenClawConfig): OpenClawConfig {
+function withGatewayTokenMode(config: NexusClawConfig): NexusClawConfig {
   return {
     ...config,
     gateway: {
@@ -107,16 +107,16 @@ function withGatewayTokenMode(config: OpenClawConfig): OpenClawConfig {
 
 async function withGeneratedModelsFromRuntimeSource(
   params: {
-    sourceConfig: OpenClawConfig;
-    runtimeConfig: OpenClawConfig;
-    candidateConfig?: OpenClawConfig;
+    sourceConfig: NexusClawConfig;
+    runtimeConfig: NexusClawConfig;
+    candidateConfig?: NexusClawConfig;
   },
   runAssertions: () => Promise<void>,
 ) {
   await withTempHome(async () => {
     try {
       setRuntimeConfigSnapshot(params.runtimeConfig, params.sourceConfig);
-      await ensureOpenClawModelsJson(params.candidateConfig ?? loadConfig());
+      await ensureNexusClawModelsJson(params.candidateConfig ?? loadConfig());
       await runAssertions();
     } finally {
       clearRuntimeConfigSnapshot();
@@ -155,7 +155,7 @@ describe("models-config runtime source snapshot", () => {
 
   it("uses non-env marker from runtime source snapshot for file refs", async () => {
     await withTempHome(async () => {
-      const sourceConfig: OpenClawConfig = {
+      const sourceConfig: NexusClawConfig = {
         models: {
           providers: {
             moonshot: {
@@ -167,7 +167,7 @@ describe("models-config runtime source snapshot", () => {
           },
         },
       };
-      const runtimeConfig: OpenClawConfig = {
+      const runtimeConfig: NexusClawConfig = {
         models: {
           providers: {
             moonshot: {
@@ -182,7 +182,7 @@ describe("models-config runtime source snapshot", () => {
 
       try {
         setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-        await ensureOpenClawModelsJson(loadConfig());
+        await ensureNexusClawModelsJson(loadConfig());
 
         const parsed = await readGeneratedModelsJson<{
           providers: Record<string, { apiKey?: string }>;
@@ -199,7 +199,7 @@ describe("models-config runtime source snapshot", () => {
     await withTempHome(async () => {
       const sourceConfig = createOpenAiApiKeySourceConfig();
       const runtimeConfig = createOpenAiApiKeyRuntimeConfig();
-      const clonedRuntimeConfig: OpenClawConfig = {
+      const clonedRuntimeConfig: NexusClawConfig = {
         ...runtimeConfig,
         agents: {
           defaults: {
@@ -210,7 +210,7 @@ describe("models-config runtime source snapshot", () => {
 
       try {
         setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-        await ensureOpenClawModelsJson(clonedRuntimeConfig);
+        await ensureNexusClawModelsJson(clonedRuntimeConfig);
         await expectGeneratedProviderApiKey("openai", "OPENAI_API_KEY"); // pragma: allowlist secret
       } finally {
         clearRuntimeConfigSnapshot();
@@ -223,7 +223,7 @@ describe("models-config runtime source snapshot", () => {
     await withTempHome(async () => {
       const sourceConfig = createOpenAiApiKeySourceConfig();
       const runtimeConfig = createOpenAiApiKeyRuntimeConfig();
-      const firstCandidate: OpenClawConfig = {
+      const firstCandidate: NexusClawConfig = {
         ...runtimeConfig,
         models: {
           providers: {
@@ -234,7 +234,7 @@ describe("models-config runtime source snapshot", () => {
           },
         },
       };
-      const secondCandidate: OpenClawConfig = {
+      const secondCandidate: NexusClawConfig = {
         ...runtimeConfig,
         models: {
           providers: {
@@ -248,14 +248,14 @@ describe("models-config runtime source snapshot", () => {
 
       try {
         setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-        await ensureOpenClawModelsJson(firstCandidate);
+        await ensureNexusClawModelsJson(firstCandidate);
         let parsed = await readGeneratedModelsJson<{
           providers: Record<string, { baseUrl?: string; apiKey?: string }>;
         }>();
         expect(parsed.providers.openai?.baseUrl).toBe("https://api.openai.com/v1");
         expect(parsed.providers.openai?.apiKey).toBe("OPENAI_API_KEY"); // pragma: allowlist secret
 
-        await ensureOpenClawModelsJson(secondCandidate);
+        await ensureNexusClawModelsJson(secondCandidate);
         parsed = await readGeneratedModelsJson<{
           providers: Record<string, { baseUrl?: string; apiKey?: string }>;
         }>();
@@ -282,13 +282,13 @@ describe("models-config runtime source snapshot", () => {
     await withTempHome(async () => {
       const sourceConfig = withGatewayTokenMode(createOpenAiApiKeySourceConfig());
       const runtimeConfig = withGatewayTokenMode(createOpenAiApiKeyRuntimeConfig());
-      const incompatibleCandidate: OpenClawConfig = {
+      const incompatibleCandidate: NexusClawConfig = {
         ...createOpenAiApiKeyRuntimeConfig(),
       };
 
       try {
         setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-        await ensureOpenClawModelsJson(incompatibleCandidate);
+        await ensureNexusClawModelsJson(incompatibleCandidate);
         await expectGeneratedProviderApiKey("openai", "OPENAI_API_KEY"); // pragma: allowlist secret
       } finally {
         clearRuntimeConfigSnapshot();
@@ -301,13 +301,13 @@ describe("models-config runtime source snapshot", () => {
     await withTempHome(async () => {
       const sourceConfig = withGatewayTokenMode(createOpenAiHeaderSourceConfig());
       const runtimeConfig = withGatewayTokenMode(createOpenAiHeaderRuntimeConfig());
-      const incompatibleCandidate: OpenClawConfig = {
+      const incompatibleCandidate: NexusClawConfig = {
         ...createOpenAiHeaderRuntimeConfig(),
       };
 
       try {
         setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
-        await ensureOpenClawModelsJson(incompatibleCandidate);
+        await ensureNexusClawModelsJson(incompatibleCandidate);
         await expectGeneratedOpenAiHeaderMarkers();
       } finally {
         clearRuntimeConfigSnapshot();

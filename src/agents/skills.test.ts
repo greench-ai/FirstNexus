@@ -14,7 +14,7 @@ import {
 } from "./skills.js";
 import { getActiveSkillEnvKeys } from "./skills/env-overrides.js";
 
-const fixtureSuite = createFixtureSuite("openclaw-skills-suite-");
+const fixtureSuite = createFixtureSuite("nexusclaw-skills-suite-");
 let tempHome: TempHomeEnv | null = null;
 
 const resolveTestSkillDirs = (workspaceDir: string) => ({
@@ -55,14 +55,14 @@ async function writeEnvSkill(workspaceDir: string) {
     dir: skillDir,
     name: "env-skill",
     description: "Needs env",
-    metadata: '{"openclaw":{"requires":{"env":["ENV_KEY"]},"primaryEnv":"ENV_KEY"}}',
+    metadata: '{"nexusclaw":{"requires":{"env":["ENV_KEY"]},"primaryEnv":"ENV_KEY"}}',
   });
 }
 
 beforeAll(async () => {
   await fixtureSuite.setup();
-  tempHome = await createTempHomeEnv("openclaw-skills-home-");
-  await fs.mkdir(path.join(tempHome.home, ".openclaw", "agents", "main", "sessions"), {
+  tempHome = await createTempHomeEnv("nexusclaw-skills-home-");
+  await fs.mkdir(path.join(tempHome.home, ".nexusclaw", "agents", "main", "sessions"), {
     recursive: true,
   });
 });
@@ -155,9 +155,9 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
     expect(cmd?.dispatch).toEqual({ kind: "tool", toolName: "sessions_send", argMode: "raw" });
   });
 
-  it("includes enabled Claude bundle markdown commands as native OpenClaw slash commands", async () => {
+  it("includes enabled Claude bundle markdown commands as native NexusClaw slash commands", async () => {
     const workspaceDir = await makeWorkspace();
-    const pluginRoot = path.join(tempHome!.home, ".openclaw", "extensions", "compound-bundle");
+    const pluginRoot = path.join(tempHome!.home, ".nexusclaw", "extensions", "compound-bundle");
     await fs.mkdir(path.join(pluginRoot, ".claude-plugin"), { recursive: true });
     await fs.mkdir(path.join(pluginRoot, "commands"), { recursive: true });
     await fs.writeFile(
@@ -201,7 +201,7 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
     );
     expect(
       commands.find((entry) => entry.skillName === "workflows:review")?.sourceFilePath,
-    ).toContain("/.openclaw/extensions/compound-bundle/commands/workflows-review.md");
+    ).toContain("/.nexusclaw/extensions/compound-bundle/commands/workflows-review.md");
   });
 });
 
@@ -378,7 +378,7 @@ describe("applySkillEnvOverrides", () => {
       name: "unsafe-env-skill",
       description: "Needs env",
       metadata:
-        '{"openclaw":{"requires":{"env":["OPENAI_API_KEY","NODE_OPTIONS"]},"primaryEnv":"OPENAI_API_KEY"}}',
+        '{"nexusclaw":{"requires":{"env":["OPENAI_API_KEY","NODE_OPTIONS"]},"primaryEnv":"OPENAI_API_KEY"}}',
     });
 
     const entries = loadWorkspaceSkillEntries(workspaceDir, resolveTestSkillDirs(workspaceDir));
@@ -418,7 +418,7 @@ describe("applySkillEnvOverrides", () => {
       dir: skillDir,
       name: "dangerous-env-skill",
       description: "Needs env",
-      metadata: '{"openclaw":{"requires":{"env":["BASH_ENV","SHELL"]}}}',
+      metadata: '{"nexusclaw":{"requires":{"env":["BASH_ENV","SHELL"]}}}',
     });
 
     const entries = loadWorkspaceSkillEntries(workspaceDir, resolveTestSkillDirs(workspaceDir));
@@ -458,7 +458,7 @@ describe("applySkillEnvOverrides", () => {
       dir: skillDir,
       name: "snapshot-env-skill",
       description: "Needs env",
-      metadata: '{"openclaw":{"requires":{"env":["OPENAI_API_KEY"]}}}',
+      metadata: '{"nexusclaw":{"requires":{"env":["OPENAI_API_KEY"]}}}',
     });
 
     const config = {

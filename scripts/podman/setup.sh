@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
-# One-time host setup for rootless OpenClaw in Podman: creates the openclaw
+# One-time host setup for rootless NexusClaw in Podman: creates the nexusclaw
 # user, builds the image, loads it into that user's Podman store, and installs
 # the launch script. Run from repo root with sudo capability.
 #
 # Usage: ./scripts/podman/setup.sh [--quadlet|--container]
 #   --quadlet   Install systemd Quadlet so the container runs as a user service
 #   --container Only install user + image + launch script; you start the container manually (default)
-#   Or set OPENCLAW_PODMAN_QUADLET=1 (or 0) to choose without a flag.
+#   Or set NEXUSCLAW_PODMAN_QUADLET=1 (or 0) to choose without a flag.
 #
 # After this, start the gateway manually:
-#   ./scripts/run-openclaw-podman.sh launch
-#   ./scripts/run-openclaw-podman.sh launch setup   # onboarding wizard
-# Or as the openclaw user: sudo -u openclaw /home/openclaw/run-openclaw-podman.sh
-# If you used --quadlet, you can also: sudo systemctl --machine openclaw@ --user start openclaw.service
+#   ./scripts/run-nexusclaw-podman.sh launch
+#   ./scripts/run-nexusclaw-podman.sh launch setup   # onboarding wizard
+# Or as the nexusclaw user: sudo -u nexusclaw /home/nexusclaw/run-nexusclaw-podman.sh
+# If you used --quadlet, you can also: sudo systemctl --machine nexusclaw@ --user start nexusclaw.service
 set -euo pipefail
 
-OPENCLAW_USER="${OPENCLAW_PODMAN_USER:-openclaw}"
-REPO_PATH="${OPENCLAW_REPO_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
-RUN_SCRIPT_SRC="$REPO_PATH/scripts/run-openclaw-podman.sh"
-QUADLET_TEMPLATE="$REPO_PATH/scripts/podman/openclaw.container.in"
+NEXUSCLAW_USER="${NEXUSCLAW_PODMAN_USER:-nexusclaw}"
+REPO_PATH="${NEXUSCLAW_REPO_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+RUN_SCRIPT_SRC="$REPO_PATH/scripts/run-nexusclaw-podman.sh"
+QUADLET_TEMPLATE="$REPO_PATH/scripts/podman/nexusclaw.container.in"
 
 require_cmd() {
   if ! command -v "$1" >/dev/null 2>&1; then
@@ -97,10 +97,10 @@ run_as_user() {
   fi
 }
 
-run_as_openclaw() {
-  # Avoid root writes into $OPENCLAW_HOME (symlink/hardlink/TOCTOU footguns).
+run_as_nexusclaw() {
+  # Avoid root writes into $NEXUSCLAW_HOME (symlink/hardlink/TOCTOU footguns).
   # Anything under the target user's home should be created/modified as that user.
-  run_as_user "$OPENCLAW_USER" env HOME="$OPENCLAW_HOME" "$@"
+  run_as_user "$NEXUSCLAW_USER" env HOME="$NEXUSCLAW_HOME" "$@"
 }
 
 escape_sed_replacement_pipe_delim() {
@@ -108,7 +108,7 @@ escape_sed_replacement_pipe_delim() {
   printf '%s' "$1" | sed -e 's/[\\&|]/\\&/g'
 }
 
-# Quadlet: opt-in via --quadlet or OPENCLAW_PODMAN_QUADLET=1
+# Quadlet: opt-in via --quadlet or NEXUSCLAW_PODMAN_QUADLET=1
 INSTALL_QUADLET=false
 for arg in "$@"; do
   case "$arg" in
@@ -116,8 +116,8 @@ for arg in "$@"; do
     --container) INSTALL_QUADLET=false ;;
   esac
 done
-if [[ -n "${OPENCLAW_PODMAN_QUADLET:-}" ]]; then
-  case "${OPENCLAW_PODMAN_QUADLET,,}" in
+if [[ -n "${NEXUSCLAW_PODMAN_QUADLET:-}" ]]; then
+  case "${NEXUSCLAW_PODMAN_QUADLET,,}" in
     1|yes|true)  INSTALL_QUADLET=true ;;
     0|no|false) INSTALL_QUADLET=false ;;
   esac
@@ -128,7 +128,7 @@ if ! is_root; then
   require_cmd sudo
 fi
 if [[ ! -f "$REPO_PATH/Dockerfile" ]]; then
-  echo "Dockerfile not found at $REPO_PATH. Set OPENCLAW_REPO_PATH to the repo root." >&2
+  echo "Dockerfile not found at $REPO_PATH. Set NEXUSCLAW_REPO_PATH to the repo root." >&2
   exit 1
 fi
 if [[ ! -f "$RUN_SCRIPT_SRC" ]]; then
@@ -153,7 +153,7 @@ PY
     od -An -N32 -tx1 /dev/urandom | tr -d " \n"
     return 0
   fi
-  echo "Missing dependency: need openssl or python3 (or od) to generate OPENCLAW_GATEWAY_TOKEN." >&2
+  echo "Missing dependency: need openssl or python3 (or od) to generate NEXUSCLAW_GATEWAY_TOKEN." >&2
   exit 1
 }
 
@@ -190,45 +190,45 @@ resolve_nologin_shell() {
   printf '%s' "/usr/sbin/nologin"
 }
 
-# Create openclaw user (non-login, with home) if missing
-if ! user_exists "$OPENCLAW_USER"; then
+# Create nexusclaw user (non-login, with home) if missing
+if ! user_exists "$NEXUSCLAW_USER"; then
   NOLOGIN_SHELL="$(resolve_nologin_shell)"
-  echo "Creating user $OPENCLAW_USER ($NOLOGIN_SHELL, with home)..."
+  echo "Creating user $NEXUSCLAW_USER ($NOLOGIN_SHELL, with home)..."
   if command -v useradd >/dev/null 2>&1; then
-    run_root useradd -m -s "$NOLOGIN_SHELL" "$OPENCLAW_USER"
+    run_root useradd -m -s "$NOLOGIN_SHELL" "$NEXUSCLAW_USER"
   elif command -v adduser >/dev/null 2>&1; then
     # Debian/Ubuntu: adduser supports --disabled-password/--gecos. Busybox adduser differs.
-    run_root adduser --disabled-password --gecos "" --shell "$NOLOGIN_SHELL" "$OPENCLAW_USER"
+    run_root adduser --disabled-password --gecos "" --shell "$NOLOGIN_SHELL" "$NEXUSCLAW_USER"
   else
-    echo "Neither useradd nor adduser found, cannot create user $OPENCLAW_USER." >&2
+    echo "Neither useradd nor adduser found, cannot create user $NEXUSCLAW_USER." >&2
     exit 1
   fi
 else
-  echo "User $OPENCLAW_USER already exists."
+  echo "User $NEXUSCLAW_USER already exists."
 fi
 
-OPENCLAW_HOME="$(resolve_user_home "$OPENCLAW_USER")"
-OPENCLAW_UID="$(id -u "$OPENCLAW_USER" 2>/dev/null || true)"
-OPENCLAW_CONFIG="$OPENCLAW_HOME/.openclaw"
-LAUNCH_SCRIPT_DST="$OPENCLAW_HOME/run-openclaw-podman.sh"
+NEXUSCLAW_HOME="$(resolve_user_home "$NEXUSCLAW_USER")"
+NEXUSCLAW_UID="$(id -u "$NEXUSCLAW_USER" 2>/dev/null || true)"
+NEXUSCLAW_CONFIG="$NEXUSCLAW_HOME/.nexusclaw"
+LAUNCH_SCRIPT_DST="$NEXUSCLAW_HOME/run-nexusclaw-podman.sh"
 
 # Prefer systemd user services (Quadlet) for production. Enable lingering early so rootless Podman can run
 # without an interactive login.
 if command -v loginctl &>/dev/null; then
-  run_root loginctl enable-linger "$OPENCLAW_USER" 2>/dev/null || true
+  run_root loginctl enable-linger "$NEXUSCLAW_USER" 2>/dev/null || true
 fi
-if [[ -n "${OPENCLAW_UID:-}" && -d /run/user ]] && command -v systemctl &>/dev/null; then
-  if [[ ! -d "/run/user/$OPENCLAW_UID" ]]; then
-    run_root install -d -m 700 -o "$OPENCLAW_UID" -g "$OPENCLAW_UID" "/run/user/$OPENCLAW_UID" || true
+if [[ -n "${NEXUSCLAW_UID:-}" && -d /run/user ]] && command -v systemctl &>/dev/null; then
+  if [[ ! -d "/run/user/$NEXUSCLAW_UID" ]]; then
+    run_root install -d -m 700 -o "$NEXUSCLAW_UID" -g "$NEXUSCLAW_UID" "/run/user/$NEXUSCLAW_UID" || true
   fi
-  run_root mkdir -p "/run/user/$OPENCLAW_UID/containers" || true
-  run_root chown "$OPENCLAW_UID:$OPENCLAW_UID" "/run/user/$OPENCLAW_UID/containers" || true
-  run_root chmod 700 "/run/user/$OPENCLAW_UID/containers" || true
+  run_root mkdir -p "/run/user/$NEXUSCLAW_UID/containers" || true
+  run_root chown "$NEXUSCLAW_UID:$NEXUSCLAW_UID" "/run/user/$NEXUSCLAW_UID/containers" || true
+  run_root chmod 700 "/run/user/$NEXUSCLAW_UID/containers" || true
 fi
 
-mkdir_user_dirs_as_openclaw() {
-  run_root install -d -m 700 -o "$OPENCLAW_UID" -g "$OPENCLAW_UID" "$OPENCLAW_HOME" "$OPENCLAW_CONFIG"
-  run_root install -d -m 700 -o "$OPENCLAW_UID" -g "$OPENCLAW_UID" "$OPENCLAW_CONFIG/workspace"
+mkdir_user_dirs_as_nexusclaw() {
+  run_root install -d -m 700 -o "$NEXUSCLAW_UID" -g "$NEXUSCLAW_UID" "$NEXUSCLAW_HOME" "$NEXUSCLAW_CONFIG"
+  run_root install -d -m 700 -o "$NEXUSCLAW_UID" -g "$NEXUSCLAW_UID" "$NEXUSCLAW_CONFIG/workspace"
 }
 
 ensure_subid_entry() {
@@ -236,71 +236,71 @@ ensure_subid_entry() {
   if [[ ! -f "$file" ]]; then
     return 1
   fi
-  grep -q "^${OPENCLAW_USER}:" "$file" 2>/dev/null
+  grep -q "^${NEXUSCLAW_USER}:" "$file" 2>/dev/null
 }
 
 if ! ensure_subid_entry /etc/subuid || ! ensure_subid_entry /etc/subgid; then
-  echo "WARNING: ${OPENCLAW_USER} may not have subuid/subgid ranges configured." >&2
-  echo "If rootless Podman fails, add 'openclaw:100000:65536' to both /etc/subuid and /etc/subgid." >&2
+  echo "WARNING: ${NEXUSCLAW_USER} may not have subuid/subgid ranges configured." >&2
+  echo "If rootless Podman fails, add 'nexusclaw:100000:65536' to both /etc/subuid and /etc/subgid." >&2
 fi
 
-mkdir_user_dirs_as_openclaw
+mkdir_user_dirs_as_nexusclaw
 
 IMAGE_TMP_BASE="$(resolve_image_tmp_dir)"
 echo "Using temp base for image export: $IMAGE_TMP_BASE"
-IMAGE_TAR_DIR="$(mktemp -d "${IMAGE_TMP_BASE%/}/openclaw-podman-image.XXXXXX")"
+IMAGE_TAR_DIR="$(mktemp -d "${IMAGE_TMP_BASE%/}/nexusclaw-podman-image.XXXXXX")"
 chmod 700 "$IMAGE_TAR_DIR"
-IMAGE_TAR="$IMAGE_TAR_DIR/openclaw-image.tar"
+IMAGE_TAR="$IMAGE_TAR_DIR/nexusclaw-image.tar"
 cleanup_image_tar() {
   rm -rf "$IMAGE_TAR_DIR"
 }
 trap cleanup_image_tar EXIT
 
 BUILD_ARGS=()
-if [[ -n "${OPENCLAW_DOCKER_APT_PACKAGES:-}" ]]; then
-  BUILD_ARGS+=(--build-arg "OPENCLAW_DOCKER_APT_PACKAGES=${OPENCLAW_DOCKER_APT_PACKAGES}")
+if [[ -n "${NEXUSCLAW_DOCKER_APT_PACKAGES:-}" ]]; then
+  BUILD_ARGS+=(--build-arg "NEXUSCLAW_DOCKER_APT_PACKAGES=${NEXUSCLAW_DOCKER_APT_PACKAGES}")
 fi
-if [[ -n "${OPENCLAW_EXTENSIONS:-}" ]]; then
-  BUILD_ARGS+=(--build-arg "OPENCLAW_EXTENSIONS=${OPENCLAW_EXTENSIONS}")
+if [[ -n "${NEXUSCLAW_EXTENSIONS:-}" ]]; then
+  BUILD_ARGS+=(--build-arg "NEXUSCLAW_EXTENSIONS=${NEXUSCLAW_EXTENSIONS}")
 fi
 
-echo "Building image openclaw:local..."
-podman build -t openclaw:local -f "$REPO_PATH/Dockerfile" "${BUILD_ARGS[@]}" "$REPO_PATH"
+echo "Building image nexusclaw:local..."
+podman build -t nexusclaw:local -f "$REPO_PATH/Dockerfile" "${BUILD_ARGS[@]}" "$REPO_PATH"
 echo "Saving image to $IMAGE_TAR ..."
-podman save -o "$IMAGE_TAR" openclaw:local
+podman save -o "$IMAGE_TAR" nexusclaw:local
 
-echo "Loading image into $OPENCLAW_USER Podman store..."
-run_as_openclaw podman load -i "$IMAGE_TAR"
+echo "Loading image into $NEXUSCLAW_USER Podman store..."
+run_as_nexusclaw podman load -i "$IMAGE_TAR"
 
 echo "Installing launch script to $LAUNCH_SCRIPT_DST ..."
-run_root install -m 0755 -o "$OPENCLAW_UID" -g "$OPENCLAW_UID" "$RUN_SCRIPT_SRC" "$LAUNCH_SCRIPT_DST"
+run_root install -m 0755 -o "$NEXUSCLAW_UID" -g "$NEXUSCLAW_UID" "$RUN_SCRIPT_SRC" "$LAUNCH_SCRIPT_DST"
 
-if [[ ! -f "$OPENCLAW_CONFIG/.env" ]]; then
+if [[ ! -f "$NEXUSCLAW_CONFIG/.env" ]]; then
   TOKEN="$(generate_token_hex_32)"
-  run_as_openclaw sh -lc "umask 077 && printf '%s\n' 'OPENCLAW_GATEWAY_TOKEN=$TOKEN' > '$OPENCLAW_CONFIG/.env'"
-  echo "Generated OPENCLAW_GATEWAY_TOKEN and wrote it to $OPENCLAW_CONFIG/.env"
+  run_as_nexusclaw sh -lc "umask 077 && printf '%s\n' 'NEXUSCLAW_GATEWAY_TOKEN=$TOKEN' > '$NEXUSCLAW_CONFIG/.env'"
+  echo "Generated NEXUSCLAW_GATEWAY_TOKEN and wrote it to $NEXUSCLAW_CONFIG/.env"
 fi
 
-if [[ ! -f "$OPENCLAW_CONFIG/openclaw.json" ]]; then
-  run_as_openclaw sh -lc "umask 077 && cat > '$OPENCLAW_CONFIG/openclaw.json' <<'JSON'
+if [[ ! -f "$NEXUSCLAW_CONFIG/nexusclaw.json" ]]; then
+  run_as_nexusclaw sh -lc "umask 077 && cat > '$NEXUSCLAW_CONFIG/nexusclaw.json' <<'JSON'
 { \"gateway\": { \"mode\": \"local\" } }
 JSON"
-  echo "Wrote minimal config to $OPENCLAW_CONFIG/openclaw.json"
+  echo "Wrote minimal config to $NEXUSCLAW_CONFIG/nexusclaw.json"
 fi
 
 if [[ "$INSTALL_QUADLET" == true ]]; then
-  QUADLET_DIR="$OPENCLAW_HOME/.config/containers/systemd"
-  QUADLET_DST="$QUADLET_DIR/openclaw.container"
+  QUADLET_DIR="$NEXUSCLAW_HOME/.config/containers/systemd"
+  QUADLET_DST="$QUADLET_DIR/nexusclaw.container"
   echo "Installing Quadlet to $QUADLET_DST ..."
-  run_as_openclaw mkdir -p "$QUADLET_DIR"
-  OPENCLAW_HOME_ESCAPED="$(escape_sed_replacement_pipe_delim "$OPENCLAW_HOME")"
-  sed "s|{{OPENCLAW_HOME}}|$OPENCLAW_HOME_ESCAPED|g" "$QUADLET_TEMPLATE" | \
-    run_as_openclaw sh -lc "cat > '$QUADLET_DST'"
-  run_as_openclaw chmod 0644 "$QUADLET_DST"
+  run_as_nexusclaw mkdir -p "$QUADLET_DIR"
+  NEXUSCLAW_HOME_ESCAPED="$(escape_sed_replacement_pipe_delim "$NEXUSCLAW_HOME")"
+  sed "s|{{NEXUSCLAW_HOME}}|$NEXUSCLAW_HOME_ESCAPED|g" "$QUADLET_TEMPLATE" | \
+    run_as_nexusclaw sh -lc "cat > '$QUADLET_DST'"
+  run_as_nexusclaw chmod 0644 "$QUADLET_DST"
 
   echo "Reloading and enabling user service..."
-  run_root systemctl --machine "${OPENCLAW_USER}@" --user daemon-reload
-  run_root systemctl --machine "${OPENCLAW_USER}@" --user enable --now openclaw.service
+  run_root systemctl --machine "${NEXUSCLAW_USER}@" --user daemon-reload
+  run_root systemctl --machine "${NEXUSCLAW_USER}@" --user enable --now nexusclaw.service
   echo "Quadlet installed and service started."
 else
   echo "Container + launch script installed."
@@ -308,5 +308,5 @@ fi
 
 echo
 echo "Next:"
-echo "  ./scripts/run-openclaw-podman.sh launch"
-echo "  ./scripts/run-openclaw-podman.sh launch setup"
+echo "  ./scripts/run-nexusclaw-podman.sh launch"
+echo "  ./scripts/run-nexusclaw-podman.sh launch setup"

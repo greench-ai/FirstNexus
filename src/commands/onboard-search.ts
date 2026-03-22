@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import {
   DEFAULT_SECRET_PROVIDER_ALIAS,
   type SecretInput,
@@ -17,9 +17,9 @@ import type { WizardPrompter } from "../wizard/prompts.js";
 import type { SecretInputMode } from "./onboard-types.js";
 
 export type SearchProvider = NonNullable<
-  NonNullable<NonNullable<NonNullable<OpenClawConfig["tools"]>["web"]>["search"]>["provider"]
+  NonNullable<NonNullable<NonNullable<NexusClawConfig["tools"]>["web"]>["search"]>["provider"]
 >;
-type SearchConfig = NonNullable<NonNullable<NonNullable<OpenClawConfig["tools"]>["web"]>["search"]>;
+type SearchConfig = NonNullable<NonNullable<NonNullable<NexusClawConfig["tools"]>["web"]>["search"]>;
 type MutableSearchConfig = SearchConfig & Record<string, unknown>;
 
 function resolveSearchProviderCredentialLabel(
@@ -47,7 +47,7 @@ function sortSearchProviderOptions(
 }
 
 function canRepairBundledProviderSelection(
-  config: OpenClawConfig,
+  config: NexusClawConfig,
   provider: Pick<PluginWebSearchProviderEntry, "id" | "pluginId">,
 ): boolean {
   const pluginId = provider.pluginId ?? resolveBundledWebSearchPluginId(provider.id);
@@ -61,7 +61,7 @@ function canRepairBundledProviderSelection(
 }
 
 export function resolveSearchProviderOptions(
-  config?: OpenClawConfig,
+  config?: NexusClawConfig,
 ): readonly PluginWebSearchProviderEntry[] {
   if (!config) {
     return SEARCH_PROVIDER_OPTIONS;
@@ -86,7 +86,7 @@ export function resolveSearchProviderOptions(
 }
 
 function resolveSearchProviderEntry(
-  config: OpenClawConfig,
+  config: NexusClawConfig,
   provider: SearchProvider,
 ): PluginWebSearchProviderEntry | undefined {
   return resolveSearchProviderOptions(config).find((entry) => entry.id === provider);
@@ -96,7 +96,7 @@ export function hasKeyInEnv(entry: Pick<PluginWebSearchProviderEntry, "envVars">
   return entry.envVars.some((k) => Boolean(process.env[k]?.trim()));
 }
 
-function rawKeyValue(config: OpenClawConfig, provider: SearchProvider): unknown {
+function rawKeyValue(config: NexusClawConfig, provider: SearchProvider): unknown {
   const search = config.tools?.web?.search;
   const entry = resolveSearchProviderEntry(config, provider);
   return (
@@ -107,19 +107,19 @@ function rawKeyValue(config: OpenClawConfig, provider: SearchProvider): unknown 
 
 /** Returns the plaintext key string, or undefined for SecretRefs/missing. */
 export function resolveExistingKey(
-  config: OpenClawConfig,
+  config: NexusClawConfig,
   provider: SearchProvider,
 ): string | undefined {
   return normalizeSecretInputString(rawKeyValue(config, provider));
 }
 
 /** Returns true if a key is configured (plaintext string or SecretRef). */
-export function hasExistingKey(config: OpenClawConfig, provider: SearchProvider): boolean {
+export function hasExistingKey(config: NexusClawConfig, provider: SearchProvider): boolean {
   return hasConfiguredSecretInput(rawKeyValue(config, provider));
 }
 
 /** Build an env-backed SecretRef for a search provider. */
-function buildSearchEnvRef(config: OpenClawConfig, provider: SearchProvider): SecretRef {
+function buildSearchEnvRef(config: NexusClawConfig, provider: SearchProvider): SecretRef {
   const entry =
     resolveSearchProviderEntry(config, provider) ??
     SEARCH_PROVIDER_OPTIONS.find((candidate) => candidate.id === provider) ??
@@ -135,7 +135,7 @@ function buildSearchEnvRef(config: OpenClawConfig, provider: SearchProvider): Se
 
 /** Resolve a plaintext key into the appropriate SecretInput based on mode. */
 function resolveSearchSecretInput(
-  config: OpenClawConfig,
+  config: NexusClawConfig,
   provider: SearchProvider,
   key: string,
   secretInputMode?: SecretInputMode,
@@ -148,10 +148,10 @@ function resolveSearchSecretInput(
 }
 
 export function applySearchKey(
-  config: OpenClawConfig,
+  config: NexusClawConfig,
   provider: SearchProvider,
   key: SecretInput,
-): OpenClawConfig {
+): NexusClawConfig {
   const providerEntry = resolveSearchProviderEntry(config, provider);
   if (!providerEntry) {
     return config;
@@ -160,7 +160,7 @@ export function applySearchKey(
   if (!providerEntry.setConfiguredCredentialValue) {
     providerEntry.setCredentialValue(search, key);
   }
-  const nextBase: OpenClawConfig = {
+  const nextBase: NexusClawConfig = {
     ...config,
     tools: {
       ...config.tools,
@@ -173,9 +173,9 @@ export function applySearchKey(
 }
 
 export function applySearchProviderSelection(
-  config: OpenClawConfig,
+  config: NexusClawConfig,
   provider: SearchProvider,
-): OpenClawConfig {
+): NexusClawConfig {
   const providerEntry = resolveSearchProviderEntry(config, provider);
   if (!providerEntry) {
     return config;
@@ -185,7 +185,7 @@ export function applySearchProviderSelection(
     provider,
     enabled: true,
   };
-  const nextBase: OpenClawConfig = {
+  const nextBase: NexusClawConfig = {
     ...config,
     tools: {
       ...config.tools,
@@ -198,12 +198,12 @@ export function applySearchProviderSelection(
   return providerEntry.applySelectionConfig?.(nextBase) ?? nextBase;
 }
 
-function preserveDisabledState(original: OpenClawConfig, result: OpenClawConfig): OpenClawConfig {
+function preserveDisabledState(original: NexusClawConfig, result: NexusClawConfig): NexusClawConfig {
   if (original.tools?.web?.search?.enabled !== false) {
     return result;
   }
 
-  const next: OpenClawConfig = {
+  const next: NexusClawConfig = {
     ...result,
     tools: {
       ...result.tools,
@@ -252,7 +252,7 @@ function preserveDisabledState(original: OpenClawConfig, result: OpenClawConfig)
 
   return {
     ...next,
-    plugins: nextPlugins as OpenClawConfig["plugins"],
+    plugins: nextPlugins as NexusClawConfig["plugins"],
   };
 }
 
@@ -262,18 +262,18 @@ export type SetupSearchOptions = {
 };
 
 export async function setupSearch(
-  config: OpenClawConfig,
+  config: NexusClawConfig,
   _runtime: RuntimeEnv,
   prompter: WizardPrompter,
   opts?: SetupSearchOptions,
-): Promise<OpenClawConfig> {
+): Promise<NexusClawConfig> {
   const providerOptions = resolveSearchProviderOptions(config);
   if (providerOptions.length === 0) {
     await prompter.note(
       [
         "No web search providers are currently available under this plugin policy.",
         "Enable plugins or remove deny rules, then run setup again.",
-        "Docs: https://docs.openclaw.ai/tools/web",
+        "Docs: https://docs.nexusclaw.ai/tools/web",
       ].join("\n"),
       "Web search",
     );
@@ -284,7 +284,7 @@ export async function setupSearch(
     [
       "Web search lets your agent look things up online.",
       "Choose a provider and paste your API key.",
-      "Docs: https://docs.openclaw.ai/tools/web",
+      "Docs: https://docs.nexusclaw.ai/tools/web",
     ].join("\n"),
     "Web search",
   );
@@ -315,7 +315,7 @@ export async function setupSearch(
       {
         value: "__skip__" as const,
         label: "Skip for now",
-        hint: "Configure later with openclaw configure --section web",
+        hint: "Configure later with nexusclaw configure --section web",
       },
     ],
     initialValue: defaultProvider,
@@ -350,10 +350,10 @@ export async function setupSearch(
     const ref = buildSearchEnvRef(config, choice);
     await prompter.note(
       [
-        "Secret references enabled — OpenClaw will store a reference instead of the API key.",
+        "Secret references enabled — NexusClaw will store a reference instead of the API key.",
         `Env var: ${ref.id}${envAvailable ? " (detected)" : ""}.`,
         ...(envAvailable ? [] : [`Set ${ref.id} in the Gateway environment.`]),
-        "Docs: https://docs.openclaw.ai/tools/web",
+        "Docs: https://docs.nexusclaw.ai/tools/web",
       ].join("\n"),
       "Web search",
     );
@@ -387,7 +387,7 @@ export async function setupSearch(
     [
       `No ${credentialLabel} stored — web_search won't work until a key is available.`,
       `Get your key at: ${entry.signupUrl}`,
-      "Docs: https://docs.openclaw.ai/tools/web",
+      "Docs: https://docs.nexusclaw.ai/tools/web",
     ].join("\n"),
     "Web search",
   );

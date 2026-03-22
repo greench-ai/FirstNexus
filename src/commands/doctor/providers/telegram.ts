@@ -9,7 +9,7 @@ import {
 } from "../../../../extensions/telegram/api.js";
 import { resolveCommandSecretRefsViaGateway } from "../../../cli/command-secret-gateway.js";
 import { getChannelsCommandSecretTargetIds } from "../../../cli/command-secret-targets.js";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { NexusClawConfig } from "../../../config/config.js";
 import type { TelegramNetworkConfig } from "../../../config/types.telegram.js";
 import { resolveTelegramAccount } from "../../../plugin-sdk/account-resolution.js";
 import { describeUnknownError } from "../../../secrets/shared.js";
@@ -33,7 +33,7 @@ type ResolvedTelegramLookupAccount = {
 };
 
 export function collectTelegramAccountScopes(
-  cfg: OpenClawConfig,
+  cfg: NexusClawConfig,
 ): Array<{ prefix: string; account: Record<string, unknown> }> {
   const scopes: Array<{ prefix: string; account: Record<string, unknown> }> = [];
   const telegram = asObjectRecord(cfg.channels?.telegram);
@@ -100,7 +100,7 @@ export function collectTelegramAllowFromLists(
 }
 
 export function scanTelegramAllowFromUsernameEntries(
-  cfg: OpenClawConfig,
+  cfg: NexusClawConfig,
 ): TelegramAllowFromUsernameHit[] {
   const hits: TelegramAllowFromUsernameHit[] = [];
 
@@ -143,8 +143,8 @@ export function collectTelegramAllowFromUsernameWarnings(params: {
   ];
 }
 
-export async function maybeRepairTelegramAllowFromUsernames(cfg: OpenClawConfig): Promise<{
-  config: OpenClawConfig;
+export async function maybeRepairTelegramAllowFromUsernames(cfg: NexusClawConfig): Promise<{
+  config: NexusClawConfig;
   changes: string[];
 }> {
   const hits = scanTelegramAllowFromUsernameEntries(cfg);

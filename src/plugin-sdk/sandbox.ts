@@ -19,7 +19,7 @@ export type {
   SshSandboxSession,
   SshSandboxSettings,
 } from "../agents/sandbox.js";
-export type { OpenClawConfig } from "../config/config.js";
+export type { NexusClawConfig } from "../config/config.js";
 
 export {
   buildExecRemoteCommand,
@@ -43,4 +43,4 @@ export {
   type PluginCommandRunOptions,
   type PluginCommandRunResult,
 } from "./run-command.js";
-export { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
+export { resolvePreferredNexusClawTmpDir } from "../infra/tmp-nexusclaw-dir.js";

@@ -1,9 +1,9 @@
 import { resolveEnvelopeFormatOptions } from "../auto-reply/envelope.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { readSessionUpdatedAt, resolveStorePath } from "../config/sessions.js";
 
 export function resolveInboundSessionEnvelopeContext(params: {
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   agentId: string;
   sessionKey: string;
 }) {

@@ -1,5 +1,5 @@
 export type {
-  OpenClawPluginApi,
+  NexusClawPluginApi,
   ProviderAuthContext,
   ProviderAuthMethodNonInteractiveContext,
   ProviderAuthResult,

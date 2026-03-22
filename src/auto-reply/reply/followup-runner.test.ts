@@ -90,7 +90,7 @@ function createAsyncReplySpy() {
 describe("createFollowupRunner compaction", () => {
   it("adds compaction notices and tracks count in verbose mode", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-")),
+      await fs.mkdtemp(path.join(tmpdir(), "nexusclaw-compaction-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -140,7 +140,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("tracks auto-compaction from embedded result metadata even when no compaction event is emitted", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-meta-")),
+      await fs.mkdtemp(path.join(tmpdir(), "nexusclaw-compaction-meta-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -193,7 +193,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("threads followup compaction notices without consuming the first reply slot", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-threading-")),
+      await fs.mkdtemp(path.join(tmpdir(), "nexusclaw-compaction-threading-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -261,7 +261,7 @@ describe("createFollowupRunner compaction", () => {
 
   it("does not count failed compaction end events in followup runs", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-compaction-failed-")),
+      await fs.mkdtemp(path.join(tmpdir(), "nexusclaw-compaction-failed-")),
       "sessions.json",
     );
     const sessionEntry: SessionEntry = {
@@ -529,7 +529,7 @@ describe("createFollowupRunner messaging tool dedupe", () => {
 
   it("persists usage even when replies are suppressed", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-followup-usage-")),
+      await fs.mkdtemp(path.join(tmpdir(), "nexusclaw-followup-usage-")),
       "sessions.json",
     );
     const sessionKey = "main";
@@ -571,7 +571,7 @@ describe("createFollowupRunner messaging tool dedupe", () => {
 
   it("passes queued config into usage persistence during drained followups", async () => {
     const storePath = path.join(
-      await fs.mkdtemp(path.join(tmpdir(), "openclaw-followup-usage-cfg-")),
+      await fs.mkdtemp(path.join(tmpdir(), "nexusclaw-followup-usage-cfg-")),
       "sessions.json",
     );
     const sessionKey = "main";

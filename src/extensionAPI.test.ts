@@ -1,4 +1,4 @@
-import * as extensionApi from "openclaw/extension-api";
+import * as extensionApi from "nexusclaw/extension-api";
 import { describe, expect, it } from "vitest";
 
 describe("extension-api compat surface", () => {

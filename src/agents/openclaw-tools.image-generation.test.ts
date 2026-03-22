@@ -1,14 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import * as imageGenerationRuntime from "../image-generation/runtime.js";
-import { createOpenClawTools } from "./openclaw-tools.js";
+import { createNexusClawTools } from "./nexusclaw-tools.js";
 
 vi.mock("../plugins/tools.js", () => ({
   resolvePluginTools: () => [],
 }));
 
-function asConfig(value: unknown): OpenClawConfig {
-  return value as OpenClawConfig;
+function asConfig(value: unknown): NexusClawConfig {
+  return value as NexusClawConfig;
 }
 
 function stubImageGenerationProviders() {
@@ -35,7 +35,7 @@ function stubImageGenerationProviders() {
   ]);
 }
 
-describe("openclaw tools image generation registration", () => {
+describe("nexusclaw tools image generation registration", () => {
   beforeEach(() => {
     vi.stubEnv("OPENAI_API_KEY", "");
     vi.stubEnv("OPENAI_API_KEYS", "");
@@ -49,7 +49,7 @@ describe("openclaw tools image generation registration", () => {
   });
 
   it("registers image_generate when image-generation config is present", () => {
-    const tools = createOpenClawTools({
+    const tools = createNexusClawTools({
       config: asConfig({
         agents: {
           defaults: {
@@ -59,7 +59,7 @@ describe("openclaw tools image generation registration", () => {
           },
         },
       }),
-      agentDir: "/tmp/openclaw-agent-main",
+      agentDir: "/tmp/nexusclaw-agent-main",
     });
 
     expect(tools.map((tool) => tool.name)).toContain("image_generate");
@@ -69,9 +69,9 @@ describe("openclaw tools image generation registration", () => {
     stubImageGenerationProviders();
     vi.stubEnv("OPENAI_API_KEY", "openai-test");
 
-    const tools = createOpenClawTools({
+    const tools = createNexusClawTools({
       config: asConfig({}),
-      agentDir: "/tmp/openclaw-agent-main",
+      agentDir: "/tmp/nexusclaw-agent-main",
     });
 
     expect(tools.map((tool) => tool.name)).toContain("image_generate");
@@ -80,9 +80,9 @@ describe("openclaw tools image generation registration", () => {
   it("omits image_generate when config is absent and no compatible provider auth exists", () => {
     stubImageGenerationProviders();
 
-    const tools = createOpenClawTools({
+    const tools = createNexusClawTools({
       config: asConfig({}),
-      agentDir: "/tmp/openclaw-agent-main",
+      agentDir: "/tmp/nexusclaw-agent-main",
     });
 
     expect(tools.map((tool) => tool.name)).not.toContain("image_generate");

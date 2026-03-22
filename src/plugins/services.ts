@@ -1,8 +1,8 @@
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { STATE_DIR } from "../config/paths.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import type { PluginRegistry } from "./registry.js";
-import type { OpenClawPluginServiceContext, PluginLogger } from "./types.js";
+import type { NexusClawPluginServiceContext, PluginLogger } from "./types.js";
 
 const log = createSubsystemLogger("plugins");
 
@@ -16,9 +16,9 @@ function createPluginLogger(): PluginLogger {
 }
 
 function createServiceContext(params: {
-  config: OpenClawConfig;
+  config: NexusClawConfig;
   workspaceDir?: string;
-}): OpenClawPluginServiceContext {
+}): NexusClawPluginServiceContext {
   return {
     config: params.config,
     workspaceDir: params.workspaceDir,
@@ -33,7 +33,7 @@ export type PluginServicesHandle = {
 
 export async function startPluginServices(params: {
   registry: PluginRegistry;
-  config: OpenClawConfig;
+  config: NexusClawConfig;
   workspaceDir?: string;
 }): Promise<PluginServicesHandle> {
   const running: Array<{

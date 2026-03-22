@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { NexusClawConfig } from "../../config/config.js";
 import type { MemoryCitationsMode } from "../../config/types.memory.js";
 import { resolveMemoryBackendConfig } from "../../memory/backend-config.js";
 import { getMemorySearchManager } from "../../memory/index.js";
@@ -23,7 +23,7 @@ const MemoryGetSchema = Type.Object({
   lines: Type.Optional(Type.Number()),
 });
 
-function resolveMemoryToolContext(options: { config?: OpenClawConfig; agentSessionKey?: string }) {
+function resolveMemoryToolContext(options: { config?: NexusClawConfig; agentSessionKey?: string }) {
   const cfg = options.config;
   if (!cfg) {
     return null;
@@ -38,7 +38,7 @@ function resolveMemoryToolContext(options: { config?: OpenClawConfig; agentSessi
   return { cfg, agentId };
 }
 
-async function getMemoryManagerContext(params: { cfg: OpenClawConfig; agentId: string }): Promise<
+async function getMemoryManagerContext(params: { cfg: NexusClawConfig; agentId: string }): Promise<
   | {
       manager: NonNullable<Awaited<ReturnType<typeof getMemorySearchManager>>["manager"]>;
     }
@@ -50,7 +50,7 @@ async function getMemoryManagerContext(params: { cfg: OpenClawConfig; agentId: s
 }
 
 async function getMemoryManagerContextWithPurpose(params: {
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   agentId: string;
   purpose?: "default" | "status";
 }): Promise<
@@ -71,14 +71,14 @@ async function getMemoryManagerContextWithPurpose(params: {
 
 function createMemoryTool(params: {
   options: {
-    config?: OpenClawConfig;
+    config?: NexusClawConfig;
     agentSessionKey?: string;
   };
   label: string;
   name: string;
   description: string;
   parameters: typeof MemorySearchSchema | typeof MemoryGetSchema;
-  execute: (ctx: { cfg: OpenClawConfig; agentId: string }) => AnyAgentTool["execute"];
+  execute: (ctx: { cfg: NexusClawConfig; agentId: string }) => AnyAgentTool["execute"];
 }): AnyAgentTool | null {
   const ctx = resolveMemoryToolContext(params.options);
   if (!ctx) {
@@ -94,7 +94,7 @@ function createMemoryTool(params: {
 }
 
 export function createMemorySearchTool(options: {
-  config?: OpenClawConfig;
+  config?: NexusClawConfig;
   agentSessionKey?: string;
 }): AnyAgentTool | null {
   return createMemoryTool({
@@ -150,7 +150,7 @@ export function createMemorySearchTool(options: {
 }
 
 export function createMemoryGetTool(options: {
-  config?: OpenClawConfig;
+  config?: NexusClawConfig;
   agentSessionKey?: string;
 }): AnyAgentTool | null {
   return createMemoryTool({
@@ -205,7 +205,7 @@ export function createMemoryGetTool(options: {
   });
 }
 
-function resolveMemoryCitationsMode(cfg: OpenClawConfig): MemoryCitationsMode {
+function resolveMemoryCitationsMode(cfg: NexusClawConfig): MemoryCitationsMode {
   const mode = cfg.memory?.citations;
   if (mode === "on" || mode === "off" || mode === "auto") {
     return mode;

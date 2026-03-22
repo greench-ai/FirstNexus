@@ -285,15 +285,15 @@ describe("buildServiceEnvironment", () => {
     } else {
       expect(env.PATH).toContain("/usr/bin");
     }
-    expect(env.OPENCLAW_GATEWAY_PORT).toBe("18789");
-    expect(env.OPENCLAW_GATEWAY_TOKEN).toBeUndefined();
-    expect(env.OPENCLAW_SERVICE_MARKER).toBe("openclaw");
-    expect(env.OPENCLAW_SERVICE_KIND).toBe("gateway");
-    expect(typeof env.OPENCLAW_SERVICE_VERSION).toBe("string");
-    expect(env.OPENCLAW_SYSTEMD_UNIT).toBe("openclaw-gateway.service");
-    expect(env.OPENCLAW_WINDOWS_TASK_NAME).toBe("OpenClaw Gateway");
+    expect(env.NEXUSCLAW_GATEWAY_PORT).toBe("18789");
+    expect(env.NEXUSCLAW_GATEWAY_TOKEN).toBeUndefined();
+    expect(env.NEXUSCLAW_SERVICE_MARKER).toBe("nexusclaw");
+    expect(env.NEXUSCLAW_SERVICE_KIND).toBe("gateway");
+    expect(typeof env.NEXUSCLAW_SERVICE_VERSION).toBe("string");
+    expect(env.NEXUSCLAW_SYSTEMD_UNIT).toBe("nexusclaw-gateway.service");
+    expect(env.NEXUSCLAW_WINDOWS_TASK_NAME).toBe("NexusClaw Gateway");
     if (process.platform === "darwin") {
-      expect(env.OPENCLAW_LAUNCHD_LABEL).toBe("ai.openclaw.gateway");
+      expect(env.NEXUSCLAW_LAUNCHD_LABEL).toBe("ai.nexusclaw.gateway");
     }
   });
 
@@ -315,13 +315,13 @@ describe("buildServiceEnvironment", () => {
 
   it("uses profile-specific unit and label", () => {
     const env = buildServiceEnvironment({
-      env: { HOME: "/home/user", OPENCLAW_PROFILE: "work" },
+      env: { HOME: "/home/user", NEXUSCLAW_PROFILE: "work" },
       port: 18789,
     });
-    expect(env.OPENCLAW_SYSTEMD_UNIT).toBe("openclaw-gateway-work.service");
-    expect(env.OPENCLAW_WINDOWS_TASK_NAME).toBe("OpenClaw Gateway (work)");
+    expect(env.NEXUSCLAW_SYSTEMD_UNIT).toBe("nexusclaw-gateway-work.service");
+    expect(env.NEXUSCLAW_WINDOWS_TASK_NAME).toBe("NexusClaw Gateway (work)");
     if (process.platform === "darwin") {
-      expect(env.OPENCLAW_LAUNCHD_LABEL).toBe("ai.openclaw.work");
+      expect(env.NEXUSCLAW_LAUNCHD_LABEL).toBe("ai.nexusclaw.work");
     }
   });
 
@@ -356,7 +356,7 @@ describe("buildServiceEnvironment", () => {
     });
 
     expect(env).not.toHaveProperty("PATH");
-    expect(env.OPENCLAW_WINDOWS_TASK_NAME).toBe("OpenClaw Gateway");
+    expect(env.NEXUSCLAW_WINDOWS_TASK_NAME).toBe("NexusClaw Gateway");
   });
 
   it("prepends extra runtime directories to the gateway service PATH", () => {
@@ -381,40 +381,40 @@ describe("buildNodeServiceEnvironment", () => {
     expect(env.HOME).toBe("/home/user");
   });
 
-  it("passes through OPENCLAW_GATEWAY_TOKEN for node services", () => {
+  it("passes through NEXUSCLAW_GATEWAY_TOKEN for node services", () => {
     const env = buildNodeServiceEnvironment({
-      env: { HOME: "/home/user", OPENCLAW_GATEWAY_TOKEN: " node-token " },
+      env: { HOME: "/home/user", NEXUSCLAW_GATEWAY_TOKEN: " node-token " },
     });
-    expect(env.OPENCLAW_GATEWAY_TOKEN).toBe("node-token");
+    expect(env.NEXUSCLAW_GATEWAY_TOKEN).toBe("node-token");
   });
 
-  it("maps legacy CLAWDBOT_GATEWAY_TOKEN to OPENCLAW_GATEWAY_TOKEN for node services", () => {
+  it("maps legacy CLAWDBOT_GATEWAY_TOKEN to NEXUSCLAW_GATEWAY_TOKEN for node services", () => {
     const env = buildNodeServiceEnvironment({
       env: { HOME: "/home/user", CLAWDBOT_GATEWAY_TOKEN: " legacy-token " },
     });
-    expect(env.OPENCLAW_GATEWAY_TOKEN).toBe("legacy-token");
+    expect(env.NEXUSCLAW_GATEWAY_TOKEN).toBe("legacy-token");
   });
 
-  it("prefers OPENCLAW_GATEWAY_TOKEN over legacy CLAWDBOT_GATEWAY_TOKEN", () => {
+  it("prefers NEXUSCLAW_GATEWAY_TOKEN over legacy CLAWDBOT_GATEWAY_TOKEN", () => {
     const env = buildNodeServiceEnvironment({
       env: {
         HOME: "/home/user",
-        OPENCLAW_GATEWAY_TOKEN: "openclaw-token",
+        NEXUSCLAW_GATEWAY_TOKEN: "nexusclaw-token",
         CLAWDBOT_GATEWAY_TOKEN: "legacy-token",
       },
     });
-    expect(env.OPENCLAW_GATEWAY_TOKEN).toBe("openclaw-token");
+    expect(env.NEXUSCLAW_GATEWAY_TOKEN).toBe("nexusclaw-token");
   });
 
-  it("omits OPENCLAW_GATEWAY_TOKEN when both token env vars are empty", () => {
+  it("omits NEXUSCLAW_GATEWAY_TOKEN when both token env vars are empty", () => {
     const env = buildNodeServiceEnvironment({
       env: {
         HOME: "/home/user",
-        OPENCLAW_GATEWAY_TOKEN: "   ",
+        NEXUSCLAW_GATEWAY_TOKEN: "   ",
         CLAWDBOT_GATEWAY_TOKEN: " ",
       },
     });
-    expect(env.OPENCLAW_GATEWAY_TOKEN).toBeUndefined();
+    expect(env.NEXUSCLAW_GATEWAY_TOKEN).toBeUndefined();
   });
 
   it("forwards proxy environment variables for node services", () => {
@@ -505,32 +505,32 @@ describe("shared Node TLS env defaults", () => {
 describe("resolveGatewayStateDir", () => {
   it("uses the default state dir when no overrides are set", () => {
     const env = { HOME: "/Users/test" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".openclaw"));
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".nexusclaw"));
   });
 
   it("appends the profile suffix when set", () => {
-    const env = { HOME: "/Users/test", OPENCLAW_PROFILE: "rescue" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".openclaw-rescue"));
+    const env = { HOME: "/Users/test", NEXUSCLAW_PROFILE: "rescue" };
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".nexusclaw-rescue"));
   });
 
   it("treats default profiles as the base state dir", () => {
-    const env = { HOME: "/Users/test", OPENCLAW_PROFILE: "Default" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".openclaw"));
+    const env = { HOME: "/Users/test", NEXUSCLAW_PROFILE: "Default" };
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".nexusclaw"));
   });
 
-  it("uses OPENCLAW_STATE_DIR when provided", () => {
-    const env = { HOME: "/Users/test", OPENCLAW_STATE_DIR: "/var/lib/openclaw" };
-    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/var/lib/openclaw"));
+  it("uses NEXUSCLAW_STATE_DIR when provided", () => {
+    const env = { HOME: "/Users/test", NEXUSCLAW_STATE_DIR: "/var/lib/nexusclaw" };
+    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/var/lib/nexusclaw"));
   });
 
-  it("expands ~ in OPENCLAW_STATE_DIR", () => {
-    const env = { HOME: "/Users/test", OPENCLAW_STATE_DIR: "~/openclaw-state" };
-    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/Users/test/openclaw-state"));
+  it("expands ~ in NEXUSCLAW_STATE_DIR", () => {
+    const env = { HOME: "/Users/test", NEXUSCLAW_STATE_DIR: "~/nexusclaw-state" };
+    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/Users/test/nexusclaw-state"));
   });
 
   it("preserves Windows absolute paths without HOME", () => {
-    const env = { OPENCLAW_STATE_DIR: "C:\\State\\openclaw" };
-    expect(resolveGatewayStateDir(env)).toBe("C:\\State\\openclaw");
+    const env = { NEXUSCLAW_STATE_DIR: "C:\\State\\nexusclaw" };
+    expect(resolveGatewayStateDir(env)).toBe("C:\\State\\nexusclaw");
   });
 });
 

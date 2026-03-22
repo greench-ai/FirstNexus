@@ -16,8 +16,8 @@ const BUNDLED_WEB_SEARCH_PROVIDERS = [
   { pluginId: "tavily", id: "tavily", order: 70 },
 ] as const;
 
-const { loadOpenClawPluginsMock } = vi.hoisted(() => ({
-  loadOpenClawPluginsMock: vi.fn((params?: { config?: { plugins?: Record<string, unknown> } }) => {
+const { loadNexusClawPluginsMock } = vi.hoisted(() => ({
+  loadNexusClawPluginsMock: vi.fn((params?: { config?: { plugins?: Record<string, unknown> } }) => {
     const plugins = params?.config?.plugins as
       | {
           enabled?: boolean;
@@ -65,12 +65,12 @@ const { loadOpenClawPluginsMock } = vi.hoisted(() => ({
 }));
 
 vi.mock("./loader.js", () => ({
-  loadOpenClawPlugins: loadOpenClawPluginsMock,
+  loadNexusClawPlugins: loadNexusClawPluginsMock,
 }));
 
 describe("resolvePluginWebSearchProviders", () => {
   beforeEach(() => {
-    loadOpenClawPluginsMock.mockClear();
+    loadNexusClawPluginsMock.mockClear();
     setActivePluginRegistry(createEmptyPluginRegistry());
     vi.useRealTimers();
   });
@@ -91,7 +91,7 @@ describe("resolvePluginWebSearchProviders", () => {
       "firecrawl:firecrawl",
       "tavily:tavily",
     ]);
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(1);
+    expect(loadNexusClawPluginsMock).toHaveBeenCalledTimes(1);
   });
 
   it("memoizes snapshot provider resolution for the same config and env", () => {
@@ -100,7 +100,7 @@ describe("resolvePluginWebSearchProviders", () => {
         allow: ["brave"],
       },
     };
-    const env = { OPENCLAW_HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { NEXUSCLAW_HOME: "/tmp/nexusclaw-home" } as NodeJS.ProcessEnv;
 
     const first = resolvePluginWebSearchProviders({
       config,
@@ -116,7 +116,7 @@ describe("resolvePluginWebSearchProviders", () => {
     });
 
     expect(second).toBe(first);
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(1);
+    expect(loadNexusClawPluginsMock).toHaveBeenCalledTimes(1);
   });
 
   it("invalidates the snapshot cache when config or env contents change in place", () => {
@@ -126,7 +126,7 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home-a",
+      NEXUSCLAW_HOME: "/tmp/nexusclaw-home-a",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -136,7 +136,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
     config.plugins.allow = ["perplexity"];
-    env.OPENCLAW_HOME = "/tmp/openclaw-home-b";
+    env.NEXUSCLAW_HOME = "/tmp/nexusclaw-home-b";
     resolvePluginWebSearchProviders({
       config,
       env,
@@ -144,7 +144,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadNexusClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("skips web-search snapshot memoization when plugin cache opt-outs are set", () => {
@@ -154,8 +154,8 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
+      NEXUSCLAW_HOME: "/tmp/nexusclaw-home",
+      NEXUSCLAW_DISABLE_PLUGIN_DISCOVERY_CACHE: "1",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -171,7 +171,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadNexusClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("skips web-search snapshot memoization when discovery cache ttl is zero", () => {
@@ -181,8 +181,8 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "0",
+      NEXUSCLAW_HOME: "/tmp/nexusclaw-home",
+      NEXUSCLAW_PLUGIN_DISCOVERY_CACHE_MS: "0",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -198,13 +198,13 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadNexusClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("invalidates the snapshot cache when global Vitest fallback changes", () => {
     const originalVitest = process.env.VITEST;
     const config = {};
-    const env = { OPENCLAW_HOME: "/tmp/openclaw-home" } as NodeJS.ProcessEnv;
+    const env = { NEXUSCLAW_HOME: "/tmp/nexusclaw-home" } as NodeJS.ProcessEnv;
 
     try {
       delete process.env.VITEST;
@@ -230,7 +230,7 @@ describe("resolvePluginWebSearchProviders", () => {
       }
     }
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadNexusClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("expires web-search snapshot memoization after the shortest plugin cache ttl", () => {
@@ -241,9 +241,9 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "5",
-      OPENCLAW_PLUGIN_MANIFEST_CACHE_MS: "20",
+      NEXUSCLAW_HOME: "/tmp/nexusclaw-home",
+      NEXUSCLAW_PLUGIN_DISCOVERY_CACHE_MS: "5",
+      NEXUSCLAW_PLUGIN_MANIFEST_CACHE_MS: "20",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -267,7 +267,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadNexusClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("invalidates web-search snapshots when cache-control env values change in place", () => {
@@ -277,8 +277,8 @@ describe("resolvePluginWebSearchProviders", () => {
       },
     };
     const env = {
-      OPENCLAW_HOME: "/tmp/openclaw-home",
-      OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS: "1000",
+      NEXUSCLAW_HOME: "/tmp/nexusclaw-home",
+      NEXUSCLAW_PLUGIN_DISCOVERY_CACHE_MS: "1000",
     } as NodeJS.ProcessEnv;
 
     resolvePluginWebSearchProviders({
@@ -288,7 +288,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    env.OPENCLAW_PLUGIN_DISCOVERY_CACHE_MS = "5";
+    env.NEXUSCLAW_PLUGIN_DISCOVERY_CACHE_MS = "5";
 
     resolvePluginWebSearchProviders({
       config,
@@ -297,7 +297,7 @@ describe("resolvePluginWebSearchProviders", () => {
       workspaceDir: "/tmp/workspace",
     });
 
-    expect(loadOpenClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadNexusClawPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it("prefers the active plugin registry for runtime resolution", () => {
@@ -331,6 +331,6 @@ describe("resolvePluginWebSearchProviders", () => {
     expect(providers.map((provider) => `${provider.pluginId}:${provider.id}`)).toEqual([
       "custom-search:custom",
     ]);
-    expect(loadOpenClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadNexusClawPluginsMock).not.toHaveBeenCalled();
   });
 });

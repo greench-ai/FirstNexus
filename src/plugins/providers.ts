@@ -6,7 +6,7 @@ import {
 } from "./bundled-compat.js";
 import { hasExplicitPluginConfig } from "./config-state.js";
 import { normalizePluginsConfig, resolveEffectiveEnableState } from "./config-state.js";
-import { loadOpenClawPlugins, type PluginLoadOptions } from "./loader.js";
+import { loadNexusClawPlugins, type PluginLoadOptions } from "./loader.js";
 import { createPluginLoaderLogger } from "./logger.js";
 import { loadPluginManifestRegistry } from "./manifest-registry.js";
 import type { ProviderPlugin } from "./types.js";
@@ -162,7 +162,7 @@ export function resolvePluginProviders(params: {
           pluginIds: bundledProviderCompatPluginIds,
         })
       : maybeVitestCompat;
-  const registry = loadOpenClawPlugins({
+  const registry = loadNexusClawPlugins({
     config,
     workspaceDir: params.workspaceDir,
     env,

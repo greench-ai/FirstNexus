@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
-  resolveConfigPath: vi.fn(() => `/tmp/openclaw-status-fast-json-missing-${process.pid}.json`),
+  resolveConfigPath: vi.fn(() => `/tmp/nexusclaw-status-fast-json-missing-${process.pid}.json`),
   hasPotentialConfiguredChannels: vi.fn(),
   readBestEffortConfig: vi.fn(),
   resolveCommandSecretRefsViaGateway: vi.fn(),

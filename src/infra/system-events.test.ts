@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { drainFormattedSystemEvents } from "../auto-reply/reply/session-updates.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { resolveMainSessionKey } from "../config/sessions.js";
 import { isCronSystemEvent } from "./heartbeat-runner.js";
 import {
@@ -21,7 +21,7 @@ async function importSystemEventsModule(cacheBust: string): Promise<SystemEvents
   return (await import(`${systemEventsModuleUrl}?t=${cacheBust}`)) as SystemEventsModule;
 }
 
-const cfg = {} as unknown as OpenClawConfig;
+const cfg = {} as unknown as NexusClawConfig;
 const mainKey = resolveMainSessionKey(cfg);
 
 describe("system events (session routing)", () => {

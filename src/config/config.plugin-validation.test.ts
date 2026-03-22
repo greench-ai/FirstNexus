@@ -37,7 +37,7 @@ async function writePluginFixture(params: {
     manifest.channels = params.channels;
   }
   await fs.writeFile(
-    path.join(params.dir, "openclaw.plugin.json"),
+    path.join(params.dir, "nexusclaw.plugin.json"),
     JSON.stringify(manifest, null, 2),
     "utf-8",
   );
@@ -86,17 +86,17 @@ describe("config plugin validation", () => {
     ({
       ...process.env,
       HOME: suiteHome,
-      OPENCLAW_HOME: undefined,
-      OPENCLAW_STATE_DIR: path.join(suiteHome, ".openclaw"),
+      NEXUSCLAW_HOME: undefined,
+      NEXUSCLAW_STATE_DIR: path.join(suiteHome, ".nexusclaw"),
       CLAWDBOT_STATE_DIR: undefined,
-      OPENCLAW_PLUGIN_MANIFEST_CACHE_MS: "10000",
+      NEXUSCLAW_PLUGIN_MANIFEST_CACHE_MS: "10000",
     }) satisfies NodeJS.ProcessEnv;
 
   const validateInSuite = (raw: unknown) =>
     validateConfigObjectWithPlugins(raw, { env: suiteEnv() });
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-config-plugin-validation-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "nexusclaw-config-plugin-validation-"));
     await chmodSafeDir(fixtureRoot);
     suiteHome = path.join(fixtureRoot, "home");
     await mkdirSafe(suiteHome);
@@ -161,7 +161,7 @@ describe("config plugin validation", () => {
       process.cwd(),
       "extensions",
       "voice-call",
-      "openclaw.plugin.json",
+      "nexusclaw.plugin.json",
     );
     const voiceCallManifest = JSON.parse(await fs.readFile(voiceCallManifestPath, "utf-8")) as {
       configSchema?: Record<string, unknown>;
@@ -245,7 +245,7 @@ describe("config plugin validation", () => {
       {
         env: {
           ...suiteEnv(),
-          OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(suiteHome, "missing-bundled-plugins"),
+          NEXUSCLAW_BUNDLED_PLUGINS_DIR: path.join(suiteHome, "missing-bundled-plugins"),
         },
       },
     );

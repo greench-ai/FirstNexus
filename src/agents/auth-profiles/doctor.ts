@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/config.js";
+import type { NexusClawConfig } from "../../config/config.js";
 import { normalizeProviderId } from "../model-selection.js";
 import type { AuthProfileStore } from "./types.js";
 
@@ -12,7 +12,7 @@ function loadProviderRuntime() {
 }
 
 export async function formatAuthDoctorHint(params: {
-  cfg?: OpenClawConfig;
+  cfg?: NexusClawConfig;
   store: AuthProfileStore;
   provider: string;
   profileId?: string;

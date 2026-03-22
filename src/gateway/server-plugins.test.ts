@@ -5,7 +5,7 @@ import type { PluginRuntime } from "../plugins/runtime/types.js";
 import type { PluginDiagnostic } from "../plugins/types.js";
 import type { GatewayRequestContext, GatewayRequestOptions } from "./server-methods/types.js";
 
-const loadOpenClawPlugins = vi.hoisted(() => vi.fn());
+const loadNexusClawPlugins = vi.hoisted(() => vi.fn());
 const resolveGatewayStartupPluginIds = vi.hoisted(() => vi.fn(() => ["discord", "telegram"]));
 const primeConfiguredBindingRegistry = vi.hoisted(() =>
   vi.fn(() => ({ bindingCount: 0, channelCount: 0 })),
@@ -18,7 +18,7 @@ const handleGatewayRequest = vi.hoisted(() =>
 );
 
 vi.mock("../plugins/loader.js", () => ({
-  loadOpenClawPlugins,
+  loadNexusClawPlugins,
 }));
 
 vi.mock("../plugins/channel-plugin-ids.js", () => ({
@@ -114,7 +114,7 @@ async function createSubagentRuntime(
     error: vi.fn(),
     debug: vi.fn(),
   };
-  loadOpenClawPlugins.mockReturnValue(createRegistry([]));
+  loadNexusClawPlugins.mockReturnValue(createRegistry([]));
   serverPlugins.loadGatewayPlugins({
     cfg,
     workspaceDir: "/tmp",
@@ -122,7 +122,7 @@ async function createSubagentRuntime(
     coreGatewayHandlers: {},
     baseMethods: [],
   });
-  const call = loadOpenClawPlugins.mock.calls.at(-1)?.[0] as
+  const call = loadNexusClawPlugins.mock.calls.at(-1)?.[0] as
     | { runtimeOptions?: { allowGatewaySubagentBinding?: boolean } }
     | undefined;
   if (call?.runtimeOptions?.allowGatewaySubagentBinding !== true) {
@@ -142,7 +142,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-  loadOpenClawPlugins.mockReset();
+  loadNexusClawPlugins.mockReset();
   resolveGatewayStartupPluginIds.mockReset().mockReturnValue(["discord", "telegram"]);
   primeConfiguredBindingRegistry.mockClear().mockReturnValue({ bindingCount: 0, channelCount: 0 });
   handleGatewayRequest.mockReset();
@@ -182,7 +182,7 @@ describe("loadGatewayPlugins", () => {
         message: "failed to load plugin: boom",
       },
     ];
-    loadOpenClawPlugins.mockReturnValue(createRegistry(diagnostics));
+    loadNexusClawPlugins.mockReturnValue(createRegistry(diagnostics));
 
     const log = {
       info: vi.fn(),
@@ -207,7 +207,7 @@ describe("loadGatewayPlugins", () => {
 
   test("loads only gateway startup plugin ids", async () => {
     const { loadGatewayPlugins } = serverPluginsModule;
-    loadOpenClawPlugins.mockReturnValue(createRegistry([]));
+    loadNexusClawPlugins.mockReturnValue(createRegistry([]));
 
     const log = {
       info: vi.fn(),
@@ -229,7 +229,7 @@ describe("loadGatewayPlugins", () => {
       workspaceDir: "/tmp",
       env: process.env,
     });
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadNexusClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         onlyPluginIds: ["discord", "telegram"],
       }),
@@ -238,7 +238,7 @@ describe("loadGatewayPlugins", () => {
 
   test("provides subagent runtime with sessions.get method aliases", async () => {
     const { loadGatewayPlugins } = serverPluginsModule;
-    loadOpenClawPlugins.mockReturnValue(createRegistry([]));
+    loadNexusClawPlugins.mockReturnValue(createRegistry([]));
 
     const log = {
       info: vi.fn(),
@@ -255,7 +255,7 @@ describe("loadGatewayPlugins", () => {
       baseMethods: [],
     });
 
-    const call = loadOpenClawPlugins.mock.calls.at(-1)?.[0] as
+    const call = loadNexusClawPlugins.mock.calls.at(-1)?.[0] as
       | { runtimeOptions?: { allowGatewaySubagentBinding?: boolean } }
       | undefined;
     expect(call?.runtimeOptions?.allowGatewaySubagentBinding).toBe(true);
@@ -364,7 +364,7 @@ describe("loadGatewayPlugins", () => {
         }),
       ),
     ).rejects.toThrow(
-      'plugin "voice-call" is not trusted for fallback provider/model override requests. See https://docs.openclaw.ai/tools/plugin#runtime-helpers and search for: plugins.entries.<id>.subagent.allowModelOverride',
+      'plugin "voice-call" is not trusted for fallback provider/model override requests. See https://docs.nexusclaw.ai/tools/plugin#runtime-helpers and search for: plugins.entries.<id>.subagent.allowModelOverride',
     );
   });
 
@@ -489,7 +489,7 @@ describe("loadGatewayPlugins", () => {
 
   test("can prefer setup-runtime channel plugins during startup loads", async () => {
     const { loadGatewayPlugins } = serverPluginsModule;
-    loadOpenClawPlugins.mockReturnValue(createRegistry([]));
+    loadNexusClawPlugins.mockReturnValue(createRegistry([]));
 
     const log = {
       info: vi.fn(),
@@ -507,7 +507,7 @@ describe("loadGatewayPlugins", () => {
       preferSetupRuntimeForChannelPlugins: true,
     });
 
-    expect(loadOpenClawPlugins).toHaveBeenCalledWith(
+    expect(loadNexusClawPlugins).toHaveBeenCalledWith(
       expect.objectContaining({
         preferSetupRuntimeForChannelPlugins: true,
       }),
@@ -516,7 +516,7 @@ describe("loadGatewayPlugins", () => {
 
   test("primes configured bindings during gateway startup", async () => {
     const { loadGatewayPlugins } = serverPluginsModule;
-    loadOpenClawPlugins.mockReturnValue(createRegistry([]));
+    loadNexusClawPlugins.mockReturnValue(createRegistry([]));
 
     const log = {
       info: vi.fn(),
@@ -547,7 +547,7 @@ describe("loadGatewayPlugins", () => {
         message: "failed to load plugin: boom",
       },
     ];
-    loadOpenClawPlugins.mockReturnValue(createRegistry(diagnostics));
+    loadNexusClawPlugins.mockReturnValue(createRegistry(diagnostics));
 
     const log = {
       info: vi.fn(),

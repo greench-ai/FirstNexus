@@ -6,7 +6,7 @@
  */
 
 import { parseExplicitTargetForChannel } from "../channels/plugins/target-parsing.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { logVerbose } from "../globals.js";
 import {
   clearPluginCommands,
@@ -23,7 +23,7 @@ import {
   requestPluginConversationBinding,
 } from "./conversation-binding.js";
 import type {
-  OpenClawPluginCommandDefinition,
+  NexusClawPluginCommandDefinition,
   PluginCommandContext,
   PluginCommandResult,
 } from "./types.js";
@@ -111,7 +111,7 @@ export type CommandRegistrationResult = {
  * Shared by both the global registration path and snapshot (non-activating) loads.
  */
 export function validatePluginCommandDefinition(
-  command: OpenClawPluginCommandDefinition,
+  command: NexusClawPluginCommandDefinition,
 ): string | null {
   if (typeof command.handler !== "function") {
     return "Command handler must be a function";
@@ -141,7 +141,7 @@ export function validatePluginCommandDefinition(
   return null;
 }
 
-function listPluginInvocationKeys(command: OpenClawPluginCommandDefinition): string[] {
+function listPluginInvocationKeys(command: NexusClawPluginCommandDefinition): string[] {
   const keys = new Set<string>();
   const push = (value: string | undefined) => {
     const normalized = value?.trim().toLowerCase();
@@ -165,7 +165,7 @@ function listPluginInvocationKeys(command: OpenClawPluginCommandDefinition): str
  */
 export function registerPluginCommand(
   pluginId: string,
-  command: OpenClawPluginCommandDefinition,
+  command: NexusClawPluginCommandDefinition,
   opts?: { pluginName?: string; pluginRoot?: string },
 ): CommandRegistrationResult {
   // Prevent registration while commands are being processed
@@ -355,7 +355,7 @@ export async function executePluginCommand(params: {
   channelId?: PluginCommandContext["channelId"];
   isAuthorizedSender: boolean;
   commandBody: string;
-  config: OpenClawConfig;
+  config: NexusClawConfig;
   from?: PluginCommandContext["from"];
   to?: PluginCommandContext["to"];
   accountId?: PluginCommandContext["accountId"];
@@ -464,7 +464,7 @@ export function listPluginCommands(): Array<{
   }));
 }
 
-function listPluginInvocationNames(command: OpenClawPluginCommandDefinition): string[] {
+function listPluginInvocationNames(command: NexusClawPluginCommandDefinition): string[] {
   return listPluginInvocationKeys(command);
 }
 

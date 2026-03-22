@@ -51,15 +51,15 @@ type PackageManifest = PluginPackageManifest & {
 };
 
 const MISSING_EXTENSIONS_ERROR =
-  'package.json missing openclaw.extensions; update the plugin package to include openclaw.extensions (for example ["./dist/index.js"]). See https://docs.openclaw.ai/help/troubleshooting#plugin-install-fails-with-missing-openclaw-extensions';
+  'package.json missing nexusclaw.extensions; update the plugin package to include nexusclaw.extensions (for example ["./dist/index.js"]). See https://docs.nexusclaw.ai/help/troubleshooting#plugin-install-fails-with-missing-nexusclaw-extensions';
 
 export const PLUGIN_INSTALL_ERROR_CODE = {
   INVALID_NPM_SPEC: "invalid_npm_spec",
   INVALID_MIN_HOST_VERSION: "invalid_min_host_version",
   UNKNOWN_HOST_VERSION: "unknown_host_version",
   INCOMPATIBLE_HOST_VERSION: "incompatible_host_version",
-  MISSING_OPENCLAW_EXTENSIONS: "missing_openclaw_extensions",
-  EMPTY_OPENCLAW_EXTENSIONS: "empty_openclaw_extensions",
+  MISSING_NEXUSCLAW_EXTENSIONS: "missing_nexusclaw_extensions",
+  EMPTY_NEXUSCLAW_EXTENSIONS: "empty_nexusclaw_extensions",
   NPM_PACKAGE_NOT_FOUND: "npm_package_not_found",
   PLUGIN_ID_MISMATCH: "plugin_id_mismatch",
 } as const;
@@ -154,7 +154,7 @@ function matchesExpectedPluginId(params: {
   );
 }
 
-function ensureOpenClawExtensions(params: { manifest: PackageManifest }):
+function ensureNexusClawExtensions(params: { manifest: PackageManifest }):
   | {
       ok: true;
       entries: string[];
@@ -169,14 +169,14 @@ function ensureOpenClawExtensions(params: { manifest: PackageManifest }):
     return {
       ok: false,
       error: MISSING_EXTENSIONS_ERROR,
-      code: PLUGIN_INSTALL_ERROR_CODE.MISSING_OPENCLAW_EXTENSIONS,
+      code: PLUGIN_INSTALL_ERROR_CODE.MISSING_NEXUSCLAW_EXTENSIONS,
     };
   }
   if (resolved.status === "empty") {
     return {
       ok: false,
-      error: "package.json openclaw.extensions is empty",
-      code: PLUGIN_INSTALL_ERROR_CODE.EMPTY_OPENCLAW_EXTENSIONS,
+      error: "package.json nexusclaw.extensions is empty",
+      code: PLUGIN_INSTALL_ERROR_CODE.EMPTY_NEXUSCLAW_EXTENSIONS,
     };
   }
   return {
@@ -392,7 +392,7 @@ async function installBundleFromSourceDir(
     });
   } catch (err) {
     logger.warn?.(
-      `Bundle "${pluginId}" code safety scan failed (${String(err)}). Installation continues; run "openclaw security audit --deep" after install.`,
+      `Bundle "${pluginId}" code safety scan failed (${String(err)}). Installation continues; run "nexusclaw security audit --deep" after install.`,
     );
   }
 
@@ -446,7 +446,7 @@ async function detectNativePackageInstallSource(packageDir: string): Promise<boo
 
   try {
     const manifest = await readJsonFile<PackageManifest>(manifestPath);
-    return ensureOpenClawExtensions({ manifest }).ok;
+    return ensureNexusClawExtensions({ manifest }).ok;
   } catch {
     return false;
   }
@@ -471,7 +471,7 @@ async function installPluginFromPackageDir(
     return { ok: false, error: `invalid package.json: ${String(err)}` };
   }
 
-  const extensionsResult = ensureOpenClawExtensions({
+  const extensionsResult = ensureNexusClawExtensions({
     manifest,
   });
   if (!extensionsResult.ok) {
@@ -486,9 +486,9 @@ async function installPluginFromPackageDir(
   const pkgName = typeof manifest.name === "string" ? manifest.name.trim() : "";
   const npmPluginId = pkgName || "plugin";
 
-  // Prefer the canonical `id` from openclaw.plugin.json over the npm package name.
+  // Prefer the canonical `id` from nexusclaw.plugin.json over the npm package name.
   // This avoids a latent key-mismatch bug: if the manifest id (e.g. "memory-cognee")
-  // differs from the npm package name (e.g. "cognee-openclaw"), the plugin registry
+  // differs from the npm package name (e.g. "cognee-nexusclaw"), the plugin registry
   // uses the manifest id as the authoritative key, so the config entry must match it.
   const ocManifestResult = loadPluginManifest(params.packageDir);
   const manifestPluginId =
@@ -531,20 +531,20 @@ async function installPluginFromPackageDir(
     if (minHostVersionCheck.kind === "invalid") {
       return {
         ok: false,
-        error: `invalid package.json openclaw.install.minHostVersion: ${minHostVersionCheck.error}`,
+        error: `invalid package.json nexusclaw.install.minHostVersion: ${minHostVersionCheck.error}`,
         code: PLUGIN_INSTALL_ERROR_CODE.INVALID_MIN_HOST_VERSION,
       };
     }
     if (minHostVersionCheck.kind === "unknown_host_version") {
       return {
         ok: false,
-        error: `plugin "${pluginId}" requires OpenClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host version could not be determined. Re-run from a released build or set OPENCLAW_VERSION and retry.`,
+        error: `plugin "${pluginId}" requires NexusClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host version could not be determined. Re-run from a released build or set NEXUSCLAW_VERSION and retry.`,
         code: PLUGIN_INSTALL_ERROR_CODE.UNKNOWN_HOST_VERSION,
       };
     }
     return {
       ok: false,
-      error: `plugin "${pluginId}" requires OpenClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host is ${minHostVersionCheck.currentVersion}. Upgrade OpenClaw and retry.`,
+      error: `plugin "${pluginId}" requires NexusClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host is ${minHostVersionCheck.currentVersion}. Upgrade NexusClaw and retry.`,
       code: PLUGIN_INSTALL_ERROR_CODE.INCOMPATIBLE_HOST_VERSION,
     };
   }
@@ -557,7 +557,7 @@ async function installPluginFromPackageDir(
     });
   } catch (err) {
     logger.warn?.(
-      `Plugin "${pluginId}" code safety scan failed (${String(err)}). Installation continues; run "openclaw security audit --deep" after install.`,
+      `Plugin "${pluginId}" code safety scan failed (${String(err)}). Installation continues; run "nexusclaw security audit --deep" after install.`,
     );
   }
 
@@ -608,7 +608,7 @@ export async function installPluginFromArchive(
 
   return await withExtractedArchiveRoot({
     archivePath,
-    tempDirPrefix: "openclaw-plugin-",
+    tempDirPrefix: "nexusclaw-plugin-",
     timeoutMs,
     logger,
     onExtracted: async (sourceDir) =>
@@ -725,7 +725,7 @@ export async function installPluginFromNpmSpec(params: {
 
   logger.info?.(`Downloading ${spec}…`);
   const flowResult = await installFromNpmSpecArchiveWithInstaller({
-    tempDirPrefix: "openclaw-npm-pack-",
+    tempDirPrefix: "nexusclaw-npm-pack-",
     spec,
     timeoutMs,
     expectedIntegrity: params.expectedIntegrity,

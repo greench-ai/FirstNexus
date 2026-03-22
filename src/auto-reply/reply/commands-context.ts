@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/config.js";
+import type { NexusClawConfig } from "../../config/config.js";
 import { resolveCommandAuthorization } from "../command-auth.js";
 import type { MsgContext } from "../templating.js";
 import type { CommandContext } from "./commands-types.js";
@@ -36,7 +36,7 @@ function normalizeCommandBodyLite(raw: string, botUsername?: string): string {
 
 export function buildCommandContext(params: {
   ctx: MsgContext;
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   agentId?: string;
   sessionKey?: string;
   isGroup: boolean;

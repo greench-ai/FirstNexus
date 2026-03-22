@@ -2,7 +2,7 @@ import fsSync from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveOpenClawPackageRootSync } from "../infra/openclaw-root.js";
+import { resolveNexusClawPackageRootSync } from "../infra/nexusclaw-root.js";
 import { FIELD_HELP } from "./schema.help.js";
 import type { ConfigSchemaResponse } from "./schema.js";
 import { schemaHasChildren } from "./schema.shared.js";
@@ -82,13 +82,13 @@ const uiHintIndexCache = new WeakMap<
 const schemaHasChildrenCache = new WeakMap<JsonSchemaObject, boolean>();
 
 function logConfigDocBaselineDebug(message: string): void {
-  if (process.env.OPENCLAW_CONFIG_DOC_BASELINE_DEBUG === "1") {
+  if (process.env.NEXUSCLAW_CONFIG_DOC_BASELINE_DEBUG === "1") {
     console.error(`[config-doc-baseline] ${message}`);
   }
 }
 
 function resolveRepoRoot(): string {
-  const fromPackage = resolveOpenClawPackageRootSync({
+  const fromPackage = resolveNexusClawPackageRootSync({
     cwd: path.dirname(fileURLToPath(import.meta.url)),
     moduleUrl: import.meta.url,
   });
@@ -356,8 +356,8 @@ async function loadBundledConfigSchemaResponse(): Promise<ConfigSchemaResponse> 
   const env = {
     ...process.env,
     HOME: os.tmpdir(),
-    OPENCLAW_STATE_DIR: path.join(os.tmpdir(), "openclaw-config-doc-baseline-state"),
-    OPENCLAW_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "extensions"),
+    NEXUSCLAW_STATE_DIR: path.join(os.tmpdir(), "nexusclaw-config-doc-baseline-state"),
+    NEXUSCLAW_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "extensions"),
   };
 
   const manifestRegistry = loadPluginManifestRegistry({
@@ -376,7 +376,7 @@ async function loadBundledConfigSchemaResponse(): Promise<ConfigSchemaResponse> 
     (plugin) => plugin.origin === "bundled" && plugin.channels.length > 0,
   );
   const channelPlugins =
-    process.env.OPENCLAW_CONFIG_DOC_BASELINE_DEBUG === "1"
+    process.env.NEXUSCLAW_CONFIG_DOC_BASELINE_DEBUG === "1"
       ? await bundledChannelPlugins.reduce<Promise<ChannelSurfaceMetadata[]>>(
           async (promise, plugin) => {
             const loaded = await promise;

@@ -1,16 +1,16 @@
-export const OPENCLAW_CLI_ENV_VAR = "OPENCLAW_CLI";
-export const OPENCLAW_CLI_ENV_VALUE = "1";
+export const NEXUSCLAW_CLI_ENV_VAR = "NEXUSCLAW_CLI";
+export const NEXUSCLAW_CLI_ENV_VALUE = "1";
 
-export function markOpenClawExecEnv<T extends Record<string, string | undefined>>(env: T): T {
+export function markNexusClawExecEnv<T extends Record<string, string | undefined>>(env: T): T {
   return {
     ...env,
-    [OPENCLAW_CLI_ENV_VAR]: OPENCLAW_CLI_ENV_VALUE,
+    [NEXUSCLAW_CLI_ENV_VAR]: NEXUSCLAW_CLI_ENV_VALUE,
   };
 }
 
-export function ensureOpenClawExecMarkerOnProcess(
+export function ensureNexusClawExecMarkerOnProcess(
   env: NodeJS.ProcessEnv = process.env,
 ): NodeJS.ProcessEnv {
-  env[OPENCLAW_CLI_ENV_VAR] = OPENCLAW_CLI_ENV_VALUE;
+  env[NEXUSCLAW_CLI_ENV_VAR] = NEXUSCLAW_CLI_ENV_VALUE;
   return env;
 }

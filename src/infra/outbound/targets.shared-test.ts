@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { ChannelOutboundAdapter } from "../../channels/plugins/types.js";
-import type { OpenClawConfig } from "../../config/config.js";
+import type { NexusClawConfig } from "../../config/config.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
 import { createOutboundTestPlugin, createTestRegistry } from "../../test-utils/channel-plugins.js";
 import { isWhatsAppGroupJid, normalizeWhatsAppTarget } from "../../whatsapp/normalize.js";
@@ -111,7 +111,7 @@ export function installResolveOutboundTargetPluginRegistryHooks(): void {
             }),
             config: {
               listAccountIds: () => [],
-              resolveDefaultTo: ({ cfg }: { cfg: OpenClawConfig }) =>
+              resolveDefaultTo: ({ cfg }: { cfg: NexusClawConfig }) =>
                 typeof cfg.channels?.whatsapp?.defaultTo === "string"
                   ? cfg.channels.whatsapp.defaultTo
                   : undefined,
@@ -130,7 +130,7 @@ export function installResolveOutboundTargetPluginRegistryHooks(): void {
             }),
             config: {
               listAccountIds: () => [],
-              resolveDefaultTo: ({ cfg }: { cfg: OpenClawConfig }) =>
+              resolveDefaultTo: ({ cfg }: { cfg: NexusClawConfig }) =>
                 typeof cfg.channels?.telegram?.defaultTo === "string"
                   ? cfg.channels.telegram.defaultTo
                   : undefined,

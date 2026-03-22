@@ -12,16 +12,16 @@ vi.mock("../plugins/tools.js", () => ({
   getPluginToolMeta: vi.fn(() => undefined),
 }));
 
-import { createOpenClawTools } from "./openclaw-tools.js";
-import { createOpenClawCodingTools } from "./pi-tools.js";
+import { createNexusClawTools } from "./nexusclaw-tools.js";
+import { createNexusClawCodingTools } from "./pi-tools.js";
 
-describe("createOpenClawTools plugin context", () => {
+describe("createNexusClawTools plugin context", () => {
   beforeEach(() => {
     resolvePluginToolsMock.mockClear();
   });
 
   it("forwards trusted requester sender identity to plugin tool context", () => {
-    createOpenClawTools({
+    createNexusClawTools({
       config: {} as never,
       requesterSenderId: "trusted-sender",
       senderIsOwner: true,
@@ -38,7 +38,7 @@ describe("createOpenClawTools plugin context", () => {
   });
 
   it("forwards ephemeral sessionId to plugin tool context", () => {
-    createOpenClawTools({
+    createNexusClawTools({
       config: {} as never,
       agentSessionKey: "agent:main:telegram:direct:12345",
       sessionId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
@@ -55,7 +55,7 @@ describe("createOpenClawTools plugin context", () => {
   });
 
   it("forwards gateway subagent binding for plugin tools", () => {
-    createOpenClawTools({
+    createNexusClawTools({
       config: {} as never,
       allowGatewaySubagentBinding: true,
     });
@@ -68,7 +68,7 @@ describe("createOpenClawTools plugin context", () => {
   });
 
   it("forwards gateway subagent binding through coding tools", () => {
-    createOpenClawCodingTools({
+    createNexusClawCodingTools({
       config: {} as never,
       allowGatewaySubagentBinding: true,
     });

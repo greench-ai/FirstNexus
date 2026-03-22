@@ -19,9 +19,9 @@ describe("restart sentinel", () => {
   let tempDir: string;
 
   beforeEach(async () => {
-    envSnapshot = captureEnv(["OPENCLAW_STATE_DIR"]);
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-sentinel-"));
-    process.env.OPENCLAW_STATE_DIR = tempDir;
+    envSnapshot = captureEnv(["NEXUSCLAW_STATE_DIR"]);
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "nexusclaw-sentinel-"));
+    process.env.NEXUSCLAW_STATE_DIR = tempDir;
   });
 
   afterEach(async () => {
@@ -110,7 +110,7 @@ describe("restart sentinel", () => {
       status: "error" as const,
       ts: Date.now(),
       message: "Patch failed",
-      doctorHint: "Run openclaw doctor",
+      doctorHint: "Run nexusclaw doctor",
       stats: { mode: "patch", reason: "validation failed" },
     };
 
@@ -119,7 +119,7 @@ describe("restart sentinel", () => {
         "Gateway restart config-patch error (patch)",
         "Patch failed",
         "Reason: validation failed",
-        "Run openclaw doctor",
+        "Run nexusclaw doctor",
       ].join("\n"),
     );
   });
@@ -191,7 +191,7 @@ describe("restart sentinel message dedup", () => {
 
   it("formats the non-interactive doctor command", () => {
     expect(formatDoctorNonInteractiveHint({ PATH: "/usr/bin:/bin" })).toContain(
-      "openclaw doctor --non-interactive",
+      "nexusclaw doctor --non-interactive",
     );
   });
 });

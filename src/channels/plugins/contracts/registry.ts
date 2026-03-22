@@ -13,7 +13,7 @@ import {
 } from "../../../../extensions/matrix/api.js";
 import { setMatrixRuntime } from "../../../../extensions/matrix/index.js";
 import { createTelegramThreadBindingManager } from "../../../../extensions/telegram/runtime-api.js";
-import type { OpenClawConfig } from "../../../config/config.js";
+import type { NexusClawConfig } from "../../../config/config.js";
 import {
   getSessionBindingService,
   type SessionBindingCapabilities,
@@ -48,7 +48,7 @@ type ActionsContractEntry = {
   unsupportedAction?: string;
   cases: Array<{
     name: string;
-    cfg: OpenClawConfig;
+    cfg: NexusClawConfig;
     expectedActions: string[];
     expectedCapabilities?: string[];
     beforeTest?: () => void;
@@ -60,14 +60,14 @@ type SetupContractEntry = {
   plugin: Pick<ChannelPlugin, "id" | "config" | "setup">;
   cases: Array<{
     name: string;
-    cfg: OpenClawConfig;
+    cfg: NexusClawConfig;
     accountId?: string;
     input: Record<string, unknown>;
     expectedAccountId?: string;
     expectedValidation?: string | null;
     beforeTest?: () => void;
-    assertPatchedConfig?: (cfg: OpenClawConfig) => void;
-    assertResolvedAccount?: (account: unknown, cfg: OpenClawConfig) => void;
+    assertPatchedConfig?: (cfg: NexusClawConfig) => void;
+    assertResolvedAccount?: (account: unknown, cfg: NexusClawConfig) => void;
   }>;
 };
 
@@ -76,7 +76,7 @@ type StatusContractEntry = {
   plugin: Pick<ChannelPlugin, "id" | "config" | "status">;
   cases: Array<{
     name: string;
-    cfg: OpenClawConfig;
+    cfg: NexusClawConfig;
     accountId?: string;
     runtime?: Record<string, unknown>;
     probe?: unknown;
@@ -112,7 +112,7 @@ type DirectoryContractEntry = {
   id: string;
   plugin: Pick<ChannelPlugin, "id" | "directory">;
   coverage: "lookups" | "presence";
-  cfg?: OpenClawConfig;
+  cfg?: NexusClawConfig;
   accountId?: string;
 };
 
@@ -202,7 +202,7 @@ bundledChannelRuntimeSetters.setLineRuntime({
     line: {
       listLineAccountIds,
       resolveDefaultLineAccountId,
-      resolveLineAccount: ({ cfg, accountId }: { cfg: OpenClawConfig; accountId?: string }) =>
+      resolveLineAccount: ({ cfg, accountId }: { cfg: NexusClawConfig; accountId?: string }) =>
         resolveLineAccount({ cfg, accountId }),
     },
   },
@@ -219,7 +219,7 @@ vi.mock("../../../../extensions/matrix/runtime-api.js", async () => {
 });
 
 const matrixSessionBindingStateDir = fs.mkdtempSync(
-  path.join(os.tmpdir(), "openclaw-matrix-session-binding-contract-"),
+  path.join(os.tmpdir(), "nexusclaw-matrix-session-binding-contract-"),
 );
 const matrixSessionBindingAuth = {
   accountId: "ops",
@@ -272,7 +272,7 @@ export const actionContractRegistry: ActionsContractEntry[] = [
               appToken: "xapp-test",
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         expectedActions: [
           "send",
           "react",
@@ -301,7 +301,7 @@ export const actionContractRegistry: ActionsContractEntry[] = [
               },
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         expectedActions: [
           "send",
           "react",
@@ -326,7 +326,7 @@ export const actionContractRegistry: ActionsContractEntry[] = [
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         expectedActions: [],
         expectedCapabilities: [],
       },
@@ -347,7 +347,7 @@ export const actionContractRegistry: ActionsContractEntry[] = [
               baseUrl: "https://chat.example.com",
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         expectedActions: ["send", "react"],
         expectedCapabilities: ["buttons"],
       },
@@ -362,7 +362,7 @@ export const actionContractRegistry: ActionsContractEntry[] = [
               actions: { reactions: false },
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         expectedActions: ["send"],
         expectedCapabilities: ["buttons"],
       },
@@ -374,7 +374,7 @@ export const actionContractRegistry: ActionsContractEntry[] = [
               enabled: true,
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         expectedActions: [],
         expectedCapabilities: [],
       },
@@ -386,7 +386,7 @@ export const actionContractRegistry: ActionsContractEntry[] = [
     cases: [
       {
         name: "forwards runtime-backed Telegram actions and capabilities",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as NexusClawConfig,
         expectedActions: ["send", "poll", "react"],
         expectedCapabilities: ["interactive", "buttons"],
         beforeTest: () => {
@@ -405,7 +405,7 @@ export const actionContractRegistry: ActionsContractEntry[] = [
     cases: [
       {
         name: "forwards runtime-backed Discord actions and capabilities",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as NexusClawConfig,
         expectedActions: ["send", "react", "poll"],
         expectedCapabilities: ["interactive", "components"],
         beforeTest: () => {
@@ -427,7 +427,7 @@ export const setupContractRegistry: SetupContractEntry[] = [
     cases: [
       {
         name: "default account stores tokens and enables the channel",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as NexusClawConfig,
         input: {
           botToken: "xoxb-test",
           appToken: "xapp-test",
@@ -441,7 +441,7 @@ export const setupContractRegistry: SetupContractEntry[] = [
       },
       {
         name: "non-default env setup is rejected",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as NexusClawConfig,
         accountId: "ops",
         input: {
           useEnv: true,
@@ -457,7 +457,7 @@ export const setupContractRegistry: SetupContractEntry[] = [
     cases: [
       {
         name: "default account stores token and normalized base URL",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as NexusClawConfig,
         input: {
           botToken: "test-token",
           httpUrl: "https://chat.example.com/",
@@ -471,7 +471,7 @@ export const setupContractRegistry: SetupContractEntry[] = [
       },
       {
         name: "missing credentials are rejected",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as NexusClawConfig,
         input: {
           httpUrl: "",
         },
@@ -486,7 +486,7 @@ export const setupContractRegistry: SetupContractEntry[] = [
     cases: [
       {
         name: "default account stores token and secret",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as NexusClawConfig,
         input: {
           channelAccessToken: "line-token",
           channelSecret: "line-secret",
@@ -500,7 +500,7 @@ export const setupContractRegistry: SetupContractEntry[] = [
       },
       {
         name: "non-default env setup is rejected",
-        cfg: {} as OpenClawConfig,
+        cfg: {} as NexusClawConfig,
         accountId: "ops",
         input: {
           useEnv: true,
@@ -526,7 +526,7 @@ export const statusContractRegistry: StatusContractEntry[] = [
               appToken: "xapp-test",
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         runtime: {
           accountId: "default",
           connected: true,
@@ -555,7 +555,7 @@ export const statusContractRegistry: StatusContractEntry[] = [
               baseUrl: "https://chat.example.com",
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         runtime: {
           accountId: "default",
           connected: true,
@@ -586,7 +586,7 @@ export const statusContractRegistry: StatusContractEntry[] = [
               channelSecret: "line-secret",
             },
           },
-        } as OpenClawConfig,
+        } as NexusClawConfig,
         runtime: {
           accountId: "default",
           running: true,
@@ -630,7 +630,7 @@ export const directoryContractRegistry: DirectoryContractEntry[] = surfaceContra
 
 const baseSessionBindingCfg = {
   session: { mainKey: "main", scope: "per-sender" },
-} satisfies OpenClawConfig;
+} satisfies NexusClawConfig;
 
 const sessionBindingContractEntries: Record<
   SessionBindingContractChannelId,

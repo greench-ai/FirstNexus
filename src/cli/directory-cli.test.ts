@@ -74,7 +74,7 @@ describe("registerDirectoryCli", () => {
       configChanged: true,
     });
 
-    const program = new Command().name("openclaw");
+    const program = new Command().name("nexusclaw");
     registerDirectoryCli(program);
 
     await program.parseAsync(["directory", "self", "--channel", "whatsapp", "--json"], {

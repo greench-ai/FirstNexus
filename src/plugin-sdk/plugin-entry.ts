@@ -1,18 +1,18 @@
 import { emptyPluginConfigSchema } from "../plugins/config-schema.js";
 import type {
-  OpenClawPluginApi,
-  OpenClawPluginCommandDefinition,
-  OpenClawPluginConfigSchema,
-  OpenClawPluginDefinition,
+  NexusClawPluginApi,
+  NexusClawPluginCommandDefinition,
+  NexusClawPluginConfigSchema,
+  NexusClawPluginDefinition,
   PluginInteractiveTelegramHandlerContext,
 } from "../plugins/types.js";
 
 export type {
   AnyAgentTool,
   MediaUnderstandingProviderPlugin,
-  OpenClawPluginApi,
+  NexusClawPluginApi,
   PluginCommandContext,
-  OpenClawPluginConfigSchema,
+  NexusClawPluginConfigSchema,
   ProviderDiscoveryContext,
   ProviderCatalogContext,
   ProviderCatalogResult,
@@ -36,19 +36,19 @@ export type {
   SpeechProviderPlugin,
   ProviderThinkingPolicyContext,
   ProviderWrapStreamFnContext,
-  OpenClawPluginService,
-  OpenClawPluginServiceContext,
+  NexusClawPluginService,
+  NexusClawPluginServiceContext,
   ProviderAuthContext,
   ProviderAuthDoctorHintContext,
   ProviderAuthMethodNonInteractiveContext,
   ProviderAuthMethod,
   ProviderAuthResult,
-  OpenClawPluginCommandDefinition,
-  OpenClawPluginDefinition,
+  NexusClawPluginCommandDefinition,
+  NexusClawPluginDefinition,
   PluginLogger,
   PluginInteractiveTelegramHandlerContext,
 } from "../plugins/types.js";
-export type { OpenClawConfig } from "../config/config.js";
+export type { NexusClawConfig } from "../config/config.js";
 
 export { emptyPluginConfigSchema } from "../plugins/config-schema.js";
 
@@ -57,24 +57,24 @@ type DefinePluginEntryOptions = {
   id: string;
   name: string;
   description: string;
-  kind?: OpenClawPluginDefinition["kind"];
-  configSchema?: OpenClawPluginConfigSchema | (() => OpenClawPluginConfigSchema);
-  register: (api: OpenClawPluginApi) => void;
+  kind?: NexusClawPluginDefinition["kind"];
+  configSchema?: NexusClawPluginConfigSchema | (() => NexusClawPluginConfigSchema);
+  register: (api: NexusClawPluginApi) => void;
 };
 
-/** Normalized object shape that OpenClaw loads from a plugin entry module. */
+/** Normalized object shape that NexusClaw loads from a plugin entry module. */
 type DefinedPluginEntry = {
   id: string;
   name: string;
   description: string;
-  configSchema: OpenClawPluginConfigSchema;
-  register: NonNullable<OpenClawPluginDefinition["register"]>;
-} & Pick<OpenClawPluginDefinition, "kind">;
+  configSchema: NexusClawPluginConfigSchema;
+  register: NonNullable<NexusClawPluginDefinition["register"]>;
+} & Pick<NexusClawPluginDefinition, "kind">;
 
 /** Resolve either a concrete config schema or a lazy schema factory. */
 function resolvePluginConfigSchema(
   configSchema: DefinePluginEntryOptions["configSchema"] = emptyPluginConfigSchema,
-): OpenClawPluginConfigSchema {
+): NexusClawPluginConfigSchema {
   return typeof configSchema === "function" ? configSchema() : configSchema;
 }
 
@@ -83,7 +83,7 @@ function resolvePluginConfigSchema(
  *
  * Use this for provider, tool, command, service, memory, and context-engine
  * plugins. Channel plugins should use `defineChannelPluginEntry(...)` from
- * `openclaw/plugin-sdk/core` so they inherit the channel capability wiring.
+ * `nexusclaw/plugin-sdk/core` so they inherit the channel capability wiring.
  */
 export function definePluginEntry({
   id,

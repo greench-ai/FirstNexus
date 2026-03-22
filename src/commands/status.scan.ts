@@ -4,7 +4,7 @@ import { hasPotentialConfiguredChannels } from "../channels/config-presence.js";
 import { resolveCommandSecretRefsViaGateway } from "../cli/command-secret-gateway.js";
 import { getStatusCommandSecretTargetIds } from "../cli/command-secret-targets.js";
 import { withProgress } from "../cli/progress.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { readBestEffortConfig } from "../config/config.js";
 import { resolveConfigPath } from "../config/paths.js";
 import { callGateway } from "../gateway/call.js";
@@ -68,7 +68,7 @@ function unwrapDeferredResult<T>(result: DeferredResult<T>): T {
   return result.value;
 }
 
-function shouldCollectPluginCompatibility(cfg: OpenClawConfig): boolean {
+function shouldCollectPluginCompatibility(cfg: NexusClawConfig): boolean {
   if (hasPotentialConfiguredChannels(cfg)) {
     return true;
   }
@@ -88,7 +88,7 @@ function buildColdStartUpdateResult(): Awaited<ReturnType<typeof getUpdateCheckR
 }
 
 async function resolveChannelsStatus(params: {
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   gatewayReachable: boolean;
   opts: { timeoutMs?: number; all?: boolean };
 }) {
@@ -107,8 +107,8 @@ async function resolveChannelsStatus(params: {
 }
 
 export type StatusScanResult = {
-  cfg: OpenClawConfig;
-  sourceConfig: OpenClawConfig;
+  cfg: NexusClawConfig;
+  sourceConfig: NexusClawConfig;
   secretDiagnostics: string[];
   osSummary: ReturnType<typeof resolveOsSummary>;
   tailscaleMode: string;
@@ -136,7 +136,7 @@ export type StatusScanResult = {
 };
 
 async function resolveMemoryStatusSnapshot(params: {
-  cfg: OpenClawConfig;
+  cfg: NexusClawConfig;
   agentStatus: Awaited<ReturnType<typeof getAgentLocalStatuses>>;
   memoryPlugin: MemoryPluginStatus;
 }): Promise<MemoryStatusSnapshot | null> {

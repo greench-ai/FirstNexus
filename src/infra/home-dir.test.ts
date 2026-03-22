@@ -12,14 +12,14 @@ import {
 describe("resolveEffectiveHomeDir", () => {
   it.each([
     {
-      name: "prefers OPENCLAW_HOME over HOME and USERPROFILE",
+      name: "prefers NEXUSCLAW_HOME over HOME and USERPROFILE",
       env: {
-        OPENCLAW_HOME: " /srv/openclaw-home ",
+        NEXUSCLAW_HOME: " /srv/nexusclaw-home ",
         HOME: "/home/other",
         USERPROFILE: "C:/Users/other",
       } as NodeJS.ProcessEnv,
       homedir: () => "/fallback",
-      expected: "/srv/openclaw-home",
+      expected: "/srv/nexusclaw-home",
     },
     {
       name: "falls back to HOME",
@@ -37,7 +37,7 @@ describe("resolveEffectiveHomeDir", () => {
     {
       name: "falls back to homedir when env values are blank",
       env: {
-        OPENCLAW_HOME: " ",
+        NEXUSCLAW_HOME: " ",
         HOME: " ",
         USERPROFILE: "\t",
       } as NodeJS.ProcessEnv,
@@ -52,7 +52,7 @@ describe("resolveEffectiveHomeDir", () => {
     {
       name: "expands ~/ using HOME",
       env: {
-        OPENCLAW_HOME: "~/svc",
+        NEXUSCLAW_HOME: "~/svc",
         HOME: "/home/alice",
       } as NodeJS.ProcessEnv,
       expected: "/home/alice/svc",
@@ -60,7 +60,7 @@ describe("resolveEffectiveHomeDir", () => {
     {
       name: "expands ~\\\\ using USERPROFILE",
       env: {
-        OPENCLAW_HOME: "~\\svc",
+        NEXUSCLAW_HOME: "~\\svc",
         HOME: " ",
         USERPROFILE: "C:/Users/alice",
       } as NodeJS.ProcessEnv,
@@ -80,17 +80,17 @@ describe("resolveRequiredHomeDir", () => {
     ).toBe(process.cwd());
   });
 
-  it("returns a fully resolved path for OPENCLAW_HOME", () => {
+  it("returns a fully resolved path for NEXUSCLAW_HOME", () => {
     const result = resolveRequiredHomeDir(
-      { OPENCLAW_HOME: "/custom/home" } as NodeJS.ProcessEnv,
+      { NEXUSCLAW_HOME: "/custom/home" } as NodeJS.ProcessEnv,
       () => "/fallback",
     );
     expect(result).toBe(path.resolve("/custom/home"));
   });
 
-  it("returns cwd when OPENCLAW_HOME is tilde-only and no fallback home exists", () => {
+  it("returns cwd when NEXUSCLAW_HOME is tilde-only and no fallback home exists", () => {
     expect(
-      resolveRequiredHomeDir({ OPENCLAW_HOME: "~" } as NodeJS.ProcessEnv, () => {
+      resolveRequiredHomeDir({ NEXUSCLAW_HOME: "~" } as NodeJS.ProcessEnv, () => {
         throw new Error("no home");
       }),
     ).toBe(process.cwd());
@@ -98,11 +98,11 @@ describe("resolveRequiredHomeDir", () => {
 });
 
 describe("resolveOsHomeDir", () => {
-  it("ignores OPENCLAW_HOME and uses HOME", () => {
+  it("ignores NEXUSCLAW_HOME and uses HOME", () => {
     expect(
       resolveOsHomeDir(
         {
-          OPENCLAW_HOME: "/srv/openclaw-home",
+          NEXUSCLAW_HOME: "/srv/nexusclaw-home",
           HOME: "/home/alice",
           USERPROFILE: "C:/Users/alice",
         } as NodeJS.ProcessEnv,
@@ -118,15 +118,15 @@ describe("expandHomePrefix", () => {
       name: "expands ~/ using effective home",
       input: "~/x",
       opts: {
-        env: { OPENCLAW_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv,
+        env: { NEXUSCLAW_HOME: "/srv/nexusclaw-home" } as NodeJS.ProcessEnv,
       },
-      expected: `${path.resolve("/srv/openclaw-home")}/x`,
+      expected: `${path.resolve("/srv/nexusclaw-home")}/x`,
     },
     {
       name: "expands exact ~ using explicit home",
       input: "~",
-      opts: { home: " /srv/openclaw-home " },
-      expected: "/srv/openclaw-home",
+      opts: { home: " /srv/nexusclaw-home " },
+      expected: "/srv/nexusclaw-home",
     },
     {
       name: "expands ~\\\\ using resolved env home",
@@ -159,9 +159,9 @@ describe("resolveHomeRelativePath", () => {
   it("expands tilde paths using the resolved home directory", () => {
     expect(
       resolveHomeRelativePath("~/docs", {
-        env: { OPENCLAW_HOME: "/srv/openclaw-home" } as NodeJS.ProcessEnv,
+        env: { NEXUSCLAW_HOME: "/srv/nexusclaw-home" } as NodeJS.ProcessEnv,
       }),
-    ).toBe(path.resolve("/srv/openclaw-home/docs"));
+    ).toBe(path.resolve("/srv/nexusclaw-home/docs"));
   });
 
   it("falls back to cwd when tilde paths have no home source", () => {
@@ -177,11 +177,11 @@ describe("resolveHomeRelativePath", () => {
 });
 
 describe("resolveOsHomeRelativePath", () => {
-  it("expands tilde paths using the OS home instead of OPENCLAW_HOME", () => {
+  it("expands tilde paths using the OS home instead of NEXUSCLAW_HOME", () => {
     expect(
       resolveOsHomeRelativePath("~/docs", {
         env: {
-          OPENCLAW_HOME: "/srv/openclaw-home",
+          NEXUSCLAW_HOME: "/srv/nexusclaw-home",
           HOME: "/home/alice",
         } as NodeJS.ProcessEnv,
       }),

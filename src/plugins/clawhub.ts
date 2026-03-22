@@ -15,7 +15,7 @@ import {
 import { resolveRuntimeServiceVersion } from "../version.js";
 import { installPluginFromArchive, type InstallPluginResult } from "./install.js";
 
-export const OPENCLAW_PLUGIN_API_VERSION = "1.2.0";
+export const NEXUSCLAW_PLUGIN_API_VERSION = "1.2.0";
 
 type PluginInstallLogger = {
   info?: (message: string) => void;
@@ -91,7 +91,7 @@ function validateClawHubPluginPackage(params: {
     throw new Error("Package not found on ClawHub.");
   }
   if (pkg.family === "skill") {
-    throw new Error(`"${pkg.name}" is a skill. Use "openclaw skills install ${pkg.name}" instead.`);
+    throw new Error(`"${pkg.name}" is a skill. Use "nexusclaw skills install ${pkg.name}" instead.`);
   }
   if (pkg.family !== "code-plugin" && pkg.family !== "bundle-plugin") {
     throw new Error(`Unsupported ClawHub package family: ${String(pkg.family)}`);
@@ -103,10 +103,10 @@ function validateClawHubPluginPackage(params: {
   const compatibility = params.compatibility;
   if (
     compatibility?.pluginApiRange &&
-    !satisfiesPluginApiRange(OPENCLAW_PLUGIN_API_VERSION, compatibility.pluginApiRange)
+    !satisfiesPluginApiRange(NEXUSCLAW_PLUGIN_API_VERSION, compatibility.pluginApiRange)
   ) {
     throw new Error(
-      `Plugin "${pkg.name}" requires plugin API ${compatibility.pluginApiRange}, but this OpenClaw runtime exposes ${OPENCLAW_PLUGIN_API_VERSION}.`,
+      `Plugin "${pkg.name}" requires plugin API ${compatibility.pluginApiRange}, but this NexusClaw runtime exposes ${NEXUSCLAW_PLUGIN_API_VERSION}.`,
     );
   }
 
@@ -116,7 +116,7 @@ function validateClawHubPluginPackage(params: {
     !satisfiesGatewayMinimum(runtimeVersion, compatibility.minGatewayVersion)
   ) {
     throw new Error(
-      `Plugin "${pkg.name}" requires OpenClaw >=${compatibility.minGatewayVersion}, but this host is ${runtimeVersion}.`,
+      `Plugin "${pkg.name}" requires NexusClaw >=${compatibility.minGatewayVersion}, but this host is ${runtimeVersion}.`,
     );
   }
 }
@@ -231,7 +231,7 @@ export async function installPluginFromClawHub(params: {
         source: "clawhub",
         clawhubUrl:
           params.baseUrl?.trim() ||
-          process.env.OPENCLAW_CLAWHUB_URL?.trim() ||
+          process.env.NEXUSCLAW_CLAWHUB_URL?.trim() ||
           "https://clawhub.ai",
         clawhubPackage: parsed.name,
         clawhubFamily,

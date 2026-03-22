@@ -12,7 +12,7 @@ vi.mock("./targets.js", async () => {
   };
 });
 
-import type { OpenClawConfig } from "../../config/config.js";
+import type { NexusClawConfig } from "../../config/config.js";
 import { resolveAgentDeliveryPlan, resolveAgentOutboundTarget } from "./agent-delivery.js";
 
 beforeEach(() => {
@@ -53,7 +53,7 @@ describe("agent delivery helpers", () => {
     });
 
     const resolved = resolveAgentOutboundTarget({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as NexusClawConfig,
       plan,
       targetMode: "implicit",
     });
@@ -91,7 +91,7 @@ describe("agent delivery helpers", () => {
 
     mocks.resolveOutboundTarget.mockClear();
     const resolved = resolveAgentOutboundTarget({
-      cfg: {} as OpenClawConfig,
+      cfg: {} as NexusClawConfig,
       plan,
       targetMode: "explicit",
       validateExplicitTarget: false,

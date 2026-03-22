@@ -2,7 +2,7 @@ import { readConfigFileSnapshot } from "../../config/config.js";
 import { redactConfigObject } from "../../config/redact-snapshot.js";
 import { buildTalkConfigResponse, resolveActiveTalkProviderConfig } from "../../config/talk.js";
 import type { TalkProviderConfig } from "../../config/types.gateway.js";
-import type { OpenClawConfig, TtsConfig } from "../../config/types.js";
+import type { NexusClawConfig, TtsConfig } from "../../config/types.js";
 import { normalizeSpeechProviderId } from "../../tts/provider-registry.js";
 import { synthesizeSpeech, type TtsDirectiveOverrides } from "../../tts/tts.js";
 import {
@@ -101,9 +101,9 @@ function readTalkVoiceSettings(
 }
 
 function buildTalkTtsConfig(
-  config: OpenClawConfig,
+  config: NexusClawConfig,
 ):
-  | { cfg: OpenClawConfig; provider: string; providerConfig: TalkProviderConfig }
+  | { cfg: NexusClawConfig; provider: string; providerConfig: TalkProviderConfig }
   | { error: string } {
   const resolved = resolveActiveTalkProviderConfig(config.talk);
   const provider = normalizeSpeechProviderId(resolved?.provider);

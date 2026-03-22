@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { resolveUserPath } from "../utils.js";
 import { resolveRuntimeServiceVersion } from "../version.js";
 import { loadBundleManifest } from "./bundle-manifest.js";
 import { normalizePluginsConfig, type NormalizedPluginsConfig } from "./config-state.js";
-import { discoverOpenClawPlugins, type PluginCandidate } from "./discovery.js";
+import { discoverNexusClawPlugins, type PluginCandidate } from "./discovery.js";
 import { loadPluginManifest, type PluginManifest } from "./manifest.js";
 import { checkMinHostVersion } from "./min-host-version.js";
 import { isPathInside, safeRealpathSync } from "./path-safety.js";
@@ -81,7 +81,7 @@ export function clearPluginManifestRegistryCache(): void {
 }
 
 function resolveManifestCacheMs(env: NodeJS.ProcessEnv): number {
-  const raw = env.OPENCLAW_PLUGIN_MANIFEST_CACHE_MS?.trim();
+  const raw = env.NEXUSCLAW_PLUGIN_MANIFEST_CACHE_MS?.trim();
   if (raw === "" || raw === "0") {
     return 0;
   }
@@ -96,7 +96,7 @@ function resolveManifestCacheMs(env: NodeJS.ProcessEnv): number {
 }
 
 function shouldUseManifestCache(env: NodeJS.ProcessEnv): boolean {
-  const disabled = env.OPENCLAW_DISABLE_PLUGIN_MANIFEST_CACHE?.trim();
+  const disabled = env.NEXUSCLAW_DISABLE_PLUGIN_MANIFEST_CACHE?.trim();
   if (disabled) {
     return false;
   }
@@ -164,7 +164,7 @@ function buildRecord(params: {
       normalizeManifestLabel(params.manifest.description) ?? params.candidate.packageDescription,
     version: normalizeManifestLabel(params.manifest.version) ?? params.candidate.packageVersion,
     enabledByDefault: params.manifest.enabledByDefault === true ? true : undefined,
-    format: params.candidate.format ?? "openclaw",
+    format: params.candidate.format ?? "nexusclaw",
     bundleFormat: params.candidate.bundleFormat,
     kind: params.manifest.kind,
     channels: params.manifest.channels ?? [],
@@ -240,7 +240,7 @@ function buildBundleRecord(params: {
 function matchesInstalledPluginRecord(params: {
   pluginId: string;
   candidate: PluginCandidate;
-  config?: OpenClawConfig;
+  config?: NexusClawConfig;
   env: NodeJS.ProcessEnv;
 }): boolean {
   if (params.candidate.origin !== "global") {
@@ -265,7 +265,7 @@ function matchesInstalledPluginRecord(params: {
 function resolveDuplicatePrecedenceRank(params: {
   pluginId: string;
   candidate: PluginCandidate;
-  config?: OpenClawConfig;
+  config?: NexusClawConfig;
   env: NodeJS.ProcessEnv;
 }): number {
   if (params.candidate.origin === "config") {
@@ -294,7 +294,7 @@ function resolveDuplicatePrecedenceRank(params: {
 
 export function loadPluginManifestRegistry(
   params: {
-    config?: OpenClawConfig;
+    config?: NexusClawConfig;
     workspaceDir?: string;
     cache?: boolean;
     env?: NodeJS.ProcessEnv;
@@ -319,7 +319,7 @@ export function loadPluginManifestRegistry(
         candidates: params.candidates,
         diagnostics: params.diagnostics ?? [],
       }
-    : discoverOpenClawPlugins({
+    : discoverNexusClawPlugins({
         workspaceDir: params.workspaceDir,
         extraPaths: normalized.loadPaths,
         cache: params.cache,
@@ -334,7 +334,7 @@ export function loadPluginManifestRegistry(
 
   for (const candidate of candidates) {
     const rejectHardlinks = candidate.origin !== "bundled";
-    const isBundleRecord = (candidate.format ?? "openclaw") === "bundle";
+    const isBundleRecord = (candidate.format ?? "nexusclaw") === "bundle";
     const manifestRes =
       isBundleRecord && candidate.bundleFormat
         ? loadBundleManifest({
@@ -369,8 +369,8 @@ export function loadPluginManifestRegistry(
           minHostVersionCheck.kind === "invalid"
             ? `plugin manifest invalid | ${minHostVersionCheck.error}`
             : minHostVersionCheck.kind === "unknown_host_version"
-              ? `plugin requires OpenClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host version could not be determined; skipping load`
-              : `plugin requires OpenClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host is ${minHostVersionCheck.currentVersion}; skipping load`,
+              ? `plugin requires NexusClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host version could not be determined; skipping load`
+              : `plugin requires NexusClaw >=${minHostVersionCheck.requirement.minimumLabel}, but this host is ${minHostVersionCheck.currentVersion}; skipping load`,
       });
       continue;
     }

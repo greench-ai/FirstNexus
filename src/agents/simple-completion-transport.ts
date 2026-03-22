@@ -1,17 +1,17 @@
 import type { Api, Model } from "@mariozechner/pi-ai";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { createAnthropicVertexStreamFnForModel } from "./anthropic-vertex-stream.js";
 import { ensureCustomApiRegistered } from "./custom-api-registry.js";
 import { createConfiguredOllamaStreamFn } from "./ollama-stream.js";
 
 function resolveAnthropicVertexSimpleApi(baseUrl?: string): Api {
   const suffix = baseUrl?.trim() ? encodeURIComponent(baseUrl.trim()) : "default";
-  return `openclaw-anthropic-vertex-simple:${suffix}`;
+  return `nexusclaw-anthropic-vertex-simple:${suffix}`;
 }
 
 export function prepareModelForSimpleCompletion<TApi extends Api>(params: {
   model: Model<TApi>;
-  cfg?: OpenClawConfig;
+  cfg?: NexusClawConfig;
 }): Model<Api> {
   const { model, cfg } = params;
   if (model.api === "ollama") {

@@ -1,7 +1,7 @@
 import type { Command } from "commander";
 import JSON5 from "json5";
 import { OLLAMA_DEFAULT_BASE_URL } from "../agents/ollama-defaults.js";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import { readConfigFileSnapshot, writeConfigFile } from "../config/config.js";
 import { formatConfigIssueLines, normalizeConfigIssues } from "../config/issue-format.js";
 import { CONFIG_PATH } from "../config/paths.js";
@@ -72,16 +72,16 @@ const OLLAMA_PROVIDER_PATH: PathSegment[] = ["models", "providers", "ollama"];
 const GATEWAY_AUTH_MODE_PATH: PathSegment[] = ["gateway", "auth", "mode"];
 const SECRET_PROVIDER_PATH_PREFIX: PathSegment[] = ["secrets", "providers"];
 const CONFIG_SET_EXAMPLE_VALUE = formatCliCommand(
-  "openclaw config set gateway.port 19001 --strict-json",
+  "nexusclaw config set gateway.port 19001 --strict-json",
 );
 const CONFIG_SET_EXAMPLE_REF = formatCliCommand(
-  "openclaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN",
+  "nexusclaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN",
 );
 const CONFIG_SET_EXAMPLE_PROVIDER = formatCliCommand(
-  "openclaw config set secrets.providers.vault --provider-source file --provider-path /etc/openclaw/secrets.json --provider-mode json",
+  "nexusclaw config set secrets.providers.vault --provider-source file --provider-path /etc/nexusclaw/secrets.json --provider-mode json",
 );
 const CONFIG_SET_EXAMPLE_BATCH = formatCliCommand(
-  "openclaw config set --batch-file ./config-set.batch.json --dry-run",
+  "nexusclaw config set --batch-file ./config-set.batch.json --dry-run",
 );
 const CONFIG_SET_DESCRIPTION = [
   "Set config values by path (value mode, ref/provider builder mode, or batch JSON mode).",
@@ -177,7 +177,7 @@ function hasOwnPathKey(value: Record<string, unknown>, key: string): boolean {
 }
 
 function formatDoctorHint(message: string): string {
-  return `Run \`${formatCliCommand("openclaw doctor")}\` ${message}`;
+  return `Run \`${formatCliCommand("nexusclaw doctor")}\` ${message}`;
 }
 
 function validatePathSegments(path: PathSegment[]): void {
@@ -797,7 +797,7 @@ function buildSingleSetOperations(params: {
 }
 
 function collectDryRunRefs(params: {
-  config: OpenClawConfig;
+  config: NexusClawConfig;
   operations: ConfigSetOperation[];
 }): SecretRef[] {
   const refsByKey = new Map<string, SecretRef>();
@@ -839,7 +839,7 @@ function collectDryRunRefs(params: {
 
 async function collectDryRunResolvabilityErrors(params: {
   refs: SecretRef[];
-  config: OpenClawConfig;
+  config: NexusClawConfig;
 }): Promise<ConfigSetDryRunError[]> {
   const failures: ConfigSetDryRunError[] = [];
   for (const ref of params.refs) {
@@ -861,7 +861,7 @@ async function collectDryRunResolvabilityErrors(params: {
 
 function collectDryRunStaticErrorsForSkippedExecRefs(params: {
   refs: SecretRef[];
-  config: OpenClawConfig;
+  config: NexusClawConfig;
 }): ConfigSetDryRunError[] {
   const failures: ConfigSetDryRunError[] = [];
   for (const ref of params.refs) {
@@ -919,7 +919,7 @@ function selectDryRunRefsForResolution(params: { refs: SecretRef[]; allowExecInD
   return { refsToResolve, skippedExecRefs };
 }
 
-function collectDryRunSchemaErrors(config: OpenClawConfig): ConfigSetDryRunError[] {
+function collectDryRunSchemaErrors(config: NexusClawConfig): ConfigSetDryRunError[] {
   const validated = validateConfigObjectRaw(config);
   if (validated.ok) {
     return [];
@@ -1011,7 +1011,7 @@ export async function runConfigSet(opts: {
       root: next,
       operations,
     });
-    const nextConfig = next as OpenClawConfig;
+    const nextConfig = next as NexusClawConfig;
 
     if (opts.cliOptions.dryRun) {
       const hasJsonMode = operations.some((operation) => operation.inputMode === "json");
@@ -1196,7 +1196,7 @@ export async function runConfigFile(opts: { runtime?: RuntimeEnv }) {
 
 export async function runConfigValidate(opts: { json?: boolean; runtime?: RuntimeEnv } = {}) {
   const runtime = opts.runtime ?? defaultRuntime;
-  let outputPath = CONFIG_PATH ?? "openclaw.json";
+  let outputPath = CONFIG_PATH ?? "nexusclaw.json";
 
   try {
     const snapshot = await readConfigFileSnapshot();
@@ -1254,7 +1254,7 @@ export function registerConfigCli(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/config", "docs.openclaw.ai/cli/config")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/config", "docs.nexusclaw.ai/cli/config")}\n`,
     )
     .option(
       "--section <section>",
@@ -1285,7 +1285,7 @@ export function registerConfigCli(program: Command) {
     .option("--json", "Legacy alias for --strict-json", false)
     .option(
       "--dry-run",
-      "Validate changes without writing openclaw.json (checks run in builder/json/batch modes; exec SecretRefs are skipped unless --allow-exec is set)",
+      "Validate changes without writing nexusclaw.json (checks run in builder/json/batch modes; exec SecretRefs are skipped unless --allow-exec is set)",
       false,
     )
     .option(

@@ -1,4 +1,4 @@
-import type { OpenClawConfig } from "../../config/config.js";
+import type { NexusClawConfig } from "../../config/config.js";
 import type { RuntimeWebSearchMetadata } from "../../secrets/runtime-web-tools.types.js";
 import {
   resolveWebSearchDefinition,
@@ -9,7 +9,7 @@ import { jsonResult } from "./common.js";
 import { SEARCH_CACHE } from "./web-search-provider-common.js";
 
 export function createWebSearchTool(options?: {
-  config?: OpenClawConfig;
+  config?: NexusClawConfig;
   sandboxed?: boolean;
   runtimeWebSearch?: RuntimeWebSearchMetadata;
 }): AnyAgentTool | null {

@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { NexusClawConfig } from "../config/config.js";
 import type { MemoryIndexManager } from "./index.js";
 
 let shouldFail = false;
@@ -23,7 +23,7 @@ describe("memory manager atomic reindex", () => {
   let closeAllMemorySearchManagers: MemoryIndexModule["closeAllMemorySearchManagers"];
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "openclaw-mem-atomic-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "nexusclaw-mem-atomic-"));
     const embeddingMocks = await import("./embedding.test-mocks.js");
     embedBatch = embeddingMocks.getEmbedBatchMock();
     resetEmbeddingMocks = embeddingMocks.resetEmbeddingMocks;
@@ -32,7 +32,7 @@ describe("memory manager atomic reindex", () => {
   });
 
   beforeEach(async () => {
-    vi.stubEnv("OPENCLAW_TEST_MEMORY_UNSAFE_REINDEX", "0");
+    vi.stubEnv("NEXUSCLAW_TEST_MEMORY_UNSAFE_REINDEX", "0");
     resetEmbeddingMocks();
     shouldFail = false;
     embedBatch.mockImplementation(async (texts: string[]) => {
@@ -81,7 +81,7 @@ describe("memory manager atomic reindex", () => {
         },
         list: [{ id: "main", default: true }],
       },
-    } as OpenClawConfig;
+    } as NexusClawConfig;
 
     manager = await getRequiredMemoryIndexManager({ cfg, agentId: "main" });
 

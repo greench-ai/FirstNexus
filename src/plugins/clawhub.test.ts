@@ -81,7 +81,7 @@ describe("installPluginFromClawHub", () => {
     installPluginFromArchiveMock.mockResolvedValue({
       ok: true,
       pluginId: "demo",
-      targetDir: "/tmp/openclaw/plugins/demo",
+      targetDir: "/tmp/nexusclaw/plugins/demo",
       version: "1.2.3",
     });
   });
@@ -148,7 +148,7 @@ describe("installPluginFromClawHub", () => {
     });
 
     await expect(installPluginFromClawHub({ spec: "clawhub:calendar" })).rejects.toThrow(
-      'Use "openclaw skills install calendar" instead.',
+      'Use "nexusclaw skills install calendar" instead.',
     );
   });
 });
