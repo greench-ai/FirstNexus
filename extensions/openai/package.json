@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/openai-provider",
+  "name": "@nexusclaw/openai-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw OpenAI provider plugins",
+  "description": "NexusClaw OpenAI provider plugins",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

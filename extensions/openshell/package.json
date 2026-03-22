@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/openshell-sandbox",
+  "name": "@nexusclaw/openshell-sandbox",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw OpenShell sandbox backend",
+  "description": "NexusClaw OpenShell sandbox backend",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

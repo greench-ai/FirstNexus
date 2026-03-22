@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/kimi-provider",
+  "name": "@nexusclaw/kimi-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Kimi provider plugin",
+  "description": "NexusClaw Kimi provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

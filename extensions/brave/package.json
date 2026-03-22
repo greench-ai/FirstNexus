@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/brave-plugin",
+  "name": "@nexusclaw/brave-plugin",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Brave plugin",
+  "description": "NexusClaw Brave plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

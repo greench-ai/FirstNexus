@@ -1,14 +1,14 @@
 {
-  "name": "@openclaw/slack",
+  "name": "@nexusclaw/slack",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Slack channel plugin",
+  "description": "NexusClaw Slack channel plugin",
   "type": "module",
   "dependencies": {
     "@slack/bolt": "^4.6.0",
     "@slack/web-api": "^7.15.0"
   },
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ],

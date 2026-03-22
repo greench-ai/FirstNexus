@@ -1,24 +1,24 @@
 {
-  "name": "@openclaw/mattermost",
+  "name": "@nexusclaw/mattermost",
   "version": "2026.3.14",
-  "description": "OpenClaw Mattermost channel plugin",
+  "description": "NexusClaw Mattermost channel plugin",
   "type": "module",
   "dependencies": {
     "ws": "^8.20.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "nexusclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.14"
+    "nexusclaw": ">=2026.3.14"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "nexusclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -33,7 +33,7 @@
       "order": 65
     },
     "install": {
-      "npmSpec": "@openclaw/mattermost",
+      "npmSpec": "@nexusclaw/mattermost",
       "localPath": "extensions/mattermost",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.3.14"

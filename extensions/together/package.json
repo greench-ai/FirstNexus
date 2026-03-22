@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/together-provider",
+  "name": "@nexusclaw/together-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Together provider plugin",
+  "description": "NexusClaw Together provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

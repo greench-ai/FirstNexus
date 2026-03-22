@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/amazon-bedrock-provider",
+  "name": "@nexusclaw/amazon-bedrock-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Amazon Bedrock provider plugin",
+  "description": "NexusClaw Amazon Bedrock provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

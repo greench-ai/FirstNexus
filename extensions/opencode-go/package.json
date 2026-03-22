@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/opencode-go-provider",
+  "name": "@nexusclaw/opencode-go-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw OpenCode Go provider plugin",
+  "description": "NexusClaw OpenCode Go provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

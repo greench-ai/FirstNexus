@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/synthetic-provider",
+  "name": "@nexusclaw/synthetic-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Synthetic provider plugin",
+  "description": "NexusClaw Synthetic provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

@@ -1,7 +1,7 @@
 {
-  "name": "@openclaw/feishu",
+  "name": "@nexusclaw/feishu",
   "version": "2026.3.14",
-  "description": "OpenClaw Feishu/Lark channel plugin (community maintained by @m1heng)",
+  "description": "NexusClaw Feishu/Lark channel plugin (community maintained by @m1heng)",
   "type": "module",
   "dependencies": {
     "@larksuiteoapi/node-sdk": "^1.59.0",
@@ -10,17 +10,17 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "nexusclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.14"
+    "nexusclaw": ">=2026.3.14"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "nexusclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -39,7 +39,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@openclaw/feishu",
+      "npmSpec": "@nexusclaw/feishu",
       "localPath": "extensions/feishu",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.3.14"

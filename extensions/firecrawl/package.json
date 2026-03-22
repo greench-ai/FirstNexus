@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/firecrawl-plugin",
+  "name": "@nexusclaw/firecrawl-plugin",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Firecrawl plugin",
+  "description": "NexusClaw Firecrawl plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

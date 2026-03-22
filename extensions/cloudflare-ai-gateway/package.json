@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/cloudflare-ai-gateway-provider",
+  "name": "@nexusclaw/cloudflare-ai-gateway-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Cloudflare AI Gateway provider plugin",
+  "description": "NexusClaw Cloudflare AI Gateway provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

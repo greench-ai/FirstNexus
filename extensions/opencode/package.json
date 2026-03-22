@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/opencode-provider",
+  "name": "@nexusclaw/opencode-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw OpenCode Zen provider plugin",
+  "description": "NexusClaw OpenCode Zen provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

@@ -1,23 +1,23 @@
 {
-  "name": "@openclaw/whatsapp",
+  "name": "@nexusclaw/whatsapp",
   "version": "2026.3.14",
-  "description": "OpenClaw WhatsApp channel plugin",
+  "description": "NexusClaw WhatsApp channel plugin",
   "type": "module",
   "dependencies": {
     "@whiskeysockets/baileys": "7.0.0-rc.9"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "nexusclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.14"
+    "nexusclaw": ">=2026.3.14"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "nexusclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -33,7 +33,7 @@
       "systemImage": "message"
     },
     "install": {
-      "npmSpec": "@openclaw/whatsapp",
+      "npmSpec": "@nexusclaw/whatsapp",
       "localPath": "extensions/whatsapp",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.3.14"

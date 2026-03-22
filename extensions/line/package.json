@@ -1,21 +1,21 @@
 {
-  "name": "@openclaw/line",
+  "name": "@nexusclaw/line",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw LINE channel plugin",
+  "description": "NexusClaw LINE channel plugin",
   "type": "module",
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "nexusclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.14"
+    "nexusclaw": ">=2026.3.14"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "nexusclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -31,7 +31,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@openclaw/line",
+      "npmSpec": "@nexusclaw/line",
       "localPath": "extensions/line",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.3.14"

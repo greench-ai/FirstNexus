@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/qianfan-provider",
+  "name": "@nexusclaw/qianfan-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Qianfan provider plugin",
+  "description": "NexusClaw Qianfan provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

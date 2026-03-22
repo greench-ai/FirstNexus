@@ -1,7 +1,7 @@
 {
-  "name": "@openclaw/tlon",
+  "name": "@nexusclaw/tlon",
   "version": "2026.3.14",
-  "description": "OpenClaw Tlon/Urbit channel plugin",
+  "description": "NexusClaw Tlon/Urbit channel plugin",
   "type": "module",
   "dependencies": {
     "@aws-sdk/client-s3": "3.1014.0",
@@ -11,17 +11,17 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "nexusclaw": "workspace:*"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.14"
+    "nexusclaw": ">=2026.3.14"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "nexusclaw": {
       "optional": true
     }
   },
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ],
@@ -37,7 +37,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@openclaw/tlon",
+      "npmSpec": "@nexusclaw/tlon",
       "localPath": "extensions/tlon",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.3.14"

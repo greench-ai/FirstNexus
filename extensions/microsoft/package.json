@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/microsoft-speech",
+  "name": "@nexusclaw/microsoft-speech",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Microsoft speech plugin",
+  "description": "NexusClaw Microsoft speech plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

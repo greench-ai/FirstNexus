@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/xiaomi-provider",
+  "name": "@nexusclaw/xiaomi-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Xiaomi provider plugin",
+  "description": "NexusClaw Xiaomi provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

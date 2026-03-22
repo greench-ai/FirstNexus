@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/imessage",
+  "name": "@nexusclaw/imessage",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw iMessage channel plugin",
+  "description": "NexusClaw iMessage channel plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ],

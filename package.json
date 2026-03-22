@@ -1,6 +1,7 @@
 {
   "name": "nexusclaw",
   "version": "1.0.0",
+  "private": true,
   "description": "NexusClaw — Personal AI Gateway. Built on OpenClaw.",
   "type": "module",
   "bin": {

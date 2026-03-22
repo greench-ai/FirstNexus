@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/vercel-ai-gateway-provider",
+  "name": "@nexusclaw/vercel-ai-gateway-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Vercel AI Gateway provider plugin",
+  "description": "NexusClaw Vercel AI Gateway provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

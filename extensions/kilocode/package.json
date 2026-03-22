@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/kilocode-provider",
+  "name": "@nexusclaw/kilocode-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Kilo Gateway provider plugin",
+  "description": "NexusClaw Kilo Gateway provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]

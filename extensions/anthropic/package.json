@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/anthropic-provider",
+  "name": "@nexusclaw/anthropic-provider",
   "version": "2026.3.14",
   "private": true,
-  "description": "OpenClaw Anthropic provider plugin",
+  "description": "NexusClaw Anthropic provider plugin",
   "type": "module",
-  "openclaw": {
+  "nexusclaw": {
     "extensions": [
       "./index.ts"
     ]
