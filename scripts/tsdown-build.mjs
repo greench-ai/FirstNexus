@@ -42,6 +42,12 @@ function pruneStaleRuntimeSymlinks() {
 
 pruneStaleRuntimeSymlinks();
 
+// Third-party packages that are intentionally optional in src/ (loaded with try/catch at runtime)
+// Matches package names (including subpath exports like pkg/dist/foo.js)
+const OPTIONAL_RUNTIME_PACKAGES = /['"](?:sharp|tar|jszip|jiti|osc-progress|croner|@line\/bot-sdk|@homebridge\/ciao|@lydell\/node-pty|@napi-rs\/canvas|pdfjs-dist(?:\/[^'"]*)?|@aws-sdk\/[^'"]*|chromium-bidi\/[^'"]*|node-edge-tts(?:\/[^'"]*)?|qrcode-terminal(?:\/[^'"]*)?|@modelcontextprotocol\/sdk(?:\/[^'"]*)?)['"]/.source;
+// Use a proper RegExp object for testing
+const OPTIONAL_RUNTIME_PACKAGES_RE = new RegExp(OPTIONAL_RUNTIME_PACKAGES);
+
 function findFatalUnresolvedImport(lines) {
   for (const line of lines) {
     if (!UNRESOLVED_IMPORT_RE.test(line)) {
@@ -49,9 +55,15 @@ function findFatalUnresolvedImport(lines) {
     }
 
     const normalizedLine = line.replace(ANSI_ESCAPE_RE, "");
-    if (!normalizedLine.includes("extensions/")) {
-      return normalizedLine;
+    // Skip extension-owned and node_modules warnings — those are expected
+    if (normalizedLine.includes("extensions/") || normalizedLine.includes("node_modules/")) {
+      continue;
     }
+    // Skip known optional runtime deps in src/ that degrade gracefully
+    if (OPTIONAL_RUNTIME_PACKAGES_RE.test(normalizedLine)) {
+      continue;
+    }
+    return normalizedLine;
   }
 
   return null;
