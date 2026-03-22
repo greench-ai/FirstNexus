@@ -1,4 +1,4 @@
-import { resolveSendableOutboundReplyParts } from "nexusclaw/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "../../plugin-sdk/reply-payload";
 import { parseReplyDirectives } from "../../auto-reply/reply/reply-directives.js";
 import {
   formatBtwTextForExternalDelivery,

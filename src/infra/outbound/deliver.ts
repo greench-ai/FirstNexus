@@ -1,7 +1,7 @@
 import {
   resolveSendableOutboundReplyParts,
   sendMediaWithLeadingCaption,
-} from "nexusclaw/plugin-sdk/reply-payload";
+} from "../../plugin-sdk/reply-payload";
 import {
   chunkByParagraph,
   chunkMarkdownTextWithMode,

@@ -40,3 +40,5 @@ export * from "../infra/transport-ready.js";
 export * from "../infra/wsl.ts";
 export { createRuntimeOutboundDelegates } from "../channels/plugins/runtime-forwarders.js";
 export * from "./ssrf-policy.js";
+// Backward-compat alias — extensions importing the old openclaw name still resolve
+export { resolvePreferredNexusClawTmpDir as resolvePreferredOpenClawTmpDir } from '../infra/tmp-nexusclaw-dir.js';

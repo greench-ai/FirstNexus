@@ -10,6 +10,19 @@ export class DashboardHeader extends LitElement {
 
   @property() tab: Tab = "overview";
 
+  override connectedCallback() {
+    super.connectedCallback();
+    // Wire ThemeSwitcher into #theme-switcher slot
+    import("../../../themes/switcher.js")
+      .then(({ ThemeSwitcher }) => {
+        ThemeSwitcher.init();
+        ThemeSwitcher.mount("#theme-switcher");
+      })
+      .catch(() => {
+        // ThemeSwitcher not available — skip gracefully
+      });
+  }
+
   override render() {
     const label = titleForTab(this.tab);
 
@@ -20,12 +33,13 @@ export class DashboardHeader extends LitElement {
             class="dashboard-header__breadcrumb-link"
             @click=${() => this.dispatchEvent(new CustomEvent("navigate", { detail: "overview", bubbles: true, composed: true }))}
           >
-            OpenClaw
+            NexusClaw
           </span>
           <span class="dashboard-header__breadcrumb-sep">›</span>
           <span class="dashboard-header__breadcrumb-current">${label}</span>
         </div>
         <div class="dashboard-header__actions">
+          <div id="theme-switcher"></div>
           <slot></slot>
         </div>
       </div>

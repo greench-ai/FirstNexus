@@ -206,7 +206,7 @@ export default defineConfig([
     // and bundled hooks in one graph so runtime singletons are emitted once.
     entry: buildUnifiedDistEntries(),
     deps: {
-      neverBundle: ["@lancedb/lancedb"],
+      neverBundle: ["@lancedb/lancedb", "jimp", "@jimp/core", "file-type", "qrcode-terminal"],
     },
   }),
 ]);

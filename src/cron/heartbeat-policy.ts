@@ -1,4 +1,4 @@
-import { resolveSendableOutboundReplyParts } from "nexusclaw/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "../plugin-sdk/reply-payload";
 import { stripHeartbeatToken } from "../auto-reply/heartbeat.js";
 
 export type HeartbeatDeliveryPayload = {

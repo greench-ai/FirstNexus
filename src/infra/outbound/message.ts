@@ -1,4 +1,4 @@
-import { resolveSendableOutboundReplyParts } from "nexusclaw/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "../../plugin-sdk/reply-payload";
 import type { NexusClawConfig } from "../../config/config.js";
 import { loadConfig } from "../../config/config.js";
 import { callGatewayLeastPrivilege, randomIdempotencyKey } from "../../gateway/call.js";

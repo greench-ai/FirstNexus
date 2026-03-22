@@ -8,16 +8,24 @@
     "nexusclaw": "./nexusclaw.mjs"
   },
   "scripts": {
-    "build":        "pnpm -r build",
-    "ui:build":     "pnpm --filter @nexusclaw/ui build",
-    "gateway:watch":"pnpm --filter @nexusclaw/gateway dev",
-    "lint":         "pnpm -r lint",
-    "typecheck":    "pnpm -r typecheck",
-    "test":         "vitest run",
-    "test:unit":    "vitest run --config vitest.unit.config.ts",
-    "nexusclaw":     "node nexusclaw.mjs"
+    "build": "node scripts/tsdown-build.mjs",
+    "build:post": "node scripts/runtime-postbuild.mjs",
+    "build:plugin-sdk:dts": "tsc -p tsconfig.plugin-sdk.dts.json",
+    "ui:build": "pnpm --filter @nexusclaw/ui build",
+    "gateway:watch": "pnpm --filter @nexusclaw/gateway dev",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "nexusclaw": "node nexusclaw.mjs"
   },
-  "keywords": ["ai", "assistant", "gateway", "nexusclaw", "personal-ai"],
+  "keywords": [
+    "ai",
+    "assistant",
+    "gateway",
+    "nexusclaw",
+    "personal-ai"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -25,5 +33,25 @@
   },
   "engines": {
     "node": ">=22.16.0"
+  },
+  "devDependencies": {
+    "tsdown": "^0.21.4"
+  },
+  "dependencies": {
+    "@anthropic-ai/vertex-sdk": "^0.14.4",
+    "@clack/prompts": "^1.1.0",
+    "@mariozechner/pi-coding-agent": "^0.61.1",
+    "@mozilla/readability": "^0.6.0",
+    "@sinclair/typebox": "^0.34.48",
+    "chalk": "^5.6.2",
+    "chokidar": "^5.0.0",
+    "commander": "^14.0.3",
+    "dotenv": "^17.3.1",
+    "ipaddr.js": "^2.3.0",
+    "json5": "^2.2.3",
+    "linkedom": "^0.18.12",
+    "tslog": "^4.10.2",
+    "undici": "^7.24.5",
+    "zod": "^4.3.6"
   }
 }

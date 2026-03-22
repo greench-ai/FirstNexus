@@ -1,3 +1,5 @@
+// NexusClaw: ClaudePreview streaming panel
+import "../components/claude-preview.js";
 import { html, nothing, type TemplateResult } from "lit";
 import { ref } from "lit/directives/ref.js";
 import { repeat } from "lit/directives/repeat.js";
@@ -1142,6 +1144,8 @@ export function renderChat(props: ChatProps) {
           style="flex: ${sidebarOpen ? `0 0 ${splitRatio * 100}%` : "1 1 100%"}"
         >
           ${thread}
+          <!-- NexusClaw: Claude Preview streaming panel -->
+          <claude-preview gatewayWsUrl="ws://localhost:19789/ws"></claude-preview>
         </div>
 
         ${
