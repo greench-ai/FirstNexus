@@ -1,278 +1,234 @@
 #!/usr/bin/env bash
-# NexusClaw — Native Install Script
-# Usage: curl -sSL https://raw.githubusercontent.com/greench/nexusclaw/main/install.sh | bash
-# Or:    bash install.sh [--daemon] [--docker]
+# ============================================================
+# NexusClaw — One-shot installer
+# Usage: bash install.sh
+# ============================================================
 
-set -euo pipefail
+set -e
 
-# ─── Colors ────────────────────────────────────────────────────────────────────
+REPO="https://github.com/greench-ai/nexusclaw.git"
+INSTALL_DIR="$HOME/nexusclaw"
+BIN_DIR="$HOME/bin"
+CONFIG_DIR="$HOME/.nexusclaw"
+GATEWAY_PORT=19789
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
+BLUE='\033[0;34m'
 BOLD='\033[1m'
 NC='\033[0m'
 
-# ─── Config ─────────────────────────────────────────────────────────────────────
-APP_NAME="NexusClaw"
-BIN_NAME="nexusclaw"
-REPO="greench/nexusclaw"
-CONFIG_DIR="$HOME/.nexusclaw"
-WORKSPACE_DIR="$CONFIG_DIR/workspace"
-SKILLS_DIR="$WORKSPACE_DIR/skills"
-LIBRARY_DIR="$HOME/nexusclaw/library"
-MIN_NODE_VERSION=22
+info()    { echo -e "${BLUE}▸${NC} $1"; }
+success() { echo -e "${GREEN}✓${NC} $1"; }
+warn()    { echo -e "${YELLOW}!${NC} $1"; }
+error()   { echo -e "${RED}✗${NC} $1"; exit 1; }
+header()  { echo -e "\n${BOLD}$1${NC}"; echo "────────────────────────────────────────"; }
 
-# ─── Args ───────────────────────────────────────────────────────────────────────
-INSTALL_DAEMON=false
-USE_DOCKER=false
-for arg in "$@"; do
-  case $arg in
-    --daemon) INSTALL_DAEMON=true ;;
-    --docker) USE_DOCKER=true ;;
-  esac
-done
+# ── Check requirements ────────────────────────────────────────
+header "NexusClaw Installer"
 
-# ─── Helpers ────────────────────────────────────────────────────────────────────
-log()  { echo -e "${CYAN}[NexusClaw]${NC} $1"; }
-ok()   { echo -e "${GREEN}[✓]${NC} $1"; }
-warn() { echo -e "${YELLOW}[!]${NC} $1"; }
-fail() { echo -e "${RED}[✗]${NC} $1"; exit 1; }
-banner() {
-  echo -e "${BOLD}${CYAN}"
-  echo "  ███╗   ██╗███████╗██╗  ██╗██╗   ██╗███████╗ ██████╗██╗      █████╗ ██╗    ██╗"
-  echo "  ████╗  ██║██╔════╝╚██╗██╔╝██║   ██║██╔════╝██╔════╝██║     ██╔══██╗██║    ██║"
-  echo "  ██╔██╗ ██║█████╗   ╚███╔╝ ██║   ██║███████╗██║     ██║     ███████║██║ █╗ ██║"
-  echo "  ██║╚██╗██║██╔══╝   ██╔██╗ ██║   ██║╚════██║██║     ██║     ██╔══██║██║███╗██║"
-  echo "  ██║ ╚████║███████╗██╔╝ ██╗╚██████╔╝███████║╚██████╗███████╗██║  ██║╚███╔███╔╝"
-  echo "  ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ "
-  echo -e "${NC}"
-  echo -e "  ${BOLD}Personal AI Gateway — Built on OpenClaw${NC}"
-  echo ""
-}
+# Node.js
+if ! command -v node &>/dev/null; then
+  error "Node.js not found. Install Node.js 22+: https://nodejs.org"
+fi
+NODE_VER=$(node -e "process.stdout.write(process.versions.node)")
+NODE_MAJOR=$(echo "$NODE_VER" | cut -d. -f1)
+if [ "$NODE_MAJOR" -lt 22 ]; then
+  error "Node.js 22+ required (found $NODE_VER). Upgrade: https://nodejs.org"
+fi
+success "Node.js $NODE_VER"
 
-# ─── Checks ─────────────────────────────────────────────────────────────────────
-check_node() {
-  if ! command -v node &>/dev/null; then
-    fail "Node.js not found. Install Node $MIN_NODE_VERSION+ from https://nodejs.org"
-  fi
-  local version
-  version=$(node -e "process.stdout.write(process.versions.node.split('.')[0])")
-  if [ "$version" -lt "$MIN_NODE_VERSION" ]; then
-    fail "Node $version found, but $MIN_NODE_VERSION+ is required."
-  fi
-  ok "Node.js $version"
-}
+# pnpm
+if ! command -v pnpm &>/dev/null; then
+  info "Installing pnpm..."
+  npm install -g pnpm
+fi
+success "pnpm $(pnpm --version)"
 
-check_pnpm() {
-  if ! command -v pnpm &>/dev/null; then
-    log "Installing pnpm..."
-    npm install -g pnpm
-  fi
-  ok "pnpm $(pnpm --version)"
-}
+# git
+if ! command -v git &>/dev/null; then
+  error "Git not found. Install: sudo apt-get install git"
+fi
+success "git $(git --version | cut -d' ' -f3)"
 
-check_git() {
-  if ! command -v git &>/dev/null; then
-    fail "git not found. Please install git."
-  fi
-  ok "git $(git --version | awk '{print $3}')"
-}
+# ── Clone or update ───────────────────────────────────────────
+header "Repository"
 
-check_docker() {
-  if ! command -v docker &>/dev/null; then
-    fail "Docker not found. Install Docker first: https://docs.docker.com/get-docker/"
-  fi
-  ok "Docker $(docker --version | awk '{print $3}' | tr -d ',')"
-}
+if [ -d "$INSTALL_DIR/.git" ]; then
+  info "Updating existing repo at $INSTALL_DIR..."
+  cd "$INSTALL_DIR"
+  git pull --ff-only
+  success "Repo updated"
+else
+  info "Cloning to $INSTALL_DIR..."
+  git clone "$REPO" "$INSTALL_DIR"
+  cd "$INSTALL_DIR"
+  success "Repo cloned"
+fi
 
-# ─── Install ────────────────────────────────────────────────────────────────────
-install_native() {
-  log "Installing $APP_NAME (native)..."
+# ── Install dependencies ──────────────────────────────────────
+header "Dependencies"
 
-  # Clone if not already in the repo
-  if [ ! -f "package.json" ]; then
-    log "Cloning $APP_NAME..."
-    git clone --depth=1 "https://github.com/$REPO.git" nexusclaw
-    cd nexusclaw
-  fi
+info "Installing npm packages..."
+pnpm install --no-frozen-lockfile 2>&1 | tail -3
+success "Dependencies installed"
 
-  log "Installing dependencies..."
-  pnpm install
+# ── Build ─────────────────────────────────────────────────────
+header "Build"
 
-  log "Building UI..."
-  pnpm ui:build
+info "Building gateway..."
+pnpm build 2>/dev/null
+success "Gateway built"
 
-  log "Building $APP_NAME..."
-  pnpm build
+info "Building UI..."
+pnpm ui:build 2>/dev/null
+success "UI built"
 
-  log "Installing globally..."
-  npm install -g .
+# ── openclaw compat symlink ───────────────────────────────────
+ln -sf "$INSTALL_DIR" "$INSTALL_DIR/node_modules/openclaw" 2>/dev/null || true
+success "openclaw compat symlink set"
 
-  ok "$APP_NAME installed → $(which $BIN_NAME)"
-}
+# ── Binary ────────────────────────────────────────────────────
+header "Binary"
 
-install_docker() {
-  log "Starting $APP_NAME via Docker..."
-  if [ ! -f "docker-compose.yml" ]; then
-    log "Downloading docker-compose.yml..."
-    curl -sSL "https://raw.githubusercontent.com/$REPO/main/docker-compose.yml" -o docker-compose.yml
-    curl -sSL "https://raw.githubusercontent.com/$REPO/main/.env.example" -o .env
-    warn "Review .env before continuing."
-    read -rp "Press Enter to continue..."
-  fi
-  docker compose up -d
-  ok "NexusClaw running via Docker. WebUI at http://localhost:19789"
-}
+mkdir -p "$BIN_DIR"
 
-# ─── Setup Dirs ────────────────────────────────────────────────────────────────
-setup_dirs() {
-  mkdir -p "$CONFIG_DIR" "$WORKSPACE_DIR" "$SKILLS_DIR" "$LIBRARY_DIR"
-  ok "Config dir: $CONFIG_DIR"
-  ok "Library dir: $LIBRARY_DIR"
-}
+cat > "$BIN_DIR/nexusclaw" << EOF
+#!/bin/bash
+exec node $INSTALL_DIR/nexusclaw.mjs "\$@"
+EOF
+chmod +x "$BIN_DIR/nexusclaw"
+success "Binary installed at $BIN_DIR/nexusclaw"
 
-# ─── Default Config ─────────────────────────────────────────────────────────────
-write_default_config() {
-  local config_file="$CONFIG_DIR/nexusclaw.json"
-  if [ -f "$config_file" ]; then
-    warn "Config already exists at $config_file — skipping."
-    return
-  fi
+# Add ~/bin to PATH in .bashrc if not already there
+if ! grep -q 'export PATH="$HOME/bin' "$HOME/.bashrc" 2>/dev/null; then
+  echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+  info "Added ~/bin to PATH in ~/.bashrc"
+fi
 
-  cat > "$config_file" <<'EOF'
+# Remove any old alias that shadows the binary
+if grep -q 'alias nexusclaw=' "$HOME/.bashrc" 2>/dev/null; then
+  sed -i '/alias nexusclaw=/d' "$HOME/.bashrc"
+  warn "Removed old nexusclaw alias from ~/.bashrc"
+fi
+
+export PATH="$BIN_DIR:$PATH"
+
+# ── Config ────────────────────────────────────────────────────
+header "Config"
+
+mkdir -p "$CONFIG_DIR/workspace/skills"
+mkdir -p "$INSTALL_DIR/library"
+
+if [ ! -f "$CONFIG_DIR/nexusclaw.json" ]; then
+  cat > "$CONFIG_DIR/nexusclaw.json" << EOF
 {
-  "agent": {
-    "model": "anthropic/claude-opus-4-6",
-    "workspace": "~/.nexusclaw/workspace"
-  },
   "gateway": {
-    "port": 19789,
-    "bind": "loopback"
+    "port": $GATEWAY_PORT,
+    "bind": "loopback",
+    "mode": "local"
   },
-  "cron": [
-    {
-      "schedule": "*/15 * * * *",
-      "skill": "evoclaw/heartbeat",
-      "description": "EvoClaw soul evolution heartbeat"
-    },
-    {
-      "schedule": "*/30 * * * *",
-      "skill": "memory-save/run",
-      "description": "Memory consolidation — saves session context"
-    },
-    {
-      "schedule": "0 * * * *",
-      "skill": "library-update/run",
-      "description": "Library documentation update"
+  "agents": {
+    "defaults": {
+      "sandbox": { "mode": "off" },
+      "model": {
+        "primary": "anthropic/claude-opus-4-6",
+        "fallbacks": []
+      }
     }
-  ],
-  "ui": {
-    "theme": "aurora",
-    "claudePreview": true,
-    "chromeExtension": true
   }
 }
 EOF
-  ok "Default config written to $config_file"
-}
+  success "Config created at $CONFIG_DIR/nexusclaw.json"
+else
+  success "Config already exists — skipped"
+fi
 
-# ─── Copy Bundled Skills ────────────────────────────────────────────────────────
-install_skills() {
-  local script_dir
-  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  local src_skills="$script_dir/skills"
+# ── Skills ────────────────────────────────────────────────────
+header "Skills"
 
-  if [ -d "$src_skills" ]; then
-    log "Installing bundled skills..."
-    for skill_dir in "$src_skills"/*/; do
-      skill_name=$(basename "$skill_dir")
-      dest="$SKILLS_DIR/$skill_name"
-      if [ ! -d "$dest" ]; then
-        cp -r "$skill_dir" "$dest"
-        ok "Skill installed: $skill_name"
-      else
-        warn "Skill already exists: $skill_name — skipping"
-      fi
-    done
+if [ -d "$INSTALL_DIR/skills" ]; then
+  cp -r "$INSTALL_DIR/skills/"* "$CONFIG_DIR/workspace/skills/" 2>/dev/null || true
+  success "Skills installed: $(ls $CONFIG_DIR/workspace/skills/ | tr '\n' ' ')"
+else
+  warn "No skills directory found in repo"
+fi
+
+# ── API Key ───────────────────────────────────────────────────
+header "API Key"
+
+if [ -z "$ANTHROPIC_API_KEY" ]; then
+  echo ""
+  echo -e "  Enter your ${BOLD}Anthropic API key${NC} (starts with sk-ant-)"
+  echo -e "  Get one at: ${BLUE}https://console.anthropic.com${NC}"
+  echo -e "  Leave blank to skip (set later with: nexusclaw secrets configure)"
+  echo ""
+  read -rsp "  API key: " API_KEY
+  echo ""
+  if [ -n "$API_KEY" ]; then
+    systemctl --user set-environment ANTHROPIC_API_KEY="$API_KEY" 2>/dev/null || \
+      echo "export ANTHROPIC_API_KEY='$API_KEY'" >> "$HOME/.bashrc"
+    success "API key saved"
   else
-    warn "Skills source dir not found — skipping bundled skill install"
+    warn "Skipped — run 'nexusclaw secrets configure' to set later"
   fi
-}
+else
+  success "ANTHROPIC_API_KEY already set in environment"
+fi
 
-# ─── Systemd Daemon ─────────────────────────────────────────────────────────────
-install_systemd() {
-  if [ "$(uname -s)" != "Linux" ]; then
-    warn "Systemd daemon install only supported on Linux."
-    return
-  fi
-  if ! command -v systemctl &>/dev/null; then
-    warn "systemctl not found — skipping daemon install."
-    return
-  fi
+# ── Gateway service ───────────────────────────────────────────
+header "Gateway Service"
 
-  local service_file="$HOME/.config/systemd/user/nexusclaw-gateway.service"
-  mkdir -p "$(dirname "$service_file")"
+"$BIN_DIR/nexusclaw" gateway install 2>/dev/null || true
+systemctl --user daemon-reload 2>/dev/null || true
+systemctl --user start nexusclaw-gateway.service 2>/dev/null || true
+sleep 2
 
-  cat > "$service_file" <<EOF
-[Unit]
-Description=NexusClaw Gateway
-After=network.target
+if systemctl --user is-active nexusclaw-gateway.service &>/dev/null; then
+  success "Gateway service running on port $GATEWAY_PORT"
+else
+  warn "Service may not be running — try: nexusclaw gateway start"
+fi
 
-[Service]
-Type=simple
-ExecStart=$(which nexusclaw) gateway --port 19789
-Restart=always
-RestartSec=5
-Environment=HOME=$HOME
-WorkingDirectory=$HOME
+# ── Cron jobs ─────────────────────────────────────────────────
+header "Cron Jobs"
 
-[Install]
-WantedBy=default.target
-EOF
+EXISTING=$("$BIN_DIR/nexusclaw" cron list 2>/dev/null | grep -c "evoclaw\|memory-save\|library-update" || echo 0)
 
-  systemctl --user daemon-reload
-  systemctl --user enable nexusclaw-gateway
-  systemctl --user start nexusclaw-gateway
-  ok "NexusClaw Gateway daemon installed and started (systemd user service)"
-  ok "Control with: systemctl --user [start|stop|restart|status] nexusclaw-gateway"
-}
+if [ "$EXISTING" -lt 3 ]; then
+  "$BIN_DIR/nexusclaw" cron add --name "evoclaw-heartbeat" \
+    --cron "*/15 * * * *" --session isolated \
+    --message "Run skill: evoclaw/heartbeat" 2>/dev/null && success "Cron: evoclaw-heartbeat" || warn "Cron: evoclaw-heartbeat (already exists or gateway not ready)"
 
-# ─── Main ───────────────────────────────────────────────────────────────────────
-main() {
-  banner
-  log "Starting $APP_NAME installation..."
+  "$BIN_DIR/nexusclaw" cron add --name "memory-save" \
+    --cron "*/30 * * * *" --session isolated \
+    --message "Run skill: memory-save/run" 2>/dev/null && success "Cron: memory-save" || warn "Cron: memory-save (already exists or gateway not ready)"
 
-  if $USE_DOCKER; then
-    check_docker
-    setup_dirs
-    write_default_config
-    install_docker
-  else
-    check_node
-    check_pnpm
-    check_git
-    install_native
-    setup_dirs
-    write_default_config
-    install_skills
+  "$BIN_DIR/nexusclaw" cron add --name "library-update" \
+    --cron "0 * * * *" --session isolated \
+    --message "Run skill: library-update/run" 2>/dev/null && success "Cron: library-update" || warn "Cron: library-update (already exists or gateway not ready)"
+else
+  success "Cron jobs already configured — skipped"
+fi
 
-    if $INSTALL_DAEMON; then
-      install_systemd
-    fi
-  fi
+# ── Done ──────────────────────────────────────────────────────
+header "Done"
 
-  echo ""
-  echo -e "${BOLD}${GREEN}═══════════════════════════════════════════════════${NC}"
-  echo -e "${BOLD}  NexusClaw installed successfully! 🦞${NC}"
-  echo -e "${GREEN}═══════════════════════════════════════════════════${NC}"
-  echo ""
-  echo -e "  Start:        ${CYAN}nexusclaw gateway${NC}"
-  echo -e "  Onboard:      ${CYAN}nexusclaw onboard --install-daemon${NC}"
-  echo -e "  WebUI:        ${CYAN}http://localhost:19789${NC}"
-  echo -e "  Config:       ${CYAN}~/.nexusclaw/nexusclaw.json${NC}"
-  echo -e "  Library:      ${CYAN}~/nexusclaw/library/${NC}"
-  echo ""
-}
-
-main "$@"
+echo ""
+echo -e "  ${GREEN}${BOLD}NexusClaw installed successfully!${NC}"
+echo ""
+echo -e "  ${BOLD}Version:${NC}   $("$BIN_DIR/nexusclaw" --version 2>/dev/null || echo 'NexusClaw 1.0.0')"
+echo -e "  ${BOLD}Gateway:${NC}   http://localhost:$GATEWAY_PORT"
+echo -e "  ${BOLD}Config:${NC}    $CONFIG_DIR/nexusclaw.json"
+echo -e "  ${BOLD}Skills:${NC}    $(ls $CONFIG_DIR/workspace/skills/ 2>/dev/null | wc -l) installed"
+echo ""
+echo -e "  ${BOLD}Next steps:${NC}"
+echo -e "  1. Reload your shell:  ${BLUE}source ~/.bashrc${NC}"
+echo -e "  2. Open dashboard:     ${BLUE}nexusclaw dashboard${NC}"
+echo -e "  3. Run onboarding:     ${BLUE}nexusclaw onboard${NC}"
+echo ""
+echo -e "  ${BOLD}Docs:${NC}"
+echo -e "  Install guide:  $INSTALL_DIR/docs/install.md"
+echo -e "  Deploy guide:   $INSTALL_DIR/docs/deploy.md"
+echo ""
