@@ -22,107 +22,226 @@ NC='\033[0m'
 info()    { echo -e "${BLUE}▸${NC} $1"; }
 success() { echo -e "${GREEN}✓${NC} $1"; }
 warn()    { echo -e "${YELLOW}!${NC} $1"; }
-error()   { echo -e "${RED}✗${NC} $1"; exit 1; }
+error()   { echo -e "${RED}✗ ERROR:${NC} $1"; exit 1; }
 header()  { echo -e "\n${BOLD}$1${NC}"; echo "────────────────────────────────────────"; }
+optional(){ echo -e "  ${YELLOW}○${NC} $1 ${YELLOW}(optional)${NC}"; }
 
-# ── Check requirements ────────────────────────────────────────
-header "NexusClaw Installer"
+# ── Detect OS ────────────────────────────────────────────────
+detect_os() {
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS=$ID
+    OS_FAMILY="linux"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    OS="macos"
+    OS_FAMILY="macos"
+  elif grep -qi microsoft /proc/version 2>/dev/null; then
+    OS="wsl"
+    OS_FAMILY="linux"
+  else
+    OS="unknown"
+    OS_FAMILY="unknown"
+  fi
+}
 
-# Node.js
-if ! command -v node &>/dev/null; then
-  error "Node.js not found. Install Node.js 22+: https://nodejs.org"
-fi
-NODE_VER=$(node -e "process.stdout.write(process.versions.node)")
-NODE_MAJOR=$(echo "$NODE_VER" | cut -d. -f1)
-if [ "$NODE_MAJOR" -lt 22 ]; then
-  error "Node.js 22+ required (found $NODE_VER). Upgrade: https://nodejs.org"
-fi
-success "Node.js $NODE_VER"
+# ── Install system packages ───────────────────────────────────
+install_system_deps() {
+  header "System Dependencies"
 
-# pnpm
-if ! command -v pnpm &>/dev/null; then
-  info "Installing pnpm..."
-  npm install -g pnpm
-fi
-success "pnpm $(pnpm --version)"
+  detect_os
 
-# git
-if ! command -v git &>/dev/null; then
-  error "Git not found. Install: sudo apt-get install git"
-fi
-success "git $(git --version | cut -d' ' -f3)"
+  if [ "$OS_FAMILY" = "linux" ]; then
+    PKG_MANAGER=""
+    if command -v apt-get &>/dev/null; then PKG_MANAGER="apt";
+    elif command -v dnf &>/dev/null;     then PKG_MANAGER="dnf";
+    elif command -v yum &>/dev/null;     then PKG_MANAGER="yum";
+    elif command -v pacman &>/dev/null;  then PKG_MANAGER="pacman";
+    fi
+
+    # Core build tools (required)
+    CORE_PKGS="curl git build-essential python3"
+
+    # Install based on package manager
+    if [ "$PKG_MANAGER" = "apt" ]; then
+      info "Updating package list..."
+      sudo apt-get update -qq
+      info "Installing core packages: $CORE_PKGS"
+      sudo apt-get install -y -qq curl git build-essential python3 python3-pip ca-certificates
+    elif [ "$PKG_MANAGER" = "dnf" ] || [ "$PKG_MANAGER" = "yum" ]; then
+      sudo $PKG_MANAGER install -y curl git gcc gcc-c++ make python3 python3-pip ca-certificates
+    elif [ "$PKG_MANAGER" = "pacman" ]; then
+      sudo pacman -Sy --noconfirm curl git base-devel python python-pip ca-certificates
+    else
+      warn "Unknown package manager — skipping system package install"
+      warn "Make sure these are installed: curl git build-essential python3"
+    fi
+    success "Core system packages installed"
+
+    # Node.js 22 (if missing or wrong version)
+    if ! command -v node &>/dev/null || [ "$(node -e 'process.stdout.write(process.versions.node.split(".")[0])')" -lt 22 ]; then
+      info "Installing Node.js 22..."
+      curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - 2>/dev/null
+      sudo apt-get install -y nodejs 2>/dev/null || \
+      sudo dnf install -y nodejs 2>/dev/null || \
+      warn "Could not auto-install Node.js — please install manually: https://nodejs.org"
+    fi
+
+  elif [ "$OS_FAMILY" = "macos" ]; then
+    if ! command -v brew &>/dev/null; then
+      info "Installing Homebrew..."
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    info "Installing core packages..."
+    brew install git curl python3 2>/dev/null || true
+    success "Core system packages installed"
+
+    if ! command -v node &>/dev/null || [ "$(node -e 'process.stdout.write(process.versions.node.split(".")[0])')" -lt 22 ]; then
+      info "Installing Node.js 22..."
+      brew install node@22
+    fi
+  fi
+
+  # Optional system tools (features degrade gracefully without them)
+  echo ""
+  info "Checking optional system tools..."
+  MISSING_OPTIONAL=()
+
+  command -v python3  &>/dev/null && success "python3 (agent code execution)" || { MISSING_OPTIONAL+=("python3"); optional "python3 — needed for agent Python code execution"; }
+  command -v ffmpeg   &>/dev/null && success "ffmpeg (voice/media)" || { MISSING_OPTIONAL+=("ffmpeg"); optional "ffmpeg — needed for voice messages and media processing"; }
+  command -v curl     &>/dev/null && success "curl (web requests)" || { MISSING_OPTIONAL+=("curl"); optional "curl — needed for web fetch tools"; }
+
+  if [ ${#MISSING_OPTIONAL[@]} -gt 0 ]; then
+    echo ""
+    warn "Optional tools missing: ${MISSING_OPTIONAL[*]}"
+    if [ "$OS_FAMILY" = "linux" ] && [ "$PKG_MANAGER" = "apt" ]; then
+      read -rp "  Install optional tools now? [y/N]: " INSTALL_OPT
+      if [[ "$INSTALL_OPT" =~ ^[Yy]$ ]]; then
+        sudo apt-get install -y ffmpeg curl python3 2>/dev/null || true
+        success "Optional tools installed"
+      fi
+    fi
+  fi
+}
+
+# ── Verify core requirements ──────────────────────────────────
+verify_requirements() {
+  header "Verifying Requirements"
+
+  # Node.js
+  if ! command -v node &>/dev/null; then
+    error "Node.js not found.\n  Install: https://nodejs.org (v22+)"
+  fi
+  NODE_VER=$(node -e "process.stdout.write(process.versions.node)")
+  NODE_MAJOR=$(echo "$NODE_VER" | cut -d. -f1)
+  if [ "$NODE_MAJOR" -lt 22 ]; then
+    error "Node.js 22+ required (found $NODE_VER)\n  Upgrade: https://nodejs.org"
+  fi
+  success "Node.js $NODE_VER"
+
+  # pnpm
+  if ! command -v pnpm &>/dev/null; then
+    info "Installing pnpm..."
+    npm install -g pnpm
+  fi
+  success "pnpm $(pnpm --version)"
+
+  # git
+  if ! command -v git &>/dev/null; then
+    error "Git not found.\n  Install: sudo apt-get install git"
+  fi
+  success "git $(git --version | cut -d' ' -f3)"
+
+  # curl
+  if ! command -v curl &>/dev/null; then
+    error "curl not found.\n  Install: sudo apt-get install curl"
+  fi
+  success "curl $(curl --version | head -1 | cut -d' ' -f2)"
+}
 
 # ── Clone or update ───────────────────────────────────────────
-header "Repository"
+setup_repo() {
+  header "Repository"
 
-if [ -d "$INSTALL_DIR/.git" ]; then
-  info "Updating existing repo at $INSTALL_DIR..."
+  if [ -d "$INSTALL_DIR/.git" ]; then
+    info "Updating existing repo at $INSTALL_DIR..."
+    cd "$INSTALL_DIR"
+    git pull --ff-only
+    success "Repo updated"
+  else
+    info "Cloning to $INSTALL_DIR..."
+    git clone "$REPO" "$INSTALL_DIR"
+    cd "$INSTALL_DIR"
+    success "Repo cloned"
+  fi
+}
+
+# ── Install npm deps ──────────────────────────────────────────
+install_deps() {
+  header "Node Dependencies"
+
   cd "$INSTALL_DIR"
-  git pull --ff-only
-  success "Repo updated"
-else
-  info "Cloning to $INSTALL_DIR..."
-  git clone "$REPO" "$INSTALL_DIR"
-  cd "$INSTALL_DIR"
-  success "Repo cloned"
-fi
-
-# ── Install dependencies ──────────────────────────────────────
-header "Dependencies"
-
-info "Installing npm packages..."
-pnpm install --no-frozen-lockfile 2>&1 | tail -3
-success "Dependencies installed"
+  info "Installing packages (this may take a minute)..."
+  pnpm install --no-frozen-lockfile 2>&1 | tail -3
+  success "Node dependencies installed"
+}
 
 # ── Build ─────────────────────────────────────────────────────
-header "Build"
+build() {
+  header "Build"
 
-info "Building gateway..."
-pnpm build 2>/dev/null
-success "Gateway built"
+  cd "$INSTALL_DIR"
 
-info "Building UI..."
-pnpm ui:build 2>/dev/null
-success "UI built"
+  info "Building gateway..."
+  pnpm build 2>/dev/null
+  success "Gateway built"
 
-# ── openclaw compat symlink ───────────────────────────────────
-ln -sf "$INSTALL_DIR" "$INSTALL_DIR/node_modules/openclaw" 2>/dev/null || true
-success "openclaw compat symlink set"
+  info "Building UI..."
+  pnpm ui:build 2>/dev/null
+  success "UI built"
+
+  # openclaw compat symlink (extensions import from openclaw/plugin-sdk/...)
+  ln -sf "$INSTALL_DIR" "$INSTALL_DIR/node_modules/openclaw" 2>/dev/null || true
+  success "openclaw compatibility symlink set"
+}
 
 # ── Binary ────────────────────────────────────────────────────
-header "Binary"
+install_binary() {
+  header "Binary"
 
-mkdir -p "$BIN_DIR"
+  mkdir -p "$BIN_DIR"
 
-cat > "$BIN_DIR/nexusclaw" << EOF
+  cat > "$BIN_DIR/nexusclaw" << EOF
 #!/bin/bash
 exec node $INSTALL_DIR/nexusclaw.mjs "\$@"
 EOF
-chmod +x "$BIN_DIR/nexusclaw"
-success "Binary installed at $BIN_DIR/nexusclaw"
+  chmod +x "$BIN_DIR/nexusclaw"
+  success "Binary installed at $BIN_DIR/nexusclaw"
 
-# Add ~/bin to PATH in .bashrc if not already there
-if ! grep -q 'export PATH="$HOME/bin' "$HOME/.bashrc" 2>/dev/null; then
-  echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
-  info "Added ~/bin to PATH in ~/.bashrc"
-fi
+  # PATH
+  if ! grep -q '"$HOME/bin"' "$HOME/.bashrc" 2>/dev/null && \
+     ! grep -q '$HOME/bin' "$HOME/.bashrc" 2>/dev/null; then
+    echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+    info "Added ~/bin to PATH in ~/.bashrc"
+  fi
 
-# Remove any old alias that shadows the binary
-if grep -q 'alias nexusclaw=' "$HOME/.bashrc" 2>/dev/null; then
-  sed -i '/alias nexusclaw=/d' "$HOME/.bashrc"
-  warn "Removed old nexusclaw alias from ~/.bashrc"
-fi
+  # Remove any conflicting alias
+  if grep -q 'alias nexusclaw=' "$HOME/.bashrc" 2>/dev/null; then
+    sed -i '/alias nexusclaw=/d' "$HOME/.bashrc"
+    warn "Removed old nexusclaw alias from ~/.bashrc"
+  fi
 
-export PATH="$BIN_DIR:$PATH"
+  export PATH="$BIN_DIR:$PATH"
+}
 
 # ── Config ────────────────────────────────────────────────────
-header "Config"
+setup_config() {
+  header "Config"
 
-mkdir -p "$CONFIG_DIR/workspace/skills"
-mkdir -p "$INSTALL_DIR/library"
+  mkdir -p "$CONFIG_DIR/workspace/skills"
+  mkdir -p "$INSTALL_DIR/library"
 
-if [ ! -f "$CONFIG_DIR/nexusclaw.json" ]; then
-  cat > "$CONFIG_DIR/nexusclaw.json" << EOF
+  if [ ! -f "$CONFIG_DIR/nexusclaw.json" ]; then
+    cat > "$CONFIG_DIR/nexusclaw.json" << EOF
 {
   "gateway": {
     "port": $GATEWAY_PORT,
@@ -140,95 +259,156 @@ if [ ! -f "$CONFIG_DIR/nexusclaw.json" ]; then
   }
 }
 EOF
-  success "Config created at $CONFIG_DIR/nexusclaw.json"
-else
-  success "Config already exists — skipped"
-fi
+    success "Config created at $CONFIG_DIR/nexusclaw.json"
+  else
+    success "Config already exists — skipped"
+  fi
 
-# ── Skills ────────────────────────────────────────────────────
-header "Skills"
-
-if [ -d "$INSTALL_DIR/skills" ]; then
-  cp -r "$INSTALL_DIR/skills/"* "$CONFIG_DIR/workspace/skills/" 2>/dev/null || true
-  success "Skills installed: $(ls $CONFIG_DIR/workspace/skills/ | tr '\n' ' ')"
-else
-  warn "No skills directory found in repo"
-fi
+  # Skills
+  if [ -d "$INSTALL_DIR/skills" ]; then
+    cp -r "$INSTALL_DIR/skills/"* "$CONFIG_DIR/workspace/skills/" 2>/dev/null || true
+    SKILL_COUNT=$(ls "$CONFIG_DIR/workspace/skills/" | wc -l)
+    success "Skills installed ($SKILL_COUNT): $(ls $CONFIG_DIR/workspace/skills/ | tr '\n' ' ')"
+  fi
+}
 
 # ── API Key ───────────────────────────────────────────────────
-header "API Key"
+setup_api_key() {
+  header "API Key"
 
-if [ -z "$ANTHROPIC_API_KEY" ]; then
-  echo ""
-  echo -e "  Enter your ${BOLD}Anthropic API key${NC} (starts with sk-ant-)"
-  echo -e "  Get one at: ${BLUE}https://console.anthropic.com${NC}"
-  echo -e "  Leave blank to skip (set later with: nexusclaw secrets configure)"
-  echo ""
-  read -rsp "  API key: " API_KEY
-  echo ""
-  if [ -n "$API_KEY" ]; then
-    systemctl --user set-environment ANTHROPIC_API_KEY="$API_KEY" 2>/dev/null || \
-      echo "export ANTHROPIC_API_KEY='$API_KEY'" >> "$HOME/.bashrc"
-    success "API key saved"
-  else
-    warn "Skipped — run 'nexusclaw secrets configure' to set later"
+  if [ -n "$ANTHROPIC_API_KEY" ]; then
+    success "ANTHROPIC_API_KEY already set"
+    return
   fi
-else
-  success "ANTHROPIC_API_KEY already set in environment"
-fi
+
+  echo ""
+  echo -e "  ${BOLD}Anthropic API key${NC} required to run the AI agent."
+  echo -e "  Get one at: ${BLUE}https://console.anthropic.com${NC}"
+  echo -e "  Leave blank to skip (configure later: nexusclaw secrets configure)"
+  echo ""
+  read -rsp "  Paste API key (hidden): " API_KEY
+  echo ""
+
+  if [ -n "$API_KEY" ]; then
+    # Try systemd first, fall back to .bashrc
+    if systemctl --user set-environment ANTHROPIC_API_KEY="$API_KEY" 2>/dev/null; then
+      success "API key saved to systemd user environment"
+    else
+      echo "export ANTHROPIC_API_KEY='$API_KEY'" >> "$HOME/.bashrc"
+      success "API key saved to ~/.bashrc"
+    fi
+  else
+    warn "Skipped — run 'nexusclaw secrets configure' later"
+  fi
+}
 
 # ── Gateway service ───────────────────────────────────────────
-header "Gateway Service"
+setup_service() {
+  header "Gateway Service"
 
-"$BIN_DIR/nexusclaw" gateway install 2>/dev/null || true
-systemctl --user daemon-reload 2>/dev/null || true
-systemctl --user start nexusclaw-gateway.service 2>/dev/null || true
-sleep 2
+  "$BIN_DIR/nexusclaw" gateway install 2>/dev/null || true
 
-if systemctl --user is-active nexusclaw-gateway.service &>/dev/null; then
-  success "Gateway service running on port $GATEWAY_PORT"
-else
-  warn "Service may not be running — try: nexusclaw gateway start"
-fi
+  if command -v systemctl &>/dev/null; then
+    systemctl --user daemon-reload 2>/dev/null || true
+    # Enable lingering so service survives logout (useful for VPS/Pi)
+    loginctl enable-linger "$USER" 2>/dev/null || true
+    systemctl --user enable nexusclaw-gateway.service 2>/dev/null || true
+    systemctl --user start nexusclaw-gateway.service 2>/dev/null || true
+    sleep 2
+
+    if systemctl --user is-active nexusclaw-gateway.service &>/dev/null; then
+      success "Gateway running on port $GATEWAY_PORT (systemd service)"
+    else
+      warn "Service not active — try: nexusclaw gateway start"
+    fi
+  else
+    warn "systemd not available — start manually: nexusclaw gateway"
+  fi
+}
 
 # ── Cron jobs ─────────────────────────────────────────────────
-header "Cron Jobs"
+setup_cron() {
+  header "Cron Jobs"
 
-EXISTING=$("$BIN_DIR/nexusclaw" cron list 2>/dev/null | grep -c "evoclaw\|memory-save\|library-update" || echo 0)
+  EXISTING=$("$BIN_DIR/nexusclaw" cron list 2>/dev/null | grep -cE "evoclaw|memory-save|library-update" || echo 0)
 
-if [ "$EXISTING" -lt 3 ]; then
+  if [ "$EXISTING" -ge 3 ]; then
+    success "Cron jobs already configured — skipped"
+    return
+  fi
+
   "$BIN_DIR/nexusclaw" cron add --name "evoclaw-heartbeat" \
     --cron "*/15 * * * *" --session isolated \
-    --message "Run skill: evoclaw/heartbeat" 2>/dev/null && success "Cron: evoclaw-heartbeat" || warn "Cron: evoclaw-heartbeat (already exists or gateway not ready)"
+    --message "Run skill: evoclaw/heartbeat" 2>/dev/null \
+    && success "Cron: evoclaw-heartbeat (every 15 min)" \
+    || warn "Could not add evoclaw-heartbeat (add manually after gateway starts)"
 
   "$BIN_DIR/nexusclaw" cron add --name "memory-save" \
     --cron "*/30 * * * *" --session isolated \
-    --message "Run skill: memory-save/run" 2>/dev/null && success "Cron: memory-save" || warn "Cron: memory-save (already exists or gateway not ready)"
+    --message "Run skill: memory-save/run" 2>/dev/null \
+    && success "Cron: memory-save (every 30 min)" \
+    || warn "Could not add memory-save"
 
   "$BIN_DIR/nexusclaw" cron add --name "library-update" \
     --cron "0 * * * *" --session isolated \
-    --message "Run skill: library-update/run" 2>/dev/null && success "Cron: library-update" || warn "Cron: library-update (already exists or gateway not ready)"
-else
-  success "Cron jobs already configured — skipped"
-fi
+    --message "Run skill: library-update/run" 2>/dev/null \
+    && success "Cron: library-update (every hour)" \
+    || warn "Could not add library-update"
+}
 
-# ── Done ──────────────────────────────────────────────────────
-header "Done"
+# ── Summary ───────────────────────────────────────────────────
+print_summary() {
+  header "Installation Complete"
 
-echo ""
-echo -e "  ${GREEN}${BOLD}NexusClaw installed successfully!${NC}"
-echo ""
-echo -e "  ${BOLD}Version:${NC}   $("$BIN_DIR/nexusclaw" --version 2>/dev/null || echo 'NexusClaw 1.0.0')"
-echo -e "  ${BOLD}Gateway:${NC}   http://localhost:$GATEWAY_PORT"
-echo -e "  ${BOLD}Config:${NC}    $CONFIG_DIR/nexusclaw.json"
-echo -e "  ${BOLD}Skills:${NC}    $(ls $CONFIG_DIR/workspace/skills/ 2>/dev/null | wc -l) installed"
-echo ""
-echo -e "  ${BOLD}Next steps:${NC}"
-echo -e "  1. Reload your shell:  ${BLUE}source ~/.bashrc${NC}"
-echo -e "  2. Open dashboard:     ${BLUE}nexusclaw dashboard${NC}"
-echo -e "  3. Run onboarding:     ${BLUE}nexusclaw onboard${NC}"
-echo ""
-echo -e "  ${BOLD}Docs:${NC}"
-echo -e "  Install guide:  $INSTALL_DIR/docs/install.md"
-echo -e "  Deploy guide:   $INSTALL_DIR/docs/deploy.md"
-echo ""
+  echo ""
+  echo -e "  ${GREEN}${BOLD}NexusClaw is ready!${NC}"
+  echo ""
+  echo -e "  ${BOLD}Version:${NC}  $("$BIN_DIR/nexusclaw" --version 2>/dev/null || echo 'NexusClaw 1.0.0')"
+  echo -e "  ${BOLD}Gateway:${NC}  http://localhost:$GATEWAY_PORT"
+  echo -e "  ${BOLD}Config:${NC}   $CONFIG_DIR/nexusclaw.json"
+  echo -e "  ${BOLD}Skills:${NC}   $(ls $CONFIG_DIR/workspace/skills/ 2>/dev/null | wc -l | tr -d ' ') installed"
+  echo ""
+  echo -e "  ${BOLD}Next steps:${NC}"
+  echo -e "  1. Reload shell:       ${BLUE}source ~/.bashrc${NC}"
+  echo -e "  2. Open dashboard:     ${BLUE}nexusclaw dashboard${NC}"
+  echo -e "  3. Run onboarding:     ${BLUE}nexusclaw onboard${NC}"
+  echo ""
+  echo -e "  ${BOLD}Useful commands:${NC}"
+  echo -e "  ${BLUE}nexusclaw gateway status${NC}      — check gateway"
+  echo -e "  ${BLUE}nexusclaw secrets configure${NC}   — set API keys"
+  echo -e "  ${BLUE}nexusclaw models${NC}              — configure models (Ollama etc)"
+  echo -e "  ${BLUE}nexusclaw doctor --fix${NC}        — fix config issues"
+  echo ""
+  echo -e "  ${BOLD}Docs:${NC}"
+  echo -e "  $INSTALL_DIR/docs/install.md"
+  echo -e "  $INSTALL_DIR/docs/deploy.md"
+  echo ""
+}
+
+# ── Main ──────────────────────────────────────────────────────
+main() {
+  echo ""
+  echo -e "${BOLD}  ⚔  NexusClaw Installer${NC}"
+  echo ""
+
+  # Ask about system deps
+  if [ "$1" != "--no-system-deps" ]; then
+    read -rp "  Install/verify system dependencies (requires sudo)? [Y/n]: " INSTALL_SYS
+    if [[ ! "$INSTALL_SYS" =~ ^[Nn]$ ]]; then
+      install_system_deps
+    fi
+  fi
+
+  verify_requirements
+  setup_repo
+  install_deps
+  build
+  install_binary
+  setup_config
+  setup_api_key
+  setup_service
+  setup_cron
+  print_summary
+}
+
+main "$@"
