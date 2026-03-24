@@ -4,11 +4,7 @@
 **Time:** 15–20 minutes  
 **Computer:** Linux, macOS, or Windows (WSL2)
 
----
-
-## Before you start — what you need
-
-This guide assumes you know almost nothing about computers. Every term is explained. Let's go.
+> **Based on [OpenClaw](https://github.com/openclaw/openclaw)** — NexusClaw is a personal fork of OpenClaw, extended with EvoClaw memory, 60+ bundled skills, and 10 UI themes. All the power of OpenClaw, ready to go.
 
 ---
 
@@ -28,31 +24,52 @@ Your API key (which powers the AI) stays on your machine. Nothing private is eve
 
 ---
 
-## Step 1 — Get a Terminal
+## Step 1 — Automatic Setup (Fastest)
 
-The Terminal is a text-based way to talk to your computer. It's faster than clicking, and some things can only be done here.
+NexusClaw has a built-in setup wizard. Run this and follow the prompts:
+
+```
+nexusclaw onboard
+```
+
+This will automatically:
+
+- Check your system for Node.js and Git
+- Download NexusClaw from GitHub
+- Build everything
+- Ask for your API key
+- Start the Gateway
+- Print your dashboard URL
+
+If `nexusclaw` is not recognised yet, follow Steps 2–4 first, then come back and run `nexusclaw onboard`.
+
+---
+
+## Step 2 — Get a Terminal
+
+The Terminal is a text-based way to talk to your computer. It's faster than pointing and clicking, and some things can only be done here.
 
 **On macOS:**
 Press `Command + Space`, type `Terminal`, press Enter.
 
 **On Linux:**
-Press `Ctrl + Alt + T`. Or right-click the desktop and choose "Open Terminal."
+Press `Ctrl + Alt + T`. Or right-click the desktop and choose **Open Terminal**.
 
 **On Windows (WSL2):**
-WSL2 lets you run Linux inside Windows. It's free.
+WSL2 lets you run Linux inside Windows — free and straightforward.
 
-1. Open PowerShell as Administrator (right-click the Start button → "Terminal (Admin)")
+1. Open PowerShell as Administrator (right-click the Start button → **Terminal (Admin)**)
 2. Paste this and press Enter:
    ```
    wsl --install
    ```
 3. Restart your computer when asked.
-4. After restarting, type `ubuntu` in the Start menu and press Enter.
-5. You'll be asked to create a username and password. Choose anything you like. This is your Linux terminal.
+4. After restarting, search for `Ubuntu` in the Start menu and press Enter.
+5. You'll be asked to create a username and password. Type them in. This is your Linux terminal.
 
 ---
 
-## Step 2 — Install Git
+## Step 3 — Install Git
 
 Git is a tool that downloads code from the internet. You need it to get NexusClaw.
 
@@ -62,11 +79,11 @@ In your Terminal, paste this and press Enter:
 sudo apt update && sudo apt install git -y
 ```
 
-You may be asked for your password (the one you just created). Type it and press Enter. You won't see the characters as you type — that's normal.
+You may be asked for your password. Type it and press Enter. You won't see the characters as you type — that's normal.
 
 ---
 
-## Step 3 — Install Node.js
+## Step 4 — Install Node.js
 
 Node.js is the engine that runs NexusClaw. You need version 22 or higher.
 
@@ -86,19 +103,19 @@ source ~/.bashrc
 fnm install 22 && fnm use 22
 ```
 
-Check it's working:
+Check it worked:
 
 ```
 node --version
 ```
 
-You should see a number like `v22.x.x`. If it says something lower than 22, restart the Terminal and try again.
+You should see a number like `v22.x.x`. If it starts with a number lower than 22, restart the Terminal and try again.
 
 ---
 
-## Step 4 — Install pnpm
+## Step 5 — Install pnpm
 
-pnpm is a package manager — it handles all the tiny pieces of code NexusClaw needs.
+pnpm is a package manager. It handles all the tiny pieces of code NexusClaw needs.
 
 ```
 npm install -g pnpm
@@ -106,7 +123,7 @@ npm install -g pnpm
 
 ---
 
-## Step 5 — Download NexusClaw
+## Step 6 — Download NexusClaw
 
 Go to your home folder and download NexusClaw from GitHub:
 
@@ -123,11 +140,9 @@ Enter the folder:
 cd nexusclaw
 ```
 
-Everything you do from now on happens inside this folder.
-
 ---
 
-## Step 6 — Install all the code
+## Step 7 — Install all the code
 
 NexusClaw needs a bunch of extra code pieces to work. This installs them all at once:
 
@@ -135,27 +150,27 @@ NexusClaw needs a bunch of extra code pieces to work. This installs them all at 
 pnpm install --no-frozen-lockfile
 ```
 
-This takes 2–5 minutes. Wait for it to finish and show a prompt again.
+This takes 2–5 minutes. Wait for the prompt to come back before continuing.
 
 ---
 
-## Step 7 — Build NexusClaw
+## Step 8 — Build NexusClaw
 
-"Building" turns the raw code into something your computer can run.
+"Building" turns the raw code into something your computer can actually run.
 
 ```
 pnpm build && pnpm ui:build
 ```
 
-This also takes a few minutes. Wait for the prompt to come back.
+This also takes a few minutes. Wait for the prompt.
 
 ---
 
-## Step 8 — Set up the NexusClaw command
+## Step 9 — Create the nexusclaw command
 
-Right now, NexusClaw lives inside the folder. We want to be able to type `nexusclaw` from anywhere.
+Right now NexusClaw only works inside the `nexusclaw` folder. We want to be able to type `nexusclaw` from anywhere.
 
-First, create a special commands folder:
+First, create a shortcuts folder:
 
 ```
 mkdir -p ~/bin
@@ -176,7 +191,7 @@ Make it runnable:
 chmod +x ~/bin/nexusclaw
 ```
 
-Add the folder to your path (so your computer knows where to find the `nexusclaw` command):
+Add the folder to your path (so your computer knows where to find the command):
 
 ```
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
@@ -193,14 +208,14 @@ You should see: `NexusClaw 1.0.0 (...)`
 
 ---
 
-## Step 9 — Get an Anthropic API key
+## Step 10 — Get an Anthropic API key
 
-NexusClaw needs an API key to talk to the AI. This key is yours and lives on your machine.
+NexusClaw needs an API key to talk to the AI. This key is yours and stays on your machine.
 
 1. Go to [console.anthropic.com](https://console.anthropic.com) and create a free account
-2. Go to "API Keys" in the left sidebar
-3. Click "Create Key"
-4. Copy the key (select it, Ctrl+C)
+2. Click **API Keys** in the left sidebar
+3. Click **Create Key**
+4. Copy the key (Ctrl+A then Ctrl+C)
 5. Back in the Terminal, paste:
 
 ```
@@ -210,11 +225,11 @@ nexusclaw secrets configure
 6. Paste your API key when asked
 7. Press Enter
 
-Your key is saved. It will never be sent anywhere except directly to Anthropic.
+Your key is saved locally and will only ever be sent directly to Anthropic's servers.
 
 ---
 
-## Step 10 — Start the Gateway
+## Step 11 — Start the Gateway
 
 The Gateway is the engine that makes NexusClaw work. It's like turning on your computer — you only need to do this once.
 
@@ -224,7 +239,7 @@ Install it as a background service:
 nexusclaw gateway install
 ```
 
-Start it:
+Start it now:
 
 ```
 nexusclaw gateway start
@@ -238,15 +253,15 @@ nexusclaw gateway status
 
 You should see: `listening on 19789`
 
-If you restart your computer, the Gateway will start automatically. No need to run these commands again.
+After this, the Gateway will start automatically every time you turn on your computer.
 
 ---
 
-## Step 11 — Open the Control Dashboard
+## Step 12 — Open the Control Dashboard
 
 The Dashboard is a website that lets you chat with NexusClaw in your browser.
 
-First, tell NexusClaw to open it:
+Tell NexusClaw to open it:
 
 ```
 nexusclaw dashboard
@@ -258,7 +273,7 @@ Then open your browser and go to:
 http://localhost:19789
 ```
 
-You'll see a login screen. To get your login token, run:
+You'll see a login screen. To get your token, run:
 
 ```
 nexusclaw gateway status
@@ -266,11 +281,11 @@ nexusclaw gateway status
 
 Look for the line that says `token=`. Copy everything after the `=` sign. Paste it into the login screen in your browser.
 
-You should now see the NexusClaw interface. You're in.
+You should now see the NexusClaw interface.
 
 ---
 
-## Step 12 — Say hello
+## Step 13 — Say hello
 
 Click the chat box at the bottom and type:
 
@@ -282,9 +297,9 @@ Press Enter. NexusClaw will respond.
 
 ---
 
-## ✅ How to know everything is working
+## How to know everything is working
 
-Run these three commands in the Terminal:
+Run these three commands:
 
 ```
 nexusclaw --version
@@ -303,25 +318,23 @@ Should show 3 jobs running (evoclaw-heartbeat, memory-save, library-update)
 
 ---
 
-## 🔧 If something goes wrong
+## If something goes wrong
 
-### "nexusclaw: command not found"
+**"nexusclaw: command not found"**
 
-Your computer doesn't know where the command is. Run:
+Your computer does not know where the command is. Run:
 
 ```
 export PATH="$HOME/bin:$PATH"
 ```
 
-Then try `nexusclaw --version` again.
-
-If it works, the fix is temporary. To make it permanent, run:
+Then try `nexusclaw --version` again. If it works, make it permanent:
 
 ```
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
 ```
 
-### Gateway shows an error instead of "listening"
+**Gateway shows an error instead of "listening"**
 
 ```
 nexusclaw doctor --fix
@@ -329,7 +342,7 @@ nexusclaw doctor --fix
 
 This automatically diagnoses and fixes the most common problems.
 
-### Node version is too old
+**Node version is too old**
 
 ```
 node --version
@@ -347,19 +360,16 @@ Restart your Terminal and try again.
 
 ---
 
-## 📁 Where everything lives
+## Where everything lives
 
 NexusClaw stores its files in a hidden folder called `.nexusclaw` in your home directory.
 
-```
-~/.nexusclaw/
-```
+To see hidden folders in your file browser:
 
-To see it in your file browser (Finder on macOS, Files on Linux):
-- macOS: Press `Cmd + Shift + .` in Finder
-- Linux: Press `Ctrl + H`
+- **macOS:** Press `Cmd + Shift + .` in Finder
+- **Linux:** Press `Ctrl + H`
 
-Inside `.nexusclaw/` you'll find:
+Inside `~/.nexusclaw/`:
 
 | Folder | What it is |
 |--------|-----------|
@@ -377,7 +387,7 @@ The most important files in `workspace/`:
 
 ---
 
-## 🔄 Updating NexusClaw
+## Updating NexusClaw
 
 NexusClaw improves regularly. To update:
 
@@ -391,7 +401,7 @@ nexusclaw gateway restart
 
 ---
 
-## 🆘 Still stuck?
+## Still stuck?
 
 ```
 nexusclaw help
