@@ -1,14 +1,38 @@
-# NexusClaw — Install Guide
+# ⚡ NexusClaw — Install Guide
 
-**Difficulty:** Beginner · **Time:** 15–20 minutes · **OS:** Linux, macOS, Windows (WSL2)
+| | |
+|---|---|
+| **Difficulty** | Beginner |
+| **Time** | 15–20 minutes |
+| **OS** | Linux · macOS · Windows (WSL2) |
+| **Based on** | [OpenClaw](https://github.com/openclaw/openclaw) |
 
-> **Based on [OpenClaw](https://github.com/openclaw/openclaw)** — NexusClaw is a personal fork of OpenClaw, extended with EvoClaw memory, 60+ bundled skills, and 10 UI themes.
+> NexusClaw is a personal fork of OpenClaw, extended with EvoClaw memory, 60+ bundled skills, and 10 UI themes. All the power of OpenClaw, ready to go.
 >
-> **Download this guide:** [raw file](https://raw.githubusercontent.com/greench-ai/nexusclaw/main/docs/INSTALL-GUIDE.md) · Right-click → Save As
+> **Download this guide:** [raw file](https://raw.githubusercontent.com/greench-ai/nexusclaw/main/docs/INSTALL-GUIDE.md) · Right-click the link → Save As
 
 ---
 
-## What is NexusClaw?
+## 📋 Table of Contents
+
+1. [Get a Terminal](#1--get-a-terminal)
+2. [Install Git](#3--install-git)
+3. [Install Node.js](#4--install-nodejs)
+4. [Install pnpm](#5--install-pnpm)
+5. [Download NexusClaw](#6--download-nexusclaw)
+6. [Install all the code](#7--install-all-the-code)
+7. [Build NexusClaw](#8--build-nexusclaw)
+8. [Create the nexusclaw command](#9--create-the-nexusclaw-command)
+9. [Get an Anthropic API key](#10--get-an-anthropic-api-key)
+10. [Start the Gateway](#11--start-the-gateway)
+11. [Open the Control Dashboard](#12--open-the-control-dashboard)
+12. [Say hello](#13--say-hello)
+13. [Configure NexusClaw](#configure-nexusclaw)
+14. [Troubleshooting](#if-something-goes-wrong)
+
+---
+
+## 🤖 What is NexusClaw?
 
 NexusClaw is an AI assistant that runs on your own computer. It can:
 
@@ -24,7 +48,7 @@ Your API key (which powers the AI) stays on your machine. Nothing private is eve
 
 ---
 
-## Step 1 — Get a Terminal
+## 🖥️ Step 1 — Get a Terminal
 
 The Terminal is a text-based way to talk to your computer. It's faster than pointing and clicking, and some things can only be done here.
 
@@ -48,7 +72,7 @@ WSL2 lets you run Linux inside Windows — free and straightforward.
 
 ---
 
-## Step 3 — Install Git
+## 📦 Step 3 — Install Git
 
 Git is a tool that downloads code from the internet. You need it to get NexusClaw.
 
@@ -62,7 +86,7 @@ You may be asked for your password. Type it and press Enter. You won't see the c
 
 ---
 
-## Step 4 — Install Node.js
+## ⚙️ Step 4 — Install Node.js
 
 Node.js is the engine that runs NexusClaw. You need version 22 or higher.
 
@@ -92,7 +116,7 @@ You should see a number like `v22.x.x`. If it starts with a number lower than 22
 
 ---
 
-## Step 5 — Install pnpm
+## 📦 Step 5 — Install pnpm
 
 pnpm is a package manager. It handles all the tiny pieces of code NexusClaw needs.
 
@@ -102,7 +126,7 @@ npm install -g pnpm
 
 ---
 
-## Step 6 — Download NexusClaw
+## ⬇️ Step 6 — Download NexusClaw
 
 Go to your home folder and download NexusClaw from GitHub:
 
@@ -121,7 +145,7 @@ cd nexusclaw
 
 ---
 
-## Step 7 — Install all the code
+## 📥 Step 7 — Install all the code
 
 NexusClaw needs a bunch of extra code pieces to work. This installs them all at once:
 
@@ -133,7 +157,7 @@ This takes 2–5 minutes. Wait for the prompt to come back before continuing.
 
 ---
 
-## Step 8 — Build NexusClaw
+## 🔨 Step 8 — Build NexusClaw
 
 "Building" turns the raw code into something your computer can actually run.
 
@@ -145,7 +169,7 @@ This also takes a few minutes. Wait for the prompt.
 
 ---
 
-## Step 9 — Create the nexusclaw command
+## ⚡ Step 9 — Create the nexusclaw command
 
 Right now NexusClaw only works inside the `nexusclaw` folder. We want to be able to type `nexusclaw` from anywhere.
 
@@ -187,7 +211,7 @@ You should see: `NexusClaw 1.0.0 (...)`
 
 ---
 
-## Step 10 — Get an Anthropic API key
+## 🔑 Step 10 — Get an Anthropic API key
 
 NexusClaw needs an API key to talk to the AI. This key is yours and stays on your machine.
 
@@ -208,7 +232,7 @@ Your key is saved locally and will only ever be sent directly to Anthropic's ser
 
 ---
 
-## Step 11 — Start the Gateway
+## 🚀 Step 11 — Start the Gateway
 
 The Gateway is the engine that makes NexusClaw work. It's like turning on your computer — you only need to do this once.
 
@@ -236,7 +260,7 @@ After this, the Gateway will start automatically every time you turn on your com
 
 ---
 
-## Step 12 — Open the Control Dashboard
+## 🌐 Step 12 — Open the Control Dashboard
 
 The Dashboard is a website that lets you chat with NexusClaw in your browser.
 
@@ -264,7 +288,7 @@ You should now see the NexusClaw interface.
 
 ---
 
-## Step 13 — Say hello
+## 👋 Step 13 — Say hello
 
 Click the chat box at the bottom and type:
 
@@ -276,7 +300,7 @@ Press Enter. NexusClaw will respond.
 
 ---
 
-## How to know everything is working
+## ✅ How to know everything is working
 
 Run these three commands to verify:
 
@@ -297,7 +321,7 @@ Should show 3 jobs running (evoclaw-heartbeat, memory-save, library-update)
 
 ---
 
-## If something goes wrong
+## 🔧 If something goes wrong
 
 **"nexusclaw: command not found"**
 
@@ -339,7 +363,7 @@ Restart your Terminal and try again.
 
 ---
 
-## Where everything lives
+## 📁 Where everything lives
 
 NexusClaw stores its files in a hidden folder called `.nexusclaw` in your home directory.
 
@@ -366,7 +390,7 @@ The most important files in `workspace/`:
 
 ---
 
-## Configure NexusClaw
+## ⚙️ Configure NexusClaw
 
 Once NexusClaw is installed and the Gateway is running, run this to set up your preferences:
 
@@ -378,7 +402,7 @@ This walks you through choosing your AI provider, setting your name, and other c
 
 ---
 
-## Updating NexusClaw
+## 🔄 Updating NexusClaw
 
 NexusClaw improves regularly. To update:
 
@@ -392,7 +416,7 @@ nexusclaw gateway restart
 
 ---
 
-## Still stuck?
+## 🆘 Still stuck?
 
 ```
 nexusclaw help
