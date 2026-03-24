@@ -270,6 +270,17 @@ EOF
     SKILL_COUNT=$(ls "$CONFIG_DIR/workspace/skills/" | wc -l)
     success "Skills installed ($SKILL_COUNT): $(ls $CONFIG_DIR/workspace/skills/ | tr '\n' ' ')"
   fi
+
+  # Additional clawhub skills (auto-installed on every setup)
+  header "Installing Additional Skills"
+  for skill in arc-security-mcp academic-research claw-smart-context; do
+    if command -v clawhub &>/dev/null; then
+      info "Installing $skill..."
+      clawhub install "$skill" --force 2>/dev/null && success "$skill installed" || warn "$skill failed (non-fatal)"
+    else
+      warn "clawhub not found — skipping $skill (install it manually)"
+    fi
+  done
 }
 
 # ── API Key ───────────────────────────────────────────────────
