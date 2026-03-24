@@ -1,260 +1,404 @@
-# ⚡ NexusClaw — Install Guide
+# NexusClaw — Install Guide
 
-> Your AI agent, running on your machine. Forever.
-
----
-
-## What you're installing
-
-| Component | What it does |
-|-----------|-------------|
-| **NexusClaw Gateway** | The brain. HTTP API your agent runs behind. |
-| **CLI** | `nexusclaw` — start/stop/status in your terminal. |
-| **Control Dashboard** | Web UI at `http://localhost:19789` |
-| **EvoClaw** | Your agent's heartbeat + memory. Runs every 15 min, automatically. |
-| **Skills** | 60+ tools ready to use — no extra install needed. |
-
-**Time:** ~10 minutes. No server required — runs on your laptop, desktop, or VPS.
+**Difficulty:** Beginner  
+**Time:** 15–20 minutes  
+**Computer:** Linux, macOS, or Windows (WSL2)
 
 ---
 
-## ⚡ Quick Install
+## Before you start — what you need
 
-One command. Everything installs.
+This guide assumes you know almost nothing about computers. Every term is explained. Let's go.
 
-```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/greench-ai/nexusclaw/main/install.sh)"
+---
+
+## What is NexusClaw?
+
+NexusClaw is an AI assistant that runs on your own computer. It can:
+
+- Search the web and read websites for you
+- Manage your files and code
+- Send messages through WhatsApp, Telegram, Discord, iMessage
+- Track your calendar and to-do lists
+- Trade crypto automatically
+- Remember everything across conversations
+- And 60+ other things
+
+Your API key (which powers the AI) stays on your machine. Nothing private is ever sent anywhere you don't control.
+
+---
+
+## Step 1 — Get a Terminal
+
+The Terminal is a text-based way to talk to your computer. It's faster than clicking, and some things can only be done here.
+
+**On macOS:**
+Press `Command + Space`, type `Terminal`, press Enter.
+
+**On Linux:**
+Press `Ctrl + Alt + T`. Or right-click the desktop and choose "Open Terminal."
+
+**On Windows (WSL2):**
+WSL2 lets you run Linux inside Windows. It's free.
+
+1. Open PowerShell as Administrator (right-click the Start button → "Terminal (Admin)")
+2. Paste this and press Enter:
+   ```
+   wsl --install
+   ```
+3. Restart your computer when asked.
+4. After restarting, type `ubuntu` in the Start menu and press Enter.
+5. You'll be asked to create a username and password. Choose anything you like. This is your Linux terminal.
+
+---
+
+## Step 2 — Install Git
+
+Git is a tool that downloads code from the internet. You need it to get NexusClaw.
+
+In your Terminal, paste this and press Enter:
+
+```
+sudo apt update && sudo apt install git -y
 ```
 
-Answer the prompts. Done.
+You may be asked for your password (the one you just created). Type it and press Enter. You won't see the characters as you type — that's normal.
 
 ---
 
-## 📋 Requirements
+## Step 3 — Install Node.js
 
-- **Node.js** ≥ 22 — [nodejs.org](https://nodejs.org)
-- **Git** — [git-scm.com](https://git-scm.com)
-- **OS** — Linux · macOS · WSL2 (Windows Subsystem for Linux)
+Node.js is the engine that runs NexusClaw. You need version 22 or higher.
 
-Check what's installed:
+Paste this and press Enter:
 
-```bash
-node --version   # must be ≥ 22
-git --version
+```
+curl -fsSL https://fnm.vercel.app/install | bash
 ```
 
-> ⚠️ If Node is missing or too old: `curl -fsSL https://fnm.vercel.app/install | bash && source ~/.bashrc && fnm install 22 && fnm use 22`
+When it finishes, paste these two commands, one at a time:
+
+```
+source ~/.bashrc
+```
+
+```
+fnm install 22 && fnm use 22
+```
+
+Check it's working:
+
+```
+node --version
+```
+
+You should see a number like `v22.x.x`. If it says something lower than 22, restart the Terminal and try again.
 
 ---
 
-## Step-by-Step
+## Step 4 — Install pnpm
 
-### 1. Clone
+pnpm is a package manager — it handles all the tiny pieces of code NexusClaw needs.
 
-```bash
-git clone https://github.com/greench-ai/nexusclaw.git ~/nexusclaw
-cd ~/nexusclaw
 ```
-
-### 2. Install dependencies
-
-```bash
-# pnpm 10 is required (pnpm handles the workspace better than npm/yarn)
 npm install -g pnpm
+```
 
-# Install everything
+---
+
+## Step 5 — Download NexusClaw
+
+Go to your home folder and download NexusClaw from GitHub:
+
+```
+cd ~
+git clone https://github.com/greench-ai/nexusclaw.git
+```
+
+This creates a new folder called `nexusclaw` in your home directory.
+
+Enter the folder:
+
+```
+cd nexusclaw
+```
+
+Everything you do from now on happens inside this folder.
+
+---
+
+## Step 6 — Install all the code
+
+NexusClaw needs a bunch of extra code pieces to work. This installs them all at once:
+
+```
 pnpm install --no-frozen-lockfile
 ```
 
-### 3. Build
+This takes 2–5 minutes. Wait for it to finish and show a prompt again.
 
-```bash
-pnpm build        # gateway + CLI → dist/
-pnpm ui:build     # control dashboard → dist/control-ui/
+---
+
+## Step 7 — Build NexusClaw
+
+"Building" turns the raw code into something your computer can run.
+
+```
+pnpm build && pnpm ui:build
 ```
 
-### 4. Set up the CLI
+This also takes a few minutes. Wait for the prompt to come back.
 
-```bash
+---
+
+## Step 8 — Set up the NexusClaw command
+
+Right now, NexusClaw lives inside the folder. We want to be able to type `nexusclaw` from anywhere.
+
+First, create a special commands folder:
+
+```
 mkdir -p ~/bin
+```
 
-# Create the nexusclaw wrapper
+Then create the shortcut:
+
+```
 cat > ~/bin/nexusclaw << 'EOF'
 #!/bin/bash
-exec node /home/YOUR_USER/nexusclaw/nexusclaw.mjs "$@"
+exec node /home/$USER/nexusclaw/nexusclaw.mjs "$@"
 EOF
+```
 
+Make it runnable:
+
+```
 chmod +x ~/bin/nexusclaw
+```
 
-# Add to your path
+Add the folder to your path (so your computer knows where to find the `nexusclaw` command):
+
+```
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
-
-# Remove old aliases if they exist
-grep -n "nexusclaw" ~/.bashrc
-# If you see: alias nexusclaw="..." — delete that line
 ```
 
-> ⚠️ **Replace `/home/YOUR_USER/`** with your actual home directory path. Run `echo $HOME` to check.
+Test it:
 
-Verify:
-
-```bash
+```
 nexusclaw --version
-# NexusClaw 1.0.0 (...)
 ```
 
-### 5. Start the gateway
+You should see: `NexusClaw 1.0.0 (...)`
 
-```bash
-nexusclaw gateway install   # install as a systemd user service
-nexusclaw gateway start     # start it now
-nexusclaw gateway status    # confirm it's running
+---
+
+## Step 9 — Get an Anthropic API key
+
+NexusClaw needs an API key to talk to the AI. This key is yours and lives on your machine.
+
+1. Go to [console.anthropic.com](https://console.anthropic.com) and create a free account
+2. Go to "API Keys" in the left sidebar
+3. Click "Create Key"
+4. Copy the key (select it, Ctrl+C)
+5. Back in the Terminal, paste:
+
+```
+nexusclaw secrets configure
+```
+
+6. Paste your API key when asked
+7. Press Enter
+
+Your key is saved. It will never be sent anywhere except directly to Anthropic.
+
+---
+
+## Step 10 — Start the Gateway
+
+The Gateway is the engine that makes NexusClaw work. It's like turning on your computer — you only need to do this once.
+
+Install it as a background service:
+
+```
+nexusclaw gateway install
+```
+
+Start it:
+
+```
+nexusclaw gateway start
+```
+
+Check it's running:
+
+```
+nexusclaw gateway status
 ```
 
 You should see: `listening on 19789`
 
-> 💡 **Systemd user service** means it auto-starts on login. No manual startup needed after a reboot.
+If you restart your computer, the Gateway will start automatically. No need to run these commands again.
 
-### 6. Open the dashboard
+---
 
-```bash
+## Step 11 — Open the Control Dashboard
+
+The Dashboard is a website that lets you chat with NexusClaw in your browser.
+
+First, tell NexusClaw to open it:
+
+```
 nexusclaw dashboard
 ```
 
-Then open in your browser:
+Then open your browser and go to:
 
 ```
 http://localhost:19789
 ```
 
-On first load you'll need a token. Get it with:
+You'll see a login screen. To get your login token, run:
 
-```bash
+```
 nexusclaw gateway status
 ```
 
-Look for `token=` in the output. Paste it into the login screen.
+Look for the line that says `token=`. Copy everything after the `=` sign. Paste it into the login screen in your browser.
 
-### 7. Set your API key
-
-```bash
-nexusclaw secrets configure
-```
-
-Paste your Anthropic API key when prompted. NexusClaw uses this to power the agent.
-
-> 🔑 **Your key lives locally.** Never sent anywhere except Anthropic's API directly.
+You should now see the NexusClaw interface. You're in.
 
 ---
 
-## ✅ Verify everything is working
+## Step 12 — Say hello
 
-```bash
-nexusclaw --version        # → NexusClaw 1.0.0 (...)
-nexusclaw gateway status   # → listening on 19789
-nexusclaw cron list        # → 3 jobs (evoclaw-heartbeat, memory-save, library-update)
-ls ~/.nexusclaw/workspace/skills/   # → 60+ skill folders
+Click the chat box at the bottom and type:
+
 ```
+Hello, what's your name?
+```
+
+Press Enter. NexusClaw will respond.
 
 ---
 
-## 🔧 Troubleshooting
+## ✅ How to know everything is working
 
-### `nexusclaw: command not found`
+Run these three commands in the Terminal:
 
-```bash
-echo $PATH | tr ':' '\n' | grep bin   # is ~/bin in the path?
-# If not:
-source ~/.bashrc
-# Or manually:
+```
+nexusclaw --version
+```
+Should say: `NexusClaw 1.0.0 (...)`
+
+```
+nexusclaw gateway status
+```
+Should say: `listening on 19789`
+
+```
+nexusclaw cron list
+```
+Should show 3 jobs running (evoclaw-heartbeat, memory-save, library-update)
+
+---
+
+## 🔧 If something goes wrong
+
+### "nexusclaw: command not found"
+
+Your computer doesn't know where the command is. Run:
+
+```
 export PATH="$HOME/bin:$PATH"
 ```
 
-### Gateway won't start
+Then try `nexusclaw --version` again.
 
-```bash
-nexusclaw gateway status
-nexusclaw doctor --fix      # auto-diagnose and fix common issues
+If it works, the fix is temporary. To make it permanent, run:
+
+```
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
 ```
 
-### Wrong Node version
+### Gateway shows an error instead of "listening"
 
-```bash
-node --version              # must say ≥ 22
-# If too old:
-curl -fsSL https://fnm.vercel.app/install | bash
+```
+nexusclaw doctor --fix
+```
+
+This automatically diagnoses and fixes the most common problems.
+
+### Node version is too old
+
+```
+node --version
+```
+
+If it shows a number below 22:
+
+```
+source ~/.bashrc
 fnm install 22
 fnm use 22
 ```
 
-### Port 19789 is already in use
-
-```bash
-# Pick a different port:
-nexusclaw gateway stop
-nexusclaw config set gateway.port 19790
-nexusclaw gateway start
-```
+Restart your Terminal and try again.
 
 ---
 
-## 🎛 Skills — what's included
+## 📁 Where everything lives
 
-No extra install needed. These are baked in:
+NexusClaw stores its files in a hidden folder called `.nexusclaw` in your home directory.
 
-| Category | Skills |
-|---------|--------|
-| 💬 Messaging | iMessage, WhatsApp, Telegram, Discord, Slack, SMS |
-| 🗓️ Productivity | Apple Reminders, Things 3, Google Calendar, Notion |
-| 🔍 Search | Web search, Brave, DuckDuckGo, Exa |
-| 🎨 Generation | Image creation (DALL·E, ComfyUI, Replicate) |
-| 🔐 Security | Healthcheck, node connect, SSH tools |
-| 📊 Crypto | SOLHUNTER trading bot, Jupiter swap, token analysis |
-| 🖥️ System | Tmux, Apple Notes, Bear, Obsidian, GitHub |
-| 🗣️ Voice | ElevenLabs TTS, Whisper STT, voice calls |
+```
+~/.nexusclaw/
+```
 
-Browse all skills: `clawhub search` or visit [clawhub.com](https://clawhub.com)
+To see it in your file browser (Finder on macOS, Files on Linux):
+- macOS: Press `Cmd + Shift + .` in Finder
+- Linux: Press `Ctrl + H`
+
+Inside `.nexusclaw/` you'll find:
+
+| Folder | What it is |
+|--------|-----------|
+| `config/` | Your gateway settings |
+| `workspace/` | NexusClaw's working files and memory |
+| `library/` | Cached code libraries |
+
+The most important files in `workspace/`:
+
+| File | What it is |
+|------|-----------|
+| `SOUL.md` | NexusClaw's identity and personality |
+| `MEMORY.md` | Everything NexusClaw remembers long-term |
+| `memory/` | Daily logs of what happened |
 
 ---
 
 ## 🔄 Updating NexusClaw
 
-```bash
+NexusClaw improves regularly. To update:
+
+```
 cd ~/nexusclaw
-git pull                    # pull latest from GitHub
-pnpm install               # install any new dependencies
-pnpm build && pnpm ui:build # rebuild
-nexusclaw gateway restart   # restart to pick up new code
+git pull
+pnpm install
+pnpm build && pnpm ui:build
+nexusclaw gateway restart
 ```
 
 ---
 
-## 💾 Where everything lives
+## 🆘 Still stuck?
 
 ```
-~/.nexusclaw/
-├── config/            # your gateway config
-├── workspace/         # your agent's working directory
-│   ├── SOUL.md       # your agent's identity
-│   ├── MEMORY.md     # long-term memory
-│   ├── memory/       # daily logs + experiences
-│   └── skills/       # installed skills
-├── library/           # code library cache
-└── state/            # gateway state
+nexusclaw help
+nexusclaw doctor --fix
 ```
 
----
-
-## 🆘 Getting help
-
-```bash
-nexusclaw help                    # full command reference
-nexusclaw doctor --fix            # diagnose + fix issues
-nexusclaw config set -h           # config options
-```
-
-Or open an issue at [github.com/greench-ai/nexusclaw](https://github.com/greench-ai/nexusclaw)
+Or open an issue at: [github.com/greench-ai/nexusclaw/issues](https://github.com/greench-ai/nexusclaw/issues)
 
 ---
 
