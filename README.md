@@ -1,6 +1,14 @@
-# NexusClaw — Personal AI Gateway
+# ⚡ NexusClaw
 
-> Built on [OpenClaw](https://github.com/openclaw/openclaw) · MIT License
+```
+███████╗██╗     ███████╗██╗  ██╗
+██╔════╝██║     ██╔════╝╚██╗██╔╝
+█████╗  ██║     █████╗   ╚███╔╝ 
+██╔══╝  ██║     ██╔══╝   ██╔██╗ 
+███████╗███████╗███████╗██╔╝ ██╗
+╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
+```
+**Personal AI Gateway** · Built on [OpenClaw](https://github.com/openclaw/openclaw) · MIT License
 
 NexusClaw is a private, full-featured fork of OpenClaw — rebranded, extended, and packaged for personal use across any machine.
 
@@ -25,23 +33,22 @@ NexusClaw is a private, full-featured fork of OpenClaw — rebranded, extended, 
 
 ## Quick Start
 
-### Native (recommended)
+> **Full install guide:** [docs/INSTALL-GUIDE.md](docs/INSTALL-GUIDE.md) — step-by-step with screenshots and troubleshooting.
+
+### One-liner
 
 ```bash
-# Clone and install
-git clone https://github.com/greench/nexusclaw.git
-cd nexusclaw
-bash install.sh --daemon
-
-# Start
-nexusclaw gateway
+curl -sSL https://raw.githubusercontent.com/greench-ai/nexusclaw/main/install.sh | bash
 ```
 
-### One-liner (from release)
+Everything installs and the gateway starts automatically.
+
+### Manual
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/greench/nexusclaw/main/install.sh | bash
-nexusclaw onboard --install-daemon
+git clone https://github.com/greench/nexusclaw.git
+cd nexusclaw
+bash install.sh
 ```
 
 ### Docker
