@@ -1,10 +1,10 @@
 # NexusClaw — Install Guide
 
-**Difficulty:** Beginner  
-**Time:** 15–20 minutes  
-**Computer:** Linux, macOS, or Windows (WSL2)
+**Difficulty:** Beginner · **Time:** 15–20 minutes · **OS:** Linux, macOS, Windows (WSL2)
 
-> **Based on [OpenClaw](https://github.com/openclaw/openclaw)** — NexusClaw is a personal fork of OpenClaw, extended with EvoClaw memory, 60+ bundled skills, and 10 UI themes. All the power of OpenClaw, ready to go.
+> **Based on [OpenClaw](https://github.com/openclaw/openclaw)** — NexusClaw is a personal fork of OpenClaw, extended with EvoClaw memory, 60+ bundled skills, and 10 UI themes.
+>
+> **Download this guide:** [raw file](https://raw.githubusercontent.com/greench-ai/nexusclaw/main/docs/INSTALL-GUIDE.md) · Right-click → Save As
 
 ---
 
@@ -24,28 +24,7 @@ Your API key (which powers the AI) stays on your machine. Nothing private is eve
 
 ---
 
-## Step 1 — Automatic Setup (Fastest)
-
-NexusClaw has a built-in setup wizard. Run this and follow the prompts:
-
-```
-nexusclaw onboard
-```
-
-This will automatically:
-
-- Check your system for Node.js and Git
-- Download NexusClaw from GitHub
-- Build everything
-- Ask for your API key
-- Start the Gateway
-- Print your dashboard URL
-
-If `nexusclaw` is not recognised yet, follow Steps 2–4 first, then come back and run `nexusclaw onboard`.
-
----
-
-## Step 2 — Get a Terminal
+## Step 1 — Get a Terminal
 
 The Terminal is a text-based way to talk to your computer. It's faster than pointing and clicking, and some things can only be done here.
 
@@ -299,7 +278,7 @@ Press Enter. NexusClaw will respond.
 
 ## How to know everything is working
 
-Run these three commands:
+Run these three commands to verify:
 
 ```
 nexusclaw --version
@@ -384,6 +363,18 @@ The most important files in `workspace/`:
 | `SOUL.md` | NexusClaw's identity and personality |
 | `MEMORY.md` | Everything NexusClaw remembers long-term |
 | `memory/` | Daily logs of what happened |
+
+---
+
+## Configure NexusClaw
+
+Once NexusClaw is installed and the Gateway is running, run this to set up your preferences:
+
+```
+nexusclaw onboard
+```
+
+This walks you through choosing your AI provider, setting your name, and other configuration options. You only need to do this once.
 
 ---
 
