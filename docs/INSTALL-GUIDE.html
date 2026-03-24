@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusClaw - Install Guide</title>
+<style>
+
+body { font-family: 'Inter', -apple-system, sans-serif; background: #0a0a0f; color: #e8e8f0; line-height: 1.7; padding: 0 24px 80px; max-width: 840px; margin: 0 auto; }
+h1 { font-size: 2rem; margin: 32px 0 16px; color: #fff; }
+h2 { font-size: 1.4rem; margin: 28px 0 12px; color: #e8e8f0; border-bottom: 1px solid #22222e; padding-bottom: 8px; }
+h3 { font-size: 1.1rem; margin: 20px 0 8px; color: #b0b0c0; }
+p { margin: 8px 0; color: #8888a0; }
+blockquote { background: rgba(108,99,255,0.08); border-left: 3px solid #6c63ff; padding: 10px 16px; margin: 12px 0; color: #8888a0; }
+li { color: #8888a0; margin: 4px 0; }
+pre { background: #0d0d14; border: 1px solid #22222e; border-radius: 11px; padding: 18px 22px; overflow-x: auto; margin: 14px 0 18px; }
+pre code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.75; color: #e2e2f0; display: block; }
+code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: #18181f; border: 1px solid #22222e; color: #00d4aa; padding: 2px 7px; border-radius: 5px; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+th { background: #18181f; padding: 10px 14px; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8888a0; border-bottom: 1px solid #22222e; }
+td { padding: 10px 14px; border-bottom: 1px solid #22222e; color: #8888a0; }
+hr { border: none; border-top: 1px solid #22222e; margin: 32px 0; }
+.download-banner { background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(0,212,170,0.06)); border: 1px solid rgba(108,99,255,0.2); border-radius: 12px; padding: 20px 24px; margin: 28px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.download-banner-text { color: #8888a0; font-size: 0.9rem; }
+.download-banner-text strong { color: #e8e8f0; }
+.download-btn { display: inline-flex; align-items: center; gap: 8px; background: #6c63ff; color: #fff; text-decoration: none; font-weight: 600; font-size: 0.875rem; padding: 10px 20px; border-radius: 10px; transition: all 0.2s; }
+.download-btn:hover { background: #7c73ff; transform: translateY(-1px); }
+a { color: #00d4aa; }
+
+</style>
+</head>
+<body>
+<div class="download-banner">
+<div class="download-banner-text"><strong>Download this guide</strong> - save it, share it, or print it.</div>
+<a href="INSTALL-GUIDE.md" download class="download-btn">
+<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 2v8M4.5 7l3 3 3-3M2 12h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+Download .md
+</a>
+</div>
+<h1>⚡ NexusClaw — Install Guide</h1>
+<tr><td></td><td></td></tr>
+<tr><td>**Difficulty**</td><td>Beginner</td></tr>
+<tr><td>**Time**</td><td>15–20 minutes</td></tr>
+<tr><td>**OS**</td><td>Linux · macOS · Windows (WSL2)</td></tr>
+<tr><td>**Based on**</td><td>[OpenClaw](https://github.com/openclaw/openclaw)</td></tr>
+<blockquote>NexusClaw is a personal fork of OpenClaw, extended with EvoClaw memory, 60+ bundled skills, and 10 UI themes. All the power of OpenClaw, ready to go.</blockquote>
+<p>></p>
+<blockquote>**Download this guide:** [raw file](https://raw.githubusercontent.com/greench-ai/nexusclaw/main/docs/INSTALL-GUIDE.md) · Right-click the link → Save As</blockquote>
+<hr>
+<h2>📋 Table of Contents</h2>
+<li>[Get a Terminal](#1--get-a-terminal)</li>
+<li>[Install Git](#3--install-git)</li>
+<li>[Install Node.js](#4--install-nodejs)</li>
+<li>[Install pnpm](#5--install-pnpm)</li>
+<li>[Download NexusClaw](#6--download-nexusclaw)</li>
+<li>[Install all the code](#7--install-all-the-code)</li>
+<li>[Build NexusClaw](#8--build-nexusclaw)</li>
+<li>[Create the nexusclaw command](#9--create-the-nexusclaw-command)</li>
+<li>[Get an Anthropic API key](#10--get-an-anthropic-api-key)</li>
+<li>[Start the Gateway](#11--start-the-gateway)</li>
+<li>[Open the Control Dashboard](#12--open-the-control-dashboard)</li>
+<li>[Say hello](#13--say-hello)</li>
+<li>[Configure NexusClaw](#configure-nexusclaw)</li>
+<li>[Troubleshooting](#if-something-goes-wrong)</li>
+<hr>
+<h2>🤖 What is NexusClaw?</h2>
+<p>NexusClaw is an AI assistant that runs on your own computer. It can:</p>
+<li>Search the web and read websites for you</li>
+<li>Manage your files and code</li>
+<li>Send messages through WhatsApp, Telegram, Discord, iMessage</li>
+<li>Track your calendar and to-do lists</li>
+<li>Trade crypto automatically</li>
+<li>Remember everything across conversations</li>
+<li>And 60+ other things</li>
+<p>Your API key (which powers the AI) stays on your machine. Nothing private is ever sent anywhere you don't control.</p>
+<hr>
+<h2>🖥️ Step 1 — Get a Terminal</h2>
+<p>The Terminal is a text-based way to talk to your computer. It's faster than pointing and clicking, and some things can only be done here.</p>
+<p><strong>On macOS:</strong></p>
+<p>Press <code>Command + Space</code>, type <code>Terminal</code>, press Enter.</p>
+<p><strong>On Linux:</strong></p>
+<p>Press <code>Ctrl + Alt + T</code>. Or right-click the desktop and choose <strong>Open Terminal</strong>.</p>
+<p><strong>On Windows (WSL2):</strong></p>
+<p>WSL2 lets you run Linux inside Windows — free and straightforward.</p>
+<li>Open PowerShell as Administrator (right-click the Start button → **Terminal (Admin)**)</li>
+<li>Paste this and press Enter:</li>
+<pre><code class="lang-">
+   wsl --install
+</code></pre>
+<li>Restart your computer when asked.</li>
+<li>After restarting, search for `Ubuntu` in the Start menu and press Enter.</li>
+<li>You&#x27;ll be asked to create a username and password. Type them in. This is your Linux terminal.</li>
+<hr>
+<h2>📦 Step 3 — Install Git</h2>
+<p>Git is a tool that downloads code from the internet. You need it to get NexusClaw.</p>
+<p>In your Terminal, paste this and press Enter:</p>
+<pre><code class="lang-">
+sudo apt update &amp;&amp; sudo apt install git -y
+</code></pre>
+<p>You may be asked for your password. Type it and press Enter. You won't see the characters as you type — that's normal.</p>
+<hr>
+<h2>⚙️ Step 4 — Install Node.js</h2>
+<p>Node.js is the engine that runs NexusClaw. You need version 22 or higher.</p>
+<p>Paste this and press Enter:</p>
+<pre><code class="lang-">
+curl -fsSL https://fnm.vercel.app/install | bash
+</code></pre>
+<p>When it finishes, paste these two commands, one at a time:</p>
+<pre><code class="lang-">
+source ~/.bashrc
+</code></pre>
+<pre><code class="lang-">
+fnm install 22 &amp;&amp; fnm use 22
+</code></pre>
+<p>Check it worked:</p>
+<pre><code class="lang-">
+node --version
+</code></pre>
+<p>You should see a number like <code>v22.x.x</code>. If it starts with a number lower than 22, restart the Terminal and try again.</p>
+<hr>
+<h2>📦 Step 5 — Install pnpm</h2>
+<p>pnpm is a package manager. It handles all the tiny pieces of code NexusClaw needs.</p>
+<pre><code class="lang-">
+npm install -g pnpm
+</code></pre>
+<hr>
+<h2>⬇️ Step 6 — Download NexusClaw</h2>
+<p>Go to your home folder and download NexusClaw from GitHub:</p>
+<pre><code class="lang-">
+cd ~
+git clone https://github.com/greench-ai/nexusclaw.git
+</code></pre>
+<p>This creates a new folder called <code>nexusclaw</code> in your home directory.</p>
+<p>Enter the folder:</p>
+<pre><code class="lang-">
+cd nexusclaw
+</code></pre>
+<hr>
+<h2>📥 Step 7 — Install all the code</h2>
+<p>NexusClaw needs a bunch of extra code pieces to work. This installs them all at once:</p>
+<pre><code class="lang-">
+pnpm install --no-frozen-lockfile
+</code></pre>
+<p>This takes 2–5 minutes. Wait for the prompt to come back before continuing.</p>
+<hr>
+<h2>🔨 Step 8 — Build NexusClaw</h2>
+<p>"Building" turns the raw code into something your computer can actually run.</p>
+<pre><code class="lang-">
+pnpm build &amp;&amp; pnpm ui:build
+</code></pre>
+<p>This also takes a few minutes. Wait for the prompt.</p>
+<hr>
+<h2>⚡ Step 9 — Create the nexusclaw command</h2>
+<p>Right now NexusClaw only works inside the <code>nexusclaw</code> folder. We want to be able to type <code>nexusclaw</code> from anywhere.</p>
+<p>First, create a shortcuts folder:</p>
+<pre><code class="lang-">
+mkdir -p ~/bin
+</code></pre>
+<p>Then create the shortcut:</p>
+<pre><code class="lang-">
+cat &gt; ~/bin/nexusclaw &lt;&lt; &#x27;EOF&#x27;
+#!/bin/bash
+exec node /home/$USER/nexusclaw/nexusclaw.mjs &quot;$@&quot;
+EOF
+</code></pre>
+<p>Make it runnable:</p>
+<pre><code class="lang-">
+chmod +x ~/bin/nexusclaw
+</code></pre>
+<p>Add the folder to your path (so your computer knows where to find the command):</p>
+<pre><code class="lang-">
+echo &#x27;export PATH=&quot;$HOME/bin:$PATH&quot;&#x27; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+<p>Test it:</p>
+<pre><code class="lang-">
+nexusclaw --version
+</code></pre>
+<p>You should see: <code>NexusClaw 1.0.0 (...)</code></p>
+<hr>
+<h2>🔑 Step 10 — Get an Anthropic API key</h2>
+<p>NexusClaw needs an API key to talk to the AI. This key is yours and stays on your machine.</p>
+<li>Go to [console.anthropic.com](https://console.anthropic.com) and create a free account</li>
+<li>Click **API Keys** in the left sidebar</li>
+<li>Click **Create Key**</li>
+<li>Copy the key (Ctrl+A then Ctrl+C)</li>
+<li>Back in the Terminal, paste:</li>
+<pre><code class="lang-">
+nexusclaw secrets configure
+</code></pre>
+<li>Paste your API key when asked</li>
+<li>Press Enter</li>
+<p>Your key is saved locally and will only ever be sent directly to Anthropic's servers.</p>
+<hr>
+<h2>🚀 Step 11 — Start the Gateway</h2>
+<p>The Gateway is the engine that makes NexusClaw work. It's like turning on your computer — you only need to do this once.</p>
+<p>Install it as a background service:</p>
+<pre><code class="lang-">
+nexusclaw gateway install
+</code></pre>
+<p>Start it now:</p>
+<pre><code class="lang-">
+nexusclaw gateway start
+</code></pre>
+<p>Check it's running:</p>
+<pre><code class="lang-">
+nexusclaw gateway status
+</code></pre>
+<p>You should see: <code>listening on 19789</code></p>
+<p>After this, the Gateway will start automatically every time you turn on your computer.</p>
+<hr>
+<h2>🌐 Step 12 — Open the Control Dashboard</h2>
+<p>The Dashboard is a website that lets you chat with NexusClaw in your browser.</p>
+<p>Tell NexusClaw to open it:</p>
+<pre><code class="lang-">
+nexusclaw dashboard
+</code></pre>
+<p>Then open your browser and go to:</p>
+<pre><code class="lang-">
+http://localhost:19789
+</code></pre>
+<p>You'll see a login screen. To get your token, run:</p>
+<pre><code class="lang-">
+nexusclaw gateway status
+</code></pre>
+<p>Look for the line that says <code>token=</code>. Copy everything after the <code>=</code> sign. Paste it into the login screen in your browser.</p>
+<p>You should now see the NexusClaw interface.</p>
+<hr>
+<h2>👋 Step 13 — Say hello</h2>
+<p>Click the chat box at the bottom and type:</p>
+<pre><code class="lang-">
+Hello, what&#x27;s your name?
+</code></pre>
+<p>Press Enter. NexusClaw will respond.</p>
+<hr>
+<h2>✅ How to know everything is working</h2>
+<p>Run these three commands to verify:</p>
+<pre><code class="lang-">
+nexusclaw --version
+</code></pre>
+<p>Should say: <code>NexusClaw 1.0.0 (...)</code></p>
+<pre><code class="lang-">
+nexusclaw gateway status
+</code></pre>
+<p>Should say: <code>listening on 19789</code></p>
+<pre><code class="lang-">
+nexusclaw cron list
+</code></pre>
+<p>Should show 3 jobs running (evoclaw-heartbeat, memory-save, library-update)</p>
+<hr>
+<h2>🔧 If something goes wrong</h2>
+<p><strong>"nexusclaw: command not found"</strong></p>
+<p>Your computer does not know where the command is. Run:</p>
+<pre><code class="lang-">
+export PATH=&quot;$HOME/bin:$PATH&quot;
+</code></pre>
+<p>Then try <code>nexusclaw --version</code> again. If it works, make it permanent:</p>
+<pre><code class="lang-">
+echo &#x27;export PATH=&quot;$HOME/bin:$PATH&quot;&#x27; &gt;&gt; ~/.bashrc
+</code></pre>
+<p><strong>Gateway shows an error instead of "listening"</strong></p>
+<pre><code class="lang-">
+nexusclaw doctor --fix
+</code></pre>
+<p>This automatically diagnoses and fixes the most common problems.</p>
+<p><strong>Node version is too old</strong></p>
+<pre><code class="lang-">
+node --version
+</code></pre>
+<p>If it shows a number below 22:</p>
+<pre><code class="lang-">
+source ~/.bashrc
+fnm install 22
+fnm use 22
+</code></pre>
+<p>Restart your Terminal and try again.</p>
+<hr>
+<h2>📁 Where everything lives</h2>
+<p>NexusClaw stores its files in a hidden folder called <code>.nexusclaw</code> in your home directory.</p>
+<p>To see hidden folders in your file browser:</p>
+<li>**macOS:** Press `Cmd + Shift + .` in Finder</li>
+<li>**Linux:** Press `Ctrl + H`</li>
+<p>Inside <code>~/.nexusclaw/</code>:</p>
+<tr><td>Folder</td><td>What it is</td></tr>
+<tr><td>`config/`</td><td>Your gateway settings</td></tr>
+<tr><td>`workspace/`</td><td>NexusClaw&#x27;s working files and memory</td></tr>
+<tr><td>`library/`</td><td>Cached code libraries</td></tr>
+<p>The most important files in <code>workspace/</code>:</p>
+<tr><td>File</td><td>What it is</td></tr>
+<tr><td>`SOUL.md`</td><td>NexusClaw&#x27;s identity and personality</td></tr>
+<tr><td>`MEMORY.md`</td><td>Everything NexusClaw remembers long-term</td></tr>
+<tr><td>`memory/`</td><td>Daily logs of what happened</td></tr>
+<hr>
+<h2>⚙️ Configure NexusClaw</h2>
+<p>Once NexusClaw is installed and the Gateway is running, run this to set up your preferences:</p>
+<pre><code class="lang-">
+nexusclaw onboard
+</code></pre>
+<p>This walks you through choosing your AI provider, setting your name, and other configuration options. You only need to do this once.</p>
+<hr>
+<h2>🔄 Updating NexusClaw</h2>
+<p>NexusClaw improves regularly. To update:</p>
+<pre><code class="lang-">
+cd ~/nexusclaw
+git pull
+pnpm install
+pnpm build &amp;&amp; pnpm ui:build
+nexusclaw gateway restart
+</code></pre>
+<hr>
+<h2>🆘 Still stuck?</h2>
+<pre><code class="lang-">
+nexusclaw help
+nexusclaw doctor --fix
+</code></pre>
+<p>Or open an issue at: <a href="https://github.com/greench-ai/nexusclaw/issues">github.com/greench-ai/nexusclaw/issues</a></p>
+<hr>
+<p><em>NexusClaw. Your agent. Your machine. Your rules.</em></p>
+</body>
+</html>
