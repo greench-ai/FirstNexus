@@ -458,9 +458,20 @@ main() {
   if [ "$RUN_ONBOARD" = 1 ]; then
     echo ""
     info "Starting NexusClaw onboarding..."
-    sleep 2
+    echo ""
+    echo "  ⚠️  Onboarding needs a real terminal (ssh -t or GUI terminal)."
+    echo "  After this finishes, open a proper terminal and run:"
+    echo ""
+    echo "    source ~/.bashrc && nexusclaw onboard"
+    echo ""
+    echo "  Or pass all flags for fully non-interactive:"
+    echo "    nexusclaw onboard --non-interactive --accept-risk \"
+    echo "      --auth-choice openrouter-api-key \"
+    echo "      --openrouter-api-key YOUR_KEY --skip-channels"
+    echo ""
+    sleep 3
     cd "$INSTALL_DIR"
-    exec "$BIN_DIR/nexusclaw" onboard
+    NODE_NO_WARNINGS=1 "$BIN_DIR/nexusclaw" onboard --skip-health --skip-skills 2>&1 || true
   fi
 }
 
