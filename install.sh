@@ -454,24 +454,28 @@ main() {
   setup_cron
   print_summary
 
-  # Start onboard — interactive first-run config
+  # Run onboard non-interactively if API key was provided, otherwise skip
   if [ "$RUN_ONBOARD" = 1 ]; then
     echo ""
-    info "Starting NexusClaw onboarding..."
-    echo ""
-    echo "  ⚠️  Onboarding needs a real terminal (ssh -t or GUI terminal)."
-    echo "  After this finishes, open a proper terminal and run:"
-    echo ""
-    echo "    source ~/.bashrc && nexusclaw onboard"
-    echo ""
-    echo "  Or pass all flags for fully non-interactive:"
-    echo "    nexusclaw onboard --non-interactive --accept-risk \"
-    echo "      --auth-choice openrouter-api-key \"
-    echo "      --openrouter-api-key YOUR_KEY --skip-channels"
-    echo ""
-    sleep 3
-    cd "$INSTALL_DIR"
-    NODE_NO_WARNINGS=1 "$BIN_DIR/nexusclaw" onboard --skip-health --skip-skills 2>&1 || true
+    if [ -n "$API_KEY" ]; then
+      info "Running NexusClaw onboarding (non-interactive)..."
+      cd "$INSTALL_DIR"
+      NODE_NO_WARNINGS=1 "$BIN_DIR/nexusclaw" onboard \
+        --non-interactive --accept-risk \
+        --auth-choice openrouter-api-key \
+        --openrouter-api-key "$API_KEY" \
+        --skip-channels --skip-search --skip-skills --skip-ui 2>&1 \
+        && success "Onboarding complete!" \
+        || warn "Onboarding had issues — run 'nexusclaw onboard' manually if needed"
+    else
+      info "Skipping onboard (no API key provided)."
+      echo "  After install, configure manually with:"
+      echo "    nexusclaw onboard"
+      echo "  Or non-interactively:"
+      echo "    nexusclaw onboard --non-interactive --accept-risk \\"
+      echo "      --auth-choice openrouter-api-key \\"
+      echo "      --openrouter-api-key YOUR_KEY"
+    fi
   fi
 }
 
