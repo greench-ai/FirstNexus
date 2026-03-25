@@ -444,38 +444,32 @@ main() {
   build
   install_binary
   setup_config
-
-  if [ "$SKIP_API_KEY" = 1 ] || [ -n "$API_KEY" ]; then
-    [ -n "$API_KEY" ] && export ANTHROPIC_API_KEY="$API_KEY"
-  fi
-  setup_api_key
-
   setup_service
   setup_cron
   print_summary
 
-  # Run onboard non-interactively if API key was provided, otherwise skip
-  if [ "$RUN_ONBOARD" = 1 ]; then
+  # Onboard requires a real TTY — pipe/SSH without -t doesn't have one
+  # Detect TTY and act accordingly
+  echo ""
+  if [ -t 0 ] && [ -t 1 ]; then
+    # Real TTY — safe to run onboard interactively
+    info "Launching NexusClaw onboarding..."
     echo ""
-    if [ -n "$API_KEY" ]; then
-      info "Running NexusClaw onboarding (non-interactive)..."
-      cd "$INSTALL_DIR"
-      NODE_NO_WARNINGS=1 "$BIN_DIR/nexusclaw" onboard \
-        --non-interactive --accept-risk \
-        --auth-choice openrouter-api-key \
-        --openrouter-api-key "$API_KEY" \
-        --skip-channels --skip-search --skip-skills --skip-ui 2>&1 \
-        && success "Onboarding complete!" \
-        || warn "Onboarding had issues — run 'nexusclaw onboard' manually if needed"
-    else
-      info "Skipping onboard (no API key provided)."
-      echo "  After install, configure manually with:"
-      echo "    nexusclaw onboard"
-      echo "  Or non-interactively:"
-      echo "    nexusclaw onboard --non-interactive --accept-risk \\"
-      echo "      --auth-choice openrouter-api-key \\"
-      echo "      --openrouter-api-key YOUR_KEY"
-    fi
+    cd "$INSTALL_DIR"
+    exec "$BIN_DIR/nexusclaw" onboard
+  else
+    # No TTY (piped or SSH without -t) — install is done, onboard needs a real terminal
+    echo ""
+    echo -e "  ${BOLD}Installation complete!${NC}"
+    echo ""
+    echo -e "  ${YELLOW}⚠️  Onboarding requires a real terminal.${NC}"
+    echo ""
+    echo -e "  Reconnect with SSH -t to continue:"
+    echo -e "    ${BLUE}ssh -t $USER@$(hostname) 'source ~/.bashrc && nexusclaw onboard'${NC}"
+    echo ""
+    echo -e "  Or open a second terminal on this machine and run:"
+    echo -e "    ${BLUE}source ~/.bashrc && nexusclaw onboard${NC}"
+    echo ""
   fi
 }
 
