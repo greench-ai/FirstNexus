@@ -4,7 +4,8 @@
 # Usage: bash install.sh
 # ============================================================
 
-set -e
+# Don't use set -e — commands fail gracefully and we handle exit codes
+# set -e removed: sudo without password in piped install fails silently instead of aborting
 
 REPO="https://github.com/greench-ai/nexusclaw.git"
 INSTALL_DIR="$HOME/nexusclaw"
@@ -63,10 +64,15 @@ install_system_deps() {
 
     # Install based on package manager
     if [ "$PKG_MANAGER" = "apt" ]; then
-      info "Updating package list..."
-      sudo apt-get update -qq
-      info "Installing core packages: $CORE_PKGS"
-      sudo apt-get install -y -qq curl git build-essential python3 python3-pip ca-certificates
+      # Check if sudo works first
+      if ! sudo -n true 2>/dev/null; then
+        warn "sudo password required but not available in this shell"
+        warn "System deps may need manual install: $CORE_PKGS"
+        warn "Try running in a real terminal, or install deps manually before re-running"
+      else
+        info "Installing core packages: $CORE_PKGS"
+        sudo apt-get install -y -qq curl git build-essential python3 python3-pip ca-certificates
+      fi
     elif [ "$PKG_MANAGER" = "dnf" ] || [ "$PKG_MANAGER" = "yum" ]; then
       sudo $PKG_MANAGER install -y curl git gcc gcc-c++ make python3 python3-pip ca-certificates
     elif [ "$PKG_MANAGER" = "pacman" ]; then
@@ -114,10 +120,15 @@ install_system_deps() {
     echo ""
     warn "Optional tools missing: ${MISSING_OPTIONAL[*]}"
     if [ "$OS_FAMILY" = "linux" ] && [ "$PKG_MANAGER" = "apt" ]; then
-      read -rp "  Install optional tools now? [y/N]: " INSTALL_OPT
-      if [[ "$INSTALL_OPT" =~ ^[Yy]$ ]]; then
-        sudo apt-get install -y ffmpeg curl python3 2>/dev/null || true
+      if [ "$AUTO_YES" = 1 ] || [ ! -t 0 ]; then
+        sudo apt-get install -y ffmpeg python3 2>/dev/null || true
         success "Optional tools installed"
+      else
+        read -rp "  Install optional tools now? [y/N]: " INSTALL_OPT
+        if [[ "$INSTALL_OPT" =~ ^[Yy]$ ]]; then
+          sudo apt-get install -y ffmpeg python3 2>/dev/null || true
+          success "Optional tools installed"
+        fi
       fi
     fi
   fi
@@ -287,6 +298,7 @@ EOF
 setup_api_key() {
   header "API Key"
 
+  # Env var takes priority (set by --api-key=... in main)
   if [ -n "$ANTHROPIC_API_KEY" ]; then
     success "ANTHROPIC_API_KEY already set"
     return
@@ -402,8 +414,24 @@ main() {
   echo -e "${BOLD}  ⚔  NexusClaw Installer${NC}"
   echo ""
 
-  # Ask about system deps
-  if [ "$1" != "--no-system-deps" ]; then
+  # Non-interactive flags
+  AUTO_YES=0
+  SKIP_API_KEY=0
+  RUN_ONBOARD=1
+  for arg in "$@"; do
+    case "$arg" in
+      --yes|-y)          AUTO_YES=1 ;;
+      --api-key=*)       API_KEY="${arg#*=}" ;;
+      --skip-api-key)    SKIP_API_KEY=1 ;;
+      --no-onboard)      RUN_ONBOARD=0 ;;
+    esac
+  done
+
+  # Auto-yes: approve system deps + optional tools silently
+  if [ "$AUTO_YES" = 1 ] || [ ! -t 0 ]; then
+    export INSTALL_OPT=y AUTO_YES=$AUTO_YES
+    install_system_deps
+  else
     read -rp "  Install/verify system dependencies (requires sudo)? [Y/n]: " INSTALL_SYS
     if [[ ! "$INSTALL_SYS" =~ ^[Nn]$ ]]; then
       install_system_deps
@@ -416,10 +444,24 @@ main() {
   build
   install_binary
   setup_config
+
+  if [ "$SKIP_API_KEY" = 1 ] || [ -n "$API_KEY" ]; then
+    [ -n "$API_KEY" ] && export ANTHROPIC_API_KEY="$API_KEY"
+  fi
   setup_api_key
+
   setup_service
   setup_cron
   print_summary
+
+  # Start onboard — interactive first-run config
+  if [ "$RUN_ONBOARD" = 1 ]; then
+    echo ""
+    info "Starting NexusClaw onboarding..."
+    sleep 2
+    cd "$INSTALL_DIR"
+    exec "$BIN_DIR/nexusclaw" onboard
+  fi
 }
 
 main "$@"
