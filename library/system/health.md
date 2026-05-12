@@ -1,18 +1,29 @@
-# System Health
-> Last checked: 2026-03-23 00:04 CET
+# Health Check
 
-## Gateway
-- ✅ Running on port 19789 (loopback)
-- ✅ Config valid, no issues or warnings
-- ✅ Model: anthropic/claude-opus-4-6
+**Last updated:** 2026-05-12T16:04:00Z
 
-## Cron Health
-- ✅ memory-autosave: healthy (0 consecutive errors)
-- ⚠️ library-update: 2 consecutive errors
-- ❌ memory-save: 5 consecutive errors (channel config)
-- ❌ evoclaw-heartbeat: 6 consecutive errors (channel config)
+## Gateway Health
+
+| Check | Status |
+|-------|--------|
+| Service | ✅ Running (systemd) |
+| PID | 15298 |
+| RPC probe | ✅ ok |
+| Gateway bind | ✅ 127.0.0.1:19789 |
+
+## Cron Jobs
+
+| Job | Enabled | Consecutive Errors | Last Error |
+|-----|---------|-------------------|------------|
+| library-update | ✅ | 4 | HTTP 401: User not found |
+| evoclaw-heartbeat | ✅ | 8 | Channel is required |
+
+## Warnings
+
+1. **library-update delivery failing** — Cron job is running but announce delivery fails with auth error
+2. **evoclaw-heartbeat channel missing** — No delivery channel configured
 
 ## Recommendations
-1. **Critical:** Fix delivery channel on `memory-save` and `evoclaw-heartbeat` cron jobs — both have been failing consistently since creation. Either set `delivery.channel` explicitly or switch to `delivery.mode: "none"`.
-2. Monitor library-update — 2 consecutive errors, currently recovering.
-3. Consider whether memory-save (isolated) and memory-autosave (main session) are redundant.
+
+- For `library-update`: Check if `delivery.mode: "none"` would work, or fix authentication
+- For `evoclaw-heartbeat`: Set `delivery.channel` explicitly in cron job config

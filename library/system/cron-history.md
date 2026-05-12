@@ -1,6 +1,27 @@
 # Cron History
 > Append-only log of cron runs
 
+## 2026-05-12
+
+### 16:04 UTC — library-update
+- **Status:** ok (running)
+- **Previous run:** error @ 15:04 (auth error)
+- **Consecutive errors:** 4 → in progress
+
+### Active Cron Jobs Summary (as of 2026-05-12 16:04 UTC)
+| Job | Schedule | Last Status | Consecutive Errors |
+|-----|----------|-------------|-------------------|
+| library-update | `0 * * * *` | error | 4 |
+| evoclaw-heartbeat | `*/15 * * * *` | error | 8 |
+
+### ⚠️ Issues Detected
+- **library-update** failing with auth error (HTTP 401: User not found)
+  - Likely delivery/authentication issue with announce mode
+- **evoclaw-heartbeat** failing with: "Channel is required (no configured channels detected)"
+  - Fix: Set `delivery.channel` explicitly or use `delivery.mode: "none"`
+
+---
+
 ## 2026-03-23
 
 ### 00:04 CET — library-update
