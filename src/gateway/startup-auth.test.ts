@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { KNOWN_WEAK_GATEWAY_TOKEN_PLACEHOLDERS } from "./known-weak-gateway-secrets.js";
 import {
   assertGatewayAuthNotKnownWeak,
@@ -9,7 +9,7 @@ import {
 } from "./startup-auth.js";
 
 const mocks = vi.hoisted(() => ({
-  replaceConfigFile: vi.fn(async (_params: { nextConfig: NexisClawConfig }) => {}),
+  replaceConfigFile: vi.fn(async (_params: { nextConfig: FirstNexusConfig }) => {}),
 }));
 
 vi.mock("../config/mutate.js", () => ({
@@ -36,7 +36,7 @@ describe("mergeGatewayTailscaleConfig", () => {
 });
 
 describe("ensureGatewayStartupAuth", () => {
-  async function expectEphemeralGeneratedTokenWhenOverridden(cfg: NexisClawConfig) {
+  async function expectEphemeralGeneratedTokenWhenOverridden(cfg: FirstNexusConfig) {
     const result = await ensureGatewayStartupAuth({
       cfg,
       env: {} as NodeJS.ProcessEnv,
@@ -56,7 +56,7 @@ describe("ensureGatewayStartupAuth", () => {
     mocks.replaceConfigFile.mockClear();
   });
 
-  async function expectNoTokenGeneration(cfg: NexisClawConfig, mode: string) {
+  async function expectNoTokenGeneration(cfg: FirstNexusConfig, mode: string) {
     const result = await ensureGatewayStartupAuth({
       cfg,
       env: {} as NodeJS.ProcessEnv,
@@ -70,7 +70,7 @@ describe("ensureGatewayStartupAuth", () => {
   }
 
   async function expectResolvedToken(params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     env: NodeJS.ProcessEnv;
     expectedToken: string;
     expectedConfiguredToken?: unknown;
@@ -91,7 +91,7 @@ describe("ensureGatewayStartupAuth", () => {
     expect(mocks.replaceConfigFile).not.toHaveBeenCalled();
   }
 
-  function createMissingGatewayTokenSecretRefConfig(): NexisClawConfig {
+  function createMissingGatewayTokenSecretRefConfig(): FirstNexusConfig {
     return {
       gateway: {
         auth: {
@@ -292,7 +292,7 @@ describe("ensureGatewayStartupAuth", () => {
   });
 
   it("does not resolve gateway.auth.password SecretRef when token mode is explicit", async () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -346,7 +346,7 @@ describe("ensureGatewayStartupAuth", () => {
   });
 
   it("treats undefined token override as no override", async () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       gateway: {
         auth: {
           mode: "token",

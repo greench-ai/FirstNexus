@@ -24,7 +24,7 @@ const legacyRootExportNames = [
   "createTypingCallbacks",
   "createChannelReplyPipeline",
   "resolveChannelSourceReplyDeliveryMode",
-  "resolvePreferredNexisClawTmpDir",
+  "resolvePreferredFirstNexusTmpDir",
 ] as const;
 
 type EmptySchema = {
@@ -381,12 +381,12 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap["NexisClaw/plugin-sdk"]).toBe(rootAliasPath);
-    expect(aliasMap["@NexisClaw/plugin-sdk"]).toBe(rootAliasPath);
-    expect(aliasMap["NexisClaw/plugin-sdk/group-access"]).toContain(
+    expect(aliasMap["FirstNexus/plugin-sdk"]).toBe(rootAliasPath);
+    expect(aliasMap["@FirstNexus/plugin-sdk"]).toBe(rootAliasPath);
+    expect(aliasMap["FirstNexus/plugin-sdk/group-access"]).toContain(
       path.join("src", "plugin-sdk", "group-access.ts"),
     );
-    expect(aliasMap["@NexisClaw/plugin-sdk/group-access"]).toContain(
+    expect(aliasMap["@FirstNexus/plugin-sdk/group-access"]).toContain(
       path.join("src", "plugin-sdk", "group-access.ts"),
     );
   });
@@ -409,14 +409,14 @@ describe("plugin-sdk root alias", () => {
       (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>,
     );
     expect(aliasKeys).toEqual([
-      "NexisClaw/plugin-sdk/alpha",
-      "@NexisClaw/plugin-sdk/alpha",
-      "NexisClaw/plugin-sdk/group-access",
-      "@NexisClaw/plugin-sdk/group-access",
-      "NexisClaw/plugin-sdk/zeta",
-      "@NexisClaw/plugin-sdk/zeta",
-      "NexisClaw/plugin-sdk",
-      "@NexisClaw/plugin-sdk",
+      "FirstNexus/plugin-sdk/alpha",
+      "@FirstNexus/plugin-sdk/alpha",
+      "FirstNexus/plugin-sdk/group-access",
+      "@FirstNexus/plugin-sdk/group-access",
+      "FirstNexus/plugin-sdk/zeta",
+      "@FirstNexus/plugin-sdk/zeta",
+      "FirstNexus/plugin-sdk",
+      "@FirstNexus/plugin-sdk",
     ]);
   });
 
@@ -433,14 +433,14 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap["NexisClaw/plugin-sdk/qa-lab"]).toBe(
+    expect(aliasMap["FirstNexus/plugin-sdk/qa-lab"]).toBe(
       path.join(packageRoot, "src", "plugin-sdk", "qa-lab.ts"),
     );
-    expect(aliasMap["@NexisClaw/plugin-sdk/qa-lab"]).toBe(
+    expect(aliasMap["@FirstNexus/plugin-sdk/qa-lab"]).toBe(
       path.join(packageRoot, "src", "plugin-sdk", "qa-lab.ts"),
     );
-    expect(aliasMap).not.toHaveProperty("NexisClaw/plugin-sdk/../escape");
-    expect(aliasMap).not.toHaveProperty("NexisClaw/plugin-sdk/nested/path");
+    expect(aliasMap).not.toHaveProperty("FirstNexus/plugin-sdk/../escape");
+    expect(aliasMap).not.toHaveProperty("FirstNexus/plugin-sdk/nested/path");
   });
 
   it("keeps non-QA private local-only plugin-sdk subpaths out of the CJS root alias", () => {
@@ -462,9 +462,9 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap).not.toHaveProperty("NexisClaw/plugin-sdk/codex-native-task-runtime");
-    expect(aliasMap).not.toHaveProperty("@NexisClaw/plugin-sdk/codex-native-task-runtime");
-    expect(aliasMap).not.toHaveProperty("NexisClaw/plugin-sdk/qa-runtime");
+    expect(aliasMap).not.toHaveProperty("FirstNexus/plugin-sdk/codex-native-task-runtime");
+    expect(aliasMap).not.toHaveProperty("@FirstNexus/plugin-sdk/codex-native-task-runtime");
+    expect(aliasMap).not.toHaveProperty("FirstNexus/plugin-sdk/qa-runtime");
   });
 
   it("builds source plugin-sdk subpath aliases through the wider source extension family", () => {
@@ -481,10 +481,10 @@ describe("plugin-sdk root alias", () => {
 
     expect((lazyModule.moduleExports.slowHelper as () => string)()).toBe("loaded");
     const aliasMap = (lazyModule.createJitiOptions.at(-1)?.alias ?? {}) as Record<string, string>;
-    expect(aliasMap["NexisClaw/plugin-sdk/channel-runtime"]).toBe(
+    expect(aliasMap["FirstNexus/plugin-sdk/channel-runtime"]).toBe(
       path.join(packageRoot, "src", "plugin-sdk", "channel-runtime.mts"),
     );
-    expect(aliasMap["@NexisClaw/plugin-sdk/channel-runtime"]).toBe(
+    expect(aliasMap["@FirstNexus/plugin-sdk/channel-runtime"]).toBe(
       path.join(packageRoot, "src", "plugin-sdk", "channel-runtime.mts"),
     );
   });

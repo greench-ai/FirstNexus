@@ -1,8 +1,8 @@
-import { resolveAgentModelPrimaryValue } from "NexisClaw/plugin-sdk/provider-onboard";
+import { resolveAgentModelPrimaryValue } from "FirstNexus/plugin-sdk/provider-onboard";
 import {
   expectProviderOnboardMergedLegacyConfig,
   expectProviderOnboardPreservesPrimary,
-} from "NexisClaw/plugin-sdk/provider-test-contracts";
+} from "FirstNexus/plugin-sdk/provider-test-contracts";
 import { describe, expect, it } from "vitest";
 import { buildMinimaxApiModelDefinition } from "./model-definitions.js";
 import { applyMinimaxApiConfig, applyMinimaxApiProviderConfig } from "./onboard.js";

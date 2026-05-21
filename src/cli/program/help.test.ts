@@ -35,7 +35,7 @@ vi.mock("../../infra/git-commit.js", () => ({
 }));
 
 vi.mock("../cli-name.js", () => ({
-  resolveCliName: () => "NexisClaw",
+  resolveCliName: () => "FirstNexus",
   replaceCliName: (cmd: string) => cmd,
 }));
 
@@ -117,7 +117,7 @@ describe("configureProgramHelp", () => {
   }
 
   it("adds root help hint and marks commands with subcommands", () => {
-    process.argv = ["node", "NexisClaw", "--help"];
+    process.argv = ["node", "FirstNexus", "--help"];
     const program = makeProgramWithCommands();
     configureProgramHelp(program, testProgramContext);
 
@@ -129,7 +129,7 @@ describe("configureProgramHelp", () => {
   });
 
   it("includes banner and docs/examples in root help output", () => {
-    process.argv = ["node", "NexisClaw", "--help"];
+    process.argv = ["node", "FirstNexus", "--help"];
     const program = makeProgramWithCommands();
     configureProgramHelp(program, testProgramContext);
 
@@ -141,11 +141,11 @@ describe("configureProgramHelp", () => {
     expect(version).toBe(testProgramContext.programVersion);
     expect(options?.mode).toBe("default");
     expect(help).toContain("Examples:");
-    expect(help).toContain("https://docs.NexisClaw.ai/cli");
+    expect(help).toContain("https://docs.FirstNexus.ai/cli");
   });
 
   it("suppresses banner formatting when parent default help requests it", () => {
-    process.argv = ["node", "NexisClaw", "channels"];
+    process.argv = ["node", "FirstNexus", "channels"];
     process.env.NEXISCLAW_SUPPRESS_HELP_BANNER = "1";
     const program = makeProgramWithCommands();
     configureProgramHelp(program, testProgramContext);
@@ -156,13 +156,13 @@ describe("configureProgramHelp", () => {
   });
 
   it("prints version and exits immediately when version flags are present", () => {
-    process.argv = ["node", "NexisClaw", "--version"];
-    expectVersionExit({ expectedVersion: "NexisClaw 9.9.9-test (abc1234)" });
+    process.argv = ["node", "FirstNexus", "--version"];
+    expectVersionExit({ expectedVersion: "FirstNexus 9.9.9-test (abc1234)" });
   });
 
   it("prints version and exits immediately without commit metadata", () => {
-    process.argv = ["node", "NexisClaw", "--version"];
+    process.argv = ["node", "FirstNexus", "--version"];
     resolveCommitHashMock.mockReturnValue(null);
-    expectVersionExit({ expectedVersion: "NexisClaw 9.9.9-test" });
+    expectVersionExit({ expectedVersion: "FirstNexus 9.9.9-test" });
   });
 });

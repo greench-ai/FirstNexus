@@ -1,15 +1,15 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   coerceSecretRef,
   ensureAuthProfileStore,
   listProfilesForProvider,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveRequiredConfiguredSecretRefInputString } from "NexisClaw/plugin-sdk/secret-input-runtime";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveRequiredConfiguredSecretRefInputString } from "FirstNexus/plugin-sdk/secret-input-runtime";
 import { PROVIDER_ID } from "./models.js";
 
 export async function resolveFirstGithubToken(params: {
   agentDir?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
 }): Promise<{
   githubToken: string;

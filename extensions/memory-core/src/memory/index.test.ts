@@ -6,8 +6,8 @@ import {
   clearMemoryEmbeddingProviders as clearRegistry,
   listRegisteredMemoryEmbeddingProviderAdapters as listRegisteredAdapters,
   registerMemoryEmbeddingProvider as registerAdapter,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-embeddings";
-import { resolveSessionTranscriptsDirForAgent } from "NexisClaw/plugin-sdk/memory-core-host-runtime-core";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-embeddings";
+import { resolveSessionTranscriptsDirForAgent } from "FirstNexus/plugin-sdk/memory-core-host-runtime-core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import "./test-runtime-mocks.js";
 import type { MemoryIndexManager } from "./index.js";
@@ -158,7 +158,7 @@ describe("memory index", () => {
   const managersForCleanup = new Set<MemoryIndexManager>();
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-mem-fixtures-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-mem-fixtures-"));
     workspaceDir = path.join(fixtureRoot, "workspace");
     memoryDir = path.join(workspaceDir, "memory");
     indexMainPath = path.join(workspaceDir, "index-main.sqlite");

@@ -1,5 +1,5 @@
 ---
-summary: "Adds Fireworks model provider support to NexisClaw."
+summary: "Adds Fireworks model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the fireworks plugin
 title: "Fireworks plugin"
@@ -7,12 +7,12 @@ title: "Fireworks plugin"
 
 # Fireworks plugin
 
-Adds Fireworks model provider support to NexisClaw.
+Adds Fireworks model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/fireworks-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/fireworks-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

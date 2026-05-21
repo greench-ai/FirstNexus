@@ -1,9 +1,9 @@
 import type {
   ProviderResolveDynamicModelContext,
   ProviderRuntimeModel,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import { cloneFirstTemplateModel } from "NexisClaw/plugin-sdk/provider-model-shared";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import { cloneFirstTemplateModel } from "FirstNexus/plugin-sdk/provider-model-shared";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 const GOOGLE_GEMINI_CLI_PROVIDER_ID = "google-gemini-cli";
 const GOOGLE_ANTIGRAVITY_PROVIDER_ID = "google-antigravity";

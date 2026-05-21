@@ -38,7 +38,7 @@ async function writePluginFixture(params: {
     manifest.channels = params.channels;
   }
   await fs.writeFile(
-    path.join(params.dir, "NexisClaw.plugin.json"),
+    path.join(params.dir, "FirstNexus.plugin.json"),
     JSON.stringify(manifest, null, 2),
     "utf-8",
   );
@@ -130,7 +130,7 @@ describe("config plugin validation", () => {
     ({
       HOME: suiteHome,
       NEXISCLAW_HOME: undefined,
-      NEXISCLAW_STATE_DIR: path.join(suiteHome, ".NexisClaw"),
+      NEXISCLAW_STATE_DIR: path.join(suiteHome, ".FirstNexus"),
       NEXISCLAW_BUNDLED_PLUGINS_DIR: undefined,
       NEXISCLAW_VERSION: undefined,
       VITEST: "true",
@@ -152,7 +152,7 @@ describe("config plugin validation", () => {
     });
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-config-plugin-validation-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-config-plugin-validation-"));
     await chmodSafeDir(fixtureRoot);
     suiteHome = path.join(fixtureRoot, "home");
     await mkdirSafe(suiteHome);
@@ -223,7 +223,7 @@ describe("config plugin validation", () => {
       process.cwd(),
       "extensions",
       "voice-call",
-      "NexisClaw.plugin.json",
+      "FirstNexus.plugin.json",
     );
     const voiceCallManifest = JSON.parse(await fs.readFile(voiceCallManifestPath, "utf-8")) as {
       configSchema?: Record<string, unknown>;
@@ -316,7 +316,7 @@ describe("config plugin validation", () => {
 
     expect(res.ok).toBe(true);
     const message =
-      "plugin not installed: brave — install the official external plugin with: NexisClaw plugins install @NexisClaw/brave-plugin";
+      "plugin not installed: brave — install the official external plugin with: FirstNexus plugins install @FirstNexus/brave-plugin";
     expectPathMessage(res.warnings, "plugins.entries.brave", message);
     expectPathMessage(res.warnings, "plugins.allow", message);
     expect(
@@ -494,7 +494,7 @@ describe("config plugin validation", () => {
     expect(res.warnings).toContainEqual({
       path: "channels.missing-chat",
       message:
-        "unknown channel id: missing-chat (stale channel plugin config ignored; run NexisClaw doctor --fix to remove stale config, or install the plugin)",
+        "unknown channel id: missing-chat (stale channel plugin config ignored; run FirstNexus doctor --fix to remove stale config, or install the plugin)",
     });
     expect(res.warnings).toContainEqual({
       path: "plugins.allow",
@@ -556,12 +556,17 @@ describe("config plugin validation", () => {
     expect(res.warnings ?? []).toContainEqual({
       path: "plugins.allow",
       message:
-        "plugin not installed: discord — install the official external plugin with: NexisClaw plugins install @NexisClaw/discord",
+        "plugin not installed: discord — install the official external plugin with: FirstNexus plugins install @FirstNexus/discord",
     });
   });
 
   it("uses persisted installed-plugin records as stale channel evidence", async () => {
-    const installedPluginIndexPath = path.join(suiteHome, ".NexisClaw", "plugins", "installs.json");
+    const installedPluginIndexPath = path.join(
+      suiteHome,
+      ".FirstNexus",
+      "plugins",
+      "installs.json",
+    );
     await mkdirSafe(path.dirname(installedPluginIndexPath));
     await fs.writeFile(
       installedPluginIndexPath,
@@ -596,7 +601,7 @@ describe("config plugin validation", () => {
       expect(res.warnings).toContainEqual({
         path: "channels.missing-sms",
         message:
-          "unknown channel id: missing-sms (stale channel plugin config ignored; run NexisClaw doctor --fix to remove stale config, or install the plugin)",
+          "unknown channel id: missing-sms (stale channel plugin config ignored; run FirstNexus doctor --fix to remove stale config, or install the plugin)",
       });
     } finally {
       await fs.rm(installedPluginIndexPath, { force: true });

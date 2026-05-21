@@ -1,13 +1,13 @@
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/channel-plugin-common";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/channel-plugin-common";
 import {
   formatThreadBindingDisabledError,
   formatThreadBindingSpawnDisabledError,
   resolveThreadBindingSpawnPolicy,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalStringifiedId,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveDiscordAccount } from "./accounts.js";
 import {
   autoBindSpawnedDiscordSubagent,
@@ -82,7 +82,7 @@ function normalizeThreadBindingTargetKind(raw?: string): ThreadBindingTargetKind
 }
 
 export async function handleDiscordSubagentSpawning(
-  api: NexisClawPluginApi,
+  api: FirstNexusPluginApi,
   event: DiscordSubagentSpawningEvent,
 ): Promise<DiscordSubagentSpawningResult> {
   if (!event.threadRequested) {

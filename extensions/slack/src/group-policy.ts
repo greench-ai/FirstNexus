@@ -1,11 +1,11 @@
-import { normalizeAccountId } from "NexisClaw/plugin-sdk/account-resolution";
-import type { ChannelGroupContext } from "NexisClaw/plugin-sdk/channel-contract";
+import { normalizeAccountId } from "FirstNexus/plugin-sdk/account-resolution";
+import type { ChannelGroupContext } from "FirstNexus/plugin-sdk/channel-contract";
 import {
   resolveToolsBySender,
   type GroupToolPolicyBySenderConfig,
   type GroupToolPolicyConfig,
-} from "NexisClaw/plugin-sdk/channel-policy";
-import { normalizeHyphenSlug } from "NexisClaw/plugin-sdk/string-normalization-runtime";
+} from "FirstNexus/plugin-sdk/channel-policy";
+import { normalizeHyphenSlug } from "FirstNexus/plugin-sdk/string-normalization-runtime";
 import { mergeSlackAccountConfig, resolveDefaultSlackAccountId } from "./accounts.js";
 
 type SlackChannelPolicyEntry = {

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ModelCatalogEntry } from "./model-catalog.js";
 import { createProviderAuthChecker } from "./model-provider-auth.js";
 import { buildConfiguredModelCatalog, modelKey } from "./model-selection.js";
@@ -27,7 +27,7 @@ function dedupeModelCatalogEntries(entries: ModelCatalogEntry[]): ModelCatalogEn
 }
 
 export function resolveVisibleModelCatalog(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   catalog: ModelCatalogEntry[];
   defaultProvider: string;
   defaultModel?: string;

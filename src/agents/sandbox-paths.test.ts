@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it, vi } from "vitest";
-import { resolvePreferredNexisClawTmpDir } from "../infra/tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../infra/tmp-FirstNexus-dir.js";
 import { resolveAllowedManagedMediaPath, resolveSandboxedMediaSource } from "./sandbox-paths.js";
 
 async function withSandboxRoot<T>(run: (sandboxDir: string) => Promise<T>) {
@@ -29,7 +29,7 @@ function makeTmpProbePath(prefix: string): string {
 }
 
 async function withManagedMediaRoot<T>(run: (ctx: { stateDir: string }) => Promise<T>) {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-managed-media-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-managed-media-"));
   vi.stubEnv("NEXISCLAW_STATE_DIR", stateDir);
   try {
     await fs.mkdir(path.join(stateDir, "media", "outbound"), { recursive: true });
@@ -41,7 +41,7 @@ async function withManagedMediaRoot<T>(run: (ctx: { stateDir: string }) => Promi
   }
 }
 
-async function withOutsideHardlinkInNexisClawTmp<T>(
+async function withOutsideHardlinkInFirstNexusTmp<T>(
   params: {
     openClawTmpDir: string;
     hardlinkPrefix: string;
@@ -83,22 +83,22 @@ async function withOutsideHardlinkInNexisClawTmp<T>(
 }
 
 describe("resolveSandboxedMediaSource", () => {
-  const openClawTmpDir = resolvePreferredNexisClawTmpDir();
+  const openClawTmpDir = resolvePreferredFirstNexusTmpDir();
 
   // Group 1: /tmp paths (the bug fix)
   it.each([
     {
-      name: "absolute paths under preferred NexisClaw tmp root",
+      name: "absolute paths under preferred FirstNexus tmp root",
       media: path.join(openClawTmpDir, "image.png"),
       expected: path.join(openClawTmpDir, "image.png"),
     },
     {
-      name: "file:// URLs pointing to preferred NexisClaw tmp root",
+      name: "file:// URLs pointing to preferred FirstNexus tmp root",
       media: pathToFileURL(path.join(openClawTmpDir, "photo.png")).href,
       expected: path.join(openClawTmpDir, "photo.png"),
     },
     {
-      name: "nested paths under preferred NexisClaw tmp root",
+      name: "nested paths under preferred FirstNexus tmp root",
       media: path.join(openClawTmpDir, "subdir", "deep", "file.png"),
       expected: path.join(openClawTmpDir, "subdir", "deep", "file.png"),
     },
@@ -215,8 +215,8 @@ describe("resolveSandboxedMediaSource", () => {
       expected: /sandbox/i,
     },
     {
-      name: "absolute paths under host tmp outside NexisClaw tmp root",
-      media: path.join(os.tmpdir(), "outside-NexisClaw", "passwd"),
+      name: "absolute paths under host tmp outside FirstNexus tmp root",
+      media: path.join(os.tmpdir(), "outside-FirstNexus", "passwd"),
       expected: /sandbox/i,
     },
     {
@@ -260,7 +260,7 @@ describe("resolveSandboxedMediaSource", () => {
     });
   });
 
-  it("rejects symlinked NexisClaw tmp paths escaping tmp root", async () => {
+  it("rejects symlinked FirstNexus tmp paths escaping tmp root", async () => {
     if (process.platform === "win32") {
       return;
     }
@@ -302,11 +302,11 @@ describe("resolveSandboxedMediaSource", () => {
     });
   });
 
-  it("rejects hardlinked NexisClaw tmp paths to outside files", async () => {
+  it("rejects hardlinked FirstNexus tmp paths to outside files", async () => {
     if (process.platform === "win32") {
       return;
     }
-    await withOutsideHardlinkInNexisClawTmp(
+    await withOutsideHardlinkInFirstNexusTmp(
       {
         openClawTmpDir,
         hardlinkPrefix: "sandbox-media-hardlink",
@@ -319,11 +319,11 @@ describe("resolveSandboxedMediaSource", () => {
     );
   });
 
-  it("rejects symlinked NexisClaw tmp paths to hardlinked outside files", async () => {
+  it("rejects symlinked FirstNexus tmp paths to hardlinked outside files", async () => {
     if (process.platform === "win32") {
       return;
     }
-    await withOutsideHardlinkInNexisClawTmp(
+    await withOutsideHardlinkInFirstNexusTmp(
       {
         openClawTmpDir,
         hardlinkPrefix: "sandbox-media-hardlink-target",

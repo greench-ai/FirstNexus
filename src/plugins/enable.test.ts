@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { enablePluginInConfig } from "./enable.js";
 
 function expectEnableResult(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   pluginId: string,
   params: {
     enabled: boolean;
@@ -41,7 +41,7 @@ describe("enablePluginInConfig", () => {
   it.each([
     {
       name: "enables a plugin entry",
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       pluginId: "google",
       expectedEnabled: true,
       assert: (result: ReturnType<typeof enablePluginInConfig>) => {
@@ -54,7 +54,7 @@ describe("enablePluginInConfig", () => {
         plugins: {
           allow: ["memory-core"],
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       pluginId: "google",
       expectedEnabled: false,
       assert: (result: ReturnType<typeof enablePluginInConfig>) => {
@@ -68,7 +68,7 @@ describe("enablePluginInConfig", () => {
         plugins: {
           allow: ["google"],
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       pluginId: "google",
       expectedEnabled: true,
       assert: (result: ReturnType<typeof enablePluginInConfig>) => {
@@ -82,7 +82,7 @@ describe("enablePluginInConfig", () => {
         plugins: {
           deny: ["google"],
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       pluginId: "google",
       expectedEnabled: false,
       assert: (result: ReturnType<typeof enablePluginInConfig>) => {
@@ -91,7 +91,7 @@ describe("enablePluginInConfig", () => {
     },
     {
       name: "writes built-in channels to channels.<id>.enabled and plugins.entries",
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       pluginId: "telegram",
       expectedEnabled: true,
       assert: expectBuiltInChannelEnabled,
@@ -102,7 +102,7 @@ describe("enablePluginInConfig", () => {
         plugins: {
           allow: ["memory-core"],
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       pluginId: "telegram",
       expectedEnabled: false,
       assert: (result: ReturnType<typeof enablePluginInConfig>) => {
@@ -117,7 +117,7 @@ describe("enablePluginInConfig", () => {
         plugins: {
           allow: ["telegram"],
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       pluginId: "telegram",
       expectedEnabled: true,
       assert: (result: ReturnType<typeof enablePluginInConfig>) => {
@@ -139,7 +139,7 @@ describe("enablePluginInConfig", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       pluginId: "telegram",
       expectedEnabled: true,
       assert: expectBuiltInChannelEnabledWithAllowlist,
@@ -152,7 +152,7 @@ describe("enablePluginInConfig", () => {
   });
 
   it("can enable a built-in channel plugin entry without mutating channel config", () => {
-    const result = enablePluginInConfig({} as NexisClawConfig, "twitch", {
+    const result = enablePluginInConfig({} as FirstNexusConfig, "twitch", {
       updateChannelConfig: false,
     });
 

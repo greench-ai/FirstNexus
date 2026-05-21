@@ -18,10 +18,10 @@ const response = await fetch(`http://127.0.0.1:${port}/v1/chat/completions`, {
   headers: {
     authorization: `Bearer ${token}`,
     "content-type": "application/json",
-    "x-NexisClaw-model": backendModel,
+    "x-FirstNexus-model": backendModel,
   },
   body: JSON.stringify({
-    model: "NexisClaw",
+    model: "FirstNexus",
     stream: false,
     messages: [
       {

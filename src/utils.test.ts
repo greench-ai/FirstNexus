@@ -14,7 +14,7 @@ import {
 
 describe("ensureDir", () => {
   it("creates nested directory", async () => {
-    await withTempDir({ prefix: "NexisClaw-test-" }, async (tmp) => {
+    await withTempDir({ prefix: "FirstNexus-test-" }, async (tmp) => {
       const target = path.join(tmp, "nested", "dir");
       await ensureDir(target);
       expect(fs.existsSync(target)).toBe(true);
@@ -36,9 +36,9 @@ describe("sleep", () => {
 });
 
 describe("resolveConfigDir", () => {
-  it("prefers ~/.NexisClaw when legacy dir is missing", async () => {
-    await withTempDir({ prefix: "NexisClaw-config-dir-" }, async (root) => {
-      const newDir = path.join(root, ".NexisClaw");
+  it("prefers ~/.FirstNexus when legacy dir is missing", async () => {
+    await withTempDir({ prefix: "FirstNexus-config-dir-" }, async (root) => {
+      const newDir = path.join(root, ".FirstNexus");
       await fs.promises.mkdir(newDir, { recursive: true });
       const resolved = resolveConfigDir({} as NodeJS.ProcessEnv, () => root);
       expect(resolved).toBe(newDir);
@@ -47,29 +47,29 @@ describe("resolveConfigDir", () => {
 
   it("expands NEXISCLAW_STATE_DIR using the provided env", () => {
     const env = {
-      HOME: "/tmp/NexisClaw-home",
+      HOME: "/tmp/FirstNexus-home",
       NEXISCLAW_STATE_DIR: "~/state",
     } as NodeJS.ProcessEnv;
 
-    expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/NexisClaw-home", "state"));
+    expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/FirstNexus-home", "state"));
   });
 
   it("falls back to the config file directory when only NEXISCLAW_CONFIG_PATH is set", () => {
     const env = {
-      HOME: "/tmp/NexisClaw-home",
-      NEXISCLAW_CONFIG_PATH: "~/profiles/dev/NexisClaw.json",
+      HOME: "/tmp/FirstNexus-home",
+      NEXISCLAW_CONFIG_PATH: "~/profiles/dev/FirstNexus.json",
     } as NodeJS.ProcessEnv;
 
-    expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/NexisClaw-home", "profiles", "dev"));
+    expect(resolveConfigDir(env)).toBe(path.resolve("/tmp/FirstNexus-home", "profiles", "dev"));
   });
 });
 
 describe("resolveHomeDir", () => {
   it("prefers NEXISCLAW_HOME over HOME", () => {
-    vi.stubEnv("NEXISCLAW_HOME", "/srv/NexisClaw-home");
+    vi.stubEnv("NEXISCLAW_HOME", "/srv/FirstNexus-home");
     vi.stubEnv("HOME", "/home/other");
     try {
-      expect(resolveHomeDir()).toBe(path.resolve("/srv/NexisClaw-home"));
+      expect(resolveHomeDir()).toBe(path.resolve("/srv/FirstNexus-home"));
     } finally {
       vi.unstubAllEnvs();
     }
@@ -78,12 +78,12 @@ describe("resolveHomeDir", () => {
 
 describe("shortenHomePath", () => {
   it("uses $NEXISCLAW_HOME prefix when NEXISCLAW_HOME is set", () => {
-    vi.stubEnv("NEXISCLAW_HOME", "/srv/NexisClaw-home");
+    vi.stubEnv("NEXISCLAW_HOME", "/srv/FirstNexus-home");
     vi.stubEnv("HOME", "/home/other");
     try {
-      expect(shortenHomePath(`${path.resolve("/srv/NexisClaw-home")}/.NexisClaw/NexisClaw.json`)).toBe(
-        "$NEXISCLAW_HOME/.NexisClaw/NexisClaw.json",
-      );
+      expect(
+        shortenHomePath(`${path.resolve("/srv/FirstNexus-home")}/.FirstNexus/FirstNexus.json`),
+      ).toBe("$NEXISCLAW_HOME/.FirstNexus/FirstNexus.json");
     } finally {
       vi.unstubAllEnvs();
     }
@@ -92,14 +92,14 @@ describe("shortenHomePath", () => {
 
 describe("shortenHomeInString", () => {
   it("uses $NEXISCLAW_HOME replacement when NEXISCLAW_HOME is set", () => {
-    vi.stubEnv("NEXISCLAW_HOME", "/srv/NexisClaw-home");
+    vi.stubEnv("NEXISCLAW_HOME", "/srv/FirstNexus-home");
     vi.stubEnv("HOME", "/home/other");
     try {
       expect(
         shortenHomeInString(
-          `config: ${path.resolve("/srv/NexisClaw-home")}/.NexisClaw/NexisClaw.json`,
+          `config: ${path.resolve("/srv/FirstNexus-home")}/.FirstNexus/FirstNexus.json`,
         ),
-      ).toBe("config: $NEXISCLAW_HOME/.NexisClaw/NexisClaw.json");
+      ).toBe("config: $NEXISCLAW_HOME/.FirstNexus/FirstNexus.json");
     } finally {
       vi.unstubAllEnvs();
     }
@@ -112,8 +112,8 @@ describe("resolveUserPath", () => {
   });
 
   it("expands ~/ to home dir", () => {
-    expect(resolveUserPath("~/NexisClaw", {}, () => "/Users/thoffman")).toBe(
-      path.resolve("/Users/thoffman", "NexisClaw"),
+    expect(resolveUserPath("~/FirstNexus", {}, () => "/Users/thoffman")).toBe(
+      path.resolve("/Users/thoffman", "FirstNexus"),
     );
   });
 
@@ -122,10 +122,12 @@ describe("resolveUserPath", () => {
   });
 
   it("prefers NEXISCLAW_HOME for tilde expansion", () => {
-    vi.stubEnv("NEXISCLAW_HOME", "/srv/NexisClaw-home");
+    vi.stubEnv("NEXISCLAW_HOME", "/srv/FirstNexus-home");
     vi.stubEnv("HOME", "/home/other");
     try {
-      expect(resolveUserPath("~/NexisClaw")).toBe(path.resolve("/srv/NexisClaw-home", "NexisClaw"));
+      expect(resolveUserPath("~/FirstNexus")).toBe(
+        path.resolve("/srv/FirstNexus-home", "FirstNexus"),
+      );
     } finally {
       vi.unstubAllEnvs();
     }
@@ -133,11 +135,13 @@ describe("resolveUserPath", () => {
 
   it("uses the provided env for tilde expansion", () => {
     const env = {
-      HOME: "/tmp/NexisClaw-home",
-      NEXISCLAW_HOME: "/srv/NexisClaw-home",
+      HOME: "/tmp/FirstNexus-home",
+      NEXISCLAW_HOME: "/srv/FirstNexus-home",
     } as NodeJS.ProcessEnv;
 
-    expect(resolveUserPath("~/NexisClaw", env)).toBe(path.resolve("/srv/NexisClaw-home", "NexisClaw"));
+    expect(resolveUserPath("~/FirstNexus", env)).toBe(
+      path.resolve("/srv/FirstNexus-home", "FirstNexus"),
+    );
   });
 
   it("keeps blank paths blank", () => {

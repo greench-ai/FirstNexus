@@ -1,8 +1,8 @@
 import {
   createResolvedApproverActionAuthAdapter,
   resolveApprovalApprovers,
-} from "NexisClaw/plugin-sdk/approval-auth-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/approval-auth-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveGoogleChatAccount } from "./accounts.js";
 import { isGoogleChatUserTarget, normalizeGoogleChatTarget } from "./targets.js";
 

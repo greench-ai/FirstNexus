@@ -1,5 +1,5 @@
 import { replaceConfigFile } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { type HookInstallUpdate, recordHookInstall } from "../hooks/installs.js";
 import { isPathInside } from "../infra/path-guards.js";
@@ -29,7 +29,7 @@ import {
 import { commitPluginInstallRecordsWithConfig } from "./plugins-install-record-commit.js";
 import { refreshPluginRegistryAfterConfigMutation } from "./plugins-registry-refresh.js";
 
-function addInstalledPluginToAllowlist(cfg: NexisClawConfig, pluginId: string): NexisClawConfig {
+function addInstalledPluginToAllowlist(cfg: FirstNexusConfig, pluginId: string): FirstNexusConfig {
   const allow = cfg.plugins?.allow;
   if (!Array.isArray(allow) || allow.length === 0 || allow.includes(pluginId)) {
     return cfg;
@@ -43,7 +43,10 @@ function addInstalledPluginToAllowlist(cfg: NexisClawConfig, pluginId: string): 
   };
 }
 
-function removeInstalledPluginFromDenylist(cfg: NexisClawConfig, pluginId: string): NexisClawConfig {
+function removeInstalledPluginFromDenylist(
+  cfg: FirstNexusConfig,
+  pluginId: string,
+): FirstNexusConfig {
   const deny = cfg.plugins?.deny;
   if (!Array.isArray(deny) || !deny.includes(pluginId)) {
     return cfg;
@@ -63,7 +66,7 @@ function removeInstalledPluginFromDenylist(cfg: NexisClawConfig, pluginId: strin
 }
 
 export type ConfigSnapshotForInstallPersist = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   baseHash: string | undefined;
 };
 
@@ -78,7 +81,7 @@ function sourceMatchesInstalledPath(params: {
 }
 
 function logShadowedNpmInstallWarning(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   pluginId: string;
   install: Omit<PluginInstallUpdate, "pluginId">;
   runtime: RuntimeEnv;
@@ -110,7 +113,7 @@ function logShadowedNpmInstallWarning(params: {
         `Warning: installed plugin "${params.pluginId}" is not the active source because a config-selected plugin with the same id is currently selected:`,
         `  active config source: ${shortenHomePath(active.source)}`,
         `  installed npm source: ${shortenHomePath(installedSource)}`,
-        "Run `NexisClaw plugins doctor` for repair options.",
+        "Run `FirstNexus plugins doctor` for repair options.",
       ].join("\n"),
     ),
   );
@@ -161,7 +164,7 @@ function resolveReplacedManagedInstallRemoval(params: {
           [params.pluginId]: params.previousInstall,
         },
       },
-    } as NexisClawConfig,
+    } as FirstNexusConfig,
     pluginId: params.pluginId,
     deleteFiles: true,
   });
@@ -187,7 +190,7 @@ export async function persistPluginInstall(params: {
   successMessage?: string;
   warningMessage?: string;
   runtime?: RuntimeEnv;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const runtime = params.runtime ?? defaultRuntime;
   const installConfig =
     params.enable === false
@@ -287,7 +290,7 @@ export async function persistHookPackInstall(params: {
   install: Omit<HookInstallUpdate, "hookId" | "hooks">;
   successMessage?: string;
   runtime?: RuntimeEnv;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const runtime = params.runtime ?? defaultRuntime;
   let next = enableInternalHookEntries(params.snapshot.config, params.hooks);
   next = recordHookInstall(next, {

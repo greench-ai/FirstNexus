@@ -4,7 +4,7 @@ import type {
   ChannelPlugin,
   ChannelThreadingAdapter,
 } from "../../channels/plugins/types.js";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import { setActivePluginRegistry } from "../../plugins/runtime.js";
 import {
   createChannelTestPluginBase,
@@ -269,7 +269,7 @@ describe("routeReply", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const res = await routeReply({
       payload: { text: "native command response" },
@@ -302,7 +302,7 @@ describe("routeReply", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const res = await routeReply({
       payload: { text: SILENT_REPLY_TOKEN },
@@ -324,15 +324,15 @@ describe("routeReply", () => {
 
   it("applies responsePrefix when routing", async () => {
     const cfg = {
-      messages: { responsePrefix: "[NexisClaw]" },
-    } as unknown as NexisClawConfig;
+      messages: { responsePrefix: "[FirstNexus]" },
+    } as unknown as FirstNexusConfig;
     await routeReply({
       payload: { text: "hi" },
       channel: "slack",
       to: "channel:C123",
       cfg,
     });
-    expect(lastDeliveryPayload().text).toBe("[NexisClaw] hi");
+    expect(lastDeliveryPayload().text).toBe("[FirstNexus] hi");
   });
 
   it("routes directive-only Slack replies when interactive replies are enabled", async () => {
@@ -342,7 +342,7 @@ describe("routeReply", () => {
           capabilities: { interactiveReplies: true },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
     await routeReply({
       payload: { text: "[[slack_select: Choose one | Alpha:alpha]]" },
       channel: "slack",
@@ -374,7 +374,7 @@ describe("routeReply", () => {
         ],
       },
       messages: {},
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
     await routeReply({
       payload: { text: "hi" },
       channel: "slack",
@@ -530,7 +530,7 @@ describe("routeReply", () => {
             baseUrl: "https://chat.example.com",
           },
         },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
     });
     expectLastDeliveryFields({
       channel: "mattermost",
@@ -576,7 +576,7 @@ describe("routeReply", () => {
           enabled: true,
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
     await routeReply({
       payload: { text: "hi" },
       channel: "msteams",

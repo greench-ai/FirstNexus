@@ -2,14 +2,14 @@
 set -euo pipefail
 trap "" PIPE
 export TERM=xterm-256color
-source scripts/lib/NexisClaw-e2e-instance.sh
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_FUNCTION_B64:?missing NEXISCLAW_TEST_STATE_FUNCTION_B64}"
+source scripts/lib/FirstNexus-e2e-instance.sh
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_FUNCTION_B64:?missing NEXISCLAW_TEST_STATE_FUNCTION_B64}"
 ONBOARD_FLAGS="--flow quickstart --auth-choice skip --skip-channels --skip-skills --skip-daemon --skip-ui"
-NEXISCLAW_ENTRY="$(NexisClaw_e2e_resolve_entrypoint)"
+NEXISCLAW_ENTRY="$(FirstNexus_e2e_resolve_entrypoint)"
 export NEXISCLAW_ENTRY
 
 # Provide a minimal trash shim to avoid noisy "missing trash" logs in containers.
-NexisClaw_e2e_install_trash_shim
+FirstNexus_e2e_install_trash_shim
 
 send() {
   local payload="$1"
@@ -49,12 +49,12 @@ wait_for_log() {
 }
 
 start_gateway() {
-  GATEWAY_PID="$(NexisClaw_e2e_start_gateway "$NEXISCLAW_ENTRY" 18789 /tmp/gateway-e2e.log)"
+  GATEWAY_PID="$(FirstNexus_e2e_start_gateway "$NEXISCLAW_ENTRY" 18789 /tmp/gateway-e2e.log)"
 }
 
 wait_for_gateway() {
   for _ in $(seq 1 20); do
-    if NexisClaw_e2e_probe_tcp 127.0.0.1 18789 500 >/dev/null 2>&1; then
+    if FirstNexus_e2e_probe_tcp 127.0.0.1 18789 500 >/dev/null 2>&1; then
       return 0
     fi
     if [ -f /tmp/gateway-e2e.log ] && grep -E -q "listening on ws://[^ ]+:18789" /tmp/gateway-e2e.log; then
@@ -70,7 +70,7 @@ wait_for_gateway() {
 }
 
 stop_gateway() {
-  NexisClaw_e2e_stop_process "$1"
+  FirstNexus_e2e_stop_process "$1"
 }
 
 run_wizard_cmd() {
@@ -82,11 +82,11 @@ run_wizard_cmd() {
   local validate_fn="${6:-}"
 
   echo "== Wizard case: $case_name =="
-  set_isolated_NexisClaw_env "$state_ref"
+  set_isolated_FirstNexus_env "$state_ref"
 
-  input_fifo="$(mktemp -u "/tmp/NexisClaw-onboard-${case_name}.XXXXXX")"
+  input_fifo="$(mktemp -u "/tmp/FirstNexus-onboard-${case_name}.XXXXXX")"
   mkfifo "$input_fifo"
-  local log_path="/tmp/NexisClaw-onboard-${case_name}.log"
+  local log_path="/tmp/FirstNexus-onboard-${case_name}.log"
   WIZARD_LOG_PATH="$log_path"
   export WIZARD_LOG_PATH
   # Run under script to keep an interactive TTY for clack prompts.
@@ -135,13 +135,13 @@ run_wizard() {
 assert_onboard_config() {
   local scenario="$1"
   shift
-  NexisClaw_e2e_assert_file "$NEXISCLAW_CONFIG_PATH"
+  FirstNexus_e2e_assert_file "$NEXISCLAW_CONFIG_PATH"
   node scripts/e2e/lib/onboard/assert-config.mjs "$scenario" "$NEXISCLAW_CONFIG_PATH" "$@"
 }
 
-set_isolated_NexisClaw_env() {
+set_isolated_FirstNexus_env() {
   local state_ref="$1"
-  NexisClaw_test_state_create "$state_ref" empty
+  FirstNexus_test_state_create "$state_ref" empty
 }
 
 select_skip_hooks() {
@@ -194,8 +194,8 @@ send_skills_flow() {
 }
 
 run_case_local_basic() {
-  set_isolated_NexisClaw_env local-basic
-  NexisClaw_e2e_run_logged local-basic node "$NEXISCLAW_ENTRY" onboard \
+  set_isolated_FirstNexus_env local-basic
+  FirstNexus_e2e_run_logged local-basic node "$NEXISCLAW_ENTRY" onboard \
     --non-interactive \
     --accept-risk \
     --flow quickstart \
@@ -210,9 +210,9 @@ run_case_local_basic() {
   workspace_dir="$NEXISCLAW_STATE_DIR/workspace"
   sessions_dir="$NEXISCLAW_STATE_DIR/agents/main/sessions"
 
-  NexisClaw_e2e_assert_dir "$sessions_dir"
+  FirstNexus_e2e_assert_dir "$sessions_dir"
   for file in AGENTS.md BOOTSTRAP.md IDENTITY.md SOUL.md TOOLS.md USER.md; do
-    NexisClaw_e2e_assert_file "$workspace_dir/$file"
+    FirstNexus_e2e_assert_file "$workspace_dir/$file"
   done
 
   assert_onboard_config local-basic "$workspace_dir"
@@ -220,9 +220,9 @@ run_case_local_basic() {
 }
 
 run_case_remote_non_interactive() {
-  set_isolated_NexisClaw_env remote-non-interactive
+  set_isolated_FirstNexus_env remote-non-interactive
   # Smoke test non-interactive remote config write.
-  NexisClaw_e2e_run_logged remote-non-interactive node "$NEXISCLAW_ENTRY" onboard --non-interactive --accept-risk \
+  FirstNexus_e2e_run_logged remote-non-interactive node "$NEXISCLAW_ENTRY" onboard --non-interactive --accept-risk \
     --mode remote \
     --remote-url ws://gateway.local:18789 \
     --remote-token remote-token \
@@ -233,10 +233,10 @@ run_case_remote_non_interactive() {
 }
 
 run_case_reset() {
-  set_isolated_NexisClaw_env reset-config
+  set_isolated_FirstNexus_env reset-config
   node scripts/e2e/lib/onboard/write-config.mjs reset "$NEXISCLAW_CONFIG_PATH"
 
-  NexisClaw_e2e_run_logged reset-config node "$NEXISCLAW_ENTRY" onboard \
+  FirstNexus_e2e_run_logged reset-config node "$NEXISCLAW_ENTRY" onboard \
     --non-interactive \
     --accept-risk \
     --flow quickstart \
@@ -260,7 +260,7 @@ run_case_channels() {
 
 run_case_skills() {
   local home_dir
-  set_isolated_NexisClaw_env skills
+  set_isolated_FirstNexus_env skills
   home_dir="$HOME"
   node scripts/e2e/lib/onboard/write-config.mjs skills "$NEXISCLAW_CONFIG_PATH"
 
@@ -271,7 +271,7 @@ run_case_skills() {
 
 validate_local_basic_log() {
   local log_path="$1"
-  NexisClaw_e2e_assert_log_not_contains "$log_path" "systemctl --user unavailable"
+  FirstNexus_e2e_assert_log_not_contains "$log_path" "systemctl --user unavailable"
 }
 
 run_case_local_basic

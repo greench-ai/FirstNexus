@@ -1,5 +1,5 @@
 import type { SkillCommandSpec } from "../../agents/skills.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
@@ -15,7 +15,7 @@ export function reserveSkillCommandNames(params: {
 }
 
 export function resolveConfiguredDirectiveAliases(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   commandTextHasSlash: boolean;
   reservedCommands: Set<string>;
 }) {

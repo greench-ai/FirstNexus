@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { buildTtsSystemPromptHint } from "../tts/tts.js";
 import { resolveAgentConfig } from "./agent-scope.js";
 import { buildModelAliasLines } from "./model-alias-lines.js";
@@ -18,12 +18,12 @@ export type ResolvedAgentSystemPromptConfig = Pick<
 >;
 
 export type ConfiguredAgentSystemPromptParams = AgentSystemPromptRenderParams & {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   agentId?: string;
 };
 
 export function resolveAgentSystemPromptConfig(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   agentId?: string;
 }): ResolvedAgentSystemPromptConfig {
   const { config, agentId } = params;

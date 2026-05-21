@@ -1,6 +1,6 @@
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "NexisClaw/plugin-sdk/provider-auth-api-key";
-import type { ProviderPlugin } from "NexisClaw/plugin-sdk/provider-model-shared";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "FirstNexus/plugin-sdk/provider-auth-api-key";
+import type { ProviderPlugin } from "FirstNexus/plugin-sdk/provider-model-shared";
 import { normalizeGoogleModelId } from "./model-id.js";
 import { GOOGLE_GEMINI_DEFAULT_MODEL, applyGoogleGeminiModelDefault } from "./onboard.js";
 import { GOOGLE_GEMINI_PROVIDER_HOOKS } from "./provider-hooks.js";
@@ -67,6 +67,6 @@ export function buildGoogleProvider(): ProviderPlugin {
   };
 }
 
-export function registerGoogleProvider(api: NexisClawPluginApi) {
+export function registerGoogleProvider(api: FirstNexusPluginApi) {
   api.registerProvider(buildGoogleProvider());
 }

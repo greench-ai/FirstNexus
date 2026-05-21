@@ -1,5 +1,5 @@
 import { Type } from "typebox";
-import type { NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusPluginApi } from "../runtime-api.js";
 import {
   createEmbeddedLobsterRunner,
   resolveLobsterCwd,
@@ -13,7 +13,7 @@ import {
 } from "./lobster-taskflow.js";
 
 type BoundTaskFlow = ReturnType<
-  NonNullable<NexisClawPluginApi["runtime"]>["tasks"]["managedFlows"]["bindSession"]
+  NonNullable<FirstNexusPluginApi["runtime"]>["tasks"]["managedFlows"]["bindSession"]
 >;
 
 type JsonLike =
@@ -209,7 +209,7 @@ function resolveManagedFlowToolResult(result: ManagedLobsterFlowResult) {
   return formatManagedFlowResult(result);
 }
 
-export function createLobsterTool(api: NexisClawPluginApi, options?: LobsterToolOptions) {
+export function createLobsterTool(api: FirstNexusPluginApi, options?: LobsterToolOptions) {
   const runner = options?.runner ?? createEmbeddedLobsterRunner();
   return {
     name: "lobster",

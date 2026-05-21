@@ -11,4 +11,4 @@ export {
   type ParsedChatAllowTarget,
   type ParsedChatTarget,
   type ServicePrefix,
-} from "NexisClaw/plugin-sdk/channel-targets";
+} from "FirstNexus/plugin-sdk/channel-targets";

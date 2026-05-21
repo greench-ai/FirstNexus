@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source scripts/lib/NexisClaw-e2e-instance.sh
+source scripts/lib/FirstNexus-e2e-instance.sh
 
 if [ -f dist/index.mjs ]; then
   NEXISCLAW_ENTRY="dist/index.mjs"
@@ -14,7 +14,7 @@ else
 fi
 export NEXISCLAW_ENTRY
 
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 
 probe="scripts/e2e/lib/bundled-plugin-install-uninstall/probe.mjs"
 runtime_smoke="scripts/e2e/lib/bundled-plugin-install-uninstall/runtime-smoke.mjs"
@@ -31,8 +31,8 @@ echo "Selected ${#plugin_entries[@]} bundled plugins for shard ${NEXISCLAW_BUNDL
 plugin_index=0
 for plugin_entry in "${plugin_entries[@]}"; do
   IFS=$'\t' read -r plugin_id plugin_dir requires_config <<<"$plugin_entry"
-  install_log="/tmp/NexisClaw-install-${plugin_index}.log"
-  uninstall_log="/tmp/NexisClaw-uninstall-${plugin_index}.log"
+  install_log="/tmp/FirstNexus-install-${plugin_index}.log"
+  uninstall_log="/tmp/FirstNexus-uninstall-${plugin_index}.log"
   plugin_started_at="$(date +%s)"
   echo "Installing bundled plugin: $plugin_id ($plugin_dir)"
   node "$NEXISCLAW_ENTRY" plugins install "$plugin_id" >"$install_log" 2>&1 || {

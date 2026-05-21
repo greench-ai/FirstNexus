@@ -3,11 +3,11 @@ import {
   applySetupAccountConfigPatch,
   type ChannelSetupDmPolicy,
   DEFAULT_ACCOUNT_ID,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   patchChannelConfigForAccount,
-} from "NexisClaw/plugin-sdk/setup";
-import { formatCliCommand, formatDocsLink } from "NexisClaw/plugin-sdk/setup-tools";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/setup";
+import { formatCliCommand, formatDocsLink } from "FirstNexus/plugin-sdk/setup-tools";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   mergeTelegramAccountConfig,
   resolveDefaultTelegramAccountId,
@@ -18,9 +18,9 @@ import { promptTelegramAllowFromForAccount } from "./setup-core.js";
 const channel = "telegram" as const;
 
 export function ensureTelegramDefaultGroupMentionGate(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   accountId: string,
-): NexisClawConfig {
+): FirstNexusConfig {
   const resolved = resolveTelegramAccount({ cfg, accountId });
   const wildcardGroup = resolved.config.groups?.["*"];
   if (wildcardGroup?.requireMention !== undefined) {
@@ -42,7 +42,10 @@ export function ensureTelegramDefaultGroupMentionGate(
   });
 }
 
-export function shouldShowTelegramDmAccessWarning(cfg: NexisClawConfig, accountId: string): boolean {
+export function shouldShowTelegramDmAccessWarning(
+  cfg: FirstNexusConfig,
+  accountId: string,
+): boolean {
   const merged = mergeTelegramAccountConfig(cfg, accountId);
   const policy = merged.dmPolicy ?? "pairing";
   const hasAllowFrom =
@@ -60,8 +63,8 @@ export function buildTelegramDmAccessWarningLines(accountId: string): string[] {
     "Your bot is using DM policy: pairing.",
     "Any Telegram user who discovers the bot can send pairing requests.",
     "For private use, configure an allowlist with your Telegram user id:",
-    "  " + formatCliCommand(`NexisClaw config set ${configBase}.dmPolicy "allowlist"`),
-    "  " + formatCliCommand(`NexisClaw config set ${configBase}.allowFrom '["YOUR_USER_ID"]'`),
+    "  " + formatCliCommand(`FirstNexus config set ${configBase}.dmPolicy "allowlist"`),
+    "  " + formatCliCommand(`FirstNexus config set ${configBase}.allowFrom '["YOUR_USER_ID"]'`),
     `Docs: ${formatDocsLink("/channels/pairing", "channels/pairing")}`,
   ];
 }

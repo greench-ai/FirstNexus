@@ -19,7 +19,7 @@ type HarnessState = {
       cdpPort?: number;
       cdpUrl?: string;
       color: string;
-      driver?: "NexisClaw" | "existing-session";
+      driver?: "FirstNexus" | "existing-session";
       attachOnly?: boolean;
     }
   >;
@@ -36,7 +36,7 @@ const state: HarnessState = {
   cfgAttachOnly: false,
   cfgEvaluateEnabled: true,
   cfgSsrfPolicy: undefined,
-  cfgDefaultProfile: "NexisClaw",
+  cfgDefaultProfile: "FirstNexus",
   cfgProfiles: {},
   tabUrl: "https://example.com",
   prevGatewayPort: undefined,
@@ -78,7 +78,7 @@ export function setBrowserControlServerTabUrl(url: string): void {
 
 export function setBrowserControlServerProfiles(
   profiles: HarnessState["cfgProfiles"],
-  defaultProfile = Object.keys(profiles)[0] ?? "NexisClaw",
+  defaultProfile = Object.keys(profiles)[0] ?? "FirstNexus",
 ): void {
   state.cfgProfiles = profiles;
   state.cfgDefaultProfile = defaultProfile;
@@ -366,7 +366,7 @@ const chromeMcpMocks = vi.hoisted(() => ({
   uploadChromeMcpFile: vi.fn(async () => {}),
 }));
 
-const chromeUserDataDir = vi.hoisted(() => ({ dir: "/tmp/NexisClaw" }));
+const chromeUserDataDir = vi.hoisted(() => ({ dir: "/tmp/FirstNexus" }));
 installChromeUserDataDirHooks(chromeUserDataDir);
 
 function makeProc(pid = 123) {
@@ -398,7 +398,7 @@ function defaultBrowserCdpPortForState(testPort: number): number {
 
 function defaultProfilesForState(testPort: number): HarnessState["cfgProfiles"] {
   return {
-    NexisClaw: { cdpPort: defaultBrowserCdpPortForState(testPort), color: "#FF4500" },
+    FirstNexus: { cdpPort: defaultBrowserCdpPortForState(testPort), color: "#FF4500" },
   };
 }
 
@@ -440,7 +440,7 @@ const launchCalls = vi.hoisted(() => [] as Array<{ port: number }>);
 vi.mock("./chrome.js", () => ({
   isChromeCdpReady: vi.fn(async () => state.reachable),
   isChromeReachable: vi.fn(async () => state.reachable),
-  launchNexisClawChrome: vi.fn(async (_resolved: unknown, profile: { cdpPort: number }) => {
+  launchFirstNexusChrome: vi.fn(async (_resolved: unknown, profile: { cdpPort: number }) => {
     launchCalls.push({ port: profile.cdpPort });
     state.reachable = true;
     return {
@@ -452,8 +452,8 @@ vi.mock("./chrome.js", () => ({
       proc,
     };
   }),
-  resolveNexisClawUserDataDir: vi.fn(() => chromeUserDataDir.dir),
-  stopNexisClawChrome: vi.fn(async () => {
+  resolveFirstNexusUserDataDir: vi.fn(() => chromeUserDataDir.dir),
+  stopFirstNexusChrome: vi.fn(async () => {
     state.reachable = false;
   }),
 }));
@@ -532,7 +532,7 @@ export async function resetBrowserControlServerTestContext(): Promise<void> {
   state.cfgAttachOnly = false;
   state.cfgEvaluateEnabled = true;
   state.cfgSsrfPolicy = undefined;
-  state.cfgDefaultProfile = "NexisClaw";
+  state.cfgDefaultProfile = "FirstNexus";
   state.cfgProfiles = defaultProfilesForState(state.testPort);
   state.tabUrl = "https://example.com";
 

@@ -4,28 +4,28 @@
 export type {
   ChannelAccountSnapshot,
   ChannelPlugin,
-  NexisClawConfig,
-  NexisClawPluginApi,
+  FirstNexusConfig,
+  FirstNexusPluginApi,
   PluginRuntime,
-} from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/core";
 export type {
   ChannelGatewayContext,
   ChannelStatusIssue,
-} from "NexisClaw/plugin-sdk/channel-contract";
-export { clearAccountEntryFields } from "NexisClaw/plugin-sdk/core";
-export { buildChannelConfigSchema } from "NexisClaw/plugin-sdk/channel-config-schema";
-export type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
-export type { ChannelSetupDmPolicy, ChannelSetupWizard } from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/channel-contract";
+export { clearAccountEntryFields } from "FirstNexus/plugin-sdk/core";
+export { buildChannelConfigSchema } from "FirstNexus/plugin-sdk/channel-config-schema";
+export type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
+export type { ChannelSetupDmPolicy, ChannelSetupWizard } from "FirstNexus/plugin-sdk/setup";
 export {
   buildComputedAccountStatusSnapshot,
   buildTokenChannelStatusSummary,
-} from "NexisClaw/plugin-sdk/status-helpers";
+} from "FirstNexus/plugin-sdk/status-helpers";
 export {
   DEFAULT_ACCOUNT_ID,
   formatDocsLink,
   setSetupChannelEnabled,
   splitSetupEntries,
-} from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/setup";
 export { setLineRuntime } from "./src/runtime.js";
 export { firstDefined, normalizeAllowFrom } from "./src/bot-access.js";
 export { downloadLineMedia } from "./src/download.js";

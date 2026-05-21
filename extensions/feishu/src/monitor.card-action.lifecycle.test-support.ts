@@ -1,4 +1,4 @@
-import { createRuntimeEnv } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+import { createRuntimeEnv } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import "./lifecycle.test-support.js";
 import { resetProcessedFeishuCardActionTokensForTests } from "./card-action.js";
@@ -146,7 +146,7 @@ describe("Feishu card-action lifecycle", () => {
     _handlers = {};
     lastRuntime = createRuntimeEnv();
     resetProcessedFeishuCardActionTokensForTests();
-    setFeishuLifecycleStateDir("NexisClaw-feishu-card-action");
+    setFeishuLifecycleStateDir("FirstNexus-feishu-card-action");
 
     createFeishuReplyDispatcherMock.mockReturnValue(createFeishuLifecycleReplyDispatcher());
 

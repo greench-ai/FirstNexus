@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   activateSecretsRuntimeSnapshot,
   clearSecretsRuntimeSnapshot,
@@ -9,8 +9,8 @@ import {
 import type { GatewayReloadPlan } from "./config-reload.js";
 import { createGatewayAuxHandlers } from "./server-aux-handlers.js";
 
-function asConfig(value: unknown): NexisClawConfig {
-  return value as NexisClawConfig;
+function asConfig(value: unknown): FirstNexusConfig {
+  return value as FirstNexusConfig;
 }
 
 function createReloadPlan(overrides?: Partial<GatewayReloadPlan>): GatewayReloadPlan {
@@ -31,7 +31,7 @@ function createReloadPlan(overrides?: Partial<GatewayReloadPlan>): GatewayReload
   };
 }
 
-function createSnapshot(config: NexisClawConfig): PreparedSecretsRuntimeSnapshot {
+function createSnapshot(config: FirstNexusConfig): PreparedSecretsRuntimeSnapshot {
   return {
     sourceConfig: asConfig({}),
     config,

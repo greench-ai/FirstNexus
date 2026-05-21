@@ -133,12 +133,12 @@ import {
   emitTrustedDiagnosticEvent,
   onInternalDiagnosticEvent,
   resetDiagnosticEventsForTest,
-} from "NexisClaw/plugin-sdk/diagnostic-runtime";
-import type { NexisClawPluginServiceContext } from "../api.js";
+} from "FirstNexus/plugin-sdk/diagnostic-runtime";
+import type { FirstNexusPluginServiceContext } from "../api.js";
 import { emitDiagnosticEvent } from "../api.js";
 import { createDiagnosticsOtelService } from "./service.js";
 
-const OTEL_TEST_STATE_DIR = "/tmp/NexisClaw-diagnostics-otel-test";
+const OTEL_TEST_STATE_DIR = "/tmp/FirstNexus-diagnostics-otel-test";
 const OTEL_TEST_ENDPOINT = "http://otel-collector:4318";
 const OTEL_TEST_PROTOCOL = "http/protobuf";
 const TRACE_ID = "4bf92f3577b34da6a3ce929d0e0e4736";
@@ -170,13 +170,13 @@ type OtelContextFlags = {
   metrics?: boolean;
   logs?: boolean;
   captureContent?: NonNullable<
-    NonNullable<NexisClawPluginServiceContext["config"]["diagnostics"]>["otel"]
+    NonNullable<FirstNexusPluginServiceContext["config"]["diagnostics"]>["otel"]
   >["captureContent"];
 };
 function createOtelContext(
   endpoint: string,
   { traces = false, metrics = false, logs = false, captureContent }: OtelContextFlags = {},
-): NexisClawPluginServiceContext {
+): FirstNexusPluginServiceContext {
   return {
     config: {
       diagnostics: {
@@ -201,7 +201,7 @@ function createOtelContext(
   };
 }
 
-function createTraceOnlyContext(endpoint: string): NexisClawPluginServiceContext {
+function createTraceOnlyContext(endpoint: string): FirstNexusPluginServiceContext {
   return createOtelContext(endpoint, { traces: true });
 }
 
@@ -421,70 +421,84 @@ describe("diagnostics-otel service", () => {
       attempt: 2,
     });
 
-    expect(telemetryState.counters.get("NexisClaw.webhook.received")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.channel": "telegram",
-      "NexisClaw.webhook": "telegram-post",
-    });
-    expect(
-      telemetryState.histograms.get("NexisClaw.webhook.duration_ms")?.record,
-    ).toHaveBeenCalledWith(120, {
-      "NexisClaw.channel": "telegram",
-      "NexisClaw.webhook": "telegram-post",
-    });
-    expect(telemetryState.counters.get("NexisClaw.message.queued")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.channel": "telegram",
-      "NexisClaw.source": "telegram",
-    });
-    expect(telemetryState.histograms.get("NexisClaw.queue.depth")?.record).toHaveBeenCalledTimes(2);
-    expect(telemetryState.histograms.get("NexisClaw.queue.depth")?.record).toHaveBeenCalledWith(2, {
-      "NexisClaw.channel": "telegram",
-      "NexisClaw.source": "telegram",
-    });
-    expect(telemetryState.histograms.get("NexisClaw.queue.depth")?.record).toHaveBeenCalledWith(3, {
-      "NexisClaw.lane": "main",
-    });
-    expect(telemetryState.counters.get("NexisClaw.message.processed")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.channel": "telegram",
-      "NexisClaw.outcome": "completed",
-    });
-    expect(
-      telemetryState.histograms.get("NexisClaw.message.duration_ms")?.record,
-    ).toHaveBeenCalledWith(55, {
-      "NexisClaw.channel": "telegram",
-      "NexisClaw.outcome": "completed",
-    });
-    expect(telemetryState.histograms.get("NexisClaw.queue.wait_ms")?.record).toHaveBeenCalledWith(
-      10,
+    expect(telemetryState.counters.get("FirstNexus.webhook.received")?.add).toHaveBeenCalledWith(
+      1,
       {
-        "NexisClaw.lane": "main",
+        "FirstNexus.channel": "telegram",
+        "FirstNexus.webhook": "telegram-post",
       },
     );
-    expect(telemetryState.counters.get("NexisClaw.session.stuck")?.add).toHaveBeenCalledTimes(1);
-    expect(telemetryState.counters.get("NexisClaw.session.stuck")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.state": "processing",
+    expect(
+      telemetryState.histograms.get("FirstNexus.webhook.duration_ms")?.record,
+    ).toHaveBeenCalledWith(120, {
+      "FirstNexus.channel": "telegram",
+      "FirstNexus.webhook": "telegram-post",
+    });
+    expect(telemetryState.counters.get("FirstNexus.message.queued")?.add).toHaveBeenCalledWith(1, {
+      "FirstNexus.channel": "telegram",
+      "FirstNexus.source": "telegram",
+    });
+    expect(telemetryState.histograms.get("FirstNexus.queue.depth")?.record).toHaveBeenCalledTimes(
+      2,
+    );
+    expect(telemetryState.histograms.get("FirstNexus.queue.depth")?.record).toHaveBeenCalledWith(
+      2,
+      {
+        "FirstNexus.channel": "telegram",
+        "FirstNexus.source": "telegram",
+      },
+    );
+    expect(telemetryState.histograms.get("FirstNexus.queue.depth")?.record).toHaveBeenCalledWith(
+      3,
+      {
+        "FirstNexus.lane": "main",
+      },
+    );
+    expect(telemetryState.counters.get("FirstNexus.message.processed")?.add).toHaveBeenCalledWith(
+      1,
+      {
+        "FirstNexus.channel": "telegram",
+        "FirstNexus.outcome": "completed",
+      },
+    );
+    expect(
+      telemetryState.histograms.get("FirstNexus.message.duration_ms")?.record,
+    ).toHaveBeenCalledWith(55, {
+      "FirstNexus.channel": "telegram",
+      "FirstNexus.outcome": "completed",
+    });
+    expect(telemetryState.histograms.get("FirstNexus.queue.wait_ms")?.record).toHaveBeenCalledWith(
+      10,
+      {
+        "FirstNexus.lane": "main",
+      },
+    );
+    expect(telemetryState.counters.get("FirstNexus.session.stuck")?.add).toHaveBeenCalledTimes(1);
+    expect(telemetryState.counters.get("FirstNexus.session.stuck")?.add).toHaveBeenCalledWith(1, {
+      "FirstNexus.state": "processing",
     });
     expect(
-      telemetryState.histograms.get("NexisClaw.session.stuck_age_ms")?.record,
+      telemetryState.histograms.get("FirstNexus.session.stuck_age_ms")?.record,
     ).toHaveBeenCalledWith(125_000, {
-      "NexisClaw.state": "processing",
+      "FirstNexus.state": "processing",
     });
-    expect(telemetryState.counters.get("NexisClaw.run.attempt")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.attempt": 2,
+    expect(telemetryState.counters.get("FirstNexus.run.attempt")?.add).toHaveBeenCalledWith(1, {
+      "FirstNexus.attempt": 2,
     });
 
     const spanNames = telemetryState.tracer.startSpan.mock.calls.map((call) => call[0]);
-    expect(spanNames).toContain("NexisClaw.webhook.processed");
-    expect(spanNames).toContain("NexisClaw.message.processed");
-    expect(spanNames).toContain("NexisClaw.session.stuck");
-    const webhookSpanOptions = startedSpanOptions("NexisClaw.webhook.processed");
-    expect(webhookSpanOptions?.attributes).not.toHaveProperty("NexisClaw.chatId");
+    expect(spanNames).toContain("FirstNexus.webhook.processed");
+    expect(spanNames).toContain("FirstNexus.message.processed");
+    expect(spanNames).toContain("FirstNexus.session.stuck");
+    const webhookSpanOptions = startedSpanOptions("FirstNexus.webhook.processed");
+    expect(webhookSpanOptions?.attributes).not.toHaveProperty("FirstNexus.chatId");
     expect(webhookSpanOptions?.startTime).toBeTypeOf("number");
-    const messageSpanOptions = startedSpanOptions("NexisClaw.message.processed");
-    expect(messageSpanOptions?.attributes?.["NexisClaw.channel"]).toBe("telegram");
-    expect(messageSpanOptions?.attributes?.["NexisClaw.outcome"]).toBe("completed");
-    expect(messageSpanOptions?.attributes?.["NexisClaw.reason"]).toBe("unknown");
-    expect(messageSpanOptions?.attributes).not.toHaveProperty("NexisClaw.chatId");
-    expect(messageSpanOptions?.attributes).not.toHaveProperty("NexisClaw.messageId");
+    const messageSpanOptions = startedSpanOptions("FirstNexus.message.processed");
+    expect(messageSpanOptions?.attributes?.["FirstNexus.channel"]).toBe("telegram");
+    expect(messageSpanOptions?.attributes?.["FirstNexus.outcome"]).toBe("completed");
+    expect(messageSpanOptions?.attributes?.["FirstNexus.reason"]).toBe("unknown");
+    expect(messageSpanOptions?.attributes).not.toHaveProperty("FirstNexus.chatId");
+    expect(messageSpanOptions?.attributes).not.toHaveProperty("FirstNexus.messageId");
     expect(messageSpanOptions?.startTime).toBeTypeOf("number");
 
     emitDiagnosticEvent({
@@ -558,13 +572,13 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runDurationRecordCall = lastHistogramRecord("NexisClaw.run.duration_ms");
+    const runDurationRecordCall = lastHistogramRecord("FirstNexus.run.duration_ms");
     expect(runDurationRecordCall?.[0]).toBe(100);
     const runDurationAttributes = runDurationRecordCall?.[1];
-    expect(runDurationAttributes?.["NexisClaw.provider"]).toBe("openai");
-    expect(runDurationAttributes?.["NexisClaw.model"]).toBe("gpt-5.4");
-    const runSpanOptions = startedSpanOptions("NexisClaw.run");
-    expect(runSpanOptions?.attributes?.["NexisClaw.outcome"]).toBe("completed");
+    expect(runDurationAttributes?.["FirstNexus.provider"]).toBe("openai");
+    expect(runDurationAttributes?.["FirstNexus.model"]).toBe("gpt-5.4");
+    const runSpanOptions = startedSpanOptions("FirstNexus.run");
+    expect(runSpanOptions?.attributes?.["FirstNexus.outcome"]).toBe("completed");
     expect(logEmit).toHaveBeenCalled();
 
     await service.stop?.(ctx);
@@ -593,12 +607,12 @@ describe("diagnostics-otel service", () => {
       expect(event?.reason).toBe("configured");
     }
     expect(
-      telemetryState.counters.get("NexisClaw.telemetry.exporter.events")?.add,
+      telemetryState.counters.get("FirstNexus.telemetry.exporter.events")?.add,
     ).toHaveBeenCalledWith(1, {
-      "NexisClaw.exporter": "diagnostics-otel",
-      "NexisClaw.signal": "logs",
-      "NexisClaw.status": "started",
-      "NexisClaw.reason": "configured",
+      "FirstNexus.exporter": "diagnostics-otel",
+      "FirstNexus.signal": "logs",
+      "FirstNexus.status": "started",
+      "FirstNexus.reason": "configured",
     });
 
     unsubscribe();
@@ -627,26 +641,29 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("NexisClaw.liveness.warning")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.liveness.reason": "event_loop_delay:cpu",
-    });
+    expect(telemetryState.counters.get("FirstNexus.liveness.warning")?.add).toHaveBeenCalledWith(
+      1,
+      {
+        "FirstNexus.liveness.reason": "event_loop_delay:cpu",
+      },
+    );
     expect(
-      telemetryState.histograms.get("NexisClaw.liveness.event_loop_delay_p99_ms")?.record,
+      telemetryState.histograms.get("FirstNexus.liveness.event_loop_delay_p99_ms")?.record,
     ).toHaveBeenCalledWith(250, {
-      "NexisClaw.liveness.reason": "event_loop_delay:cpu",
+      "FirstNexus.liveness.reason": "event_loop_delay:cpu",
     });
     expect(
-      telemetryState.histograms.get("NexisClaw.liveness.cpu_core_ratio")?.record,
+      telemetryState.histograms.get("FirstNexus.liveness.cpu_core_ratio")?.record,
     ).toHaveBeenCalledWith(1.4, {
-      "NexisClaw.liveness.reason": "event_loop_delay:cpu",
+      "FirstNexus.liveness.reason": "event_loop_delay:cpu",
     });
-    const livenessSpanOptions = startedSpanOptions("NexisClaw.liveness.warning");
-    expect(livenessSpanOptions?.attributes?.["NexisClaw.liveness.reason"]).toBe(
+    const livenessSpanOptions = startedSpanOptions("FirstNexus.liveness.warning");
+    expect(livenessSpanOptions?.attributes?.["FirstNexus.liveness.reason"]).toBe(
       "event_loop_delay:cpu",
     );
-    expect(livenessSpanOptions?.attributes?.["NexisClaw.liveness.active"]).toBe(2);
-    expect(livenessSpanOptions?.attributes?.["NexisClaw.liveness.queued"]).toBe(4);
-    const span = telemetryState.spans.find((item) => item.name === "NexisClaw.liveness.warning");
+    expect(livenessSpanOptions?.attributes?.["FirstNexus.liveness.active"]).toBe(2);
+    expect(livenessSpanOptions?.attributes?.["FirstNexus.liveness.queued"]).toBe(4);
+    const span = telemetryState.spans.find((item) => item.name === "FirstNexus.liveness.warning");
     expect(span?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "event_loop_delay:cpu",
@@ -685,13 +702,13 @@ describe("diagnostics-otel service", () => {
     expect(failureEvent?.reason).toBe("emit_failed");
     expect(failureEvent?.errorCategory).toBe("TypeError");
     expect(
-      telemetryState.counters.get("NexisClaw.telemetry.exporter.events")?.add,
+      telemetryState.counters.get("FirstNexus.telemetry.exporter.events")?.add,
     ).toHaveBeenCalledWith(1, {
-      "NexisClaw.exporter": "diagnostics-otel",
-      "NexisClaw.signal": "logs",
-      "NexisClaw.status": "failure",
-      "NexisClaw.reason": "emit_failed",
-      "NexisClaw.errorCategory": "TypeError",
+      "FirstNexus.exporter": "diagnostics-otel",
+      "FirstNexus.signal": "logs",
+      "FirstNexus.status": "failure",
+      "FirstNexus.reason": "emit_failed",
+      "FirstNexus.errorCategory": "TypeError",
     });
 
     unsubscribe();
@@ -703,7 +720,7 @@ describe("diagnostics-otel service", () => {
     const ctx = createOtelContext(OTEL_TEST_ENDPOINT, { metrics: true });
 
     await service.start(ctx);
-    telemetryState.counters.get("NexisClaw.telemetry.exporter.events")?.add.mockClear();
+    telemetryState.counters.get("FirstNexus.telemetry.exporter.events")?.add.mockClear();
     emitDiagnosticEvent({
       type: "telemetry.exporter",
       exporter: "spoofed-plugin-exporter",
@@ -713,7 +730,7 @@ describe("diagnostics-otel service", () => {
     });
 
     expect(
-      telemetryState.counters.get("NexisClaw.telemetry.exporter.events")?.add,
+      telemetryState.counters.get("FirstNexus.telemetry.exporter.events")?.add,
     ).not.toHaveBeenCalled();
 
     await service.stop?.(ctx);
@@ -735,10 +752,10 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runDurationRecordCall = lastHistogramRecord("NexisClaw.run.duration_ms");
+    const runDurationRecordCall = lastHistogramRecord("FirstNexus.run.duration_ms");
     expect(runDurationRecordCall?.[0]).toBe(100);
-    expect(runDurationRecordCall?.[1]?.["NexisClaw.outcome"]).toBe("blocked");
-    expect(runDurationRecordCall?.[1]?.["NexisClaw.blocked_by"]).toBe("policy-plugin");
+    expect(runDurationRecordCall?.[1]?.["FirstNexus.outcome"]).toBe("blocked");
+    expect(runDurationRecordCall?.[1]?.["FirstNexus.blocked_by"]).toBe("policy-plugin");
     expect(JSON.stringify(telemetryState)).not.toContain("matched secret prompt");
 
     await service.stop?.(ctx);
@@ -761,9 +778,9 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     expect(sdkStart).not.toHaveBeenCalled();
-    const runDurationRecordCall = lastHistogramRecord("NexisClaw.run.duration_ms");
+    const runDurationRecordCall = lastHistogramRecord("FirstNexus.run.duration_ms");
     expect(runDurationRecordCall?.[0]).toBe(100);
-    expect(runDurationRecordCall?.[1]?.["NexisClaw.provider"]).toBe("openai");
+    expect(runDurationRecordCall?.[1]?.["FirstNexus.provider"]).toBe("openai");
     expect(telemetryState.tracer.startSpan).not.toHaveBeenCalled();
 
     await service.stop?.(ctx);
@@ -900,7 +917,7 @@ describe("diagnostics-otel service", () => {
       },
     });
 
-    const tokenAttr = emitCall?.attributes?.["NexisClaw.token"];
+    const tokenAttr = emitCall?.attributes?.["FirstNexus.token"];
     expect(tokenAttr).not.toBe("ghp_abcdefghijklmnopqrstuvwxyz123456"); // pragma: allowlist secret
     if (typeof tokenAttr === "string") {
       expect(tokenAttr).toContain("…");
@@ -921,9 +938,9 @@ describe("diagnostics-otel service", () => {
       },
     });
 
-    expect(Object.hasOwn(emitCall?.attributes ?? {}, "NexisClaw.traceId")).toBe(false);
-    expect(Object.hasOwn(emitCall?.attributes ?? {}, "NexisClaw.spanId")).toBe(false);
-    expect(Object.hasOwn(emitCall?.attributes ?? {}, "NexisClaw.traceFlags")).toBe(false);
+    expect(Object.hasOwn(emitCall?.attributes ?? {}, "FirstNexus.traceId")).toBe(false);
+    expect(Object.hasOwn(emitCall?.attributes ?? {}, "FirstNexus.spanId")).toBe(false);
+    expect(Object.hasOwn(emitCall?.attributes ?? {}, "FirstNexus.traceFlags")).toBe(false);
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
     expect(emitCall?.context).toBeUndefined();
   });
@@ -973,10 +990,10 @@ describe("diagnostics-otel service", () => {
       message: "x".repeat(6000),
       attributes,
       code: {
-        filepath: "/Users/alice/NexisClaw/src/private.ts",
+        filepath: "/Users/alice/FirstNexus/src/private.ts",
         line: 42,
         functionName: "handler",
-        location: "/Users/alice/NexisClaw/src/private.ts:42",
+        location: "/Users/alice/FirstNexus/src/private.ts:42",
       },
     } as Parameters<typeof emitDiagnosticEvent>[0]);
     await flushDiagnosticEvents();
@@ -986,22 +1003,22 @@ describe("diagnostics-otel service", () => {
       body: string;
     };
     expect(emitCall.body.length).toBeLessThanOrEqual(4200);
-    expect(String(emitCall.attributes["NexisClaw.good"])).toMatch(/^y+/);
+    expect(String(emitCall.attributes["FirstNexus.good"])).toMatch(/^y+/);
     expect(emitCall.attributes["code.lineno"]).toBe(42);
     expect(emitCall.attributes["code.function"]).toBe("handler");
-    expect(String(emitCall.attributes["NexisClaw.good"]).length).toBeLessThanOrEqual(4200);
-    expect(Object.hasOwn(emitCall.attributes, `NexisClaw.${PROTO_KEY}`)).toBe(false);
-    expect(Object.hasOwn(emitCall.attributes, "NexisClaw.constructor")).toBe(false);
-    expect(Object.hasOwn(emitCall.attributes, "NexisClaw.prototype")).toBe(false);
+    expect(String(emitCall.attributes["FirstNexus.good"]).length).toBeLessThanOrEqual(4200);
+    expect(Object.hasOwn(emitCall.attributes, `FirstNexus.${PROTO_KEY}`)).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, "FirstNexus.constructor")).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, "FirstNexus.prototype")).toBe(false);
     expect(
       Object.hasOwn(
         emitCall.attributes,
-        "NexisClaw.sk-1234567890abcdef1234567890abcdef", // pragma: allowlist secret
+        "FirstNexus.sk-1234567890abcdef1234567890abcdef", // pragma: allowlist secret
       ),
     ).toBe(false);
-    expect(Object.hasOwn(emitCall.attributes, "NexisClaw.bad key")).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, "FirstNexus.bad key")).toBe(false);
     expect(Object.hasOwn(emitCall.attributes, "code.filepath")).toBe(false);
-    expect(Object.hasOwn(emitCall.attributes, "NexisClaw.code.location")).toBe(false);
+    expect(Object.hasOwn(emitCall.attributes, "FirstNexus.code.location")).toBe(false);
     await service.stop?.(ctx);
   });
 
@@ -1063,7 +1080,7 @@ describe("diagnostics-otel service", () => {
     });
 
     const modelUsageCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "NexisClaw.model.usage",
+      (call) => call[0] === "FirstNexus.model.usage",
     );
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
     expect(modelUsageCall?.[2]).toBeUndefined();
@@ -1100,13 +1117,13 @@ describe("diagnostics-otel service", () => {
       expect(tokenUsageBoundaries).toContain(boundary);
     }
     const genAiTokenUsage = telemetryState.histograms.get("gen_ai.client.token.usage");
-    const tokens = telemetryState.counters.get("NexisClaw.tokens");
+    const tokens = telemetryState.counters.get("FirstNexus.tokens");
     expect(tokens?.add).toHaveBeenCalledWith(12, {
-      "NexisClaw.channel": "webchat",
-      "NexisClaw.agent": "ops",
-      "NexisClaw.provider": "openai",
-      "NexisClaw.model": "gpt-5.4",
-      "NexisClaw.token": "input",
+      "FirstNexus.channel": "webchat",
+      "FirstNexus.agent": "ops",
+      "FirstNexus.provider": "openai",
+      "FirstNexus.model": "gpt-5.4",
+      "FirstNexus.token": "input",
     });
     expect(genAiTokenUsage?.record).toHaveBeenCalledTimes(2);
     expect(genAiTokenUsage?.record).toHaveBeenCalledWith(12, {
@@ -1139,15 +1156,15 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("NexisClaw.tokens")?.add).toHaveBeenCalledWith(2, {
-      "NexisClaw.channel": "unknown",
-      "NexisClaw.agent": "unknown",
-      "NexisClaw.provider": "openai",
-      "NexisClaw.model": "gpt-5.4",
-      "NexisClaw.token": "input",
+    expect(telemetryState.counters.get("FirstNexus.tokens")?.add).toHaveBeenCalledWith(2, {
+      "FirstNexus.channel": "unknown",
+      "FirstNexus.agent": "unknown",
+      "FirstNexus.provider": "openai",
+      "FirstNexus.model": "gpt-5.4",
+      "FirstNexus.token": "input",
     });
     expect(
-      JSON.stringify(telemetryState.counters.get("NexisClaw.tokens")?.add.mock.calls),
+      JSON.stringify(telemetryState.counters.get("FirstNexus.tokens")?.add.mock.calls),
     ).not.toContain("sk-test-secret-value");
     await service.stop?.(ctx);
   });
@@ -1199,7 +1216,7 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const modelUsageOptions = startedSpanOptions("NexisClaw.model.usage");
+    const modelUsageOptions = startedSpanOptions("FirstNexus.model.usage");
     expect(modelUsageOptions?.attributes?.["gen_ai.operation.name"]).toBe("chat");
     expect(modelUsageOptions?.attributes?.["gen_ai.system"]).toBe("anthropic");
     expect(modelUsageOptions?.attributes?.["gen_ai.request.model"]).toBe("claude-sonnet-4.6");
@@ -1207,8 +1224,8 @@ describe("diagnostics-otel service", () => {
     expect(modelUsageOptions?.attributes?.["gen_ai.usage.output_tokens"]).toBe(40);
     expect(modelUsageOptions?.attributes?.["gen_ai.usage.cache_read.input_tokens"]).toBe(30);
     expect(modelUsageOptions?.attributes?.["gen_ai.usage.cache_creation.input_tokens"]).toBe(20);
-    expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "NexisClaw.sessionKey")).toBe(false);
-    expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "NexisClaw.sessionId")).toBe(false);
+    expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "FirstNexus.sessionKey")).toBe(false);
+    expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "FirstNexus.sessionId")).toBe(false);
     expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "gen_ai.provider.name")).toBe(false);
     expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "gen_ai.input.messages")).toBe(false);
     expect(Object.hasOwn(modelUsageOptions?.attributes ?? {}, "gen_ai.output.messages")).toBe(
@@ -1353,111 +1370,111 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const spanNames = telemetryState.tracer.startSpan.mock.calls.map((call) => call[0]);
-    expect(spanNames).toContain("NexisClaw.run");
-    expect(spanNames).toContain("NexisClaw.model.call");
-    expect(spanNames).toContain("NexisClaw.harness.run");
-    expect(spanNames).toContain("NexisClaw.tool.execution");
+    expect(spanNames).toContain("FirstNexus.run");
+    expect(spanNames).toContain("FirstNexus.model.call");
+    expect(spanNames).toContain("FirstNexus.harness.run");
+    expect(spanNames).toContain("FirstNexus.tool.execution");
 
-    const runOptions = startedSpanOptions("NexisClaw.run");
-    expect(runOptions?.attributes?.["NexisClaw.outcome"]).toBe("completed");
-    expect(runOptions?.attributes?.["NexisClaw.provider"]).toBe("openai");
-    expect(runOptions?.attributes?.["NexisClaw.model"]).toBe("gpt-5.4");
-    expect(runOptions?.attributes?.["NexisClaw.channel"]).toBe("webchat");
+    const runOptions = startedSpanOptions("FirstNexus.run");
+    expect(runOptions?.attributes?.["FirstNexus.outcome"]).toBe("completed");
+    expect(runOptions?.attributes?.["FirstNexus.provider"]).toBe("openai");
+    expect(runOptions?.attributes?.["FirstNexus.model"]).toBe("gpt-5.4");
+    expect(runOptions?.attributes?.["FirstNexus.channel"]).toBe("webchat");
     expect(Object.hasOwn(runOptions?.attributes ?? {}, "gen_ai.system")).toBe(false);
     expect(Object.hasOwn(runOptions?.attributes ?? {}, "gen_ai.request.model")).toBe(false);
-    expect(Object.hasOwn(runOptions?.attributes ?? {}, "NexisClaw.runId")).toBe(false);
-    expect(Object.hasOwn(runOptions?.attributes ?? {}, "NexisClaw.sessionKey")).toBe(false);
-    expect(Object.hasOwn(runOptions?.attributes ?? {}, "NexisClaw.traceId")).toBe(false);
+    expect(Object.hasOwn(runOptions?.attributes ?? {}, "FirstNexus.runId")).toBe(false);
+    expect(Object.hasOwn(runOptions?.attributes ?? {}, "FirstNexus.sessionKey")).toBe(false);
+    expect(Object.hasOwn(runOptions?.attributes ?? {}, "FirstNexus.traceId")).toBe(false);
     expect(runOptions?.startTime).toBeTypeOf("number");
 
-    const modelCall = startedSpanCall("NexisClaw.model.call");
+    const modelCall = startedSpanCall("FirstNexus.model.call");
     const modelOptions = modelCall?.[1];
     expect(modelOptions?.attributes?.["gen_ai.system"]).toBe("openai");
     expect(modelOptions?.attributes?.["gen_ai.request.model"]).toBe("gpt-5.4");
     expect(modelOptions?.attributes?.["gen_ai.operation.name"]).toBe("text_completion");
     expect(Object.hasOwn(modelOptions?.attributes ?? {}, "gen_ai.provider.name")).toBe(false);
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "NexisClaw.callId")).toBe(false);
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "NexisClaw.runId")).toBe(false);
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "NexisClaw.sessionKey")).toBe(false);
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "FirstNexus.callId")).toBe(false);
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "FirstNexus.runId")).toBe(false);
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "FirstNexus.sessionKey")).toBe(false);
     expect(modelOptions?.startTime).toBeTypeOf("number");
     expect(modelCall?.[2]).toBeUndefined();
 
-    const harnessCall = startedSpanCall("NexisClaw.harness.run");
+    const harnessCall = startedSpanCall("FirstNexus.harness.run");
     const harnessOptions = harnessCall?.[1];
-    expect(harnessOptions?.attributes?.["NexisClaw.harness.id"]).toBe("codex");
-    expect(harnessOptions?.attributes?.["NexisClaw.harness.plugin"]).toBe("codex-plugin");
-    expect(harnessOptions?.attributes?.["NexisClaw.outcome"]).toBe("completed");
-    expect(harnessOptions?.attributes?.["NexisClaw.provider"]).toBe("codex");
-    expect(harnessOptions?.attributes?.["NexisClaw.model"]).toBe("gpt-5.4");
-    expect(harnessOptions?.attributes?.["NexisClaw.channel"]).toBe("qa");
-    expect(harnessOptions?.attributes?.["NexisClaw.harness.result_classification"]).toBe(
+    expect(harnessOptions?.attributes?.["FirstNexus.harness.id"]).toBe("codex");
+    expect(harnessOptions?.attributes?.["FirstNexus.harness.plugin"]).toBe("codex-plugin");
+    expect(harnessOptions?.attributes?.["FirstNexus.outcome"]).toBe("completed");
+    expect(harnessOptions?.attributes?.["FirstNexus.provider"]).toBe("codex");
+    expect(harnessOptions?.attributes?.["FirstNexus.model"]).toBe("gpt-5.4");
+    expect(harnessOptions?.attributes?.["FirstNexus.channel"]).toBe("qa");
+    expect(harnessOptions?.attributes?.["FirstNexus.harness.result_classification"]).toBe(
       "reasoning-only",
     );
-    expect(harnessOptions?.attributes?.["NexisClaw.harness.yield_detected"]).toBe(true);
-    expect(harnessOptions?.attributes?.["NexisClaw.harness.items.started"]).toBe(3);
-    expect(harnessOptions?.attributes?.["NexisClaw.harness.items.completed"]).toBe(2);
-    expect(harnessOptions?.attributes?.["NexisClaw.harness.items.active"]).toBe(1);
-    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "NexisClaw.runId")).toBe(false);
-    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "NexisClaw.sessionId")).toBe(false);
-    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "NexisClaw.sessionKey")).toBe(false);
-    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "NexisClaw.traceId")).toBe(false);
+    expect(harnessOptions?.attributes?.["FirstNexus.harness.yield_detected"]).toBe(true);
+    expect(harnessOptions?.attributes?.["FirstNexus.harness.items.started"]).toBe(3);
+    expect(harnessOptions?.attributes?.["FirstNexus.harness.items.completed"]).toBe(2);
+    expect(harnessOptions?.attributes?.["FirstNexus.harness.items.active"]).toBe(1);
+    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "FirstNexus.runId")).toBe(false);
+    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "FirstNexus.sessionId")).toBe(false);
+    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "FirstNexus.sessionKey")).toBe(false);
+    expect(Object.hasOwn(harnessOptions?.attributes ?? {}, "FirstNexus.traceId")).toBe(false);
     expect(harnessOptions?.startTime).toBeTypeOf("number");
     expect(harnessCall?.[2]).toBeUndefined();
 
-    const toolCall = startedSpanCall("NexisClaw.tool.execution");
+    const toolCall = startedSpanCall("FirstNexus.tool.execution");
     const toolOptions = toolCall?.[1];
-    expect(toolOptions?.attributes?.["NexisClaw.toolName"]).toBe("read");
-    expect(toolOptions?.attributes?.["NexisClaw.errorCategory"]).toBe("TypeError");
-    expect(toolOptions?.attributes?.["NexisClaw.errorCode"]).toBe("429");
-    expect(toolOptions?.attributes?.["NexisClaw.tool.params.kind"]).toBe("object");
+    expect(toolOptions?.attributes?.["FirstNexus.toolName"]).toBe("read");
+    expect(toolOptions?.attributes?.["FirstNexus.errorCategory"]).toBe("TypeError");
+    expect(toolOptions?.attributes?.["FirstNexus.errorCode"]).toBe("429");
+    expect(toolOptions?.attributes?.["FirstNexus.tool.params.kind"]).toBe("object");
     expect(toolOptions?.attributes?.["gen_ai.tool.name"]).toBe("read");
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "NexisClaw.toolCallId")).toBe(false);
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "NexisClaw.runId")).toBe(false);
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "NexisClaw.sessionKey")).toBe(false);
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "FirstNexus.toolCallId")).toBe(false);
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "FirstNexus.runId")).toBe(false);
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "FirstNexus.sessionKey")).toBe(false);
     expect(toolOptions?.startTime).toBeTypeOf("number");
     expect(toolCall?.[2]).toBeUndefined();
 
-    const modelCallDuration = lastHistogramRecord("NexisClaw.model_call.duration_ms");
+    const modelCallDuration = lastHistogramRecord("FirstNexus.model_call.duration_ms");
     expect(modelCallDuration?.[0]).toBe(80);
-    expect(modelCallDuration?.[1]?.["NexisClaw.provider"]).toBe("openai");
-    expect(modelCallDuration?.[1]?.["NexisClaw.model"]).toBe("gpt-5.4");
-    const requestBytes = lastHistogramRecord("NexisClaw.model_call.request_bytes");
+    expect(modelCallDuration?.[1]?.["FirstNexus.provider"]).toBe("openai");
+    expect(modelCallDuration?.[1]?.["FirstNexus.model"]).toBe("gpt-5.4");
+    const requestBytes = lastHistogramRecord("FirstNexus.model_call.request_bytes");
     expect(requestBytes?.[0]).toBe(1234);
-    expect(requestBytes?.[1]?.["NexisClaw.provider"]).toBe("openai");
-    expect(requestBytes?.[1]?.["NexisClaw.model"]).toBe("gpt-5.4");
-    const responseBytes = lastHistogramRecord("NexisClaw.model_call.response_bytes");
+    expect(requestBytes?.[1]?.["FirstNexus.provider"]).toBe("openai");
+    expect(requestBytes?.[1]?.["FirstNexus.model"]).toBe("gpt-5.4");
+    const responseBytes = lastHistogramRecord("FirstNexus.model_call.response_bytes");
     expect(responseBytes?.[0]).toBe(567);
-    expect(responseBytes?.[1]?.["NexisClaw.provider"]).toBe("openai");
-    expect(responseBytes?.[1]?.["NexisClaw.model"]).toBe("gpt-5.4");
-    const timeToFirstByte = lastHistogramRecord("NexisClaw.model_call.time_to_first_byte_ms");
+    expect(responseBytes?.[1]?.["FirstNexus.provider"]).toBe("openai");
+    expect(responseBytes?.[1]?.["FirstNexus.model"]).toBe("gpt-5.4");
+    const timeToFirstByte = lastHistogramRecord("FirstNexus.model_call.time_to_first_byte_ms");
     expect(timeToFirstByte?.[0]).toBe(45);
-    expect(timeToFirstByte?.[1]?.["NexisClaw.provider"]).toBe("openai");
-    expect(timeToFirstByte?.[1]?.["NexisClaw.model"]).toBe("gpt-5.4");
-    const modelSpanAttributes = firstSpanAttributes("NexisClaw.model.call");
-    expect(modelSpanAttributes["NexisClaw.model_call.request_bytes"]).toBe(1234);
-    expect(modelSpanAttributes["NexisClaw.model_call.response_bytes"]).toBe(567);
-    expect(modelSpanAttributes["NexisClaw.model_call.time_to_first_byte_ms"]).toBe(45);
-    const runDuration = lastHistogramRecord("NexisClaw.run.duration_ms");
+    expect(timeToFirstByte?.[1]?.["FirstNexus.provider"]).toBe("openai");
+    expect(timeToFirstByte?.[1]?.["FirstNexus.model"]).toBe("gpt-5.4");
+    const modelSpanAttributes = firstSpanAttributes("FirstNexus.model.call");
+    expect(modelSpanAttributes["FirstNexus.model_call.request_bytes"]).toBe(1234);
+    expect(modelSpanAttributes["FirstNexus.model_call.response_bytes"]).toBe(567);
+    expect(modelSpanAttributes["FirstNexus.model_call.time_to_first_byte_ms"]).toBe(45);
+    const runDuration = lastHistogramRecord("FirstNexus.run.duration_ms");
     expect(runDuration?.[0]).toBe(100);
-    expect(Object.hasOwn(runDuration?.[1] ?? {}, "NexisClaw.runId")).toBe(false);
-    const harnessDuration = lastHistogramRecord("NexisClaw.harness.duration_ms");
+    expect(Object.hasOwn(runDuration?.[1] ?? {}, "FirstNexus.runId")).toBe(false);
+    const harnessDuration = lastHistogramRecord("FirstNexus.harness.duration_ms");
     expect(harnessDuration?.[0]).toBe(90);
-    expect(harnessDuration?.[1]?.["NexisClaw.harness.id"]).toBe("codex");
-    expect(harnessDuration?.[1]?.["NexisClaw.harness.plugin"]).toBe("codex-plugin");
-    expect(harnessDuration?.[1]?.["NexisClaw.outcome"]).toBe("completed");
-    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "NexisClaw.runId")).toBe(false);
-    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "NexisClaw.sessionKey")).toBe(false);
-    const toolDuration = lastHistogramRecord("NexisClaw.tool.execution.duration_ms");
+    expect(harnessDuration?.[1]?.["FirstNexus.harness.id"]).toBe("codex");
+    expect(harnessDuration?.[1]?.["FirstNexus.harness.plugin"]).toBe("codex-plugin");
+    expect(harnessDuration?.[1]?.["FirstNexus.outcome"]).toBe("completed");
+    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "FirstNexus.runId")).toBe(false);
+    expect(Object.hasOwn(harnessDuration?.[1] ?? {}, "FirstNexus.sessionKey")).toBe(false);
+    const toolDuration = lastHistogramRecord("FirstNexus.tool.execution.duration_ms");
     expect(toolDuration?.[0]).toBe(20);
-    expect(Object.hasOwn(toolDuration?.[1] ?? {}, "NexisClaw.errorCode")).toBe(false);
-    expect(Object.hasOwn(toolDuration?.[1] ?? {}, "NexisClaw.runId")).toBe(false);
+    expect(Object.hasOwn(toolDuration?.[1] ?? {}, "FirstNexus.errorCode")).toBe(false);
+    expect(Object.hasOwn(toolDuration?.[1] ?? {}, "FirstNexus.runId")).toBe(false);
 
-    const toolSpan = spanByName("NexisClaw.tool.execution");
+    const toolSpan = spanByName("FirstNexus.tool.execution");
     expect(toolSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "TypeError",
     });
-    expect(firstSpanEndTime("NexisClaw.tool.execution")).toBeTypeOf("number");
+    expect(firstSpanEndTime("FirstNexus.tool.execution")).toBeTypeOf("number");
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
     await service.stop?.(ctx);
   });
@@ -1481,19 +1498,19 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const failoverOptions = startedSpanOptions("NexisClaw.model.failover");
-    expect(failoverOptions?.attributes?.["NexisClaw.provider"]).toBe("anthropic");
-    expect(failoverOptions?.attributes?.["NexisClaw.model"]).toBe("claude-opus-4-6");
-    expect(failoverOptions?.attributes?.["NexisClaw.failover.to_provider"]).toBe("openai");
-    expect(failoverOptions?.attributes?.["NexisClaw.failover.to_model"]).toBe("gpt-5.4");
-    expect(failoverOptions?.attributes?.["NexisClaw.failover.reason"]).toBe("overloaded");
-    expect(failoverOptions?.attributes?.["NexisClaw.failover.suspended"]).toBe(true);
-    expect(failoverOptions?.attributes?.["NexisClaw.failover.cascade_depth"]).toBe(1);
-    expect(failoverOptions?.attributes?.["NexisClaw.lane"]).toBe("main");
-    expect(Object.hasOwn(failoverOptions?.attributes ?? {}, "NexisClaw.sessionId")).toBe(false);
-    expect(Object.hasOwn(failoverOptions?.attributes ?? {}, "NexisClaw.sessionKey")).toBe(false);
+    const failoverOptions = startedSpanOptions("FirstNexus.model.failover");
+    expect(failoverOptions?.attributes?.["FirstNexus.provider"]).toBe("anthropic");
+    expect(failoverOptions?.attributes?.["FirstNexus.model"]).toBe("claude-opus-4-6");
+    expect(failoverOptions?.attributes?.["FirstNexus.failover.to_provider"]).toBe("openai");
+    expect(failoverOptions?.attributes?.["FirstNexus.failover.to_model"]).toBe("gpt-5.4");
+    expect(failoverOptions?.attributes?.["FirstNexus.failover.reason"]).toBe("overloaded");
+    expect(failoverOptions?.attributes?.["FirstNexus.failover.suspended"]).toBe(true);
+    expect(failoverOptions?.attributes?.["FirstNexus.failover.cascade_depth"]).toBe(1);
+    expect(failoverOptions?.attributes?.["FirstNexus.lane"]).toBe("main");
+    expect(Object.hasOwn(failoverOptions?.attributes ?? {}, "FirstNexus.sessionId")).toBe(false);
+    expect(Object.hasOwn(failoverOptions?.attributes ?? {}, "FirstNexus.sessionKey")).toBe(false);
     expect(failoverOptions?.startTime).toBeTypeOf("number");
-    expect(firstSpanEndTime("NexisClaw.model.failover")).toBeTypeOf("number");
+    expect(firstSpanEndTime("FirstNexus.model.failover")).toBeTypeOf("number");
     await service.stop?.(ctx);
   });
 
@@ -1533,7 +1550,7 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCallAttrs = telemetryState.tracer.startSpan.mock.calls
-      .filter((call) => call[0] === "NexisClaw.model.call")
+      .filter((call) => call[0] === "FirstNexus.model.call")
       .map((call) => (call[1] as { attributes?: Record<string, unknown> }).attributes);
     expect(modelCallAttrs).toHaveLength(3);
     expect(modelCallAttrs[0]?.["gen_ai.system"]).toBe("openai");
@@ -1574,13 +1591,13 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const modelCallOptions = startedSpanOptions("NexisClaw.model.call");
+    const modelCallOptions = startedSpanOptions("FirstNexus.model.call");
     expect(modelCallOptions?.attributes?.["gen_ai.provider.name"]).toBe("openai");
     expect(modelCallOptions?.attributes?.["gen_ai.request.model"]).toBe("gpt-5.4");
     expect(modelCallOptions?.attributes?.["gen_ai.operation.name"]).toBe("text_completion");
     expect(Object.hasOwn(modelCallOptions?.attributes ?? {}, "gen_ai.system")).toBe(false);
     expect(modelCallOptions?.startTime).toBeTypeOf("number");
-    const modelUsageOptions = startedSpanOptions("NexisClaw.model.usage");
+    const modelUsageOptions = startedSpanOptions("FirstNexus.model.usage");
     expect(modelUsageOptions?.attributes?.["gen_ai.provider.name"]).toBe("openai");
     expect(modelUsageOptions?.attributes?.["gen_ai.request.model"]).toBe("gpt-5.4");
     expect(modelUsageOptions?.attributes?.["gen_ai.operation.name"]).toBe("chat");
@@ -1608,20 +1625,22 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const modelCallOptions = startedSpanOptions("NexisClaw.model.call");
-    expect(modelCallOptions?.attributes?.["NexisClaw.failureKind"]).toBe("terminated");
+    const modelCallOptions = startedSpanOptions("FirstNexus.model.call");
+    expect(modelCallOptions?.attributes?.["FirstNexus.failureKind"]).toBe("terminated");
     expect(
-      Object.hasOwn(modelCallOptions?.attributes ?? {}, "NexisClaw.upstreamRequestIdHash"),
+      Object.hasOwn(modelCallOptions?.attributes ?? {}, "FirstNexus.upstreamRequestIdHash"),
     ).toBe(false);
     expect(modelCallOptions?.startTime).toBeTypeOf("number");
-    const span = telemetryState.spans.find((candidate) => candidate.name === "NexisClaw.model.call");
-    expect(span?.addEvent).toHaveBeenCalledWith("NexisClaw.provider.request", {
-      "NexisClaw.upstreamRequestIdHash": "sha256:123456abcdef",
+    const span = telemetryState.spans.find(
+      (candidate) => candidate.name === "FirstNexus.model.call",
+    );
+    expect(span?.addEvent).toHaveBeenCalledWith("FirstNexus.provider.request", {
+      "FirstNexus.upstreamRequestIdHash": "sha256:123456abcdef",
     });
-    const modelCallDuration = lastHistogramRecord("NexisClaw.model_call.duration_ms");
+    const modelCallDuration = lastHistogramRecord("FirstNexus.model_call.duration_ms");
     expect(modelCallDuration?.[0]).toBe(40);
-    expect(modelCallDuration?.[1]?.["NexisClaw.failureKind"]).toBe("terminated");
-    expect(Object.hasOwn(modelCallDuration?.[1] ?? {}, "NexisClaw.upstreamRequestIdHash")).toBe(
+    expect(modelCallDuration?.[1]?.["FirstNexus.failureKind"]).toBe("terminated");
+    expect(Object.hasOwn(modelCallDuration?.[1] ?? {}, "FirstNexus.upstreamRequestIdHash")).toBe(
       false,
     );
     await service.stop?.(ctx);
@@ -1670,23 +1689,23 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const contextCall = startedSpanCall("NexisClaw.context.assembled");
+    const contextCall = startedSpanCall("FirstNexus.context.assembled");
     const contextOptions = contextCall?.[1];
-    const runSpan = telemetryState.spans.find((span) => span.name === "NexisClaw.run");
+    const runSpan = telemetryState.spans.find((span) => span.name === "FirstNexus.run");
     const runSpanId = runSpan?.spanContext.mock.results[0]?.value?.spanId;
-    expect(contextOptions?.attributes?.["NexisClaw.provider"]).toBe("openai");
-    expect(contextOptions?.attributes?.["NexisClaw.model"]).toBe("gpt-5.4");
-    expect(contextOptions?.attributes?.["NexisClaw.channel"]).toBe("webchat");
-    expect(contextOptions?.attributes?.["NexisClaw.trigger"]).toBe("message");
-    expect(contextOptions?.attributes?.["NexisClaw.context.message_count"]).toBe(12);
-    expect(contextOptions?.attributes?.["NexisClaw.context.history_text_chars"]).toBe(1234);
-    expect(contextOptions?.attributes?.["NexisClaw.context.history_image_blocks"]).toBe(2);
-    expect(contextOptions?.attributes?.["NexisClaw.context.max_message_text_chars"]).toBe(456);
-    expect(contextOptions?.attributes?.["NexisClaw.context.system_prompt_chars"]).toBe(789);
-    expect(contextOptions?.attributes?.["NexisClaw.context.prompt_chars"]).toBe(42);
-    expect(contextOptions?.attributes?.["NexisClaw.context.prompt_images"]).toBe(1);
-    expect(contextOptions?.attributes?.["NexisClaw.context.token_budget"]).toBe(128_000);
-    expect(contextOptions?.attributes?.["NexisClaw.context.reserve_tokens"]).toBe(4096);
+    expect(contextOptions?.attributes?.["FirstNexus.provider"]).toBe("openai");
+    expect(contextOptions?.attributes?.["FirstNexus.model"]).toBe("gpt-5.4");
+    expect(contextOptions?.attributes?.["FirstNexus.channel"]).toBe("webchat");
+    expect(contextOptions?.attributes?.["FirstNexus.trigger"]).toBe("message");
+    expect(contextOptions?.attributes?.["FirstNexus.context.message_count"]).toBe(12);
+    expect(contextOptions?.attributes?.["FirstNexus.context.history_text_chars"]).toBe(1234);
+    expect(contextOptions?.attributes?.["FirstNexus.context.history_image_blocks"]).toBe(2);
+    expect(contextOptions?.attributes?.["FirstNexus.context.max_message_text_chars"]).toBe(456);
+    expect(contextOptions?.attributes?.["FirstNexus.context.system_prompt_chars"]).toBe(789);
+    expect(contextOptions?.attributes?.["FirstNexus.context.prompt_chars"]).toBe(42);
+    expect(contextOptions?.attributes?.["FirstNexus.context.prompt_images"]).toBe(1);
+    expect(contextOptions?.attributes?.["FirstNexus.context.token_budget"]).toBe(128_000);
+    expect(contextOptions?.attributes?.["FirstNexus.context.reserve_tokens"]).toBe(4096);
     expect(contextOptions?.attributes).toBeTypeOf("object");
     expect(contextOptions?.startTime).toBeTypeOf("number");
     expect(JSON.stringify(contextCall)).not.toContain("session-key");
@@ -1719,23 +1738,23 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.counters.get("NexisClaw.tool.loop")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.toolName": "process",
-      "NexisClaw.loop.level": "critical",
-      "NexisClaw.loop.action": "block",
-      "NexisClaw.loop.detector": "known_poll_no_progress",
-      "NexisClaw.loop.count": 20,
-      "NexisClaw.loop.paired_tool": "read",
+    expect(telemetryState.counters.get("FirstNexus.tool.loop")?.add).toHaveBeenCalledWith(1, {
+      "FirstNexus.toolName": "process",
+      "FirstNexus.loop.level": "critical",
+      "FirstNexus.loop.action": "block",
+      "FirstNexus.loop.detector": "known_poll_no_progress",
+      "FirstNexus.loop.count": 20,
+      "FirstNexus.loop.paired_tool": "read",
     });
-    const loopSpanCall = startedSpanCall("NexisClaw.tool.loop");
+    const loopSpanCall = startedSpanCall("FirstNexus.tool.loop");
     const loopOptions = loopSpanCall?.[1];
-    expect(loopOptions?.attributes?.["NexisClaw.toolName"]).toBe("process");
-    expect(loopOptions?.attributes?.["NexisClaw.loop.level"]).toBe("critical");
-    expect(loopOptions?.attributes?.["NexisClaw.loop.action"]).toBe("block");
-    expect(loopOptions?.attributes?.["NexisClaw.loop.detector"]).toBe("known_poll_no_progress");
-    expect(loopOptions?.attributes?.["NexisClaw.loop.count"]).toBe(20);
-    expect(loopOptions?.attributes?.["NexisClaw.loop.paired_tool"]).toBe("read");
-    const loopSpan = telemetryState.spans.find((span) => span.name === "NexisClaw.tool.loop");
+    expect(loopOptions?.attributes?.["FirstNexus.toolName"]).toBe("process");
+    expect(loopOptions?.attributes?.["FirstNexus.loop.level"]).toBe("critical");
+    expect(loopOptions?.attributes?.["FirstNexus.loop.action"]).toBe("block");
+    expect(loopOptions?.attributes?.["FirstNexus.loop.detector"]).toBe("known_poll_no_progress");
+    expect(loopOptions?.attributes?.["FirstNexus.loop.count"]).toBe(20);
+    expect(loopOptions?.attributes?.["FirstNexus.loop.paired_tool"]).toBe("read");
+    const loopSpan = telemetryState.spans.find((span) => span.name === "FirstNexus.tool.loop");
     expect(loopSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "known_poll_no_progress:block",
@@ -1778,35 +1797,33 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    expect(telemetryState.histograms.get("NexisClaw.memory.rss_bytes")?.record).toHaveBeenCalledWith(
-      100,
-      {},
-    );
-    expect(telemetryState.histograms.get("NexisClaw.memory.rss_bytes")?.record).toHaveBeenCalledWith(
-      200,
-      {
-        "NexisClaw.memory.level": "critical",
-        "NexisClaw.memory.reason": "rss_growth",
-      },
-    );
-    expect(telemetryState.counters.get("NexisClaw.memory.pressure")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.memory.level": "critical",
-      "NexisClaw.memory.reason": "rss_growth",
+    expect(
+      telemetryState.histograms.get("FirstNexus.memory.rss_bytes")?.record,
+    ).toHaveBeenCalledWith(100, {});
+    expect(
+      telemetryState.histograms.get("FirstNexus.memory.rss_bytes")?.record,
+    ).toHaveBeenCalledWith(200, {
+      "FirstNexus.memory.level": "critical",
+      "FirstNexus.memory.reason": "rss_growth",
     });
-    const pressureCall = startedSpanCall("NexisClaw.memory.pressure");
+    expect(telemetryState.counters.get("FirstNexus.memory.pressure")?.add).toHaveBeenCalledWith(1, {
+      "FirstNexus.memory.level": "critical",
+      "FirstNexus.memory.reason": "rss_growth",
+    });
+    const pressureCall = startedSpanCall("FirstNexus.memory.pressure");
     const pressureOptions = pressureCall?.[1];
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.level"]).toBe("critical");
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.reason"]).toBe("rss_growth");
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.rss_bytes"]).toBe(200);
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.heap_used_bytes"]).toBe(50);
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.heap_total_bytes"]).toBe(90);
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.external_bytes"]).toBe(20);
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.array_buffers_bytes"]).toBe(6);
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.threshold_bytes"]).toBe(512);
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.rss_growth_bytes"]).toBe(256);
-    expect(pressureOptions?.attributes?.["NexisClaw.memory.window_ms"]).toBe(60_000);
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.level"]).toBe("critical");
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.reason"]).toBe("rss_growth");
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.rss_bytes"]).toBe(200);
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.heap_used_bytes"]).toBe(50);
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.heap_total_bytes"]).toBe(90);
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.external_bytes"]).toBe(20);
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.array_buffers_bytes"]).toBe(6);
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.threshold_bytes"]).toBe(512);
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.rss_growth_bytes"]).toBe(256);
+    expect(pressureOptions?.attributes?.["FirstNexus.memory.window_ms"]).toBe(60_000);
     const pressureSpan = telemetryState.spans.find(
-      (span) => span.name === "NexisClaw.memory.pressure",
+      (span) => span.name === "FirstNexus.memory.pressure",
     );
     expect(pressureSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
@@ -1900,9 +1917,9 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runSpan = telemetryState.spans.find((span) => span.name === "NexisClaw.run");
-    const modelSpan = telemetryState.spans.find((span) => span.name === "NexisClaw.model.call");
-    const toolSpan = telemetryState.spans.find((span) => span.name === "NexisClaw.tool.execution");
+    const runSpan = telemetryState.spans.find((span) => span.name === "FirstNexus.run");
+    const modelSpan = telemetryState.spans.find((span) => span.name === "FirstNexus.model.call");
+    const toolSpan = telemetryState.spans.find((span) => span.name === "FirstNexus.tool.execution");
     const runSpanId = runSpan?.spanContext.mock.results[0]?.value?.spanId;
     const modelSpanId = modelSpan?.spanContext.mock.results[0]?.value?.spanId;
 
@@ -1921,9 +1938,9 @@ describe("diagnostics-otel service", () => {
         (call[2] as { spanContext?: { spanId?: string } } | undefined)?.spanContext?.spanId,
       ]),
     );
-    expect(parentBySpanName["NexisClaw.run"]).toBeUndefined();
-    expect(parentBySpanName["NexisClaw.model.call"]).toBe(runSpanId);
-    expect(parentBySpanName["NexisClaw.tool.execution"]).toBe(modelSpanId);
+    expect(parentBySpanName["FirstNexus.run"]).toBeUndefined();
+    expect(parentBySpanName["FirstNexus.model.call"]).toBe(runSpanId);
+    expect(parentBySpanName["FirstNexus.tool.execution"]).toBe(modelSpanId);
     expect(toolSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "TypeError",
@@ -1977,10 +1994,10 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const runSpan = telemetryState.spans.find((span) => span.name === "NexisClaw.run");
+    const runSpan = telemetryState.spans.find((span) => span.name === "FirstNexus.run");
     const runSpanId = runSpan?.spanContext.mock.results[0]?.value?.spanId;
     const modelUsageCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "NexisClaw.model.usage",
+      (call) => call[0] === "FirstNexus.model.usage",
     );
 
     const linkedSpanContext = firstSetSpanContext();
@@ -1990,7 +2007,7 @@ describe("diagnostics-otel service", () => {
       (modelUsageCall?.[2] as { spanContext?: { spanId?: string } } | undefined)?.spanContext
         ?.spanId,
     ).toBe(runSpanId);
-    expect(firstSpanEndTime("NexisClaw.run")).toBeTypeOf("number");
+    expect(firstSpanEndTime("FirstNexus.run")).toBeTypeOf("number");
     await service.stop?.(ctx);
   });
 
@@ -2033,8 +2050,8 @@ describe("diagnostics-otel service", () => {
     const parentBySpanName = Object.fromEntries(
       telemetryState.tracer.startSpan.mock.calls.map((call) => [call[0], call[2]]),
     );
-    expect(parentBySpanName["NexisClaw.run"]).toBeUndefined();
-    expect(parentBySpanName["NexisClaw.model.call"]).toBeUndefined();
+    expect(parentBySpanName["FirstNexus.run"]).toBeUndefined();
+    expect(parentBySpanName["FirstNexus.model.call"]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -2075,8 +2092,8 @@ describe("diagnostics-otel service", () => {
     const parentBySpanName = Object.fromEntries(
       telemetryState.tracer.startSpan.mock.calls.map((call) => [call[0], call[2]]),
     );
-    expect(parentBySpanName["NexisClaw.run"]).toBeUndefined();
-    expect(parentBySpanName["NexisClaw.model.call"]).toBeUndefined();
+    expect(parentBySpanName["FirstNexus.run"]).toBeUndefined();
+    expect(parentBySpanName["FirstNexus.model.call"]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -2131,9 +2148,9 @@ describe("diagnostics-otel service", () => {
     const parentBySpanName = Object.fromEntries(
       telemetryState.tracer.startSpan.mock.calls.map((call) => [call[0], call[2]]),
     );
-    expect(parentBySpanName["NexisClaw.run"]).toBeUndefined();
-    expect(parentBySpanName["NexisClaw.model.call"]).toBeUndefined();
-    expect(parentBySpanName["NexisClaw.tool.execution"]).toBeUndefined();
+    expect(parentBySpanName["FirstNexus.run"]).toBeUndefined();
+    expect(parentBySpanName["FirstNexus.model.call"]).toBeUndefined();
+    expect(parentBySpanName["FirstNexus.tool.execution"]).toBeUndefined();
     await service.stop?.(ctx);
   });
 
@@ -2204,21 +2221,21 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     expect(
-      telemetryState.tracer.startSpan.mock.calls.filter((call) => call[0] === "NexisClaw.run"),
+      telemetryState.tracer.startSpan.mock.calls.filter((call) => call[0] === "FirstNexus.run"),
     ).toHaveLength(1);
     expect(
       telemetryState.tracer.startSpan.mock.calls.filter(
-        (call) => call[0] === "NexisClaw.model.call",
+        (call) => call[0] === "FirstNexus.model.call",
       ),
     ).toHaveLength(1);
     expect(
       telemetryState.tracer.startSpan.mock.calls.filter(
-        (call) => call[0] === "NexisClaw.tool.execution",
+        (call) => call[0] === "FirstNexus.tool.execution",
       ),
     ).toHaveLength(1);
     expect(
       telemetryState.tracer.startSpan.mock.calls.filter(
-        (call) => call[0] === "NexisClaw.harness.run",
+        (call) => call[0] === "FirstNexus.harness.run",
       ),
     ).toHaveLength(1);
     await service.stop?.(ctx);
@@ -2242,33 +2259,33 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const execDuration = lastHistogramRecord("NexisClaw.exec.duration_ms");
+    const execDuration = lastHistogramRecord("FirstNexus.exec.duration_ms");
     expect(execDuration?.[0]).toBe(30);
-    expect(execDuration?.[1]?.["NexisClaw.exec.target"]).toBe("host");
-    expect(execDuration?.[1]?.["NexisClaw.exec.mode"]).toBe("child");
-    expect(execDuration?.[1]?.["NexisClaw.outcome"]).toBe("failed");
-    expect(execDuration?.[1]?.["NexisClaw.failureKind"]).toBe("runtime-error");
+    expect(execDuration?.[1]?.["FirstNexus.exec.target"]).toBe("host");
+    expect(execDuration?.[1]?.["FirstNexus.exec.mode"]).toBe("child");
+    expect(execDuration?.[1]?.["FirstNexus.outcome"]).toBe("failed");
+    expect(execDuration?.[1]?.["FirstNexus.failureKind"]).toBe("runtime-error");
 
-    const execCall = startedSpanCall("NexisClaw.exec");
+    const execCall = startedSpanCall("FirstNexus.exec");
     const execOptions = execCall?.[1];
-    expect(execOptions?.attributes?.["NexisClaw.exec.target"]).toBe("host");
-    expect(execOptions?.attributes?.["NexisClaw.exec.mode"]).toBe("child");
-    expect(execOptions?.attributes?.["NexisClaw.outcome"]).toBe("failed");
-    expect(execOptions?.attributes?.["NexisClaw.exec.command_length"]).toBe(42);
-    expect(execOptions?.attributes?.["NexisClaw.exec.exit_code"]).toBe(1);
-    expect(execOptions?.attributes?.["NexisClaw.exec.timed_out"]).toBe(false);
-    expect(execOptions?.attributes?.["NexisClaw.failureKind"]).toBe("runtime-error");
-    expect(Object.hasOwn(execOptions?.attributes ?? {}, "NexisClaw.exec.command")).toBe(false);
-    expect(Object.hasOwn(execOptions?.attributes ?? {}, "NexisClaw.exec.workdir")).toBe(false);
-    expect(Object.hasOwn(execOptions?.attributes ?? {}, "NexisClaw.sessionKey")).toBe(false);
+    expect(execOptions?.attributes?.["FirstNexus.exec.target"]).toBe("host");
+    expect(execOptions?.attributes?.["FirstNexus.exec.mode"]).toBe("child");
+    expect(execOptions?.attributes?.["FirstNexus.outcome"]).toBe("failed");
+    expect(execOptions?.attributes?.["FirstNexus.exec.command_length"]).toBe(42);
+    expect(execOptions?.attributes?.["FirstNexus.exec.exit_code"]).toBe(1);
+    expect(execOptions?.attributes?.["FirstNexus.exec.timed_out"]).toBe(false);
+    expect(execOptions?.attributes?.["FirstNexus.failureKind"]).toBe("runtime-error");
+    expect(Object.hasOwn(execOptions?.attributes ?? {}, "FirstNexus.exec.command")).toBe(false);
+    expect(Object.hasOwn(execOptions?.attributes ?? {}, "FirstNexus.exec.workdir")).toBe(false);
+    expect(Object.hasOwn(execOptions?.attributes ?? {}, "FirstNexus.sessionKey")).toBe(false);
     expect(execOptions?.startTime).toBeTypeOf("number");
 
-    const execSpan = spanByName("NexisClaw.exec");
+    const execSpan = spanByName("FirstNexus.exec");
     expect(execSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
       message: "runtime-error",
     });
-    expect(firstSpanEndTime("NexisClaw.exec")).toBeTypeOf("number");
+    expect(firstSpanEndTime("FirstNexus.exec")).toBeTypeOf("number");
     await service.stop?.(ctx);
   });
 
@@ -2302,56 +2319,56 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     expect(
-      telemetryState.counters.get("NexisClaw.message.delivery.started")?.add,
+      telemetryState.counters.get("FirstNexus.message.delivery.started")?.add,
     ).toHaveBeenCalledWith(1, {
-      "NexisClaw.channel": "matrix",
-      "NexisClaw.delivery.kind": "text",
+      "FirstNexus.channel": "matrix",
+      "FirstNexus.delivery.kind": "text",
     });
     const deliveryDurationRecords = telemetryState.histograms.get(
-      "NexisClaw.message.delivery.duration_ms",
+      "FirstNexus.message.delivery.duration_ms",
     )?.record.mock.calls as Array<[unknown, Record<string, unknown>]>;
     expect(deliveryDurationRecords[0]?.[0]).toBe(25);
-    expect(deliveryDurationRecords[0]?.[1]["NexisClaw.channel"]).toBe("matrix");
-    expect(deliveryDurationRecords[0]?.[1]["NexisClaw.delivery.kind"]).toBe("text");
-    expect(deliveryDurationRecords[0]?.[1]["NexisClaw.outcome"]).toBe("completed");
+    expect(deliveryDurationRecords[0]?.[1]["FirstNexus.channel"]).toBe("matrix");
+    expect(deliveryDurationRecords[0]?.[1]["FirstNexus.delivery.kind"]).toBe("text");
+    expect(deliveryDurationRecords[0]?.[1]["FirstNexus.outcome"]).toBe("completed");
     expect(deliveryDurationRecords[1]?.[0]).toBe(40);
-    expect(deliveryDurationRecords[1]?.[1]["NexisClaw.channel"]).toBe("discord");
-    expect(deliveryDurationRecords[1]?.[1]["NexisClaw.delivery.kind"]).toBe("media");
-    expect(deliveryDurationRecords[1]?.[1]["NexisClaw.outcome"]).toBe("error");
-    expect(deliveryDurationRecords[1]?.[1]["NexisClaw.errorCategory"]).toBe("TypeError");
+    expect(deliveryDurationRecords[1]?.[1]["FirstNexus.channel"]).toBe("discord");
+    expect(deliveryDurationRecords[1]?.[1]["FirstNexus.delivery.kind"]).toBe("media");
+    expect(deliveryDurationRecords[1]?.[1]["FirstNexus.outcome"]).toBe("error");
+    expect(deliveryDurationRecords[1]?.[1]["FirstNexus.errorCategory"]).toBe("TypeError");
 
     const deliverySpanCalls = telemetryState.tracer.startSpan.mock.calls.filter(
-      (call) => call[0] === "NexisClaw.message.delivery",
+      (call) => call[0] === "FirstNexus.message.delivery",
     );
     expect(deliverySpanCalls).toHaveLength(2);
     const firstDeliveryOptions = deliverySpanCalls[0]?.[1] as
       | { attributes?: Record<string, unknown>; startTime?: unknown }
       | undefined;
-    expect(firstDeliveryOptions?.attributes?.["NexisClaw.channel"]).toBe("matrix");
-    expect(firstDeliveryOptions?.attributes?.["NexisClaw.delivery.kind"]).toBe("text");
-    expect(firstDeliveryOptions?.attributes?.["NexisClaw.outcome"]).toBe("completed");
-    expect(firstDeliveryOptions?.attributes?.["NexisClaw.delivery.result_count"]).toBe(1);
+    expect(firstDeliveryOptions?.attributes?.["FirstNexus.channel"]).toBe("matrix");
+    expect(firstDeliveryOptions?.attributes?.["FirstNexus.delivery.kind"]).toBe("text");
+    expect(firstDeliveryOptions?.attributes?.["FirstNexus.outcome"]).toBe("completed");
+    expect(firstDeliveryOptions?.attributes?.["FirstNexus.delivery.result_count"]).toBe(1);
     expect(firstDeliveryOptions?.startTime).toBeTypeOf("number");
     const secondDeliveryOptions = deliverySpanCalls[1]?.[1] as
       | { attributes?: Record<string, unknown>; startTime?: unknown }
       | undefined;
-    expect(secondDeliveryOptions?.attributes?.["NexisClaw.channel"]).toBe("discord");
-    expect(secondDeliveryOptions?.attributes?.["NexisClaw.delivery.kind"]).toBe("media");
-    expect(secondDeliveryOptions?.attributes?.["NexisClaw.outcome"]).toBe("error");
-    expect(secondDeliveryOptions?.attributes?.["NexisClaw.errorCategory"]).toBe("TypeError");
+    expect(secondDeliveryOptions?.attributes?.["FirstNexus.channel"]).toBe("discord");
+    expect(secondDeliveryOptions?.attributes?.["FirstNexus.delivery.kind"]).toBe("media");
+    expect(secondDeliveryOptions?.attributes?.["FirstNexus.outcome"]).toBe("error");
+    expect(secondDeliveryOptions?.attributes?.["FirstNexus.errorCategory"]).toBe("TypeError");
     expect(secondDeliveryOptions?.startTime).toBeTypeOf("number");
     for (const call of deliverySpanCalls) {
       const options = call[1] as { attributes?: Record<string, unknown>; startTime?: unknown };
-      expect(Object.hasOwn(options.attributes ?? {}, "NexisClaw.chatId")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "NexisClaw.sessionKey")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "NexisClaw.messageId")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "NexisClaw.conversationId")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "NexisClaw.content")).toBe(false);
-      expect(Object.hasOwn(options.attributes ?? {}, "NexisClaw.to")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "FirstNexus.chatId")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "FirstNexus.sessionKey")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "FirstNexus.messageId")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "FirstNexus.conversationId")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "FirstNexus.content")).toBe(false);
+      expect(Object.hasOwn(options.attributes ?? {}, "FirstNexus.to")).toBe(false);
       expect(options.startTime).toBeTypeOf("number");
     }
     const errorSpan = telemetryState.spans.find(
-      (span) => span.name === "NexisClaw.message.delivery" && span.setStatus.mock.calls.length > 0,
+      (span) => span.name === "FirstNexus.message.delivery" && span.setStatus.mock.calls.length > 0,
     );
     expect(errorSpan?.setStatus).toHaveBeenCalledWith({
       code: 2,
@@ -2375,17 +2392,17 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const deliveryDuration = lastHistogramRecord("NexisClaw.message.delivery.duration_ms");
+    const deliveryDuration = lastHistogramRecord("FirstNexus.message.delivery.duration_ms");
     expect(deliveryDuration?.[0]).toBe(20);
-    expect(deliveryDuration?.[1]?.["NexisClaw.channel"]).toBe("unknown");
-    expect(deliveryDuration?.[1]?.["NexisClaw.delivery.kind"]).toBe("other");
-    expect(deliveryDuration?.[1]?.["NexisClaw.outcome"]).toBe("completed");
-    const deliverySpanCall = startedSpanCall("NexisClaw.message.delivery");
+    expect(deliveryDuration?.[1]?.["FirstNexus.channel"]).toBe("unknown");
+    expect(deliveryDuration?.[1]?.["FirstNexus.delivery.kind"]).toBe("other");
+    expect(deliveryDuration?.[1]?.["FirstNexus.outcome"]).toBe("completed");
+    const deliverySpanCall = startedSpanCall("FirstNexus.message.delivery");
     const deliveryOptions = deliverySpanCall?.[1];
-    expect(deliveryOptions?.attributes?.["NexisClaw.channel"]).toBe("unknown");
-    expect(deliveryOptions?.attributes?.["NexisClaw.delivery.kind"]).toBe("other");
-    expect(deliveryOptions?.attributes?.["NexisClaw.outcome"]).toBe("completed");
-    expect(deliveryOptions?.attributes?.["NexisClaw.delivery.result_count"]).toBe(1);
+    expect(deliveryOptions?.attributes?.["FirstNexus.channel"]).toBe("unknown");
+    expect(deliveryOptions?.attributes?.["FirstNexus.delivery.kind"]).toBe("other");
+    expect(deliveryOptions?.attributes?.["FirstNexus.outcome"]).toBe("completed");
+    expect(deliveryOptions?.attributes?.["FirstNexus.delivery.result_count"]).toBe(1);
     expect(deliveryOptions?.startTime).toBeTypeOf("number");
     await service.stop?.(ctx);
   });
@@ -2439,48 +2456,47 @@ describe("diagnostics-otel service", () => {
     });
     await flushDiagnosticEvents();
 
-    const recoveryRequestedCall = firstCounterAddCall("NexisClaw.session.recovery.requested");
+    const recoveryRequestedCall = firstCounterAddCall("FirstNexus.session.recovery.requested");
     expect(recoveryRequestedCall[0]).toBe(1);
-    expect(recoveryRequestedCall[1]?.["NexisClaw.state"]).toBe("processing");
-    expect(recoveryRequestedCall[1]?.["NexisClaw.action"]).toBe("abort");
-    expect(recoveryRequestedCall[1]?.["NexisClaw.active_work_kind"]).toBe("tool_call");
-    const recoveryCompletedCall = firstCounterAddCall("NexisClaw.session.recovery.completed");
+    expect(recoveryRequestedCall[1]?.["FirstNexus.state"]).toBe("processing");
+    expect(recoveryRequestedCall[1]?.["FirstNexus.action"]).toBe("abort");
+    expect(recoveryRequestedCall[1]?.["FirstNexus.active_work_kind"]).toBe("tool_call");
+    const recoveryCompletedCall = firstCounterAddCall("FirstNexus.session.recovery.completed");
     expect(recoveryCompletedCall[0]).toBe(1);
-    expect(recoveryCompletedCall[1]?.["NexisClaw.state"]).toBe("processing");
-    expect(recoveryCompletedCall[1]?.["NexisClaw.status"]).toBe("released");
-    expect(recoveryCompletedCall[1]?.["NexisClaw.action"]).toBe("abort-active-run");
-    const recoveryAgeRecord = lastHistogramRecord("NexisClaw.session.recovery.age_ms");
+    expect(recoveryCompletedCall[1]?.["FirstNexus.state"]).toBe("processing");
+    expect(recoveryCompletedCall[1]?.["FirstNexus.status"]).toBe("released");
+    expect(recoveryCompletedCall[1]?.["FirstNexus.action"]).toBe("abort-active-run");
+    const recoveryAgeRecord = lastHistogramRecord("FirstNexus.session.recovery.age_ms");
     expect(recoveryAgeRecord?.[0]).toBe(13_000);
-    expect(recoveryAgeRecord?.[1]?.["NexisClaw.status"]).toBe("released");
-    expect(telemetryState.counters.get("NexisClaw.talk.event")?.add).toHaveBeenCalledWith(1, {
-      "NexisClaw.talk.brain": "agent-consult",
-      "NexisClaw.talk.event_type": "input.audio.delta",
-      "NexisClaw.talk.mode": "realtime",
-      "NexisClaw.talk.provider": "openai",
-      "NexisClaw.talk.transport": "gateway-relay",
+    expect(recoveryAgeRecord?.[1]?.["FirstNexus.status"]).toBe("released");
+    expect(telemetryState.counters.get("FirstNexus.talk.event")?.add).toHaveBeenCalledWith(1, {
+      "FirstNexus.talk.brain": "agent-consult",
+      "FirstNexus.talk.event_type": "input.audio.delta",
+      "FirstNexus.talk.mode": "realtime",
+      "FirstNexus.talk.provider": "openai",
+      "FirstNexus.talk.transport": "gateway-relay",
     });
-    expect(telemetryState.histograms.get("NexisClaw.talk.audio.bytes")?.record).toHaveBeenCalledWith(
-      320,
-      {
-        "NexisClaw.talk.brain": "agent-consult",
-        "NexisClaw.talk.event_type": "input.audio.delta",
-        "NexisClaw.talk.mode": "realtime",
-        "NexisClaw.talk.provider": "openai",
-        "NexisClaw.talk.transport": "gateway-relay",
-      },
-    );
     expect(
-      telemetryState.histograms.get("NexisClaw.talk.event.duration_ms")?.record,
+      telemetryState.histograms.get("FirstNexus.talk.audio.bytes")?.record,
+    ).toHaveBeenCalledWith(320, {
+      "FirstNexus.talk.brain": "agent-consult",
+      "FirstNexus.talk.event_type": "input.audio.delta",
+      "FirstNexus.talk.mode": "realtime",
+      "FirstNexus.talk.provider": "openai",
+      "FirstNexus.talk.transport": "gateway-relay",
+    });
+    expect(
+      telemetryState.histograms.get("FirstNexus.talk.event.duration_ms")?.record,
     ).toHaveBeenCalledWith(45, {
-      "NexisClaw.talk.brain": "agent-consult",
-      "NexisClaw.talk.event_type": "latency.metrics",
-      "NexisClaw.talk.mode": "realtime",
-      "NexisClaw.talk.provider": "openai",
-      "NexisClaw.talk.transport": "gateway-relay",
+      "FirstNexus.talk.brain": "agent-consult",
+      "FirstNexus.talk.event_type": "latency.metrics",
+      "FirstNexus.talk.mode": "realtime",
+      "FirstNexus.talk.provider": "openai",
+      "FirstNexus.talk.transport": "gateway-relay",
     });
 
     const talkCounterCalls = JSON.stringify(
-      telemetryState.counters.get("NexisClaw.talk.event")?.add.mock.calls,
+      telemetryState.counters.get("FirstNexus.talk.event")?.add.mock.calls,
     );
     expect(talkCounterCalls).not.toContain("talk-session-should-not-export");
     expect(talkCounterCalls).not.toContain("turn-should-not-export");
@@ -2514,20 +2530,22 @@ describe("diagnostics-otel service", () => {
     } as Parameters<typeof emitDiagnosticEvent>[0]);
     await flushDiagnosticEvents();
 
-    const modelOptions = startedSpanOptions("NexisClaw.model.call");
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "NexisClaw.content.input_messages")).toBe(
+    const modelOptions = startedSpanOptions("FirstNexus.model.call");
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "FirstNexus.content.input_messages")).toBe(
       false,
     );
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "NexisClaw.content.output_messages")).toBe(
-      false,
-    );
-    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "NexisClaw.content.system_prompt")).toBe(
+    expect(
+      Object.hasOwn(modelOptions?.attributes ?? {}, "FirstNexus.content.output_messages"),
+    ).toBe(false);
+    expect(Object.hasOwn(modelOptions?.attributes ?? {}, "FirstNexus.content.system_prompt")).toBe(
       false,
     );
     expect(modelOptions?.startTime).toBeTypeOf("number");
-    const toolOptions = startedSpanOptions("NexisClaw.tool.execution");
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "NexisClaw.content.tool_input")).toBe(false);
-    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "NexisClaw.content.tool_output")).toBe(
+    const toolOptions = startedSpanOptions("FirstNexus.tool.execution");
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "FirstNexus.content.tool_input")).toBe(
+      false,
+    );
+    expect(Object.hasOwn(toolOptions?.attributes ?? {}, "FirstNexus.content.tool_output")).toBe(
       false,
     );
     expect(toolOptions?.startTime).toBeTypeOf("number");
@@ -2573,26 +2591,26 @@ describe("diagnostics-otel service", () => {
     await flushDiagnosticEvents();
 
     const modelCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "NexisClaw.model.call",
+      (call) => call[0] === "FirstNexus.model.call",
     );
     const toolCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "NexisClaw.tool.execution",
+      (call) => call[0] === "FirstNexus.tool.execution",
     );
     const modelAttrs = (modelCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
     const toolAttrs = (toolCall?.[1] as { attributes?: Record<string, unknown> } | undefined)
       ?.attributes;
 
-    expect(modelAttrs?.["NexisClaw.content.output_messages"]).toBe("model reply");
-    expect(modelAttrs?.["NexisClaw.content.system_prompt"]).toBe("system prompt");
-    expect(String(modelAttrs?.["NexisClaw.content.input_messages"])).not.toContain(
+    expect(modelAttrs?.["FirstNexus.content.output_messages"]).toBe("model reply");
+    expect(modelAttrs?.["FirstNexus.content.system_prompt"]).toBe("system prompt");
+    expect(String(modelAttrs?.["FirstNexus.content.input_messages"])).not.toContain(
       "sk-1234567890abcdef1234567890abcdef", // pragma: allowlist secret
     );
-    expect(toolAttrs?.["NexisClaw.content.tool_input"]).toBe("tool input");
-    expect(String(toolAttrs?.["NexisClaw.content.tool_output"]).length).toBeLessThanOrEqual(
+    expect(toolAttrs?.["FirstNexus.content.tool_input"]).toBe("tool input");
+    expect(String(toolAttrs?.["FirstNexus.content.tool_output"]).length).toBeLessThanOrEqual(
       MAX_TEST_OTEL_CONTENT_ATTRIBUTE_CHARS + OTEL_TRUNCATED_SUFFIX_MAX_CHARS,
     );
-    expect(String(toolAttrs?.["NexisClaw.content.tool_output"])).not.toContain("a".repeat(11));
+    expect(String(toolAttrs?.["FirstNexus.content.tool_output"])).not.toContain("a".repeat(11));
     await service.stop?.(ctx);
   });
 
@@ -2615,7 +2633,7 @@ describe("diagnostics-otel service", () => {
     });
 
     const modelUsageCall = telemetryState.tracer.startSpan.mock.calls.find(
-      (call) => call[0] === "NexisClaw.model.usage",
+      (call) => call[0] === "FirstNexus.model.usage",
     );
     expect(telemetryState.tracer.setSpanContext).not.toHaveBeenCalled();
     expect(modelUsageCall?.[2]).toBeUndefined();
@@ -2633,12 +2651,12 @@ describe("diagnostics-otel service", () => {
       reason: "token=ghp_abcdefghijklmnopqrstuvwxyz123456", // pragma: allowlist secret
     });
 
-    const sessionStateCall = firstCounterAddCall("NexisClaw.session.state");
+    const sessionStateCall = firstCounterAddCall("FirstNexus.session.state");
     const attrs = sessionStateCall[1];
     expect(sessionStateCall[0]).toBe(1);
-    expect(String(attrs?.["NexisClaw.reason"])).toContain("…");
-    expect(typeof attrs?.["NexisClaw.reason"]).toBe("string");
-    expect(String(attrs?.["NexisClaw.reason"])).not.toContain(
+    expect(String(attrs?.["FirstNexus.reason"])).toContain("…");
+    expect(typeof attrs?.["FirstNexus.reason"]).toBe("string");
+    expect(String(attrs?.["FirstNexus.reason"])).not.toContain(
       "ghp_abcdefghijklmnopqrstuvwxyz123456", // pragma: allowlist secret
     );
     await service.stop?.(ctx);

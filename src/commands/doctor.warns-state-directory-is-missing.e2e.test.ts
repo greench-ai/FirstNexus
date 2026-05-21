@@ -107,7 +107,7 @@ describe("doctor command", () => {
   it("warns when the state directory is missing", async () => {
     mockDoctorConfigSnapshot();
 
-    const missingDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-missing-state-"));
+    const missingDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-missing-state-"));
     fs.rmSync(missingDir, { recursive: true, force: true });
     process.env.NEXISCLAW_STATE_DIR = missingDir;
     await doctorCommand(createDoctorRuntime(), {
@@ -336,8 +336,10 @@ describe("doctor command", () => {
 
     const gatewayAuthNote = requireTerminalNote({ title: "Gateway auth" });
     expect(String(gatewayAuthNote[0])).toContain("gateway.auth.mode is unset");
-    expect(String(gatewayAuthNote[0])).toContain("NexisClaw config set gateway.auth.mode token");
-    expect(String(gatewayAuthNote[0])).toContain("NexisClaw config set gateway.auth.mode password");
+    expect(String(gatewayAuthNote[0])).toContain("FirstNexus config set gateway.auth.mode token");
+    expect(String(gatewayAuthNote[0])).toContain(
+      "FirstNexus config set gateway.auth.mode password",
+    );
   });
 
   it("keeps doctor read-only when gateway token is SecretRef-managed but unresolved", async () => {

@@ -1,4 +1,4 @@
-import { isBillingErrorMessage } from "NexisClaw/plugin-sdk/test-env";
+import { isBillingErrorMessage } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { createXSearchTool } from "./x-search.js";
 
@@ -34,7 +34,7 @@ describeLive("xai x_search live", () => {
     let result: Awaited<ReturnType<typeof tool.execute>>;
     try {
       result = await tool.execute("x-search:live", {
-        query: "NexisClaw from:steipete",
+        query: "FirstNexus from:steipete",
         to_date: "2026-03-28",
       });
     } catch (error) {

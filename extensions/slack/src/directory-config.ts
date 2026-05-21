@@ -1,9 +1,9 @@
-import { normalizeAccountId } from "NexisClaw/plugin-sdk/account-resolution";
+import { normalizeAccountId } from "FirstNexus/plugin-sdk/account-resolution";
 import {
   createResolvedDirectoryEntriesLister,
   type DirectoryConfigParams,
-} from "NexisClaw/plugin-sdk/directory-config-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/directory-config-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   mergeSlackAccountConfig,
   resolveDefaultSlackAccountId,

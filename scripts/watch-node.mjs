@@ -127,7 +127,7 @@ const writeWatchLock = (lockPath, payload) => {
 };
 
 const logWatcher = (message, deps) => {
-  deps.process.stderr?.write?.(`[NexisClaw] ${message}\n`);
+  deps.process.stderr?.write?.(`[FirstNexus] ${message}\n`);
 };
 
 const isInvalidPackageConfigError = (err) => err?.code === "ERR_INVALID_PACKAGE_CONFIG";
@@ -143,18 +143,18 @@ const printFriendlyWatchStartupError = (err) => {
 
   console.error("");
   console.error(
-    "[NexisClaw] gateway:watch could not start because a dependency package config looks corrupted.",
+    "[FirstNexus] gateway:watch could not start because a dependency package config looks corrupted.",
   );
   if (packageConfigPath) {
-    console.error(`[NexisClaw] Invalid package config: ${packageConfigPath}`);
+    console.error(`[FirstNexus] Invalid package config: ${packageConfigPath}`);
   }
-  console.error("[NexisClaw] This usually means a file in node_modules is empty or truncated.");
-  console.error("[NexisClaw] Recommended recovery:");
-  console.error("[NexisClaw]   rm -rf node_modules");
-  console.error("[NexisClaw]   pnpm store prune");
-  console.error("[NexisClaw]   pnpm install");
+  console.error("[FirstNexus] This usually means a file in node_modules is empty or truncated.");
+  console.error("[FirstNexus] Recommended recovery:");
+  console.error("[FirstNexus]   rm -rf node_modules");
+  console.error("[FirstNexus]   pnpm store prune");
+  console.error("[FirstNexus]   pnpm install");
   console.error("");
-  console.error("[NexisClaw] Original error:");
+  console.error("[FirstNexus] Original error:");
   console.error(err);
 };
 
@@ -380,7 +380,7 @@ export async function runWatchMain(params = {}) {
     const runAutoDoctorAndRestart = () => {
       autoDoctorAttempted = true;
       logWatcher(
-        "Gateway exited early; running `NexisClaw doctor --fix --non-interactive` once.",
+        "Gateway exited early; running `FirstNexus doctor --fix --non-interactive` once.",
         deps,
       );
       watchProcess = deps.spawn(deps.process.execPath, buildDoctorRunnerArgs(), {

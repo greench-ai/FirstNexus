@@ -267,7 +267,7 @@ jobs:
           set -euo pipefail
           install_dir="${RUNNER_TEMP}/crabbox"
           mkdir -p "$install_dir" "$HOME/.local/bin"
-          git clone --depth 1 https://github.com/NexisClaw/crabbox.git "$install_dir/src"
+          git clone --depth 1 https://github.com/FirstNexus/crabbox.git "$install_dir/src"
           go build -C "$install_dir/src" -o "$HOME/.local/bin/crabbox" ./cmd/crabbox
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           "$HOME/.local/bin/crabbox" --version
@@ -338,7 +338,7 @@ jobs:
             local lane="$1"
             local repo_root="$worktree_root/$lane"
             local output_dir=".artifacts/qa-e2e/mantis/discord-status-reactions/$lane"
-            pnpm NexisClaw qa discord \
+            pnpm FirstNexus qa discord \
               --repo-root "$repo_root" \
               --output-dir "$output_dir" \
               --provider-mode live-frontier \
@@ -390,7 +390,7 @@ jobs:
               exit 1
             fi
             local args=(
-              NexisClaw qa mantis desktop-browser-smoke
+              FirstNexus qa mantis desktop-browser-smoke
               --html-file "$html_file"
               --output-dir "$desktop_dir"
               --provider hetzner

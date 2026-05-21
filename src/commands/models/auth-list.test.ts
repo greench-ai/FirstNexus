@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { AuthProfileStore } from "../../agents/auth-profiles.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { OutputRuntimeEnv } from "../../runtime.js";
 import { modelsAuthListCommand } from "./auth-list.js";
 
@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("../../agents/agent-scope.js", () => ({
-  resolveAgentDir: (_cfg: NexisClawConfig, agentId: string) => `/tmp/NexisClaw/agents/${agentId}`,
+  resolveAgentDir: (_cfg: FirstNexusConfig, agentId: string) => `/tmp/FirstNexus/agents/${agentId}`,
   resolveDefaultAgentId: () => "main",
 }));
 
@@ -54,7 +54,7 @@ function createRuntime(): OutputRuntimeEnv & { logs: string[]; jsonPayloads: unk
 
 describe("modelsAuthListCommand", () => {
   beforeEach(() => {
-    mocks.loadModelsConfig.mockReset().mockResolvedValue({} as NexisClawConfig);
+    mocks.loadModelsConfig.mockReset().mockResolvedValue({} as FirstNexusConfig);
     mocks.ensureAuthProfileStore.mockReset();
     mocks.externalCliDiscoveryForProviderAuth.mockClear();
     mocks.resolveAuthProfileDisplayLabel.mockClear();
@@ -96,9 +96,9 @@ describe("modelsAuthListCommand", () => {
     });
     expect(runtime.jsonPayloads).toStrictEqual([
       {
-        agentDir: "/tmp/NexisClaw/agents/coder",
+        agentDir: "/tmp/FirstNexus/agents/coder",
         agentId: "coder",
-        authStatePath: "/tmp/NexisClaw/agents/coder/auth-state.json",
+        authStatePath: "/tmp/FirstNexus/agents/coder/auth-state.json",
         profiles: [
           {
             cooldownUntil: "2027-01-15T08:00:10.000Z",
@@ -151,9 +151,9 @@ describe("modelsAuthListCommand", () => {
     });
     expect(runtime.jsonPayloads).toStrictEqual([
       {
-        agentDir: "/tmp/NexisClaw/agents/main",
+        agentDir: "/tmp/FirstNexus/agents/main",
         agentId: "main",
-        authStatePath: "/tmp/NexisClaw/agents/main/auth-state.json",
+        authStatePath: "/tmp/FirstNexus/agents/main/auth-state.json",
         profiles: [
           {
             id: "openai:api-key-backup",
@@ -184,7 +184,7 @@ describe("modelsAuthListCommand", () => {
 
     expect(runtime.logs).toEqual([
       "Agent: main",
-      "Auth state file: /tmp/NexisClaw/agents/main/auth-state.json",
+      "Auth state file: /tmp/FirstNexus/agents/main/auth-state.json",
       "Profiles: (none)",
     ]);
   });

@@ -18,7 +18,7 @@ type CandidateDir = {
 };
 
 const NEXISCLAW_PACKAGE_ROOT = fileURLToPath(new URL("../..", import.meta.url));
-const PLUGIN_MANIFEST_FILENAME = "NexisClaw.plugin.json";
+const PLUGIN_MANIFEST_FILENAME = "FirstNexus.plugin.json";
 let manifestMetadataCache:
   | {
       key: string;
@@ -48,7 +48,7 @@ function resolveStateDir(env: NodeJS.ProcessEnv): string {
     return resolveUserPath(override, env);
   }
   const home = env.NEXISCLAW_HOME ?? env.HOME ?? env.USERPROFILE ?? os.homedir();
-  return path.join(home, ".NexisClaw");
+  return path.join(home, ".FirstNexus");
 }
 
 function areBundledPluginsDisabled(env: NodeJS.ProcessEnv): boolean {
@@ -170,7 +170,7 @@ function uniqueCandidateDirs(candidates: CandidateDir[]): CandidateDir[] {
   );
 }
 
-export function listNexisClawPluginManifestMetadata(
+export function listFirstNexusPluginManifestMetadata(
   env: NodeJS.ProcessEnv = process.env,
 ): PluginManifestMetadataRecord[] {
   const candidates: CandidateDir[] = [];

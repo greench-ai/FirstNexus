@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeAgentId, parseAgentSessionKey } from "../routing/session-key.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 import { resolveAgentWorkspaceDir } from "./agent-scope.js";
@@ -51,7 +51,7 @@ export function mapToolContextToSpawnedRunMetadata(
 }
 
 export function resolveSpawnedWorkspaceInheritance(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   targetAgentId?: string;
   requesterSessionKey?: string;
   explicitWorkspaceDir?: string | null;

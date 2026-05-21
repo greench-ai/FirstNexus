@@ -11,11 +11,11 @@ describe("prepareCliBundleMcpConfig gemini", () => {
         command: "gemini",
         args: ["--prompt", "{prompt}"],
       },
-      workspaceDir: "/tmp/NexisClaw-bundle-mcp-gemini",
+      workspaceDir: "/tmp/FirstNexus-bundle-mcp-gemini",
       config: { plugins: { enabled: false } },
       additionalConfig: {
         mcpServers: {
-          NexisClaw: {
+          FirstNexus: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
@@ -38,9 +38,9 @@ describe("prepareCliBundleMcpConfig gemini", () => {
       mcp?: { allowed?: string[] };
       mcpServers?: Record<string, { url?: string; headers?: Record<string, string> }>;
     };
-    expect(raw.mcp?.allowed).toEqual(["NexisClaw"]);
-    expect(raw.mcpServers?.NexisClaw?.url).toBe("http://127.0.0.1:23119/mcp");
-    expect(raw.mcpServers?.NexisClaw?.headers?.Authorization).toBe("Bearer loopback-token-123");
+    expect(raw.mcp?.allowed).toEqual(["FirstNexus"]);
+    expect(raw.mcpServers?.FirstNexus?.url).toBe("http://127.0.0.1:23119/mcp");
+    expect(raw.mcpServers?.FirstNexus?.headers?.Authorization).toBe("Bearer loopback-token-123");
 
     await prepared.cleanup?.();
   });
@@ -53,7 +53,7 @@ describe("prepareCliBundleMcpConfig gemini", () => {
         command: "gemini",
         args: ["--prompt", "{prompt}"],
       },
-      workspaceDir: "/tmp/NexisClaw-bundle-mcp-gemini",
+      workspaceDir: "/tmp/FirstNexus-bundle-mcp-gemini",
       config: {
         plugins: { enabled: false },
         mcp: {

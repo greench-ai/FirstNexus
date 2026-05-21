@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
@@ -100,7 +100,7 @@ export function normalizeCommandBody(raw: string, options?: CommandNormalizeOpti
   return normalizedRest ? `${tokenSpec.canonical} ${normalizedRest}` : tokenSpec.canonical;
 }
 
-export function getCommandDetection(_cfg?: NexisClawConfig): CommandDetection {
+export function getCommandDetection(_cfg?: FirstNexusConfig): CommandDetection {
   const commands = getChatCommands();
   if (cachedDetection && cachedDetectionCommands === commands) {
     return cachedDetection;
@@ -133,7 +133,7 @@ export function getCommandDetection(_cfg?: NexisClawConfig): CommandDetection {
   return cachedDetection;
 }
 
-export function maybeResolveTextAlias(raw: string, cfg?: NexisClawConfig) {
+export function maybeResolveTextAlias(raw: string, cfg?: FirstNexusConfig) {
   const trimmed = normalizeCommandBody(raw).trim();
   if (!trimmed.startsWith("/")) {
     return null;
@@ -156,7 +156,7 @@ export function maybeResolveTextAlias(raw: string, cfg?: NexisClawConfig) {
 
 export function resolveTextCommand(
   raw: string,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): {
   command: ChatCommandDefinition;
   args?: string;

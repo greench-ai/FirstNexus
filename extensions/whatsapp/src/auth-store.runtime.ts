@@ -1,1 +1,1 @@
-export { resolveOAuthDir } from "NexisClaw/plugin-sdk/state-paths";
+export { resolveOAuthDir } from "FirstNexus/plugin-sdk/state-paths";

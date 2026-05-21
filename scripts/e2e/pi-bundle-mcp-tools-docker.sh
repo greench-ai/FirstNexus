@@ -5,9 +5,9 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-pi-bundle-mcp-tools-e2e" NEXISCLAW_IMAGE)"
-CONTAINER_NAME="NexisClaw-pi-bundle-mcp-tools-e2e-$$"
-RUN_LOG="$(mktemp -t NexisClaw-pi-bundle-mcp-tools-log.XXXXXX)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-pi-bundle-mcp-tools-e2e" NEXISCLAW_IMAGE)"
+CONTAINER_NAME="FirstNexus-pi-bundle-mcp-tools-e2e-$$"
+RUN_LOG="$(mktemp -t FirstNexus-pi-bundle-mcp-tools-log.XXXXXX)"
 
 cleanup() {
   docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
@@ -26,8 +26,8 @@ docker_e2e_run_with_harness \
   -e "NEXISCLAW_TEST_STATE_SCRIPT_B64=$NEXISCLAW_TEST_STATE_SCRIPT_B64" \
   "$IMAGE_NAME" \
   bash -lc "set -euo pipefail
-    source scripts/lib/NexisClaw-e2e-instance.sh
-    NexisClaw_e2e_eval_test_state_from_b64 \"\${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}\"
+    source scripts/lib/FirstNexus-e2e-instance.sh
+    FirstNexus_e2e_eval_test_state_from_b64 \"\${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}\"
     tsx scripts/e2e/pi-bundle-mcp-tools-docker-client.ts
   " >"$RUN_LOG" 2>&1
 status=${PIPESTATUS[0]}

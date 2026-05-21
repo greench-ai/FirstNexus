@@ -190,7 +190,7 @@ describe("gateway auth compatibility baseline", () => {
     test("keeps local backend device-token reconnects out of pairing", async () => {
       const identityPath = path.join(
         os.tmpdir(),
-        `NexisClaw-backend-device-${process.pid}-${port}.json`,
+        `FirstNexus-backend-device-${process.pid}-${port}.json`,
       );
       const { loadOrCreateDeviceIdentity, publicKeyRawBase64UrlFromPem } =
         await import("../infra/device-identity.js");
@@ -384,7 +384,7 @@ describe("gateway auth compatibility baseline", () => {
       try {
         const deviceIdentityPath = path.join(
           os.tmpdir(),
-          `NexisClaw-auth-none-control-ui-first-${process.pid}-${port}.json`,
+          `FirstNexus-auth-none-control-ui-first-${process.pid}-${port}.json`,
         );
         const res = await connectReq(ws, {
           skipDefaultAuth: true,
@@ -416,11 +416,11 @@ describe("gateway auth compatibility baseline", () => {
         const nonce = await readConnectChallengeNonce(ws);
         const identityPath = path.join(
           os.tmpdir(),
-          `NexisClaw-auth-none-control-ui-${process.pid}-${port}.json`,
+          `FirstNexus-auth-none-control-ui-${process.pid}-${port}.json`,
         );
         const staleIdentityPath = path.join(
           os.tmpdir(),
-          `NexisClaw-auth-none-control-ui-stale-${process.pid}-${port}.json`,
+          `FirstNexus-auth-none-control-ui-stale-${process.pid}-${port}.json`,
         );
         const { identity, device } = await createSignedDevice({
           token: null,

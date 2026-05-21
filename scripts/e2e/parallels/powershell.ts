@@ -63,11 +63,11 @@ export function windowsModelProviderTimeoutScript(modelId: string): string {
       },
     },
   ]);
-  return `$providerTimeoutBatchPath = Join-Path ([System.IO.Path]::GetTempPath()) 'NexisClaw-provider-timeout.batch.json'
+  return `$providerTimeoutBatchPath = Join-Path ([System.IO.Path]::GetTempPath()) 'FirstNexus-provider-timeout.batch.json'
 @'
 ${batchJson}
 '@ | Set-Content -Path $providerTimeoutBatchPath -Encoding UTF8
-Invoke-NexisClaw config set --batch-file $providerTimeoutBatchPath --strict-json
+Invoke-FirstNexus config set --batch-file $providerTimeoutBatchPath --strict-json
 $providerTimeoutExit = $LASTEXITCODE
 Remove-Item $providerTimeoutBatchPath -Force -ErrorAction SilentlyContinue
 if ($providerTimeoutExit -ne 0) { throw "model provider timeout config set failed" }`;
@@ -80,10 +80,10 @@ export function windowsAgentTurnConfigPatchScript(modelId: string): string {
     operations: batchJson ? (JSON.parse(batchJson) as unknown) : [],
   });
   return `$agentTurnConfigPatchPath = $env:NEXISCLAW_CONFIG_PATH
-if (-not $agentTurnConfigPatchPath) { $agentTurnConfigPatchPath = Join-Path $env:USERPROFILE '.NexisClaw\\NexisClaw.json' }
-$agentTurnVersionText = Invoke-NexisClaw --version 2>$null | Out-String
+if (-not $agentTurnConfigPatchPath) { $agentTurnConfigPatchPath = Join-Path $env:USERPROFILE '.FirstNexus\\FirstNexus.json' }
+$agentTurnVersionText = Invoke-FirstNexus --version 2>$null | Out-String
 $agentTurnRuntimePolicySupported = $false
-if ($agentTurnVersionText -match 'NexisClaw\\s+(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})') {
+if ($agentTurnVersionText -match 'FirstNexus\\s+(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})') {
   $agentTurnYear = [int]$Matches[1]
   $agentTurnMonth = [int]$Matches[2]
   $agentTurnDay = [int]$Matches[3]
@@ -94,7 +94,7 @@ ${payloadJson}
 '@
 $env:NEXISCLAW_PARALLELS_AGENT_CONFIG_PATH = $agentTurnConfigPatchPath
 $env:NEXISCLAW_PARALLELS_AGENT_RUNTIME_POLICY_SUPPORTED = if ($agentTurnRuntimePolicySupported) { '1' } else { '0' }
-$agentTurnConfigPatchScriptPath = Join-Path ([System.IO.Path]::GetTempPath()) 'NexisClaw-agent-turn-config-patch.cjs'
+$agentTurnConfigPatchScriptPath = Join-Path ([System.IO.Path]::GetTempPath()) 'FirstNexus-agent-turn-config-patch.cjs'
 @'
 const fs = require("node:fs");
 const path = require("node:path");
@@ -161,14 +161,14 @@ Remove-Item Env:NEXISCLAW_PARALLELS_AGENT_RUNTIME_POLICY_SUPPORTED -Force -Error
 if ($agentTurnConfigPatchExit -ne 0) { throw "agent turn config patch failed" }`;
 }
 
-export const windowsNexisClawResolver = String.raw`function Resolve-NexisClawCommand {
-  if ($script:NexisClawResolvedCommand) { return $script:NexisClawResolvedCommand }
+export const windowsFirstNexusResolver = String.raw`function Resolve-FirstNexusCommand {
+  if ($script:FirstNexusResolvedCommand) { return $script:FirstNexusResolvedCommand }
   $shimCandidates = @()
   if ($env:APPDATA) {
-    $shimCandidates += Join-Path $env:APPDATA 'npm\NexisClaw.cmd'
-    $shimCandidates += Join-Path $env:APPDATA 'npm\NexisClaw.ps1'
+    $shimCandidates += Join-Path $env:APPDATA 'npm\FirstNexus.cmd'
+    $shimCandidates += Join-Path $env:APPDATA 'npm\FirstNexus.ps1'
   }
-  foreach ($name in @('NexisClaw.cmd', 'NexisClaw.ps1', 'NexisClaw')) {
+  foreach ($name in @('FirstNexus.cmd', 'FirstNexus.ps1', 'FirstNexus')) {
     $command = Get-Command $name -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($command -and $command.Source) { $shimCandidates += $command.Source }
   }
@@ -177,42 +177,42 @@ export const windowsNexisClawResolver = String.raw`function Resolve-NexisClawCom
     $npmPrefix = (& npm.cmd prefix -g 2>$null | Select-Object -First 1)
   } catch {}
   if ($npmPrefix) {
-    $shimCandidates += Join-Path $npmPrefix 'NexisClaw.cmd'
-    $shimCandidates += Join-Path $npmPrefix 'NexisClaw.ps1'
+    $shimCandidates += Join-Path $npmPrefix 'FirstNexus.cmd'
+    $shimCandidates += Join-Path $npmPrefix 'FirstNexus.ps1'
   }
   foreach ($candidate in $shimCandidates) {
     if ($candidate -and (Test-Path $candidate)) {
-      $script:NexisClawResolvedCommand = @{ Kind = 'shim'; Path = $candidate }
-      return $script:NexisClawResolvedCommand
+      $script:FirstNexusResolvedCommand = @{ Kind = 'shim'; Path = $candidate }
+      return $script:FirstNexusResolvedCommand
     }
   }
   $entryCandidates = @()
   if ($env:APPDATA) {
-    $entryCandidates += Join-Path $env:APPDATA 'npm\node_modules\NexisClaw\NexisClaw.mjs'
+    $entryCandidates += Join-Path $env:APPDATA 'npm\node_modules\FirstNexus\FirstNexus.mjs'
   }
   if ($npmPrefix) {
-    $entryCandidates += Join-Path $npmPrefix 'node_modules\NexisClaw\NexisClaw.mjs'
+    $entryCandidates += Join-Path $npmPrefix 'node_modules\FirstNexus\FirstNexus.mjs'
   }
   foreach ($candidate in $entryCandidates) {
     if ($candidate -and (Test-Path $candidate)) {
-      $script:NexisClawResolvedCommand = @{ Kind = 'node'; Path = $candidate }
-      return $script:NexisClawResolvedCommand
+      $script:FirstNexusResolvedCommand = @{ Kind = 'node'; Path = $candidate }
+      return $script:FirstNexusResolvedCommand
     }
   }
-  throw 'NexisClaw command not found in PATH, APPDATA npm, or npm global prefix'
+  throw 'FirstNexus command not found in PATH, APPDATA npm, or npm global prefix'
 }
-function Invoke-NexisClaw {
-  param([Parameter(ValueFromRemainingArguments = $true)][string[]] $NexisClawArgs)
-  $command = Resolve-NexisClawCommand
+function Invoke-FirstNexus {
+  param([Parameter(ValueFromRemainingArguments = $true)][string[]] $FirstNexusArgs)
+  $command = Resolve-FirstNexusCommand
   $previousErrorActionPreference = $ErrorActionPreference
   $previousNativeErrorActionPreference = $PSNativeCommandUseErrorActionPreference
   $ErrorActionPreference = 'Continue'
   $PSNativeCommandUseErrorActionPreference = $false
   try {
     if ($command.Kind -eq 'node') {
-      & node.exe $command.Path @NexisClawArgs
+      & node.exe $command.Path @FirstNexusArgs
     } else {
-      & $command.Path @NexisClawArgs
+      & $command.Path @FirstNexusArgs
     }
   } finally {
     $ErrorActionPreference = $previousErrorActionPreference

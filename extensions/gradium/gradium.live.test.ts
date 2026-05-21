@@ -4,8 +4,8 @@ import { join } from "node:path";
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { isLiveTestEnabled } from "NexisClaw/plugin-sdk/test-env";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { isLiveTestEnabled } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 

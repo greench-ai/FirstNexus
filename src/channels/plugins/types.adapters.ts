@@ -1,7 +1,7 @@
 import type { ReplyPayload } from "../../auto-reply/reply-payload.js";
 import type { LegacyConfigRule } from "../../config/legacy.shared.js";
 import type { AgentBinding } from "../../config/types.agents.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { GroupToolPolicyConfig } from "../../config/types.tools.js";
 import type { ChannelApprovalNativeRuntimeAdapter } from "../../infra/approval-handler-runtime-types.js";
 import type { ChannelApprovalKind } from "../../infra/approval-types.js";
@@ -75,34 +75,34 @@ type ChannelAdapterCallback<T extends (...args: never[]) => unknown> = T;
 
 export type ChannelSetupAdapter = {
   resolveAccountId?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string;
     input?: ChannelSetupInput;
   }) => string;
   resolveBindingAccountId?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     agentId: string;
     accountId?: string;
   }) => string | undefined;
   applyAccountName?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId: string;
     name?: string;
-  }) => NexisClawConfig;
+  }) => FirstNexusConfig;
   applyAccountConfig: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId: string;
     input: ChannelSetupInput;
-  }) => NexisClawConfig;
+  }) => FirstNexusConfig;
   afterAccountConfigWritten?: (params: {
-    previousCfg: NexisClawConfig;
-    cfg: NexisClawConfig;
+    previousCfg: FirstNexusConfig;
+    cfg: FirstNexusConfig;
     accountId: string;
     input: ChannelSetupInput;
     runtime: RuntimeEnv;
   }) => Promise<void> | void;
   validateInput?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId: string;
     input: ChannelSetupInput;
   }) => string | null;
@@ -114,42 +114,42 @@ export type ChannelSetupAdapter = {
 };
 
 export type ChannelConfigAdapter<ResolvedAccount> = {
-  listAccountIds: (cfg: NexisClawConfig) => string[];
-  resolveAccount: (cfg: NexisClawConfig, accountId?: string | null) => ResolvedAccount;
-  inspectAccount?: (cfg: NexisClawConfig, accountId?: string | null) => unknown;
-  defaultAccountId?: (cfg: NexisClawConfig) => string;
+  listAccountIds: (cfg: FirstNexusConfig) => string[];
+  resolveAccount: (cfg: FirstNexusConfig, accountId?: string | null) => ResolvedAccount;
+  inspectAccount?: (cfg: FirstNexusConfig, accountId?: string | null) => unknown;
+  defaultAccountId?: (cfg: FirstNexusConfig) => string;
   setAccountEnabled?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId: string;
     enabled: boolean;
-  }) => NexisClawConfig;
-  deleteAccount?: (params: { cfg: NexisClawConfig; accountId: string }) => NexisClawConfig;
-  isEnabled?: ChannelAdapterCallback<(account: ResolvedAccount, cfg: NexisClawConfig) => boolean>;
+  }) => FirstNexusConfig;
+  deleteAccount?: (params: { cfg: FirstNexusConfig; accountId: string }) => FirstNexusConfig;
+  isEnabled?: ChannelAdapterCallback<(account: ResolvedAccount, cfg: FirstNexusConfig) => boolean>;
   disabledReason?: ChannelAdapterCallback<
-    (account: ResolvedAccount, cfg: NexisClawConfig) => string
+    (account: ResolvedAccount, cfg: FirstNexusConfig) => string
   >;
   isConfigured?: ChannelAdapterCallback<
-    (account: ResolvedAccount, cfg: NexisClawConfig) => boolean | Promise<boolean>
+    (account: ResolvedAccount, cfg: FirstNexusConfig) => boolean | Promise<boolean>
   >;
   unconfiguredReason?: ChannelAdapterCallback<
-    (account: ResolvedAccount, cfg: NexisClawConfig) => string
+    (account: ResolvedAccount, cfg: FirstNexusConfig) => string
   >;
   describeAccount?: ChannelAdapterCallback<
-    (account: ResolvedAccount, cfg: NexisClawConfig) => ChannelAccountSnapshot
+    (account: ResolvedAccount, cfg: FirstNexusConfig) => ChannelAccountSnapshot
   >;
   resolveAllowFrom?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
   }) => Array<string | number> | undefined;
   formatAllowFrom?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     allowFrom: Array<string | number>;
   }) => string[];
-  hasConfiguredState?: (params: { cfg: NexisClawConfig; env?: NodeJS.ProcessEnv }) => boolean;
-  hasPersistedAuthState?: (params: { cfg: NexisClawConfig; env?: NodeJS.ProcessEnv }) => boolean;
+  hasConfiguredState?: (params: { cfg: FirstNexusConfig; env?: NodeJS.ProcessEnv }) => boolean;
+  hasPersistedAuthState?: (params: { cfg: FirstNexusConfig; env?: NodeJS.ProcessEnv }) => boolean;
   resolveDefaultTo?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
   }) => string | undefined;
 };
@@ -162,7 +162,7 @@ export type ChannelSecretsAdapter = {
     value: unknown;
   }>;
   collectRuntimeConfigAssignments?: (params: {
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     defaults: SecretDefaults | undefined;
     context: ResolverContext;
   }) => void;
@@ -179,13 +179,17 @@ export type ChannelStatusAdapter<ResolvedAccount, Probe = unknown, Audit = unkno
   buildChannelSummary?: ChannelAdapterCallback<
     (params: {
       account: ResolvedAccount;
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       defaultAccountId: string;
       snapshot: ChannelAccountSnapshot;
     }) => Record<string, unknown> | Promise<Record<string, unknown>>
   >;
   probeAccount?: ChannelAdapterCallback<
-    (params: { account: ResolvedAccount; timeoutMs: number; cfg: NexisClawConfig }) => Promise<Probe>
+    (params: {
+      account: ResolvedAccount;
+      timeoutMs: number;
+      cfg: FirstNexusConfig;
+    }) => Promise<Probe>
   >;
   formatCapabilitiesProbe?: ChannelAdapterCallback<
     (params: { probe: Probe }) => ChannelCapabilitiesDisplayLine[]
@@ -194,7 +198,7 @@ export type ChannelStatusAdapter<ResolvedAccount, Probe = unknown, Audit = unkno
     (params: {
       account: ResolvedAccount;
       timeoutMs: number;
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       probe?: Probe;
     }) => Promise<Audit>
   >;
@@ -202,7 +206,7 @@ export type ChannelStatusAdapter<ResolvedAccount, Probe = unknown, Audit = unkno
     (params: {
       account: ResolvedAccount;
       timeoutMs: number;
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       probe?: Probe;
       audit?: Audit;
       target?: string;
@@ -211,7 +215,7 @@ export type ChannelStatusAdapter<ResolvedAccount, Probe = unknown, Audit = unkno
   buildAccountSnapshot?: ChannelAdapterCallback<
     (params: {
       account: ResolvedAccount;
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       runtime?: ChannelAccountSnapshot;
       probe?: Probe;
       audit?: Audit;
@@ -220,7 +224,7 @@ export type ChannelStatusAdapter<ResolvedAccount, Probe = unknown, Audit = unkno
   logSelfId?: ChannelAdapterCallback<
     (params: {
       account: ResolvedAccount;
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       runtime: RuntimeEnv;
       includeChannelPrefix?: boolean;
     }) => void
@@ -228,7 +232,7 @@ export type ChannelStatusAdapter<ResolvedAccount, Probe = unknown, Audit = unkno
   resolveAccountState?: ChannelAdapterCallback<
     (params: {
       account: ResolvedAccount;
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       configured: boolean;
       enabled: boolean;
     }) => ChannelAccountState
@@ -237,7 +241,7 @@ export type ChannelStatusAdapter<ResolvedAccount, Probe = unknown, Audit = unkno
 };
 
 export type ChannelGatewayContext<ResolvedAccount = unknown> = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   account: ResolvedAccount;
   runtime: RuntimeEnv;
@@ -308,7 +312,7 @@ export type ChannelGatewayContext<ResolvedAccount = unknown> = {
    *   a full `createPluginRuntime().channel` surface from the Gateway.
    *
    * @since Plugin SDK 2026.2.19
-   * @see {@link https://docs.NexisClaw.ai/plugins/building-plugins | Plugin SDK documentation}
+   * @see {@link https://docs.FirstNexus.ai/plugins/building-plugins | Plugin SDK documentation}
    */
   channelRuntime?: ChannelRuntimeSurface;
 };
@@ -332,7 +336,7 @@ export type ChannelLoginWithQrWaitResult = {
 };
 
 export type ChannelLogoutContext<ResolvedAccount = unknown> = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   account: ResolvedAccount;
   runtime: RuntimeEnv;
@@ -343,7 +347,7 @@ export type ChannelGatewayAdapter<ResolvedAccount = unknown> = {
   startAccount?: (ctx: ChannelGatewayContext<ResolvedAccount>) => Promise<unknown>;
   stopAccount?: (ctx: ChannelGatewayContext<ResolvedAccount>) => Promise<void>;
   /** Keep gateway auth bypass resolution mirrored through a lightweight top-level `gateway-auth-api.ts` artifact. */
-  resolveGatewayAuthBypassPaths?: (params: { cfg: NexisClawConfig }) => string[];
+  resolveGatewayAuthBypassPaths?: (params: { cfg: FirstNexusConfig }) => string[];
   loginWithQrStart?: (params: {
     accountId?: string;
     force?: boolean;
@@ -360,7 +364,7 @@ export type ChannelGatewayAdapter<ResolvedAccount = unknown> = {
 
 export type ChannelAuthAdapter = {
   login?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     runtime: RuntimeEnv;
     verbose?: boolean;
@@ -370,19 +374,19 @@ export type ChannelAuthAdapter = {
 
 export type ChannelHeartbeatAdapter = {
   checkReady?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     deps?: ChannelHeartbeatDeps;
   }) => Promise<{ ok: boolean; reason: string }>;
   sendTyping?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     to: string;
     accountId?: string | null;
     threadId?: string | number | null;
     deps?: ChannelHeartbeatDeps;
   }) => Promise<void> | void;
   clearTyping?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     to: string;
     accountId?: string | null;
     threadId?: string | number | null;
@@ -391,13 +395,13 @@ export type ChannelHeartbeatAdapter = {
 };
 
 type ChannelDirectorySelfParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   runtime: RuntimeEnv;
 };
 
 type ChannelDirectoryListParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   query?: string | null;
   limit?: number | null;
@@ -405,7 +409,7 @@ type ChannelDirectoryListParams = {
 };
 
 type ChannelDirectoryListGroupMembersParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   groupId: string;
   limit?: number | null;
@@ -435,7 +439,7 @@ export type ChannelResolveResult = {
 
 export type ChannelResolverAdapter = {
   resolveTargets: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     inputs: string[];
     kind: ChannelResolveKind;
@@ -445,7 +449,7 @@ export type ChannelResolverAdapter = {
 
 export type ChannelElevatedAdapter = {
   allowFromFallback?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
   }) => Array<string | number> | undefined;
 };
@@ -487,7 +491,7 @@ export type ChannelCommandAdapter = {
 };
 
 export type ChannelDoctorConfigMutation = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   changes: string[];
   warnings?: string[];
 };
@@ -514,26 +518,26 @@ export type ChannelDoctorAdapter = {
   groupAllowFromFallbackToAllowFrom?: boolean;
   warnOnEmptyGroupSenderAllowlist?: boolean;
   legacyConfigRules?: LegacyConfigRule[];
-  normalizeCompatibilityConfig?: (params: { cfg: NexisClawConfig }) => ChannelDoctorConfigMutation;
+  normalizeCompatibilityConfig?: (params: { cfg: FirstNexusConfig }) => ChannelDoctorConfigMutation;
   collectPreviewWarnings?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     doctorFixCommand: string;
     env?: NodeJS.ProcessEnv;
   }) => string[] | Promise<string[]>;
   collectMutableAllowlistWarnings?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
   }) => string[] | Promise<string[]>;
   repairConfig?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     doctorFixCommand: string;
   }) => ChannelDoctorConfigMutation | Promise<ChannelDoctorConfigMutation>;
   runConfigSequence?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     env: NodeJS.ProcessEnv;
     shouldRepair: boolean;
   }) => ChannelDoctorSequenceResult | Promise<ChannelDoctorSequenceResult>;
   cleanStaleConfig?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
   }) => ChannelDoctorConfigMutation | Promise<ChannelDoctorConfigMutation>;
   collectEmptyAllowlistExtraWarnings?: (
     params: ChannelDoctorEmptyAllowlistAccountContext,
@@ -545,18 +549,18 @@ export type ChannelDoctorAdapter = {
 
 export type ChannelLifecycleAdapter = {
   onAccountConfigChanged?: (params: {
-    prevCfg: NexisClawConfig;
-    nextCfg: NexisClawConfig;
+    prevCfg: FirstNexusConfig;
+    nextCfg: FirstNexusConfig;
     accountId: string;
     runtime: RuntimeEnv;
   }) => Promise<void> | void;
   onAccountRemoved?: (params: {
-    prevCfg: NexisClawConfig;
+    prevCfg: FirstNexusConfig;
     accountId: string;
     runtime: RuntimeEnv;
   }) => Promise<void> | void;
   runStartupMaintenance?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     env?: NodeJS.ProcessEnv;
     log: {
       info?: (message: string) => void;
@@ -566,7 +570,7 @@ export type ChannelLifecycleAdapter = {
     logPrefix?: string;
   }) => Promise<void> | void;
   detectLegacyStateMigrations?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     env: NodeJS.ProcessEnv;
     stateDir: string;
     oauthDir: string;
@@ -574,9 +578,9 @@ export type ChannelLifecycleAdapter = {
 };
 
 export type ChannelApprovalDeliveryAdapter = {
-  hasConfiguredDmRoute?: (params: { cfg: NexisClawConfig }) => boolean;
+  hasConfiguredDmRoute?: (params: { cfg: FirstNexusConfig }) => boolean;
   shouldSuppressForwardingFallback?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     approvalKind: ChannelApprovalKind;
     target: ChannelApprovalForwardTarget;
     request: ExecApprovalRequest;
@@ -599,26 +603,26 @@ export type {
 export type ChannelApprovalRenderAdapter = {
   exec?: {
     buildPendingPayload?: (params: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       request: ExecApprovalRequest;
       target: ChannelApprovalForwardTarget;
       nowMs: number;
     }) => ReplyPayload | null;
     buildResolvedPayload?: (params: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       resolved: ExecApprovalResolved;
       target: ChannelApprovalForwardTarget;
     }) => ReplyPayload | null;
   };
   plugin?: {
     buildPendingPayload?: (params: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       request: PluginApprovalRequest;
       target: ChannelApprovalForwardTarget;
       nowMs: number;
     }) => ReplyPayload | null;
     buildResolvedPayload?: (params: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       resolved: PluginApprovalResolved;
       target: ChannelApprovalForwardTarget;
     }) => ReplyPayload | null;
@@ -639,7 +643,7 @@ export type ChannelApprovalAdapter = {
 
 export type ChannelApprovalCapability = ChannelApprovalAdapter & {
   authorizeActorAction?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     senderId?: string | null;
     action: "approve";
@@ -649,19 +653,19 @@ export type ChannelApprovalCapability = ChannelApprovalAdapter & {
     reason?: string;
   };
   getActionAvailabilityState?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     action: "approve";
     approvalKind?: ChannelApprovalKind;
   }) => ChannelActionAvailabilityState;
   /** Exec-native client availability for the initiating surface; distinct from same-chat auth. */
   getExecInitiatingSurfaceState?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     action: "approve";
   }) => ChannelActionAvailabilityState;
   resolveApproveCommandBehavior?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     senderId?: string | null;
     approvalKind: ChannelApprovalKind;
@@ -670,7 +674,7 @@ export type ChannelApprovalCapability = ChannelApprovalAdapter & {
 
 export type ChannelAllowlistAdapter = {
   applyConfigEdit?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     parsedConfig: Record<string, unknown>;
     accountId?: string | null;
     scope: "dm" | "group";
@@ -698,7 +702,7 @@ export type ChannelAllowlistAdapter = {
           }
       >
     | null;
-  readConfig?: (params: { cfg: NexisClawConfig; accountId?: string | null }) =>
+  readConfig?: (params: { cfg: FirstNexusConfig; accountId?: string | null }) =>
     | {
         dmAllowFrom?: Array<string | number>;
         groupAllowFrom?: Array<string | number>;
@@ -714,7 +718,7 @@ export type ChannelAllowlistAdapter = {
         groupOverrides?: Array<{ label: string; entries: Array<string | number> }>;
       }>;
   resolveNames?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     scope: "dm" | "group";
     entries: string[];
@@ -831,7 +835,7 @@ export type ChannelConversationBindingSupport = {
     idleTimeoutMs?: number;
     maxAgeMs?: number;
   }>;
-  createManager?: (params: { cfg: NexisClawConfig; accountId?: string | null }) =>
+  createManager?: (params: { cfg: FirstNexusConfig; accountId?: string | null }) =>
     | {
         stop: () => void | Promise<void>;
       }
@@ -842,7 +846,7 @@ export type ChannelConversationBindingSupport = {
 
 export type ChannelSecurityAdapter<ResolvedAccount = unknown> = {
   applyConfigFixes?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     env: NodeJS.ProcessEnv;
   }) => ChannelDoctorConfigMutation | Promise<ChannelDoctorConfigMutation>;
   resolveDmPolicy?: ChannelAdapterCallback<
@@ -854,7 +858,7 @@ export type ChannelSecurityAdapter<ResolvedAccount = unknown> = {
   collectAuditFindings?: ChannelAdapterCallback<
     (
       ctx: ChannelSecurityContext<ResolvedAccount> & {
-        sourceConfig: NexisClawConfig;
+        sourceConfig: FirstNexusConfig;
         orderedAccountIds: string[];
         hasExplicitAccountPath: boolean;
       },

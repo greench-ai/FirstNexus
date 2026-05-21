@@ -8,16 +8,20 @@ import {
 
 describe("gh-read helpers", () => {
   it("finds repo from gh args", () => {
-    expect(parseRepoArg(["pr", "view", "42", "-R", "NexisClaw/NexisClaw"])).toBe("NexisClaw/NexisClaw");
-    expect(parseRepoArg(["run", "list", "--repo=NexisClaw/docs"])).toBe("NexisClaw/docs");
+    expect(parseRepoArg(["pr", "view", "42", "-R", "FirstNexus/FirstNexus"])).toBe(
+      "FirstNexus/FirstNexus",
+    );
+    expect(parseRepoArg(["run", "list", "--repo=FirstNexus/docs"])).toBe("FirstNexus/docs");
     expect(parseRepoArg(["pr", "view", "42"])).toBeNull();
   });
 
   it("normalizes repo strings from common git formats", () => {
-    expect(normalizeRepo("NexisClaw/NexisClaw")).toBe("NexisClaw/NexisClaw");
-    expect(normalizeRepo("github.com/NexisClaw/NexisClaw")).toBe("NexisClaw/NexisClaw");
-    expect(normalizeRepo("https://github.com/NexisClaw/NexisClaw.git")).toBe("NexisClaw/NexisClaw");
-    expect(normalizeRepo("git@github.com:NexisClaw/NexisClaw.git")).toBe("NexisClaw/NexisClaw");
+    expect(normalizeRepo("FirstNexus/FirstNexus")).toBe("FirstNexus/FirstNexus");
+    expect(normalizeRepo("github.com/FirstNexus/FirstNexus")).toBe("FirstNexus/FirstNexus");
+    expect(normalizeRepo("https://github.com/FirstNexus/FirstNexus.git")).toBe(
+      "FirstNexus/FirstNexus",
+    );
+    expect(normalizeRepo("git@github.com:FirstNexus/FirstNexus.git")).toBe("FirstNexus/FirstNexus");
     expect(normalizeRepo("invalid")).toBeNull();
   });
 

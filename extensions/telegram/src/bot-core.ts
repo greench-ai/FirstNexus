@@ -1,28 +1,31 @@
 import {
   resolveChannelGroupPolicy,
   resolveChannelGroupRequireMention,
-} from "NexisClaw/plugin-sdk/channel-policy";
+} from "FirstNexus/plugin-sdk/channel-policy";
 import {
   resolveThreadBindingIdleTimeoutMsForChannel,
   resolveThreadBindingMaxAgeMsForChannel,
   resolveThreadBindingSpawnPolicy,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { formatErrorMessage, formatUncaughtError } from "NexisClaw/plugin-sdk/error-runtime";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { formatErrorMessage, formatUncaughtError } from "FirstNexus/plugin-sdk/error-runtime";
 import {
   isNativeCommandsExplicitlyDisabled,
   resolveNativeCommandsEnabled,
   resolveNativeSkillsEnabled,
-} from "NexisClaw/plugin-sdk/native-command-config-runtime";
-import { resolveTextChunkLimit } from "NexisClaw/plugin-sdk/reply-chunking";
-import { DEFAULT_GROUP_HISTORY_LIMIT, type HistoryEntry } from "NexisClaw/plugin-sdk/reply-history";
-import { danger, logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { getChildLogger } from "NexisClaw/plugin-sdk/runtime-env";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
-import { createNonExitingRuntime, type RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/native-command-config-runtime";
+import { resolveTextChunkLimit } from "FirstNexus/plugin-sdk/reply-chunking";
+import {
+  DEFAULT_GROUP_HISTORY_LIMIT,
+  type HistoryEntry,
+} from "FirstNexus/plugin-sdk/reply-history";
+import { danger, logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { getChildLogger } from "FirstNexus/plugin-sdk/runtime-env";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
+import { createNonExitingRuntime, type RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { getOrCreateAccountThrottler } from "./account-throttler.js";
 import { resolveTelegramAccount } from "./accounts.js";
 import { normalizeTelegramApiRoot } from "./api-root.js";

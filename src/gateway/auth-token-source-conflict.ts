@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeSecretInputString, resolveSecretInputRef } from "../config/types.secrets.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 
@@ -15,7 +15,7 @@ export type GatewayAuthTokenSourceConflict = {
 };
 
 export function resolveGatewayAuthTokenSourceConflict(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
 }): GatewayAuthTokenSourceConflict | null {
   const envToken = normalizeOptionalString(params.env.NEXISCLAW_GATEWAY_TOKEN);
@@ -60,7 +60,7 @@ export function resolveGatewayAuthTokenSourceConflict(params: {
     "prefers gateway.auth.token. If the values differ, CLI/RPC calls can fail to authenticate " +
     "with the running gateway.";
   const remediation =
-    `Remove ${GATEWAY_ENV_TOKEN} from the shell, ~/.NexisClaw/.env, or launchctl env if gateway.auth.token is intended, ` +
+    `Remove ${GATEWAY_ENV_TOKEN} from the shell, ~/.FirstNexus/.env, or launchctl env if gateway.auth.token is intended, ` +
     `or point gateway.auth.token at \${${GATEWAY_ENV_TOKEN}} if the env var should be canonical.`;
 
   return {

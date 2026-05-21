@@ -111,7 +111,7 @@ type AgentConfig = {
   contextLimits?: AgentContextLimitsConfig;
 };
 
-export type NexisClawConfig = {
+export type FirstNexusConfig = {
   agents?: {
     defaults?: {
       workspace?: string;
@@ -141,7 +141,7 @@ const INVALID_CHARS_RE = /[^a-z0-9_-]+/g;
 const LEADING_DASH_RE = /^-+/;
 const TRAILING_DASH_RE = /-+$/;
 const LEGACY_STATE_DIRNAMES = [".clawdbot"] as const;
-const NEW_STATE_DIRNAME = ".NexisClaw";
+const NEW_STATE_DIRNAME = ".FirstNexus";
 const DURATION_MULTIPLIERS: Record<string, number> = {
   ms: 1,
   s: 1000,
@@ -241,18 +241,18 @@ function resolveDefaultAgentWorkspaceDir(env: NodeJS.ProcessEnv = process.env): 
   const home = resolveRequiredHomeDir(env, os.homedir);
   const profile = env.NEXISCLAW_PROFILE?.trim();
   if (profile && normalizeLowercaseStringOrEmpty(profile) !== "default") {
-    return path.join(home, ".NexisClaw", `workspace-${profile}`);
+    return path.join(home, ".FirstNexus", `workspace-${profile}`);
   }
-  return path.join(home, ".NexisClaw", "workspace");
+  return path.join(home, ".FirstNexus", "workspace");
 }
 
-function listAgentEntries(cfg: NexisClawConfig): AgentConfig[] {
+function listAgentEntries(cfg: FirstNexusConfig): AgentConfig[] {
   return Array.isArray(cfg.agents?.list)
     ? cfg.agents.list.filter((entry): entry is AgentConfig => Boolean(entry))
     : [];
 }
 
-function resolveDefaultAgentId(cfg: NexisClawConfig): string {
+function resolveDefaultAgentId(cfg: FirstNexusConfig): string {
   const agents = listAgentEntries(cfg);
   if (agents.length === 0) {
     return DEFAULT_AGENT_ID;
@@ -261,7 +261,7 @@ function resolveDefaultAgentId(cfg: NexisClawConfig): string {
   return normalizeAgentId(chosen || DEFAULT_AGENT_ID);
 }
 
-function resolveAgentConfig(cfg: NexisClawConfig, agentId: string): AgentConfig | undefined {
+function resolveAgentConfig(cfg: FirstNexusConfig, agentId: string): AgentConfig | undefined {
   const id = normalizeAgentId(agentId);
   return listAgentEntries(cfg).find((entry) => normalizeAgentId(entry.id) === id);
 }
@@ -271,7 +271,7 @@ function stripNullBytes(value: string): string {
 }
 
 export function resolveAgentWorkspaceDir(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   agentId: string,
   env: NodeJS.ProcessEnv = process.env,
 ): string {
@@ -293,7 +293,7 @@ export function resolveAgentWorkspaceDir(
 }
 
 export function resolveAgentContextLimits(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
   agentId?: string | null,
 ): AgentContextLimitsConfig | undefined {
   const defaults = cfg?.agents?.defaults?.contextLimits;
@@ -304,7 +304,7 @@ export function resolveAgentContextLimits(
 }
 
 export function resolveMemorySearchConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   agentId: string,
 ): { enabled: boolean; extraPaths: string[] } | null {
   const defaults = cfg.agents?.defaults?.memorySearch;

@@ -1,11 +1,11 @@
 import type {
   ChannelAccountSnapshot,
   ChannelStatusIssue,
-} from "NexisClaw/plugin-sdk/channel-contract";
+} from "FirstNexus/plugin-sdk/channel-contract";
 import {
   coerceStatusIssueAccountId,
   readStatusIssueFields,
-} from "NexisClaw/plugin-sdk/extension-shared";
+} from "FirstNexus/plugin-sdk/extension-shared";
 
 const ZALO_STATUS_FIELDS = ["accountId", "enabled", "configured", "dmPolicy"] as const;
 

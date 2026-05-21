@@ -65,7 +65,7 @@ describe("Feishu bot menu handler", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    process.env.NEXISCLAW_STATE_DIR = `/tmp/NexisClaw-feishu-bot-menu-test-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    process.env.NEXISCLAW_STATE_DIR = `/tmp/FirstNexus-feishu-bot-menu-test-${Date.now()}-${Math.random().toString(36).slice(2)}`;
   });
 
   afterEach(() => {

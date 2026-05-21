@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import type { MsgContext } from "../templating.js";
 import { resolveElevatedPermissions } from "./reply-elevated.js";
 
-function buildConfig(allowFrom: string[]): NexisClawConfig {
+function buildConfig(allowFrom: string[]): FirstNexusConfig {
   return {
     tools: {
       elevated: {
@@ -12,7 +12,7 @@ function buildConfig(allowFrom: string[]): NexisClawConfig {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function buildContext(overrides?: Partial<MsgContext>): MsgContext {

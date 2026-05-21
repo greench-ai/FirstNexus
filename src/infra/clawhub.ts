@@ -16,10 +16,10 @@ const DEFAULT_FETCH_TIMEOUT_MS = 30_000;
 
 export type ClawHubPackageFamily = "skill" | "code-plugin" | "bundle-plugin";
 export type ClawHubPackageChannel = "official" | "community" | "private";
-// Keep aligned with @NexisClaw/plugin-package-contract ExternalPluginCompatibility.
+// Keep aligned with @FirstNexus/plugin-package-contract ExternalPluginCompatibility.
 export type ClawHubPackageCompatibility = {
   pluginApiRange?: string;
-  builtWithNexisClawVersion?: string;
+  builtWithFirstNexusVersion?: string;
   pluginSdkVersion?: string;
   minGatewayVersion?: string;
 };
@@ -150,11 +150,11 @@ export type ClawHubPackageReadinessPhase =
   | "legacy-zip-only"
   | "metadata-ready"
   | "blocked"
-  | "ready-for-NexisClaw"
+  | "ready-for-FirstNexus"
   | (string & {});
 export type ClawHubPackageReadiness = {
   ready?: boolean | null;
-  readyForNexisClaw?: boolean | null;
+  readyForFirstNexus?: boolean | null;
   installReady?: boolean | null;
   phase?: ClawHubPackageReadinessPhase | null;
   status?: ClawHubPackageReadinessPhase | null;
@@ -941,7 +941,7 @@ export async function downloadClawHubPackageArchive(params: {
     const rawSpecVersion = response.headers.get("X-ClawHub-ClawPack-Spec-Version");
     const specVersion = rawSpecVersion ? Number.parseInt(rawSpecVersion, 10) : undefined;
     const target = await createTempDownloadTarget({
-      prefix: "NexisClaw-clawhub-clawpack",
+      prefix: "FirstNexus-clawhub-clawpack",
       fileName: npmTarballName,
       tmpDir: os.tmpdir(),
     });
@@ -980,7 +980,7 @@ export async function downloadClawHubPackageArchive(params: {
   const bytes = new Uint8Array(await response.arrayBuffer());
   const sha256Hex = formatSha256Hex(bytes);
   const target = await createTempDownloadTarget({
-    prefix: "NexisClaw-clawhub-package",
+    prefix: "FirstNexus-clawhub-package",
     fileName: `${params.name}.zip`,
     tmpDir: os.tmpdir(),
   });
@@ -1021,7 +1021,7 @@ export async function downloadClawHubSkillArchive(params: {
   const bytes = new Uint8Array(await response.arrayBuffer());
   const sha256Hex = formatSha256Hex(bytes);
   const target = await createTempDownloadTarget({
-    prefix: "NexisClaw-clawhub-skill",
+    prefix: "FirstNexus-clawhub-skill",
     fileName: `${params.slug}.zip`,
     tmpDir: os.tmpdir(),
   });

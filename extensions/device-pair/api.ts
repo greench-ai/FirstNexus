@@ -6,15 +6,15 @@ export {
   listDevicePairing,
   revokeDeviceBootstrapToken,
   type DeviceBootstrapProfile,
-} from "NexisClaw/plugin-sdk/device-bootstrap";
-export { definePluginEntry, type NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
+} from "FirstNexus/plugin-sdk/device-bootstrap";
+export { definePluginEntry, type FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
 export {
   resolveGatewayBindUrl,
   resolveGatewayPort,
   resolveTailnetHostWithRunner,
-} from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/core";
 export {
-  resolvePreferredNexisClawTmpDir,
+  resolvePreferredFirstNexusTmpDir,
   runPluginCommandWithTimeout,
-} from "NexisClaw/plugin-sdk/sandbox";
+} from "FirstNexus/plugin-sdk/sandbox";
 export { renderQrPngBase64, renderQrPngDataUrl, writeQrPngTempFile } from "./qr-image.js";

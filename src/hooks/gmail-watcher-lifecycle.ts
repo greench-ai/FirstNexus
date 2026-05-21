@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { startGmailWatcher } from "./gmail-watcher.js";
 
@@ -9,7 +9,7 @@ export type GMailWatcherLog = {
 };
 
 export async function startGmailWatcherWithLogs(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   log: GMailWatcherLog;
   onSkipped?: () => void;
 }) {

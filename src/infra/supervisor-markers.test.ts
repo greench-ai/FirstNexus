@@ -14,7 +14,7 @@ describe("SUPERVISOR_HINT_ENV_VARS", () => {
 
 describe("detectRespawnSupervisor", () => {
   it("detects launchd and systemd only from non-blank platform-specific hints", () => {
-    expect(detectRespawnSupervisor({ LAUNCH_JOB_LABEL: " ai.NexisClaw.gateway " }, "darwin")).toBe(
+    expect(detectRespawnSupervisor({ LAUNCH_JOB_LABEL: " ai.FirstNexus.gateway " }, "darwin")).toBe(
       "launchd",
     );
     expect(detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "   " }, "darwin")).toBeNull();
@@ -25,12 +25,12 @@ describe("detectRespawnSupervisor", () => {
 
   it("detects scheduled-task supervision on Windows from either hint family", () => {
     expect(
-      detectRespawnSupervisor({ NEXISCLAW_WINDOWS_TASK_NAME: "NexisClaw Gateway" }, "win32"),
+      detectRespawnSupervisor({ NEXISCLAW_WINDOWS_TASK_NAME: "FirstNexus Gateway" }, "win32"),
     ).toBe("schtasks");
     expect(
       detectRespawnSupervisor(
         {
-          NEXISCLAW_SERVICE_MARKER: "NexisClaw",
+          NEXISCLAW_SERVICE_MARKER: "FirstNexus",
           NEXISCLAW_SERVICE_KIND: "gateway",
         },
         "win32",
@@ -39,7 +39,7 @@ describe("detectRespawnSupervisor", () => {
     expect(
       detectRespawnSupervisor(
         {
-          NEXISCLAW_SERVICE_MARKER: "NexisClaw",
+          NEXISCLAW_SERVICE_MARKER: "FirstNexus",
           NEXISCLAW_SERVICE_KIND: "worker",
         },
         "win32",
@@ -51,14 +51,14 @@ describe("detectRespawnSupervisor", () => {
     expect(
       detectRespawnSupervisor(
         {
-          NEXISCLAW_SERVICE_MARKER: "NexisClaw",
+          NEXISCLAW_SERVICE_MARKER: "FirstNexus",
           NEXISCLAW_SERVICE_KIND: "gateway",
         },
         "linux",
       ),
     ).toBeNull();
     expect(
-      detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "ai.NexisClaw.gateway" }, "freebsd"),
+      detectRespawnSupervisor({ LAUNCH_JOB_LABEL: "ai.FirstNexus.gateway" }, "freebsd"),
     ).toBeNull();
   });
 });

@@ -1,13 +1,13 @@
 {
   "entries": [
     {
-      "name": "@wecom/wecom-NexisClaw-plugin",
-      "description": "NexisClaw WeCom channel plugin by the Tencent WeCom team.",
+      "name": "@wecom/wecom-FirstNexus-plugin",
+      "description": "FirstNexus WeCom channel plugin by the Tencent WeCom team.",
       "source": "external",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
-          "id": "wecom-NexisClaw-plugin",
+          "id": "wecom-FirstNexus-plugin",
           "label": "WeCom"
         },
         "contracts": {
@@ -35,20 +35,20 @@
           }
         },
         "install": {
-          "npmSpec": "@wecom/wecom-NexisClaw-plugin@2026.4.23",
+          "npmSpec": "@wecom/wecom-FirstNexus-plugin@2026.4.23",
           "defaultChoice": "npm",
           "expectedIntegrity": "sha512-bnzfdIEEu1/LFvcdyjaTkyxt27w6c7dqhkPezU62OWaqmcdFsUGR3T55USK/O9pIKsNcnL1Tnu1pqKYCWHFgWQ=="
         }
       }
     },
     {
-      "name": "NexisClaw-plugin-yuanbao",
-      "description": "NexisClaw Yuanbao channel plugin by the Tencent Yuanbao team.",
+      "name": "FirstNexus-plugin-yuanbao",
+      "description": "FirstNexus Yuanbao channel plugin by the Tencent Yuanbao team.",
       "source": "external",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
-          "id": "NexisClaw-plugin-yuanbao",
+          "id": "FirstNexus-plugin-yuanbao",
           "label": "Yuanbao"
         },
         "contracts": {
@@ -76,24 +76,24 @@
           }
         },
         "install": {
-          "npmSpec": "NexisClaw-plugin-yuanbao@2.13.1",
+          "npmSpec": "FirstNexus-plugin-yuanbao@2.13.1",
           "defaultChoice": "npm",
           "expectedIntegrity": "sha512-lH2I9/nsmrg7l0YJJSQhOSpWMEFBAa6FwKbZcRLDFHDT2+mOZkHa44XE+8KYN4VmorlUdAxHzpZQmVr7C98IuA=="
         }
       }
     },
     {
-      "name": "@tencent-weixin/NexisClaw-weixin",
-      "description": "NexisClaw Weixin channel plugin by the Tencent Weixin team.",
+      "name": "@tencent-weixin/FirstNexus-weixin",
+      "description": "FirstNexus Weixin channel plugin by the Tencent Weixin team.",
       "source": "external",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
-          "id": "NexisClaw-weixin",
+          "id": "FirstNexus-weixin",
           "label": "Weixin"
         },
         "channel": {
-          "id": "NexisClaw-weixin",
+          "id": "FirstNexus-weixin",
           "label": "Weixin",
           "selectionLabel": "Weixin（微信）",
           "detailLabel": "Weixin",
@@ -104,7 +104,7 @@
           "order": 75
         },
         "channelConfigs": {
-          "NexisClaw-weixin": {
+          "FirstNexus-weixin": {
             "label": "Weixin",
             "description": "Personal WeChat conversation channel.",
             "schema": {
@@ -114,7 +114,7 @@
           }
         },
         "install": {
-          "npmSpec": "@tencent-weixin/NexisClaw-weixin@2.4.1",
+          "npmSpec": "@tencent-weixin/FirstNexus-weixin@2.4.1",
           "defaultChoice": "npm",
           "expectedIntegrity": "sha512-FZnUVMQRpKGTKezeplr/DYal+5RSif2tXE51pljIFrO8rn7bVnnvpbj81/i9UMrYbuGiom1sl8OeSDzWRDKGhQ==",
           "minHostVersion": ">=2026.3.22"
@@ -122,11 +122,11 @@
       }
     },
     {
-      "name": "@NexisClaw/discord",
-      "description": "NexisClaw Discord channel plugin",
+      "name": "@FirstNexus/discord",
+      "description": "FirstNexus Discord channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "discord",
           "label": "Discord",
@@ -140,7 +140,7 @@
           "preferSessionLookupForAnnounceTarget": true
         },
         "install": {
-          "npmSpec": "@NexisClaw/discord",
+          "npmSpec": "@FirstNexus/discord",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10",
           "allowInvalidConfigRecovery": true
@@ -148,11 +148,11 @@
       }
     },
     {
-      "name": "@NexisClaw/feishu",
-      "description": "NexisClaw Feishu/Lark channel plugin",
+      "name": "@FirstNexus/feishu",
+      "description": "FirstNexus Feishu/Lark channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "feishu",
           "label": "Feishu",
@@ -165,18 +165,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@NexisClaw/feishu",
+          "npmSpec": "@FirstNexus/feishu",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@NexisClaw/googlechat",
-      "description": "NexisClaw Google Chat channel plugin",
+      "name": "@FirstNexus/googlechat",
+      "description": "FirstNexus Google Chat channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "googlechat",
           "label": "Google Chat",
@@ -215,18 +215,18 @@
           ]
         },
         "install": {
-          "npmSpec": "@NexisClaw/googlechat",
+          "npmSpec": "@FirstNexus/googlechat",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/line",
-      "description": "NexisClaw LINE channel plugin",
+      "name": "@FirstNexus/line",
+      "description": "FirstNexus LINE channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "line",
           "label": "LINE",
@@ -240,18 +240,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@NexisClaw/line",
+          "npmSpec": "@FirstNexus/line",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/matrix",
-      "description": "NexisClaw Matrix channel plugin",
+      "name": "@FirstNexus/matrix",
+      "description": "FirstNexus Matrix channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "matrix",
           "label": "Matrix",
@@ -291,8 +291,8 @@
           ]
         },
         "install": {
-          "clawhubSpec": "clawhub:@NexisClaw/matrix",
-          "npmSpec": "@NexisClaw/matrix",
+          "clawhubSpec": "clawhub:@FirstNexus/matrix",
+          "npmSpec": "@FirstNexus/matrix",
           "defaultChoice": "clawhub",
           "minHostVersion": ">=2026.4.10",
           "allowInvalidConfigRecovery": true
@@ -300,11 +300,11 @@
       }
     },
     {
-      "name": "@NexisClaw/msteams",
-      "description": "NexisClaw Microsoft Teams channel plugin",
+      "name": "@FirstNexus/msteams",
+      "description": "FirstNexus Microsoft Teams channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "msteams",
           "label": "Microsoft Teams",
@@ -316,18 +316,18 @@
           "order": 60
         },
         "install": {
-          "npmSpec": "@NexisClaw/msteams",
+          "npmSpec": "@FirstNexus/msteams",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/nextcloud-talk",
-      "description": "NexisClaw Nextcloud Talk channel plugin",
+      "name": "@FirstNexus/nextcloud-talk",
+      "description": "FirstNexus Nextcloud Talk channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "nextcloud-talk",
           "label": "Nextcloud Talk",
@@ -340,18 +340,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@NexisClaw/nextcloud-talk",
+          "npmSpec": "@FirstNexus/nextcloud-talk",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/nostr",
-      "description": "NexisClaw Nostr channel plugin for NIP-04 encrypted DMs",
+      "name": "@FirstNexus/nostr",
+      "description": "FirstNexus Nostr channel plugin for NIP-04 encrypted DMs",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "nostr",
           "label": "Nostr",
@@ -363,18 +363,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@NexisClaw/nostr",
+          "npmSpec": "@FirstNexus/nostr",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/qqbot",
-      "description": "NexisClaw QQ Bot channel plugin",
+      "name": "@FirstNexus/qqbot",
+      "description": "FirstNexus QQ Bot channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "qqbot",
           "label": "QQ Bot",
@@ -386,40 +386,40 @@
           "systemImage": "bubble.left.and.bubble.right"
         },
         "install": {
-          "npmSpec": "@NexisClaw/qqbot",
+          "npmSpec": "@FirstNexus/qqbot",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/synology-chat",
-      "description": "Synology Chat channel plugin for NexisClaw",
+      "name": "@FirstNexus/synology-chat",
+      "description": "Synology Chat channel plugin for FirstNexus",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "synology-chat",
           "label": "Synology Chat",
           "selectionLabel": "Synology Chat (Webhook)",
           "docsPath": "/channels/synology-chat",
           "docsLabel": "synology-chat",
-          "blurb": "Connect your Synology NAS Chat to NexisClaw with full agent capabilities.",
+          "blurb": "Connect your Synology NAS Chat to FirstNexus with full agent capabilities.",
           "order": 90
         },
         "install": {
-          "npmSpec": "@NexisClaw/synology-chat",
+          "npmSpec": "@FirstNexus/synology-chat",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/tlon",
-      "description": "NexisClaw Tlon/Urbit channel plugin",
+      "name": "@FirstNexus/tlon",
+      "description": "FirstNexus Tlon/Urbit channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "tlon",
           "label": "Tlon",
@@ -431,18 +431,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@NexisClaw/tlon",
+          "npmSpec": "@FirstNexus/tlon",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/twitch",
-      "description": "NexisClaw Twitch channel plugin",
+      "name": "@FirstNexus/twitch",
+      "description": "FirstNexus Twitch channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "twitch",
           "label": "Twitch",
@@ -452,18 +452,18 @@
           "aliases": ["twitch-chat"]
         },
         "install": {
-          "npmSpec": "@NexisClaw/twitch",
+          "npmSpec": "@FirstNexus/twitch",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/whatsapp",
-      "description": "NexisClaw WhatsApp channel plugin",
+      "name": "@FirstNexus/whatsapp",
+      "description": "FirstNexus WhatsApp channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "whatsapp",
           "label": "WhatsApp",
@@ -475,18 +475,18 @@
           "systemImage": "message"
         },
         "install": {
-          "npmSpec": "@NexisClaw/whatsapp",
+          "npmSpec": "@FirstNexus/whatsapp",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@NexisClaw/zalo",
-      "description": "NexisClaw Zalo channel plugin",
+      "name": "@FirstNexus/zalo",
+      "description": "FirstNexus Zalo channel plugin",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "zalo",
           "label": "Zalo",
@@ -499,18 +499,18 @@
           "quickstartAllowFrom": true
         },
         "install": {
-          "npmSpec": "@NexisClaw/zalo",
+          "npmSpec": "@FirstNexus/zalo",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/zalouser",
-      "description": "NexisClaw Zalo Personal Account plugin via native zca-js integration",
+      "name": "@FirstNexus/zalouser",
+      "description": "FirstNexus Zalo Personal Account plugin via native zca-js integration",
       "source": "official",
       "kind": "channel",
-      "NexisClaw": {
+      "FirstNexus": {
         "channel": {
           "id": "zalouser",
           "label": "Zalo Personal",
@@ -523,7 +523,7 @@
           "quickstartAllowFrom": false
         },
         "install": {
-          "npmSpec": "@NexisClaw/zalouser",
+          "npmSpec": "@FirstNexus/zalouser",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }

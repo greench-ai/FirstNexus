@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import type { RootHelpRenderOptions } from "../src/cli/program/root-help.js";
-import type { NexisClawConfig } from "../src/config/config.js";
+import type { FirstNexusConfig } from "../src/config/config.js";
 
 function dedupe(values: string[]): string[] {
   const seen = new Set<string>();
@@ -108,7 +108,7 @@ export function readBundledChannelCatalog(
       const raw = readFileSync(packageJsonPath, "utf8");
       signature.update(`${dirEntry.name}\0${raw}\0`);
       const parsed = JSON.parse(raw) as {
-        NexisClaw?: {
+        FirstNexus?: {
           channel?: {
             id?: unknown;
             order?: unknown;
@@ -116,12 +116,12 @@ export function readBundledChannelCatalog(
           };
         };
       };
-      const id = parsed.NexisClaw?.channel?.id;
+      const id = parsed.FirstNexus?.channel?.id;
       if (typeof id !== "string" || !id.trim()) {
         continue;
       }
-      const orderRaw = parsed.NexisClaw?.channel?.order;
-      const labelRaw = parsed.NexisClaw?.channel?.label;
+      const orderRaw = parsed.FirstNexus?.channel?.order;
+      const labelRaw = parsed.FirstNexus?.channel?.label;
       entries.push({
         id: id.trim(),
         order: typeof orderRaw === "number" ? orderRaw : 999,
@@ -150,13 +150,13 @@ export function readBundledChannelCatalogIds(
 function createIsolatedRootHelpRenderContext(
   bundledPluginsDir: string = extensionsDir,
 ): RootHelpRenderContext {
-  const stateDir = path.join(rootDir, ".NexisClaw-build-root-help");
+  const stateDir = path.join(rootDir, ".FirstNexus-build-root-help");
   const workspaceDir = path.join(stateDir, "workspace");
   const homeDir = path.join(stateDir, "home");
   const env: NodeJS.ProcessEnv = {
     HOME: homeDir,
-    LOGNAME: process.env.LOGNAME ?? process.env.USER ?? "NexisClaw-build",
-    USER: process.env.USER ?? process.env.LOGNAME ?? "NexisClaw-build",
+    LOGNAME: process.env.LOGNAME ?? process.env.USER ?? "FirstNexus-build",
+    USER: process.env.USER ?? process.env.LOGNAME ?? "FirstNexus-build",
     PATH: process.env.PATH ?? "",
     TMPDIR: process.env.TMPDIR ?? "/tmp",
     LANG: process.env.LANG ?? "C.UTF-8",
@@ -167,7 +167,7 @@ function createIsolatedRootHelpRenderContext(
     NEXISCLAW_DISABLE_BUNDLED_PLUGINS: "",
     NEXISCLAW_STATE_DIR: stateDir,
   };
-  const config: NexisClawConfig = {
+  const config: FirstNexusConfig = {
     agents: {
       defaults: {
         workspace: workspaceDir,
@@ -280,7 +280,7 @@ function renderSourceBrowserHelpText(
     `const { createProgramContext } = await import(${JSON.stringify(contextUrl)});`,
     `const program = new Command();`,
     `configureProgramHelp(program, createProgramContext());`,
-    `registerBrowserCli(program, ["node", "NexisClaw", "browser", "--help"]);`,
+    `registerBrowserCli(program, ["node", "FirstNexus", "browser", "--help"]);`,
     `const browser = program.commands.find((cmd) => cmd.name() === "browser");`,
     `if (!browser) throw new Error("Browser command was not registered.");`,
     `browser.outputHelp();`,

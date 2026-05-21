@@ -1,15 +1,15 @@
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/account-id";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/account-id";
 import {
   getSessionBindingService,
   type SessionBindingRecord,
-} from "NexisClaw/plugin-sdk/conversation-binding-runtime";
+} from "FirstNexus/plugin-sdk/conversation-binding-runtime";
 import {
   formatThreadBindingDisabledError,
   formatThreadBindingSpawnDisabledError,
   resolveThreadBindingSpawnPolicy,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/core";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/core";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveMatrixTargetIdentity } from "./target-ids.js";
 import {
   getMatrixThreadBindingManager,
@@ -103,7 +103,7 @@ function resolveMatrixBindingDeliveryOrigin(
 }
 
 export async function handleMatrixSubagentSpawning(
-  api: NexisClawPluginApi,
+  api: FirstNexusPluginApi,
   event: MatrixSubagentSpawningEvent,
 ): Promise<SpawningResult | undefined> {
   if (!event.threadRequested) {

@@ -343,7 +343,7 @@ async function startRateLimitedTokenServerWithPairedDeviceToken() {
   const { server, ws, port, prevToken } = await startServerWithClient(undefined, {
     controlUiEnabled: true,
   });
-  const deviceIdentityPath = nextAuthIdentityPath("NexisClaw-auth-rate-limit");
+  const deviceIdentityPath = nextAuthIdentityPath("FirstNexus-auth-rate-limit");
   try {
     const initial = await connectReq(ws, { token: "secret", deviceIdentityPath });
     if (!initial.ok) {
@@ -366,7 +366,7 @@ async function ensurePairedDeviceTokenForCurrentIdentity(ws: WebSocket): Promise
   deviceToken: string;
   deviceIdentityPath: string;
 }> {
-  const deviceIdentityPath = nextAuthIdentityPath("NexisClaw-auth-device");
+  const deviceIdentityPath = nextAuthIdentityPath("FirstNexus-auth-device");
 
   const res = await connectReq(ws, { token: "secret", deviceIdentityPath });
   if (!res.ok) {

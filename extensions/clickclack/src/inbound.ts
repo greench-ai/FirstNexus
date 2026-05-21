@@ -1,5 +1,5 @@
-import { createChannelMessageReplyPipeline } from "NexisClaw/plugin-sdk/channel-message";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { createChannelMessageReplyPipeline } from "FirstNexus/plugin-sdk/channel-message";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { sendClickClackText } from "./outbound.js";
 import { getClickClackRuntime } from "./runtime.js";
 import { buildClickClackTarget } from "./target.js";
@@ -8,7 +8,7 @@ import type { ClickClackMessage, CoreConfig, ResolvedClickClackAccount } from ".
 const CHANNEL_ID = "clickclack" as const;
 
 function resolveAccountAgentRoute(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedClickClackAccount;
   target: string;
   isDirect: boolean;
@@ -44,7 +44,7 @@ function resolveAccountAgentRoute(params: {
 
 async function dispatchModelReply(params: {
   account: ResolvedClickClackAccount;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   message: ClickClackMessage;
   route: { agentId: string };
   target: string;
@@ -91,7 +91,7 @@ export async function handleClickClackInbound(params: {
       : { chatType: "group", kind: "channel", id: message.channel_id ?? "" },
   );
   const route = resolveAccountAgentRoute({
-    cfg: params.config as NexisClawConfig,
+    cfg: params.config as FirstNexusConfig,
     account: params.account,
     target,
     isDirect,
@@ -99,7 +99,7 @@ export async function handleClickClackInbound(params: {
   if (params.account.replyMode === "model") {
     await dispatchModelReply({
       account: params.account,
-      cfg: params.config as NexisClawConfig,
+      cfg: params.config as FirstNexusConfig,
       message,
       route,
       target,
@@ -118,7 +118,7 @@ export async function handleClickClackInbound(params: {
     from: senderName,
     timestamp: new Date(message.created_at),
     previousTimestamp,
-    envelope: runtime.channel.reply.resolveEnvelopeFormatOptions(params.config as NexisClawConfig),
+    envelope: runtime.channel.reply.resolveEnvelopeFormatOptions(params.config as FirstNexusConfig),
     body: message.body,
   });
   const storePath = runtime.channel.session.resolveStorePath(params.config.session?.store, {
@@ -153,7 +153,7 @@ export async function handleClickClackInbound(params: {
     CommandAuthorized: true,
   });
   const { onModelSelected, ...replyPipeline } = createChannelMessageReplyPipeline({
-    cfg: params.config as NexisClawConfig,
+    cfg: params.config as FirstNexusConfig,
     agentId: route.agentId,
     channel: CHANNEL_ID,
     accountId: params.account.accountId,
@@ -168,7 +168,7 @@ export async function handleClickClackInbound(params: {
     runDispatch: async () =>
       await runtime.channel.reply.dispatchReplyWithBufferedBlockDispatcher({
         ctx: ctxPayload,
-        cfg: params.config as NexisClawConfig,
+        cfg: params.config as FirstNexusConfig,
         dispatcherOptions: {
           ...replyPipeline,
           deliver: async (payload) => {

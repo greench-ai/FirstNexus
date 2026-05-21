@@ -1,11 +1,11 @@
 import fs from "node:fs/promises";
 import type { ConnectionOptions } from "node:tls";
-import type { PinnedDispatcherPolicy } from "NexisClaw/plugin-sdk/ssrf-dispatcher";
+import type { PinnedDispatcherPolicy } from "FirstNexus/plugin-sdk/ssrf-dispatcher";
 import {
   buildHostnameAllowlistPolicyFromSuffixAllowlist,
   fetchWithSsrFGuard,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { resolveUserPath } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { resolveUserPath } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 
 type ProxyRule = RegExp | URL | string;

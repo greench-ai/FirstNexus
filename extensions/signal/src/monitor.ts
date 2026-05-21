@@ -1,38 +1,41 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { SignalReactionNotificationMode } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { SignalReactionNotificationMode } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   detectMime,
   estimateBase64DecodedBytes,
   saveMediaBuffer,
-} from "NexisClaw/plugin-sdk/media-runtime";
-import { DEFAULT_GROUP_HISTORY_LIMIT, type HistoryEntry } from "NexisClaw/plugin-sdk/reply-history";
+} from "FirstNexus/plugin-sdk/media-runtime";
+import {
+  DEFAULT_GROUP_HISTORY_LIMIT,
+  type HistoryEntry,
+} from "FirstNexus/plugin-sdk/reply-history";
 import {
   deliverTextOrMediaReply,
   resolveSendableOutboundReplyParts,
-} from "NexisClaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
+} from "FirstNexus/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
 import {
   chunkTextWithMode,
   resolveChunkMode,
   resolveTextChunkLimit,
-} from "NexisClaw/plugin-sdk/reply-runtime";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
+} from "FirstNexus/plugin-sdk/reply-runtime";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
 import {
   createNonExitingRuntime,
   type BackoffPolicy,
   type RuntimeEnv,
-} from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/runtime-env";
 import {
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
 import {
   normalizeOptionalString,
   normalizeStringEntries,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { normalizeE164 } from "NexisClaw/plugin-sdk/text-utility-runtime";
-import { waitForTransportReady } from "NexisClaw/plugin-sdk/transport-ready-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { normalizeE164 } from "FirstNexus/plugin-sdk/text-utility-runtime";
+import { waitForTransportReady } from "FirstNexus/plugin-sdk/transport-ready-runtime";
 import { resolveSignalAccount } from "./accounts.js";
 import { signalRpcRequest, signalCheck } from "./client-adapter.js";
 import { formatSignalDaemonExit, spawnSignalDaemon, type SignalDaemonHandle } from "./daemon.js";
@@ -51,7 +54,7 @@ export type MonitorSignalOpts = {
   abortSignal?: AbortSignal;
   account?: string;
   accountId?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   baseUrl?: string;
   autoStart?: boolean;
   startupTimeoutMs?: number;
@@ -348,7 +351,7 @@ async function fetchAttachment(params: {
 }
 
 async function deliverReplies(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   replies: ReplyPayload[];
   target: string;
   baseUrl: string;

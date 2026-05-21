@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type {
   TaskDeliveryState,
   TaskDeliveryStatus,
@@ -100,7 +100,7 @@ export type DetachedTaskDeliveryStatusParams = {
 };
 
 export type DetachedTaskCancelParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   taskId: string;
   reason?: string;
 };

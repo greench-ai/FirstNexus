@@ -16,10 +16,10 @@ export type {
   AcpSessionUpdateTag,
 } from "../acp/runtime/types.js";
 export type {
-  NexisClawPluginApi,
-  NexisClawPluginConfigSchema,
-  NexisClawPluginService,
-  NexisClawPluginServiceContext,
+  FirstNexusPluginApi,
+  FirstNexusPluginConfigSchema,
+  FirstNexusPluginService,
+  FirstNexusPluginServiceContext,
   PluginLogger,
 } from "../plugins/types.js";
 export type {

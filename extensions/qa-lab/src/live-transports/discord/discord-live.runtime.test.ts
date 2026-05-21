@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   LIVE_TRANSPORT_BASELINE_STANDARD_SCENARIO_IDS,
@@ -106,7 +106,7 @@ describe("discord live qa runtime", () => {
   });
 
   it("injects a temporary Discord account into the QA gateway config", () => {
-    const baseCfg: NexisClawConfig = {
+    const baseCfg: FirstNexusConfig = {
       plugins: {
         allow: ["memory-core", "qa-channel"],
         entries: {
@@ -118,8 +118,8 @@ describe("discord live qa runtime", () => {
         "qa-channel": {
           enabled: true,
           baseUrl: "http://127.0.0.1:43123",
-          botUserId: "NexisClaw",
-          botDisplayName: "NexisClaw QA",
+          botUserId: "FirstNexus",
+          botDisplayName: "FirstNexus QA",
           allowFrom: ["*"],
         },
       },

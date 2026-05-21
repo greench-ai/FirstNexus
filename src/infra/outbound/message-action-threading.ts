@@ -4,7 +4,7 @@ import type {
   ChannelThreadingAdapter,
   ChannelThreadingToolContext,
 } from "../../channels/plugins/types.public.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type {
   OutboundSessionRoute,
   ResolveOutboundSessionRouteParams,
@@ -20,7 +20,7 @@ function suppressesImplicitThreading(actionParams: Record<string, unknown>): boo
 export function resolveAndApplyOutboundThreadId(
   actionParams: Record<string, unknown>,
   context: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     to: string;
     accountId?: string | null;
     toolContext?: ChannelThreadingToolContext;
@@ -123,7 +123,7 @@ export function resolveAndApplyOutboundReplyToId(
 }
 
 export async function prepareOutboundMirrorRoute(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channel: ChannelId;
   to: string;
   actionParams: Record<string, unknown>;
@@ -138,7 +138,7 @@ export async function prepareOutboundMirrorRoute(params: {
     params: ResolveOutboundSessionRouteParams,
   ) => Promise<OutboundSessionRoute | null>;
   ensureOutboundSessionEntry: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     channel: ChannelId;
     accountId?: string | null;
     route: OutboundSessionRoute;

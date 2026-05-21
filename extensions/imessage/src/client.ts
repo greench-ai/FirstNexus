@@ -1,9 +1,9 @@
 import { type ChildProcessWithoutNullStreams, spawn } from "node:child_process";
 import { createInterface, type Interface } from "node:readline";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { resolveUserPath } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { resolveUserPath } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { DEFAULT_IMESSAGE_PROBE_TIMEOUT_MS } from "./constants.js";
 
 export type IMessageRpcError = {

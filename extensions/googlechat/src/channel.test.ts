@@ -1,10 +1,10 @@
-import { verifyChannelMessageAdapterCapabilityProofs } from "NexisClaw/plugin-sdk/channel-message";
+import { verifyChannelMessageAdapterCapabilityProofs } from "FirstNexus/plugin-sdk/channel-message";
 import {
   createDirectoryTestRuntime,
   expectDirectorySurface,
-} from "NexisClaw/plugin-sdk/channel-test-helpers";
+} from "FirstNexus/plugin-sdk/channel-test-helpers";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../runtime-api.js";
+import type { FirstNexusConfig } from "../runtime-api.js";
 import {
   googlechatDirectoryAdapter,
   googlechatMessageAdapter,
@@ -47,7 +47,10 @@ function normalizeGoogleChatTarget(raw?: string | null): string | undefined {
   return normalized;
 }
 
-function resolveGoogleChatAccountImpl(params: { cfg: NexisClawConfig; accountId?: string | null }) {
+function resolveGoogleChatAccountImpl(params: {
+  cfg: FirstNexusConfig;
+  accountId?: string | null;
+}) {
   const accountId = params.accountId?.trim() || DEFAULT_ACCOUNT_ID;
   const channelConfig = (params.cfg.channels?.googlechat ?? {}) as Record<string, unknown>;
   const accounts =
@@ -131,7 +134,7 @@ vi.mock("./channel.deps.runtime.js", () => {
     getChatChannelMeta: (id: string) => ({ id, name: id }),
     isGoogleChatSpaceTarget: (value: string) => value.toLowerCase().startsWith("spaces/"),
     isGoogleChatUserTarget: (value: string) => value.toLowerCase().startsWith("users/"),
-    listGoogleChatAccountIds: (cfg: NexisClawConfig) => {
+    listGoogleChatAccountIds: (cfg: FirstNexusConfig) => {
       const ids = Object.keys(cfg.channels?.googlechat?.accounts ?? {});
       return ids.length > 0 ? ids : ["default"];
     },
@@ -141,9 +144,9 @@ vi.mock("./channel.deps.runtime.js", () => {
     normalizeGoogleChatTarget,
     PAIRING_APPROVED_MESSAGE: "approved",
     resolveChannelMediaMaxBytes: (params: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       resolveChannelLimitMb: (args: {
-        cfg: NexisClawConfig;
+        cfg: FirstNexusConfig;
         accountId?: string;
       }) => number | undefined;
       accountId?: string;
@@ -181,7 +184,7 @@ afterAll(() => {
   vi.resetModules();
 });
 
-function createGoogleChatCfg(): NexisClawConfig {
+function createGoogleChatCfg(): FirstNexusConfig {
   return {
     channels: {
       googlechat: {
@@ -420,7 +423,7 @@ describe("googlechatPlugin threading", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     const workAccount = googlechatThreadingAdapter.scopedAccountReplyToMode.resolveAccount(
       cfg,
@@ -702,7 +705,7 @@ describe("googlechat directory", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const directory = expectDirectorySurface(googlechatDirectoryAdapter);
 
@@ -739,7 +742,7 @@ describe("googlechat directory", () => {
           dm: { allowFrom: [" users/alice ", " googlechat:user:Bob@Example.com "] },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const directory = expectDirectorySurface(googlechatDirectoryAdapter);
 
@@ -769,7 +772,7 @@ describe("googlechatPlugin security", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     const account = resolveGoogleChatAccountImpl({ cfg, accountId: "default" });
 

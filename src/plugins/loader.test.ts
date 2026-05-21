@@ -45,7 +45,7 @@ import {
 import {
   __testing,
   clearPluginLoaderCache,
-  loadNexisClawPlugins,
+  loadFirstNexusPlugins,
   PluginLoadReentryError,
   resolveRuntimePluginRegistry,
 } from "./loader.js";
@@ -79,7 +79,7 @@ import {
   registerMemoryPromptSupplement,
   resolveMemoryFlushPlan,
 } from "./memory-state.js";
-import { ensureNexisClawPluginSdkAlias } from "./plugin-sdk-dist-alias.js";
+import { ensureFirstNexusPluginSdkAlias } from "./plugin-sdk-dist-alias.js";
 import { createEmptyPluginRegistry } from "./registry.js";
 import {
   getActivePluginRegistry,
@@ -164,7 +164,7 @@ function simplePluginBody(id: string) {
 }
 
 function updatePluginManifest(plugin: Pick<TempPlugin, "dir">, patch: Record<string, unknown>) {
-  const manifestPath = path.join(plugin.dir, "NexisClaw.plugin.json");
+  const manifestPath = path.join(plugin.dir, "FirstNexus.plugin.json");
   const raw = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as Record<string, unknown>;
   fs.writeFileSync(manifestPath, JSON.stringify({ ...raw, ...patch }, null, 2), "utf-8");
 }
@@ -202,7 +202,7 @@ function writeWorkspacePlugin(params: {
   workspaceDir?: string;
 }) {
   const workspaceDir = params.workspaceDir ?? makeTempDir();
-  const workspacePluginDir = path.join(workspaceDir, ".NexisClaw", "extensions", params.id);
+  const workspacePluginDir = path.join(workspaceDir, ".FirstNexus", "extensions", params.id);
   mkdirSafe(workspacePluginDir);
   const plugin = writePlugin({
     id: params.id,
@@ -225,7 +225,7 @@ function loadBundledMemoryPluginRegistry(options?: {
 }) {
   if (!options && cachedBundledMemoryDir) {
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = cachedBundledMemoryDir;
-    return loadNexisClawPlugins({
+    return loadFirstNexusPlugins({
       cache: false,
       workspaceDir: cachedBundledMemoryDir,
       config: {
@@ -253,7 +253,7 @@ function loadBundledMemoryPluginRegistry(options?: {
           name: options.packageMeta.name,
           version: options.packageMeta.version,
           description: options.packageMeta.description,
-          NexisClaw: { extensions: [`./${pluginFilename}`] },
+          FirstNexus: { extensions: [`./${pluginFilename}`] },
         },
         null,
         2,
@@ -275,7 +275,7 @@ function loadBundledMemoryPluginRegistry(options?: {
   }
   process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-  return loadNexisClawPlugins({
+  return loadFirstNexusPlugins({
     cache: false,
     workspaceDir: bundledDir,
     config: {
@@ -301,7 +301,7 @@ function setupBundledTelegramPlugin() {
   process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = cachedBundledTelegramDir;
 }
 
-function expectTelegramLoaded(registry: ReturnType<typeof loadNexisClawPlugins>) {
+function expectTelegramLoaded(registry: ReturnType<typeof loadFirstNexusPlugins>) {
   const telegram = registry.plugins.find((entry) => entry.id === "telegram");
   expect(telegram?.status).toBe("loaded");
   expect(registry.channels.map((entry) => entry.plugin.id)).toContain("telegram");
@@ -311,10 +311,10 @@ function loadRegistryFromSinglePlugin(params: {
   plugin: TempPlugin;
   pluginConfig?: Record<string, unknown>;
   includeWorkspaceDir?: boolean;
-  options?: Omit<Parameters<typeof loadNexisClawPlugins>[0], "cache" | "workspaceDir" | "config">;
+  options?: Omit<Parameters<typeof loadFirstNexusPlugins>[0], "cache" | "workspaceDir" | "config">;
 }) {
   const pluginConfig = params.pluginConfig ?? {};
-  return loadNexisClawPlugins({
+  return loadFirstNexusPlugins({
     cache: false,
     ...(params.includeWorkspaceDir === false ? {} : { workspaceDir: params.plugin.dir }),
     ...params.options,
@@ -329,9 +329,9 @@ function loadRegistryFromSinglePlugin(params: {
 
 function loadRegistryFromAllowedPlugins(
   plugins: TempPlugin[],
-  options?: Omit<Parameters<typeof loadNexisClawPlugins>[0], "cache" | "config">,
+  options?: Omit<Parameters<typeof loadFirstNexusPlugins>[0], "cache" | "config">,
 ) {
-  return loadNexisClawPlugins({
+  return loadFirstNexusPlugins({
     cache: false,
     ...options,
     config: {
@@ -587,7 +587,7 @@ function createEscapingEntryFixture(params: { id: string; sourceBody: string }) 
   const linkedEntry = path.join(pluginDir, "entry.cjs");
   fs.writeFileSync(outsideEntry, params.sourceBody, "utf-8");
   fs.writeFileSync(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id: params.id,
@@ -602,7 +602,7 @@ function createEscapingEntryFixture(params: { id: string; sourceBody: string }) 
 }
 
 function resolveLoadedPluginSource(
-  registry: ReturnType<typeof loadNexisClawPlugins>,
+  registry: ReturnType<typeof loadFirstNexusPlugins>,
   pluginId: string,
 ) {
   return fs.realpathSync(registry.plugins.find((entry) => entry.id === pluginId)?.source ?? "");
@@ -610,8 +610,8 @@ function resolveLoadedPluginSource(
 
 function expectCachePartitionByPluginSource(params: {
   pluginId: string;
-  loadFirst: () => ReturnType<typeof loadNexisClawPlugins>;
-  loadSecond: () => ReturnType<typeof loadNexisClawPlugins>;
+  loadFirst: () => ReturnType<typeof loadFirstNexusPlugins>;
+  loadSecond: () => ReturnType<typeof loadFirstNexusPlugins>;
   expectedFirstSource: string;
   expectedSecondSource: string;
 }) {
@@ -628,8 +628,8 @@ function expectCachePartitionByPluginSource(params: {
 }
 
 function expectCacheMissThenHit(params: {
-  loadFirst: () => ReturnType<typeof loadNexisClawPlugins>;
-  loadVariant: () => ReturnType<typeof loadNexisClawPlugins>;
+  loadFirst: () => ReturnType<typeof loadFirstNexusPlugins>;
+  loadVariant: () => ReturnType<typeof loadFirstNexusPlugins>;
 }) {
   const first = params.loadFirst();
   const second = params.loadVariant();
@@ -671,7 +671,7 @@ function createSetupEntryChannelPluginFixture(params: {
     JSON.stringify(
       {
         name: params.packageName,
-        NexisClaw: {
+        FirstNexus: {
           extensions: ["./index.cjs"],
           setupEntry: "./setup-entry.cjs",
           ...(params.startupDeferConfiguredChannelFullLoadUntilAfterListen
@@ -689,7 +689,7 @@ function createSetupEntryChannelPluginFixture(params: {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id: params.id,
@@ -850,10 +850,10 @@ module.exports = {
 
 function createEnvResolvedPluginFixture(pluginId: string) {
   useNoBundledPlugins();
-  const NexisClawHome = makeTempDir();
+  const FirstNexusHome = makeTempDir();
   const ignoredHome = makeTempDir();
   const stateDir = makeTempDir();
-  const pluginDir = path.join(NexisClawHome, "plugins", pluginId);
+  const pluginDir = path.join(FirstNexusHome, "plugins", pluginId);
   mkdirSafe(pluginDir);
   const plugin = writePlugin({
     id: pluginId,
@@ -863,7 +863,7 @@ function createEnvResolvedPluginFixture(pluginId: string) {
   });
   const env = {
     ...process.env,
-    NEXISCLAW_HOME: NexisClawHome,
+    NEXISCLAW_HOME: FirstNexusHome,
     HOME: ignoredHome,
     NEXISCLAW_STATE_DIR: stateDir,
     NEXISCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
@@ -897,7 +897,7 @@ function expectEscapingEntryRejected(params: {
     throw err;
   }
 
-  const registry = loadNexisClawPlugins({
+  const registry = loadFirstNexusPlugins({
     cache: false,
     config: {
       plugins: {
@@ -925,7 +925,7 @@ afterAll(() => {
   cachedBundledMemoryDir = "";
 });
 
-describe("loadNexisClawPlugins", () => {
+describe("loadFirstNexusPlugins", () => {
   it("can load scoped plugins from a supplied manifest registry without rereading manifests", () => {
     useNoBundledPlugins();
     const plugin = writePlugin({
@@ -939,9 +939,9 @@ describe("loadNexisClawPlugins", () => {
       },
     };
     const manifestRegistry = loadPluginManifestRegistry({ config });
-    fs.rmSync(path.join(plugin.dir, "NexisClaw.plugin.json"));
+    fs.rmSync(path.join(plugin.dir, "FirstNexus.plugin.json"));
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config,
       manifestRegistry,
@@ -972,7 +972,7 @@ describe("loadNexisClawPlugins", () => {
     );
 
     const registry = withEnv({ NEXISCLAW_STATE_DIR: stateDir }, () =>
-      loadNexisClawPlugins({
+      loadFirstNexusPlugins({
         cache: false,
         config: {
           plugins: {
@@ -993,16 +993,16 @@ describe("loadNexisClawPlugins", () => {
   it("refreshes bundled plugin-sdk aliases without deleting the shared alias directory", () => {
     const distRoot = makeTempDir();
     const pluginSdkDir = path.join(distRoot, "plugin-sdk");
-    const aliasDir = path.join(distRoot, "extensions", "node_modules", "NexisClaw", "plugin-sdk");
+    const aliasDir = path.join(distRoot, "extensions", "node_modules", "FirstNexus", "plugin-sdk");
     mkdirSafe(pluginSdkDir);
     mkdirSafe(aliasDir);
     fs.writeFileSync(path.join(pluginSdkDir, "index.js"), "export const value = 1;\n", "utf8");
     fs.writeFileSync(path.join(pluginSdkDir, "core.js"), "export const core = 1;\n", "utf8");
     fs.writeFileSync(path.join(aliasDir, "sentinel.txt"), "keep\n", "utf8");
 
-    ensureNexisClawPluginSdkAlias(distRoot);
+    ensureFirstNexusPluginSdkAlias(distRoot);
     fs.writeFileSync(path.join(pluginSdkDir, "core.js"), "export const core = 2;\n", "utf8");
-    ensureNexisClawPluginSdkAlias(distRoot);
+    ensureFirstNexusPluginSdkAlias(distRoot);
 
     expect(fs.existsSync(path.join(aliasDir, "sentinel.txt"))).toBe(true);
     expect(fs.readFileSync(path.join(aliasDir, "core.js"), "utf8")).toContain("core.js");
@@ -1018,7 +1018,7 @@ describe("loadNexisClawPlugins", () => {
     });
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -1038,7 +1038,7 @@ describe("loadNexisClawPlugins", () => {
     fs.mkdirSync(pluginRoot, { recursive: true });
     fs.writeFileSync(
       path.join(packageRoot, "package.json"),
-      JSON.stringify({ name: "NexisClaw", version: "2026.4.22", type: "module" }),
+      JSON.stringify({ name: "FirstNexus", version: "2026.4.22", type: "module" }),
       "utf-8",
     );
     fs.writeFileSync(
@@ -1046,11 +1046,11 @@ describe("loadNexisClawPlugins", () => {
       "export const normalizeLowercaseStringOrEmpty = (value) => String(value).toLowerCase();\n",
       "utf-8",
     );
-    ensureNexisClawPluginSdkAlias(path.join(packageRoot, "dist"));
+    ensureFirstNexusPluginSdkAlias(path.join(packageRoot, "dist"));
     fs.writeFileSync(
       path.join(pluginRoot, "index.js"),
       [
-        `import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";`,
+        `import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";`,
         `export default {`,
         `  id: "discord",`,
         `  register(api) {`,
@@ -1065,10 +1065,10 @@ describe("loadNexisClawPlugins", () => {
       path.join(pluginRoot, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/discord",
+          name: "@FirstNexus/discord",
           version: "1.0.0",
           type: "module",
-          NexisClaw: { extensions: ["./index.js"] },
+          FirstNexus: { extensions: ["./index.js"] },
         },
         null,
         2,
@@ -1076,7 +1076,7 @@ describe("loadNexisClawPlugins", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginRoot, "NexisClaw.plugin.json"),
+      path.join(pluginRoot, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "discord",
@@ -1090,7 +1090,7 @@ describe("loadNexisClawPlugins", () => {
     );
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -1148,7 +1148,7 @@ describe("loadNexisClawPlugins", () => {
           },
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
         expectTelegramLoaded(registry);
       },
     },
@@ -1164,7 +1164,7 @@ describe("loadNexisClawPlugins", () => {
           enabled: true,
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
         expectTelegramLoaded(registry);
       },
     },
@@ -1180,7 +1180,7 @@ describe("loadNexisClawPlugins", () => {
           allow: ["browser"],
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
         const telegram = registry.plugins.find((entry) => entry.id === "telegram");
         expect(telegram?.status).toBe("loaded");
         expect(telegram?.error).toBeUndefined();
@@ -1201,7 +1201,7 @@ describe("loadNexisClawPlugins", () => {
           },
         },
       } satisfies PluginLoadConfig,
-      assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+      assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
         const telegram = registry.plugins.find((entry) => entry.id === "telegram");
         expect(telegram?.status).toBe("disabled");
         expect(telegram?.error).toBe("disabled in config");
@@ -1211,7 +1211,7 @@ describe("loadNexisClawPlugins", () => {
     "handles bundled telegram plugin enablement and override rules: $name",
     ({ config, assert }) => {
       setupBundledTelegramPlugin();
-      const registry = loadNexisClawPlugins({
+      const registry = loadFirstNexusPlugins({
         cache: false,
         workspaceDir: cachedBundledTelegramDir,
         config,
@@ -1237,7 +1237,7 @@ describe("loadNexisClawPlugins", () => {
       env: {},
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: autoEnabled.config,
@@ -1269,7 +1269,7 @@ describe("loadNexisClawPlugins", () => {
       env: {},
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: autoEnabled.config,
@@ -1300,7 +1300,7 @@ describe("loadNexisClawPlugins", () => {
       },
     } satisfies PluginLoadConfig;
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: cachedBundledTelegramDir,
       config: {
@@ -1341,7 +1341,7 @@ describe("loadNexisClawPlugins", () => {
       },
     } satisfies PluginLoadConfig;
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: bundledDir,
       config,
@@ -1358,7 +1358,7 @@ describe("loadNexisClawPlugins", () => {
   it("preserves package.json metadata for bundled memory plugins", () => {
     const registry = loadBundledMemoryPluginRegistry({
       packageMeta: {
-        name: "@NexisClaw/memory-core",
+        name: "@FirstNexus/memory-core",
         version: "1.2.3",
         description: "Memory plugin package",
       },
@@ -1388,7 +1388,7 @@ describe("loadNexisClawPlugins", () => {
 };`,
         });
 
-        const registry = loadNexisClawPlugins({
+        const registry = loadFirstNexusPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           config: {
@@ -1423,7 +1423,7 @@ describe("loadNexisClawPlugins", () => {
 };`,
         });
 
-        const registry = loadNexisClawPlugins({
+        const registry = loadFirstNexusPlugins({
           cache: false,
           workspaceDir: plugin.dir,
           config: {
@@ -1458,7 +1458,7 @@ describe("loadNexisClawPlugins", () => {
 };`,
         });
 
-        const registry = loadNexisClawPlugins({
+        const registry = loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -1584,7 +1584,7 @@ describe("loadNexisClawPlugins", () => {
 module.exports = { id: "skipped-scoped-only", register() { throw new Error("skipped plugin should not load"); } };`,
         });
 
-        const registry = loadNexisClawPlugins({
+        const registry = loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -1611,7 +1611,7 @@ module.exports = { id: "skipped-scoped-only", register() { throw new Error("skip
 module.exports = { id: "manifest-only-plugin", register() { throw new Error("manifest-only snapshot should not register"); } };`,
         });
 
-        const registry = loadNexisClawPlugins({
+        const registry = loadFirstNexusPlugins({
           cache: false,
           activate: false,
           loadModules: false,
@@ -1643,7 +1643,7 @@ module.exports = { id: "manifest-only-plugin", register() { throw new Error("man
 module.exports = { id: "manifest-surfaces-plugin", register() { throw new Error("manifest-only snapshot should not register"); } };`,
         });
         fs.writeFileSync(
-          path.join(plugin.dir, "NexisClaw.plugin.json"),
+          path.join(plugin.dir, "FirstNexus.plugin.json"),
           JSON.stringify(
             {
               id: "manifest-surfaces-plugin",
@@ -1660,7 +1660,7 @@ module.exports = { id: "manifest-surfaces-plugin", register() { throw new Error(
           "utf-8",
         );
 
-        const registry = loadNexisClawPlugins({
+        const registry = loadFirstNexusPlugins({
           cache: false,
           activate: false,
           loadModules: false,
@@ -1700,7 +1700,7 @@ module.exports = { id: "manifest-surfaces-plugin", register() { throw new Error(
 };`,
         });
         fs.writeFileSync(
-          path.join(memoryPlugin.dir, "NexisClaw.plugin.json"),
+          path.join(memoryPlugin.dir, "FirstNexus.plugin.json"),
           JSON.stringify(
             {
               id: "memory-demo",
@@ -1713,7 +1713,7 @@ module.exports = { id: "manifest-surfaces-plugin", register() { throw new Error(
           "utf-8",
         );
 
-        const registry = loadNexisClawPlugins({
+        const registry = loadFirstNexusPlugins({
           cache: false,
           activate: false,
           loadModules: false,
@@ -1741,7 +1741,7 @@ module.exports = { id: "manifest-surfaces-plugin", register() { throw new Error(
       label: "tracks plugins as imported when module evaluation throws after top-level execution",
       run: () => {
         useNoBundledPlugins();
-        const importMarker = "__NexisClaw_loader_import_throw_marker";
+        const importMarker = "__FirstNexus_loader_import_throw_marker";
         Reflect.deleteProperty(globalThis, importMarker);
 
         const plugin = writePlugin({
@@ -1752,7 +1752,7 @@ throw new Error("boom after import");
 module.exports = { id: "throws-after-import", register() {} };`,
         });
 
-        const registry = loadNexisClawPlugins({
+        const registry = loadFirstNexusPlugins({
           cache: false,
           activate: false,
           config: {
@@ -1777,13 +1777,13 @@ module.exports = { id: "throws-after-import", register() {} };`,
       label: "fails loudly when a plugin reenters the same snapshot load during register",
       run: () => {
         useNoBundledPlugins();
-        const marker = "__NexisClaw_loader_reentry_error";
-        const reenterFnMarker = "__NexisClaw_loader_reentry_fn";
+        const marker = "__FirstNexus_loader_reentry_error";
+        const reenterFnMarker = "__FirstNexus_loader_reentry_fn";
         Reflect.deleteProperty(globalThis, marker);
         Reflect.set(
           globalThis,
           reenterFnMarker,
-          (options: Parameters<typeof loadNexisClawPlugins>[0]) => loadNexisClawPlugins(options),
+          (options: Parameters<typeof loadFirstNexusPlugins>[0]) => loadFirstNexusPlugins(options),
         );
         const pluginDir = makeTempDir();
         const pluginFile = path.join(pluginDir, "reentrant-snapshot.cjs");
@@ -1797,7 +1797,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
               allow: ["reentrant-snapshot"],
             },
           },
-        } satisfies Parameters<typeof loadNexisClawPlugins>[0];
+        } satisfies Parameters<typeof loadFirstNexusPlugins>[0];
         writePlugin({
           id: "reentrant-snapshot",
           dir: pluginDir,
@@ -1818,7 +1818,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 };`,
         });
 
-        const registry = loadNexisClawPlugins(nestedOptions);
+        const registry = loadFirstNexusPlugins(nestedOptions);
 
         try {
           const reentryError = Reflect.get(globalThis, marker) as
@@ -1840,8 +1840,8 @@ module.exports = { id: "throws-after-import", register() {} };`,
       label: "lets resolveRuntimePluginRegistry short-circuit during same snapshot load",
       run: () => {
         useNoBundledPlugins();
-        const marker = "__NexisClaw_runtime_registry_reentry_marker";
-        const resolverMarker = "__NexisClaw_runtime_registry_reentry_fn";
+        const marker = "__FirstNexus_runtime_registry_reentry_marker";
+        const resolverMarker = "__FirstNexus_runtime_registry_reentry_fn";
         Reflect.deleteProperty(globalThis, marker);
         Reflect.set(
           globalThis,
@@ -1861,7 +1861,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
               allow: ["runtime-registry-reentry"],
             },
           },
-        } satisfies Parameters<typeof loadNexisClawPlugins>[0];
+        } satisfies Parameters<typeof loadFirstNexusPlugins>[0];
         writePlugin({
           id: "runtime-registry-reentry",
           dir: pluginDir,
@@ -1875,7 +1875,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 };`,
         });
 
-        const registry = loadNexisClawPlugins(nestedOptions);
+        const registry = loadFirstNexusPlugins(nestedOptions);
 
         try {
           expect(Reflect.get(globalThis, marker)).toBe("undefined");
@@ -1910,12 +1910,12 @@ module.exports = { id: "throws-after-import", register() {} };`,
           },
         };
 
-        const full = loadNexisClawPlugins(options);
-        const scoped = loadNexisClawPlugins({
+        const full = loadFirstNexusPlugins(options);
+        const scoped = loadFirstNexusPlugins({
           ...options,
           onlyPluginIds: ["allowed-cache-scope"],
         });
-        const scopedAgain = loadNexisClawPlugins({
+        const scopedAgain = loadFirstNexusPlugins({
           ...options,
           onlyPluginIds: ["allowed-cache-scope"],
         });
@@ -1942,7 +1942,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         setActivePluginRegistry(previousRegistry, "existing-registry");
         resetGlobalHookRunner();
 
-        const scoped = loadNexisClawPlugins({
+        const scoped = loadFirstNexusPlugins({
           cache: false,
           activate: false,
           workspaceDir: plugin.dir,
@@ -1978,7 +1978,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       body: `module.exports = { id: "extra-empty-scope", register() {} };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       activate: false,
       config: {
@@ -2003,10 +2003,10 @@ module.exports = { id: "throws-after-import", register() {} };`,
 
     const discovery = await import("./discovery.js");
     const manifestRegistry = await import("./manifest-registry.js");
-    const discoverySpy = vi.spyOn(discovery, "discoverNexisClawPlugins");
+    const discoverySpy = vi.spyOn(discovery, "discoverFirstNexusPlugins");
     const manifestSpy = vi.spyOn(manifestRegistry, "loadPluginManifestRegistry");
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       activate: false,
       config: {
@@ -2045,7 +2045,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
     clearPluginCommands();
 
-    const scoped = loadNexisClawPlugins({
+    const scoped = loadFirstNexusPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -2062,7 +2062,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     expect(scoped.commands.map((entry) => entry.command.name)).toEqual(["pair"]);
     expect(getPluginCommandSpecs("telegram")).toStrictEqual([]);
 
-    const active = loadNexisClawPlugins({
+    const active = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2104,7 +2104,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2117,7 +2117,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
     expect(listAgentHarnessIds()).toEqual(["codex"]);
 
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       cache: false,
       workspaceDir: makeTempDir(),
       config: {
@@ -2145,7 +2145,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2183,7 +2183,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
 
     clearInternalHooks();
-    const scoped = loadNexisClawPlugins({
+    const scoped = loadFirstNexusPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -2238,8 +2238,8 @@ module.exports = { id: "throws-after-import", register() {} };`,
       onlyPluginIds: ["internal-hook-reload"],
     };
 
-    loadNexisClawPlugins(loadOptions);
-    loadNexisClawPlugins(loadOptions);
+    loadFirstNexusPlugins(loadOptions);
+    loadFirstNexusPlugins(loadOptions);
 
     const event = createInternalHookEvent("gateway", "startup", "gateway:startup");
     await triggerInternalHook(event);
@@ -2267,7 +2267,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "NexisClaw.plugin.json"),
+      path.join(plugin.dir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "hook-config-context",
@@ -2281,7 +2281,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 
     clearInternalHooks();
 
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2363,7 +2363,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     clearPluginCommands();
     clearPluginInteractiveHandlers();
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2412,7 +2412,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 
     clearInternalHooks();
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2455,7 +2455,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2487,8 +2487,8 @@ module.exports = { id: "throws-after-import", register() {} };`,
     fs.writeFileSync(
       path.join(scopedDir, "package.json"),
       JSON.stringify({
-        name: "@NexisClaw/scoped-provider",
-        NexisClaw: { extensions: ["./index.cjs"] },
+        name: "@FirstNexus/scoped-provider",
+        FirstNexus: { extensions: ["./index.cjs"] },
       }),
       "utf-8",
     );
@@ -2514,8 +2514,8 @@ module.exports = { id: "throws-after-import", register() {} };`,
     fs.writeFileSync(
       path.join(unscopedDir, "package.json"),
       JSON.stringify({
-        name: "@NexisClaw/unscoped-provider",
-        NexisClaw: { extensions: ["./index.cjs"] },
+        name: "@FirstNexus/unscoped-provider",
+        FirstNexus: { extensions: ["./index.cjs"] },
       }),
       "utf-8",
     );
@@ -2537,7 +2537,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
     delete process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS;
 
-    const scoped = loadNexisClawPlugins({
+    const scoped = loadFirstNexusPlugins({
       cache: false,
       activate: false,
       config: {
@@ -2617,7 +2617,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const scoped = loadNexisClawPlugins({
+    const scoped = loadFirstNexusPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -2682,7 +2682,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2729,7 +2729,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const scoped = loadNexisClawPlugins({
+    const scoped = loadFirstNexusPlugins({
       cache: false,
       activate: false,
       workspaceDir: plugin.dir,
@@ -2774,7 +2774,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {
@@ -2824,15 +2824,15 @@ module.exports = { id: "throws-after-import", register() {} };`,
         },
       },
       onlyPluginIds: ["cached-detached-runtime"],
-    } satisfies Parameters<typeof loadNexisClawPlugins>[0];
+    } satisfies Parameters<typeof loadFirstNexusPlugins>[0];
 
-    loadNexisClawPlugins(loadOptions);
+    loadFirstNexusPlugins(loadOptions);
     expect(getDetachedTaskLifecycleRuntimeRegistration()?.pluginId).toBe("cached-detached-runtime");
 
     clearDetachedTaskLifecycleRuntimeRegistration();
     expect(getDetachedTaskLifecycleRuntimeRegistration()).toBeUndefined();
 
-    loadNexisClawPlugins(loadOptions);
+    loadFirstNexusPlugins(loadOptions);
 
     expect(getDetachedTaskLifecycleRuntimeRegistration()?.pluginId).toBe("cached-detached-runtime");
   });
@@ -2868,9 +2868,9 @@ module.exports = { id: "throws-after-import", register() {} };`,
         },
       },
       onlyPluginIds: ["cached-command-interactive"],
-    } satisfies Parameters<typeof loadNexisClawPlugins>[0];
+    } satisfies Parameters<typeof loadFirstNexusPlugins>[0];
 
-    loadNexisClawPlugins(loadOptions);
+    loadFirstNexusPlugins(loadOptions);
     expect(getPluginCommandSpecs()).toEqual([
       { name: "hue", description: "Control Hue lights", acceptsArgs: false },
     ]);
@@ -2883,7 +2883,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     commitPluginInteractiveCallbackDedupe(dedupeKey, 1_000);
     expect(claimPluginInteractiveCallbackDedupe(dedupeKey, 1_001)).toBe(false);
 
-    loadNexisClawPlugins(loadOptions);
+    loadFirstNexusPlugins(loadOptions);
     expect(claimPluginInteractiveCallbackDedupe(dedupeKey, 1_002)).toBe(false);
 
     clearPluginCommands();
@@ -2891,7 +2891,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     expect(getPluginCommandSpecs()).toStrictEqual([]);
     expect(resolvePluginInteractiveNamespaceMatch("telegram", "hue:on")).toBeNull();
 
-    loadNexisClawPlugins(loadOptions);
+    loadFirstNexusPlugins(loadOptions);
 
     expect(getPluginCommandSpecs()).toEqual([
       { name: "hue", description: "Control Hue lights", acceptsArgs: false },
@@ -2907,7 +2907,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     useNoBundledPlugins();
     registerDetachedTaskLifecycleRuntime("stale-runtime", createDetachedTaskRuntimeStub("stale"));
 
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -2973,14 +2973,14 @@ module.exports = { id: "throws-after-import", register() {} };`,
       },
     ];
 
-    const first = loadNexisClawPlugins(options);
+    const first = loadFirstNexusPlugins(options);
     await expect(listActiveMemoryPublicArtifacts({ cfg: {} as never })).resolves.toEqual(
       expectedArtifacts,
     );
 
     clearMemoryPluginState();
 
-    const second = loadNexisClawPlugins(options);
+    const second = loadFirstNexusPlugins(options);
     expect(second).toBe(first);
     await expect(listActiveMemoryPublicArtifacts({ cfg: {} as never })).resolves.toEqual(
       expectedArtifacts,
@@ -3032,7 +3032,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         slots: { memory: "capability-survives-memory" },
       },
     };
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       cache: false,
       workspaceDir: memoryPlugin.dir,
       config: activateConfig,
@@ -3056,7 +3056,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     // Simulate what resolvePluginWebSearchProviders and similar read-only paths do:
     // load plugins again with activate:false. Each per-plugin snapshot/rollback must
     // preserve the previously registered memory capability.
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       cache: false,
       activate: false,
       workspaceDir: memoryPlugin.dir,
@@ -3070,7 +3070,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 
   it("uses discovery registration mode for non-activating loads", () => {
     useNoBundledPlugins();
-    const marker = "__NexisClawDiscoveryModeTest";
+    const marker = "__FirstNexusDiscoveryModeTest";
     const plugin = writePlugin({
       id: "discovery-mode-test",
       filename: "discovery-mode-test.cjs",
@@ -3097,7 +3097,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       },
     };
 
-    const snapshot = loadNexisClawPlugins({
+    const snapshot = loadFirstNexusPlugins({
       activate: false,
       cache: false,
       workspaceDir: plugin.dir,
@@ -3107,7 +3107,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     expect(snapshot.providers.map((entry) => entry.provider.id)).toEqual(["discovery-provider"]);
     expect(snapshot.tools.flatMap((entry) => entry.names)).toContain("discovery_tool");
 
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config,
@@ -3134,7 +3134,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       activate: false,
       cache: false,
       workspaceDir: plugin.dir,
@@ -3175,7 +3175,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
     updatePluginManifest(plugin, { contracts: { tools: ["manifest_tool"] } });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       activate: false,
       cache: false,
       workspaceDir: plugin.dir,
@@ -3200,7 +3200,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
   it("caches non-activating snapshots without restoring global side effects", () => {
     useNoBundledPlugins();
     clearPluginCommands();
-    const marker = "__NexisClawSnapshotCacheRegisterCount";
+    const marker = "__FirstNexusSnapshotCacheRegisterCount";
     const plugin = writePlugin({
       id: "snapshot-cache",
       filename: "snapshot-cache.cjs",
@@ -3228,15 +3228,15 @@ module.exports = { id: "throws-after-import", register() {} };`,
       onlyPluginIds: ["snapshot-cache"],
     };
 
-    const first = loadNexisClawPlugins(options);
-    const second = loadNexisClawPlugins(options);
+    const first = loadFirstNexusPlugins(options);
+    const second = loadFirstNexusPlugins(options);
 
     expect(second).toBe(first);
     expect((globalThis as Record<string, unknown>)[marker]).toBe(1);
     expect(first.commands.map((entry) => entry.command.name)).toEqual(["snapshot-command"]);
     expect(getPluginCommandSpecs()).toStrictEqual([]);
 
-    const active = loadNexisClawPlugins({
+    const active = loadFirstNexusPlugins({
       workspaceDir: plugin.dir,
       config: options.config,
       onlyPluginIds: ["snapshot-cache"],
@@ -3255,7 +3255,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 
   it("does not re-register non-bundled plugins after gateway-bindable boot loads", () => {
     useNoBundledPlugins();
-    const marker = "__NexisClawGatewayBootRegisterCount";
+    const marker = "__FirstNexusGatewayBootRegisterCount";
     const plugin = writePlugin({
       id: "costclaw-boot-cache",
       filename: "costclaw-boot-cache.cjs",
@@ -3276,7 +3276,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       },
     };
 
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       workspaceDir: plugin.dir,
       config,
       runtimeOptions: {
@@ -3295,7 +3295,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 
   it("reuses a gateway-bindable cache entry for later default-mode loads", () => {
     useNoBundledPlugins();
-    const marker = "__NexisClawGatewayBindableCacheRegisterCount";
+    const marker = "__FirstNexusGatewayBindableCacheRegisterCount";
     const plugin = writePlugin({
       id: "gateway-bindable-cache",
       filename: "gateway-bindable-cache.cjs",
@@ -3319,13 +3319,13 @@ module.exports = { id: "throws-after-import", register() {} };`,
       },
     };
 
-    const gatewayBindable = loadNexisClawPlugins({
+    const gatewayBindable = loadFirstNexusPlugins({
       ...options,
       runtimeOptions: {
         allowGatewaySubagentBinding: true,
       },
     });
-    const defaultMode = loadNexisClawPlugins(options);
+    const defaultMode = loadFirstNexusPlugins(options);
 
     expect(defaultMode).toBe(gatewayBindable);
     expect((globalThis as Record<string, unknown>)[marker]).toBe(1);
@@ -3350,13 +3350,13 @@ module.exports = { id: "throws-after-import", register() {} };`,
       },
     };
 
-    const first = loadNexisClawPlugins(options);
+    const first = loadFirstNexusPlugins(options);
     expectGlobalHookRunner(getGlobalHookRunner());
 
     resetGlobalHookRunner();
     expect(getGlobalHookRunner()).toBeNull();
 
-    const second = loadNexisClawPlugins(options);
+    const second = loadFirstNexusPlugins(options);
     expect(second).toBe(first);
     expectGlobalHookRunner(getGlobalHookRunner());
 
@@ -3380,7 +3380,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       } };`,
     });
 
-    const gatewayRegistry = loadNexisClawPlugins({
+    const gatewayRegistry = loadFirstNexusPlugins({
       workspaceDir: gatewayPlugin.dir,
       config: {
         plugins: {
@@ -3401,7 +3401,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     expect(getGlobalPluginRegistry()).toBe(gatewayRegistry);
     expect(expectGlobalHookRunner(getGlobalHookRunner()).hasHooks("subagent_ended")).toBe(true);
 
-    const defaultRegistry = loadNexisClawPlugins({
+    const defaultRegistry = loadFirstNexusPlugins({
       workspaceDir: defaultPlugin.dir,
       config: {
         plugins: {
@@ -3459,7 +3459,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
           expectedFirstSource: pluginA.file,
           expectedSecondSource: pluginB.file,
           loadFirst: () =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               ...options,
               env: {
                 ...process.env,
@@ -3467,7 +3467,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
               },
             }),
           loadSecond: () =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               ...options,
               env: {
                 ...process.env,
@@ -3516,7 +3516,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
           expectedFirstSource: pluginA.file,
           expectedSecondSource: pluginB.file,
           loadFirst: () =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               ...options,
               env: {
                 ...process.env,
@@ -3527,7 +3527,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
               },
             }),
           loadSecond: () =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               ...options,
               env: {
                 ...process.env,
@@ -3556,10 +3556,10 @@ module.exports = { id: "throws-after-import", register() {} };`,
       name: "does not reuse cached registries when env-resolved install paths change",
       setup: () => {
         useNoBundledPlugins();
-        const NexisClawHome = makeTempDir();
+        const FirstNexusHome = makeTempDir();
         const ignoredHome = makeTempDir();
         const stateDir = makeTempDir();
-        const pluginDir = path.join(NexisClawHome, "plugins", "tracked-install-cache");
+        const pluginDir = path.join(FirstNexusHome, "plugins", "tracked-install-cache");
         mkdirSafe(pluginDir);
         const plugin = writePlugin({
           id: "tracked-install-cache",
@@ -3591,18 +3591,18 @@ module.exports = { id: "throws-after-import", register() {} };`,
         const secondHome = makeTempDir();
         return {
           loadFirst: () =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               ...options,
               env: {
                 ...process.env,
-                NEXISCLAW_HOME: NexisClawHome,
+                NEXISCLAW_HOME: FirstNexusHome,
                 HOME: ignoredHome,
                 NEXISCLAW_STATE_DIR: stateDir,
                 NEXISCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins",
               },
             }),
           loadVariant: () =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               ...options,
               env: {
                 ...process.env,
@@ -3638,9 +3638,9 @@ module.exports = { id: "throws-after-import", register() {} };`,
         };
 
         return {
-          loadFirst: () => loadNexisClawPlugins(options),
+          loadFirst: () => loadFirstNexusPlugins(options),
           loadVariant: () =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               ...options,
               pluginSdkResolution: "workspace" as PluginSdkResolutionPreference,
             }),
@@ -3670,9 +3670,9 @@ module.exports = { id: "throws-after-import", register() {} };`,
         };
 
         return {
-          loadFirst: () => loadNexisClawPlugins(options),
+          loadFirst: () => loadFirstNexusPlugins(options),
           loadVariant: () =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               ...options,
               runtimeOptions: {
                 allowGatewaySubagentBinding: true,
@@ -3699,7 +3699,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     );
 
     const loadWithStateDir = (stateDir: string) =>
-      loadNexisClawPlugins({
+      loadFirstNexusPlugins({
         env: {
           ...process.env,
           NEXISCLAW_STATE_DIR: stateDir,
@@ -3743,7 +3743,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       body: `module.exports = { id: "tilde-bundled", register() {} };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       env: {
         ...process.env,
         HOME: homeDir,
@@ -3767,32 +3767,32 @@ module.exports = { id: "throws-after-import", register() {} };`,
 
   it("prefers NEXISCLAW_HOME over HOME for env-expanded load paths", () => {
     const ignoredHome = makeTempDir();
-    const NexisClawHome = makeTempDir();
+    const FirstNexusHome = makeTempDir();
     const stateDir = makeTempDir();
     const bundledDir = makeTempDir();
     const plugin = writePlugin({
-      id: "NexisClaw-home-demo",
-      dir: path.join(NexisClawHome, "plugins", "NexisClaw-home-demo"),
+      id: "FirstNexus-home-demo",
+      dir: path.join(FirstNexusHome, "plugins", "FirstNexus-home-demo"),
       filename: "index.cjs",
-      body: `module.exports = { id: "NexisClaw-home-demo", register() {} };`,
+      body: `module.exports = { id: "FirstNexus-home-demo", register() {} };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       env: {
         ...process.env,
         HOME: ignoredHome,
-        NEXISCLAW_HOME: NexisClawHome,
+        NEXISCLAW_HOME: FirstNexusHome,
         NEXISCLAW_STATE_DIR: stateDir,
         NEXISCLAW_BUNDLED_PLUGINS_DIR: bundledDir,
       },
       config: {
         plugins: {
-          allow: ["NexisClaw-home-demo"],
+          allow: ["FirstNexus-home-demo"],
           entries: {
-            "NexisClaw-home-demo": { enabled: true },
+            "FirstNexus-home-demo": { enabled: true },
           },
           load: {
-            paths: ["~/plugins/NexisClaw-home-demo"],
+            paths: ["~/plugins/FirstNexus-home-demo"],
           },
         },
       },
@@ -3800,7 +3800,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 
     expect(
       fs.realpathSync(
-        registry.plugins.find((entry) => entry.id === "NexisClaw-home-demo")?.source ?? "",
+        registry.plugins.find((entry) => entry.id === "FirstNexus-home-demo")?.source ?? "",
       ),
     ).toBe(fs.realpathSync(plugin.file));
   });
@@ -3927,7 +3927,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     });
 
     expect(() =>
-      loadNexisClawPlugins({
+      loadFirstNexusPlugins({
         cache: false,
         throwOnLoadError: true,
         config: {
@@ -4065,7 +4065,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     }
   });
 } };`,
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const channel = registry.channels.find((entry) => entry.plugin.id === "demo");
           expect(channel?.plugin.id).toBe("demo");
         },
@@ -4111,7 +4111,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     }
   });
 } };`,
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expect(countMatching(registry.channels, (entry) => entry.plugin.id === "demo")).toBe(1);
           expect(
             registry.channels.find((entry) => entry.plugin.id === "demo")?.plugin.meta?.label,
@@ -4124,7 +4124,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         body: `module.exports = { id: "context-engine-malformed", register(api) {
   api.registerContextEngine({ id: "broken-context" });
 } };`,
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "context-engine-malformed",
@@ -4139,7 +4139,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         body: `module.exports = { id: "context-engine-core-collision", register(api) {
   api.registerContextEngine("legacy", () => ({}));
 } };`,
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "context-engine-core-collision",
@@ -4153,7 +4153,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         body: `module.exports = { id: "compaction-provider-malformed", register(api) {
   api.registerCompactionProvider({ id: "broken-compaction", label: "Broken" });
 } };`,
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "compaction-provider-malformed",
@@ -4168,7 +4168,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         body: `module.exports = { id: "memory-prompt-supplement-malformed", register(api) {
   api.registerMemoryPromptSupplement({ id: "broken-memory-prompt" });
 } };`,
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expectRegistryErrorDiagnostic({
             registry,
             pluginId: "memory-prompt-supplement-malformed",
@@ -4183,7 +4183,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         body: `module.exports = { id: "cli-missing-metadata", register(api) {
   api.registerCli(() => {});
 } };`,
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expect(registry.cliRegistrars).toHaveLength(0);
           expectRegistryErrorDiagnostic({
             registry,
@@ -4206,7 +4206,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
     ],
   });
 } };`,
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expect(registry.cliRegistrars).toHaveLength(1);
           expect(registry.cliRegistrars[0]?.parentPath).toEqual(["nodes"]);
           expect(registry.cliRegistrars[0]?.commands).toEqual(["demo-node"]);
@@ -4270,7 +4270,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
   api.registerHook("gateway:startup", () => {}, { name: "shared-hook" });
 } };`,
-        selectCount: (registry: ReturnType<typeof loadNexisClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadFirstNexusPlugins>) =>
           countMatching(registry.hooks, (entry) => entry.entry.hook.name === "shared-hook"),
         duplicateMessage: "hook already registered: shared-hook (hook-owner-a)",
         assert: expectDuplicateRegistrationResult,
@@ -4282,7 +4282,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
   api.registerService({ id: "shared-service", start() {} });
 } };`,
-        selectCount: (registry: ReturnType<typeof loadNexisClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadFirstNexusPlugins>) =>
           countMatching(registry.services, (entry) => entry.service.id === "shared-service"),
         duplicateMessage: "service already registered: shared-service (service-owner-a)",
         assert: expectDuplicateRegistrationResult,
@@ -4294,13 +4294,13 @@ module.exports = { id: "throws-after-import", register() {} };`,
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
   api.registerGatewayDiscoveryService({ id: "shared-discovery", advertise() {} });
 } };`,
-        selectCount: (registry: ReturnType<typeof loadNexisClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadFirstNexusPlugins>) =>
           registry.gatewayDiscoveryServices.filter(
             (entry) => entry.service.id === "shared-discovery",
           ).length,
         duplicateMessage:
           "gateway discovery service already registered: shared-discovery (discovery-owner-a)",
-        assertPrimaryOwner: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assertPrimaryOwner: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expect(
             registry.plugins.find((entry) => entry.id === "discovery-owner-a")
               ?.gatewayDiscoveryServiceIds,
@@ -4318,7 +4318,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
         selectCount: () => 1,
         duplicateMessage:
           "context engine already registered: shared-context-engine-loader-test (plugin:context-engine-owner-a)",
-        assertPrimaryOwner: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assertPrimaryOwner: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expect(
             registry.plugins.find((entry) => entry.id === "context-engine-owner-a")
               ?.contextEngineIds,
@@ -4333,10 +4333,10 @@ module.exports = { id: "throws-after-import", register() {} };`,
         buildBody: (ownerId: string) => `module.exports = { id: "${ownerId}", register(api) {
   api.registerCli(() => {}, { commands: ["shared-cli"] });
 } };`,
-        selectCount: (registry: ReturnType<typeof loadNexisClawPlugins>) =>
+        selectCount: (registry: ReturnType<typeof loadFirstNexusPlugins>) =>
           registry.cliRegistrars.length,
         duplicateMessage: "cli command already registered: shared-cli (cli-owner-a)",
-        assertPrimaryOwner: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assertPrimaryOwner: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expect(registry.cliRegistrars[0]?.pluginId).toBe("cli-owner-a");
         },
         assert: expectDuplicateRegistrationResult,
@@ -4483,7 +4483,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expect(
             registry.httpRoutes.find((entry) => entry.pluginId === "http-route-missing-auth"),
           ).toBeUndefined();
@@ -4505,7 +4505,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-replace-self",
           );
@@ -4532,7 +4532,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const route = registry.httpRoutes.find((entry) => entry.path === "/demo");
           expect(route?.pluginId).toBe("http-route-owner-a");
           expectDiagnosticContaining({
@@ -4553,7 +4553,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-overlap",
           );
@@ -4577,7 +4577,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
 } };`,
           }),
         ],
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const routes = registry.httpRoutes.filter(
             (entry) => entry.pluginId === "http-route-overlap-same-auth",
           );
@@ -4599,7 +4599,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       body: `module.exports = { id: "config-disable", register() {} };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -4624,8 +4624,8 @@ module.exports = { id: "throws-after-import", register() {} };`,
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/nested-default-channel",
-          NexisClaw: {
+          name: "@FirstNexus/nested-default-channel",
+          FirstNexus: {
             extensions: ["./index.cjs"],
           },
         },
@@ -4635,7 +4635,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "nested-default-channel",
@@ -4683,7 +4683,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       "utf-8",
     );
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         channels: {
@@ -4719,7 +4719,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       body: `module.exports = { id: "unrelated-plugin", register() { throw new Error("unrelated plugin should not load"); } };`,
     });
     fs.writeFileSync(
-      path.join(unrelated.dir, "NexisClaw.plugin.json"),
+      path.join(unrelated.dir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "unrelated-plugin",
@@ -4732,7 +4732,7 @@ module.exports = { id: "throws-after-import", register() {} };`,
       "utf-8",
     );
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -4782,7 +4782,7 @@ module.exports = {
 };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "NexisClaw.plugin.json"),
+      path.join(plugin.dir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "lazy-channel-plugin",
@@ -4804,7 +4804,7 @@ module.exports = {
       },
     };
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config,
     });
@@ -4815,7 +4815,7 @@ module.exports = {
       "disabled",
     );
 
-    const broadSetupRegistry = loadNexisClawPlugins({
+    const broadSetupRegistry = loadFirstNexusPlugins({
       cache: false,
       config,
       includeSetupOnlyChannelPlugins: true,
@@ -4828,7 +4828,7 @@ module.exports = {
       broadSetupRegistry.plugins.find((entry) => entry.id === "lazy-channel-plugin")?.status,
     ).toBe("disabled");
 
-    const scopedSetupRegistry = loadNexisClawPlugins({
+    const scopedSetupRegistry = loadFirstNexusPlugins({
       cache: false,
       config,
       includeSetupOnlyChannelPlugins: true,
@@ -4849,13 +4849,13 @@ module.exports = {
       fixture: {
         id: "setup-entry-test",
         label: "Setup Entry Test",
-        packageName: "@NexisClaw/setup-entry-test",
+        packageName: "@FirstNexus/setup-entry-test",
         fullBlurb: "full entry should not run in setup-only mode",
         setupBlurb: "setup entry",
         configured: false,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -4878,14 +4878,14 @@ module.exports = {
       fixture: {
         id: "setup-only-bundled-contract-test",
         label: "Setup Only Bundled Contract Test",
-        packageName: "@NexisClaw/setup-only-bundled-contract-test",
+        packageName: "@FirstNexus/setup-only-bundled-contract-test",
         fullBlurb: "full entry should not run in setup-only mode",
         setupBlurb: "setup-only bundled contract",
         configured: false,
         useBundledSetupEntryContract: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -4908,13 +4908,13 @@ module.exports = {
       fixture: {
         id: "setup-runtime-test",
         label: "Setup Runtime Test",
-        packageName: "@NexisClaw/setup-runtime-test",
+        packageName: "@FirstNexus/setup-runtime-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime",
         configured: false,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -4932,14 +4932,14 @@ module.exports = {
       fixture: {
         id: "setup-runtime-bundled-contract-test",
         label: "Setup Runtime Bundled Contract Test",
-        packageName: "@NexisClaw/setup-runtime-bundled-contract-test",
+        packageName: "@FirstNexus/setup-runtime-bundled-contract-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract",
         configured: false,
         useBundledSetupEntryContract: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -4957,7 +4957,7 @@ module.exports = {
       fixture: {
         id: "setup-runtime-bundled-contract-secrets-test",
         label: "Setup Runtime Bundled Contract Secrets Test",
-        packageName: "@NexisClaw/setup-runtime-bundled-contract-secrets-test",
+        packageName: "@FirstNexus/setup-runtime-bundled-contract-secrets-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract secrets",
         configured: false,
@@ -4965,7 +4965,7 @@ module.exports = {
         splitBundledSetupSecrets: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -4984,7 +4984,7 @@ module.exports = {
       fixture: {
         id: "setup-runtime-bundled-contract-runtime-test",
         label: "Setup Runtime Bundled Contract Runtime Test",
-        packageName: "@NexisClaw/setup-runtime-bundled-contract-runtime-test",
+        packageName: "@FirstNexus/setup-runtime-bundled-contract-runtime-test",
         fullBlurb: "full entry should not run while unconfigured",
         setupBlurb: "setup runtime bundled contract runtime",
         configured: false,
@@ -4992,7 +4992,7 @@ module.exports = {
         bundledSetupRuntimeMarker: path.join(makeTempDir(), "setup-runtime-applied.txt"),
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -5011,7 +5011,7 @@ module.exports = {
       fixture: {
         id: "setup-runtime-bundled-runtime-merge-test",
         label: "Setup Runtime Bundled Runtime Merge Test",
-        packageName: "@NexisClaw/setup-runtime-bundled-runtime-merge-test",
+        packageName: "@FirstNexus/setup-runtime-bundled-runtime-merge-test",
         fullBlurb: "full runtime plugin",
         setupBlurb: "setup runtime override",
         configured: false,
@@ -5020,7 +5020,7 @@ module.exports = {
         bundledFullRuntimeMarker: path.join(makeTempDir(), "bundled-runtime-applied.txt"),
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           config: {
             plugins: {
@@ -5039,7 +5039,7 @@ module.exports = {
       fixture: {
         id: "setup-runtime-external-deferred-test",
         label: "Setup Runtime External Deferred Test",
-        packageName: "@NexisClaw/setup-runtime-external-deferred-test",
+        packageName: "@FirstNexus/setup-runtime-external-deferred-test",
         fullBlurb: "full entry should defer while configured",
         setupBlurb: "setup runtime external deferred",
         configured: true,
@@ -5047,7 +5047,7 @@ module.exports = {
         bundledSetupRuntimeMarker: path.join(makeTempDir(), "external-setup-runtime-applied.txt"),
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           preferSetupRuntimeForChannelPlugins: true,
           config: {
@@ -5073,13 +5073,13 @@ module.exports = {
       fixture: {
         id: "setup-runtime-not-preferred-test",
         label: "Setup Runtime Not Preferred Test",
-        packageName: "@NexisClaw/setup-runtime-not-preferred-test",
+        packageName: "@FirstNexus/setup-runtime-not-preferred-test",
         fullBlurb: "full entry should still load without explicit startup opt-in",
         setupBlurb: "setup runtime not preferred",
         configured: true,
       },
       load: ({ pluginDir }: { pluginDir: string }) =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           preferSetupRuntimeForChannelPlugins: true,
           config: {
@@ -5148,7 +5148,7 @@ module.exports = {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-order-test",
       label: "Setup Runtime Order Test",
-      packageName: "@NexisClaw/setup-runtime-order-test",
+      packageName: "@FirstNexus/setup-runtime-order-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -5158,7 +5158,7 @@ module.exports = {
       requireBundledFullRuntimeBeforeLoad: true,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -5178,7 +5178,7 @@ module.exports = {
     const built = createSetupEntryChannelPluginFixture({
       id: "setup-runtime-error-test",
       label: "Setup Runtime Error Test",
-      packageName: "@NexisClaw/setup-runtime-error-test",
+      packageName: "@FirstNexus/setup-runtime-error-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -5191,7 +5191,7 @@ module.exports = {
       body: `module.exports = { id: "setup-runtime-helper-test", register() {} };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -5218,7 +5218,7 @@ module.exports = {
       id: "setup-runtime-mismatch-test",
       bundledFullEntryId: "wrong-runtime-id",
       label: "Setup Runtime Mismatch Test",
-      packageName: "@NexisClaw/setup-runtime-mismatch-test",
+      packageName: "@FirstNexus/setup-runtime-mismatch-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -5227,7 +5227,7 @@ module.exports = {
       bundledFullRuntimeMarker: runtimeMarker,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -5253,7 +5253,7 @@ module.exports = {
       id: "setup-export-mismatch-test",
       bundledSetupEntryId: "wrong-setup-id",
       label: "Setup Export Mismatch Test",
-      packageName: "@NexisClaw/setup-export-mismatch-test",
+      packageName: "@FirstNexus/setup-export-mismatch-test",
       fullBlurb: "full runtime plugin",
       setupBlurb: "setup runtime override",
       configured: false,
@@ -5262,7 +5262,7 @@ module.exports = {
       bundledFullRuntimeMarker: runtimeMarker,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -5292,8 +5292,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/setup-entry-throws-test",
-          NexisClaw: {
+          name: "@FirstNexus/setup-entry-throws-test",
+          FirstNexus: {
             extensions: ["./index.cjs"],
             setupEntry: "./setup-entry.cjs",
           },
@@ -5304,7 +5304,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "setup-entry-throws-test",
@@ -5332,7 +5332,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -5359,8 +5359,8 @@ module.exports = {
       path.join(brokenDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/setup-entry-throws-sibling-test",
-          NexisClaw: {
+          name: "@FirstNexus/setup-entry-throws-sibling-test",
+          FirstNexus: {
             extensions: ["./index.cjs"],
             setupEntry: "./setup-entry.cjs",
           },
@@ -5371,7 +5371,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(brokenDir, "NexisClaw.plugin.json"),
+      path.join(brokenDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "setup-entry-throws-sibling-test",
@@ -5422,7 +5422,7 @@ module.exports = {
 } };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -5476,7 +5476,7 @@ module.exports = {
     mkdirSafe(sourceDir);
     mkdirSafe(runtimeDir);
     fs.writeFileSync(
-      path.join(sourceDir, "NexisClaw.plugin.json"),
+      path.join(sourceDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "startup-artifact-test",
@@ -5505,7 +5505,7 @@ module.exports = {
         NEXISCLAW_DISABLE_BUNDLED_PLUGINS: undefined,
       },
       () =>
-        loadNexisClawPlugins({
+        loadFirstNexusPlugins({
           cache: false,
           preferBuiltPluginArtifacts: true,
           onlyPluginIds: ["startup-artifact-test"],
@@ -5823,7 +5823,7 @@ module.exports = {
               NEXISCLAW_BUNDLED_PLUGINS_DIR: undefined,
             },
             () =>
-              loadNexisClawPlugins({
+              loadFirstNexusPlugins({
                 cache: false,
                 config: {
                   plugins: {
@@ -5834,7 +5834,7 @@ module.exports = {
               }),
           );
         },
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const a = registry.plugins.find((entry) => entry.id === "memory-a");
           const b = registry.plugins.find((entry) => entry.id === "memory-b");
           expect(b?.status).toBe("loaded");
@@ -5862,7 +5862,7 @@ module.exports = {
             body: memoryPluginBody("memory-b"),
           });
           fs.writeFileSync(
-            path.join(memoryADir, "NexisClaw.plugin.json"),
+            path.join(memoryADir, "FirstNexus.plugin.json"),
             JSON.stringify(
               {
                 id: "memory-a",
@@ -5875,7 +5875,7 @@ module.exports = {
             "utf-8",
           );
           fs.writeFileSync(
-            path.join(memoryBDir, "NexisClaw.plugin.json"),
+            path.join(memoryBDir, "FirstNexus.plugin.json"),
             JSON.stringify(
               {
                 id: "memory-b",
@@ -5889,7 +5889,7 @@ module.exports = {
           );
           process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             config: {
               plugins: {
@@ -5903,7 +5903,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const a = registry.plugins.find((entry) => entry.id === "memory-a");
           const b = registry.plugins.find((entry) => entry.id === "memory-b");
           expect(a?.status).toBe("disabled");
@@ -5934,7 +5934,7 @@ module.exports = {
           });
           const openSchema = { type: "object", additionalProperties: true };
           fs.writeFileSync(
-            path.join(memoryCoreDir, "NexisClaw.plugin.json"),
+            path.join(memoryCoreDir, "FirstNexus.plugin.json"),
             JSON.stringify(
               { id: "memory-core", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
               null,
@@ -5943,7 +5943,7 @@ module.exports = {
             "utf-8",
           );
           fs.writeFileSync(
-            path.join(memoryLanceDir, "NexisClaw.plugin.json"),
+            path.join(memoryLanceDir, "FirstNexus.plugin.json"),
             JSON.stringify(
               { id: "memory-lancedb", kind: "memory", configSchema: openSchema },
               null,
@@ -5953,7 +5953,7 @@ module.exports = {
           );
           process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             config: {
               plugins: {
@@ -5967,7 +5967,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const core = registry.plugins.find((entry) => entry.id === "memory-core");
           const lance = registry.plugins.find((entry) => entry.id === "memory-lancedb");
           expect(core?.status).toBe("loaded");
@@ -5997,7 +5997,7 @@ module.exports = {
             body: memoryPluginBody("memory-lancedb"),
           });
           fs.writeFileSync(
-            path.join(memoryCoreDir, "NexisClaw.plugin.json"),
+            path.join(memoryCoreDir, "FirstNexus.plugin.json"),
             JSON.stringify(
               { id: "memory-core", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
               null,
@@ -6006,7 +6006,7 @@ module.exports = {
             "utf-8",
           );
           fs.writeFileSync(
-            path.join(memoryLanceDir, "NexisClaw.plugin.json"),
+            path.join(memoryLanceDir, "FirstNexus.plugin.json"),
             JSON.stringify(
               { id: "memory-lancedb", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
               null,
@@ -6016,7 +6016,7 @@ module.exports = {
           );
           process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             config: {
               plugins: {
@@ -6030,7 +6030,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const core = registry.plugins.find((entry) => entry.id === "memory-core");
           const lance = registry.plugins.find((entry) => entry.id === "memory-lancedb");
           expect(core?.status).toBe("disabled");
@@ -6050,7 +6050,7 @@ module.exports = {
             body: `throw new Error("memory-core should not load when memory slot is none");`,
           });
           fs.writeFileSync(
-            path.join(memoryCoreDir, "NexisClaw.plugin.json"),
+            path.join(memoryCoreDir, "FirstNexus.plugin.json"),
             JSON.stringify(
               { id: "memory-core", kind: "memory", configSchema: EMPTY_PLUGIN_SCHEMA },
               null,
@@ -6060,7 +6060,7 @@ module.exports = {
           );
           process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
 
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             config: {
               plugins: {
@@ -6073,7 +6073,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const core = registry.plugins.find((entry) => entry.id === "memory-core");
           expect(core?.status).toBe("disabled");
         },
@@ -6092,7 +6092,7 @@ module.exports = {
               NEXISCLAW_BUNDLED_PLUGINS_DIR: undefined,
             },
             () =>
-              loadNexisClawPlugins({
+              loadFirstNexusPlugins({
                 cache: false,
                 config: {
                   plugins: {
@@ -6103,7 +6103,7 @@ module.exports = {
               }),
           );
         },
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           const entry = registry.plugins.find((item) => item.id === "memory-off");
           expect(entry?.status).toBe("disabled");
         },
@@ -6131,7 +6131,7 @@ module.exports = {
             body: simplePluginBody("shadow"),
           });
 
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             config: {
               plugins: {
@@ -6166,7 +6166,7 @@ module.exports = {
               filename: "index.cjs",
             });
 
-            return loadNexisClawPlugins({
+            return loadFirstNexusPlugins({
               cache: false,
               config: {
                 plugins: {
@@ -6212,7 +6212,7 @@ module.exports = {
               { stateDir },
             );
 
-            return loadNexisClawPlugins({
+            return loadFirstNexusPlugins({
               cache: false,
               config: {
                 plugins: {
@@ -6250,7 +6250,7 @@ module.exports = {
             id: "warn-open-allow-config",
             body: simplePluginBody("warn-open-allow-config"),
           });
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             logger: createWarningLogger(warnings),
             config: {
@@ -6271,7 +6271,7 @@ module.exports = {
             id: "warn-open-allow-workspace",
           });
           return (warnings: string[]) =>
-            loadNexisClawPlugins({
+            loadFirstNexusPlugins({
               cache: false,
               workspaceDir,
               logger: createWarningLogger(warnings),
@@ -6312,7 +6312,7 @@ module.exports = {
             id: "workspace-helper",
           });
 
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             workspaceDir,
             config: {
@@ -6322,7 +6322,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expectPluginOriginAndStatus({
             registry,
             pluginId: "workspace-helper",
@@ -6341,7 +6341,7 @@ module.exports = {
             id: "workspace-helper",
           });
 
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             workspaceDir,
             config: {
@@ -6352,7 +6352,7 @@ module.exports = {
             },
           });
         },
-        assert: (registry: ReturnType<typeof loadNexisClawPlugins>) => {
+        assert: (registry: ReturnType<typeof loadFirstNexusPlugins>) => {
           expectPluginOriginAndStatus({
             registry,
             pluginId: "workspace-helper",
@@ -6376,7 +6376,7 @@ module.exports = {
             id: "shadowed",
           });
 
-          return loadNexisClawPlugins({
+          return loadFirstNexusPlugins({
             cache: false,
             workspaceDir,
             config: {
@@ -6411,7 +6411,7 @@ module.exports = {
       body: simplePluginBody("profile-aware"),
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "NexisClaw.plugin.json"),
+      path.join(plugin.dir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "profile-aware",
@@ -6424,7 +6424,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: bundledDir,
       config: {
@@ -6452,7 +6452,7 @@ module.exports = {
       filename: "unscoped.cjs",
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -6484,7 +6484,7 @@ module.exports = {
             });
 
             const warnings: string[] = [];
-            const registry = loadNexisClawPlugins({
+            const registry = loadFirstNexusPlugins({
               cache: false,
               logger: createWarningLogger(warnings),
               config: {
@@ -6513,7 +6513,7 @@ module.exports = {
             });
 
             const warnings: string[] = [];
-            const registry = loadNexisClawPlugins({
+            const registry = loadFirstNexusPlugins({
               cache: false,
               logger: createWarningLogger(warnings),
               config: {
@@ -6532,7 +6532,7 @@ module.exports = {
         loadRegistry: () => {
           const { plugin, env } = createEnvResolvedPluginFixture("tracked-load-path");
           const warnings: string[] = [];
-          const registry = loadNexisClawPlugins({
+          const registry = loadFirstNexusPlugins({
             cache: false,
             logger: createWarningLogger(warnings),
             env,
@@ -6558,7 +6558,7 @@ module.exports = {
         loadRegistry: () => {
           const { plugin, env } = createEnvResolvedPluginFixture("tracked-install-path");
           const warnings: string[] = [];
-          const registry = loadNexisClawPlugins({
+          const registry = loadFirstNexusPlugins({
             cache: false,
             logger: createWarningLogger(warnings),
             env,
@@ -6598,7 +6598,7 @@ module.exports = {
 
           const pluginDir = path.join(
             realHome,
-            ".NexisClaw",
+            ".FirstNexus",
             "npm",
             "node_modules",
             "@example",
@@ -6618,7 +6618,7 @@ module.exports = {
                 spec: "@example/tracked-symlink-install@1.0.0",
                 installPath: path.join(
                   linkedHome,
-                  ".NexisClaw",
+                  ".FirstNexus",
                   "npm",
                   "node_modules",
                   "@example",
@@ -6631,7 +6631,7 @@ module.exports = {
           );
 
           const warnings: string[] = [];
-          const registry = loadNexisClawPlugins({
+          const registry = loadFirstNexusPlugins({
             cache: false,
             logger: createWarningLogger(warnings),
             env: {
@@ -6705,7 +6705,7 @@ module.exports = {
       setRuntimeConfigSnapshot(runtimeConfig, sourceConfig);
 
       const warnings: string[] = [];
-      const registry = loadNexisClawPlugins({
+      const registry = loadFirstNexusPlugins({
         cache: false,
         logger: createWarningLogger(warnings),
         config: runtimeConfig,
@@ -6783,7 +6783,7 @@ module.exports = {
     }
 
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledDir;
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: bundledDir,
       config: {
@@ -6845,22 +6845,24 @@ module.exports = {
       filename: "legacy-root-import.cjs",
       body: `module.exports = {
   id: "legacy-root-import",
-  configSchema: (require("NexisClaw/plugin-sdk").emptyPluginConfigSchema)(),
+  configSchema: (require("FirstNexus/plugin-sdk").emptyPluginConfigSchema)(),
         register() {},
       };`,
     });
 
-    const registry = withEnv({ NEXISCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" }, () =>
-      loadNexisClawPlugins({
-        cache: false,
-        workspaceDir: plugin.dir,
-        config: {
-          plugins: {
-            load: { paths: [plugin.file] },
-            allow: ["legacy-root-import"],
+    const registry = withEnv(
+      { NEXISCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" },
+      () =>
+        loadFirstNexusPlugins({
+          cache: false,
+          workspaceDir: plugin.dir,
+          config: {
+            plugins: {
+              load: { paths: [plugin.file] },
+              allow: ["legacy-root-import"],
+            },
           },
-        },
-      }),
+        }),
     );
     const record = registry.plugins.find((entry) => entry.id === "legacy-root-import");
     expect(
@@ -6871,7 +6873,7 @@ module.exports = {
 
   it("supports legacy plugins subscribing to diagnostic events from the root sdk", () => {
     useNoBundledPlugins();
-    const seenKey = "__NexisClawLegacyRootDiagnosticSeen";
+    const seenKey = "__FirstNexusLegacyRootDiagnosticSeen";
     delete (globalThis as Record<string, unknown>)[seenKey];
 
     const plugin = writePlugin({
@@ -6879,9 +6881,9 @@ module.exports = {
       filename: "legacy-root-diagnostic-listener.cjs",
       body: `module.exports = {
   id: "legacy-root-diagnostic-listener",
-  configSchema: (require("NexisClaw/plugin-sdk").emptyPluginConfigSchema)(),
+  configSchema: (require("FirstNexus/plugin-sdk").emptyPluginConfigSchema)(),
   register() {
-    const { onDiagnosticEvent } = require("NexisClaw/plugin-sdk");
+    const { onDiagnosticEvent } = require("FirstNexus/plugin-sdk");
     if (typeof onDiagnosticEvent !== "function") {
       throw new Error("missing onDiagnosticEvent root export");
     }
@@ -6900,7 +6902,7 @@ module.exports = {
       const registry = withEnv(
         { NEXISCLAW_BUNDLED_PLUGINS_DIR: "/nonexistent/bundled/plugins" },
         () =>
-          loadNexisClawPlugins({
+          loadFirstNexusPlugins({
             cache: false,
             workspaceDir: plugin.dir,
             config: {
@@ -6950,7 +6952,7 @@ module.exports = {
       });
 
       const warnings: string[] = [];
-      const registry = loadNexisClawPlugins({
+      const registry = loadFirstNexusPlugins({
         activate: false,
         cache: false,
         logger: createWarningLogger(warnings),
@@ -6995,7 +6997,7 @@ export const runtimeValue = helperValue;`,
       "utf-8",
     );
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: plugin.dir,
       config: {

@@ -1,1 +1,1 @@
-export { normalizeGroupActivation } from "NexisClaw/plugin-sdk/group-activation";
+export { normalizeGroupActivation } from "FirstNexus/plugin-sdk/group-activation";

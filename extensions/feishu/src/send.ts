@@ -1,9 +1,9 @@
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { convertMarkdownTables } from "NexisClaw/plugin-sdk/text-chunking";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { convertMarkdownTables } from "FirstNexus/plugin-sdk/text-chunking";
 import type { ClawdbotConfig } from "../runtime-api.js";
 import { resolveFeishuRuntimeAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";

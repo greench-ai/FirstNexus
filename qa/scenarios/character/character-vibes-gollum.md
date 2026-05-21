@@ -87,7 +87,7 @@ execution:
       - internal error
       - tool failed
       - /var/folders
-      - NexisClaw-qa-suite
+      - FirstNexus-qa-suite
 ```
 
 ```yaml qa-flow

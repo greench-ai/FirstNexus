@@ -1,12 +1,12 @@
-import { doesApprovalRequestMatchChannelAccount } from "NexisClaw/plugin-sdk/approval-native-runtime";
+import { doesApprovalRequestMatchChannelAccount } from "FirstNexus/plugin-sdk/approval-native-runtime";
 import type {
   ExecApprovalRequest,
   PluginApprovalRequest,
-} from "NexisClaw/plugin-sdk/approval-runtime";
+} from "FirstNexus/plugin-sdk/approval-runtime";
 import type {
   DiscordExecApprovalConfig,
-  NexisClawConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
+  FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
 import { resolveDiscordAccount } from "./accounts.js";
 import {
   isChannelExecApprovalClientEnabledFromConfig,
@@ -17,7 +17,7 @@ import { getDiscordExecApprovalApprovers } from "./exec-approvals.js";
 type ApprovalRequest = ExecApprovalRequest | PluginApprovalRequest;
 
 export function shouldHandleDiscordApprovalRequest(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   request: ApprovalRequest;
   configOverride?: DiscordExecApprovalConfig | null;

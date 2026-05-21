@@ -1,17 +1,17 @@
-import { transcodeAudioBufferToOpus } from "NexisClaw/plugin-sdk/media-runtime";
+import { transcodeAudioBufferToOpus } from "FirstNexus/plugin-sdk/media-runtime";
 import {
   isProviderAuthProfileConfigured,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   resolveProviderAuthProfileApiKey,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
   SpeechProviderOverrides,
   SpeechProviderPlugin,
-} from "NexisClaw/plugin-sdk/speech-core";
-import { asFiniteNumber, asObject, trimToUndefined } from "NexisClaw/plugin-sdk/speech-core";
+} from "FirstNexus/plugin-sdk/speech-core";
+import { asFiniteNumber, asObject, trimToUndefined } from "FirstNexus/plugin-sdk/speech-core";
 import {
   DEFAULT_MINIMAX_TTS_BASE_URL,
   MINIMAX_TTS_MODELS,
@@ -45,7 +45,7 @@ type MinimaxTtsProviderOverrides = {
   pitch?: number;
 };
 
-function resolveConfiguredPortalTtsBaseUrl(cfg: NexisClawConfig | undefined): string | undefined {
+function resolveConfiguredPortalTtsBaseUrl(cfg: FirstNexusConfig | undefined): string | undefined {
   const providers = asObject(asObject(cfg?.models)?.providers);
   const portalProvider = asObject(providers?.[MINIMAX_PORTAL_PROVIDER_ID]);
   const portalBaseUrl = trimToUndefined(portalProvider?.baseUrl);
@@ -63,7 +63,7 @@ function resolveMinimaxTokenPlanEnvKey(): string | undefined {
 }
 
 async function resolveMinimaxPortalProfileToken(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
 ): Promise<string | undefined> {
   return await resolveProviderAuthProfileApiKey({
     cfg,
@@ -72,7 +72,7 @@ async function resolveMinimaxPortalProfileToken(
 }
 
 async function resolveMinimaxTtsApiKey(params: {
-  cfg: NexisClawConfig | undefined;
+  cfg: FirstNexusConfig | undefined;
   configApiKey?: string;
 }): Promise<string | undefined> {
   return (
@@ -85,7 +85,7 @@ async function resolveMinimaxTtsApiKey(params: {
 
 function normalizeMinimaxProviderConfig(
   rawConfig: Record<string, unknown>,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): MinimaxTtsProviderConfig {
   const providers = asObject(rawConfig.providers);
   const raw = asObject(providers?.minimax) ?? asObject(rawConfig.minimax);
@@ -116,7 +116,7 @@ function normalizeMinimaxProviderConfig(
 
 function readMinimaxProviderConfig(
   config: SpeechProviderConfig,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): MinimaxTtsProviderConfig {
   const normalized = normalizeMinimaxProviderConfig({}, cfg);
   return {

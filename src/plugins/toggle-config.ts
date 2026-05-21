@@ -1,16 +1,16 @@
 import { normalizeChatChannelId } from "../channels/ids.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export function setPluginEnabledInConfig(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   pluginId: string,
   enabled: boolean,
   options: { updateChannelConfig?: boolean } = {},
-): NexisClawConfig {
+): FirstNexusConfig {
   const builtInChannelId = normalizeChatChannelId(pluginId);
   const resolvedId = builtInChannelId ?? pluginId;
 
-  const next: NexisClawConfig = {
+  const next: FirstNexusConfig = {
     ...config,
     plugins: {
       ...config.plugins,

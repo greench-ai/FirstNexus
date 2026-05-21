@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import type { AuthProfileStore } from "./auth-profiles.js";
 import { resolveEnvApiKey } from "./model-auth-env.js";
@@ -14,11 +14,11 @@ import {
 import { hasAuthForModelProvider } from "./model-provider-auth.js";
 
 async function writeWorkspaceAuthEvidencePlugin(workspaceDir: string) {
-  const pluginDir = path.join(workspaceDir, ".NexisClaw", "extensions", "workspace-cloud");
+  const pluginDir = path.join(workspaceDir, ".FirstNexus", "extensions", "workspace-cloud");
   await fs.mkdir(pluginDir, { recursive: true });
   await fs.writeFile(path.join(pluginDir, "index.ts"), "export default {}\n", "utf8");
   await fs.writeFile(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: "workspace-cloud",
       configSchema: { type: "object" },
@@ -44,7 +44,7 @@ async function writeWorkspaceAuthEvidencePlugin(workspaceDir: string) {
 
 describe("workspace plugin model auth evidence", () => {
   it("uses trusted workspace plugin auth evidence across runtime and picker auth checks", async () => {
-    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-workspace-auth-"));
+    const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-workspace-auth-"));
     const workspaceDir = path.join(tempRoot, "workspace");
     const bundledDir = path.join(tempRoot, "bundled");
     const stateDir = path.join(tempRoot, "state");
@@ -54,7 +54,7 @@ describe("workspace plugin model auth evidence", () => {
     await fs.writeFile(credentialsPath, "{}", "utf8");
     await writeWorkspaceAuthEvidencePlugin(workspaceDir);
 
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       plugins: {
         allow: ["workspace-cloud"],
       },

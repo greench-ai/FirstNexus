@@ -1,7 +1,7 @@
-import { listSkillCommandsForAgents as listSkillCommandsForAgentsImpl } from "NexisClaw/plugin-sdk/command-auth-native";
+import { listSkillCommandsForAgents as listSkillCommandsForAgentsImpl } from "FirstNexus/plugin-sdk/command-auth-native";
 
 type ListSkillCommandsForAgents =
-  typeof import("NexisClaw/plugin-sdk/command-auth-native").listSkillCommandsForAgents;
+  typeof import("FirstNexus/plugin-sdk/command-auth-native").listSkillCommandsForAgents;
 
 export function listSkillCommandsForAgents(
   ...args: Parameters<ListSkillCommandsForAgents>

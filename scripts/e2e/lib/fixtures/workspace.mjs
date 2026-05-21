@@ -4,12 +4,12 @@ import { assert, readJson, requireArg, write, writeJson } from "./common.mjs";
 
 function writeOpenWebUiWorkspace() {
   const workspace =
-    process.env.NEXISCLAW_WORKSPACE_DIR || path.join(process.env.HOME, ".NexisClaw", "workspace");
+    process.env.NEXISCLAW_WORKSPACE_DIR || path.join(process.env.HOME, ".FirstNexus", "workspace");
   write(
     path.join(workspace, "IDENTITY.md"),
-    "# Identity\n\n- Name: NexisClaw\n- Purpose: Open WebUI Docker compatibility smoke test assistant.\n",
+    "# Identity\n\n- Name: FirstNexus\n- Purpose: Open WebUI Docker compatibility smoke test assistant.\n",
   );
-  writeJson(path.join(workspace, ".NexisClaw", "workspace-state.json"), {
+  writeJson(path.join(workspace, ".FirstNexus", "workspace-state.json"), {
     version: 1,
     setupCompletedAt: "2026-01-01T00:00:00.000Z",
   });
@@ -20,7 +20,7 @@ function writeAgentsDeleteConfig() {
   const stateDir = requireArg(process.env.NEXISCLAW_STATE_DIR, "NEXISCLAW_STATE_DIR");
   const sharedWorkspace = requireArg(process.env.SHARED_WORKSPACE, "SHARED_WORKSPACE");
   fs.mkdirSync(sharedWorkspace, { recursive: true });
-  writeJson(path.join(stateDir, "NexisClaw.json"), {
+  writeJson(path.join(stateDir, "FirstNexus.json"), {
     agents: {
       list: [
         { id: "main", workspace: sharedWorkspace },
@@ -53,7 +53,7 @@ function assertAgentsDeleteResult([outputPath]) {
   );
   assert(fs.existsSync(process.env.SHARED_WORKSPACE), "shared workspace was removed");
   const remaining =
-    readJson(path.join(process.env.NEXISCLAW_STATE_DIR, "NexisClaw.json"))?.agents?.list ?? [];
+    readJson(path.join(process.env.NEXISCLAW_STATE_DIR, "FirstNexus.json"))?.agents?.list ?? [];
   assert(Array.isArray(remaining), "agents list missing after delete");
   assert(!remaining.some((entry) => entry?.id === "ops"), "deleted agent remained in config");
   assert(

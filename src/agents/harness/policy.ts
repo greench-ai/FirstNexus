@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { resolveModelRuntimePolicy } from "../model-runtime-policy.js";
 import {
   isOpenAICodexProvider,
@@ -17,7 +17,7 @@ export type AgentHarnessPolicy = {
 export function resolveAgentHarnessPolicy(params: {
   provider?: string;
   modelId?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   agentId?: string;
   sessionKey?: string;
   env?: NodeJS.ProcessEnv;

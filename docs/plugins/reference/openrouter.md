@@ -1,5 +1,5 @@
 ---
-summary: "Adds OpenRouter model provider support to NexisClaw."
+summary: "Adds OpenRouter model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the openrouter plugin
 title: "OpenRouter plugin"
@@ -7,12 +7,12 @@ title: "OpenRouter plugin"
 
 # OpenRouter plugin
 
-Adds OpenRouter model provider support to NexisClaw.
+Adds OpenRouter model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/openrouter-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/openrouter-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

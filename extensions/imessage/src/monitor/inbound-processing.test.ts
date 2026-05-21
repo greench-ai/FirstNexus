@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { sanitizeTerminalText } from "NexisClaw/plugin-sdk/test-fixtures";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { sanitizeTerminalText } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { _resetIMessageShortIdState, rememberIMessageReplyCache } from "../monitor-reply-cache.js";
 import {
@@ -14,7 +14,7 @@ import {
 import { createSelfChatCache } from "./self-chat-cache.js";
 
 describe("resolveIMessageInboundDecision echo detection", () => {
-  const cfg = {} as NexisClawConfig;
+  const cfg = {} as FirstNexusConfig;
   type InboundDecisionParams = Parameters<typeof resolveIMessageInboundDecision>[0];
 
   function createInboundDecisionParams(
@@ -190,7 +190,7 @@ describe("resolveIMessageInboundDecision echo detection", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const createdAt = "2026-03-02T20:58:10.649Z";
 
     expect(
@@ -543,7 +543,7 @@ describe("resolveIMessageInboundDecision echo detection", () => {
   });
 
   it("uses the production reply-cache lookup for bot-authored reaction targets", async () => {
-    const tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-imsg-reaction-cache-"));
+    const tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-imsg-reaction-cache-"));
     const priorStateDir = process.env.NEXISCLAW_STATE_DIR;
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
     try {
@@ -747,7 +747,7 @@ describe("describeIMessageEchoDropLog", () => {
 describe("buildIMessageInboundContext", () => {
   it("keeps numeric row id and provider GUID separately for action tooling", async () => {
     const decision = await resolveIMessageInboundDecision({
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       accountId: "default",
       message: {
         id: 12345,
@@ -777,7 +777,7 @@ describe("buildIMessageInboundContext", () => {
     }
 
     const { ctxPayload } = buildIMessageInboundContext({
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       decision,
       message: {
         id: 12345,
@@ -797,7 +797,7 @@ describe("buildIMessageInboundContext", () => {
 });
 
 describe("resolveIMessageInboundDecision command auth", () => {
-  const cfg = {} as NexisClawConfig;
+  const cfg = {} as FirstNexusConfig;
   const resolveDmCommandDecision = (params: {
     messageId: number;
     storeAllowFrom: string[];
@@ -856,7 +856,7 @@ describe("buildIMessageInboundContext MessageSid handling (rowid-leak regression
   let tempStateDir: string;
   let priorStateDir: string | undefined;
   beforeAll(() => {
-    tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-imsg-inbound-"));
+    tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-imsg-inbound-"));
     priorStateDir = process.env.NEXISCLAW_STATE_DIR;
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
   });
@@ -894,7 +894,7 @@ describe("buildIMessageInboundContext MessageSid handling (rowid-leak regression
       commandAuthorized: false,
     };
     return {
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       decision: decision as unknown as Parameters<
         typeof buildIMessageInboundContext
       >[0]["decision"],

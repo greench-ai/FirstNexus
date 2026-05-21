@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { GatewayClient } from "../gateway/client.js";
 import {
   describeInterpreterInlineEval,
@@ -125,7 +125,7 @@ const APPROVAL_SCRIPT_OPERAND_BINDING_DENIED_MESSAGE =
   "SYSTEM_RUN_DENIED: approval missing script operand binding";
 const APPROVAL_SCRIPT_OPERAND_DRIFT_DENIED_MESSAGE =
   "SYSTEM_RUN_DENIED: approval script operand changed before execution";
-type ExecToolConfig = NonNullable<NonNullable<NexisClawConfig["tools"]>["exec"]>;
+type ExecToolConfig = NonNullable<NonNullable<FirstNexusConfig["tools"]>["exec"]>;
 
 function warnWritableTrustedDirOnce(message: string): void {
   if (safeBinTrustedDirWarningCache.has(message)) {
@@ -150,7 +150,7 @@ function normalizeDeniedReason(reason: string | null | undefined): SystemRunDeni
 }
 
 function resolveAgentExecConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   agentId: string | undefined,
 ): ExecToolConfig | undefined {
   if (!agentId) {
@@ -191,10 +191,10 @@ export type HandleSystemRunInvokeOptions = {
   sendInvokeResult: (result: SystemRunInvokeResult) => Promise<void>;
   sendExecFinishedEvent: (params: ExecFinishedEventParams) => Promise<void>;
   preferMacAppExecHost: boolean;
-  getRuntimeConfig?: () => NexisClawConfig;
+  getRuntimeConfig?: () => FirstNexusConfig;
 };
 
-async function loadSystemRunConfig(opts: HandleSystemRunInvokeOptions): Promise<NexisClawConfig> {
+async function loadSystemRunConfig(opts: HandleSystemRunInvokeOptions): Promise<FirstNexusConfig> {
   if (opts.getRuntimeConfig) {
     return opts.getRuntimeConfig();
   }

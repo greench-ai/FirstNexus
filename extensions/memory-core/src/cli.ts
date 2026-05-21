@@ -3,7 +3,7 @@ import {
   formatDocsLink,
   formatHelpExamples,
   theme,
-} from "NexisClaw/plugin-sdk/memory-core-host-runtime-cli";
+} from "FirstNexus/plugin-sdk/memory-core-host-runtime-cli";
 import type {
   MemoryCommandOptions,
   MemoryPromoteCommandOptions,
@@ -73,44 +73,44 @@ export function registerMemoryCli(program: Command) {
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
-          ["NexisClaw memory status", "Show index and provider status."],
+          ["FirstNexus memory status", "Show index and provider status."],
           [
-            "NexisClaw memory status --fix",
+            "FirstNexus memory status --fix",
             "Repair stale recall locks and normalize promotion metadata.",
           ],
-          ["NexisClaw memory status --deep", "Probe embedding provider readiness."],
-          ["NexisClaw memory index --force", "Force a full reindex."],
-          ['NexisClaw memory search "meeting notes"', "Quick search using positional query."],
+          ["FirstNexus memory status --deep", "Probe embedding provider readiness."],
+          ["FirstNexus memory index --force", "Force a full reindex."],
+          ['FirstNexus memory search "meeting notes"', "Quick search using positional query."],
           [
-            'NexisClaw memory search --query "deployment" --max-results 20',
+            'FirstNexus memory search --query "deployment" --max-results 20',
             "Limit results for focused troubleshooting.",
           ],
           [
-            `NexisClaw memory promote --limit 10 --min-score ${DEFAULT_PROMOTION_MIN_SCORE}`,
+            `FirstNexus memory promote --limit 10 --min-score ${DEFAULT_PROMOTION_MIN_SCORE}`,
             "Review weighted short-term candidates for long-term memory.",
           ],
           [
-            "NexisClaw memory promote --apply",
+            "FirstNexus memory promote --apply",
             "Append top-ranked short-term candidates into MEMORY.md.",
           ],
           [
-            'NexisClaw memory promote-explain "router vlan"',
+            'FirstNexus memory promote-explain "router vlan"',
             "Explain why a specific candidate would or would not promote.",
           ],
           [
-            "NexisClaw memory rem-harness --json",
+            "FirstNexus memory rem-harness --json",
             "Preview REM reflections, candidate truths, and deep promotion output.",
           ],
           [
-            "NexisClaw memory rem-backfill --path ./memory",
+            "FirstNexus memory rem-backfill --path ./memory",
             "Write grounded historical REM entries into DREAMS.md for UI review.",
           ],
           [
-            "NexisClaw memory rem-backfill --path ./memory --stage-short-term",
+            "FirstNexus memory rem-backfill --path ./memory --stage-short-term",
             "Also seed durable grounded candidates into the live short-term promotion store.",
           ],
-          ["NexisClaw memory status --json", "Output machine-readable JSON (good for scripts)."],
-        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/memory", "docs.NexisClaw.ai/cli/memory")}\n`,
+          ["FirstNexus memory status --json", "Output machine-readable JSON (good for scripts)."],
+        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/memory", "docs.FirstNexus.ai/cli/memory")}\n`,
     );
 
   memory

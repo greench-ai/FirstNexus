@@ -18,7 +18,7 @@ export type {
   VideoGenerationSourceAsset,
   VideoGenerationTransformCapabilities,
 } from "../video-generation/types.js";
-export type { NexisClawConfig } from "../config/types.NexisClaw.js";
+export type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export { describeFailoverError, isFailoverError } from "../agents/failover-error.js";
 export {

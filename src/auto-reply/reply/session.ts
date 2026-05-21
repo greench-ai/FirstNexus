@@ -31,7 +31,7 @@ import {
   type SessionEntry,
   type SessionScope,
 } from "../../config/sessions/types.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { TtsAutoMode } from "../../config/types.tts.js";
 import {
   forgetActiveSessionForShutdown,
@@ -106,7 +106,7 @@ function resolveExplicitSessionEndReason(matchedResetTriggerLower?: string): Rep
 }
 
 function resolveSessionDefaultAccountId(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channelRaw?: string;
   accountIdRaw?: string;
   persistedLastAccountId?: string;
@@ -174,7 +174,7 @@ export type SessionInitResult = {
 };
 
 function resolveSessionConversationBindingContext(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   ctx: MsgContext,
 ): {
   channel: string;
@@ -200,7 +200,7 @@ function resolveSessionConversationBindingContext(
 }
 
 function resolveBoundConversationSessionKey(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   ctx: MsgContext;
   bindingContext?: {
     channel: string;
@@ -233,7 +233,7 @@ function resolveBoundConversationSessionKey(params: {
 
 export async function initSessionState(params: {
   ctx: MsgContext;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   commandAuthorized: boolean;
 }): Promise<SessionInitResult> {
   const { ctx, cfg, commandAuthorized } = params;

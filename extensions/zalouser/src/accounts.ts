@@ -3,9 +3,9 @@ import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   resolveMergedAccountConfig,
-} from "NexisClaw/plugin-sdk/account-resolution";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/account-resolution";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { ResolvedZalouserAccount, ZalouserAccountConfig, ZalouserConfig } from "./types.js";
 
 let zalouserAccountsRuntimePromise: Promise<typeof import("./accounts.runtime.js")> | undefined;
@@ -21,7 +21,10 @@ const {
 } = createAccountListHelpers("zalouser");
 export { listZalouserAccountIds, resolveDefaultZalouserAccountId };
 
-function mergeZalouserAccountConfig(cfg: NexisClawConfig, accountId: string): ZalouserAccountConfig {
+function mergeZalouserAccountConfig(
+  cfg: FirstNexusConfig,
+  accountId: string,
+): ZalouserAccountConfig {
   const merged = resolveMergedAccountConfig<ZalouserAccountConfig>({
     channelConfig: cfg.channels?.zalouser as ZalouserAccountConfig | undefined,
     accounts: (cfg.channels?.zalouser as ZalouserConfig | undefined)?.accounts as
@@ -53,7 +56,7 @@ function resolveProfile(config: ZalouserAccountConfig, accountId: string): strin
   return "default";
 }
 
-function resolveZalouserAccountBase(params: { cfg: NexisClawConfig; accountId?: string | null }) {
+function resolveZalouserAccountBase(params: { cfg: FirstNexusConfig; accountId?: string | null }) {
   const accountId = normalizeAccountId(
     params.accountId ?? resolveDefaultZalouserAccountId(params.cfg),
   );
@@ -69,7 +72,7 @@ function resolveZalouserAccountBase(params: { cfg: NexisClawConfig; accountId?: 
 }
 
 export async function resolveZalouserAccount(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): Promise<ResolvedZalouserAccount> {
   const { accountId, enabled, merged, profile } = resolveZalouserAccountBase(params);
@@ -86,7 +89,7 @@ export async function resolveZalouserAccount(params: {
 }
 
 export function resolveZalouserAccountSync(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): ResolvedZalouserAccount {
   const { accountId, enabled, merged, profile } = resolveZalouserAccountBase(params);
@@ -102,7 +105,7 @@ export function resolveZalouserAccountSync(params: {
 }
 
 export async function listEnabledZalouserAccounts(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): Promise<ResolvedZalouserAccount[]> {
   const ids = listZalouserAccountIds(cfg);
   const accounts = await Promise.all(

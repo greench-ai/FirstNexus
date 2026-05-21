@@ -59,7 +59,7 @@ const hoisted = vi.hoisted(() => {
   const stopGmailWatcher = vi.fn(async () => {});
   const resetModelCatalogCache = vi.fn();
   const disposeAllSessionMcpRuntimes = vi.fn(async () => {});
-  const resolveNexisClawPackageRootSync = vi.fn((_params: unknown) => "/package");
+  const resolveFirstNexusPackageRootSync = vi.fn((_params: unknown) => "/package");
 
   const providerManager = {
     getRuntimeSnapshot: vi.fn(() => ({
@@ -163,7 +163,7 @@ const hoisted = vi.hoisted(() => {
     stopGmailWatcher,
     resetModelCatalogCache,
     disposeAllSessionMcpRuntimes,
-    resolveNexisClawPackageRootSync,
+    resolveFirstNexusPackageRootSync,
     providerManager,
     createChannelManager,
     startGatewayConfigReloader,
@@ -213,11 +213,11 @@ vi.mock("../agents/pi-bundle-mcp-tools.js", async () => {
   };
 });
 
-vi.mock("../infra/NexisClaw-root.js", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("../infra/NexisClaw-root.js")>();
+vi.mock("../infra/FirstNexus-root.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../infra/FirstNexus-root.js")>();
   return {
     ...actual,
-    resolveNexisClawPackageRootSync: hoisted.resolveNexisClawPackageRootSync,
+    resolveFirstNexusPackageRootSync: hoisted.resolveFirstNexusPackageRootSync,
   };
 });
 
@@ -327,8 +327,8 @@ describe("gateway hot reload", () => {
     hoisted.resetModelCatalogCache.mockReset();
     hoisted.disposeAllSessionMcpRuntimes.mockReset();
     hoisted.disposeAllSessionMcpRuntimes.mockResolvedValue(undefined);
-    hoisted.resolveNexisClawPackageRootSync.mockClear();
-    hoisted.resolveNexisClawPackageRootSync.mockReturnValue("/package");
+    hoisted.resolveFirstNexusPackageRootSync.mockClear();
+    hoisted.resolveFirstNexusPackageRootSync.mockReturnValue("/package");
     hoisted.resetReloadCallbacks();
   });
 

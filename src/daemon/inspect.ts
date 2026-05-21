@@ -17,7 +17,7 @@ export type ExtraGatewayService = {
   label: string;
   detail: string;
   scope: "user" | "system";
-  marker?: "NexisClaw" | "clawdbot";
+  marker?: "FirstNexus" | "clawdbot";
   legacy?: boolean;
 };
 
@@ -25,7 +25,7 @@ export type FindExtraGatewayServicesOptions = {
   deep?: boolean;
 };
 
-const EXTRA_MARKERS = ["NexisClaw", "clawdbot"] as const;
+const EXTRA_MARKERS = ["FirstNexus", "clawdbot"] as const;
 const SYSTEMD_REFERENCE_ONLY_KEYS = new Set([
   "after",
   "before",
@@ -122,8 +122,8 @@ export function detectMarkerLineWithGateway(contents: string): Marker | null {
 
 function hasGatewayServiceMarker(content: string): boolean {
   const lower = normalizeLowercaseStringOrEmpty(content);
-  const markerKeys = ["NexisClaw_service_marker"];
-  const kindKeys = ["NexisClaw_service_kind"];
+  const markerKeys = ["FirstNexus_service_marker"];
+  const kindKeys = ["FirstNexus_service_kind"];
   const markerValues = [normalizeLowercaseStringOrEmpty(GATEWAY_SERVICE_MARKER)];
   const hasMarkerKey = markerKeys.some((key) => lower.includes(key));
   const hasKindKey = kindKeys.some((key) => lower.includes(key));
@@ -184,33 +184,33 @@ function detectLaunchdGatewayExecutionMarker(contents: string): Marker | null {
   return null;
 }
 
-function isNexisClawGatewayLaunchdService(label: string, contents: string): boolean {
+function isFirstNexusGatewayLaunchdService(label: string, contents: string): boolean {
   if (hasGatewayServiceMarker(contents)) {
     return true;
   }
-  if (detectLaunchdGatewayExecutionMarker(contents) !== "NexisClaw") {
+  if (detectLaunchdGatewayExecutionMarker(contents) !== "FirstNexus") {
     return false;
   }
-  return label.startsWith("ai.NexisClaw.");
+  return label.startsWith("ai.FirstNexus.");
 }
 
-function isNexisClawGatewaySystemdService(name: string, contents: string): boolean {
+function isFirstNexusGatewaySystemdService(name: string, contents: string): boolean {
   if (hasGatewayServiceMarker(contents)) {
     return true;
   }
-  if (!name.startsWith("NexisClaw-gateway")) {
+  if (!name.startsWith("FirstNexus-gateway")) {
     return false;
   }
   return normalizeLowercaseStringOrEmpty(contents).includes("gateway");
 }
 
-function isNexisClawGatewayTaskName(name: string): boolean {
+function isFirstNexusGatewayTaskName(name: string): boolean {
   const normalized = normalizeLowercaseStringOrEmpty(name);
   if (!normalized) {
     return false;
   }
   const defaultName = normalizeLowercaseStringOrEmpty(resolveGatewayWindowsTaskName());
-  return normalized === defaultName || normalized.startsWith("NexisClaw gateway");
+  return normalized === defaultName || normalized.startsWith("FirstNexus gateway");
 }
 
 function tryExtractPlistLabel(contents: string): string | null {
@@ -298,8 +298,8 @@ async function scanLaunchdDir(params: {
     const legacyLabel = isLegacyLabel(labelFromName) || isLegacyLabel(label);
     const executionMarker = detectLaunchdGatewayExecutionMarker(contents);
     const marker =
-      hasGatewayServiceMarker(contents) || executionMarker === "NexisClaw"
-        ? "NexisClaw"
+      hasGatewayServiceMarker(contents) || executionMarker === "FirstNexus"
+        ? "FirstNexus"
         : executionMarker === "clawdbot" || legacyLabel || detectMarker(contents) === "clawdbot"
           ? "clawdbot"
           : null;
@@ -309,7 +309,7 @@ async function scanLaunchdDir(params: {
     if (isIgnoredLaunchdLabel(label)) {
       continue;
     }
-    if (marker === "NexisClaw" && isNexisClawGatewayLaunchdService(label, contents)) {
+    if (marker === "FirstNexus" && isFirstNexusGatewayLaunchdService(label, contents)) {
       continue;
     }
     results.push({
@@ -318,7 +318,7 @@ async function scanLaunchdDir(params: {
       detail: `plist: ${fullPath}`,
       scope: params.scope,
       marker,
-      legacy: marker !== "NexisClaw" || isLegacyLabel(label),
+      legacy: marker !== "FirstNexus" || isLegacyLabel(label),
     });
   }
 
@@ -328,26 +328,26 @@ async function scanLaunchdDir(params: {
 async function scanSystemdDir(params: {
   dir: string;
   scope: "user" | "system";
-  includeManagedNexisClaw?: boolean;
+  includeManagedFirstNexus?: boolean;
 }): Promise<ExtraGatewayService[]> {
   const results: ExtraGatewayService[] = [];
   const candidates = await collectServiceFiles({
     dir: params.dir,
     extension: ".service",
-    isIgnoredName: params.includeManagedNexisClaw ? () => false : isIgnoredSystemdName,
+    isIgnoredName: params.includeManagedFirstNexus ? () => false : isIgnoredSystemdName,
   });
 
   for (const { entry, name, fullPath, contents } of candidates) {
     const marker = hasGatewayServiceMarker(contents)
-      ? "NexisClaw"
+      ? "FirstNexus"
       : detectMarkerLineWithGateway(contents);
     if (!marker) {
       continue;
     }
     if (
-      !params.includeManagedNexisClaw &&
-      marker === "NexisClaw" &&
-      isNexisClawGatewaySystemdService(name, contents)
+      !params.includeManagedFirstNexus &&
+      marker === "FirstNexus" &&
+      isFirstNexusGatewaySystemdService(name, contents)
     ) {
       continue;
     }
@@ -357,7 +357,7 @@ async function scanSystemdDir(params: {
       detail: `unit: ${fullPath}`,
       scope: params.scope,
       marker,
-      legacy: marker !== "NexisClaw",
+      legacy: marker !== "FirstNexus",
     });
   }
 
@@ -376,7 +376,7 @@ export async function findSystemGatewayServices(): Promise<ExtraGatewayService[]
         ...(await scanSystemdDir({
           dir,
           scope: "system",
-          includeManagedNexisClaw: true,
+          includeManagedFirstNexus: true,
         })),
       );
     }
@@ -524,7 +524,7 @@ export async function findExtraGatewayServices(
       if (!name) {
         continue;
       }
-      if (isNexisClawGatewayTaskName(name)) {
+      if (isFirstNexusGatewayTaskName(name)) {
         continue;
       }
       const lowerName = normalizeLowercaseStringOrEmpty(name);
@@ -545,7 +545,7 @@ export async function findExtraGatewayServices(
         detail: task.taskToRun ? `task: ${name}, run: ${task.taskToRun}` : name,
         scope: "system",
         marker,
-        legacy: marker !== "NexisClaw",
+        legacy: marker !== "FirstNexus",
       });
     }
     return results;

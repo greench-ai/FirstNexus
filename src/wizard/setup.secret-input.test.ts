@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { resolveSetupSecretInputString } from "./setup.secret-input.js";
 
-function makeConfig(): NexisClawConfig {
+function makeConfig(): FirstNexusConfig {
   return {
     secrets: {
       providers: {
         default: { source: "env" },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 describe("resolveSetupSecretInputString", () => {

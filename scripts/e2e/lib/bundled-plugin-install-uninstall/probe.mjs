@@ -13,7 +13,7 @@ function loadManifestEntries() {
     .readdirSync(extensionRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => {
-      const manifestPath = path.join(extensionRoot, entry.name, "NexisClaw.plugin.json");
+      const manifestPath = path.join(extensionRoot, entry.name, "FirstNexus.plugin.json");
       if (!fs.existsSync(manifestPath)) {
         return null;
       }
@@ -69,8 +69,8 @@ function selectedManifestEntries() {
 }
 
 function assertInstalled(pluginId, pluginDir, requiresConfig) {
-  const configPath = path.join(process.env.HOME, ".NexisClaw", "NexisClaw.json");
-  const indexPath = path.join(process.env.HOME, ".NexisClaw", "plugins", "installs.json");
+  const configPath = path.join(process.env.HOME, ".FirstNexus", "FirstNexus.json");
+  const indexPath = path.join(process.env.HOME, ".FirstNexus", "plugins", "installs.json");
   const config = readJson(configPath);
   const index = readJson(indexPath);
   const records = index.installRecords ?? index.records ?? {};
@@ -114,8 +114,8 @@ function assertInstalled(pluginId, pluginDir, requiresConfig) {
 }
 
 function assertUninstalled(pluginId, pluginDir) {
-  const configPath = path.join(process.env.HOME, ".NexisClaw", "NexisClaw.json");
-  const indexPath = path.join(process.env.HOME, ".NexisClaw", "plugins", "installs.json");
+  const configPath = path.join(process.env.HOME, ".FirstNexus", "FirstNexus.json");
+  const indexPath = path.join(process.env.HOME, ".FirstNexus", "plugins", "installs.json");
   const config = fs.existsSync(configPath) ? readJson(configPath) : {};
   const index = fs.existsSync(indexPath) ? readJson(indexPath) : {};
   const records = index.installRecords ?? index.records ?? {};
@@ -135,7 +135,7 @@ function assertUninstalled(pluginId, pluginDir) {
   if ((config.plugins?.deny || []).includes(pluginId)) {
     throw new Error(`denylist still contains ${pluginId} after uninstall`);
   }
-  const managedPath = path.join(process.env.HOME, ".NexisClaw", "extensions", pluginId);
+  const managedPath = path.join(process.env.HOME, ".FirstNexus", "extensions", pluginId);
   if (fs.existsSync(managedPath)) {
     throw new Error(
       `managed install directory unexpectedly exists for bundled plugin ${pluginId}: ${managedPath}`,

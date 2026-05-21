@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { resolveTranscriptPolicy } from "./transcript-policy.js";
 
 vi.mock("../plugins/provider-hook-runtime.js", () => ({
@@ -21,10 +21,10 @@ const MISTRAL_PLUGIN_CONFIG = {
       mistral: { enabled: true },
     },
   },
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 function createProviderRuntimeSmokeContext(): {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   workspaceDir: string;
 } {

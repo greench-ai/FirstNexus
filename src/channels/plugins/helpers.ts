@@ -1,5 +1,5 @@
 import { formatCliCommand } from "../../cli/command-format.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { DEFAULT_ACCOUNT_ID } from "../../routing/session-key.js";
 import type { ChannelSecurityDmPolicy } from "./types.core.js";
 import type { ChannelPlugin } from "./types.plugin.js";
@@ -7,7 +7,7 @@ import type { ChannelPlugin } from "./types.plugin.js";
 // Channel docking helper: use this when selecting the default account for a plugin.
 export function resolveChannelDefaultAccountId<ResolvedAccount>(params: {
   plugin: ChannelPlugin<ResolvedAccount>;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountIds?: string[];
 }): string {
   const accountIds = params.accountIds ?? params.plugin.config.listAccountIds(params.cfg);
@@ -15,8 +15,8 @@ export function resolveChannelDefaultAccountId<ResolvedAccount>(params: {
 }
 
 export function formatPairingApproveHint(channelId: string): string {
-  const listCmd = formatCliCommand(`NexisClaw pairing list ${channelId}`);
-  const approveCmd = formatCliCommand(`NexisClaw pairing approve ${channelId} <code>`);
+  const listCmd = formatCliCommand(`FirstNexus pairing list ${channelId}`);
+  const approveCmd = formatCliCommand(`FirstNexus pairing approve ${channelId} <code>`);
   return `Approve via: ${listCmd} / ${approveCmd}`;
 }
 
@@ -32,7 +32,7 @@ export function parseOptionalDelimitedEntries(value?: string): string[] | undefi
 }
 
 export function buildAccountScopedDmSecurityPolicy(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channelKey: string;
   accountId?: string | null;
   fallbackAccountId?: string | null;

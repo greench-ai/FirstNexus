@@ -3,7 +3,7 @@ import JSON5 from "json5";
 import { z } from "zod";
 import { formatCliCommand } from "../cli/command-format.js";
 import type { OptionalBootstrapFileName } from "../config/types.agent-defaults.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { defaultRuntime } from "../runtime.js";
 import { createLazyImportLoader } from "../shared/lazy-promise.js";
@@ -34,7 +34,7 @@ type SetupCommandDeps = {
   mkdir?: (dir: string, options: { recursive: true }) => Promise<unknown>;
   resolveSessionTranscriptsDir?: () => string | Promise<string>;
   replaceConfigFile?: (params: {
-    nextConfig: NexisClawConfig;
+    nextConfig: FirstNexusConfig;
     afterWrite: { mode: "auto" };
   }) => Promise<unknown>;
 };
@@ -89,7 +89,7 @@ async function ensureDefaultAgentWorkspace(
   return ensureAgentWorkspace(params);
 }
 
-async function writeDefaultConfigFile(config: NexisClawConfig): Promise<void> {
+async function writeDefaultConfigFile(config: FirstNexusConfig): Promise<void> {
   const { replaceConfigFile } = await loadConfigIOModule();
   await replaceConfigFile({
     nextConfig: config,
@@ -117,12 +117,12 @@ async function resolveDefaultSessionTranscriptsDir(): Promise<string> {
 
 async function readConfigFileRaw(configPath: string): Promise<{
   exists: boolean;
-  parsed: NexisClawConfig;
+  parsed: FirstNexusConfig;
 }> {
   try {
     const raw = await fs.readFile(configPath, "utf-8");
     const parsed = safeParseWithSchema(JsonRecordSchema, JSON5.parse(raw));
-    return { exists: true, parsed: (parsed ?? {}) as NexisClawConfig };
+    return { exists: true, parsed: (parsed ?? {}) as FirstNexusConfig };
   } catch {
     return { exists: false, parsed: {} };
   }
@@ -147,7 +147,7 @@ export async function setupCommand(
   const workspace =
     desiredWorkspace ?? defaults.workspace ?? (await resolveDefaultAgentWorkspaceDir(deps));
 
-  const next: NexisClawConfig = {
+  const next: FirstNexusConfig = {
     ...cfg,
     agents: {
       ...cfg.agents,
@@ -209,9 +209,9 @@ export async function setupCommand(
   runtime.log(`Sessions OK: ${shortenHomePath(sessionsDir)}`);
   runtime.log("");
   runtime.log("Setup complete: config, workspace, and session directories are ready.");
-  runtime.log(`Next guided path: ${formatCliCommand("NexisClaw onboard")}.`);
+  runtime.log(`Next guided path: ${formatCliCommand("FirstNexus onboard")}.`);
   runtime.log(
-    `Next targeted changes: ${formatCliCommand("NexisClaw configure")} for models, channels, Gateway, plugins, skills, and health checks.`,
+    `Next targeted changes: ${formatCliCommand("FirstNexus configure")} for models, channels, Gateway, plugins, skills, and health checks.`,
   );
-  runtime.log(`Add a chat channel later: ${formatCliCommand("NexisClaw channels add")}.`);
+  runtime.log(`Add a chat channel later: ${formatCliCommand("FirstNexus channels add")}.`);
 }

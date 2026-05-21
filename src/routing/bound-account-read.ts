@@ -1,7 +1,7 @@
 import { normalizeChatType, type ChatType } from "../channels/chat-type.js";
 import { listRouteBindings } from "../config/bindings.js";
 import type { AgentRouteBinding } from "../config/types.agents.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   normalizeRouteBindingChannelId,
   normalizeRouteBindingId,
@@ -58,7 +58,7 @@ function buildExactPeerIdSet(params: {
 }
 
 export function resolveFirstBoundAccountId(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channelId: string;
   agentId: string;
   peerId?: string;

@@ -3,7 +3,7 @@ import path from "node:path";
 import { resolveAgentContextLimits } from "../../agents/agent-scope.js";
 import { resolveCronStyleNow } from "../../agents/current-time.js";
 import { resolveUserTimezone } from "../../agents/date-time.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { openRootFile } from "../../infra/boundary-file-read.js";
 import { normalizeLowercaseStringOrEmpty } from "../../shared/string-coerce.js";
 
@@ -63,7 +63,7 @@ function formatDateStamp(nowMs: number, timezone: string): string {
  * daily memory files instead of guessing based on training cutoff.
  */
 export type PostCompactionContextOptions = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentId?: string;
   nowMs?: number;
 };

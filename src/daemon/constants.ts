@@ -1,15 +1,15 @@
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
 
 // Default service labels (canonical + legacy compatibility)
-export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.NexisClaw.gateway";
-export const GATEWAY_SYSTEMD_SERVICE_NAME = "NexisClaw-gateway";
-export const GATEWAY_WINDOWS_TASK_NAME = "NexisClaw Gateway";
-export const GATEWAY_SERVICE_MARKER = "NexisClaw";
+export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.FirstNexus.gateway";
+export const GATEWAY_SYSTEMD_SERVICE_NAME = "FirstNexus-gateway";
+export const GATEWAY_WINDOWS_TASK_NAME = "FirstNexus Gateway";
+export const GATEWAY_SERVICE_MARKER = "FirstNexus";
 export const GATEWAY_SERVICE_KIND = "gateway";
-const NODE_LAUNCH_AGENT_LABEL = "ai.NexisClaw.node";
-const NODE_SYSTEMD_SERVICE_NAME = "NexisClaw-node";
-const NODE_WINDOWS_TASK_NAME = "NexisClaw Node";
-export const NODE_SERVICE_MARKER = "NexisClaw";
+const NODE_LAUNCH_AGENT_LABEL = "ai.FirstNexus.node";
+const NODE_SYSTEMD_SERVICE_NAME = "FirstNexus-node";
+const NODE_WINDOWS_TASK_NAME = "FirstNexus Node";
+export const NODE_SERVICE_MARKER = "FirstNexus";
 export const NODE_SERVICE_KIND = "node";
 export const NODE_WINDOWS_TASK_SCRIPT_NAME = "node.cmd";
 export const LEGACY_GATEWAY_SYSTEMD_SERVICE_NAMES: string[] = ["clawdbot-gateway"];
@@ -32,7 +32,7 @@ export function resolveGatewayLaunchAgentLabel(profile?: string): string {
   if (!normalized) {
     return GATEWAY_LAUNCH_AGENT_LABEL;
   }
-  return `ai.NexisClaw.${normalized}`;
+  return `ai.FirstNexus.${normalized}`;
 }
 
 export function resolveLegacyGatewayLaunchAgentLabels(profile?: string): string[] {
@@ -45,7 +45,7 @@ export function resolveGatewaySystemdServiceName(profile?: string): string {
   if (!suffix) {
     return GATEWAY_SYSTEMD_SERVICE_NAME;
   }
-  return `NexisClaw-gateway${suffix}`;
+  return `FirstNexus-gateway${suffix}`;
 }
 
 export function resolveGatewayWindowsTaskName(profile?: string): string {
@@ -53,7 +53,7 @@ export function resolveGatewayWindowsTaskName(profile?: string): string {
   if (!normalized) {
     return GATEWAY_WINDOWS_TASK_NAME;
   }
-  return `NexisClaw Gateway (${normalized})`;
+  return `FirstNexus Gateway (${normalized})`;
 }
 
 export function formatGatewayServiceDescription(params?: {
@@ -70,9 +70,9 @@ export function formatGatewayServiceDescription(params?: {
     parts.push(`v${version}`);
   }
   if (parts.length === 0) {
-    return "NexisClaw Gateway";
+    return "FirstNexus Gateway";
   }
-  return `NexisClaw Gateway (${parts.join(", ")})`;
+  return `FirstNexus Gateway (${parts.join(", ")})`;
 }
 
 export function resolveGatewayServiceDescription(params: {
@@ -84,7 +84,8 @@ export function resolveGatewayServiceDescription(params: {
     params.description ??
     formatGatewayServiceDescription({
       profile: params.env.NEXISCLAW_PROFILE,
-      version: params.environment?.NEXISCLAW_SERVICE_VERSION ?? params.env.NEXISCLAW_SERVICE_VERSION,
+      version:
+        params.environment?.NEXISCLAW_SERVICE_VERSION ?? params.env.NEXISCLAW_SERVICE_VERSION,
     })
   );
 }
@@ -104,7 +105,7 @@ export function resolveNodeWindowsTaskName(): string {
 export function formatNodeServiceDescription(params?: { version?: string }): string {
   const version = params?.version?.trim();
   if (!version) {
-    return "NexisClaw Node Host";
+    return "FirstNexus Node Host";
   }
-  return `NexisClaw Node Host (v${version})`;
+  return `FirstNexus Node Host (v${version})`;
 }

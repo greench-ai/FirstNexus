@@ -3,7 +3,7 @@ import {
   canonicalizeMainSessionAlias,
   resolveAgentMainSessionKey,
 } from "../../config/sessions/main-session.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { normalizeOptionalLowercaseString } from "../../shared/string-coerce.js";
 import { resolveSessionAgentId } from "../agent-scope.js";
 import { resolveSandboxConfigForAgent } from "./config.js";
@@ -24,7 +24,7 @@ function shouldSandboxSession(cfg: SandboxConfig, sessionKey: string, mainSessio
 }
 
 function resolveMainSessionKeyForSandbox(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentId: string;
 }): string {
   if (params.cfg?.session?.scope === "global") {
@@ -37,7 +37,7 @@ function resolveMainSessionKeyForSandbox(params: {
 }
 
 function resolveComparableSessionKeyForSandbox(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentId: string;
   sessionKey: string;
 }): string {
@@ -49,7 +49,7 @@ function resolveComparableSessionKeyForSandbox(params: {
 }
 
 export function resolveSandboxRuntimeStatus(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   sessionKey?: string;
 }): {
   agentId: string;
@@ -126,7 +126,7 @@ function shellEscapeSingleArg(value: string): string {
 }
 
 export function formatSandboxToolPolicyBlockedMessage(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   sessionKey?: string;
   toolName: string;
 }): string | undefined {
@@ -178,9 +178,9 @@ export function formatSandboxToolPolicyBlockedMessage(params: {
   }
   const explainCommand = runtime.sessionKey
     ? hasUnsafeControlChars(runtime.sessionKey)
-      ? `NexisClaw sandbox explain --agent ${runtime.agentId}`
-      : `NexisClaw sandbox explain --session ${shellEscapeSingleArg(runtime.sessionKey)}`
-    : "NexisClaw sandbox explain";
+      ? `FirstNexus sandbox explain --agent ${runtime.agentId}`
+      : `FirstNexus sandbox explain --session ${shellEscapeSingleArg(runtime.sessionKey)}`
+    : "FirstNexus sandbox explain";
   lines.push(`- See: ${formatCliCommand(explainCommand)}`);
 
   return lines.join("\n");

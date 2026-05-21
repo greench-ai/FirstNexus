@@ -4,13 +4,13 @@ import {
   normalizeEnvVarKey,
 } from "../infra/host-env-security.js";
 import { containsEnvVarReference } from "./env-substitution.js";
-import type { NexisClawConfig } from "./types.js";
+import type { FirstNexusConfig } from "./types.js";
 
 function isBlockedConfigEnvVar(key: string): boolean {
   return isDangerousHostEnvVarName(key) || isDangerousHostEnvOverrideVarName(key);
 }
 
-function collectConfigEnvVarsByTarget(cfg?: NexisClawConfig): Record<string, string> {
+function collectConfigEnvVarsByTarget(cfg?: FirstNexusConfig): Record<string, string> {
   const envConfig = cfg?.env;
   if (!envConfig) {
     return {};
@@ -54,16 +54,16 @@ function collectConfigEnvVarsByTarget(cfg?: NexisClawConfig): Record<string, str
   return entries;
 }
 
-export function collectConfigRuntimeEnvVars(cfg?: NexisClawConfig): Record<string, string> {
+export function collectConfigRuntimeEnvVars(cfg?: FirstNexusConfig): Record<string, string> {
   return collectConfigEnvVarsByTarget(cfg);
 }
 
-export function collectConfigServiceEnvVars(cfg?: NexisClawConfig): Record<string, string> {
+export function collectConfigServiceEnvVars(cfg?: FirstNexusConfig): Record<string, string> {
   return collectConfigEnvVarsByTarget(cfg);
 }
 
 export function createConfigRuntimeEnv(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   baseEnv: NodeJS.ProcessEnv = process.env,
 ): NodeJS.ProcessEnv {
   const env = { ...baseEnv };
@@ -72,7 +72,7 @@ export function createConfigRuntimeEnv(
 }
 
 export function applyConfigEnvVars(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): void {
   const entries = collectConfigRuntimeEnvVars(cfg);

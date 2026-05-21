@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveCrestodianRescuePolicy } from "./rescue-policy.js";
 
-function decide(cfg: NexisClawConfig, overrides = {}) {
+function decide(cfg: FirstNexusConfig, overrides = {}) {
   return resolveCrestodianRescuePolicy({
     cfg,
     senderIsOwner: true,

@@ -10,7 +10,7 @@ import type {
   ReadConfigFileSnapshotWithPluginMetadataResult,
 } from "../../config/config.js";
 import { CONFIG_PATH, resolveGatewayPort, resolveStateDir } from "../../config/paths.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { hasConfiguredSecretInput } from "../../config/types.secrets.js";
 import {
   defaultGatewayBindMode,
@@ -217,7 +217,7 @@ function formatModeErrorList(modes: readonly string[]): string {
   return `${quoted.slice(0, -1).join(", ")}, or ${quoted[quoted.length - 1]}`;
 }
 
-async function maybeLogPendingControlUiBuild(cfg: NexisClawConfig): Promise<void> {
+async function maybeLogPendingControlUiBuild(cfg: FirstNexusConfig): Promise<void> {
   if (cfg.gateway?.controlUi?.enabled === false) {
     return;
   }
@@ -250,7 +250,7 @@ function getGatewayStartGuardErrors(params: {
   }
   if (!params.configExists) {
     return [
-      `Missing config. Run \`${formatCliCommand("NexisClaw setup")}\` or set gateway.mode=local (or pass --allow-unconfigured).`,
+      `Missing config. Run \`${formatCliCommand("FirstNexus setup")}\` or set gateway.mode=local (or pass --allow-unconfigured).`,
     ];
   }
   if (params.mode === undefined) {
@@ -258,7 +258,7 @@ function getGatewayStartGuardErrors(params: {
       [
         "Gateway start blocked: existing config is missing gateway.mode.",
         "Treat this as suspicious or clobbered config.",
-        `Re-run \`${formatCliCommand("NexisClaw onboard --mode local")}\` or \`${formatCliCommand("NexisClaw setup")}\`, set gateway.mode=local manually, or pass --allow-unconfigured.`,
+        `Re-run \`${formatCliCommand("FirstNexus onboard --mode local")}\` or \`${formatCliCommand("FirstNexus setup")}\`, set gateway.mode=local manually, or pass --allow-unconfigured.`,
       ].join(" "),
       `Config write audit: ${params.configAuditPath}`,
     ];
@@ -272,7 +272,7 @@ function getGatewayStartGuardErrors(params: {
 async function readGatewayStartupConfig(params: {
   startupTrace: ReturnType<typeof createGatewayCliStartupTrace>;
 }): Promise<{
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   snapshot: ConfigFileSnapshot | null;
   startupConfigSnapshotRead?: ReadConfigFileSnapshotWithPluginMetadataResult;
 }> {
@@ -617,7 +617,7 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
       }
     } catch (err) {
       defaultRuntime.error(
-        `Could not free port ${port}: ${formatErrorMessage(err)}. Run ${formatCliCommand("NexisClaw gateway status --deep")} to inspect the listener.`,
+        `Could not free port ${port}: ${formatErrorMessage(err)}. Run ${formatCliCommand("FirstNexus gateway status --deep")} to inspect the listener.`,
       );
       defaultRuntime.exit(1);
       return;
@@ -822,7 +822,7 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
     if (isGatewayLockError(err)) {
       const errMessage = formatErrorMessage(err);
       defaultRuntime.error(
-        `Gateway failed to start: ${errMessage}\nIf the gateway is supervised, stop it with: ${formatCliCommand("NexisClaw gateway stop")}`,
+        `Gateway failed to start: ${errMessage}\nIf the gateway is supervised, stop it with: ${formatCliCommand("FirstNexus gateway stop")}`,
       );
       try {
         const { formatPortDiagnostics, inspectPortUsage } = await import("../../infra/ports.js");
@@ -842,7 +842,7 @@ async function runGatewayCommand(opts: GatewayRunOpts) {
     }
     await maybeWriteGatewayStartupFailureBundle(err);
     defaultRuntime.error(
-      `Gateway failed to start: ${formatErrorMessage(err)}. Run ${formatCliCommand("NexisClaw gateway status --deep")} for diagnostics.`,
+      `Gateway failed to start: ${formatErrorMessage(err)}. Run ${formatCliCommand("FirstNexus gateway status --deep")} for diagnostics.`,
     );
     defaultRuntime.exit(1);
   }

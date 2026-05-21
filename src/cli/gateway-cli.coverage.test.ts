@@ -180,12 +180,12 @@ describe("gateway-cli coverage", () => {
 
   it("prints the latest stability bundle without calling Gateway", async () => {
     callGateway.mockClear();
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-gateway-cli-bundle-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-gateway-cli-bundle-"));
     try {
       const bundleDir = path.join(tempDir, "logs", "stability");
       const bundlePath = path.join(
         bundleDir,
-        "NexisClaw-stability-2026-04-22T12-00-00-000Z-123-test.json",
+        "FirstNexus-stability-2026-04-22T12-00-00-000Z-123-test.json",
       );
       const bundle = {
         version: 1,
@@ -249,7 +249,7 @@ describe("gateway-cli coverage", () => {
 
   it("writes gateway diagnostics export with a best-effort health snapshot", async () => {
     callGateway.mockClear();
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-gateway-cli-support-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-gateway-cli-support-"));
     try {
       const outputPath = path.join(tempDir, "diagnostics.zip");
       await withEnvOverride(
@@ -286,10 +286,10 @@ describe("gateway-cli coverage", () => {
     discoverGatewayBeacons.mockClear();
     discoverGatewayBeacons.mockResolvedValueOnce([
       {
-        instanceName: "Studio (NexisClaw)",
+        instanceName: "Studio (FirstNexus)",
         displayName: "Studio",
-        domain: "NexisClaw.internal.",
-        host: "studio.NexisClaw.internal",
+        domain: "FirstNexus.internal.",
+        host: "studio.FirstNexus.internal",
         port: 18789,
         lanHost: "studio.local",
         tailnetDns: "studio.tailnet.ts.net",
@@ -413,7 +413,7 @@ describe("gateway-cli coverage", () => {
     runtimeErrors.length = 0;
     serviceIsLoaded.mockResolvedValue(true);
     startGatewayServer.mockRejectedValueOnce(
-      new GatewayLockError("failed to acquire gateway lock at /tmp/NexisClaw/gateway.lock"),
+      new GatewayLockError("failed to acquire gateway lock at /tmp/FirstNexus/gateway.lock"),
     );
 
     await expectGatewayExit(["gateway", "--token", "test-token", "--allow-unconfigured"]);

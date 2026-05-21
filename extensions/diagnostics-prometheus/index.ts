@@ -1,4 +1,4 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
 import { createDiagnosticsPrometheusExporter } from "./src/service.js";
 
 const exporter = createDiagnosticsPrometheusExporter();
@@ -6,7 +6,7 @@ const exporter = createDiagnosticsPrometheusExporter();
 export default definePluginEntry({
   id: "diagnostics-prometheus",
   name: "Diagnostics Prometheus",
-  description: "Expose NexisClaw diagnostics metrics in Prometheus text format",
+  description: "Expose FirstNexus diagnostics metrics in Prometheus text format",
   register(api) {
     api.registerService(exporter.service);
     api.registerHttpRoute({

@@ -1,5 +1,5 @@
-import type { BaseProbeResult } from "NexisClaw/plugin-sdk/channel-contract";
-import { withTimeout } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import type { BaseProbeResult } from "FirstNexus/plugin-sdk/channel-contract";
+import { withTimeout } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { createSlackWebClient } from "./client.js";
 import { formatSlackError } from "./errors.js";
 

@@ -11,8 +11,8 @@ Adds text-to-speech provider support.
 
 ## Distribution
 
-- Package: `@NexisClaw/tts-local-cli`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/tts-local-cli`
+- Install route: included in FirstNexus
 
 ## Surface
 

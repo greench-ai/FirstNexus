@@ -6,11 +6,11 @@ import {
   DiscordApiError,
   handleDiscordMessageAction,
   requestDiscord,
-} from "@NexisClaw/discord/api.js";
-import { DEFAULT_EMOJIS } from "NexisClaw/plugin-sdk/channel-feedback";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { writeExternalFileWithinRoot } from "NexisClaw/plugin-sdk/security-runtime";
+} from "@FirstNexus/discord/api.js";
+import { DEFAULT_EMOJIS } from "FirstNexus/plugin-sdk/channel-feedback";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { writeExternalFileWithinRoot } from "FirstNexus/plugin-sdk/security-runtime";
 import { chromium } from "playwright-core";
 import { z } from "zod";
 import { startQaGatewayChild } from "../../gateway-child.js";
@@ -432,7 +432,7 @@ function parseDiscordQaCredentialPayload(payload: unknown): DiscordQaRuntimeEnv 
 }
 
 function buildDiscordQaConfig(
-  baseCfg: NexisClawConfig,
+  baseCfg: FirstNexusConfig,
   params: {
     guildId: string;
     channelId: string;
@@ -447,7 +447,7 @@ function buildDiscordQaConfig(
       guildId: string;
     };
   } = {},
-): NexisClawConfig {
+): FirstNexusConfig {
   const pluginAllow = [...new Set([...(baseCfg.plugins?.allow ?? []), "discord"])];
   const pluginEntries = {
     ...baseCfg.plugins?.entries,
@@ -941,7 +941,7 @@ function renderDiscordThreadReplyAttachmentHtml(params: {
     <h1>${escapeHtml(params.scenarioTitle)}</h1>
     <div class="sub">Thread: ${escapeHtml(params.threadName)}</div>
     <section class="message">
-      <div class="author">NexisClaw Discord SUT</div>
+      <div class="author">FirstNexus Discord SUT</div>
       <div class="badge">${params.status === "pass" ? "Attachment found" : "Attachment missing"}</div>
       <div class="content">${escapeHtml(params.messageContent ?? "No SUT reply content captured")}</div>
       <div class="attachments">${attachmentRows}</div>
@@ -1158,7 +1158,7 @@ async function pollThreadReplyMessage(params: {
 }
 
 async function runDiscordThreadReplyFilePathAttachmentScenario(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   driverBotId: string;
   outputDir: string;
   runtimeEnv: DiscordQaRuntimeEnv;

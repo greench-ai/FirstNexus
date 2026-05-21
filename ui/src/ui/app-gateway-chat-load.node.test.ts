@@ -152,7 +152,7 @@ function createHost(tab: Tab) {
     healthResult: null,
     healthError: null,
     debugHealth: null,
-    assistantName: "NexisClaw",
+    assistantName: "FirstNexus",
     assistantAvatar: null,
     assistantAgentId: null,
     serverVersion: null,

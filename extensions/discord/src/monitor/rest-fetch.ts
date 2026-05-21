@@ -1,11 +1,11 @@
 import { randomUUID } from "node:crypto";
-import { wrapFetchWithAbortSignal } from "NexisClaw/plugin-sdk/fetch-runtime";
+import { wrapFetchWithAbortSignal } from "FirstNexus/plugin-sdk/fetch-runtime";
 import {
   captureHttpExchange,
   resolveEffectiveDebugProxyUrl,
-} from "NexisClaw/plugin-sdk/proxy-capture";
-import { resolveRequestUrl } from "NexisClaw/plugin-sdk/request-url";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/proxy-capture";
+import { resolveRequestUrl } from "FirstNexus/plugin-sdk/request-url";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import { Agent, ProxyAgent, fetch as undiciFetch } from "undici";
 import { createDiscordDnsLookup } from "../network-config.js";
 import { withValidatedDiscordProxy } from "../proxy-fetch.js";

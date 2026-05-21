@@ -6,7 +6,7 @@ type PackageJson = {
   version?: string;
   devDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
-  NexisClaw?: {
+  FirstNexus?: {
     install?: {
       minHostVersion?: string;
     };
@@ -14,7 +14,7 @@ type PackageJson = {
       pluginApi?: string;
     };
     build?: {
-      NexisClawVersion?: string;
+      FirstNexusVersion?: string;
     };
   };
 };
@@ -25,11 +25,11 @@ type SyncPluginVersionsOptions = {
 
 const NEXISCLAW_VERSION_RANGE_RE = /^>=\d{4}\.\d{1,2}\.\d{1,2}(?:[-.][^"\s]+)?$/u;
 
-function syncNexisClawDependencyRange(
+function syncFirstNexusDependencyRange(
   deps: Record<string, string> | undefined,
   targetVersion: string,
 ): boolean {
-  const current = deps?.NexisClaw;
+  const current = deps?.FirstNexus;
   if (!current || current === "workspace:*" || !NEXISCLAW_VERSION_RANGE_RE.test(current)) {
     return false;
   }
@@ -37,12 +37,12 @@ function syncNexisClawDependencyRange(
   if (current === next) {
     return false;
   }
-  deps.NexisClaw = next;
+  deps.FirstNexus = next;
   return true;
 }
 
 function syncPluginApiVersion(pkg: PackageJson, targetVersion: string): boolean {
-  const compat = pkg.NexisClaw?.compat;
+  const compat = pkg.FirstNexus?.compat;
   const current = compat?.pluginApi;
   if (!current || !NEXISCLAW_VERSION_RANGE_RE.test(current)) {
     return false;
@@ -55,16 +55,16 @@ function syncPluginApiVersion(pkg: PackageJson, targetVersion: string): boolean 
   return true;
 }
 
-function syncBuildNexisClawVersion(pkg: PackageJson, targetVersion: string): boolean {
-  const build = pkg.NexisClaw?.build;
-  const current = build?.NexisClawVersion;
+function syncBuildFirstNexusVersion(pkg: PackageJson, targetVersion: string): boolean {
+  const build = pkg.FirstNexus?.build;
+  const current = build?.FirstNexusVersion;
   if (!current) {
     return false;
   }
   if (current === targetVersion) {
     return false;
   }
-  build.NexisClawVersion = targetVersion;
+  build.FirstNexusVersion = targetVersion;
   return true;
 }
 
@@ -80,7 +80,7 @@ function ensureChangelogEntry(changelogPath: string, version: string, write: boo
   if (content.includes(`## ${version}`)) {
     return false;
   }
-  const entry = `## ${version}\n\n### Changes\n- Version alignment with core NexisClaw release numbers.\n\n`;
+  const entry = `## ${version}\n\n### Changes\n- Version alignment with core FirstNexus release numbers.\n\n`;
   if (content.startsWith("# Changelog\n\n")) {
     const next = content.replace("# Changelog\n\n", `# Changelog\n\n${entry}`);
     if (write) {
@@ -137,18 +137,21 @@ export function syncPluginVersions(
     }
 
     const versionChanged = pkg.version !== targetVersion;
-    const devDependencyChanged = syncNexisClawDependencyRange(pkg.devDependencies, targetVersion);
-    const peerDependencyChanged = syncNexisClawDependencyRange(pkg.peerDependencies, targetVersion);
+    const devDependencyChanged = syncFirstNexusDependencyRange(pkg.devDependencies, targetVersion);
+    const peerDependencyChanged = syncFirstNexusDependencyRange(
+      pkg.peerDependencies,
+      targetVersion,
+    );
     // minHostVersion is a compatibility floor, not release alignment metadata.
     // Keep it stable unless the owning plugin intentionally raises it.
     const pluginApiChanged = syncPluginApiVersion(pkg, targetVersion);
-    const buildNexisClawVersionChanged = syncBuildNexisClawVersion(pkg, targetVersion);
+    const buildFirstNexusVersionChanged = syncBuildFirstNexusVersion(pkg, targetVersion);
     const packageChanged =
       versionChanged ||
       devDependencyChanged ||
       peerDependencyChanged ||
       pluginApiChanged ||
-      buildNexisClawVersionChanged;
+      buildFirstNexusVersionChanged;
     if (!packageChanged) {
       skipped.push(pkg.name);
       continue;

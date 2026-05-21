@@ -1,20 +1,23 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   createProviderOperationDeadline,
   resolveProviderOperationTimeoutMs,
   waitProviderOperationPollInterval,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { writeExternalFileWithinRoot } from "NexisClaw/plugin-sdk/security-runtime";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredNexisClawTmpDir, withTempWorkspace } from "NexisClaw/plugin-sdk/temp-path";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { writeExternalFileWithinRoot } from "FirstNexus/plugin-sdk/security-runtime";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import {
+  resolvePreferredFirstNexusTmpDir,
+  withTempWorkspace,
+} from "FirstNexus/plugin-sdk/temp-path";
 import type {
   GeneratedVideoAsset,
   VideoGenerationProvider,
   VideoGenerationRequest,
-} from "NexisClaw/plugin-sdk/video-generation";
+} from "FirstNexus/plugin-sdk/video-generation";
 import { parseGeminiAuth, resolveGoogleGenerativeAiApiOrigin } from "./api.js";
 import {
   createGoogleVideoGenerationProviderMetadata,
@@ -153,7 +156,7 @@ async function downloadGeneratedVideo(params: {
   index: number;
 }): Promise<GeneratedVideoAsset> {
   return await withTempWorkspace(
-    { rootDir: resolvePreferredNexisClawTmpDir(), prefix: "NexisClaw-google-video-" },
+    { rootDir: resolvePreferredFirstNexusTmpDir(), prefix: "FirstNexus-google-video-" },
     async ({ dir: tempDir }) => {
       const fileName = `video-${params.index + 1}.mp4`;
       const downloadPath = path.join(tempDir, fileName);

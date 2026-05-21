@@ -1,11 +1,11 @@
 import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
-  type NexisClawPluginApi,
-} from "NexisClaw/plugin-sdk/channel-entry-contract";
+  type FirstNexusPluginApi,
+} from "FirstNexus/plugin-sdk/channel-entry-contract";
 
-function registerQQBotFull(api: NexisClawPluginApi): void {
-  const register = loadBundledEntryExportSync<(api: NexisClawPluginApi) => void>(import.meta.url, {
+function registerQQBotFull(api: FirstNexusPluginApi): void {
+  const register = loadBundledEntryExportSync<(api: FirstNexusPluginApi) => void>(import.meta.url, {
     specifier: "./api.js",
     exportName: "registerQQBotFull",
   });

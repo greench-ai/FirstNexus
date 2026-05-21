@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   resolvePluginCapabilityProvider,
   resolvePluginCapabilityProviders,
@@ -16,27 +16,29 @@ export function normalizeRealtimeVoiceProviderId(
   return normalizeCapabilityProviderId(providerId);
 }
 
-function resolveRealtimeVoiceProviderEntries(cfg?: NexisClawConfig): RealtimeVoiceProviderPlugin[] {
+function resolveRealtimeVoiceProviderEntries(
+  cfg?: FirstNexusConfig,
+): RealtimeVoiceProviderPlugin[] {
   return resolvePluginCapabilityProviders({
     key: "realtimeVoiceProviders",
     cfg,
   });
 }
 
-function buildProviderMaps(cfg?: NexisClawConfig): {
+function buildProviderMaps(cfg?: FirstNexusConfig): {
   canonical: Map<string, RealtimeVoiceProviderPlugin>;
   aliases: Map<string, RealtimeVoiceProviderPlugin>;
 } {
   return buildCapabilityProviderMaps(resolveRealtimeVoiceProviderEntries(cfg));
 }
 
-export function listRealtimeVoiceProviders(cfg?: NexisClawConfig): RealtimeVoiceProviderPlugin[] {
+export function listRealtimeVoiceProviders(cfg?: FirstNexusConfig): RealtimeVoiceProviderPlugin[] {
   return [...buildProviderMaps(cfg).canonical.values()];
 }
 
 export function getRealtimeVoiceProvider(
   providerId: string | undefined,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): RealtimeVoiceProviderPlugin | undefined {
   const normalized = normalizeRealtimeVoiceProviderId(providerId);
   if (!normalized) {
@@ -55,7 +57,7 @@ export function getRealtimeVoiceProvider(
 
 export function canonicalizeRealtimeVoiceProviderId(
   providerId: string | undefined,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): RealtimeVoiceProviderId | undefined {
   const normalized = normalizeRealtimeVoiceProviderId(providerId);
   if (!normalized) {

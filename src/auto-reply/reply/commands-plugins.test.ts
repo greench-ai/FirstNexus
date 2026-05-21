@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import { handlePluginsCommand } from "./commands-plugins.js";
 import { buildPluginsCommandParams } from "./commands.test-harness.js";
 
@@ -68,7 +68,7 @@ vi.mock("../../plugins/status.js", () => ({
 }));
 
 vi.mock("../../plugins/toggle-config.js", () => ({
-  setPluginEnabledInConfig: vi.fn((config: NexisClawConfig, id: string, enabled: boolean) => ({
+  setPluginEnabledInConfig: vi.fn((config: FirstNexusConfig, id: string, enabled: boolean) => ({
     ...config,
     plugins: {
       ...config.plugins,
@@ -88,7 +88,7 @@ vi.mock("../../utils.js", async () => {
   };
 });
 
-function buildCfg(): NexisClawConfig {
+function buildCfg(): FirstNexusConfig {
   return {
     plugins: { enabled: true },
     commands: { text: true, plugins: true },
@@ -99,7 +99,7 @@ const WRITE_GATEWAY_SCOPES = ["operator.admin", "operator.write", "operator.pair
 
 function buildPluginsParams(
   commandBodyNormalized: string,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   options?: { gatewayClientScopes?: string[] },
 ) {
   return buildPluginsCommandParams({
@@ -157,7 +157,7 @@ describe("handlePluginsCommand", () => {
     vi.clearAllMocks();
     readConfigFileSnapshotMock.mockResolvedValue({
       valid: true,
-      path: "/tmp/NexisClaw.json",
+      path: "/tmp/FirstNexus.json",
       sourceConfig: buildCfg(),
       resolved: buildCfg(),
       hash: "config-1",
@@ -174,7 +174,7 @@ describe("handlePluginsCommand", () => {
           id: "superpowers",
           name: "superpowers",
           status: "disabled",
-          format: "NexisClaw",
+          format: "FirstNexus",
           bundleFormat: "claude",
         },
       ],
@@ -186,7 +186,7 @@ describe("handlePluginsCommand", () => {
           id: "superpowers",
           name: "superpowers",
           status: "disabled",
-          format: "NexisClaw",
+          format: "FirstNexus",
           bundleFormat: "claude",
         },
       ],
@@ -283,7 +283,7 @@ describe("handlePluginsCommand", () => {
 
       const result = await handlePluginsCommand(params, true);
       expect(result?.reply?.text).toContain("NEXISCLAW_NIX_MODE=1");
-      expect(result?.reply?.text).toContain("nix-NexisClaw#quick-start");
+      expect(result?.reply?.text).toContain("nix-FirstNexus#quick-start");
       expect(readConfigFileSnapshotMock).not.toHaveBeenCalled();
       expect(replaceConfigFileMock).not.toHaveBeenCalled();
       expect(refreshPluginRegistryAfterConfigMutationMock).not.toHaveBeenCalled();
@@ -304,7 +304,7 @@ describe("handlePluginsCommand", () => {
           id: "superpowers",
           name: "Super Powers",
           status: "disabled",
-          format: "NexisClaw",
+          format: "FirstNexus",
           bundleFormat: "claude",
         },
       ],

@@ -13,7 +13,7 @@ const { assertOkOrThrowHttpErrorMock, postJsonRequestMock, resolveProviderHttpRe
     })),
   }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-http", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-http", () => ({
   assertOkOrThrowHttpError: assertOkOrThrowHttpErrorMock,
   postJsonRequest: postJsonRequestMock,
   resolveProviderHttpRequestConfig: resolveProviderHttpRequestConfigMock,

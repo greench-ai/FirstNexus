@@ -1,6 +1,6 @@
-import { isRecord } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { sanitizeTerminalText } from "NexisClaw/plugin-sdk/text-chunking";
-import { truncateUtf16Safe } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import { isRecord } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { sanitizeTerminalText } from "FirstNexus/plugin-sdk/text-chunking";
+import { truncateUtf16Safe } from "FirstNexus/plugin-sdk/text-utility-runtime";
 
 const MAX_WATCH_ERROR_MESSAGE_CHARS = 200;
 

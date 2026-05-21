@@ -6,7 +6,7 @@ read_when:
 title: "Platforms"
 ---
 
-NexisClaw core is written in TypeScript. **Node is the recommended runtime**.
+FirstNexus core is written in TypeScript. **Node is the recommended runtime**.
 Bun is not recommended for the Gateway — known issues with WhatsApp and
 Telegram channels; see [Bun (experimental)](/install/bun) for details.
 
@@ -36,22 +36,22 @@ Native companion apps for Windows are also planned; the Gateway is recommended v
 - Install guide: [Getting Started](/start/getting-started)
 - Gateway runbook: [Gateway](/gateway)
 - Gateway configuration: [Configuration](/gateway/configuration)
-- Service status: `NexisClaw gateway status`
+- Service status: `FirstNexus gateway status`
 
 ## Gateway service install (CLI)
 
 Use one of these (all supported):
 
-- Wizard (recommended): `NexisClaw onboard --install-daemon`
-- Direct: `NexisClaw gateway install`
-- Configure flow: `NexisClaw configure` → select **Gateway service**
-- Repair/migrate: `NexisClaw doctor` (offers to install or fix the service)
+- Wizard (recommended): `FirstNexus onboard --install-daemon`
+- Direct: `FirstNexus gateway install`
+- Configure flow: `FirstNexus configure` → select **Gateway service**
+- Repair/migrate: `FirstNexus doctor` (offers to install or fix the service)
 
 The service target depends on OS:
 
-- macOS: LaunchAgent (`ai.NexisClaw.gateway` or `ai.NexisClaw.<profile>`; legacy `com.NexisClaw.*`)
-- Linux/WSL2: systemd user service (`NexisClaw-gateway[-<profile>].service`)
-- Native Windows: Scheduled Task (`NexisClaw Gateway` or `NexisClaw Gateway (<profile>)`), with a per-user Startup-folder login item fallback if task creation is denied
+- macOS: LaunchAgent (`ai.FirstNexus.gateway` or `ai.FirstNexus.<profile>`; legacy `com.FirstNexus.*`)
+- Linux/WSL2: systemd user service (`FirstNexus-gateway[-<profile>].service`)
+- Native Windows: Scheduled Task (`FirstNexus Gateway` or `FirstNexus Gateway (<profile>)`), with a per-user Startup-folder login item fallback if task creation is denied
 
 ## Related
 

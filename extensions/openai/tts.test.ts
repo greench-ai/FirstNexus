@@ -5,7 +5,7 @@ import {
   finalizeDebugProxyCapture,
   getDebugProxyCaptureStore,
   initializeDebugProxyCapture,
-} from "NexisClaw/plugin-sdk/proxy-capture";
+} from "FirstNexus/plugin-sdk/proxy-capture";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { installDebugProxyTestResetHooks } from "../test-support/debug-proxy-env-test-helpers.js";
 import { createStreamingErrorResponse } from "../test-support/streaming-error-response.js";
@@ -18,7 +18,7 @@ import {
   resolveOpenAITtsInstructions,
 } from "./tts.js";
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: async ({
     url,
     init,
@@ -146,7 +146,7 @@ describe("openai tts", () => {
   });
 
   describe("openaiTTS diagnostics", () => {
-    it("adds NexisClaw attribution headers to native OpenAI speech requests", async () => {
+    it("adds FirstNexus attribution headers to native OpenAI speech requests", async () => {
       vi.stubEnv("NEXISCLAW_VERSION", "2026.3.22");
       const fetchMock = vi.fn(
         async (_url: string | URL, _init?: RequestInit) =>
@@ -168,9 +168,9 @@ describe("openai tts", () => {
       const init = firstFetchInit(fetchMock);
       const headers = init?.headers as Record<string, string> | undefined;
       expect(url).toBe("https://api.openai.com/v1/audio/speech");
-      expect(headers?.originator).toBe("NexisClaw");
+      expect(headers?.originator).toBe("FirstNexus");
       expect(headers?.version).toBe("2026.3.22");
-      expect(headers?.["User-Agent"]).toBe("NexisClaw/2026.3.22");
+      expect(headers?.["User-Agent"]).toBe("FirstNexus/2026.3.22");
     });
 
     it("sends instructions to custom OpenAI-compatible endpoints", async () => {
@@ -369,8 +369,8 @@ describe("openai tts", () => {
         id: "tts-session",
         startedAt: Date.now(),
         mode: "test",
-        sourceScope: "NexisClaw",
-        sourceProcess: "NexisClaw",
+        sourceScope: "FirstNexus",
+        sourceProcess: "FirstNexus",
         dbPath: process.env.NEXISCLAW_DEBUG_PROXY_DB_PATH,
         blobDir: process.env.NEXISCLAW_DEBUG_PROXY_BLOB_DIR,
       });

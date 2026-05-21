@@ -15,7 +15,7 @@ import type {
 } from "../config/sessions.js";
 import { isCompactionCheckpointTranscriptFileName } from "../config/sessions/artifacts.js";
 import { streamSessionTranscriptLines } from "../config/sessions/transcript-stream.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { resolveGatewaySessionStoreTarget } from "./session-utils.js";
 
@@ -388,7 +388,7 @@ async function cleanupTrimmedCompactionCheckpointFiles(params: {
 }
 
 export async function persistSessionCompactionCheckpoint(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   sessionId: string;
   reason: SessionCompactionCheckpointReason;

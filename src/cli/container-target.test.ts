@@ -19,24 +19,24 @@ function requireSpawnCall(
 describe("parseCliContainerArgs", () => {
   it("extracts a root --container flag before the command", () => {
     expect(
-      parseCliContainerArgs(["node", "NexisClaw", "--container", "demo", "status", "--deep"]),
+      parseCliContainerArgs(["node", "FirstNexus", "--container", "demo", "status", "--deep"]),
     ).toEqual({
       ok: true,
       container: "demo",
-      argv: ["node", "NexisClaw", "status", "--deep"],
+      argv: ["node", "FirstNexus", "status", "--deep"],
     });
   });
 
   it("accepts the equals form", () => {
-    expect(parseCliContainerArgs(["node", "NexisClaw", "--container=demo", "health"])).toEqual({
+    expect(parseCliContainerArgs(["node", "FirstNexus", "--container=demo", "health"])).toEqual({
       ok: true,
       container: "demo",
-      argv: ["node", "NexisClaw", "health"],
+      argv: ["node", "FirstNexus", "health"],
     });
   });
 
   it("rejects a missing container value", () => {
-    expect(parseCliContainerArgs(["node", "NexisClaw", "--container"])).toEqual({
+    expect(parseCliContainerArgs(["node", "FirstNexus", "--container"])).toEqual({
       ok: false,
       error: "--container requires a value",
     });
@@ -44,7 +44,7 @@ describe("parseCliContainerArgs", () => {
 
   it("does not consume an adjacent flag as the container value", () => {
     expect(
-      parseCliContainerArgs(["node", "NexisClaw", "--container", "--no-color", "status"]),
+      parseCliContainerArgs(["node", "FirstNexus", "--container", "--no-color", "status"]),
     ).toEqual({
       ok: false,
       error: "--container requires a value",
@@ -52,20 +52,20 @@ describe("parseCliContainerArgs", () => {
   });
 
   it("leaves argv unchanged when the flag is absent", () => {
-    expect(parseCliContainerArgs(["node", "NexisClaw", "status"])).toEqual({
+    expect(parseCliContainerArgs(["node", "FirstNexus", "status"])).toEqual({
       ok: true,
       container: null,
-      argv: ["node", "NexisClaw", "status"],
+      argv: ["node", "FirstNexus", "status"],
     });
   });
 
   it("extracts --container after the command like other root options", () => {
     expect(
-      parseCliContainerArgs(["node", "NexisClaw", "status", "--container", "demo", "--deep"]),
+      parseCliContainerArgs(["node", "FirstNexus", "status", "--container", "demo", "--deep"]),
     ).toEqual({
       ok: true,
       container: "demo",
-      argv: ["node", "NexisClaw", "status", "--deep"],
+      argv: ["node", "FirstNexus", "status", "--deep"],
     });
   });
 
@@ -73,7 +73,7 @@ describe("parseCliContainerArgs", () => {
     expect(
       parseCliContainerArgs([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "nodes",
         "run",
         "--",
@@ -88,7 +88,7 @@ describe("parseCliContainerArgs", () => {
       container: null,
       argv: [
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "nodes",
         "run",
         "--",
@@ -105,11 +105,11 @@ describe("parseCliContainerArgs", () => {
 describe("resolveCliContainerTarget", () => {
   it("uses argv first and falls back to NEXISCLAW_CONTAINER", () => {
     expect(
-      resolveCliContainerTarget(["node", "NexisClaw", "--container", "demo", "status"], {}),
+      resolveCliContainerTarget(["node", "FirstNexus", "--container", "demo", "status"], {}),
     ).toBe("demo");
-    expect(resolveCliContainerTarget(["node", "NexisClaw", "status"], {})).toBeNull();
+    expect(resolveCliContainerTarget(["node", "FirstNexus", "status"], {})).toBeNull();
     expect(
-      resolveCliContainerTarget(["node", "NexisClaw", "status"], {
+      resolveCliContainerTarget(["node", "FirstNexus", "status"], {
         NEXISCLAW_CONTAINER: "demo",
       } as NodeJS.ProcessEnv),
     ).toBe("demo");
@@ -118,9 +118,9 @@ describe("resolveCliContainerTarget", () => {
 
 describe("maybeRunCliInContainer", () => {
   it("passes through when no container target is provided", () => {
-    expect(maybeRunCliInContainer(["node", "NexisClaw", "status"], { env: {} })).toEqual({
+    expect(maybeRunCliInContainer(["node", "FirstNexus", "status"], { env: {} })).toEqual({
       handled: false,
-      argv: ["node", "NexisClaw", "status"],
+      argv: ["node", "FirstNexus", "status"],
     });
   });
 
@@ -141,7 +141,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "NexisClaw", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "status"], {
         env: { NEXISCLAW_CONTAINER: "demo" } as NodeJS.ProcessEnv,
         spawnSync,
       }),
@@ -161,7 +161,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "NEXISCLAW_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "NexisClaw",
+        "FirstNexus",
         "status",
       ],
       {
@@ -189,7 +189,7 @@ describe("maybeRunCliInContainer", () => {
         stdout: "",
       });
 
-    maybeRunCliInContainer(["node", "NexisClaw", "status"], {
+    maybeRunCliInContainer(["node", "FirstNexus", "status"], {
       env: {
         NEXISCLAW_CONTAINER: "demo",
         NEXISCLAW_PROFILE: "work",
@@ -212,7 +212,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "NEXISCLAW_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "NexisClaw",
+        "FirstNexus",
         "status",
       ],
       {
@@ -240,7 +240,7 @@ describe("maybeRunCliInContainer", () => {
         stdout: "",
       });
 
-    maybeRunCliInContainer(["node", "NexisClaw", "status"], {
+    maybeRunCliInContainer(["node", "FirstNexus", "status"], {
       env: {
         NEXISCLAW_CONTAINER: "demo",
         NEXISCLAW_PROXY_URL: " http://proxy.internal:3128 ",
@@ -261,7 +261,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "NEXISCLAW_PROXY_URL=http://proxy.internal:3128",
         "demo",
-        "NexisClaw",
+        "FirstNexus",
         "status",
       ],
       {
@@ -294,7 +294,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "NexisClaw", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "status"], {
         env: {
           NEXISCLAW_CONTAINER: "demo",
           NEXISCLAW_PROXY_URL: ` ${proxyUrl} `,
@@ -320,7 +320,7 @@ describe("maybeRunCliInContainer", () => {
 
     let message = "";
     try {
-      maybeRunCliInContainer(["node", "NexisClaw", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "status"], {
         env: {
           NEXISCLAW_CONTAINER: "demo",
           NEXISCLAW_PROXY_URL:
@@ -358,7 +358,7 @@ describe("maybeRunCliInContainer", () => {
         stdout: "",
       });
 
-    maybeRunCliInContainer(["node", "NexisClaw", "status"], {
+    maybeRunCliInContainer(["node", "FirstNexus", "status"], {
       env: {
         NEXISCLAW_CONTAINER: "demo",
         NEXISCLAW_PROXY_URL: " http://127.0.0.1:3128 ",
@@ -392,7 +392,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "status"], {
         env: {},
         spawnSync,
       }),
@@ -418,7 +418,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "NEXISCLAW_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "NexisClaw",
+        "FirstNexus",
         "status",
       ],
       {
@@ -445,8 +445,8 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "health"], {
-        env: { USER: "NexisClaw" } as NodeJS.ProcessEnv,
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "health"], {
+        env: { USER: "FirstNexus" } as NodeJS.ProcessEnv,
         spawnSync,
       }),
     ).toEqual({
@@ -471,12 +471,12 @@ describe("maybeRunCliInContainer", () => {
         "-e",
         "NEXISCLAW_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "NexisClaw",
+        "FirstNexus",
         "health",
       ],
       {
         stdio: "inherit",
-        env: { USER: "NexisClaw", NEXISCLAW_CONTAINER: "" },
+        env: { USER: "FirstNexus", NEXISCLAW_CONTAINER: "" },
       },
     );
   });
@@ -502,7 +502,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "status"], {
         env: { USER: "somalley" } as NodeJS.ProcessEnv,
         spawnSync,
       }),
@@ -534,7 +534,7 @@ describe("maybeRunCliInContainer", () => {
         "-e",
         "NEXISCLAW_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "NexisClaw",
+        "FirstNexus",
         "status",
       ],
       {
@@ -558,7 +558,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "status"], {
         env: { USER: "somalley" } as NodeJS.ProcessEnv,
         spawnSync,
       }),
@@ -596,7 +596,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "status"], {
         env: { USER: "somalley" } as NodeJS.ProcessEnv,
         spawnSync,
       }),
@@ -621,7 +621,7 @@ describe("maybeRunCliInContainer", () => {
         stdout: "",
       });
 
-    maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "setup"], {
+    maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "setup"], {
       env: {},
       spawnSync,
       stdinIsTTY: true,
@@ -640,7 +640,7 @@ describe("maybeRunCliInContainer", () => {
         "--env",
         "NEXISCLAW_CLI_CONTAINER_BYPASS=1",
         "demo",
-        "NexisClaw",
+        "FirstNexus",
         "setup",
       ],
       {
@@ -667,7 +667,7 @@ describe("maybeRunCliInContainer", () => {
       });
 
     expect(
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "flag-demo", "health"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "flag-demo", "health"], {
         env: { NEXISCLAW_CONTAINER: "env-demo" } as NodeJS.ProcessEnv,
         spawnSync,
       }),
@@ -691,7 +691,7 @@ describe("maybeRunCliInContainer", () => {
     });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "status"], {
         env: {},
         spawnSync,
       }),
@@ -700,12 +700,12 @@ describe("maybeRunCliInContainer", () => {
 
   it("skips recursion when the bypass env is set", () => {
     expect(
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "status"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "status"], {
         env: { NEXISCLAW_CLI_CONTAINER_BYPASS: "1" } as NodeJS.ProcessEnv,
       }),
     ).toEqual({
       handled: false,
-      argv: ["node", "NexisClaw", "--container", "demo", "status"],
+      argv: ["node", "FirstNexus", "--container", "demo", "status"],
     });
   });
 
@@ -716,12 +716,12 @@ describe("maybeRunCliInContainer", () => {
     });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "update"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "update"], {
         env: {},
         spawnSync,
       }),
     ).toThrow(
-      "NexisClaw update is not supported with --container; rebuild or restart the container image instead.",
+      "FirstNexus update is not supported with --container; rebuild or restart the container image instead.",
     );
     expect(spawnSync).not.toHaveBeenCalled();
   });
@@ -733,12 +733,15 @@ describe("maybeRunCliInContainer", () => {
     });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "--no-color", "update"], {
-        env: {},
-        spawnSync,
-      }),
+      maybeRunCliInContainer(
+        ["node", "FirstNexus", "--container", "demo", "--no-color", "update"],
+        {
+          env: {},
+          spawnSync,
+        },
+      ),
     ).toThrow(
-      "NexisClaw update is not supported with --container; rebuild or restart the container image instead.",
+      "FirstNexus update is not supported with --container; rebuild or restart the container image instead.",
     );
     expect(spawnSync).not.toHaveBeenCalled();
   });
@@ -750,12 +753,12 @@ describe("maybeRunCliInContainer", () => {
     });
 
     expect(() =>
-      maybeRunCliInContainer(["node", "NexisClaw", "--container", "demo", "--update"], {
+      maybeRunCliInContainer(["node", "FirstNexus", "--container", "demo", "--update"], {
         env: {},
         spawnSync,
       }),
     ).toThrow(
-      "NexisClaw update is not supported with --container; rebuild or restart the container image instead.",
+      "FirstNexus update is not supported with --container; rebuild or restart the container image instead.",
     );
     expect(spawnSync).not.toHaveBeenCalled();
   });

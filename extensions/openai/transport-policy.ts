@@ -3,9 +3,9 @@ import type {
   ProviderResolveWebSocketSessionPolicyContext,
   ProviderTransportTurnState,
   ProviderWebSocketSessionPolicy,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import { normalizeProviderId } from "NexisClaw/plugin-sdk/provider-model-shared";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import { normalizeProviderId } from "FirstNexus/plugin-sdk/provider-model-shared";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { isOpenAIApiBaseUrl, isOpenAICodexBaseUrl } from "./base-url.js";
 
 const DEFAULT_OPENAI_WS_DEGRADE_COOLDOWN_MS = 60_000;
@@ -60,7 +60,7 @@ function resolveSessionHeaders(params: {
   }
   return {
     "x-client-request-id": sessionId,
-    "x-NexisClaw-session-id": sessionId,
+    "x-FirstNexus-session-id": sessionId,
   };
 }
 
@@ -82,14 +82,14 @@ export function resolveOpenAITransportTurnState(
   return {
     headers: {
       ...sessionHeaders,
-      "x-NexisClaw-turn-id": turnId,
-      "x-NexisClaw-turn-attempt": attempt,
+      "x-FirstNexus-turn-id": turnId,
+      "x-FirstNexus-turn-attempt": attempt,
     },
     metadata: {
-      NexisClaw_session_id: sessionHeaders["x-NexisClaw-session-id"] ?? "",
-      NexisClaw_turn_id: turnId,
-      NexisClaw_turn_attempt: attempt,
-      NexisClaw_transport: ctx.transport,
+      FirstNexus_session_id: sessionHeaders["x-FirstNexus-session-id"] ?? "",
+      FirstNexus_turn_id: turnId,
+      FirstNexus_turn_attempt: attempt,
+      FirstNexus_transport: ctx.transport,
     },
   };
 }

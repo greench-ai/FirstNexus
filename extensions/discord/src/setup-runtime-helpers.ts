@@ -7,4 +7,4 @@ export {
   promptLegacyChannelAllowFromForAccount,
   resolveEntriesWithOptionalToken,
   setSetupChannelEnabled,
-} from "NexisClaw/plugin-sdk/setup-runtime";
+} from "FirstNexus/plugin-sdk/setup-runtime";

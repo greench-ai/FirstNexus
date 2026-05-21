@@ -1,12 +1,15 @@
 import { randomUUID, createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { readJsonFileWithFallback, writeJsonFileAtomically } from "NexisClaw/plugin-sdk/json-store";
+import {
+  readJsonFileWithFallback,
+  writeJsonFileAtomically,
+} from "FirstNexus/plugin-sdk/json-store";
 
 export const NEXISCLAW_ACPX_LEASE_ID_ENV = "NEXISCLAW_ACPX_LEASE_ID";
 export const NEXISCLAW_GATEWAY_INSTANCE_ID_ENV = "NEXISCLAW_GATEWAY_INSTANCE_ID";
-export const NEXISCLAW_ACPX_LEASE_ID_ARG = "--NexisClaw-acpx-lease-id";
-export const NEXISCLAW_GATEWAY_INSTANCE_ID_ARG = "--NexisClaw-gateway-instance-id";
+export const NEXISCLAW_ACPX_LEASE_ID_ARG = "--FirstNexus-acpx-lease-id";
+export const NEXISCLAW_GATEWAY_INSTANCE_ID_ARG = "--FirstNexus-gateway-instance-id";
 
 export type AcpxProcessLeaseState = "open" | "closing" | "closed" | "lost";
 

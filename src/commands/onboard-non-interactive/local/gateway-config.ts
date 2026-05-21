@@ -1,6 +1,6 @@
 import { formatCliCommand } from "../../../cli/command-format.js";
 import { formatInvalidPortOption } from "../../../cli/error-format.js";
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import { isValidEnvSecretRefId, resolveSecretInputRef } from "../../../config/types.secrets.js";
 import type { RuntimeEnv } from "../../../runtime.js";
 import { resolveDefaultSecretProviderAlias } from "../../../secrets/ref-contract.js";
@@ -9,12 +9,12 @@ import { normalizeGatewayTokenInput, randomToken } from "../../onboard-helpers.j
 import type { OnboardOptions } from "../../onboard-types.js";
 
 export function applyNonInteractiveGatewayConfig(params: {
-  nextConfig: NexisClawConfig;
+  nextConfig: FirstNexusConfig;
   opts: OnboardOptions;
   runtime: RuntimeEnv;
   defaultPort: number;
 }): {
-  nextConfig: NexisClawConfig;
+  nextConfig: FirstNexusConfig;
   port: number;
   bind: string;
   authMode: string;
@@ -90,7 +90,7 @@ export function applyNonInteractiveGatewayConfig(params: {
       const resolvedFromEnv = process.env[gatewayTokenRefEnv]?.trim();
       if (!resolvedFromEnv) {
         runtime.error(
-          `Environment variable "${gatewayTokenRefEnv}" is missing or empty. Export it first, then rerun ${formatCliCommand("NexisClaw onboard --non-interactive")}.`,
+          `Environment variable "${gatewayTokenRefEnv}" is missing or empty. Export it first, then rerun ${formatCliCommand("FirstNexus onboard --non-interactive")}.`,
         );
         runtime.exit(1);
         return null;

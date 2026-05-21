@@ -24,33 +24,33 @@ describe("renderGatewayServiceStartHints", () => {
   it("resolves daemon container context from either env key", () => {
     expect(
       resolveDaemonContainerContext({
-        NEXISCLAW_CONTAINER: "NexisClaw-demo-container",
+        NEXISCLAW_CONTAINER: "FirstNexus-demo-container",
       } as NodeJS.ProcessEnv),
-    ).toBe("NexisClaw-demo-container");
+    ).toBe("FirstNexus-demo-container");
     expect(
       resolveDaemonContainerContext({
-        NEXISCLAW_CONTAINER_HINT: "NexisClaw-demo-container",
+        NEXISCLAW_CONTAINER_HINT: "FirstNexus-demo-container",
       } as NodeJS.ProcessEnv),
-    ).toBe("NexisClaw-demo-container");
+    ).toBe("FirstNexus-demo-container");
   });
 
   it("prepends a single container restart hint when NEXISCLAW_CONTAINER is set", () => {
     expect(
       renderGatewayServiceStartHints({
-        NEXISCLAW_CONTAINER: "NexisClaw-demo-container",
+        NEXISCLAW_CONTAINER: "FirstNexus-demo-container",
       } as NodeJS.ProcessEnv),
     ).toContain(
-      "Restart the container or the service that manages it for NexisClaw-demo-container.",
+      "Restart the container or the service that manages it for FirstNexus-demo-container.",
     );
   });
 
   it("prepends a single container restart hint when NEXISCLAW_CONTAINER_HINT is set", () => {
     expect(
       renderGatewayServiceStartHints({
-        NEXISCLAW_CONTAINER_HINT: "NexisClaw-demo-container",
+        NEXISCLAW_CONTAINER_HINT: "FirstNexus-demo-container",
       } as NodeJS.ProcessEnv),
     ).toContain(
-      "Restart the container or the service that manages it for NexisClaw-demo-container.",
+      "Restart the container or the service that manages it for FirstNexus-demo-container.",
     );
   });
 });
@@ -61,9 +61,9 @@ describe("filterContainerGenericHints", () => {
       filterContainerGenericHints(
         [
           "systemd user services are unavailable; install/enable systemd or run the gateway under your supervisor.",
-          "If you're in a container, run the gateway in the foreground instead of `NexisClaw gateway`.",
+          "If you're in a container, run the gateway in the foreground instead of `FirstNexus gateway`.",
         ],
-        { NEXISCLAW_CONTAINER: "NexisClaw-demo-container" } as NodeJS.ProcessEnv,
+        { NEXISCLAW_CONTAINER: "FirstNexus-demo-container" } as NodeJS.ProcessEnv,
       ),
     ).toStrictEqual([]);
   });
@@ -73,9 +73,9 @@ describe("filterContainerGenericHints", () => {
       filterContainerGenericHints(
         [
           "systemd user services are unavailable; install/enable systemd or run the gateway under your supervisor.",
-          "If you're in a container, run the gateway in the foreground instead of `NexisClaw gateway`.",
+          "If you're in a container, run the gateway in the foreground instead of `FirstNexus gateway`.",
         ],
-        { NEXISCLAW_CONTAINER_HINT: "NexisClaw-demo-container" } as NodeJS.ProcessEnv,
+        { NEXISCLAW_CONTAINER_HINT: "FirstNexus-demo-container" } as NodeJS.ProcessEnv,
       ),
     ).toStrictEqual([]);
   });

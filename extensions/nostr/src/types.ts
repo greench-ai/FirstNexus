@@ -2,14 +2,14 @@ import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   normalizeOptionalAccountId,
-} from "NexisClaw/plugin-sdk/account-id";
+} from "FirstNexus/plugin-sdk/account-id";
 import {
   listCombinedAccountIds,
   resolveListedDefaultAccountId,
-} from "NexisClaw/plugin-sdk/account-resolution";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { normalizeSecretInputString, type SecretInput } from "NexisClaw/plugin-sdk/secret-input";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/account-resolution";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { normalizeSecretInputString, type SecretInput } from "FirstNexus/plugin-sdk/secret-input";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { NostrProfile } from "./config-schema.js";
 import { DEFAULT_RELAYS } from "./default-relays.js";
 import { getPublicKeyFromPrivate } from "./nostr-key-utils.js";
@@ -37,7 +37,7 @@ export interface ResolvedNostrAccount {
   config: NostrAccountConfig;
 }
 
-function resolveConfiguredDefaultNostrAccountId(cfg: NexisClawConfig): string | undefined {
+function resolveConfiguredDefaultNostrAccountId(cfg: FirstNexusConfig): string | undefined {
   const nostrCfg = (cfg.channels as Record<string, unknown> | undefined)?.nostr as
     | NostrAccountConfig
     | undefined;
@@ -47,7 +47,7 @@ function resolveConfiguredDefaultNostrAccountId(cfg: NexisClawConfig): string | 
 /**
  * List all configured Nostr account IDs
  */
-export function listNostrAccountIds(cfg: NexisClawConfig): string[] {
+export function listNostrAccountIds(cfg: FirstNexusConfig): string[] {
   const nostrCfg = (cfg.channels as Record<string, unknown> | undefined)?.nostr as
     | NostrAccountConfig
     | undefined;
@@ -63,7 +63,7 @@ export function listNostrAccountIds(cfg: NexisClawConfig): string[] {
 /**
  * Get the default account ID
  */
-export function resolveDefaultNostrAccountId(cfg: NexisClawConfig): string {
+export function resolveDefaultNostrAccountId(cfg: FirstNexusConfig): string {
   return resolveListedDefaultAccountId({
     accountIds: listNostrAccountIds(cfg),
     configuredDefaultAccountId: resolveConfiguredDefaultNostrAccountId(cfg),
@@ -74,7 +74,7 @@ export function resolveDefaultNostrAccountId(cfg: NexisClawConfig): string {
  * Resolve a Nostr account from config
  */
 export function resolveNostrAccount(opts: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): ResolvedNostrAccount {
   const accountId = normalizeAccountId(opts.accountId ?? resolveDefaultNostrAccountId(opts.cfg));

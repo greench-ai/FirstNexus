@@ -1,8 +1,8 @@
 import {
   registerSingleProviderPlugin,
   resolveProviderPluginChoice,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { resolveAgentModelPrimaryValue } from "NexisClaw/plugin-sdk/provider-onboard";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { resolveAgentModelPrimaryValue } from "FirstNexus/plugin-sdk/provider-onboard";
 import { describe, expect, it } from "vitest";
 import { runSingleProviderCatalog } from "../test-support/provider-model-test-helpers.js";
 import qianfanPlugin from "./index.js";

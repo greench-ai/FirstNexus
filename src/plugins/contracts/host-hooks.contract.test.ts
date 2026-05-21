@@ -3,7 +3,7 @@ import path from "node:path";
 import {
   createPluginRegistryFixture,
   registerTestPlugin,
-} from "NexisClaw/plugin-sdk/plugin-test-contracts";
+} from "FirstNexus/plugin-sdk/plugin-test-contracts";
 import { afterEach, describe, expect, it } from "vitest";
 import { loadSessionStore, updateSessionStore, type SessionEntry } from "../../config/sessions.js";
 import { APPROVALS_SCOPE, READ_SCOPE, WRITE_SCOPE } from "../../gateway/operator-scopes.js";
@@ -14,7 +14,7 @@ import {
 import { buildGatewaySessionRow } from "../../gateway/session-utils.js";
 import { withTempConfig } from "../../gateway/test-temp-config.js";
 import { emitAgentEvent, resetAgentEventsForTest } from "../../infra/agent-events.js";
-import { resolvePreferredNexisClawTmpDir } from "../../infra/tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../../infra/tmp-FirstNexus-dir.js";
 import { executePluginCommand, validatePluginCommandDefinition } from "../commands.js";
 import { createHookRunner } from "../hooks.js";
 import {
@@ -159,7 +159,14 @@ describe("host-hook fixture plugin contract", () => {
 
   it("allows the official npm Codex plugin to keep /codex command ownership", () => {
     const { config, registry } = createPluginRegistryFixture();
-    const codexRoot = path.join("/tmp", ".NexisClaw", "npm", "node_modules", "@NexisClaw", "codex");
+    const codexRoot = path.join(
+      "/tmp",
+      ".FirstNexus",
+      "npm",
+      "node_modules",
+      "@FirstNexus",
+      "codex",
+    );
     registerTestPlugin({
       registry,
       config,
@@ -192,14 +199,14 @@ describe("host-hook fixture plugin contract", () => {
 
   it("allows the official ClawHub Codex plugin to keep /codex command ownership", () => {
     const { config, registry } = createPluginRegistryFixture();
-    const codexRoot = path.join("/tmp", ".NexisClaw", "extensions", "codex");
+    const codexRoot = path.join("/tmp", ".FirstNexus", "extensions", "codex");
     registerTestPlugin({
       registry,
       config,
       record: createPluginRecord({
         id: "codex",
         name: "Codex",
-        packageName: "@NexisClaw/codex",
+        packageName: "@FirstNexus/codex",
         origin: "global",
         rootDir: codexRoot,
         source: path.join(codexRoot, "dist", "index.js"),
@@ -226,7 +233,7 @@ describe("host-hook fixture plugin contract", () => {
 
   it("rejects non-official global Codex plugins from /codex command ownership", () => {
     const { config, registry } = createPluginRegistryFixture();
-    const codexRoot = path.join("/tmp", ".NexisClaw", "extensions", "codex");
+    const codexRoot = path.join("/tmp", ".FirstNexus", "extensions", "codex");
     registerTestPlugin({
       registry,
       config,
@@ -263,7 +270,7 @@ describe("host-hook fixture plugin contract", () => {
       record: createPluginRecord({
         id: "codex",
         name: "Codex",
-        packageName: "@NexisClaw/codex",
+        packageName: "@FirstNexus/codex",
         origin: "workspace",
         rootDir: codexRoot,
         source: path.join(codexRoot, "dist", "index.js"),
@@ -1050,7 +1057,7 @@ describe("host-hook fixture plugin contract", () => {
     setActivePluginRegistry(registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-patch-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-patch-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = {
@@ -1266,7 +1273,7 @@ describe("host-hook fixture plugin contract", () => {
 
   it("reports duplicate next-turn injections as not newly enqueued", async () => {
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-injection-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-injection-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = {
@@ -1353,7 +1360,7 @@ describe("host-hook fixture plugin contract", () => {
     );
     setActivePluginRegistry(registry);
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-stale-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-stale-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = {
@@ -1450,7 +1457,7 @@ describe("host-hook fixture plugin contract", () => {
     );
     setActivePluginRegistry(registry);
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-order-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-order-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = {
@@ -2028,7 +2035,7 @@ describe("host-hook fixture plugin contract", () => {
     });
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-state-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-state-"),
     );
     const tempConfig = {
       session: { store: path.join(stateDir, "sessions.json") },
@@ -2397,7 +2404,7 @@ describe("host-hook fixture plugin contract", () => {
     });
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-store-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-store-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = {
@@ -2494,7 +2501,7 @@ describe("host-hook fixture plugin contract", () => {
     ).toBe(true);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-run-context-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-run-context-"),
     );
     const tempConfig = {
       session: { store: path.join(stateDir, "sessions.json") },
@@ -2554,7 +2561,7 @@ describe("host-hook fixture plugin contract", () => {
     });
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-restart-state-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-restart-state-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = {
@@ -2633,7 +2640,7 @@ describe("host-hook fixture plugin contract", () => {
       }),
     );
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-injection-only-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-injection-only-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = {

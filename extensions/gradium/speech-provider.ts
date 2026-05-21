@@ -1,10 +1,10 @@
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
   SpeechProviderPlugin,
-} from "NexisClaw/plugin-sdk/speech";
-import { asObject, trimToUndefined } from "NexisClaw/plugin-sdk/speech";
+} from "FirstNexus/plugin-sdk/speech";
+import { asObject, trimToUndefined } from "FirstNexus/plugin-sdk/speech";
 import { DEFAULT_GRADIUM_VOICE_ID, GRADIUM_VOICES, normalizeGradiumBaseUrl } from "./shared.js";
 import { gradiumTTS } from "./tts.js";
 

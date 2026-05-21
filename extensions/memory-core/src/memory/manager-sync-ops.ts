@@ -4,24 +4,24 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import chokidar, { FSWatcher } from "chokidar";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { classifyMemoryMultimodalPath } from "NexisClaw/plugin-sdk/memory-core-host-engine-embeddings";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { classifyMemoryMultimodalPath } from "FirstNexus/plugin-sdk/memory-core-host-engine-embeddings";
 import {
   createSubsystemLogger,
   onSessionTranscriptUpdate,
   resolveAgentDir,
   resolveSessionTranscriptsDirForAgent,
   resolveUserPath,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type ResolvedMemorySearchConfig,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-foundation";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-foundation";
 import {
   buildSessionEntry,
   isSessionArchiveArtifactName,
   isUsageCountedSessionTranscriptFileName,
   listSessionFilesForAgent,
   sessionPathForFile,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-qmd";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-qmd";
 import {
   buildFileEntry,
   ensureMemoryIndexSchema,
@@ -32,8 +32,8 @@ import {
   runWithConcurrency,
   type MemorySource,
   type MemorySyncProgressUpdate,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-storage";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-storage";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   createEmbeddingProvider,
   type EmbeddingProvider,
@@ -95,7 +95,7 @@ const IGNORED_MEMORY_WATCH_DIR_NAMES = new Set([
 ]);
 
 const log = createSubsystemLogger("memory");
-const TEST_MEMORY_WATCH_FACTORY_KEY = Symbol.for("NexisClaw.test.memoryWatchFactory");
+const TEST_MEMORY_WATCH_FACTORY_KEY = Symbol.for("FirstNexus.test.memoryWatchFactory");
 
 function resolveMemoryWatchFactory(): typeof chokidar.watch {
   if (process.env.VITEST === "true" || process.env.NODE_ENV === "test") {
@@ -154,7 +154,7 @@ function createSessionSyncYield(total: number): () => Promise<void> {
 }
 
 export abstract class MemoryManagerSyncOps {
-  protected abstract readonly cfg: NexisClawConfig;
+  protected abstract readonly cfg: FirstNexusConfig;
   protected abstract readonly agentId: string;
   protected abstract readonly workspaceDir: string;
   protected abstract readonly settings: ResolvedMemorySearchConfig;

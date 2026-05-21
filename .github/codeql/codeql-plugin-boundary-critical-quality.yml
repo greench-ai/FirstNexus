@@ -1,4 +1,4 @@
-name: NexisClaw-codeql-plugin-boundary-critical-quality
+name: FirstNexus-codeql-plugin-boundary-critical-quality
 
 disable-default-queries: true
 

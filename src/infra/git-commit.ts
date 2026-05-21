@@ -3,8 +3,8 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
+import { resolveFirstNexusPackageRootSync } from "./FirstNexus-root.js";
 import { resolveGitHeadPath } from "./git-root.js";
-import { resolveNexisClawPackageRootSync } from "./NexisClaw-root.js";
 
 const formatCommit = (value?: string | null) => {
   if (!value) {
@@ -230,7 +230,7 @@ export const resolveCommitHash = (
   if (cachedGitCommitBySearchDir.has(searchDir)) {
     return cachedGitCommitBySearchDir.get(searchDir) ?? null;
   }
-  const packageRoot = resolveNexisClawPackageRootSync({
+  const packageRoot = resolveFirstNexusPackageRootSync({
     cwd: options.cwd,
     moduleUrl: options.moduleUrl,
   });

@@ -1,9 +1,9 @@
-import type { ChannelSetupWizard } from "NexisClaw/plugin-sdk/setup";
+import type { ChannelSetupWizard } from "FirstNexus/plugin-sdk/setup";
 import {
   DEFAULT_ACCOUNT_ID,
   setSetupChannelEnabled,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/setup";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/setup";
 import { listWhatsAppAccountIds, resolveWhatsAppAuthDir } from "./accounts.js";
 import { formatWhatsAppWebAuthStatusState, readWebAuthState } from "./auth-store.js";
 
@@ -12,7 +12,7 @@ const channel = "whatsapp" as const;
 type WhatsAppSetupLinkState = "linked" | "not-linked" | "unstable";
 
 async function readWhatsAppSetupLinkState(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   accountId: string,
 ): Promise<WhatsAppSetupLinkState> {
   const { authDir } = resolveWhatsAppAuthDir({ cfg, accountId });

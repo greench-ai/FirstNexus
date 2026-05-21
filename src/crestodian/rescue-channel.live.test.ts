@@ -4,7 +4,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { CommandContext } from "../auto-reply/reply/commands-types.js";
 import { clearConfigCache } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { runCrestodianRescueMessage } from "./rescue-message.js";
 
 const originalStateDir = process.env.NEXISCLAW_STATE_DIR;
@@ -37,7 +37,7 @@ function commandContext(channel = process.env.NEXISCLAW_LIVE_CRESTODIAN_CHANNEL 
 
 async function runRescue(params: {
   commandBody: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   ctx?: CommandContext;
 }) {
   const ctx = params.ctx ?? commandContext();
@@ -66,7 +66,7 @@ describeLive("Crestodian live rescue channel smoke", () => {
 
   it("handles /crestodian status and a persistent approval roundtrip", async () => {
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "crestodian-live-rescue-"));
-    const configPath = path.join(tempDir, "NexisClaw.json");
+    const configPath = path.join(tempDir, "FirstNexus.json");
     vi.stubEnv("NEXISCLAW_STATE_DIR", tempDir);
     vi.stubEnv("NEXISCLAW_CONFIG_PATH", configPath);
     await fs.writeFile(
@@ -82,7 +82,7 @@ describeLive("Crestodian live rescue channel smoke", () => {
       ),
     );
 
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       crestodian: { rescue: { enabled: true } },
       tools: { exec: { security: "full", ask: "off" } },
     };
@@ -97,7 +97,7 @@ describeLive("Crestodian live rescue channel smoke", () => {
       "Default model: openai/gpt-5.5",
     );
 
-    const config = JSON.parse(await fs.readFile(configPath, "utf8")) as NexisClawConfig;
+    const config = JSON.parse(await fs.readFile(configPath, "utf8")) as FirstNexusConfig;
     const defaultModel = config.agents?.defaults?.model;
     if (!defaultModel || typeof defaultModel !== "object") {
       throw new Error("expected default model object");

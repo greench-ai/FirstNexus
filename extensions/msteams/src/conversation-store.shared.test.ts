@@ -17,7 +17,9 @@ const storeFactories: StoreFactory[] = [
   {
     name: "fs",
     createStore: async () => {
-      const stateDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "NexisClaw-msteams-store-"));
+      const stateDir = await fs.promises.mkdtemp(
+        path.join(os.tmpdir(), "FirstNexus-msteams-store-"),
+      );
       return createMSTeamsConversationStoreFs({
         env: { ...process.env, NEXISCLAW_STATE_DIR: stateDir },
         ttlMs: 60_000,

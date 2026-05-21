@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 
 afterEach(() => {
   vi.doUnmock("node:fs");
@@ -36,7 +36,7 @@ describe("plugin state permission hardening", () => {
       await import("./plugin-state-store.js");
 
     try {
-      await withNexisClawTestState({ label: "plugin-state-post-commit-chmod" }, async () => {
+      await withFirstNexusTestState({ label: "plugin-state-post-commit-chmod" }, async () => {
         const store = createPluginStateKeyedStore<{ value: number }>("fixture-plugin", {
           namespace: "post-commit",
           maxEntries: 10,

@@ -125,9 +125,9 @@ async function expectPathMissing(filePath: string): Promise<void> {
 }
 
 async function createAuditFixture(): Promise<AuditFixture> {
-  const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-secrets-audit-"));
-  const stateDir = path.join(rootDir, ".NexisClaw");
-  const configPath = path.join(stateDir, "NexisClaw.json");
+  const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-secrets-audit-"));
+  const stateDir = path.join(rootDir, ".FirstNexus");
+  const configPath = path.join(stateDir, "FirstNexus.json");
   const authStorePath = path.join(stateDir, "agents", "main", "agent", "auth-profiles.json");
   const authJsonPath = path.join(stateDir, "agents", "main", "agent", "auth.json");
   const modelsPath = path.join(stateDir, "agents", "main", "agent", "models.json");
@@ -582,7 +582,7 @@ describe("secrets audit", () => {
     expect(report.filesScanned).toContain(externalModelsPath);
   });
 
-  it("does not flag non-sensitive routing headers in NexisClaw config", async () => {
+  it("does not flag non-sensitive routing headers in FirstNexus config", async () => {
     await writeJsonFile(fixture.configPath, {
       models: {
         providers: {

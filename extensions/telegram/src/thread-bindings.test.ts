@@ -1,18 +1,18 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { getSessionBindingService } from "NexisClaw/plugin-sdk/conversation-runtime";
-import { resolveStateDir } from "NexisClaw/plugin-sdk/state-paths";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { getSessionBindingService } from "FirstNexus/plugin-sdk/conversation-runtime";
+import { resolveStateDir } from "FirstNexus/plugin-sdk/state-paths";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const writeJsonFileAtomicallyMock = vi.hoisted(() => vi.fn());
 const readAcpSessionEntryMock = vi.hoisted(() => vi.fn());
 
-vi.mock("NexisClaw/plugin-sdk/acp-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/acp-runtime")>(
-    "NexisClaw/plugin-sdk/acp-runtime",
+vi.mock("FirstNexus/plugin-sdk/acp-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/acp-runtime")>(
+    "FirstNexus/plugin-sdk/acp-runtime",
   );
   readAcpSessionEntryMock.mockImplementation(actual.readAcpSessionEntry);
   return {
@@ -21,9 +21,9 @@ vi.mock("NexisClaw/plugin-sdk/acp-runtime", async () => {
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/json-store", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/json-store")>(
-    "NexisClaw/plugin-sdk/json-store",
+vi.mock("FirstNexus/plugin-sdk/json-store", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/json-store")>(
+    "FirstNexus/plugin-sdk/json-store",
   );
   writeJsonFileAtomicallyMock.mockImplementation(actual.writeJsonFileAtomically);
   return {
@@ -45,7 +45,7 @@ const TELEGRAM_THREAD_BINDINGS_TEST_CFG = {
       token: "test-token",
     },
   },
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 type TelegramThreadBindingManagerParams = Parameters<
   typeof createTelegramThreadBindingManagerImpl
@@ -72,8 +72,8 @@ describe("telegram thread bindings", () => {
   beforeEach(async () => {
     writeJsonFileAtomicallyMock.mockClear();
     readAcpSessionEntryMock.mockReset();
-    const acpRuntime = await vi.importActual<typeof import("NexisClaw/plugin-sdk/acp-runtime")>(
-      "NexisClaw/plugin-sdk/acp-runtime",
+    const acpRuntime = await vi.importActual<typeof import("FirstNexus/plugin-sdk/acp-runtime")>(
+      "FirstNexus/plugin-sdk/acp-runtime",
     );
     readAcpSessionEntryMock.mockImplementation(acpRuntime.readAcpSessionEntry);
     await __testing.resetTelegramThreadBindingsForTests();
@@ -269,7 +269,7 @@ describe("telegram thread bindings", () => {
   });
 
   it("does not persist lifecycle updates when manager persistence is disabled", async () => {
-    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-telegram-bindings-"));
+    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-telegram-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDirOverride;
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-06T10:00:00.000Z"));
@@ -310,7 +310,7 @@ describe("telegram thread bindings", () => {
   });
 
   it("persists unbinds before restart so removed bindings do not come back", async () => {
-    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-telegram-bindings-"));
+    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-telegram-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDirOverride;
 
     createTelegramThreadBindingManager({
@@ -320,7 +320,7 @@ describe("telegram thread bindings", () => {
     });
 
     const bound = await getSessionBindingService().bind({
-      targetSessionKey: "plugin-binding:NexisClaw-codex-app-server:abc123",
+      targetSessionKey: "plugin-binding:FirstNexus-codex-app-server:abc123",
       targetKind: "session",
       conversation: {
         channel: "telegram",
@@ -346,7 +346,7 @@ describe("telegram thread bindings", () => {
   });
 
   it("cleans up stale ACP bindings before restart routing can reuse them", async () => {
-    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-telegram-bindings-"));
+    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-telegram-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDirOverride;
 
     createTelegramThreadBindingManager({
@@ -400,7 +400,7 @@ describe("telegram thread bindings", () => {
   });
 
   it("keeps plugin-owned bindings when ACP cleanup runs on startup", async () => {
-    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-telegram-bindings-"));
+    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-telegram-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDirOverride;
 
     createTelegramThreadBindingManager({
@@ -410,7 +410,7 @@ describe("telegram thread bindings", () => {
     });
 
     await getSessionBindingService().bind({
-      targetSessionKey: "plugin-binding:NexisClaw-codex-app-server:still-valid",
+      targetSessionKey: "plugin-binding:FirstNexus-codex-app-server:still-valid",
       targetKind: "session",
       conversation: {
         channel: "telegram",
@@ -428,13 +428,13 @@ describe("telegram thread bindings", () => {
     });
 
     expect(reloaded.getByConversationId("plugin-binding-convo")?.targetSessionKey).toBe(
-      "plugin-binding:NexisClaw-codex-app-server:still-valid",
+      "plugin-binding:FirstNexus-codex-app-server:still-valid",
     );
     expect(readAcpSessionEntryMock).not.toHaveBeenCalled();
   });
 
   it("keeps ACP bindings when the session store cannot be read during startup cleanup", async () => {
-    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-telegram-bindings-"));
+    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-telegram-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDirOverride;
 
     createTelegramThreadBindingManager({
@@ -476,7 +476,7 @@ describe("telegram thread bindings", () => {
   });
 
   it("flushes pending lifecycle update persists before test reset", async () => {
-    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-telegram-bindings-"));
+    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-telegram-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDirOverride;
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-06T10:00:00.000Z"));
@@ -517,7 +517,7 @@ describe("telegram thread bindings", () => {
   });
 
   it("does not leak unhandled rejections when a persist write fails", async () => {
-    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-telegram-bindings-"));
+    stateDirOverride = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-telegram-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDirOverride;
     const unhandled: unknown[] = [];
     const onUnhandledRejection = (reason: unknown) => {

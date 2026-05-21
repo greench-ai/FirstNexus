@@ -22,14 +22,14 @@
     "types": ["node"],
     "useDefineForClassFields": false,
     "paths": {
-      "NexisClaw/extension-api": ["./src/extensionAPI.ts"],
-      "NexisClaw/plugin-sdk": ["./src/plugin-sdk/index.ts"],
-      "NexisClaw/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
-      "@NexisClaw/sdk": ["./packages/sdk/src/index.ts"],
-      "@NexisClaw/plugin-sdk": ["./src/plugin-sdk/index.ts"],
-      "@NexisClaw/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
-      "NexisClaw/plugin-sdk/account-id": ["./src/plugin-sdk/account-id.ts"],
-      "@NexisClaw/*": ["./extensions/*"]
+      "FirstNexus/extension-api": ["./src/extensionAPI.ts"],
+      "FirstNexus/plugin-sdk": ["./src/plugin-sdk/index.ts"],
+      "FirstNexus/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
+      "@FirstNexus/sdk": ["./packages/sdk/src/index.ts"],
+      "@FirstNexus/plugin-sdk": ["./src/plugin-sdk/index.ts"],
+      "@FirstNexus/plugin-sdk/*": ["./src/plugin-sdk/*.ts"],
+      "FirstNexus/plugin-sdk/account-id": ["./src/plugin-sdk/account-id.ts"],
+      "@FirstNexus/*": ["./extensions/*"]
     }
   },
   "include": ["src/**/*", "ui/**/*", "extensions/**/*", "packages/**/*"],

@@ -1,4 +1,4 @@
-import type { NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusPluginApi } from "../runtime-api.js";
 
 type ToolContextLike = {
   agentAccountId?: string;
@@ -37,10 +37,10 @@ function asToolLike(tool: unknown, fallbackName?: string): ToolLike {
   };
 }
 
-export function createToolFactoryHarness(cfg: NexisClawPluginApi["config"]) {
+export function createToolFactoryHarness(cfg: FirstNexusPluginApi["config"]) {
   const registered: RegisteredTool[] = [];
 
-  const api: Pick<NexisClawPluginApi, "config" | "logger" | "registerTool"> = {
+  const api: Pick<FirstNexusPluginApi, "config" | "logger" | "registerTool"> = {
     config: cfg,
     logger: {
       info: () => {},
@@ -73,7 +73,7 @@ export function createToolFactoryHarness(cfg: NexisClawPluginApi["config"]) {
   };
 
   return {
-    api: api as NexisClawPluginApi,
+    api: api as FirstNexusPluginApi,
     resolveTool,
   };
 }

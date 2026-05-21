@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { DEFAULT_COMMITMENT_EXTRACTION_QUEUE_MAX_ITEMS } from "./config.js";
 import {
   configureCommitmentExtractionRuntime,
@@ -54,8 +54,8 @@ describe("commitment extraction runtime", () => {
     tmpDirs.length = 0;
   });
 
-  async function createConfig(): Promise<NexisClawConfig> {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-commitment-runtime-"));
+  async function createConfig(): Promise<FirstNexusConfig> {
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-commitment-runtime-"));
     tmpDirs.push(tmpDir);
     vi.stubEnv("NEXISCLAW_STATE_DIR", tmpDir);
     return {
@@ -82,7 +82,7 @@ describe("commitment extraction runtime", () => {
   });
 
   it("keeps hidden extraction opt-in by default", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       commitments: {},
     };
     configureCommitmentExtractionRuntime({

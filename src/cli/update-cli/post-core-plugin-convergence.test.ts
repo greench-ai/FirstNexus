@@ -12,7 +12,7 @@ vi.mock("./plugin-payload-validation.js", () => ({
   runPluginPayloadSmokeCheck: mocks.runPluginPayloadSmokeCheck,
 }));
 
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   convergenceWarningsToOutcomes,
   filterRecordsToActive,
@@ -31,7 +31,7 @@ describe("runPostCorePluginConvergence", () => {
   });
 
   it("calls repair with NEXISCLAW_UPDATE_POST_CORE_CONVERGENCE=1 set", async () => {
-    const cfg = { plugins: { entries: {} } } as unknown as NexisClawConfig;
+    const cfg = { plugins: { entries: {} } } as unknown as FirstNexusConfig;
     await runPostCorePluginConvergence({
       cfg,
       env: { NEXISCLAW_UPDATE_IN_PROGRESS: "1" },
@@ -55,7 +55,7 @@ describe("runPostCorePluginConvergence", () => {
     const result = await runPostCorePluginConvergence({
       cfg: {
         plugins: { entries: { discord: { enabled: true } } },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       env: {},
     });
     expect(result.errored).toBe(false);
@@ -70,7 +70,7 @@ describe("runPostCorePluginConvergence", () => {
       records: { discord: { source: "npm", installPath: "/p/discord" } },
     });
     const result = await runPostCorePluginConvergence({
-      cfg: { plugins: { entries: { discord: { enabled: true } } } } as unknown as NexisClawConfig,
+      cfg: { plugins: { entries: { discord: { enabled: true } } } } as unknown as FirstNexusConfig,
       env: {},
     });
     expect(result.installRecords).toEqual({
@@ -82,7 +82,7 @@ describe("runPostCorePluginConvergence", () => {
     const baseline = { matrix: { source: "npm" as const, installPath: "/p/matrix" } };
     const cfg = {
       plugins: { entries: { matrix: { enabled: true } } },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
     mocks.repairMissingConfiguredPluginInstalls.mockResolvedValue({
       changes: [],
       warnings: [],
@@ -107,24 +107,24 @@ describe("runPostCorePluginConvergence", () => {
     mocks.repairMissingConfiguredPluginInstalls.mockResolvedValue({
       changes: [],
       warnings: [
-        'Failed to install missing configured plugin "discord" from @NexisClaw/discord: ENETUNREACH.',
+        'Failed to install missing configured plugin "discord" from @FirstNexus/discord: ENETUNREACH.',
       ],
       records: {},
     });
     const result = await runPostCorePluginConvergence({
       cfg: {
         plugins: { entries: { discord: { enabled: true } } },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       env: {},
     });
     expect(result.errored).toBe(true);
     expect(result.warnings).toStrictEqual([
       {
         reason:
-          'Failed to install missing configured plugin "discord" from @NexisClaw/discord: ENETUNREACH.',
+          'Failed to install missing configured plugin "discord" from @FirstNexus/discord: ENETUNREACH.',
         message:
-          'Failed to install missing configured plugin "discord" from @NexisClaw/discord: ENETUNREACH.',
-        guidance: ["Run `NexisClaw doctor --fix` to retry plugin repair."],
+          'Failed to install missing configured plugin "discord" from @FirstNexus/discord: ENETUNREACH.',
+        guidance: ["Run `FirstNexus doctor --fix` to retry plugin repair."],
       },
     ]);
   });
@@ -149,7 +149,7 @@ describe("runPostCorePluginConvergence", () => {
     const result = await runPostCorePluginConvergence({
       cfg: {
         plugins: { entries: { brave: { enabled: true } } },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       env: {},
     });
     expect(result.errored).toBe(true);
@@ -161,8 +161,8 @@ describe("runPostCorePluginConvergence", () => {
         message:
           'Plugin "brave" failed post-core payload smoke check (missing-main-entry): Plugin main entry "dist/index.js" not found at /p/brave/dist/index.js',
         guidance: [
-          "Run `NexisClaw doctor --fix` to retry plugin repair.",
-          "Run `NexisClaw plugins inspect brave --runtime --json` for details.",
+          "Run `FirstNexus doctor --fix` to retry plugin repair.",
+          "Run `FirstNexus plugins inspect brave --runtime --json` for details.",
         ],
       },
     ]);
@@ -187,7 +187,7 @@ describe("runPostCorePluginConvergence", () => {
     const result = await runPostCorePluginConvergence({
       cfg: {
         plugins: { entries: { brave: { enabled: true } } },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       env: {},
     });
     expect(result.errored).toBe(true);
@@ -198,8 +198,8 @@ describe("runPostCorePluginConvergence", () => {
         message:
           'Plugin "brave" failed post-core payload smoke check (missing-install-path): Install path is missing from the plugin install record.',
         guidance: [
-          "Run `NexisClaw doctor --fix` to retry plugin repair.",
-          "Run `NexisClaw plugins inspect brave --runtime --json` for details.",
+          "Run `FirstNexus doctor --fix` to retry plugin repair.",
+          "Run `FirstNexus plugins inspect brave --runtime --json` for details.",
         ],
       },
     ]);
@@ -215,7 +215,7 @@ describe("runPostCorePluginConvergence", () => {
     await runPostCorePluginConvergence({
       cfg: {
         plugins: { entries: { brave: { enabled: true } } },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       env: {},
     });
     expect(mocks.runPluginPayloadSmokeCheck).toHaveBeenCalledTimes(1);
@@ -237,12 +237,12 @@ describe("convergenceWarningsToOutcomes", () => {
           pluginId: "brave",
           reason: "missing-main-entry: …",
           message: 'Plugin "brave" failed payload smoke check.',
-          guidance: ["Run `NexisClaw doctor --fix`."],
+          guidance: ["Run `FirstNexus doctor --fix`."],
         },
         {
           reason: "Failed install",
           message: "Failed install for some plugin.",
-          guidance: ["Run `NexisClaw doctor --fix`."],
+          guidance: ["Run `FirstNexus doctor --fix`."],
         },
       ],
       errored: true,
@@ -276,7 +276,7 @@ describe("filterRecordsToActive", () => {
     const filtered = filterRecordsToActive({
       cfg: {
         plugins: { enabled: true, entries: { enabled: { enabled: true } } },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       records,
     });
     expect(filtered).toEqual(records);
@@ -296,7 +296,7 @@ describe("filterRecordsToActive", () => {
             "active-plugin": { enabled: true },
           },
         },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       records,
     });
     expect(filtered).toEqual({
@@ -314,7 +314,7 @@ describe("filterRecordsToActive", () => {
           enabled: true,
           deny: ["denied"],
         },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       records,
     });
     expect(filtered).toEqual({});
@@ -327,7 +327,7 @@ describe("filterRecordsToActive", () => {
     const records = {
       codex: {
         source: "npm" as const,
-        spec: "@NexisClaw/codex",
+        spec: "@FirstNexus/codex",
         installPath: "/p/codex",
         trustedSourceLinkedOfficial: true,
       },
@@ -338,7 +338,7 @@ describe("filterRecordsToActive", () => {
           enabled: true,
           entries: { codex: { enabled: false } },
         },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       records,
     });
     expect(filtered).toEqual(records);

@@ -94,21 +94,21 @@ describe("command-startup-policy", () => {
     ).toBe(false);
     expect(
       shouldLoadPluginsForCommandPath({
-        argv: ["node", "NexisClaw", "agent", "--json"],
+        argv: ["node", "FirstNexus", "agent", "--json"],
         commandPath: ["agent"],
         jsonOutputMode: true,
       }),
     ).toBe(false);
     expect(
       shouldLoadPluginsForCommandPath({
-        argv: ["node", "NexisClaw", "agent", "--json", "--local"],
+        argv: ["node", "FirstNexus", "agent", "--json", "--local"],
         commandPath: ["agent"],
         jsonOutputMode: true,
       }),
     ).toBe(true);
     expect(
       shouldLoadPluginsForCommandPath({
-        argv: ["node", "NexisClaw", "agent"],
+        argv: ["node", "FirstNexus", "agent"],
         commandPath: ["agent"],
         jsonOutputMode: false,
       }),

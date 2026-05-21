@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/groq-provider",
+  "name": "@FirstNexus/groq-provider",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw Groq media-understanding provider",
+  "description": "FirstNexus Groq media-understanding provider",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

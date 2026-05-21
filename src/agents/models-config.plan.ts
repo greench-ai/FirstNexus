@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.js";
 import { isRecord } from "../utils.js";
 import {
@@ -15,10 +15,10 @@ import {
   type ProviderConfig,
 } from "./models-config.providers.js";
 
-type ModelsConfig = NonNullable<NexisClawConfig["models"]>;
+type ModelsConfig = NonNullable<FirstNexusConfig["models"]>;
 export type ResolveImplicitProvidersForModelsJson = (params: {
   agentDir: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   workspaceDir?: string;
   explicitProviders: Record<string, ProviderConfig>;
@@ -42,7 +42,7 @@ export type ModelsJsonPlan =
 
 export async function resolveProvidersForModelsJsonWithDeps(
   params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     agentDir: string;
     env: NodeJS.ProcessEnv;
     workspaceDir?: string;
@@ -105,10 +105,10 @@ function resolveProvidersForMode(params: {
   });
 }
 
-export async function planNexisClawModelsJsonWithDeps(
+export async function planFirstNexusModelsJsonWithDeps(
   params: {
-    cfg: NexisClawConfig;
-    sourceConfigForSecrets?: NexisClawConfig;
+    cfg: FirstNexusConfig;
+    sourceConfigForSecrets?: FirstNexusConfig;
     agentDir: string;
     env: NodeJS.ProcessEnv;
     workspaceDir?: string;
@@ -190,8 +190,8 @@ export async function planNexisClawModelsJsonWithDeps(
   };
 }
 
-export async function planNexisClawModelsJson(
-  params: Parameters<typeof planNexisClawModelsJsonWithDeps>[0],
+export async function planFirstNexusModelsJson(
+  params: Parameters<typeof planFirstNexusModelsJsonWithDeps>[0],
 ): Promise<ModelsJsonPlan> {
-  return planNexisClawModelsJsonWithDeps(params);
+  return planFirstNexusModelsJsonWithDeps(params);
 }

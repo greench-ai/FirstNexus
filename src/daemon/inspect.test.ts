@@ -12,17 +12,17 @@ vi.mock("./schtasks-exec.js", () => ({
   execSchtasks: (...args: unknown[]) => execSchtasksMock(...args),
 }));
 
-// Real content from the NexisClaw-gateway.service unit file (the canonical gateway unit).
+// Real content from the FirstNexus-gateway.service unit file (the canonical gateway unit).
 const GATEWAY_SERVICE_CONTENTS = `\
 [Unit]
-Description=NexisClaw Gateway (v2026.3.8)
+Description=FirstNexus Gateway (v2026.3.8)
 After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/bin/node /home/NexisClaw/.npm-global/lib/node_modules/NexisClaw/dist/entry.js gateway --port 18789
+ExecStart=/usr/bin/node /home/FirstNexus/.npm-global/lib/node_modules/FirstNexus/dist/entry.js gateway --port 18789
 Restart=always
-Environment=NEXISCLAW_SERVICE_MARKER=NexisClaw
+Environment=NEXISCLAW_SERVICE_MARKER=FirstNexus
 Environment=NEXISCLAW_SERVICE_KIND=gateway
 Environment=NEXISCLAW_SERVICE_VERSION=2026.3.8
 
@@ -30,10 +30,10 @@ Environment=NEXISCLAW_SERVICE_VERSION=2026.3.8
 WantedBy=default.target
 `;
 
-// Real content from the NexisClaw-test.service unit file (a non-gateway NexisClaw service).
+// Real content from the FirstNexus-test.service unit file (a non-gateway FirstNexus service).
 const TEST_SERVICE_CONTENTS = `\
 [Unit]
-Description=NexisClaw test service
+Description=FirstNexus test service
 After=default.target
 
 [Service]
@@ -55,29 +55,29 @@ Environment=HOME=/home/clawdbot
 
 const COMPANION_SERVICE_CONTENTS = `\
 [Unit]
-Description=NexisClaw companion worker
-After=NexisClaw-gateway.service
-Requires=NexisClaw-gateway.service
+Description=FirstNexus companion worker
+After=FirstNexus-gateway.service
+Requires=FirstNexus-gateway.service
 
 [Service]
-ExecStart=/usr/bin/node /opt/NexisClaw-worker/dist/index.js worker
+ExecStart=/usr/bin/node /opt/FirstNexus-worker/dist/index.js worker
 `;
 
 const CUSTOM_NEXISCLAW_GATEWAY_CONTENTS = `\
 [Unit]
-Description=Custom NexisClaw gateway
+Description=Custom FirstNexus gateway
 
 [Service]
-ExecStart=/usr/bin/node /opt/NexisClaw/dist/entry.js gateway --port 18888
+ExecStart=/usr/bin/node /opt/FirstNexus/dist/entry.js gateway --port 18888
 `;
 
 describe("detectMarkerLineWithGateway", () => {
-  it("returns null for NexisClaw-test.service (NexisClaw only in description, no gateway on same line)", () => {
+  it("returns null for FirstNexus-test.service (FirstNexus only in description, no gateway on same line)", () => {
     expect(detectMarkerLineWithGateway(TEST_SERVICE_CONTENTS)).toBeNull();
   });
 
-  it("returns NexisClaw for the canonical gateway unit (ExecStart has both NexisClaw and gateway)", () => {
-    expect(detectMarkerLineWithGateway(GATEWAY_SERVICE_CONTENTS)).toBe("NexisClaw");
+  it("returns FirstNexus for the canonical gateway unit (ExecStart has both FirstNexus and gateway)", () => {
+    expect(detectMarkerLineWithGateway(GATEWAY_SERVICE_CONTENTS)).toBe("FirstNexus");
   });
 
   it("returns clawdbot for a clawdbot gateway unit", () => {
@@ -85,8 +85,8 @@ describe("detectMarkerLineWithGateway", () => {
   });
 
   it("handles line continuations — marker and gateway split across physical lines", () => {
-    const contents = `[Service]\nExecStart=/usr/bin/node /opt/NexisClaw/dist/entry.js \\\n  gateway --port 18789\n`;
-    expect(detectMarkerLineWithGateway(contents)).toBe("NexisClaw");
+    const contents = `[Service]\nExecStart=/usr/bin/node /opt/FirstNexus/dist/entry.js \\\n  gateway --port 18789\n`;
+    expect(detectMarkerLineWithGateway(contents)).toBe("FirstNexus");
   });
 
   it("ignores dependency-only references to the gateway unit", () => {
@@ -94,7 +94,7 @@ describe("detectMarkerLineWithGateway", () => {
   });
 
   it("ignores non-gateway ExecStart commands that only pass gateway-named options", () => {
-    const contents = `[Service]\nExecStart=/usr/bin/NexisClaw-helper --gateway-url http://127.0.0.1:18789 sync\n`;
+    const contents = `[Service]\nExecStart=/usr/bin/FirstNexus-helper --gateway-url http://127.0.0.1:18789 sync\n`;
     expect(detectMarkerLineWithGateway(contents)).toBeNull();
   });
 });
@@ -105,12 +105,12 @@ describe("findExtraGatewayServices (linux / scanSystemdDir) — real filesystem"
   // Only runs on Linux/macOS where the linux branch of findExtraGatewayServices is active.
   const isLinux = process.platform === "linux";
 
-  it.skipIf(!isLinux)("does not report NexisClaw-test.service as a gateway service", async () => {
-    const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-test-"));
+  it.skipIf(!isLinux)("does not report FirstNexus-test.service as a gateway service", async () => {
+    const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-test-"));
     const systemdDir = path.join(tmpHome, ".config", "systemd", "user");
     try {
       await fs.mkdir(systemdDir, { recursive: true });
-      await fs.writeFile(path.join(systemdDir, "NexisClaw-test.service"), TEST_SERVICE_CONTENTS);
+      await fs.writeFile(path.join(systemdDir, "FirstNexus-test.service"), TEST_SERVICE_CONTENTS);
       const result = await findExtraGatewayServices({ HOME: tmpHome });
       expect(result).toStrictEqual([]);
     } finally {
@@ -119,14 +119,14 @@ describe("findExtraGatewayServices (linux / scanSystemdDir) — real filesystem"
   });
 
   it.skipIf(!isLinux)(
-    "does not report the canonical NexisClaw-gateway.service as an extra service",
+    "does not report the canonical FirstNexus-gateway.service as an extra service",
     async () => {
-      const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-test-"));
+      const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-test-"));
       const systemdDir = path.join(tmpHome, ".config", "systemd", "user");
       try {
         await fs.mkdir(systemdDir, { recursive: true });
         await fs.writeFile(
-          path.join(systemdDir, "NexisClaw-gateway.service"),
+          path.join(systemdDir, "FirstNexus-gateway.service"),
           GATEWAY_SERVICE_CONTENTS,
         );
         const result = await findExtraGatewayServices({ HOME: tmpHome });
@@ -140,7 +140,7 @@ describe("findExtraGatewayServices (linux / scanSystemdDir) — real filesystem"
   it.skipIf(!isLinux)(
     "reports a legacy clawdbot-gateway service as an extra gateway service",
     async () => {
-      const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-test-"));
+      const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-test-"));
       const systemdDir = path.join(tmpHome, ".config", "systemd", "user");
       const unitPath = path.join(systemdDir, "clawdbot-gateway.service");
       try {
@@ -166,12 +166,12 @@ describe("findExtraGatewayServices (linux / scanSystemdDir) — real filesystem"
   it.skipIf(!isLinux)(
     "does not report companion units that only depend on the gateway",
     async () => {
-      const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-test-"));
+      const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-test-"));
       const systemdDir = path.join(tmpHome, ".config", "systemd", "user");
       try {
         await fs.mkdir(systemdDir, { recursive: true });
         await fs.writeFile(
-          path.join(systemdDir, "NexisClaw-companion.service"),
+          path.join(systemdDir, "FirstNexus-companion.service"),
           COMPANION_SERVICE_CONTENTS,
         );
         const result = await findExtraGatewayServices({ HOME: tmpHome });
@@ -183,11 +183,11 @@ describe("findExtraGatewayServices (linux / scanSystemdDir) — real filesystem"
   );
 
   it.skipIf(!isLinux)(
-    "reports custom-named gateway units that execute NexisClaw gateway",
+    "reports custom-named gateway units that execute FirstNexus gateway",
     async () => {
-      const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-test-"));
+      const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-test-"));
       const systemdDir = path.join(tmpHome, ".config", "systemd", "user");
-      const unitPath = path.join(systemdDir, "custom-NexisClaw.service");
+      const unitPath = path.join(systemdDir, "custom-FirstNexus.service");
       try {
         await fs.mkdir(systemdDir, { recursive: true });
         await fs.writeFile(unitPath, CUSTOM_NEXISCLAW_GATEWAY_CONTENTS);
@@ -195,10 +195,10 @@ describe("findExtraGatewayServices (linux / scanSystemdDir) — real filesystem"
         expect(result).toEqual([
           {
             platform: "linux",
-            label: "custom-NexisClaw.service",
+            label: "custom-FirstNexus.service",
             detail: `unit: ${unitPath}`,
             scope: "user",
-            marker: "NexisClaw",
+            marker: "FirstNexus",
             legacy: false,
           },
         ]);
@@ -227,7 +227,7 @@ describe("findExtraGatewayServices (darwin / scanLaunchdDir) — real filesystem
   });
 
   it("does not report LaunchAgent companions that only mention the gateway label", async () => {
-    const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-test-"));
+    const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-test-"));
     const launchdDir = path.join(tmpHome, "Library", "LaunchAgents");
     try {
       await fs.mkdir(launchdDir, { recursive: true });
@@ -236,8 +236,8 @@ describe("findExtraGatewayServices (darwin / scanLaunchdDir) — real filesystem
         `<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict>
 <key>Label</key><string>com.example.companion</string>
-<key>KeepAlive</key><dict><key>OtherJobEnabled</key><dict><key>ai.NexisClaw.gateway</key><true/></dict></dict>
-<key>ProgramArguments</key><array><string>/usr/local/bin/NexisClaw-helper</string><string>sync</string></array>
+<key>KeepAlive</key><dict><key>OtherJobEnabled</key><dict><key>ai.FirstNexus.gateway</key><true/></dict></dict>
+<key>ProgramArguments</key><array><string>/usr/local/bin/FirstNexus-helper</string><string>sync</string></array>
 </dict></plist>`,
       );
       const result = await findExtraGatewayServices({ HOME: tmpHome });
@@ -248,7 +248,7 @@ describe("findExtraGatewayServices (darwin / scanLaunchdDir) — real filesystem
   });
 
   it("does not report LaunchAgent companions that only pass gateway-named options", async () => {
-    const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-test-"));
+    const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-test-"));
     const launchdDir = path.join(tmpHome, "Library", "LaunchAgents");
     try {
       await fs.mkdir(launchdDir, { recursive: true });
@@ -257,7 +257,7 @@ describe("findExtraGatewayServices (darwin / scanLaunchdDir) — real filesystem
         `<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict>
 <key>Label</key><string>com.example.companion-options</string>
-<key>ProgramArguments</key><array><string>/usr/local/bin/NexisClaw-helper</string><string>--gateway-url</string><string>http://127.0.0.1:18789</string><string>sync</string></array>
+<key>ProgramArguments</key><array><string>/usr/local/bin/FirstNexus-helper</string><string>--gateway-url</string><string>http://127.0.0.1:18789</string><string>sync</string></array>
 </dict></plist>`,
       );
       const result = await findExtraGatewayServices({ HOME: tmpHome });
@@ -267,28 +267,28 @@ describe("findExtraGatewayServices (darwin / scanLaunchdDir) — real filesystem
     }
   });
 
-  it("reports custom LaunchAgents that execute NexisClaw gateway", async () => {
-    const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-test-"));
+  it("reports custom LaunchAgents that execute FirstNexus gateway", async () => {
+    const tmpHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-test-"));
     const launchdDir = path.join(tmpHome, "Library", "LaunchAgents");
-    const plistPath = path.join(launchdDir, "com.example.NexisClaw-gateway.plist");
+    const plistPath = path.join(launchdDir, "com.example.FirstNexus-gateway.plist");
     try {
       await fs.mkdir(launchdDir, { recursive: true });
       await fs.writeFile(
         plistPath,
         `<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict>
-<key>Label</key><string>com.example.NexisClaw-gateway</string>
-<key>ProgramArguments</key><array><string>/usr/local/bin/NexisClaw</string><string>gateway</string><string>--port</string><string>18888</string></array>
+<key>Label</key><string>com.example.FirstNexus-gateway</string>
+<key>ProgramArguments</key><array><string>/usr/local/bin/FirstNexus</string><string>gateway</string><string>--port</string><string>18888</string></array>
 </dict></plist>`,
       );
       const result = await findExtraGatewayServices({ HOME: tmpHome });
       expect(result).toEqual([
         {
           platform: "darwin",
-          label: "com.example.NexisClaw-gateway",
+          label: "com.example.FirstNexus-gateway",
           detail: `plist: ${plistPath}`,
           scope: "user",
-          marker: "NexisClaw",
+          marker: "FirstNexus",
           legacy: false,
         },
       ]);
@@ -333,12 +333,12 @@ describe("findExtraGatewayServices (win32)", () => {
     expect(result).toStrictEqual([]);
   });
 
-  it("collects only non-NexisClaw marker tasks from schtasks output", async () => {
+  it("collects only non-FirstNexus marker tasks from schtasks output", async () => {
     execSchtasksMock.mockResolvedValueOnce({
       code: 0,
       stdout: [
-        "TaskName: NexisClaw Gateway",
-        "Task To Run: C:\\Program Files\\NexisClaw\\NexisClaw.exe gateway run",
+        "TaskName: FirstNexus Gateway",
+        "Task To Run: C:\\Program Files\\FirstNexus\\FirstNexus.exe gateway run",
         "",
         "TaskName: Clawdbot Legacy",
         "Task To Run: C:\\clawdbot\\clawdbot.exe run",

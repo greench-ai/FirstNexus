@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   buildModelCatalogMergeKey,
   planManifestModelCatalogSuppressions,
@@ -11,7 +11,7 @@ import {
 } from "./manifest-contract-eligibility.js";
 
 function listManifestModelCatalogSuppressions(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env: NodeJS.ProcessEnv;
 }): readonly ManifestModelCatalogSuppressionEntry[] {
@@ -61,7 +61,7 @@ function normalizeSuppressionHost(host: string): string {
 
 function resolveConfiguredProviderValue(params: {
   provider: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 }): { api?: string; baseUrl?: string } | undefined {
   const providers = params.config?.models?.providers;
   if (!providers) {
@@ -83,7 +83,7 @@ function manifestSuppressionMatchesConditions(params: {
   suppression: ManifestModelCatalogSuppressionEntry;
   provider: string;
   baseUrl?: string | null;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 }): boolean {
   const when = params.suppression.when;
   if (!when) {
@@ -113,7 +113,7 @@ function manifestSuppressionMatchesConditions(params: {
 }
 
 export function buildManifestBuiltInModelSuppressionResolver(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }) {
@@ -170,7 +170,7 @@ export function buildManifestBuiltInModelSuppressionResolver(params: {
 export function resolveManifestBuiltInModelSuppression(params: {
   provider?: string | null;
   id?: string | null;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   baseUrl?: string | null;

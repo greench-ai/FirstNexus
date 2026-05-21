@@ -71,7 +71,7 @@ describe("docker build cache layout", () => {
         dockerfile,
         `${path} should use a shared pnpm store cache under the active user's home`,
       ).toMatch(
-        /--mount=type=cache,id=NexisClaw-pnpm-store,target=\/(?:root|home\/appuser)\/\.local\/share\/pnpm\/store,sharing=locked/,
+        /--mount=type=cache,id=FirstNexus-pnpm-store,target=\/(?:root|home\/appuser)\/\.local\/share\/pnpm\/store,sharing=locked/,
       );
     }
   });
@@ -112,17 +112,19 @@ describe("docker build cache layout", () => {
     expect(dockerfile).not.toContain("pnpm install --frozen-lockfile");
     expect(dockerfile).not.toContain("COPY . .");
     expect(dockerfile).toMatch(
-      /^COPY --from=NexisClaw_package --chown=appuser:appuser NexisClaw-current\.tgz \/tmp\/NexisClaw-current\.tgz$/m,
+      /^COPY --from=FirstNexus_package --chown=appuser:appuser FirstNexus-current\.tgz \/tmp\/FirstNexus-current\.tgz$/m,
     );
     expect(dockerfile).toContain(
-      "npm install -g --prefix /tmp/NexisClaw-prefix /tmp/NexisClaw-current.tgz --no-fund --no-audit",
+      "npm install -g --prefix /tmp/FirstNexus-prefix /tmp/FirstNexus-current.tgz --no-fund --no-audit",
     );
     expect(dockerfile).not.toContain(
-      "cp -a /tmp/NexisClaw-prefix/lib/node_modules/. /app/node_modules/",
+      "cp -a /tmp/FirstNexus-prefix/lib/node_modules/. /app/node_modules/",
     );
-    expect(dockerfile).toContain("cp -a /tmp/NexisClaw-prefix/lib/node_modules/NexisClaw/. /app/");
-    expect(dockerfile).toContain("rm -rf /app/node_modules/NexisClaw");
-    expect(dockerfile).toContain("ln -sf /app /app/node_modules/NexisClaw");
+    expect(dockerfile).toContain(
+      "cp -a /tmp/FirstNexus-prefix/lib/node_modules/FirstNexus/. /app/",
+    );
+    expect(dockerfile).toContain("rm -rf /app/node_modules/FirstNexus");
+    expect(dockerfile).toContain("ln -sf /app /app/node_modules/FirstNexus");
   });
 
   it("copies manifests before install in the qr-import image", async () => {

@@ -25,7 +25,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-plugin-registry-migration", tempDirs);
+  return makeTrackedTempDir("FirstNexus-plugin-registry-migration", tempDirs);
 }
 
 function hermeticEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
@@ -49,7 +49,7 @@ function createCandidate(
     "utf8",
   );
   fs.writeFileSync(
-    path.join(rootDir, "NexisClaw.plugin.json"),
+    path.join(rootDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id,
       name: id,

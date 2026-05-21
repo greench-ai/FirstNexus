@@ -11,7 +11,7 @@ import {
   type QaLabServerStartParams,
 } from "./lab-server.js";
 
-vi.mock("@NexisClaw/qa-channel/api.js", async () => await import("../../qa-channel/api.js"));
+vi.mock("@FirstNexus/qa-channel/api.js", async () => await import("../../qa-channel/api.js"));
 
 const captureMock = vi.hoisted(() => {
   const sessions: Array<Record<string, unknown>> = [];
@@ -126,7 +126,7 @@ const captureMock = vi.hoisted(() => {
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/proxy-capture", () => ({
+vi.mock("FirstNexus/plugin-sdk/proxy-capture", () => ({
   acquireDebugProxyCaptureStore: () => ({
     store: captureMock.store,
     release: captureMock.store.close,
@@ -785,16 +785,16 @@ describe("qa-lab server", () => {
       id: "qa-capture-session",
       startedAt: Date.now(),
       mode: "proxy-run",
-      sourceScope: "NexisClaw",
-      sourceProcess: "NexisClaw",
+      sourceScope: "FirstNexus",
+      sourceProcess: "FirstNexus",
       dbPath: process.env.NEXISCLAW_DEBUG_PROXY_DB_PATH,
       blobDir: process.env.NEXISCLAW_DEBUG_PROXY_BLOB_DIR,
     });
     store.recordEvent({
       sessionId: "qa-capture-session",
       ts: Date.now(),
-      sourceScope: "NexisClaw",
-      sourceProcess: "NexisClaw",
+      sourceScope: "FirstNexus",
+      sourceProcess: "FirstNexus",
       protocol: "https",
       direction: "outbound",
       kind: "request",
@@ -814,8 +814,8 @@ describe("qa-lab server", () => {
     store.recordEvent({
       sessionId: "qa-capture-session",
       ts: Date.now() + 1,
-      sourceScope: "NexisClaw",
-      sourceProcess: "NexisClaw",
+      sourceScope: "FirstNexus",
+      sourceProcess: "FirstNexus",
       protocol: "https",
       direction: "outbound",
       kind: "request",
@@ -835,8 +835,8 @@ describe("qa-lab server", () => {
     store.recordEvent({
       sessionId: "qa-capture-session",
       ts: Date.now() + 2,
-      sourceScope: "NexisClaw",
-      sourceProcess: "NexisClaw",
+      sourceScope: "FirstNexus",
+      sourceProcess: "FirstNexus",
       protocol: "https",
       direction: "outbound",
       kind: "request",

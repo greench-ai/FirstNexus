@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { tryReadJsonSync } from "../infra/json-files.js";
 import type { PluginCandidate } from "./discovery.js";
 import { hashJson } from "./installed-plugin-index-hash.js";
@@ -11,7 +11,7 @@ import type { BundledChannelConfigCollector } from "./manifest-registry.js";
 import {
   DEFAULT_PLUGIN_ENTRY_CANDIDATES,
   getPackageManifestMetadata,
-  type NexisClawPackageManifest,
+  type FirstNexusPackageManifest,
   type PackageManifest,
 } from "./manifest.js";
 import { tracePluginLifecyclePhase } from "./plugin-lifecycle-trace.js";
@@ -110,7 +110,7 @@ function resolveFallbackPluginSource(record: InstalledPluginIndexRecord): string
 }
 
 function resolveInstalledPackageMetadata(record: InstalledPluginIndexRecord): {
-  packageManifest?: NexisClawPackageManifest;
+  packageManifest?: FirstNexusPackageManifest;
   packageDependencies?: PluginDependencySpecMap;
   packageOptionalDependencies?: PluginDependencySpecMap;
 } {
@@ -191,7 +191,7 @@ function toPluginCandidate(record: InstalledPluginIndexRecord): PluginCandidate 
 
 export function loadPluginManifestRegistryForInstalledIndex(params: {
   index: InstalledPluginIndex;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   pluginIds?: readonly string[];

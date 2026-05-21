@@ -2,12 +2,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveNexisClawPackageRootSync } from "../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRootSync } from "../infra/FirstNexus-root.js";
 import { isPathInside } from "../infra/path-guards.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { resolveUserPath } from "../utils.js";
 
-const DISABLED_BUNDLED_PLUGINS_DIR = path.join(os.tmpdir(), "NexisClaw-empty-bundled-plugins");
+const DISABLED_BUNDLED_PLUGINS_DIR = path.join(os.tmpdir(), "FirstNexus-empty-bundled-plugins");
 const TEST_TRUST_BUNDLED_PLUGINS_DIR_ENV = "NEXISCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR";
 let bundledPluginsDirOverrideForTest: string | undefined;
 const bundledPluginsDirCache = new Map<string, string | undefined>();
@@ -62,7 +62,7 @@ function hasUsableBundledPluginTree(pluginsDir: string): boolean {
       const pluginDir = path.join(pluginsDir, entry.name);
       return (
         fs.existsSync(path.join(pluginDir, "package.json")) ||
-        fs.existsSync(path.join(pluginDir, "NexisClaw.plugin.json"))
+        fs.existsSync(path.join(pluginDir, "FirstNexus.plugin.json"))
       );
     });
   } catch {
@@ -94,8 +94,8 @@ function trustedBundledPluginRootsForPackageRoot(packageRoot: string): string[] 
 }
 
 function resolvePackageRootsForBundledPlugins(): string[] {
-  const argvRoot = resolveNexisClawPackageRootSync({ argv1: process.argv[1] });
-  const moduleRoot = resolveNexisClawPackageRootSync({ moduleUrl: import.meta.url });
+  const argvRoot = resolveFirstNexusPackageRootSync({ argv1: process.argv[1] });
+  const moduleRoot = resolveFirstNexusPackageRootSync({ moduleUrl: import.meta.url });
   return [argvRoot, moduleRoot].filter(
     (entry, index, all): entry is string => Boolean(entry) && all.indexOf(entry) === index,
   );
@@ -121,7 +121,7 @@ export function resolveSourceCheckoutDependencyDiagnostic(
     return {
       source: packageRoot,
       message:
-        "NexisClaw source checkout detected without pnpm workspace dependencies; run `pnpm install` from the repo root so bundled plugins can load package-local dependencies.",
+        "FirstNexus source checkout detected without pnpm workspace dependencies; run `pnpm install` from the repo root so bundled plugins can load package-local dependencies.",
     };
   }
   return null;
@@ -133,7 +133,7 @@ function resolveTrustedExistingOverride(resolvedOverride: string): string | null
     return null;
   }
 
-  const modulePackageRoot = resolveNexisClawPackageRootSync({ moduleUrl: import.meta.url });
+  const modulePackageRoot = resolveFirstNexusPackageRootSync({ moduleUrl: import.meta.url });
   const packageRoots = modulePackageRoot ? [modulePackageRoot] : [];
   const trustedRoots = packageRoots
     .flatMap((packageRoot) => trustedBundledPluginRootsForPackageRoot(packageRoot))
@@ -239,7 +239,7 @@ function resolveBundledPluginsDirUncached(env: NodeJS.ProcessEnv): string | unde
   }
 
   try {
-    const argvRoot = resolveNexisClawPackageRootSync({ argv1: process.argv[1] });
+    const argvRoot = resolveFirstNexusPackageRootSync({ argv1: process.argv[1] });
     const rejectedOverrideUsesArgvRoot = Boolean(
       argvRoot &&
       rejectedExistingOverride &&
@@ -249,7 +249,7 @@ function resolveBundledPluginsDirUncached(env: NodeJS.ProcessEnv): string | unde
       }),
     );
     const safeArgvRoot = rejectedOverrideUsesArgvRoot ? null : argvRoot;
-    const moduleRoot = resolveNexisClawPackageRootSync({ moduleUrl: import.meta.url });
+    const moduleRoot = resolveFirstNexusPackageRootSync({ moduleUrl: import.meta.url });
     const packageRoots = [safeArgvRoot, moduleRoot].filter(
       (entry, index, all): entry is string => Boolean(entry) && all.indexOf(entry) === index,
     );

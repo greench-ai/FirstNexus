@@ -1,16 +1,16 @@
 {
-  "name": "@NexisClaw/anthropic-provider",
+  "name": "@FirstNexus/anthropic-provider",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw Anthropic provider plugin",
+  "description": "FirstNexus Anthropic provider plugin",
   "type": "module",
   "dependencies": {
     "@earendil-works/pi-ai": "0.74.0"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

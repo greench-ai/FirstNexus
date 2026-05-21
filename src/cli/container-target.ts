@@ -151,7 +151,7 @@ function buildContainerExecArgs(params: {
     "NEXISCLAW_CLI_CONTAINER_BYPASS=1",
     ...proxyEnvArgs,
     params.containerName,
-    "NexisClaw",
+    "FirstNexus",
     ...params.argv,
   ];
 }
@@ -230,7 +230,7 @@ function buildContainerExecEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
 }
 
 function isBlockedContainerCommand(argv: string[]): boolean {
-  if (resolveCliArgvInvocation(["node", "NexisClaw", ...argv]).primary === "update") {
+  if (resolveCliArgvInvocation(["node", "FirstNexus", ...argv]).primary === "update") {
     return true;
   }
   for (let i = 0; i < argv.length; i += 1) {
@@ -278,7 +278,7 @@ export function maybeRunCliInContainer(
   }
   if (isBlockedContainerCommand(parsed.argv.slice(2))) {
     throw new Error(
-      "NexisClaw update is not supported with --container; rebuild or restart the container image instead.",
+      "FirstNexus update is not supported with --container; rebuild or restart the container image instead.",
     );
   }
 

@@ -10,7 +10,7 @@ import {
 describe("plugin-sdk browser subpaths", () => {
   it("keeps browser profile helpers available on the narrow subpath", () => {
     expect(DEFAULT_NEXISCLAW_BROWSER_ENABLED).toBe(true);
-    expect(DEFAULT_BROWSER_DEFAULT_PROFILE_NAME).toBe("NexisClaw");
+    expect(DEFAULT_BROWSER_DEFAULT_PROFILE_NAME).toBe("FirstNexus");
     expect(resolveBrowserConfig).toBeTypeOf("function");
   });
 

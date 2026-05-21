@@ -52,7 +52,7 @@ export type {
   AgentToolResultMiddlewareOptions,
   AgentToolResultMiddlewareResult,
   AgentToolResultMiddlewareRuntime,
-  NexisClawAgentToolResult,
+  FirstNexusAgentToolResult,
 } from "../plugins/agent-tool-result-middleware-types.js";
 export type {
   CodexAppServerExtensionContext,
@@ -95,7 +95,7 @@ export {
   filterToolResultMediaUrls,
 } from "../agents/pi-embedded-subscribe.tools.js";
 export { normalizeUsage } from "../agents/usage.js";
-export { resolveNexisClawAgentDir } from "./agent-dir-compat.js";
+export { resolveFirstNexusAgentDir } from "./agent-dir-compat.js";
 export {
   resolveAgentDir,
   resolveDefaultAgentDir,
@@ -221,7 +221,7 @@ export type AgentHarnessTerminalOutcomeClassification = NonNullable<
  * should advance fallback. Deliberate silent replies such as NO_REPLY count as
  * intentional output, while whitespace-only text remains fallback-eligible.
  * This is intentionally SDK-level so plugin harness adapters such as Codex
- * preserve the same NexisClaw-owned fallback signals as the built-in PI path
+ * preserve the same FirstNexus-owned fallback signals as the built-in PI path
  * without re-implementing terminal-result policy.
  */
 export function classifyAgentHarnessTerminalOutcome(

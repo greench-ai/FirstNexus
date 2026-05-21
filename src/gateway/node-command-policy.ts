@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   NODE_BROWSER_PROXY_COMMAND,
   NODE_SYSTEM_NOTIFY_COMMAND,
@@ -235,7 +235,7 @@ function hasTalkSurface(node?: NodeCommandPolicyNode): boolean {
 }
 
 export function resolveNodeCommandAllowlist(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   node?: NodeCommandPolicyNode,
 ): Set<string> {
   const platformId = normalizePlatformId(node?.platform, node?.deviceFamily);

@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import type {
-  NexisClawPluginApi,
-  NexisClawPluginCommandDefinition,
+  FirstNexusPluginApi,
+  FirstNexusPluginCommandDefinition,
   PluginCommandContext,
-} from "NexisClaw/plugin-sdk/plugin-entry";
+} from "FirstNexus/plugin-sdk/plugin-entry";
 import { describe, expect, it } from "vitest";
 import {
   getWrittenQQBotConfig,
@@ -12,7 +12,7 @@ import {
 import { ensurePlatformAdapter } from "../bootstrap.js";
 import { registerQQBotFrameworkCommands } from "./framework-registration.js";
 
-function createConfig(): NexisClawConfig {
+function createConfig(): FirstNexusConfig {
   return {
     channels: {
       qqbot: {
@@ -30,24 +30,24 @@ function createConfig(): NexisClawConfig {
   };
 }
 
-function registerCommands(): NexisClawPluginCommandDefinition[] {
+function registerCommands(): FirstNexusPluginCommandDefinition[] {
   ensurePlatformAdapter();
-  const commands: NexisClawPluginCommandDefinition[] = [];
+  const commands: FirstNexusPluginCommandDefinition[] = [];
   const api = {
     logger: {},
-    registerCommand: (command: NexisClawPluginCommandDefinition) => {
+    registerCommand: (command: FirstNexusPluginCommandDefinition) => {
       commands.push(command);
     },
-  } as unknown as NexisClawPluginApi;
+  } as unknown as FirstNexusPluginApi;
 
   registerQQBotFrameworkCommands(api);
   return commands;
 }
 
 function findCommand(
-  commands: NexisClawPluginCommandDefinition[],
+  commands: FirstNexusPluginCommandDefinition[],
   name: string,
-): NexisClawPluginCommandDefinition {
+): FirstNexusPluginCommandDefinition {
   const command = commands.find((entry) => entry.name === name);
   if (!command) {
     throw new Error(`expected QQBot command ${name}`);
@@ -56,7 +56,7 @@ function findCommand(
 }
 
 function createCommandContext(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   from: string | undefined,
 ): PluginCommandContext {
   return {
@@ -83,7 +83,7 @@ describe("registerQQBotFrameworkCommands", () => {
 
   it("preserves the private-chat guard for bot-streaming on generic framework calls", async () => {
     const config = createConfig();
-    const writes: NexisClawConfig[] = [];
+    const writes: FirstNexusConfig[] = [];
     installCommandRuntime(config, writes);
     const command = findCommand(registerCommands(), "bot-streaming");
 
@@ -101,7 +101,7 @@ describe("registerQQBotFrameworkCommands", () => {
 
   it("allows bot-streaming on explicit QQBot private-chat framework calls", async () => {
     const config = createConfig();
-    const writes: NexisClawConfig[] = [];
+    const writes: FirstNexusConfig[] = [];
     installCommandRuntime(config, writes);
     const command = findCommand(registerCommands(), "bot-streaming");
 

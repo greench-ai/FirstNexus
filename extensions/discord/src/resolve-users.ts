@@ -1,7 +1,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { fetchDiscord } from "./api.js";
 import { listGuilds, type DiscordGuildSummary } from "./guilds.js";
 import {

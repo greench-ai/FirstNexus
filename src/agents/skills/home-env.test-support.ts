@@ -3,14 +3,14 @@ import { vi } from "vitest";
 
 export type SkillsHomeEnvSnapshot = {
   previousHome: string | undefined;
-  previousNexisClawHome: string | undefined;
+  previousFirstNexusHome: string | undefined;
   previousUserProfile: string | undefined;
 };
 
 export function setMockSkillsHomeEnv(fakeHome: string): SkillsHomeEnvSnapshot {
   const snapshot: SkillsHomeEnvSnapshot = {
     previousHome: process.env.HOME,
-    previousNexisClawHome: process.env.NEXISCLAW_HOME,
+    previousFirstNexusHome: process.env.NEXISCLAW_HOME,
     previousUserProfile: process.env.USERPROFILE,
   };
   process.env.HOME = fakeHome;
@@ -30,10 +30,10 @@ export async function restoreMockSkillsHomeEnv(
   } else {
     process.env.HOME = snapshot.previousHome;
   }
-  if (snapshot.previousNexisClawHome === undefined) {
+  if (snapshot.previousFirstNexusHome === undefined) {
     delete process.env.NEXISCLAW_HOME;
   } else {
-    process.env.NEXISCLAW_HOME = snapshot.previousNexisClawHome;
+    process.env.NEXISCLAW_HOME = snapshot.previousFirstNexusHome;
   }
   if (snapshot.previousUserProfile === undefined) {
     delete process.env.USERPROFILE;

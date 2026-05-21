@@ -182,7 +182,7 @@ jobs:
 
       - name: Run OpenAI candidate lane
         run: |
-          pnpm NexisClaw qa suite \
+          pnpm FirstNexus qa suite \
             --provider-mode mock-openai \
             --parity-pack agentic \
             --concurrency "${QA_PARITY_CONCURRENCY}" \
@@ -192,7 +192,7 @@ jobs:
 
       - name: Run Opus 4.7 lane
         run: |
-          pnpm NexisClaw qa suite \
+          pnpm FirstNexus qa suite \
             --provider-mode mock-openai \
             --parity-pack agentic \
             --concurrency "${QA_PARITY_CONCURRENCY}" \
@@ -202,7 +202,7 @@ jobs:
 
       - name: Generate parity report
         run: |
-          pnpm NexisClaw qa parity-report \
+          pnpm FirstNexus qa parity-report \
             --repo-root . \
             --candidate-summary .artifacts/qa-e2e/gpt54/qa-suite-summary.json \
             --baseline-summary .artifacts/qa-e2e/opus46/qa-suite-summary.json \
@@ -279,11 +279,11 @@ jobs:
             --profile "${INPUT_MATRIX_PROFILE}" \
             --fast
           )
-          if pnpm NexisClaw qa matrix --help 2>/dev/null | grep -F -q -- "--fail-fast"; then
+          if pnpm FirstNexus qa matrix --help 2>/dev/null | grep -F -q -- "--fail-fast"; then
             matrix_args+=(--fail-fast)
           fi
 
-          pnpm NexisClaw qa matrix "${matrix_args[@]}"
+          pnpm FirstNexus qa matrix "${matrix_args[@]}"
 
       - name: Upload Matrix QA artifacts
         if: always()
@@ -362,11 +362,11 @@ jobs:
             --profile "${{ matrix.profile }}" \
             --fast
           )
-          if pnpm NexisClaw qa matrix --help 2>/dev/null | grep -F -q -- "--fail-fast"; then
+          if pnpm FirstNexus qa matrix --help 2>/dev/null | grep -F -q -- "--fail-fast"; then
             matrix_args+=(--fail-fast)
           fi
 
-          pnpm NexisClaw qa matrix "${matrix_args[@]}"
+          pnpm FirstNexus qa matrix "${matrix_args[@]}"
 
       - name: Upload Matrix QA shard artifacts
         if: always()
@@ -450,7 +450,7 @@ jobs:
 
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm NexisClaw qa telegram \
+          pnpm FirstNexus qa telegram \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \
@@ -543,7 +543,7 @@ jobs:
 
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm NexisClaw qa discord \
+          pnpm FirstNexus qa discord \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \
@@ -636,7 +636,7 @@ jobs:
 
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm NexisClaw qa whatsapp \
+          pnpm FirstNexus qa whatsapp \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \
@@ -729,7 +729,7 @@ jobs:
 
           echo "output_dir=${output_dir}" >> "$GITHUB_OUTPUT"
 
-          pnpm NexisClaw qa slack \
+          pnpm FirstNexus qa slack \
             --repo-root . \
             --output-dir "${output_dir}" \
             --provider-mode live-frontier \

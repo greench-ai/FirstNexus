@@ -1,4 +1,4 @@
-import { buildChannelConfigSchema } from "NexisClaw/plugin-sdk/channel-config-schema";
+import { buildChannelConfigSchema } from "FirstNexus/plugin-sdk/channel-config-schema";
 import { z } from "zod";
 
 export const SynologyChatChannelConfigSchema = buildChannelConfigSchema(

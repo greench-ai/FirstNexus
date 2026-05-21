@@ -1,6 +1,6 @@
 import { listChannelPlugins } from "../../channels/plugins/index.js";
 import type { ChannelPlugin } from "../../channels/plugins/types.plugin.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   type OfficialExternalPluginRepairHint,
   resolveMissingOfficialExternalChannelPluginRepairHint,
@@ -42,7 +42,7 @@ function resolveKnownChannel(value?: string | null): MessageChannelId | undefine
 }
 
 function resolveAvailableKnownChannel(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   value?: string | null;
 }): MessageChannelId | undefined {
   const normalized = resolveKnownChannel(params.value);
@@ -57,7 +57,7 @@ function resolveAvailableKnownChannel(params: {
     : undefined;
 }
 
-function isConfiguredChannel(cfg: NexisClawConfig, channelId: string): boolean {
+function isConfiguredChannel(cfg: FirstNexusConfig, channelId: string): boolean {
   const channels = cfg.channels;
   if (!channels || typeof channels !== "object" || Array.isArray(channels)) {
     return false;
@@ -70,7 +70,7 @@ function isConfiguredChannel(cfg: NexisClawConfig, channelId: string): boolean {
 }
 
 function listConfiguredOfficialExternalRepairHints(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): OfficialExternalPluginRepairHint[] {
   const channels = cfg.channels;
   if (!channels || typeof channels !== "object" || Array.isArray(channels)) {
@@ -99,14 +99,14 @@ function formatMissingOfficialExternalChannelsMessage(
   }
   const labels = hints.map((hint) => hint.label).join(", ");
   const installCommands = hints.map((hint) => hint.installCommand).join("; ");
-  return `Configured official external channels ${labels} are missing their plugins. Run: NexisClaw doctor --fix, or install individually: ${installCommands}.`;
+  return `Configured official external channels ${labels} are missing their plugins. Run: FirstNexus doctor --fix, or install individually: ${installCommands}.`;
 }
 
 function formatNoConfiguredChannelsMessage(): string {
   return [
     "Channel is required (no configured channels detected).",
-    "Run NexisClaw channels add to configure one, or pass --channel <channel> after enabling a channel.",
-    "Use NexisClaw channels list --all to see available channel ids.",
+    "Run FirstNexus channels add to configure one, or pass --channel <channel> after enabling a channel.",
+    "Use FirstNexus channels list --all to see available channel ids.",
   ].join(" ");
 }
 
@@ -144,7 +144,7 @@ function logChannelSelectionError(params: {
   );
 }
 
-async function isPluginConfigured(plugin: ChannelPlugin, cfg: NexisClawConfig): Promise<boolean> {
+async function isPluginConfigured(plugin: ChannelPlugin, cfg: FirstNexusConfig): Promise<boolean> {
   const accountIds = plugin.config.listAccountIds(cfg);
   if (accountIds.length === 0) {
     return false;
@@ -193,7 +193,7 @@ async function isPluginConfigured(plugin: ChannelPlugin, cfg: NexisClawConfig): 
 }
 
 export async function listConfiguredMessageChannels(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): Promise<MessageChannelId[]> {
   const channels: MessageChannelId[] = [];
   for (const plugin of listChannelPlugins()) {
@@ -208,7 +208,7 @@ export async function listConfiguredMessageChannels(
 }
 
 export async function resolveMessageChannelSelection(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channel?: string | null;
   fallbackChannel?: string | null;
 }): Promise<{

@@ -33,7 +33,7 @@ let loadInstalledPluginManifestRegistryMock: ReturnType<
 let setActivePluginRegistry: RuntimeModule["setActivePluginRegistry"];
 let resolvePluginWebSearchProviders: WebSearchProvidersRuntimeModule["resolvePluginWebSearchProviders"];
 let resolveRuntimeWebSearchProviders: WebSearchProvidersRuntimeModule["resolveRuntimeWebSearchProviders"];
-let loadNexisClawPluginsMock: ReturnType<typeof vi.fn>;
+let loadFirstNexusPluginsMock: ReturnType<typeof vi.fn>;
 let loaderModule: typeof import("./loader.js");
 let pluginAutoEnableModule: PluginAutoEnableModule;
 let applyPluginAutoEnableSpy: ReturnType<typeof vi.fn>;
@@ -111,7 +111,7 @@ function createBraveAllowConfig() {
 
 function createWebSearchEnv(overrides?: Partial<NodeJS.ProcessEnv>) {
   return {
-    NEXISCLAW_HOME: "/tmp/NexisClaw-home",
+    NEXISCLAW_HOME: "/tmp/FirstNexus-home",
     ...overrides,
   } as NodeJS.ProcessEnv;
 }
@@ -152,7 +152,7 @@ function createManifestRegistryFixture(): PluginManifestRegistry {
         origin: "bundled",
         rootDir: "/tmp/brave",
         source: "/tmp/brave/index.js",
-        manifestPath: "/tmp/brave/NexisClaw.plugin.json",
+        manifestPath: "/tmp/brave/FirstNexus.plugin.json",
         channels: [],
         providers: [],
         cliBackends: [],
@@ -167,7 +167,7 @@ function createManifestRegistryFixture(): PluginManifestRegistry {
         origin: "bundled",
         rootDir: "/tmp/noise",
         source: "/tmp/noise/index.js",
-        manifestPath: "/tmp/noise/NexisClaw.plugin.json",
+        manifestPath: "/tmp/noise/FirstNexus.plugin.json",
         channels: [],
         providers: [],
         cliBackends: [],
@@ -191,7 +191,7 @@ function createWebSearchManifestRecord(params: {
     origin: "bundled",
     rootDir: `/tmp/${params.id}`,
     source: `/tmp/${params.id}/index.js`,
-    manifestPath: `/tmp/${params.id}/NexisClaw.plugin.json`,
+    manifestPath: `/tmp/${params.id}/FirstNexus.plugin.json`,
     channels: [],
     providers: [],
     cliBackends: [],
@@ -204,7 +204,7 @@ function createWebSearchManifestRecord(params: {
 }
 
 function expectLoaderCallCount(count: number) {
-  expect(loadNexisClawPluginsMock).toHaveBeenCalledTimes(count);
+  expect(loadFirstNexusPluginsMock).toHaveBeenCalledTimes(count);
 }
 
 function requireRecord(value: unknown): Record<string, unknown> {
@@ -233,7 +233,7 @@ function requirePluginsConfig(params: Record<string, unknown>): Record<string, u
 function expectScopedWebSearchCandidates(pluginIds: readonly string[]) {
   expect(loadInstalledPluginManifestRegistryMock).toHaveBeenCalled();
   expect(
-    requireLastCallFirstArg(loadNexisClawPluginsMock, "loadNexisClawPlugins").onlyPluginIds,
+    requireLastCallFirstArg(loadFirstNexusPluginsMock, "loadFirstNexusPlugins").onlyPluginIds,
   ).toEqual([...pluginIds]);
 }
 
@@ -245,7 +245,7 @@ function expectAutoEnabledWebSearchLoad(params: {
     config: params.rawConfig,
     env: createWebSearchEnv(),
   });
-  const loaderParams = requireLastCallFirstArg(loadNexisClawPluginsMock, "loadNexisClawPlugins");
+  const loaderParams = requireLastCallFirstArg(loadFirstNexusPluginsMock, "loadFirstNexusPlugins");
   const plugins = requirePluginsConfig(loaderParams);
   expect(plugins.allow).toEqual([...params.expectedAllow]);
 }
@@ -356,7 +356,7 @@ function expectRuntimeProviderResolution(
   expected: readonly string[],
 ) {
   expect(toRuntimeProviderKeys(providers)).toEqual([...expected]);
-  expect(loadNexisClawPluginsMock).not.toHaveBeenCalled();
+  expect(loadFirstNexusPluginsMock).not.toHaveBeenCalled();
 }
 
 describe("resolvePluginWebSearchProviders", () => {
@@ -433,8 +433,8 @@ describe("resolvePluginWebSearchProviders", () => {
     loadPluginManifestRegistryMock.mockReturnValue(createManifestRegistryFixture());
     loadInstalledPluginManifestRegistryMock.mockReset();
     loadInstalledPluginManifestRegistryMock.mockReturnValue(createManifestRegistryFixture());
-    loadNexisClawPluginsMock = vi
-      .spyOn(loaderModule, "loadNexisClawPlugins")
+    loadFirstNexusPluginsMock = vi
+      .spyOn(loaderModule, "loadFirstNexusPlugins")
       .mockImplementation((params) => {
         const registry = createEmptyPluginRegistry();
         registry.webSearchProviders = buildMockedWebSearchProviders(params);
@@ -467,7 +467,7 @@ describe("resolvePluginWebSearchProviders", () => {
     });
 
     expect(toRuntimeProviderKeys(providers)).toEqual(["brave:brave"]);
-    expect(loadNexisClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadFirstNexusPluginsMock).not.toHaveBeenCalled();
   });
 
   it("loads plugin web-search providers from the auto-enabled config snapshot", () => {
@@ -520,7 +520,10 @@ describe("resolvePluginWebSearchProviders", () => {
 
     expect(toRuntimeProviderKeys(providers)).toEqual(["brave:brave"]);
     expectScopedWebSearchCandidates(["brave"]);
-    const loaderParams = requireLastCallFirstArg(loadNexisClawPluginsMock, "loadNexisClawPlugins");
+    const loaderParams = requireLastCallFirstArg(
+      loadFirstNexusPluginsMock,
+      "loadFirstNexusPlugins",
+    );
     expect(requirePluginsConfig(loaderParams)).toEqual({
       allow: ["brave"],
       bundledDiscovery: "allowlist",
@@ -550,7 +553,10 @@ describe("resolvePluginWebSearchProviders", () => {
       "loadPluginManifestRegistryForInstalledIndex",
     );
     expect(manifestParams.workspaceDir).toBe("/tmp/runtime-workspace");
-    const loaderParams = requireLastCallFirstArg(loadNexisClawPluginsMock, "loadNexisClawPlugins");
+    const loaderParams = requireLastCallFirstArg(
+      loadFirstNexusPluginsMock,
+      "loadFirstNexusPlugins",
+    );
     expect(loaderParams.workspaceDir).toBe("/tmp/runtime-workspace");
     expect(loaderParams.onlyPluginIds).toEqual(["brave"]);
   });
@@ -565,7 +571,7 @@ describe("resolvePluginWebSearchProviders", () => {
     });
 
     expectRuntimeProviderResolution(providers, ["brave:brave"]);
-    expect(loadNexisClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadFirstNexusPluginsMock).not.toHaveBeenCalled();
   });
 
   it("inherits workspaceDir from the active registry for compatible web-search snapshot reuse", () => {
@@ -581,7 +587,7 @@ describe("resolvePluginWebSearchProviders", () => {
     });
 
     expectRuntimeProviderResolution(providers, ["brave:brave"]);
-    expect(loadNexisClawPluginsMock).not.toHaveBeenCalled();
+    expect(loadFirstNexusPluginsMock).not.toHaveBeenCalled();
   });
 
   it("uses the inherited active workspace for each web-search resolution", () => {
@@ -607,7 +613,7 @@ describe("resolvePluginWebSearchProviders", () => {
 
   it("resolves current config contents when config changes in place", () => {
     const config = createBraveAllowConfig();
-    const env = createWebSearchEnv({ NEXISCLAW_HOME: "/tmp/NexisClaw-home-a" });
+    const env = createWebSearchEnv({ NEXISCLAW_HOME: "/tmp/FirstNexus-home-a" });
 
     expectSnapshotLoaderCalls({
       config,
@@ -621,13 +627,13 @@ describe("resolvePluginWebSearchProviders", () => {
 
   it("resolves current env contents when env changes in place", () => {
     const config = createBraveAllowConfig();
-    const env = createWebSearchEnv({ NEXISCLAW_HOME: "/tmp/NexisClaw-home-a" });
+    const env = createWebSearchEnv({ NEXISCLAW_HOME: "/tmp/FirstNexus-home-a" });
 
     expectSnapshotLoaderCalls({
       config,
       env,
       mutate: () => {
-        env.NEXISCLAW_HOME = "/tmp/NexisClaw-home-b";
+        env.NEXISCLAW_HOME = "/tmp/FirstNexus-home-b";
       },
       expectedLoaderCalls: 2,
     });
@@ -652,7 +658,7 @@ describe("resolvePluginWebSearchProviders", () => {
       }
     }
 
-    expect(loadNexisClawPluginsMock).toHaveBeenCalledTimes(2);
+    expect(loadFirstNexusPluginsMock).toHaveBeenCalledTimes(2);
   });
 
   it.each([

@@ -1,23 +1,23 @@
 ---
 summary: "Gateway runtime on macOS (external launchd service)"
 read_when:
-  - Packaging NexisClaw.app
+  - Packaging FirstNexus.app
   - Debugging the macOS gateway launchd service
   - Installing the gateway CLI for macOS
 title: "Gateway on macOS"
 ---
 
-NexisClaw.app no longer bundles Node/Bun or the Gateway runtime. The macOS app
-expects an **external** `NexisClaw` CLI install, does not spawn the Gateway as a
+FirstNexus.app no longer bundles Node/Bun or the Gateway runtime. The macOS app
+expects an **external** `FirstNexus` CLI install, does not spawn the Gateway as a
 child process, and manages a per-user launchd service to keep the Gateway
 running (or attaches to an existing local Gateway if one is already running).
 
 ## Install the CLI (required for local mode)
 
-Node 24 is the default runtime on the Mac. Node 22 LTS, currently `22.16+`, still works for compatibility. Then install `NexisClaw` globally:
+Node 24 is the default runtime on the Mac. Node 22 LTS, currently `22.16+`, still works for compatibility. Then install `FirstNexus` globally:
 
 ```bash
-npm install -g NexisClaw@<version>
+npm install -g FirstNexus@<version>
 ```
 
 The macOS app's **Install CLI** button runs the same global install flow the app
@@ -28,28 +28,28 @@ detected package manager. Node remains the recommended Gateway runtime.
 
 Label:
 
-- `ai.NexisClaw.gateway` (or `ai.NexisClaw.<profile>`; legacy `com.NexisClaw.*` may remain)
+- `ai.FirstNexus.gateway` (or `ai.FirstNexus.<profile>`; legacy `com.FirstNexus.*` may remain)
 
 Plist location (per-user):
 
-- `~/Library/LaunchAgents/ai.NexisClaw.gateway.plist`
-  (or `~/Library/LaunchAgents/ai.NexisClaw.<profile>.plist`)
+- `~/Library/LaunchAgents/ai.FirstNexus.gateway.plist`
+  (or `~/Library/LaunchAgents/ai.FirstNexus.<profile>.plist`)
 
 Manager:
 
 - The macOS app owns LaunchAgent install/update in Local mode.
-- The CLI can also install it: `NexisClaw gateway install`.
+- The CLI can also install it: `FirstNexus gateway install`.
 
 Behavior:
 
-- "NexisClaw Active" enables/disables the LaunchAgent.
+- "FirstNexus Active" enables/disables the LaunchAgent.
 - App quit does **not** stop the gateway (launchd keeps it alive).
 - If a Gateway is already running on the configured port, the app attaches to
   it instead of starting a new one.
 
 Logging:
 
-- launchd stdout/err: `/tmp/NexisClaw/NexisClaw-gateway.log`
+- launchd stdout/err: `/tmp/FirstNexus/FirstNexus-gateway.log`
 
 ## Version compatibility
 
@@ -59,17 +59,17 @@ incompatible, update the global CLI to match the app version.
 ## Smoke check
 
 ```bash
-NexisClaw --version
+FirstNexus --version
 
 NEXISCLAW_SKIP_CHANNELS=1 \
 NEXISCLAW_SKIP_CANVAS_HOST=1 \
-NexisClaw gateway --port 18999 --bind loopback
+FirstNexus gateway --port 18999 --bind loopback
 ```
 
 Then:
 
 ```bash
-NexisClaw gateway call health --url ws://127.0.0.1:18999 --timeout 3000
+FirstNexus gateway call health --url ws://127.0.0.1:18999 --timeout 3000
 ```
 
 ## Related

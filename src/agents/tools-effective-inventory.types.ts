@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export type EffectiveToolSource = "core" | "plugin" | "channel";
 
@@ -35,7 +35,7 @@ export type EffectiveToolInventoryResult = {
 };
 
 export type ResolveEffectiveToolInventoryParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   sessionKey?: string;
   workspaceDir?: string;

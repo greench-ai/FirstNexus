@@ -4,12 +4,15 @@ import {
   canonicalizeAllowlistWithResolvedIds,
   patchAllowlistUsersInConfigEntries,
   summarizeMapping,
-} from "NexisClaw/plugin-sdk/allow-from";
-import type { DiscordAccountConfig, DiscordGuildEntry } from "NexisClaw/plugin-sdk/config-contracts";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeStringEntries } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/allow-from";
+import type {
+  DiscordAccountConfig,
+  DiscordGuildEntry,
+} from "FirstNexus/plugin-sdk/config-contracts";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeStringEntries } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveDiscordChannelAllowlist } from "../resolve-channels.js";
 import { resolveDiscordUserAllowlist } from "../resolve-users.js";
 

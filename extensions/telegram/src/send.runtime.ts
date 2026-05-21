@@ -1,7 +1,7 @@
-export { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-export { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-export type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-export type { PollInput, MediaKind } from "NexisClaw/plugin-sdk/media-runtime";
+export { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+export { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+export type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+export type { PollInput, MediaKind } from "FirstNexus/plugin-sdk/media-runtime";
 export {
   buildOutboundMediaLoadOptions,
   getImageMetadata,
@@ -9,5 +9,5 @@ export {
   kindFromMime,
   normalizePollInput,
   probeVideoDimensions,
-} from "NexisClaw/plugin-sdk/media-runtime";
-export { loadWebMedia } from "NexisClaw/plugin-sdk/web-media";
+} from "FirstNexus/plugin-sdk/media-runtime";
+export { loadWebMedia } from "FirstNexus/plugin-sdk/web-media";

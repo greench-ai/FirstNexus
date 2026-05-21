@@ -14,7 +14,7 @@ const DEFAULT_USER_DRIVER_DIR = "~/.codex/skills/custom/telegram-e2e-bot-to-bot/
 const DEFAULT_BOT_CREDENTIALS_FILE =
   "~/.codex/skills/custom/telegram-e2e-bot-to-bot/credentials.local.json";
 const DEFAULT_CONVEX_ENV_FILE = "~/.codex/skills/custom/telegram-e2e-bot-to-bot/convex.local.env";
-const CHUNKED_PAYLOAD_MARKER = "__NexisClawQaCredentialPayloadChunksV1";
+const CHUNKED_PAYLOAD_MARKER = "__FirstNexusQaCredentialPayloadChunksV1";
 
 function usage(): never {
   throw new Error(
@@ -382,7 +382,7 @@ async function createTelegramUserPayload(opts: Map<string, string>) {
     throw new Error("Missing group id in env, user-driver config, or bot credentials file.");
   }
 
-  const tempRoot = `/tmp/NexisClaw-telegram-user-credential-${Date.now()}-${Math.random()
+  const tempRoot = `/tmp/FirstNexus-telegram-user-credential-${Date.now()}-${Math.random()
     .toString(16)
     .slice(2)}`;
   const tdlibArchive = `${tempRoot}/tdlib.tgz`;
@@ -456,7 +456,7 @@ async function restoreTelegramUserPayload(params: {
     usage();
   }
   const payload = parseTelegramUserQaCredentialPayload(params.payload);
-  const tempRoot = `/tmp/NexisClaw-telegram-user-restore-${Date.now()}-${Math.random()
+  const tempRoot = `/tmp/FirstNexus-telegram-user-restore-${Date.now()}-${Math.random()
     .toString(16)
     .slice(2)}`;
   const tdlibArchive = `${tempRoot}/tdlib.tgz`;

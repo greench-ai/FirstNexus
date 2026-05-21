@@ -1,25 +1,25 @@
 {
-  "name": "@NexisClaw/migrate-hermes",
+  "name": "@FirstNexus/migrate-hermes",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "Hermes to NexisClaw migration provider",
+  "description": "Hermes to FirstNexus migration provider",
   "type": "module",
   "dependencies": {
     "yaml": "2.9.0"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*",
-    "NexisClaw": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*",
+    "FirstNexus": "workspace:*"
   },
   "peerDependencies": {
-    "NexisClaw": ">=2026.5.12-beta.1"
+    "FirstNexus": ">=2026.5.12-beta.1"
   },
   "peerDependenciesMeta": {
-    "NexisClaw": {
+    "FirstNexus": {
       "optional": true
     }
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

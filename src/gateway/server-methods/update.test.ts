@@ -12,8 +12,8 @@ const runGatewayUpdateMock = vi.fn<() => Promise<UpdateRunResult>>();
 const resolveUpdateInstallSurfaceMock = vi.fn<() => Promise<UpdateInstallSurface>>(async () => ({
   kind: "git",
   mode: "git",
-  root: "/tmp/NexisClaw",
-  packageRoot: "/tmp/NexisClaw",
+  root: "/tmp/FirstNexus",
+  packageRoot: "/tmp/FirstNexus",
 }));
 const getLatestUpdateRestartSentinelMock = vi.fn<() => RestartSentinelPayload | null>(() => null);
 const isRestartEnabledMock = vi.fn(() => true);
@@ -49,13 +49,13 @@ vi.mock("../../config/sessions.js", () => ({
   },
 }));
 
-vi.mock("../../infra/NexisClaw-root.js", async () => {
-  const actual = await vi.importActual<typeof import("../../infra/NexisClaw-root.js")>(
-    "../../infra/NexisClaw-root.js",
+vi.mock("../../infra/FirstNexus-root.js", async () => {
+  const actual = await vi.importActual<typeof import("../../infra/FirstNexus-root.js")>(
+    "../../infra/FirstNexus-root.js",
   );
   return {
     ...actual,
-    resolveNexisClawPackageRoot: async () => "/tmp/NexisClaw",
+    resolveFirstNexusPackageRoot: async () => "/tmp/FirstNexus",
   };
 });
 
@@ -134,8 +134,8 @@ beforeEach(() => {
   resolveUpdateInstallSurfaceMock.mockResolvedValue({
     kind: "git",
     mode: "git",
-    root: "/tmp/NexisClaw",
-    packageRoot: "/tmp/NexisClaw",
+    root: "/tmp/FirstNexus",
+    packageRoot: "/tmp/FirstNexus",
   });
   getLatestUpdateRestartSentinelMock.mockClear();
   scheduleGatewaySigusr1RestartMock.mockClear();
@@ -314,8 +314,8 @@ describe("update.run restart scheduling", () => {
     resolveUpdateInstallSurfaceMock.mockResolvedValueOnce({
       kind: "global",
       mode: "npm",
-      root: "/tmp/NexisClaw-global",
-      packageRoot: "/tmp/NexisClaw-global",
+      root: "/tmp/FirstNexus-global",
+      packageRoot: "/tmp/FirstNexus-global",
     });
 
     let payload:
@@ -345,8 +345,8 @@ describe("update.run restart scheduling", () => {
     resolveUpdateInstallSurfaceMock.mockResolvedValueOnce({
       kind: "global",
       mode: "npm",
-      root: "/tmp/NexisClaw-global",
-      packageRoot: "/tmp/NexisClaw-global",
+      root: "/tmp/FirstNexus-global",
+      packageRoot: "/tmp/FirstNexus-global",
     });
 
     let payload:

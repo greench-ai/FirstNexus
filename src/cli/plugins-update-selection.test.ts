@@ -20,18 +20,18 @@ describe("resolvePluginUpdateSelection", () => {
     expect(
       resolvePluginUpdateSelection({
         installs: {
-          "NexisClaw-codex-app-server": createNpmInstall({
-            spec: "NexisClaw-codex-app-server",
-            installPath: "/tmp/NexisClaw-codex-app-server",
-            resolvedName: "NexisClaw-codex-app-server",
+          "FirstNexus-codex-app-server": createNpmInstall({
+            spec: "FirstNexus-codex-app-server",
+            installPath: "/tmp/FirstNexus-codex-app-server",
+            resolvedName: "FirstNexus-codex-app-server",
           }),
         },
-        rawId: "NexisClaw-codex-app-server@beta",
+        rawId: "FirstNexus-codex-app-server@beta",
       }),
     ).toEqual({
-      pluginIds: ["NexisClaw-codex-app-server"],
+      pluginIds: ["FirstNexus-codex-app-server"],
       specOverrides: {
-        "NexisClaw-codex-app-server": "NexisClaw-codex-app-server@beta",
+        "FirstNexus-codex-app-server": "FirstNexus-codex-app-server@beta",
       },
     });
   });
@@ -41,17 +41,17 @@ describe("resolvePluginUpdateSelection", () => {
       resolvePluginUpdateSelection({
         installs: {
           "voice-call": createNpmInstall({
-            spec: "@NexisClaw/voice-call",
+            spec: "@FirstNexus/voice-call",
             installPath: "/tmp/voice-call",
-            resolvedName: "@NexisClaw/voice-call",
+            resolvedName: "@FirstNexus/voice-call",
           }),
         },
-        rawId: "@NexisClaw/voice-call@beta",
+        rawId: "@FirstNexus/voice-call@beta",
       }),
     ).toEqual({
       pluginIds: ["voice-call"],
       specOverrides: {
-        "voice-call": "@NexisClaw/voice-call@beta",
+        "voice-call": "@FirstNexus/voice-call@beta",
       },
     });
   });
@@ -60,18 +60,18 @@ describe("resolvePluginUpdateSelection", () => {
     expect(
       resolvePluginUpdateSelection({
         installs: {
-          "NexisClaw-codex-app-server": createNpmInstall({
-            spec: "NexisClaw-codex-app-server",
-            installPath: "/tmp/NexisClaw-codex-app-server",
-            resolvedName: "NexisClaw-codex-app-server",
+          "FirstNexus-codex-app-server": createNpmInstall({
+            spec: "FirstNexus-codex-app-server",
+            installPath: "/tmp/FirstNexus-codex-app-server",
+            resolvedName: "FirstNexus-codex-app-server",
           }),
         },
-        rawId: "NexisClaw-codex-app-server@0.2.0-beta.4",
+        rawId: "FirstNexus-codex-app-server@0.2.0-beta.4",
       }),
     ).toEqual({
-      pluginIds: ["NexisClaw-codex-app-server"],
+      pluginIds: ["FirstNexus-codex-app-server"],
       specOverrides: {
-        "NexisClaw-codex-app-server": "NexisClaw-codex-app-server@0.2.0-beta.4",
+        "FirstNexus-codex-app-server": "FirstNexus-codex-app-server@0.2.0-beta.4",
       },
     });
   });
@@ -80,16 +80,16 @@ describe("resolvePluginUpdateSelection", () => {
     expect(
       resolvePluginUpdateSelection({
         installs: {
-          "NexisClaw-codex-app-server": createNpmInstall({
-            spec: "NexisClaw-codex-app-server@beta",
-            installPath: "/tmp/NexisClaw-codex-app-server",
-            resolvedName: "NexisClaw-codex-app-server",
+          "FirstNexus-codex-app-server": createNpmInstall({
+            spec: "FirstNexus-codex-app-server@beta",
+            installPath: "/tmp/FirstNexus-codex-app-server",
+            resolvedName: "FirstNexus-codex-app-server",
           }),
         },
-        rawId: "NexisClaw-codex-app-server",
+        rawId: "FirstNexus-codex-app-server",
       }),
     ).toEqual({
-      pluginIds: ["NexisClaw-codex-app-server"],
+      pluginIds: ["FirstNexus-codex-app-server"],
     });
   });
 

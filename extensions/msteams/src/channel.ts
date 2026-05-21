@@ -1,33 +1,33 @@
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
-import { formatAllowFromLowercase } from "NexisClaw/plugin-sdk/allow-from";
-import { createTopLevelChannelConfigAdapter } from "NexisClaw/plugin-sdk/channel-config-helpers";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
+import { formatAllowFromLowercase } from "FirstNexus/plugin-sdk/allow-from";
+import { createTopLevelChannelConfigAdapter } from "FirstNexus/plugin-sdk/channel-config-helpers";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageToolDiscovery,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import { createChannelMessageAdapterFromOutbound } from "NexisClaw/plugin-sdk/channel-message";
-import { createPairingPrefixStripper } from "NexisClaw/plugin-sdk/channel-pairing";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import { createChatChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import { createChannelMessageAdapterFromOutbound } from "FirstNexus/plugin-sdk/channel-message";
+import { createPairingPrefixStripper } from "FirstNexus/plugin-sdk/channel-pairing";
 import {
   createAllowlistProviderGroupPolicyWarningCollector,
   projectConfigWarningCollector,
-} from "NexisClaw/plugin-sdk/channel-policy";
+} from "FirstNexus/plugin-sdk/channel-policy";
 import {
   createChannelDirectoryAdapter,
   createRuntimeDirectoryLiveAdapter,
   listDirectoryEntriesFromSources,
-} from "NexisClaw/plugin-sdk/directory-runtime";
-import { normalizeMessagePresentation } from "NexisClaw/plugin-sdk/interactive-runtime";
-import { createLazyRuntimeNamedExport } from "NexisClaw/plugin-sdk/lazy-runtime";
-import { createRuntimeOutboundDelegates } from "NexisClaw/plugin-sdk/outbound-runtime";
-import { createComputedAccountStatusAdapter } from "NexisClaw/plugin-sdk/status-helpers";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/directory-runtime";
+import { normalizeMessagePresentation } from "FirstNexus/plugin-sdk/interactive-runtime";
+import { createLazyRuntimeNamedExport } from "FirstNexus/plugin-sdk/lazy-runtime";
+import { createRuntimeOutboundDelegates } from "FirstNexus/plugin-sdk/outbound-runtime";
+import { createComputedAccountStatusAdapter } from "FirstNexus/plugin-sdk/status-helpers";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { Type } from "typebox";
 import type {
   ChannelMessageActionName,
   ChannelOutboundAdapter,
   ChannelPlugin,
-  NexisClawConfig,
+  FirstNexusConfig,
 } from "../runtime-api.js";
 import {
   buildProbeChannelStatusSummary,
@@ -84,7 +84,7 @@ const TEAMS_GRAPH_PERMISSION_HINTS: Record<string, string> = {
 };
 
 const collectMSTeamsSecurityWarnings = createAllowlistProviderGroupPolicyWarningCollector<{
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 }>({
   providerConfigPresent: (cfg) => cfg.channels?.msteams !== undefined,
   resolveGroupPolicy: ({ cfg }) => cfg.channels?.msteams?.groupPolicy,
@@ -101,7 +101,7 @@ const loadMSTeamsChannelRuntime = createLazyRuntimeNamedExport(
   "msTeamsChannelRuntime",
 );
 
-const resolveMSTeamsChannelConfig = (cfg: NexisClawConfig) => ({
+const resolveMSTeamsChannelConfig = (cfg: FirstNexusConfig) => ({
   allowFrom: cfg.channels?.msteams?.allowFrom,
   defaultTo: cfg.channels?.msteams?.defaultTo,
 });
@@ -1137,7 +1137,7 @@ export const msteamsPlugin: ChannelPlugin<ResolvedMSTeamsAccount, ProbeMSTeamsRe
       },
     },
     security: {
-      collectWarnings: projectConfigWarningCollector<{ cfg: NexisClawConfig }>(
+      collectWarnings: projectConfigWarningCollector<{ cfg: FirstNexusConfig }>(
         collectMSTeamsSecurityWarnings,
       ),
     },

@@ -1,11 +1,11 @@
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/account-id";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/account-id";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   applySetupAccountConfigPatch,
   createStandardChannelSetupStatus,
   formatDocsLink,
   type ChannelSetupWizard,
-} from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/setup";
 import {
   applyMattermostSetupConfigPatch,
   isMattermostConfigured,
@@ -124,7 +124,7 @@ export const mattermostSetupWizard: ChannelSetupWizard = {
         }),
     },
   ],
-  disable: (cfg: NexisClawConfig) => ({
+  disable: (cfg: FirstNexusConfig) => ({
     ...cfg,
     channels: {
       ...cfg.channels,

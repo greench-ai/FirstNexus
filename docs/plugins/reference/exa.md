@@ -11,8 +11,8 @@ Adds web search provider support.
 
 ## Distribution
 
-- Package: `@NexisClaw/exa-plugin`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/exa-plugin`
+- Install route: included in FirstNexus
 
 ## Surface
 

@@ -4,12 +4,12 @@ const ssrfMocks = vi.hoisted(() => ({
   resolvePinnedHostnameWithPolicy: vi.fn(),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", () => ({
   resolvePinnedHostnameWithPolicy: ssrfMocks.resolvePinnedHostnameWithPolicy,
 }));
 
 afterAll(() => {
-  vi.doUnmock("NexisClaw/plugin-sdk/ssrf-runtime");
+  vi.doUnmock("FirstNexus/plugin-sdk/ssrf-runtime");
   vi.resetModules();
 });
 

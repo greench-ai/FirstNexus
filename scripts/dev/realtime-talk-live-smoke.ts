@@ -91,7 +91,7 @@ async function smokeOpenAIBackendBridge(apiKey: string): Promise<SmokeResult> {
       model: OPENAI_REALTIME_MODEL,
       voice: OPENAI_REALTIME_VOICE,
     },
-    instructions: "NexisClaw backend realtime live smoke. Do not speak yet.",
+    instructions: "FirstNexus backend realtime live smoke. Do not speak yet.",
     onAudio: () => {},
     onClearAudio: () => {},
     onEvent: (event) => {
@@ -221,7 +221,7 @@ async function createGoogleLiveToken(apiKey: string): Promise<string> {
               prebuiltVoiceConfig: { voiceName: GOOGLE_REALTIME_VOICE },
             },
           },
-          systemInstruction: "NexisClaw browser Talk live smoke.",
+          systemInstruction: "FirstNexus browser Talk live smoke.",
           inputAudioTranscription: {},
           outputAudioTranscription: {},
         },
@@ -332,7 +332,7 @@ async function smokeGoogleLiveBrowserWs(browser: Browser, apiKey: string): Promi
 
 async function smokeGatewayRelayBrowser(browser: Browser): Promise<SmokeResult> {
   let server: ViteDevServer | undefined;
-  const dir = await mkdtemp(path.join(tmpdir(), "NexisClaw-realtime-talk-"));
+  const dir = await mkdtemp(path.join(tmpdir(), "FirstNexus-realtime-talk-"));
   try {
     const repoRoot = process.cwd().replaceAll("\\", "/");
     await writeFile(
@@ -429,7 +429,7 @@ try {
       relaySessionId: "relay-live-smoke",
       type: "toolCall",
       callId: "call-smoke",
-      name: "NexisClaw_agent_consult",
+      name: "FirstNexus_agent_consult",
       args: { question: "confirm relay consult path" },
     },
   });

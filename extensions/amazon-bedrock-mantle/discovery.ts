@@ -1,10 +1,10 @@
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/core";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/core";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import type {
   ModelDefinitionConfig,
   ModelProviderConfig,
-} from "NexisClaw/plugin-sdk/provider-model-shared";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-model-shared";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 const log = createSubsystemLogger("bedrock-mantle-discovery");
 

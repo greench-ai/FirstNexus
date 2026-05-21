@@ -1,12 +1,12 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { findCatalogTemplate } from "NexisClaw/plugin-sdk/provider-catalog-shared";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { findCatalogTemplate } from "FirstNexus/plugin-sdk/provider-catalog-shared";
 import {
   cloneFirstTemplateModel,
   matchesExactOrPrefix,
   type ProviderPlugin,
-} from "NexisClaw/plugin-sdk/provider-model-shared";
-import { OPENAI_RESPONSES_STREAM_HOOKS } from "NexisClaw/plugin-sdk/provider-stream-family";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-model-shared";
+import { OPENAI_RESPONSES_STREAM_HOOKS } from "FirstNexus/plugin-sdk/provider-stream-family";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { createOpenAINativeWebSearchWrapper } from "./native-web-search.js";
 import { buildOpenAIReplayPolicy } from "./replay-policy.js";
 import {
@@ -38,7 +38,7 @@ export function toOpenAIDataUrl(buffer: Buffer, mimeType: string): string {
   return `data:${mimeType};base64,${buffer.toString("base64")}`;
 }
 
-export function resolveConfiguredOpenAIBaseUrl(cfg: NexisClawConfig | undefined): string {
+export function resolveConfiguredOpenAIBaseUrl(cfg: FirstNexusConfig | undefined): string {
   return normalizeOptionalString(cfg?.models?.providers?.openai?.baseUrl) ?? OPENAI_API_BASE_URL;
 }
 

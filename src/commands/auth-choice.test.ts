@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { resolveAgentDir } from "../agents/agent-scope.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
 import type { ModelProviderConfig } from "../config/types.models.js";
 import { __testing as providerAuthChoiceTesting } from "../plugins/provider-auth-choice.js";
@@ -81,13 +81,13 @@ const detectZaiEndpoint = vi.hoisted(() => vi.fn<DetectZaiEndpoint>(async () => 
 vi.mock("../agents/agent-scope.js", () => ({
   resolveDefaultAgentId: () => "main",
   resolveAgentDir: (_config: unknown, agentId: string) =>
-    `${process.env.NEXISCLAW_STATE_DIR ?? "/tmp/NexisClaw-state"}/agents/${agentId}/agent`,
+    `${process.env.NEXISCLAW_STATE_DIR ?? "/tmp/FirstNexus-state"}/agents/${agentId}/agent`,
   resolveAgentWorkspaceDir: (_config: unknown, agentId: string) =>
-    `/tmp/NexisClaw-workspaces/${agentId}`,
+    `/tmp/FirstNexus-workspaces/${agentId}`,
 }));
 
 vi.mock("../agents/workspace.js", () => ({
-  resolveDefaultAgentWorkspaceDir: () => "/tmp/NexisClaw-workspace",
+  resolveDefaultAgentWorkspaceDir: () => "/tmp/FirstNexus-workspace",
 }));
 
 vi.mock("../plugins/setup-browser.js", () => ({
@@ -101,7 +101,7 @@ vi.mock("../plugins/provider-oauth-flow.js", () => ({
 
 vi.mock("../plugins/provider-auth-helpers.js", () => ({
   applyAuthProfileConfig: (
-    cfg: NexisClawConfig,
+    cfg: FirstNexusConfig,
     params: {
       profileId: string;
       provider: string;
@@ -109,7 +109,7 @@ vi.mock("../plugins/provider-auth-helpers.js", () => ({
       email?: string;
       displayName?: string;
     },
-  ): NexisClawConfig => ({
+  ): FirstNexusConfig => ({
     ...cfg,
     auth: {
       ...cfg.auth,
@@ -217,7 +217,7 @@ function resolveProviderPluginChoice(params: { providers: ProviderPlugin[]; choi
 function providerConfigPatch(
   providerId: string,
   patch: Record<string, unknown>,
-): Partial<NexisClawConfig> {
+): Partial<FirstNexusConfig> {
   const providers: Record<string, ModelProviderConfig> = {
     [providerId]: patch as ModelProviderConfig,
   };
@@ -348,7 +348,7 @@ async function createApiKeyProvider(params: {
   expectedProviders?: string[];
   noteMessage?: string;
   noteTitle?: string;
-  applyConfig?: Partial<NexisClawConfig>;
+  applyConfig?: Partial<FirstNexusConfig>;
 }): Promise<ProviderPlugin> {
   const profileIds =
     params.profileIds && params.profileIds.length > 0
@@ -387,7 +387,7 @@ async function createApiKeyProvider(params: {
                 input,
               ),
             })),
-            ...(params.applyConfig ? { configPatch: params.applyConfig as NexisClawConfig } : {}),
+            ...(params.applyConfig ? { configPatch: params.applyConfig as FirstNexusConfig } : {}),
             ...(params.defaultModel ? { defaultModel: params.defaultModel } : {}),
           };
         },
@@ -463,7 +463,7 @@ async function createDefaultProviderPlugins(): Promise<ProviderPlugin[]> {
             credential: buildApiKeyCredential("zai", token),
           },
         ],
-        configPatch: providerConfigPatch("zai", { baseUrl }) as NexisClawConfig,
+        configPatch: providerConfigPatch("zai", { baseUrl }) as FirstNexusConfig,
         defaultModel: `zai/${modelId}`,
       };
     },
@@ -609,7 +609,7 @@ describe("applyAuthChoice", () => {
     };
   }
   async function readAuthProfiles() {
-    return readTestAuthProfileStore(resolveAgentDir({} as NexisClawConfig, "main"));
+    return readTestAuthProfileStore(resolveAgentDir({} as FirstNexusConfig, "main"));
   }
   async function readAuthProfilesForAgentDir(agentDir: string) {
     return readTestAuthProfileStore(agentDir);
@@ -618,7 +618,7 @@ describe("applyAuthChoice", () => {
     return (await readAuthProfiles()).profiles?.[profileId];
   }
   function expectAuthProfileConfig(
-    result: { config: NexisClawConfig },
+    result: { config: FirstNexusConfig },
     profileId: string,
     expected: { provider: string; mode: string },
   ) {
@@ -649,7 +649,7 @@ describe("applyAuthChoice", () => {
   let defaultProviderPlugins: ProviderPlugin[] = [];
 
   beforeAll(async () => {
-    authTestRoot = (await setupAuthTestEnv("NexisClaw-auth-")).stateDir;
+    authTestRoot = (await setupAuthTestEnv("FirstNexus-auth-")).stateDir;
     defaultProviderPlugins = await createDefaultProviderPlugins();
     resolvePluginProviders.mockReturnValue(defaultProviderPlugins);
     providerAuthChoiceTesting.setDepsForTest({
@@ -713,7 +713,7 @@ describe("applyAuthChoice", () => {
 
     const result = await applyAuthChoice({
       authChoice: "token",
-      config: {} as NexisClawConfig,
+      config: {} as FirstNexusConfig,
       prompter: createPrompter({}),
       runtime: createExitThrowingRuntime(),
       setDefaultModel: true,
@@ -751,7 +751,7 @@ describe("applyAuthChoice", () => {
           setDefaultModel: true,
         }),
       ).rejects.toThrow(
-        'Auth choice "openai-codex-import" is no longer supported. Use "openai-codex" instead, or run NexisClaw onboard to choose interactively.',
+        'Auth choice "openai-codex-import" is no longer supported. Use "openai-codex" instead, or run FirstNexus onboard to choose interactively.',
       );
     } finally {
       spy.mockRestore();
@@ -774,7 +774,7 @@ describe("applyAuthChoice", () => {
           setDefaultModel: true,
         }),
       ).rejects.toThrow(
-        'Auth choice "legacy\\u001b[31mchoice" is no longer supported. Use "modern\\nchoice" instead, or run NexisClaw onboard to choose interactively.',
+        'Auth choice "legacy\\u001b[31mchoice" is no longer supported. Use "modern\\nchoice" instead, or run FirstNexus onboard to choose interactively.',
       );
     } finally {
       spy.mockRestore();
@@ -902,7 +902,7 @@ describe("applyAuthChoice", () => {
   it("uses provided tokens without prompting across alias and direct provider choices", async () => {
     const scenarios: Array<{
       authChoice: "apiKey" | "gemini-api-key";
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
       setDefaultModel: boolean;
       tokenProvider: string;
       token: string;

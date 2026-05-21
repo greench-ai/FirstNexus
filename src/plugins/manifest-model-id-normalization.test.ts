@@ -9,7 +9,7 @@ import {
 } from "./current-plugin-metadata-snapshot.js";
 import { resolveInstalledPluginIndexPolicyHash } from "./installed-plugin-index-policy.js";
 import type { InstalledPluginIndex } from "./installed-plugin-index.js";
-import { listNexisClawPluginManifestMetadata } from "./manifest-metadata-scan.js";
+import { listFirstNexusPluginManifestMetadata } from "./manifest-metadata-scan.js";
 import { normalizeProviderModelIdWithManifest } from "./manifest-model-id-normalization.js";
 import type { PluginMetadataSnapshot } from "./plugin-metadata-snapshot.js";
 import { createEmptyPluginRegistry } from "./registry-empty.js";
@@ -25,7 +25,7 @@ const ORIGINAL_ENV = {
 const tempDirs: string[] = [];
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-model-id-normalization-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-model-id-normalization-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -66,7 +66,7 @@ function writeNormalizerManifest(params: { pluginDir: string; prefix: string }):
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(params.pluginDir, "NexisClaw.plugin.json"),
+    path.join(params.pluginDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: "normalizer",
       configSchema: { type: "object" },
@@ -100,7 +100,7 @@ function createCurrentSnapshot(params: {
     plugins: [
       {
         pluginId: "normalizer",
-        manifestPath: `/tmp/normalizer-${params.manifestHash}/NexisClaw.plugin.json`,
+        manifestPath: `/tmp/normalizer-${params.manifestHash}/FirstNexus.plugin.json`,
         manifestHash: params.manifestHash,
         source: `/tmp/normalizer-${params.manifestHash}/index.ts`,
         rootDir: `/tmp/normalizer-${params.manifestHash}`,
@@ -248,7 +248,7 @@ describe("manifest model id normalization", () => {
   it("reuses manifest metadata while file fingerprints are unchanged", () => {
     const stateDir = makeTempDir();
     const pluginDir = path.join(stateDir, "extensions", "normalizer");
-    const manifestPath = path.join(pluginDir, "NexisClaw.plugin.json");
+    const manifestPath = path.join(pluginDir, "FirstNexus.plugin.json");
     writeInstallIndex({ stateDir, pluginDir });
     writeNormalizerManifest({ pluginDir, prefix: "alpha" });
 
@@ -259,8 +259,8 @@ describe("manifest model id normalization", () => {
 
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync");
 
-    expect(listNexisClawPluginManifestMetadata(process.env)).toHaveLength(1);
-    expect(listNexisClawPluginManifestMetadata(process.env)).toHaveLength(1);
+    expect(listFirstNexusPluginManifestMetadata(process.env)).toHaveLength(1);
+    expect(listFirstNexusPluginManifestMetadata(process.env)).toHaveLength(1);
 
     const manifestReads = readFileSyncSpy.mock.calls.filter(
       ([filePath]) => String(filePath) === manifestPath,

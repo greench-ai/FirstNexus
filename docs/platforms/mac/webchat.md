@@ -19,10 +19,10 @@ agent (with a session switcher for other sessions).
 - Auto-open for testing:
 
   ```bash
-  dist/NexisClaw.app/Contents/MacOS/NexisClaw --webchat
+  dist/FirstNexus.app/Contents/MacOS/FirstNexus --webchat
   ```
 
-- Logs: `./scripts/clawlog.sh` (subsystem `ai.NexisClaw`, category `WebChatSwiftUI`).
+- Logs: `./scripts/clawlog.sh` (subsystem `ai.FirstNexus`, category `WebChatSwiftUI`).
 
 ## How it is wired
 

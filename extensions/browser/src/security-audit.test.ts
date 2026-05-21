@@ -8,8 +8,8 @@ function collectFindings(
     config,
     sourceConfig: config,
     env: {} as NodeJS.ProcessEnv,
-    stateDir: "/tmp/NexisClaw-state",
-    configPath: "/tmp/NexisClaw.json",
+    stateDir: "/tmp/FirstNexus-state",
+    configPath: "/tmp/FirstNexus.json",
   });
 }
 

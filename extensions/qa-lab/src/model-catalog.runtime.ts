@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 import { resolveQaNodeExecPath } from "./node-exec.js";
 import {
   isPreferredQaLiveFrontierCatalogModel,
@@ -105,12 +105,12 @@ function killProcessTree(pid: number | undefined, signal: NodeJS.Signals) {
 
 export async function loadQaRunnerModelOptions(params: { repoRoot: string; signal?: AbortSignal }) {
   const tempRoot = await fs.mkdtemp(
-    path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-qa-model-catalog-"),
+    path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-qa-model-catalog-"),
   );
   const workspaceDir = path.join(tempRoot, "workspace");
   const stateDir = path.join(tempRoot, "state");
   const homeDir = path.join(tempRoot, "home");
-  const configPath = path.join(tempRoot, "NexisClaw.json");
+  const configPath = path.join(tempRoot, "FirstNexus.json");
 
   try {
     await Promise.all([

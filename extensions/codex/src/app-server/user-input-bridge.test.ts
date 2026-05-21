@@ -1,4 +1,4 @@
-import type { EmbeddedRunAttemptParams } from "NexisClaw/plugin-sdk/agent-harness-runtime";
+import type { EmbeddedRunAttemptParams } from "FirstNexus/plugin-sdk/agent-harness-runtime";
 import { describe, expect, it, vi } from "vitest";
 import { createCodexUserInputBridge } from "./user-input-bridge.js";
 
@@ -98,11 +98,11 @@ describe("Codex app-server user input bridge", () => {
     });
 
     await vi.waitFor(() => expect(params.onBlockReply).toHaveBeenCalledTimes(1));
-    expect(bridge.handleQueuedMessage("repo: NexisClaw\nscope: Tests")).toBe(true);
+    expect(bridge.handleQueuedMessage("repo: FirstNexus\nscope: Tests")).toBe(true);
 
     await expect(response).resolves.toEqual({
       answers: {
-        repo: { answers: ["NexisClaw"] },
+        repo: { answers: ["FirstNexus"] },
         scope: { answers: ["Tests"] },
       },
     });

@@ -110,14 +110,14 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
       stateScenario: "empty",
       weight: 3,
     });
-    expect(script).toContain("npm:@NexisClaw/kitchen-sink@latest");
+    expect(script).toContain("npm:@FirstNexus/kitchen-sink@latest");
     expect(script).toContain("npm-latest-conformance");
     expect(script).toContain("npm-latest-adversarial");
-    expect(script).toContain("npm:@NexisClaw/kitchen-sink@beta");
-    expect(script).toContain("clawhub:@NexisClaw/kitchen-sink@latest");
-    expect(script).toContain("clawhub:@NexisClaw/kitchen-sink@beta");
+    expect(script).toContain("npm:@FirstNexus/kitchen-sink@beta");
+    expect(script).toContain("clawhub:@FirstNexus/kitchen-sink@latest");
+    expect(script).toContain("clawhub:@FirstNexus/kitchen-sink@beta");
     expect(script).toContain(
-      "npm-to-clawhub|clawhub:@NexisClaw/kitchen-sink@latest|NexisClaw-kitchen-sink-fixture|clawhub|success|basic||${KITCHEN_SINK_NPM_SPEC}",
+      "npm-to-clawhub|clawhub:@FirstNexus/kitchen-sink@latest|FirstNexus-kitchen-sink-fixture|clawhub|success|basic||${KITCHEN_SINK_NPM_SPEC}",
     );
     expect(script).toContain("scripts/e2e/lib/kitchen-sink-plugin/sweep.sh");
     expect(sweepScript).toContain('plugins install "$KITCHEN_SINK_SPEC"');
@@ -153,7 +153,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     );
     expect(assertionsScript).toContain("!INVALID_PROBE_DIAGNOSTIC_SURFACE_MODES.has(surfaceMode)");
     expect(readFileSync("scripts/e2e/lib/clawhub-fixture-server.cjs", "utf8")).toContain(
-      'from "NexisClaw/plugin-sdk/plugin-entry"',
+      'from "FirstNexus/plugin-sdk/plugin-entry"',
     );
     expect(readFileSync("scripts/e2e/lib/clawhub-fixture-server.cjs", "utf8")).toContain(
       "X-ClawHub-Artifact-Sha256",
@@ -185,9 +185,9 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     expect(sweepScript).toContain("run_plugins_clawhub_scenario");
     expect(clawhubScript).toContain('plugins install "$CLAWHUB_PLUGIN_SPEC"');
     expect(assertionsScript).toContain("assertClawHubExternalInstallContract");
-    expect(assertionsScript).toContain('node_modules", "NexisClaw');
+    expect(assertionsScript).toContain('node_modules", "FirstNexus');
     expect(fixtureServer).toContain('"is-number": "7.0.0"');
-    expect(fixtureServer).toContain('NexisClaw: ">=2026.4.11"');
+    expect(fixtureServer).toContain('FirstNexus: ">=2026.4.11"');
     expect(fixtureServer).toContain("/versions/${fixture.version}/artifact");
   });
 
@@ -404,7 +404,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
     });
     expect(inspectorRun.run).toContain("extensions/");
     expect(inspectorRun.run).toContain(
-      'npm exec --yes "@NexisClaw/plugin-inspector@${NEXISCLAW_PLUGIN_INSPECTOR_VERSION}" -- ci',
+      'npm exec --yes "@FirstNexus/plugin-inspector@${NEXISCLAW_PLUGIN_INSPECTOR_VERSION}" -- ci',
     );
     expect(inspectorRun.run).toContain("This job is informational");
     expect(
@@ -432,7 +432,7 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
         packages: "write",
         "pull-requests": "read",
       },
-      uses: "./.github/workflows/NexisClaw-live-and-e2e-checks-reusable.yml",
+      uses: "./.github/workflows/FirstNexus-live-and-e2e-checks-reusable.yml",
       with: {
         docker_lanes: "${{ needs.preflight.outputs.plugin_prerelease_docker_lanes }}",
         include_live_suites: false,
@@ -460,13 +460,13 @@ describe("scripts/lib/plugin-prerelease-test-plan.mjs", () => {
 
   it("keeps release-check reruns independent while cancelling superseded umbrella runs", () => {
     const releaseChecksWorkflow = parse(
-      readFileSync(".github/workflows/NexisClaw-release-checks.yml", "utf8"),
+      readFileSync(".github/workflows/FirstNexus-release-checks.yml", "utf8"),
     );
     const fullReleaseWorkflow = readFullReleaseValidationWorkflow();
 
     expect(releaseChecksWorkflow.concurrency).toEqual({
       group:
-        "NexisClaw-release-checks-${{ inputs.expected_sha || inputs.ref }}-${{ inputs.rerun_group }}",
+        "FirstNexus-release-checks-${{ inputs.expected_sha || inputs.ref }}-${{ inputs.rerun_group }}",
       "cancel-in-progress": false,
     });
     expect(fullReleaseWorkflow.concurrency).toEqual({

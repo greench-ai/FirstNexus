@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-source scripts/lib/NexisClaw-e2e-instance.sh
+source scripts/lib/FirstNexus-e2e-instance.sh
 
 export npm_config_loglevel=error
 export npm_config_fund=false
@@ -13,14 +13,14 @@ export NEXISCLAW_SKIP_PROVIDERS=1
 export NEXISCLAW_SKIP_CHANNELS=1
 export NEXISCLAW_DISABLE_BONJOUR=1
 export GATEWAY_AUTH_TOKEN_REF="upgrade-survivor-token"
-export OPENAI_API_KEY="sk-NexisClaw-upgrade-survivor"
+export OPENAI_API_KEY="sk-FirstNexus-upgrade-survivor"
 export DISCORD_BOT_TOKEN="upgrade-survivor-discord-token"
 export TELEGRAM_BOT_TOKEN="123456:upgrade-survivor-telegram-token"
 export FEISHU_APP_SECRET="upgrade-survivor-feishu-secret"
 export MATRIX_ACCESS_TOKEN="upgrade-survivor-matrix-token"
 export BRAVE_API_KEY="BSA_upgrade_survivor_brave_key"
 
-ARTIFACT_ROOT="$(dirname "${NEXISCLAW_UPGRADE_SURVIVOR_SUMMARY_JSON:-/tmp/NexisClaw-upgrade-survivor-artifacts/summary.json}")"
+ARTIFACT_ROOT="$(dirname "${NEXISCLAW_UPGRADE_SURVIVOR_SUMMARY_JSON:-/tmp/FirstNexus-upgrade-survivor-artifacts/summary.json}")"
 mkdir -p "$ARTIFACT_ROOT"
 export TMPDIR="$ARTIFACT_ROOT/tmp"
 mkdir -p "$TMPDIR"
@@ -77,10 +77,10 @@ rm -f "$SUMMARY_JSON" "$CONFIG_COVERAGE_JSON"
 
 validate_baseline_package_spec() {
   local spec="$1"
-  if [[ "$spec" =~ ^NexisClaw@(alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$ ]]; then
+  if [[ "$spec" =~ ^FirstNexus@(alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$ ]]; then
     return 0
   fi
-  echo "NEXISCLAW_UPGRADE_SURVIVOR_BASELINE must be NexisClaw@latest, NexisClaw@beta, NexisClaw@alpha, an exact NexisClaw release version, or a bare release version; got: $spec" >&2
+  echo "NEXISCLAW_UPGRADE_SURVIVOR_BASELINE must be FirstNexus@latest, FirstNexus@beta, FirstNexus@alpha, an exact FirstNexus release version, or a bare release version; got: $spec" >&2
   return 1
 }
 
@@ -91,17 +91,17 @@ normalize_baseline() {
     return 1
   fi
   case "$raw" in
-    NexisClaw@*)
+    FirstNexus@*)
       baseline_spec="$raw"
-      baseline_version="${raw#NexisClaw@}"
+      baseline_version="${raw#FirstNexus@}"
       ;;
     *@*)
-      echo "NEXISCLAW_UPGRADE_SURVIVOR_BASELINE must be NexisClaw@<version> or a bare version" >&2
+      echo "NEXISCLAW_UPGRADE_SURVIVOR_BASELINE must be FirstNexus@<version> or a bare version" >&2
       return 1
       ;;
     *)
       baseline_version="$raw"
-      baseline_spec="NexisClaw@$raw"
+      baseline_spec="FirstNexus@$raw"
       ;;
   esac
   case "$baseline_version" in
@@ -110,7 +110,7 @@ normalize_baseline() {
       baseline_version_expected="0"
       ;;
     dev | main | "")
-      echo "NEXISCLAW_UPGRADE_SURVIVOR_BASELINE must be NexisClaw@latest, NexisClaw@beta, NexisClaw@alpha, NexisClaw@<version>, or a bare version" >&2
+      echo "NEXISCLAW_UPGRADE_SURVIVOR_BASELINE must be FirstNexus@latest, FirstNexus@beta, FirstNexus@alpha, FirstNexus@<version>, or a bare version" >&2
       return 1
       ;;
     *)
@@ -218,12 +218,12 @@ cleanup() {
   if [ -n "${plugin_registry_pid:-}" ]; then
     kill "$plugin_registry_pid" >/dev/null 2>&1 || true
   fi
-  NexisClaw_e2e_terminate_gateways "${gateway_pid:-}"
+  FirstNexus_e2e_terminate_gateways "${gateway_pid:-}"
   if [ -s "$SYSTEMCTL_SHIM_PID_FILE" ]; then
     local shim_pid
     shim_pid="$(cat "$SYSTEMCTL_SHIM_PID_FILE" 2>/dev/null || true)"
     if [[ "$shim_pid" =~ ^[0-9]+$ ]] && [ "$shim_pid" -gt 1 ]; then
-      NexisClaw_e2e_terminate_gateways "$shim_pid"
+      FirstNexus_e2e_terminate_gateways "$shim_pid"
     fi
   fi
 }
@@ -267,7 +267,7 @@ phase() {
 }
 
 package_root() {
-  printf '%s/lib/node_modules/NexisClaw\n' "$npm_config_prefix"
+  printf '%s/lib/node_modules/FirstNexus\n' "$npm_config_prefix"
 }
 
 legacy_runtime_deps_symlink_plugin() {
@@ -286,7 +286,7 @@ legacy_runtime_deps_symlink_plugin() {
 
 legacy_runtime_deps_symlink_target() {
   local plugin="$1"
-  printf '%s/@NexisClaw-upgrade-survivor/%s-runtime-dep\n' "$(dirname "$(package_root)")" "$plugin"
+  printf '%s/@FirstNexus-upgrade-survivor/%s-runtime-dep\n' "$(dirname "$(package_root)")" "$plugin"
 }
 
 legacy_runtime_deps_symlink_source() {
@@ -322,20 +322,20 @@ source_only_plugin_shadow_enabled() {
 seed_source_only_plugin_shadow() {
   source_only_plugin_shadow_enabled || return 0
 
-  local shadow_root="$NEXISCLAW_STATE_DIR/extensions/opik-NexisClaw"
+  local shadow_root="$NEXISCLAW_STATE_DIR/extensions/opik-FirstNexus"
   mkdir -p "$shadow_root/src"
   cat >"$shadow_root/package.json" <<'JSON'
 {
-  "name": "@opik/opik-NexisClaw",
+  "name": "@opik/opik-FirstNexus",
   "version": "0.0.0-upgrade-survivor",
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": ["./src/index.ts"]
   }
 }
 JSON
-  cat >"$shadow_root/NexisClaw.plugin.json" <<'JSON'
+  cat >"$shadow_root/FirstNexus.plugin.json" <<'JSON'
 {
-  "id": "opik-NexisClaw",
+  "id": "opik-FirstNexus",
   "activation": {
     "onStartup": false
   },
@@ -348,7 +348,7 @@ JSON
 JSON
   cat >"$shadow_root/src/index.ts" <<'TS'
 export default {
-  id: "opik-NexisClaw",
+  id: "opik-FirstNexus",
   name: "Source-only Opik shadow",
   register() {},
 };
@@ -361,7 +361,7 @@ configure_configured_plugin_install_fixture_registry() {
 
   local fixture_root="$ARTIFACT_ROOT/configured-plugin-installs-npm-fixture"
   local package_dir="$fixture_root/package"
-  local tarball="$fixture_root/NexisClaw-brave-plugin-2026.5.2.tgz"
+  local tarball="$fixture_root/FirstNexus-brave-plugin-2026.5.2.tgz"
   local port_file="$fixture_root/npm-registry-port"
   local log_file="$fixture_root/npm-registry.log"
   mkdir -p "$package_dir"
@@ -374,16 +374,16 @@ fs.writeFileSync(
   path.join(root, "package.json"),
   `${JSON.stringify(
     {
-      name: "@NexisClaw/brave-plugin",
+      name: "@FirstNexus/brave-plugin",
       version: "2026.5.2",
-      NexisClaw: { extensions: ["./index.js"] },
+      FirstNexus: { extensions: ["./index.js"] },
     },
     null,
     2,
   )}\n`,
 );
 fs.writeFileSync(
-  path.join(root, "NexisClaw.plugin.json"),
+  path.join(root, "FirstNexus.plugin.json"),
   `${JSON.stringify(
     {
       id: "brave",
@@ -418,7 +418,7 @@ NODE
   tar -czf "$tarball" -C "$fixture_root" package
   node scripts/e2e/lib/plugins/npm-registry-server.mjs \
     "$port_file" \
-    "@NexisClaw/brave-plugin" \
+    "@FirstNexus/brave-plugin" \
     "2026.5.2" \
     "$tarball" \
     >"$log_file" 2>&1 &
@@ -448,11 +448,11 @@ legacy_plugin_dependency_probe_paths() {
   while IFS= read -r plugin_dir; do
     printf '%s\n' \
       "$plugin_dir/node_modules" \
-      "$plugin_dir/.NexisClaw-runtime-deps.json" \
-      "$plugin_dir/.NexisClaw-runtime-deps-stamp.json" \
-      "$plugin_dir/.NexisClaw-runtime-deps-copy-upgrade-survivor" \
-      "$plugin_dir/.NexisClaw-install-stage-upgrade-survivor" \
-      "$plugin_dir/.NexisClaw-pnpm-store"
+      "$plugin_dir/.FirstNexus-runtime-deps.json" \
+      "$plugin_dir/.FirstNexus-runtime-deps-stamp.json" \
+      "$plugin_dir/.FirstNexus-runtime-deps-copy-upgrade-survivor" \
+      "$plugin_dir/.FirstNexus-install-stage-upgrade-survivor" \
+      "$plugin_dir/.FirstNexus-pnpm-store"
   done < <(plugin_deps_cleanup_plugin_dirs "$plugin")
   printf '%s\n' \
     "$(package_root)/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor" \
@@ -483,27 +483,27 @@ seed_legacy_plugin_dependency_debris() {
     [ -n "$plugin_dir" ] || continue
     found=1
     mkdir -p \
-      "$plugin_dir/node_modules/NexisClaw-upgrade-survivor-dep" \
-      "$plugin_dir/.NexisClaw-runtime-deps-copy-upgrade-survivor/node_modules/NexisClaw-upgrade-survivor-dep" \
-      "$plugin_dir/.NexisClaw-install-stage-upgrade-survivor" \
-      "$plugin_dir/.NexisClaw-pnpm-store" \
-      "$(package_root)/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/NexisClaw-upgrade-survivor-dep" \
-      "$NEXISCLAW_STATE_DIR/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/NexisClaw-upgrade-survivor-dep" \
-      "$NEXISCLAW_STATE_DIR/plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/NexisClaw-upgrade-survivor-dep"
-    printf '{"name":"NexisClaw-upgrade-survivor-dep","version":"0.0.0"}\n' \
-      >"$plugin_dir/node_modules/NexisClaw-upgrade-survivor-dep/package.json"
+      "$plugin_dir/node_modules/FirstNexus-upgrade-survivor-dep" \
+      "$plugin_dir/.FirstNexus-runtime-deps-copy-upgrade-survivor/node_modules/FirstNexus-upgrade-survivor-dep" \
+      "$plugin_dir/.FirstNexus-install-stage-upgrade-survivor" \
+      "$plugin_dir/.FirstNexus-pnpm-store" \
+      "$(package_root)/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/FirstNexus-upgrade-survivor-dep" \
+      "$NEXISCLAW_STATE_DIR/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/FirstNexus-upgrade-survivor-dep" \
+      "$NEXISCLAW_STATE_DIR/plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/FirstNexus-upgrade-survivor-dep"
+    printf '{"name":"FirstNexus-upgrade-survivor-dep","version":"0.0.0"}\n' \
+      >"$plugin_dir/node_modules/FirstNexus-upgrade-survivor-dep/package.json"
     printf '{"plugin":"%s","scenario":"plugin-deps-cleanup"}\n' "$plugin" \
-      >"$plugin_dir/.NexisClaw-runtime-deps.json"
+      >"$plugin_dir/.FirstNexus-runtime-deps.json"
     printf '{"plugin":"%s","scenario":"plugin-deps-cleanup","stale":true}\n' "$plugin" \
-      >"$plugin_dir/.NexisClaw-runtime-deps-stamp.json"
-    printf '{"name":"NexisClaw-upgrade-survivor-dep","version":"0.0.0"}\n' \
-      >"$plugin_dir/.NexisClaw-runtime-deps-copy-upgrade-survivor/node_modules/NexisClaw-upgrade-survivor-dep/package.json"
-    printf '{"name":"NexisClaw-upgrade-survivor-dep","version":"0.0.0"}\n' \
-      >"$(package_root)/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/NexisClaw-upgrade-survivor-dep/package.json"
-    printf '{"name":"NexisClaw-upgrade-survivor-dep","version":"0.0.0"}\n' \
-      >"$NEXISCLAW_STATE_DIR/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/NexisClaw-upgrade-survivor-dep/package.json"
-    printf '{"name":"NexisClaw-upgrade-survivor-dep","version":"0.0.0"}\n' \
-      >"$NEXISCLAW_STATE_DIR/plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/NexisClaw-upgrade-survivor-dep/package.json"
+      >"$plugin_dir/.FirstNexus-runtime-deps-stamp.json"
+    printf '{"name":"FirstNexus-upgrade-survivor-dep","version":"0.0.0"}\n' \
+      >"$plugin_dir/.FirstNexus-runtime-deps-copy-upgrade-survivor/node_modules/FirstNexus-upgrade-survivor-dep/package.json"
+    printf '{"name":"FirstNexus-upgrade-survivor-dep","version":"0.0.0"}\n' \
+      >"$(package_root)/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/FirstNexus-upgrade-survivor-dep/package.json"
+    printf '{"name":"FirstNexus-upgrade-survivor-dep","version":"0.0.0"}\n' \
+      >"$NEXISCLAW_STATE_DIR/.local/bundled-plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/FirstNexus-upgrade-survivor-dep/package.json"
+    printf '{"name":"FirstNexus-upgrade-survivor-dep","version":"0.0.0"}\n' \
+      >"$NEXISCLAW_STATE_DIR/plugin-runtime-deps/$plugin-upgrade-survivor/node_modules/FirstNexus-upgrade-survivor-dep/package.json"
     echo "Seeded legacy plugin dependency debris for configured plugin: $plugin"
   done
 
@@ -593,7 +593,7 @@ seed_legacy_runtime_deps_symlink() {
   target_dir="$(legacy_runtime_deps_symlink_target "$plugin")"
   mkdir -p "$source_dir"
   mkdir -p "$(dirname "$target_dir")"
-  printf '{"name":"NexisClaw-upgrade-survivor-legacy-runtime-deps","version":"0.0.0"}\n' \
+  printf '{"name":"FirstNexus-upgrade-survivor-legacy-runtime-deps","version":"0.0.0"}\n' \
     >"$source_dir/package.json"
   rm -rf "$target_dir"
   ln -s "$source_dir" "$target_dir"
@@ -653,8 +653,8 @@ install_baseline() {
     cat "$BASELINE_INSTALL_LOG" >&2 || true
     return 1
   fi
-  if ! command -v NexisClaw >/dev/null; then
-    echo "baseline install did not expose NexisClaw on PATH" >&2
+  if ! command -v FirstNexus >/dev/null; then
+    echo "baseline install did not expose FirstNexus on PATH" >&2
     echo "PATH=$PATH" >&2
     find "$npm_config_prefix" -maxdepth 3 -type f -o -type l >&2 || true
     return 1
@@ -667,21 +667,21 @@ install_baseline() {
   fi
   baseline_version="$installed_version"
   local version_output
-  if ! version_output="$(NexisClaw --version 2>&1)"; then
-    echo "baseline NexisClaw --version failed" >&2
+  if ! version_output="$(FirstNexus --version 2>&1)"; then
+    echo "baseline FirstNexus --version failed" >&2
     echo "$version_output" >&2
     return 1
   fi
   if [[ "$version_output" != *"$baseline_version"* ]]; then
-    echo "baseline NexisClaw --version mismatch: expected output to include $baseline_version" >&2
+    echo "baseline FirstNexus --version mismatch: expected output to include $baseline_version" >&2
     echo "$version_output" >&2
     return 1
   fi
 }
 
 seed_state() {
-  NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_FUNCTION_B64:?missing NEXISCLAW_TEST_STATE_FUNCTION_B64}"
-  NexisClaw_test_state_create "$ARTIFACT_ROOT/state-home" minimal
+  FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_FUNCTION_B64:?missing NEXISCLAW_TEST_STATE_FUNCTION_B64}"
+  FirstNexus_test_state_create "$ARTIFACT_ROOT/state-home" minimal
   export NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_VERSION="$baseline_version"
   node scripts/e2e/lib/upgrade-survivor/assertions.mjs seed
 }
@@ -693,7 +693,7 @@ apply_baseline_config_recipe() {
 }
 
 validate_baseline_config() {
-  if ! NexisClaw config validate >"$BASELINE_CONFIG_VALIDATE_LOG" 2>&1; then
+  if ! FirstNexus config validate >"$BASELINE_CONFIG_VALIDATE_LOG" 2>&1; then
     echo "generated baseline config failed baseline validation" >&2
     cat "$BASELINE_CONFIG_VALIDATE_LOG" >&2 || true
     return 1
@@ -707,9 +707,9 @@ install_update_restart_systemctl_shim() {
 #!/usr/bin/env bash
 set -euo pipefail
 
-log_file="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_LOG:-/tmp/NexisClaw-systemctl-shim.log}"
-pid_file="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_PID_FILE:-/tmp/NexisClaw-systemctl-shim.pid}"
-daemon_log="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_DAEMON_LOG:-/tmp/NexisClaw-systemctl-shim-gateway.log}"
+log_file="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_LOG:-/tmp/FirstNexus-systemctl-shim.log}"
+pid_file="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_PID_FILE:-/tmp/FirstNexus-systemctl-shim.pid}"
+daemon_log="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_DAEMON_LOG:-/tmp/FirstNexus-systemctl-shim-gateway.log}"
 printf '%s\n' "$*" >>"$log_file"
 
 filtered=()
@@ -753,7 +753,7 @@ stop_gateway() {
 }
 
 unit_path() {
-  printf '%s/.config/systemd/user/NexisClaw-gateway.service\n' "${HOME:?missing HOME}"
+  printf '%s/.config/systemd/user/FirstNexus-gateway.service\n' "${HOME:?missing HOME}"
 }
 
 load_unit_environment() {
@@ -843,7 +843,7 @@ SHIM
 }
 
 install_update_restart_service_unit() {
-  if ! env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NexisClaw gateway install --force --json >"$BASELINE_SERVICE_INSTALL_JSON" 2>"$BASELINE_SERVICE_INSTALL_ERR"; then
+  if ! env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD FirstNexus gateway install --force --json >"$BASELINE_SERVICE_INSTALL_JSON" 2>"$BASELINE_SERVICE_INSTALL_ERR"; then
     echo "baseline gateway service install failed" >&2
     cat "$BASELINE_SERVICE_INSTALL_ERR" >&2 || true
     cat "$BASELINE_SERVICE_INSTALL_JSON" >&2 || true
@@ -1042,8 +1042,8 @@ update_candidate() {
   else
     update_start="$(node -e "process.stdout.write(String(Date.now()))")"
   fi
-  if ! env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NEXISCLAW_ALLOW_ROOT=1 NexisClaw "${update_args[@]}" >"$UPDATE_JSON" 2>"$UPDATE_ERR"; then
-    echo "NexisClaw update failed" >&2
+  if ! env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NEXISCLAW_ALLOW_ROOT=1 FirstNexus "${update_args[@]}" >"$UPDATE_JSON" 2>"$UPDATE_ERR"; then
+    echo "FirstNexus update failed" >&2
     cat "$UPDATE_ERR" >&2 || true
     cat "$UPDATE_JSON" >&2 || true
     return 1
@@ -1064,15 +1064,15 @@ update_candidate() {
 }
 
 run_doctor() {
-  if ! NexisClaw doctor --fix --non-interactive >"$DOCTOR_LOG" 2>&1; then
-    echo "NexisClaw doctor failed" >&2
+  if ! FirstNexus doctor --fix --non-interactive >"$DOCTOR_LOG" 2>&1; then
+    echo "FirstNexus doctor failed" >&2
     cat "$DOCTOR_LOG" >&2 || true
     return 1
   fi
 }
 
 validate_post_doctor_config() {
-  if ! NexisClaw config validate >>"$DOCTOR_LOG" 2>&1; then
+  if ! FirstNexus config validate >>"$DOCTOR_LOG" 2>&1; then
     echo "post-doctor config validation failed" >&2
     cat "$DOCTOR_LOG" >&2 || true
     return 1
@@ -1116,12 +1116,12 @@ start_gateway() {
   local start_epoch
   local ready_epoch
   start_epoch="$(node -e "process.stdout.write(String(Date.now()))")"
-  env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NexisClaw gateway --port "$port" --bind loopback --allow-unconfigured >"$GATEWAY_LOG" 2>&1 &
+  env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD FirstNexus gateway --port "$port" --bind loopback --allow-unconfigured >"$GATEWAY_LOG" 2>&1 &
   gateway_pid="$!"
   if [ "$UPDATE_RESTART_MODE" = "auto-auth" ]; then
     printf '%s\n' "$gateway_pid" >"$SYSTEMCTL_SHIM_PID_FILE"
   fi
-  NexisClaw_e2e_wait_gateway_ready "$gateway_pid" "$GATEWAY_LOG" 360
+  FirstNexus_e2e_wait_gateway_ready "$gateway_pid" "$GATEWAY_LOG" 360
   ready_epoch="$(node -e "process.stdout.write(String(Date.now()))")"
   start_seconds=$(((ready_epoch - start_epoch + 999) / 1000))
   if [ "$start_seconds" -gt "$budget" ]; then
@@ -1151,7 +1151,7 @@ check_gateway_status() {
   local status_start
   local status_end
   status_start="$(node -e "process.stdout.write(String(Date.now()))")"
-  if ! NexisClaw gateway status --url "ws://127.0.0.1:$port" --token "$GATEWAY_AUTH_TOKEN_REF" --require-rpc --timeout 30000 --json >"$STATUS_JSON" 2>"$STATUS_ERR"; then
+  if ! FirstNexus gateway status --url "ws://127.0.0.1:$port" --token "$GATEWAY_AUTH_TOKEN_REF" --require-rpc --timeout 30000 --json >"$STATUS_JSON" 2>"$STATUS_ERR"; then
     echo "gateway status failed" >&2
     cat "$STATUS_ERR" >&2 || true
     cat "$GATEWAY_LOG" >&2 || true

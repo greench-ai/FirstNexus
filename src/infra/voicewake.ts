@@ -8,7 +8,7 @@ type VoiceWakeConfig = {
   updatedAtMs: number;
 };
 
-const DEFAULT_TRIGGERS = ["NexisClaw", "claude", "computer"];
+const DEFAULT_TRIGGERS = ["FirstNexus", "claude", "computer"];
 
 function resolvePath(baseDir?: string) {
   const root = baseDir ?? resolveStateDir();

@@ -2,7 +2,7 @@ export {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   normalizeOptionalAccountId,
-} from "NexisClaw/plugin-sdk/account-id";
+} from "FirstNexus/plugin-sdk/account-id";
 export {
   createActionGate,
   jsonResult,
@@ -11,9 +11,9 @@ export {
   readStringArrayParam,
   readStringParam,
   ToolAuthorizationError,
-} from "NexisClaw/plugin-sdk/channel-actions";
-export { buildChannelConfigSchema } from "NexisClaw/plugin-sdk/channel-config-primitives";
-export type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
+} from "FirstNexus/plugin-sdk/channel-actions";
+export { buildChannelConfigSchema } from "FirstNexus/plugin-sdk/channel-config-primitives";
+export type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
 export type {
   BaseProbeResult,
   ChannelDirectoryEntry,
@@ -26,30 +26,30 @@ export type {
   ChannelResolveKind,
   ChannelResolveResult,
   ChannelToolSend,
-} from "NexisClaw/plugin-sdk/channel-contract";
+} from "FirstNexus/plugin-sdk/channel-contract";
 export {
   formatLocationText,
   toLocationContext,
   type NormalizedLocation,
-} from "NexisClaw/plugin-sdk/channel-location";
-export { logInboundDrop, logTypingFailure } from "NexisClaw/plugin-sdk/channel-logging";
-export { resolveAckReaction } from "NexisClaw/plugin-sdk/channel-feedback";
-export type { ChannelSetupInput } from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/channel-location";
+export { logInboundDrop, logTypingFailure } from "FirstNexus/plugin-sdk/channel-logging";
+export { resolveAckReaction } from "FirstNexus/plugin-sdk/channel-feedback";
+export type { ChannelSetupInput } from "FirstNexus/plugin-sdk/setup";
 export type {
-  NexisClawConfig,
+  FirstNexusConfig,
   ContextVisibilityMode,
   DmPolicy,
   GroupPolicy,
-} from "NexisClaw/plugin-sdk/config-contracts";
-export type { GroupToolPolicyConfig } from "NexisClaw/plugin-sdk/config-contracts";
-export type { WizardPrompter } from "NexisClaw/plugin-sdk/setup";
-export type { SecretInput } from "NexisClaw/plugin-sdk/secret-input";
+} from "FirstNexus/plugin-sdk/config-contracts";
+export type { GroupToolPolicyConfig } from "FirstNexus/plugin-sdk/config-contracts";
+export type { WizardPrompter } from "FirstNexus/plugin-sdk/setup";
+export type { SecretInput } from "FirstNexus/plugin-sdk/secret-input";
 export {
   GROUP_POLICY_BLOCKED_LABEL,
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
 export {
   addWildcardAllowFrom,
   formatDocsLink,
@@ -59,8 +59,8 @@ export {
   promptAccountId,
   promptChannelAccessConfig,
   splitSetupEntries,
-} from "NexisClaw/plugin-sdk/setup";
-export type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime";
+} from "FirstNexus/plugin-sdk/setup";
+export type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime";
 export {
   assertHttpUrlTargetsPrivateNetwork,
   closeDispatcher,
@@ -71,36 +71,36 @@ export {
   ssrfPolicyFromAllowPrivateNetwork,
   type LookupFn,
   type SsrFPolicy,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
-export { dispatchReplyFromConfigWithSettledDispatcher } from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
+export { dispatchReplyFromConfigWithSettledDispatcher } from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
 export {
   ensureConfiguredAcpBindingReady,
   resolveConfiguredAcpBindingRecord,
-} from "NexisClaw/plugin-sdk/acp-binding-runtime";
+} from "FirstNexus/plugin-sdk/acp-binding-runtime";
 export {
   buildProbeChannelStatusSummary,
   collectStatusIssuesFromLastError,
   PAIRING_APPROVED_MESSAGE,
-} from "NexisClaw/plugin-sdk/channel-status";
+} from "FirstNexus/plugin-sdk/channel-status";
 export {
   getSessionBindingService,
   resolveThreadBindingIdleTimeoutMsForChannel,
   resolveThreadBindingMaxAgeMsForChannel,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-export { resolveOutboundSendDep } from "NexisClaw/plugin-sdk/outbound-send-deps";
-export { resolveAgentIdFromSessionKey } from "NexisClaw/plugin-sdk/routing";
-export { chunkTextForOutbound } from "NexisClaw/plugin-sdk/text-chunking";
-export { createChannelMessageReplyPipeline } from "NexisClaw/plugin-sdk/channel-message";
-export { loadOutboundMediaFromUrl } from "NexisClaw/plugin-sdk/outbound-media";
-export { normalizePollInput, type PollInput } from "NexisClaw/plugin-sdk/poll-runtime";
-export { writeJsonFileAtomically } from "NexisClaw/plugin-sdk/json-store";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+export { resolveOutboundSendDep } from "FirstNexus/plugin-sdk/outbound-send-deps";
+export { resolveAgentIdFromSessionKey } from "FirstNexus/plugin-sdk/routing";
+export { chunkTextForOutbound } from "FirstNexus/plugin-sdk/text-chunking";
+export { createChannelMessageReplyPipeline } from "FirstNexus/plugin-sdk/channel-message";
+export { loadOutboundMediaFromUrl } from "FirstNexus/plugin-sdk/outbound-media";
+export { normalizePollInput, type PollInput } from "FirstNexus/plugin-sdk/poll-runtime";
+export { writeJsonFileAtomically } from "FirstNexus/plugin-sdk/json-store";
 export {
   buildChannelKeyCandidates,
   resolveChannelEntryMatch,
-} from "NexisClaw/plugin-sdk/channel-targets";
+} from "FirstNexus/plugin-sdk/channel-targets";
 export { buildTimeoutAbortSignal } from "./matrix/sdk/timeout-abort-signal.js";
-export { formatZonedTimestamp } from "NexisClaw/plugin-sdk/time-runtime";
-export type { PluginRuntime, RuntimeLogger } from "NexisClaw/plugin-sdk/plugin-runtime";
-export type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
+export { formatZonedTimestamp } from "FirstNexus/plugin-sdk/time-runtime";
+export type { PluginRuntime, RuntimeLogger } from "FirstNexus/plugin-sdk/plugin-runtime";
+export type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
 // resolveMatrixAccountStringValues already comes from the Matrix API barrel.
 // Re-exporting auth-precedence here makes TS source loaders define the export twice.

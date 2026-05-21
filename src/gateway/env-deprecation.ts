@@ -5,7 +5,7 @@ type LegacyEnvPrefix = (typeof LEGACY_ENV_PREFIXES)[number];
 
 let warned = false;
 
-export function warnLegacyNexisClawEnvVars(env: NodeJS.ProcessEnv = process.env): void {
+export function warnLegacyFirstNexusEnvVars(env: NodeJS.ProcessEnv = process.env): void {
   if (warned || isVitestRuntimeEnv(env)) {
     return;
   }
@@ -29,7 +29,7 @@ export function warnLegacyNexisClawEnvVars(env: NodeJS.ProcessEnv = process.env)
 
   process.emitWarning(
     [
-      `Legacy ${detectedPrefixes} environment variables were detected (${legacyVarCount} total), but NexisClaw only reads NEXISCLAW_* names now.`,
+      `Legacy ${detectedPrefixes} environment variables were detected (${legacyVarCount} total), but FirstNexus only reads NEXISCLAW_* names now.`,
       "Rename them by replacing the legacy prefix with NEXISCLAW_; the old names are ignored.",
     ].join("\n"),
     { code: "NEXISCLAW_LEGACY_ENV_VARS", type: "DeprecationWarning" },
@@ -37,6 +37,6 @@ export function warnLegacyNexisClawEnvVars(env: NodeJS.ProcessEnv = process.env)
   warned = true;
 }
 
-export function resetLegacyNexisClawEnvWarningForTest(): void {
+export function resetLegacyFirstNexusEnvWarningForTest(): void {
   warned = false;
 }

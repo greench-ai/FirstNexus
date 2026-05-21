@@ -1,5 +1,5 @@
 import type { Command } from "commander";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import {
   createLazyCliRuntimeLoader,
   createLiveTransportQaCliRegistration,

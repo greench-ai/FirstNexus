@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { collectChannelRouteTargets } from "./channel-route-targets.js";
 
-function targetMap(cfg: NexisClawConfig): Map<string, string[]> {
+function targetMap(cfg: FirstNexusConfig): Map<string, string[]> {
   return new Map(
     collectChannelRouteTargets(cfg).map((target) => [target.agentId, target.channels]),
   );

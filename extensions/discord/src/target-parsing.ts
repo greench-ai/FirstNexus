@@ -5,7 +5,7 @@ import {
   type MessagingTarget,
   type MessagingTargetKind,
   type MessagingTargetParseOptions,
-} from "NexisClaw/plugin-sdk/messaging-targets";
+} from "FirstNexus/plugin-sdk/messaging-targets";
 
 export type DiscordTargetKind = MessagingTargetKind;
 

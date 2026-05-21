@@ -1,11 +1,11 @@
-import type { MarkdownTableMode } from "NexisClaw/plugin-sdk/config-contracts";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { MarkdownTableMode } from "FirstNexus/plugin-sdk/config-contracts";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   markdownToIR,
   type MarkdownIR,
   type MarkdownStyle,
   renderMarkdownIRChunksWithinLimit,
-} from "NexisClaw/plugin-sdk/text-chunking";
+} from "FirstNexus/plugin-sdk/text-chunking";
 
 type SignalTextStyle = "BOLD" | "ITALIC" | "STRIKETHROUGH" | "MONOSPACE" | "SPOILER";
 

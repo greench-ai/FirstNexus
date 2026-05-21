@@ -2,8 +2,8 @@ import {
   assertOkOrThrowHttpError,
   postJsonRequest,
   resolveProviderHttpRequestConfig,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
 import { asFiniteNumber, asObject, trimToUndefined } from "../agents/provider-http-errors.js";
 import type { SpeechProviderPlugin } from "../plugins/types.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";

@@ -17,7 +17,7 @@ import { writeManagedNpmPlugin } from "./test-helpers/managed-npm-plugin.js";
 const tempDirs: string[] = [];
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-plugin-status", tempDirs);
+  return makeTrackedTempDir("FirstNexus-plugin-status", tempDirs);
 }
 
 afterEach(() => {
@@ -85,7 +85,7 @@ describe("buildPluginRegistrySnapshotReport", () => {
     };
     const whatsappDir = writeManagedNpmPlugin({
       stateDir,
-      packageName: "@NexisClaw/whatsapp",
+      packageName: "@FirstNexus/whatsapp",
       pluginId: "whatsapp",
       version: "2026.5.2",
       name: "WhatsApp",
@@ -121,7 +121,7 @@ describe("buildPluginRegistrySnapshotReport", () => {
     const fixture = createColdPluginFixture({
       rootDir: makeTempDir(),
       pluginId: "indexed-demo",
-      packageName: "@example/NexisClaw-indexed-demo",
+      packageName: "@example/FirstNexus-indexed-demo",
       packageVersion: "9.8.7",
       manifest: {
         id: "indexed-demo",
@@ -156,7 +156,7 @@ describe("buildPluginRegistrySnapshotReport", () => {
       name: "Indexed Demo",
       description: "Manifest-backed list metadata",
       version: "9.8.7",
-      format: "NexisClaw",
+      format: "FirstNexus",
       providerIds: ["indexed-provider"],
       speechProviderIds: ["indexed-speech-provider"],
       realtimeTranscriptionProviderIds: ["indexed-transcription-provider"],
@@ -236,7 +236,7 @@ describe("buildPluginRegistrySnapshotReport", () => {
     const fixture = createColdPluginFixture({
       rootDir: makeTempDir(),
       pluginId: "persisted-demo",
-      packageName: "@example/NexisClaw-persisted-demo",
+      packageName: "@example/FirstNexus-persisted-demo",
       packageVersion: "2.0.0",
       manifest: {
         id: "persisted-demo",

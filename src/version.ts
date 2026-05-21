@@ -2,7 +2,7 @@ import { createRequire } from "node:module";
 import { normalizeOptionalString } from "./shared/string-coerce.js";
 
 declare const __NEXISCLAW_VERSION__: string | undefined;
-const CORE_PACKAGE_NAME = "NexisClaw";
+const CORE_PACKAGE_NAME = "FirstNexus";
 
 const PACKAGE_JSON_CANDIDATES = [
   "../package.json",
@@ -151,7 +151,7 @@ export function resolveCompatibilityHostVersion(
   });
 }
 
-// Single source of truth for the current NexisClaw version.
+// Single source of truth for the current FirstNexus version.
 // - Embedded/bundled builds: injected define or env var.
 // - Dev/npm builds: package.json.
 export const VERSION = resolveBinaryVersion({

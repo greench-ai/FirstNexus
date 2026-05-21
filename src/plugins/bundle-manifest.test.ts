@@ -28,7 +28,7 @@ type ReadonlyBundleManifestExpectation = Omit<
 const tempDirs: string[] = [];
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-bundle-manifest", tempDirs);
+  return makeTrackedTempDir("FirstNexus-bundle-manifest", tempDirs);
 }
 
 const mkdirSafe = mkdirSafeDir;
@@ -155,9 +155,9 @@ afterEach(() => {
 });
 
 describe("bundle manifest parsing", () => {
-  it("does not treat NexisClaw.bundle.json as a bundle manifest", () => {
+  it("does not treat FirstNexus.bundle.json as a bundle manifest", () => {
     const rootDir = makeTempDir();
-    writeBundleManifest(rootDir, "NexisClaw.bundle.json", {
+    writeBundleManifest(rootDir, "FirstNexus.bundle.json", {
       name: "Not Real",
       skills: ["skills"],
     });

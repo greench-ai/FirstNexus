@@ -1,10 +1,10 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import {
   isRequestBodyLimitError,
   readRequestBodyWithLimit,
   requestBodyErrorToText,
-} from "NexisClaw/plugin-sdk/webhook-ingress";
+} from "FirstNexus/plugin-sdk/webhook-ingress";
 import { normalizeAccountId } from "./bus-queries.js";
 import type { QaBusState } from "./bus-state.js";
 import type {

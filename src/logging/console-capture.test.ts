@@ -17,7 +17,7 @@ import {
 } from "./test-helpers/console-snapshot.js";
 
 let snapshot: ConsoleSnapshot;
-const logPathTracker = createSuiteLogPathTracker("NexisClaw-log-");
+const logPathTracker = createSuiteLogPathTracker("FirstNexus-log-");
 
 beforeAll(async () => {
   await logPathTracker.setup();

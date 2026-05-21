@@ -11,8 +11,8 @@ Adds media understanding provider support.
 
 ## Distribution
 
-- Package: `@NexisClaw/senseaudio-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/senseaudio-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

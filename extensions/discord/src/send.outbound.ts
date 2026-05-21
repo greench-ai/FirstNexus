@@ -1,13 +1,13 @@
 import { ChannelType } from "discord-api-types/v10";
-import { recordChannelActivity } from "NexisClaw/plugin-sdk/channel-activity-runtime";
-import type { MarkdownTableMode, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import type { OutboundMediaAccess, PollInput } from "NexisClaw/plugin-sdk/media-runtime";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import { resolveChunkMode, type ChunkMode } from "NexisClaw/plugin-sdk/reply-chunking";
-import type { RetryConfig } from "NexisClaw/plugin-sdk/retry-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { convertMarkdownTables } from "NexisClaw/plugin-sdk/text-chunking";
+import { recordChannelActivity } from "FirstNexus/plugin-sdk/channel-activity-runtime";
+import type { MarkdownTableMode, FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import type { OutboundMediaAccess, PollInput } from "FirstNexus/plugin-sdk/media-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import { resolveChunkMode, type ChunkMode } from "FirstNexus/plugin-sdk/reply-chunking";
+import type { RetryConfig } from "FirstNexus/plugin-sdk/retry-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { convertMarkdownTables } from "FirstNexus/plugin-sdk/text-chunking";
 import { resolveDiscordAccount } from "./accounts.js";
 import { createChannelMessage, createThread, type RequestClient } from "./internal/discord.js";
 import { rewriteDiscordKnownMentions } from "./mentions.js";
@@ -32,7 +32,7 @@ import {
 } from "./send.shared.js";
 import type { DiscordSendResult } from "./send.types.js";
 type DiscordSendOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   token?: string;
   accountId?: string;
   mediaUrl?: string;

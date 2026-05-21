@@ -1,9 +1,12 @@
 import fs from "node:fs";
 import type { Message } from "@grammyjs/types";
-import { formatLocationText } from "NexisClaw/plugin-sdk/channel-inbound";
-import type { MsgContext } from "NexisClaw/plugin-sdk/reply-runtime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { appendRegularFileSync, replaceFileAtomicSync } from "NexisClaw/plugin-sdk/security-runtime";
+import { formatLocationText } from "FirstNexus/plugin-sdk/channel-inbound";
+import type { MsgContext } from "FirstNexus/plugin-sdk/reply-runtime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import {
+  appendRegularFileSync,
+  replaceFileAtomicSync,
+} from "FirstNexus/plugin-sdk/security-runtime";
 import { resolveTelegramPrimaryMedia } from "./bot/body-helpers.js";
 import {
   buildSenderName,

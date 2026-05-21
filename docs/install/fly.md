@@ -1,12 +1,12 @@
 ---
-summary: "Step-by-step Fly.io deployment for NexisClaw with persistent storage and HTTPS"
+summary: "Step-by-step Fly.io deployment for FirstNexus with persistent storage and HTTPS"
 title: Fly.io
 read_when:
-  - Deploying NexisClaw on Fly.io
+  - Deploying FirstNexus on Fly.io
   - Setting up Fly volumes, secrets, and first-run config
 ---
 
-**Goal:** NexisClaw Gateway running on a [Fly.io](https://fly.io) machine with persistent storage, automatic HTTPS, and Discord/channel access.
+**Goal:** FirstNexus Gateway running on a [Fly.io](https://fly.io) machine with persistent storage, automatic HTTPS, and Discord/channel access.
 
 ## What you need
 
@@ -26,14 +26,14 @@ read_when:
   <Step title="Create the Fly app">
     ```bash
     # Clone the repo
-    git clone https://github.com/NexisClaw/NexisClaw.git
-    cd NexisClaw
+    git clone https://github.com/FirstNexus/FirstNexus.git
+    cd FirstNexus
 
     # Create a new Fly app (pick your own name)
-    fly apps create my-NexisClaw
+    fly apps create my-FirstNexus
 
     # Create a persistent volume (1GB is usually enough)
-    fly volumes create NexisClaw_data --size 1 --region iad
+    fly volumes create FirstNexus_data --size 1 --region iad
     ```
 
     **Tip:** Choose a region close to you. Common options: `lhr` (London), `iad` (Virginia), `sjc` (San Jose).
@@ -46,7 +46,7 @@ read_when:
     **Security note:** The default config exposes a public URL. For a hardened deployment with no public IP, see [Private Deployment](#private-deployment-hardened) or use `deploy/fly.private.toml`.
 
     ```toml
-    app = "my-NexisClaw"  # Your app name
+    app = "my-FirstNexus"  # Your app name
     primary_region = "iad"
 
     [build]
@@ -74,11 +74,11 @@ read_when:
       memory = "2048mb"
 
     [mounts]
-      source = "NexisClaw_data"
+      source = "FirstNexus_data"
       destination = "/data"
     ```
 
-    The NexisClaw Docker image uses `tini` as its entrypoint. Fly process commands replace Docker `CMD` without replacing `ENTRYPOINT`, so the process still runs under `tini`.
+    The FirstNexus Docker image uses `tini` as its entrypoint. Fly process commands replace Docker `CMD` without replacing `ENTRYPOINT`, so the process still runs under `tini`.
 
     **Key settings:**
 
@@ -112,7 +112,7 @@ read_when:
 
     - Non-loopback binds (`--bind lan`) require a valid gateway auth path. This Fly.io example uses `NEXISCLAW_GATEWAY_TOKEN`, but `gateway.auth.password` or a correctly configured non-loopback `trusted-proxy` deployment also satisfy the requirement.
     - Treat these tokens like passwords.
-    - **Prefer env vars over config file** for all API keys and tokens. This keeps secrets out of `NexisClaw.json` where they could be accidentally exposed or logged.
+    - **Prefer env vars over config file** for all API keys and tokens. This keeps secrets out of `FirstNexus.json` where they could be accidentally exposed or logged.
 
   </Step>
 
@@ -150,7 +150,7 @@ read_when:
 
     ```bash
     mkdir -p /data
-    cat > /data/NexisClaw.json << 'EOF'
+    cat > /data/FirstNexus.json << 'EOF'
     {
       "agents": {
         "defaults": {
@@ -196,7 +196,7 @@ read_when:
         "bind": "auto",
         "controlUi": {
           "allowedOrigins": [
-            "https://my-NexisClaw.fly.dev",
+            "https://my-FirstNexus.fly.dev",
             "http://localhost:3000",
             "http://127.0.0.1:3000"
           ]
@@ -207,9 +207,9 @@ read_when:
     EOF
     ```
 
-    **Note:** With `NEXISCLAW_STATE_DIR=/data`, the config path is `/data/NexisClaw.json`.
+    **Note:** With `NEXISCLAW_STATE_DIR=/data`, the config path is `/data/FirstNexus.json`.
 
-    **Note:** Replace `https://my-NexisClaw.fly.dev` with your real Fly app
+    **Note:** Replace `https://my-FirstNexus.fly.dev` with your real Fly app
     origin. Gateway startup seeds local Control UI origins from the runtime
     `--bind` and `--port` values so first boot can proceed before config exists,
     but browser access through Fly still needs the exact HTTPS origin listed in
@@ -240,7 +240,7 @@ read_when:
     fly open
     ```
 
-    Or visit `https://my-NexisClaw.fly.dev/`
+    Or visit `https://my-FirstNexus.fly.dev/`
 
     Authenticate with the configured shared secret. This guide uses the gateway
     token from `NEXISCLAW_GATEWAY_TOKEN`; if you switched to password auth, use
@@ -312,12 +312,12 @@ The lock file is at `/data/gateway.*.lock` (not in a subdirectory).
 
 ### Config not being read
 
-`--allow-unconfigured` only bypasses the startup guard. It does not create or repair `/data/NexisClaw.json`, so make sure your real config exists and includes `gateway.mode="local"` when you want a normal local gateway start.
+`--allow-unconfigured` only bypasses the startup guard. It does not create or repair `/data/FirstNexus.json`, so make sure your real config exists and includes `gateway.mode="local"` when you want a normal local gateway start.
 
 Verify the config exists:
 
 ```bash
-fly ssh console --command "cat /data/NexisClaw.json"
+fly ssh console --command "cat /data/FirstNexus.json"
 ```
 
 ### Writing config via SSH
@@ -326,17 +326,17 @@ The `fly ssh console -C` command doesn't support shell redirection. To write a c
 
 ```bash
 # Use echo + tee (pipe from local to remote)
-echo '{"your":"config"}' | fly ssh console -C "tee /data/NexisClaw.json"
+echo '{"your":"config"}' | fly ssh console -C "tee /data/FirstNexus.json"
 
 # Or use sftp
 fly sftp shell
-> put /local/path/config.json /data/NexisClaw.json
+> put /local/path/config.json /data/FirstNexus.json
 ```
 
 **Note:** `fly sftp` may fail if the file already exists. Delete first:
 
 ```bash
-fly ssh console --command "rm /data/NexisClaw.json"
+fly ssh console --command "rm /data/FirstNexus.json"
 ```
 
 ### State not persisting
@@ -403,18 +403,18 @@ Or convert an existing deployment:
 
 ```bash
 # List current IPs
-fly ips list -a my-NexisClaw
+fly ips list -a my-FirstNexus
 
 # Release public IPs
-fly ips release <public-ipv4> -a my-NexisClaw
-fly ips release <public-ipv6> -a my-NexisClaw
+fly ips release <public-ipv4> -a my-FirstNexus
+fly ips release <public-ipv6> -a my-FirstNexus
 
 # Switch to private config so future deploys don't re-allocate public IPs
 # (remove [http_service] or deploy with the private template)
 fly deploy -c deploy/fly.private.toml
 
 # Allocate private-only IPv6
-fly ips allocate-v6 --private -a my-NexisClaw
+fly ips allocate-v6 --private -a my-FirstNexus
 ```
 
 After this, `fly ips list` should show only a `private` type IP:
@@ -432,7 +432,7 @@ Since there's no public URL, use one of these methods:
 
 ```bash
 # Forward local port 3000 to the app
-fly proxy 3000:3000 -a my-NexisClaw
+fly proxy 3000:3000 -a my-FirstNexus
 
 # Then open http://localhost:3000 in browser
 ```
@@ -450,7 +450,7 @@ fly wireguard create
 **Option 3: SSH only**
 
 ```bash
-fly ssh console -a my-NexisClaw
+fly ssh console -a my-FirstNexus
 ```
 
 ### Webhooks with private deployment
@@ -514,7 +514,7 @@ See [Fly.io pricing](https://fly.io/docs/about/pricing/) for details.
 
 - Set up messaging channels: [Channels](/channels)
 - Configure the Gateway: [Gateway configuration](/gateway/configuration)
-- Keep NexisClaw up to date: [Updating](/install/updating)
+- Keep FirstNexus up to date: [Updating](/install/updating)
 
 ## Related
 

@@ -1,5 +1,5 @@
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import type { Bot } from "grammy";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const { loadWebMedia } = vi.hoisted(() => ({
   loadWebMedia: vi.fn(),
@@ -27,28 +27,28 @@ type DeliverWithParams = Omit<
   Partial<Pick<DeliverRepliesParams, "replyToMode" | "textLimit" | "mediaLoader">>;
 type RuntimeStub = Pick<RuntimeEnv, "error" | "log" | "exit">;
 
-vi.mock("NexisClaw/plugin-sdk/web-media", () => ({
+vi.mock("FirstNexus/plugin-sdk/web-media", () => ({
   loadWebMedia: (...args: unknown[]) => loadWebMedia(...args),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/media-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("NexisClaw/plugin-sdk/media-runtime")>();
+vi.mock("FirstNexus/plugin-sdk/media-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("FirstNexus/plugin-sdk/media-runtime")>();
   return {
     ...actual,
     probeVideoDimensions,
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/hook-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("NexisClaw/plugin-sdk/hook-runtime")>();
+vi.mock("FirstNexus/plugin-sdk/hook-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("FirstNexus/plugin-sdk/hook-runtime")>();
   return {
     ...actual,
     triggerInternalHook,
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/plugin-runtime", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("NexisClaw/plugin-sdk/plugin-runtime")>();
+vi.mock("FirstNexus/plugin-sdk/plugin-runtime", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("FirstNexus/plugin-sdk/plugin-runtime")>();
   return {
     ...actual,
     getGlobalHookRunner: () => messageHookRunner,

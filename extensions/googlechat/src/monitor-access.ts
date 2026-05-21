@@ -2,12 +2,12 @@ import {
   channelIngressRoutes,
   createChannelIngressResolver,
   defineStableChannelIngressIdentity,
-} from "NexisClaw/plugin-sdk/channel-ingress-runtime";
+} from "FirstNexus/plugin-sdk/channel-ingress-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   normalizeStringEntries,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   GROUP_POLICY_BLOCKED_LABEL,
   createChannelPairingController,
@@ -15,7 +15,7 @@ import {
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../runtime-api.js";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 import { sendGoogleChatMessage } from "./api.js";
@@ -188,7 +188,7 @@ function warnMutableGroupKeysConfigured(
 
 export async function applyGoogleChatInboundAccessPolicy(params: {
   account: ResolvedGoogleChatAccount;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   core: GoogleChatCoreRuntime;
   space: GoogleChatSpace;
   message: GoogleChatMessage;

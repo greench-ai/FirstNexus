@@ -13,7 +13,7 @@ import {
   runCommandWithTimeoutMock,
   scanDirectoryWithSummaryMock,
 } from "./skills-install.test-mocks.js";
-import { resolveNexisClawMetadata, resolveSkillInvocationPolicy } from "./skills/frontmatter.js";
+import { resolveFirstNexusMetadata, resolveSkillInvocationPolicy } from "./skills/frontmatter.js";
 import { loadSkillsFromDirSafe, readSkillFrontmatterSafe } from "./skills/local-loader.js";
 import type { SkillEntry } from "./skills/types.js";
 
@@ -37,7 +37,7 @@ async function writeInstallableSkill(workspaceDir: string, name: string): Promis
     `---
 name: ${name}
 description: test skill
-metadata: {"NexisClaw":{"install":[{"id":"deps","kind":"node","package":"example-package"}]}}
+metadata: {"FirstNexus":{"install":[{"id":"deps","kind":"node","package":"example-package"}]}}
 ---
 
 # ${name}
@@ -70,7 +70,7 @@ function mockDangerousSkillScanFinding(skillDir: string) {
 function loadTestWorkspaceSkillEntries(workspaceDir: string): SkillEntry[] {
   const skills = loadSkillsFromDirSafe({
     dir: path.join(workspaceDir, "skills"),
-    source: "NexisClaw-workspace",
+    source: "FirstNexus-workspace",
   }).skills;
   return skills.map((skill) => {
     const frontmatter =
@@ -82,7 +82,7 @@ function loadTestWorkspaceSkillEntries(workspaceDir: string): SkillEntry[] {
     return {
       skill,
       frontmatter,
-      metadata: resolveNexisClawMetadata(frontmatter),
+      metadata: resolveFirstNexusMetadata(frontmatter),
       invocation,
       exposure: {
         includeInRuntimeRegistry: true,
@@ -93,7 +93,7 @@ function loadTestWorkspaceSkillEntries(workspaceDir: string): SkillEntry[] {
   });
 }
 
-const workspaceSuite = createFixtureSuite("NexisClaw-skills-install-");
+const workspaceSuite = createFixtureSuite("FirstNexus-skills-install-");
 
 beforeAll(async () => {
   await workspaceSuite.setup();
@@ -194,7 +194,7 @@ describe("installSkill code safety scanning", () => {
     });
   });
 
-  it("runs npm node installs with an NexisClaw-managed user prefix", async () => {
+  it("runs npm node installs with an FirstNexus-managed user prefix", async () => {
     await withWorkspaceCase(async ({ workspaceDir, stateDir }) => {
       await writeInstallableSkill(workspaceDir, "node-prefix-skill");
 
@@ -221,7 +221,7 @@ describe("installSkill code safety scanning", () => {
     const envSnapshot = captureEnv(["NEXISCLAW_STATE_DIR", "NEXISCLAW_CONFIG_PATH"]);
     try {
       process.env.NEXISCLAW_STATE_DIR = "/tmp/untrusted-state";
-      process.env.NEXISCLAW_CONFIG_PATH = "/tmp/untrusted-config/NexisClaw.json";
+      process.env.NEXISCLAW_CONFIG_PATH = "/tmp/untrusted-config/FirstNexus.json";
 
       expect(
         skillsInstallTesting.resolveDefaultNodeInstallStateDir({
@@ -229,7 +229,7 @@ describe("installSkill code safety scanning", () => {
           homedir: () => "/Users/tester",
           platform: "darwin",
         }),
-      ).toBe("/Users/tester/.NexisClaw");
+      ).toBe("/Users/tester/.FirstNexus");
     } finally {
       envSnapshot.restore();
     }
@@ -238,12 +238,12 @@ describe("installSkill code safety scanning", () => {
   it("uses a fixed system state root for root npm installs", () => {
     expect(
       skillsInstallTesting.resolveDefaultNodeInstallStateDir({
-        cwd: "/workspace/NexisClaw",
+        cwd: "/workspace/FirstNexus",
         getuid: () => 0,
         homedir: () => "/root",
         platform: "linux",
       }),
-    ).toBe("/var/lib/NexisClaw");
+    ).toBe("/var/lib/FirstNexus");
   });
 
   it("blocks install when skill scan fails", async () => {
@@ -304,7 +304,7 @@ describe("installSkill code safety scanning", () => {
         | undefined;
       expect(payload?.targetName).toBe("policy-skill");
       expect(payload?.targetType).toBe("skill");
-      expect(payload?.origin).toBe("NexisClaw-workspace");
+      expect(payload?.origin).toBe("FirstNexus-workspace");
       expect(payload?.sourcePath).toContain("policy-skill");
       expect(payload?.sourcePathKind).toBe("directory");
       expect(payload?.request).toEqual({
@@ -317,7 +317,7 @@ describe("installSkill code safety scanning", () => {
       expect(payload?.skill?.installSpec?.kind).toBe("node");
       expect(payload?.skill?.installSpec?.package).toBe("example-package");
       expect(handler.mock.calls.at(0)?.[1]).toEqual({
-        origin: "NexisClaw-workspace",
+        origin: "FirstNexus-workspace",
         targetType: "skill",
         requestKind: "skill-install",
       });

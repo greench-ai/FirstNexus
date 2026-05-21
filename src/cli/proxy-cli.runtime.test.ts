@@ -50,7 +50,7 @@ describe("proxy cli runtime", () => {
   let tempDir = "";
 
   beforeEach(() => {
-    tempDir = mkdtempSync(path.join(os.tmpdir(), "NexisClaw-proxy-cli-runtime-"));
+    tempDir = mkdtempSync(path.join(os.tmpdir(), "FirstNexus-proxy-cli-runtime-"));
     process.env.NEXISCLAW_DEBUG_PROXY_DB_PATH = path.join(tempDir, "capture.sqlite");
     process.env.NEXISCLAW_DEBUG_PROXY_BLOB_DIR = path.join(tempDir, "blobs");
     process.env.NEXISCLAW_DEBUG_PROXY_CERT_DIR = path.join(tempDir, "certs");

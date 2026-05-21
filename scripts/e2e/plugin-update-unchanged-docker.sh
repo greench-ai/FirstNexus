@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Verifies `NexisClaw plugins update` is a no-op for an already-current plugin.
+# Verifies `FirstNexus plugins update` is a no-op for an already-current plugin.
 # The CLI under test is installed from the prepared npm tarball in a bare runner.
 set -euo pipefail
 
@@ -7,7 +7,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-plugin-update-e2e" NEXISCLAW_PLUGIN_UPDATE_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-plugin-update-e2e" NEXISCLAW_PLUGIN_UPDATE_E2E_IMAGE)"
 SKIP_BUILD="${NEXISCLAW_PLUGIN_UPDATE_E2E_SKIP_BUILD:-0}"
 PACKAGE_TGZ="$(docker_e2e_prepare_package_tgz plugin-update "${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}")"
 # Bare lanes mount the package artifact instead of baking app sources into the image.

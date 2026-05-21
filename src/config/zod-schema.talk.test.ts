@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { NexisClawSchema } from "./zod-schema.js";
+import { FirstNexusSchema } from "./zod-schema.js";
 
-describe("NexisClawSchema talk validation", () => {
+describe("FirstNexusSchema talk validation", () => {
   it("accepts a positive integer talk.silenceTimeoutMs", () => {
-    const result = NexisClawSchema.safeParse({
+    const result = FirstNexusSchema.safeParse({
       talk: {
         consultThinkingLevel: "low",
         consultFastMode: true,
@@ -16,7 +16,7 @@ describe("NexisClawSchema talk validation", () => {
 
   it("rejects invalid talk.consultThinkingLevel", () => {
     expect(() =>
-      NexisClawSchema.parse({
+      FirstNexusSchema.parse({
         talk: {
           consultThinkingLevel: "turbo",
         },
@@ -26,7 +26,7 @@ describe("NexisClawSchema talk validation", () => {
 
   it("accepts additional realtime Talk instructions", () => {
     expect(() =>
-      NexisClawSchema.parse({
+      FirstNexusSchema.parse({
         talk: {
           realtime: {
             provider: "openai",
@@ -49,7 +49,7 @@ describe("NexisClawSchema talk validation", () => {
     ["float", 1500.5],
   ])("rejects %s talk.silenceTimeoutMs", (_label, value) => {
     expect(() =>
-      NexisClawSchema.parse({
+      FirstNexusSchema.parse({
         talk: {
           silenceTimeoutMs: value,
         },
@@ -59,7 +59,7 @@ describe("NexisClawSchema talk validation", () => {
 
   it("rejects talk.provider when it does not match talk.providers", () => {
     expect(() =>
-      NexisClawSchema.parse({
+      FirstNexusSchema.parse({
         talk: {
           provider: "acme",
           providers: {
@@ -74,7 +74,7 @@ describe("NexisClawSchema talk validation", () => {
 
   it("rejects multi-provider talk config without talk.provider", () => {
     expect(() =>
-      NexisClawSchema.parse({
+      FirstNexusSchema.parse({
         talk: {
           providers: {
             acme: {

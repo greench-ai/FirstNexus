@@ -29,14 +29,14 @@ export function registerNodeCli(program: Command) {
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
           [
-            "NexisClaw node run --host 127.0.0.1 --port 18789",
+            "FirstNexus node run --host 127.0.0.1 --port 18789",
             "Run the node host in the foreground.",
           ],
-          ["NexisClaw node status", "Check node host service status."],
-          ["NexisClaw node install", "Install the node host service."],
-          ["NexisClaw node start", "Start the installed node host service."],
-          ["NexisClaw node restart", "Restart the installed node host service."],
-        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/node", "docs.NexisClaw.ai/cli/node")}\n`,
+          ["FirstNexus node status", "Check node host service status."],
+          ["FirstNexus node install", "Install the node host service."],
+          ["FirstNexus node start", "Start the installed node host service."],
+          ["FirstNexus node restart", "Restart the installed node host service."],
+        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/node", "docs.FirstNexus.ai/cli/node")}\n`,
     );
 
   node

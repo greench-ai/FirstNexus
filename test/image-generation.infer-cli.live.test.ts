@@ -22,8 +22,8 @@ function parseJsonEnvelope(stdout: string): Record<string, unknown> {
 }
 
 describeLive("image generation infer CLI live", () => {
-  it("generates an image through NexisClaw infer", () => {
-    const outputBase = path.join(os.tmpdir(), `NexisClaw-infer-image-${process.pid}.png`);
+  it("generates an image through FirstNexus infer", () => {
+    const outputBase = path.join(os.tmpdir(), `FirstNexus-infer-image-${process.pid}.png`);
     const result = spawnSync(
       process.execPath,
       [

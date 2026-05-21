@@ -1,9 +1,9 @@
 import type { Message } from "@grammyjs/types";
+import { createChannelPairingChallengeIssuer } from "FirstNexus/plugin-sdk/channel-pairing";
+import type { DmPolicy } from "FirstNexus/plugin-sdk/config-contracts";
+import { upsertChannelPairingRequest } from "FirstNexus/plugin-sdk/conversation-runtime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import type { Bot } from "grammy";
-import { createChannelPairingChallengeIssuer } from "NexisClaw/plugin-sdk/channel-pairing";
-import type { DmPolicy } from "NexisClaw/plugin-sdk/config-contracts";
-import { upsertChannelPairingRequest } from "NexisClaw/plugin-sdk/conversation-runtime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import type { NormalizedAllowFrom } from "./bot-access.js";
 import { renderTelegramHtmlText } from "./format.js";

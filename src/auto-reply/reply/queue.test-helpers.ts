@@ -1,5 +1,5 @@
 import { afterAll, beforeAll } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { defaultRuntime } from "../../runtime.js";
 import type { FollowupRun } from "./queue.js";
 
@@ -35,7 +35,7 @@ export function createQueueTestRun(params: {
       sessionId: "sess",
       sessionFile: "/tmp/session.json",
       workspaceDir: "/tmp",
-      config: {} as NexisClawConfig,
+      config: {} as FirstNexusConfig,
       provider: "openai",
       model: "gpt-test",
       timeoutMs: 10_000,

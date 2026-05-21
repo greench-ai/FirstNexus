@@ -1,7 +1,7 @@
 import {
   createModelCatalogPresetAppliers,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/provider-onboard";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/provider-onboard";
 import {
   QWEN_CN_BASE_URL,
   QWEN_DEFAULT_MODEL_REF,
@@ -13,7 +13,7 @@ import { buildQwenProvider } from "./provider-catalog.js";
 
 const qwenPresetAppliers = createModelCatalogPresetAppliers<[string]>({
   primaryModelRef: QWEN_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: NexisClawConfig, baseUrl: string) => {
+  resolveParams: (_cfg: FirstNexusConfig, baseUrl: string) => {
     const provider = buildQwenProvider({ baseUrl });
     return {
       providerId: "qwen",
@@ -31,35 +31,35 @@ const qwenPresetAppliers = createModelCatalogPresetAppliers<[string]>({
   },
 });
 
-function applyQwenProviderConfig(cfg: NexisClawConfig): NexisClawConfig {
+function applyQwenProviderConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   return qwenPresetAppliers.applyProviderConfig(cfg, QWEN_GLOBAL_BASE_URL);
 }
 
-function applyQwenProviderConfigCn(cfg: NexisClawConfig): NexisClawConfig {
+function applyQwenProviderConfigCn(cfg: FirstNexusConfig): FirstNexusConfig {
   return qwenPresetAppliers.applyProviderConfig(cfg, QWEN_CN_BASE_URL);
 }
 
-export function applyQwenConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applyQwenConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   return qwenPresetAppliers.applyConfig(cfg, QWEN_GLOBAL_BASE_URL);
 }
 
-export function applyQwenConfigCn(cfg: NexisClawConfig): NexisClawConfig {
+export function applyQwenConfigCn(cfg: FirstNexusConfig): FirstNexusConfig {
   return qwenPresetAppliers.applyConfig(cfg, QWEN_CN_BASE_URL);
 }
 
-function applyQwenStandardProviderConfig(cfg: NexisClawConfig): NexisClawConfig {
+function applyQwenStandardProviderConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   return qwenPresetAppliers.applyProviderConfig(cfg, QWEN_STANDARD_GLOBAL_BASE_URL);
 }
 
-function applyQwenStandardProviderConfigCn(cfg: NexisClawConfig): NexisClawConfig {
+function applyQwenStandardProviderConfigCn(cfg: FirstNexusConfig): FirstNexusConfig {
   return qwenPresetAppliers.applyProviderConfig(cfg, QWEN_STANDARD_CN_BASE_URL);
 }
 
-export function applyQwenStandardConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applyQwenStandardConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   return qwenPresetAppliers.applyConfig(cfg, QWEN_STANDARD_GLOBAL_BASE_URL);
 }
 
-export function applyQwenStandardConfigCn(cfg: NexisClawConfig): NexisClawConfig {
+export function applyQwenStandardConfigCn(cfg: FirstNexusConfig): FirstNexusConfig {
   return qwenPresetAppliers.applyConfig(cfg, QWEN_STANDARD_CN_BASE_URL);
 }
 

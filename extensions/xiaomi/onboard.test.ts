@@ -1,7 +1,7 @@
 import {
   expectProviderOnboardMergedLegacyConfig,
   expectProviderOnboardPrimaryModel,
-} from "NexisClaw/plugin-sdk/provider-test-contracts";
+} from "FirstNexus/plugin-sdk/provider-test-contracts";
 import { describe, expect, it } from "vitest";
 import { applyXiaomiConfig, applyXiaomiProviderConfig } from "./onboard.js";
 import { buildXiaomiProvider } from "./provider-catalog.js";

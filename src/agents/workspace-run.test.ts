@@ -1,6 +1,6 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { resolveRunWorkspaceDir } from "./workspace-run.js";
 import { resolveDefaultAgentWorkspaceDir } from "./workspace.js";
 
@@ -25,7 +25,7 @@ describe("resolveRunWorkspaceDir", () => {
         defaults: { workspace: defaultWorkspace },
         list: [{ id: "research", workspace: researchWorkspace }],
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     const result = resolveRunWorkspaceDir({
       workspaceDir: undefined,
@@ -45,7 +45,7 @@ describe("resolveRunWorkspaceDir", () => {
       agents: {
         defaults: { workspace: defaultWorkspace },
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     const result = resolveRunWorkspaceDir({
       workspaceDir: "   ",
@@ -87,7 +87,7 @@ describe("resolveRunWorkspaceDir", () => {
       ...process.env,
       HOME: "/home/runner",
       NEXISCLAW_HOME: undefined,
-      NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-state",
+      NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-state",
     } satisfies NodeJS.ProcessEnv;
     const result = resolveRunWorkspaceDir({
       workspaceDir: undefined,
@@ -99,7 +99,7 @@ describe("resolveRunWorkspaceDir", () => {
 
     expect(result.agentId).toBe("research");
     expect(result.agentIdSource).toBe("explicit");
-    expect(result.workspaceDir).toBe(path.resolve("/tmp/NexisClaw-state", "workspace-research"));
+    expect(result.workspaceDir).toBe(path.resolve("/tmp/FirstNexus-state", "workspace-research"));
   });
 
   it("throws for malformed agent session keys even when config has a default agent", () => {
@@ -113,7 +113,7 @@ describe("resolveRunWorkspaceDir", () => {
           { id: "research", workspace: researchWorkspace, default: true },
         ],
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     expect(() =>
       resolveRunWorkspaceDir({
@@ -130,7 +130,7 @@ describe("resolveRunWorkspaceDir", () => {
       agents: {
         defaults: { workspace: fallbackWorkspace },
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     const result = resolveRunWorkspaceDir({
       workspaceDir: undefined,

@@ -1,5 +1,5 @@
 import { normalizeProviderId } from "../agents/model-selection.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isBlockedObjectKey } from "../infra/prototype-keys.js";
 import * as capabilityProviderRuntime from "../plugins/capability-provider-runtime.js";
 import type { ImageGenerationProviderPlugin } from "../plugins/types.js";
@@ -20,7 +20,7 @@ function isSafeImageGenerationProviderId(id: string | undefined): id is string {
 }
 
 function resolvePluginImageGenerationProviders(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): ImageGenerationProviderPlugin[] {
   return capabilityProviderRuntime.resolvePluginCapabilityProviders({
     key: "imageGenerationProviders",
@@ -28,7 +28,7 @@ function resolvePluginImageGenerationProviders(
   });
 }
 
-function buildProviderMaps(cfg?: NexisClawConfig): {
+function buildProviderMaps(cfg?: FirstNexusConfig): {
   canonical: Map<string, ImageGenerationProviderPlugin>;
   aliases: Map<string, ImageGenerationProviderPlugin>;
 } {
@@ -60,14 +60,14 @@ function buildProviderMaps(cfg?: NexisClawConfig): {
 }
 
 export function listImageGenerationProviders(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): ImageGenerationProviderPlugin[] {
   return [...buildProviderMaps(cfg).canonical.values()];
 }
 
 export function getImageGenerationProvider(
   providerId: string | undefined,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): ImageGenerationProviderPlugin | undefined {
   const normalized = normalizeImageGenerationProviderId(providerId);
   if (!normalized) {

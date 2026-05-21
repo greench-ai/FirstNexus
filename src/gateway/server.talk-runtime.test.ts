@@ -28,7 +28,7 @@ async function setTalkConfig(talk: Record<string, unknown>) {
   const { setRuntimeConfigSnapshot } = await import("../config/config.js");
   const config = {
     commands: {
-      ownerDisplaySecret: "NexisClaw-test-owner-display-secret",
+      ownerDisplaySecret: "FirstNexus-test-owner-display-secret",
     },
     talk,
   };

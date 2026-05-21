@@ -1,17 +1,17 @@
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
-import { isProviderApiKeyConfigured } from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
+import { isProviderApiKeyConfigured } from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   postJsonRequest,
   resolveProviderHttpRequestConfig,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type {
   GeneratedVideoAsset,
   VideoGenerationProvider,
   VideoGenerationRequest,
-} from "NexisClaw/plugin-sdk/video-generation";
+} from "FirstNexus/plugin-sdk/video-generation";
 import {
   DEEPINFRA_NATIVE_BASE_URL,
   DEEPINFRA_VIDEO_ASPECT_RATIOS,

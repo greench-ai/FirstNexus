@@ -1,6 +1,6 @@
 import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { bundledPluginFile, bundledPluginRoot } from "NexisClaw/plugin-sdk/test-fixtures";
+import { bundledPluginFile, bundledPluginRoot } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it } from "vitest";
 import { collectClawHubPublishablePluginPackages } from "../scripts/lib/plugin-clawhub-release.ts";
 import {
@@ -32,8 +32,8 @@ describe("parsePluginReleaseSelection", () => {
 
   it("dedupes and sorts comma or whitespace separated package names", () => {
     expect(
-      parsePluginReleaseSelection(" @NexisClaw/zalo, @NexisClaw/feishu  @NexisClaw/zalo "),
-    ).toEqual(["@NexisClaw/feishu", "@NexisClaw/zalo"]);
+      parsePluginReleaseSelection(" @FirstNexus/zalo, @FirstNexus/feishu  @FirstNexus/zalo "),
+    ).toEqual(["@FirstNexus/feishu", "@FirstNexus/zalo"]);
   });
 });
 
@@ -69,7 +69,7 @@ describe("parsePluginReleaseArgs", () => {
         "--selection-mode",
         "all-publishable",
         "--plugins",
-        "@NexisClaw/zalo",
+        "@FirstNexus/zalo",
       ]),
     ).toThrowError("`--selection-mode all-publishable` must not be combined with `--plugins`.");
   });
@@ -92,16 +92,16 @@ describe("collectPublishablePluginPackageErrors", () => {
         extensionId: "zalo",
         packageDir: bundledPluginRoot("zalo"),
         packageJson: {
-          name: "@NexisClaw/zalo",
+          name: "@FirstNexus/zalo",
           version: "2026.3.15",
           repository: {
             type: "git",
             url: NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL,
           },
-          NexisClaw: {
+          FirstNexus: {
             extensions: ["./index.ts"],
             install: {
-              npmSpec: "@NexisClaw/zalo",
+              npmSpec: "@FirstNexus/zalo",
             },
             release: {
               publishToNpm: true,
@@ -121,7 +121,7 @@ describe("collectPublishablePluginPackageErrors", () => {
           name: "broken",
           version: "latest",
           private: true,
-          NexisClaw: {
+          FirstNexus: {
             extensions: [""],
             install: {
               npmSpec: "   ",
@@ -133,12 +133,12 @@ describe("collectPublishablePluginPackageErrors", () => {
         },
       }),
     ).toEqual([
-      'package name must start with "@NexisClaw/"; found "broken".',
+      'package name must start with "@FirstNexus/"; found "broken".',
       "package.json private must not be true.",
       `package.json repository.url must be "${NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL}" so npm provenance can validate GitHub trusted publishing; found "<missing>".`,
       'package.json version must match YYYY.M.D, YYYY.M.D-N, YYYY.M.D-alpha.N, or YYYY.M.D-beta.N; found "latest".',
-      "NexisClaw.extensions must contain only non-empty strings.",
-      "NexisClaw.install.npmSpec must be a non-empty string for publishable plugins.",
+      "FirstNexus.extensions must contain only non-empty strings.",
+      "FirstNexus.install.npmSpec must be a non-empty string for publishable plugins.",
     ]);
   });
 
@@ -148,12 +148,12 @@ describe("collectPublishablePluginPackageErrors", () => {
         extensionId: "twitch",
         packageDir: bundledPluginRoot("twitch"),
         packageJson: {
-          name: "@NexisClaw/twitch",
+          name: "@FirstNexus/twitch",
           version: "2026.5.1-beta.1",
-          NexisClaw: {
+          FirstNexus: {
             extensions: ["./index.ts"],
             install: {
-              npmSpec: "@NexisClaw/twitch",
+              npmSpec: "@FirstNexus/twitch",
             },
             release: {
               publishToNpm: true,
@@ -172,13 +172,13 @@ describe("collectPublishablePluginPackageErrors", () => {
         extensionId: "voice-call",
         packageDir: bundledPluginRoot("voice-call"),
         packageJson: {
-          name: "@NexisClaw/voice-call",
+          name: "@FirstNexus/voice-call",
           version: "2026.5.1-beta.1",
           repository: {
             type: "git",
             url: NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL,
           },
-          NexisClaw: {
+          FirstNexus: {
             extensions: ["./index.ts"],
             release: {
               publishToNpm: true,
@@ -186,7 +186,7 @@ describe("collectPublishablePluginPackageErrors", () => {
           },
         },
       }),
-    ).toEqual(["NexisClaw.install.npmSpec must be a non-empty string for publishable plugins."]);
+    ).toEqual(["FirstNexus.install.npmSpec must be a non-empty string for publishable plugins."]);
   });
 });
 
@@ -213,19 +213,19 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("collects publishable npm plugins from extension package manifests", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "NexisClaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "FirstNexus-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
-      name: "@NexisClaw/demo-plugin",
+      name: "@FirstNexus/demo-plugin",
       version: "2026.4.10",
       repository: {
         type: "git",
         url: NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL,
       },
-      NexisClaw: {
+      FirstNexus: {
         extensions: ["./index.ts"],
         install: {
-          npmSpec: "@NexisClaw/demo-plugin",
+          npmSpec: "@FirstNexus/demo-plugin",
         },
         release: {
           publishToNpm: true,
@@ -237,29 +237,29 @@ describe("collectPublishablePluginPackages", () => {
       {
         extensionId: "demo-plugin",
         packageDir: "extensions/demo-plugin",
-        packageName: "@NexisClaw/demo-plugin",
+        packageName: "@FirstNexus/demo-plugin",
         version: "2026.4.10",
         channel: "stable",
         publishTag: "latest",
-        installNpmSpec: "@NexisClaw/demo-plugin",
+        installNpmSpec: "@FirstNexus/demo-plugin",
       },
     ]);
   });
 
   it("does not validate unselected publishable plugin manifests", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "NexisClaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "FirstNexus-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
-      name: "@NexisClaw/demo-plugin",
+      name: "@FirstNexus/demo-plugin",
       version: "2026.4.10-beta.1",
       repository: {
         type: "git",
         url: NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL,
       },
-      NexisClaw: {
+      FirstNexus: {
         extensions: ["./index.ts"],
         install: {
-          npmSpec: "@NexisClaw/demo-plugin",
+          npmSpec: "@FirstNexus/demo-plugin",
         },
         release: {
           publishToNpm: true,
@@ -268,13 +268,13 @@ describe("collectPublishablePluginPackages", () => {
     });
     mkdirSync(join(repoDir, "extensions", "private-plugin"), { recursive: true });
     writeJsonFile(join(repoDir, "extensions", "private-plugin", "package.json"), {
-      name: "@NexisClaw/private-plugin",
+      name: "@FirstNexus/private-plugin",
       version: "2026.4.10-beta.1",
       private: true,
-      NexisClaw: {
+      FirstNexus: {
         extensions: ["./index.ts"],
         install: {
-          npmSpec: "@NexisClaw/private-plugin",
+          npmSpec: "@FirstNexus/private-plugin",
         },
         release: {
           publishToNpm: true,
@@ -284,15 +284,15 @@ describe("collectPublishablePluginPackages", () => {
 
     expect(
       collectPublishablePluginPackages(repoDir, {
-        packageNames: ["@NexisClaw/demo-plugin"],
+        packageNames: ["@FirstNexus/demo-plugin"],
       }),
     ).toEqual([
       {
         extensionId: "demo-plugin",
         packageDir: "extensions/demo-plugin",
-        installNpmSpec: "@NexisClaw/demo-plugin",
+        installNpmSpec: "@FirstNexus/demo-plugin",
         channel: "beta",
-        packageName: "@NexisClaw/demo-plugin",
+        packageName: "@FirstNexus/demo-plugin",
         publishTag: "beta",
         version: "2026.4.10-beta.1",
       },
@@ -300,13 +300,13 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("treats an explicit empty extension filter as no candidates", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "NexisClaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "FirstNexus-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "private-plugin"), { recursive: true });
     writeJsonFile(join(repoDir, "extensions", "private-plugin", "package.json"), {
-      name: "@NexisClaw/private-plugin",
+      name: "@FirstNexus/private-plugin",
       version: "2026.4.10-beta.1",
       private: true,
-      NexisClaw: {
+      FirstNexus: {
         extensions: ["./index.ts"],
         release: {
           publishToNpm: true,
@@ -322,19 +322,19 @@ describe("collectPublishablePluginPackages", () => {
   });
 
   it("publishes alpha plugin packages to the alpha dist-tag", () => {
-    const repoDir = makeTempRepoRoot(tempDirs, "NexisClaw-plugin-npm-release-");
+    const repoDir = makeTempRepoRoot(tempDirs, "FirstNexus-plugin-npm-release-");
     mkdirSync(join(repoDir, "extensions", "demo-plugin"), { recursive: true });
     writeJsonFile(join(repoDir, "extensions", "demo-plugin", "package.json"), {
-      name: "@NexisClaw/demo-plugin",
+      name: "@FirstNexus/demo-plugin",
       version: "2026.4.10-alpha.1",
       repository: {
         type: "git",
         url: NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL,
       },
-      NexisClaw: {
+      FirstNexus: {
         extensions: ["./index.ts"],
         install: {
-          npmSpec: "@NexisClaw/demo-plugin",
+          npmSpec: "@FirstNexus/demo-plugin",
         },
         release: {
           publishToNpm: true,
@@ -346,8 +346,8 @@ describe("collectPublishablePluginPackages", () => {
       {
         extensionId: "demo-plugin",
         packageDir: "extensions/demo-plugin",
-        installNpmSpec: "@NexisClaw/demo-plugin",
-        packageName: "@NexisClaw/demo-plugin",
+        installNpmSpec: "@FirstNexus/demo-plugin",
+        packageName: "@FirstNexus/demo-plugin",
         channel: "alpha",
         publishTag: "alpha",
         version: "2026.4.10-alpha.1",
@@ -361,7 +361,7 @@ describe("resolveSelectedPublishablePluginPackages", () => {
     {
       extensionId: "feishu",
       packageDir: bundledPluginRoot("feishu"),
-      packageName: "@NexisClaw/feishu",
+      packageName: "@FirstNexus/feishu",
       version: "2026.3.15",
       channel: "stable",
       publishTag: "latest",
@@ -369,7 +369,7 @@ describe("resolveSelectedPublishablePluginPackages", () => {
     {
       extensionId: "zalo",
       packageDir: bundledPluginRoot("zalo"),
-      packageName: "@NexisClaw/zalo",
+      packageName: "@FirstNexus/zalo",
       version: "2026.3.15-beta.1",
       channel: "beta",
       publishTag: "beta",
@@ -389,7 +389,7 @@ describe("resolveSelectedPublishablePluginPackages", () => {
     expect(
       resolveSelectedPublishablePluginPackages({
         plugins: publishablePlugins,
-        selection: ["@NexisClaw/zalo"],
+        selection: ["@FirstNexus/zalo"],
       }),
     ).toEqual([publishablePlugins[1]]);
   });
@@ -398,9 +398,9 @@ describe("resolveSelectedPublishablePluginPackages", () => {
     expect(() =>
       resolveSelectedPublishablePluginPackages({
         plugins: publishablePlugins,
-        selection: ["@NexisClaw/missing"],
+        selection: ["@FirstNexus/missing"],
       }),
-    ).toThrowError("Unknown or non-publishable plugin package selection: @NexisClaw/missing.");
+    ).toThrowError("Unknown or non-publishable plugin package selection: @FirstNexus/missing.");
   });
 });
 
@@ -422,7 +422,7 @@ describe("resolveChangedPublishablePluginPackages", () => {
     {
       extensionId: "feishu",
       packageDir: bundledPluginRoot("feishu"),
-      packageName: "@NexisClaw/feishu",
+      packageName: "@FirstNexus/feishu",
       version: "2026.3.15",
       channel: "stable",
       publishTag: "latest",
@@ -430,7 +430,7 @@ describe("resolveChangedPublishablePluginPackages", () => {
     {
       extensionId: "zalo",
       packageDir: bundledPluginRoot("zalo"),
-      packageName: "@NexisClaw/zalo",
+      packageName: "@FirstNexus/zalo",
       version: "2026.3.15-beta.1",
       channel: "beta",
       publishTag: "beta",

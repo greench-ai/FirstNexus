@@ -59,7 +59,7 @@ describe("prepare-extension-package-boundary-artifacts", () => {
   }, 45_000);
 
   it("runs boundary prep steps serially for local checks", async () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-boundary-serial-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-boundary-serial-"));
     tempRoots.add(rootDir);
     const logPath = path.join(rootDir, "steps.log");
     const appendScript = (label: string) =>
@@ -85,7 +85,7 @@ describe("prepare-extension-package-boundary-artifacts", () => {
   });
 
   it("passes step-specific environment overrides to child steps", async () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-boundary-env-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-boundary-env-"));
     tempRoots.add(rootDir);
     const outputPath = path.join(rootDir, "env.txt");
     const writeEnvScript =
@@ -105,7 +105,7 @@ describe("prepare-extension-package-boundary-artifacts", () => {
   });
 
   it("treats artifacts as fresh only when outputs are newer than inputs", () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-boundary-prep-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-boundary-prep-"));
     tempRoots.add(rootDir);
     const inputPath = path.join(rootDir, "src", "demo.ts");
     const outputPath = path.join(rootDir, "dist", "demo.tsbuildinfo");

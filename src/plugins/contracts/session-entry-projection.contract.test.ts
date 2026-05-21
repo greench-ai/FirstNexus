@@ -3,11 +3,11 @@ import path from "node:path";
 import {
   createPluginRegistryFixture,
   registerTestPlugin,
-} from "NexisClaw/plugin-sdk/plugin-test-contracts";
+} from "FirstNexus/plugin-sdk/plugin-test-contracts";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { loadSessionStore, updateSessionStore, type SessionEntry } from "../../config/sessions.js";
 import { withTempConfig } from "../../gateway/test-temp-config.js";
-import { resolvePreferredNexisClawTmpDir } from "../../infra/tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../../infra/tmp-FirstNexus-dir.js";
 import { cleanupReplacedPluginHostRegistry, runPluginHostCleanup } from "../host-hook-cleanup.js";
 import { clearPluginHostRuntimeState } from "../host-hook-runtime.js";
 import { patchPluginSessionExtension } from "../host-hook-state.js";
@@ -78,7 +78,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -160,7 +160,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-projector-fail-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-projector-fail-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -412,7 +412,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-cleanup-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-cleanup-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -482,7 +482,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-active-cleanup-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-active-cleanup-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -563,7 +563,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(previousFixture.registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-restart-cleanup-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-restart-cleanup-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -659,7 +659,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(previousFixture.registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-restart-mixed-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-restart-mixed-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -762,7 +762,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(previousFixture.registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-restart-preserve-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-restart-preserve-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -826,7 +826,7 @@ describe("plugin session extension SessionEntry projection", () => {
   it("clears persisted promoted slots when registry metadata is unavailable", async () => {
     setActivePluginRegistry(createEmptyPluginRegistry());
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-metadata-cleanup-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-metadata-cleanup-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -917,7 +917,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-policy-read-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-policy-read-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };
@@ -1012,7 +1012,7 @@ describe("plugin session extension SessionEntry projection", () => {
     setActivePluginRegistry(registry.registry);
 
     const stateDir = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-host-hooks-slot-noop-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-host-hooks-slot-noop-"),
     );
     const storePath = path.join(stateDir, "sessions.json");
     const tempConfig = { session: { store: storePath } };

@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempHome as withTempHomeBase } from "NexisClaw/plugin-sdk/test-env";
+import { withTempHome as withTempHomeBase } from "FirstNexus/plugin-sdk/test-env";
 import { resetPluginLoaderTestStateForTest } from "../plugins/loader.test-fixtures.js";
 import { clearPluginSetupRegistryCache } from "../plugins/setup-registry.js";
-import { resetConfigRuntimeState, type NexisClawConfig } from "./config.js";
+import { resetConfigRuntimeState, type FirstNexusConfig } from "./config.js";
 
 function resetConfigTestRuntimeState(): void {
   resetConfigRuntimeState();
@@ -15,7 +15,7 @@ export async function withTempHome<T>(fn: (home: string) => Promise<T>): Promise
   resetConfigTestRuntimeState();
   try {
     return await withTempHomeBase(fn, {
-      prefix: "NexisClaw-config-",
+      prefix: "FirstNexus-config-",
       env: {
         NEXISCLAW_CONFIG_PATH: undefined,
         NEXISCLAW_BUNDLED_PLUGINS_DIR: undefined,
@@ -34,8 +34,8 @@ export async function withTempHome<T>(fn: (home: string) => Promise<T>): Promise
   }
 }
 
-export async function writeNexisClawConfig(home: string, config: unknown): Promise<string> {
-  const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+export async function writeFirstNexusConfig(home: string, config: unknown): Promise<string> {
+  const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
   await fs.mkdir(path.dirname(configPath), { recursive: true });
   await fs.writeFile(configPath, JSON.stringify(config, null, 2), "utf-8");
   return configPath;
@@ -63,7 +63,7 @@ export async function withTempHomeConfig<T>(
   fn: (params: { home: string; configPath: string }) => Promise<T>,
 ): Promise<T> {
   return withTempHome(async (home) => {
-    const configPath = await writeNexisClawConfig(home, config);
+    const configPath = await writeFirstNexusConfig(home, config);
     return fn({ home, configPath });
   });
 }
@@ -99,7 +99,7 @@ export async function withEnvOverride<T>(
 
 export function buildWebSearchProviderConfig(params: {
   provider: NonNullable<
-    NonNullable<NonNullable<NonNullable<NexisClawConfig["tools"]>["web"]>["search"]>["provider"]
+    NonNullable<NonNullable<NonNullable<FirstNexusConfig["tools"]>["web"]>["search"]>["provider"]
   >;
   enabled?: boolean;
   providerConfig?: Record<string, unknown>;

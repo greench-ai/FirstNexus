@@ -1,11 +1,11 @@
-import type { BaseTokenResolution } from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/routing";
-import { resolveAccountEntry } from "NexisClaw/plugin-sdk/routing";
+import type { BaseTokenResolution } from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/routing";
+import { resolveAccountEntry } from "FirstNexus/plugin-sdk/routing";
 import {
   normalizeResolvedSecretInputString,
   resolveSecretInputString,
-} from "NexisClaw/plugin-sdk/secret-input";
+} from "FirstNexus/plugin-sdk/secret-input";
 import { selectDiscordRuntimeConfig } from "./runtime-config.js";
 
 type DiscordTokenSource = "env" | "config" | "none";
@@ -34,7 +34,7 @@ export function normalizeDiscordToken(raw: unknown, path: string): string | unde
 }
 
 function resolveDiscordTokenValue(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   value: unknown;
   path: string;
 }): DiscordTokenValueResolution {
@@ -57,7 +57,7 @@ function resolveDiscordTokenValue(params: {
 }
 
 export function resolveDiscordToken(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   opts: { accountId?: string | null; envToken?: string | null } = {},
 ): DiscordTokenResolution {
   const selectedCfg = selectDiscordRuntimeConfig(cfg);

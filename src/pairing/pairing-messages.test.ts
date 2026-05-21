@@ -1,4 +1,4 @@
-import { expectPairingReplyText } from "NexisClaw/plugin-sdk/channel-test-helpers";
+import { expectPairingReplyText } from "FirstNexus/plugin-sdk/channel-test-helpers";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { captureEnv } from "../test-utils/env.js";
 import { buildPairingReply } from "./pairing-messages.js";
@@ -51,7 +51,7 @@ describe("buildPairingReply", () => {
 
   function expectPairingApproveCommand(text: string, testCase: (typeof pairingReplyCases)[number]) {
     const commandRe = new RegExp(
-      `(?:NexisClaw|NexisClaw) --profile isolated pairing approve ${testCase.channel} ${testCase.code}`,
+      `(?:FirstNexus|FirstNexus) --profile isolated pairing approve ${testCase.channel} ${testCase.code}`,
     );
     expect(text).toMatch(commandRe);
   }

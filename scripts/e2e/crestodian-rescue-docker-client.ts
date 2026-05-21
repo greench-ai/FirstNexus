@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { handleCrestodianCommand } from "../../dist/auto-reply/reply/commands-crestodian.js";
 import { clearConfigCache } from "../../dist/config/config.js";
-import type { NexisClawConfig } from "../../dist/config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../dist/config/types.FirstNexus.js";
 import { runCrestodianRescueMessage } from "../../dist/crestodian/rescue-message.js";
 
 type CommandResult = Awaited<ReturnType<typeof handleCrestodianCommand>>;
@@ -17,7 +17,7 @@ function assert(condition: unknown, message: string): asserts condition {
   }
 }
 
-function makeParams(commandBody: string, cfg: NexisClawConfig, isGroup = false) {
+function makeParams(commandBody: string, cfg: FirstNexusConfig, isGroup = false) {
   return {
     cfg,
     command: {
@@ -38,7 +38,11 @@ function makeParams(commandBody: string, cfg: NexisClawConfig, isGroup = false) 
   } as Parameters<typeof handleCrestodianCommand>[0];
 }
 
-async function invoke(commandBody: string, cfg: NexisClawConfig, isGroup = false): Promise<string> {
+async function invoke(
+  commandBody: string,
+  cfg: FirstNexusConfig,
+  isGroup = false,
+): Promise<string> {
   const result: CommandResult = await handleCrestodianCommand(
     makeParams(commandBody, cfg, isGroup),
     true,
@@ -53,8 +57,8 @@ async function invoke(commandBody: string, cfg: NexisClawConfig, isGroup = false
 async function main() {
   const stateDir =
     process.env.NEXISCLAW_STATE_DIR ??
-    (await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-crestodian-")));
-  const configPath = process.env.NEXISCLAW_CONFIG_PATH ?? path.join(stateDir, "NexisClaw.json");
+    (await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-crestodian-")));
+  const configPath = process.env.NEXISCLAW_CONFIG_PATH ?? path.join(stateDir, "FirstNexus.json");
   process.env.NEXISCLAW_STATE_DIR = stateDir;
   process.env.NEXISCLAW_CONFIG_PATH = configPath;
   await fs.mkdir(stateDir, { recursive: true });
@@ -77,7 +81,7 @@ async function main() {
   });
   assert(denied.includes("sandboxing is active"), "sandboxed rescue was not denied");
 
-  const cfg: NexisClawConfig = {};
+  const cfg: FirstNexusConfig = {};
   const refusedTui = await invoke("/crestodian talk to agent", cfg);
   assert(
     refusedTui.includes("cannot open the local TUI"),
@@ -114,7 +118,10 @@ async function main() {
   const refApplied = await invoke("/crestodian yes", cfg);
   assert(refApplied.includes("[crestodian] done: config.setRef"), "SecretRef set failed");
 
-  const agentPlan = await invoke("/crestodian create agent work workspace /tmp/NexisClaw-work", cfg);
+  const agentPlan = await invoke(
+    "/crestodian create agent work workspace /tmp/FirstNexus-work",
+    cfg,
+  );
   assert(
     agentPlan.includes("Reply /crestodian yes to apply"),
     "agent creation did not require approval",
@@ -123,7 +130,7 @@ async function main() {
   assert(agentApplied.includes("[crestodian] done: agents.create"), "agent creation did not apply");
 
   const setupPlan = await invoke(
-    "/crestodian setup workspace /tmp/NexisClaw-setup model openai/gpt-5.2",
+    "/crestodian setup workspace /tmp/FirstNexus-setup model openai/gpt-5.2",
     cfg,
   );
   assert(setupPlan.includes("Reply /crestodian yes to apply"), "setup did not require approval");
@@ -199,7 +206,7 @@ async function main() {
   assert(doctorApplied?.includes("[crestodian] done: doctor.fix"), "doctor fix did not apply");
   assert(doctorRuns.join(",") === "repair", "doctor repair dependency was not invoked once");
 
-  const updatedConfig = JSON.parse(await fs.readFile(configPath, "utf8")) as NexisClawConfig;
+  const updatedConfig = JSON.parse(await fs.readFile(configPath, "utf8")) as FirstNexusConfig;
   assert(
     updatedConfig.agents?.defaults?.model &&
       typeof updatedConfig.agents.defaults.model === "object" &&
@@ -216,12 +223,12 @@ async function main() {
     "SecretRef set did not update gateway.auth.token",
   );
   assert(
-    updatedConfig.agents?.defaults?.workspace === "/tmp/NexisClaw-setup",
+    updatedConfig.agents?.defaults?.workspace === "/tmp/FirstNexus-setup",
     "setup did not update default workspace",
   );
   assert(
     updatedConfig.agents?.list?.some(
-      (agent) => agent.id === "work" && agent.workspace === "/tmp/NexisClaw-work",
+      (agent) => agent.id === "work" && agent.workspace === "/tmp/FirstNexus-work",
     ),
     "agent config was not updated",
   );

@@ -364,7 +364,7 @@ const listRequiredBundledPluginMetadataOutputs = (pluginEntries, deps) =>
       requiredPaths.push(path.join(builtPluginDir, "package.json"));
     }
     if (hasManifest) {
-      requiredPaths.push(path.join(builtPluginDir, "NexisClaw.plugin.json"));
+      requiredPaths.push(path.join(builtPluginDir, "FirstNexus.plugin.json"));
     }
     return requiredPaths;
   });
@@ -414,7 +414,7 @@ const listRequiredBundledPluginRuntimeOverlayOutputs = (deps) => {
   return [...new Set(runtimePaths)].toSorted((left, right) => left.localeCompare(right));
 };
 
-const listRequiredNexisClawExtensionAliasOutputs = (deps) => {
+const listRequiredFirstNexusExtensionAliasOutputs = (deps) => {
   const distRoot = resolveRuntimePostBuildDistRoot(deps);
   const distExtensionsRoot = path.join(distRoot, "extensions");
   if (!deps.fs.existsSync(distExtensionsRoot)) {
@@ -428,7 +428,7 @@ const listRequiredNexisClawExtensionAliasOutputs = (deps) => {
     return [];
   }
 
-  const aliasDir = path.join(distRoot, "extensions", "node_modules", "NexisClaw");
+  const aliasDir = path.join(distRoot, "extensions", "node_modules", "FirstNexus");
   return [
     path.join(aliasDir, "package.json"),
     ...dirents
@@ -454,7 +454,7 @@ export const listRequiredRuntimePostBuildOutputs = (deps) => {
   const builtPluginEntries = listBuiltBundledPluginEntries(deps);
   return [
     ...listRequiredCoreRuntimePostBuildOutputs(deps),
-    ...listRequiredNexisClawExtensionAliasOutputs(deps),
+    ...listRequiredFirstNexusExtensionAliasOutputs(deps),
     ...listRequiredStaticExtensionAssetOutputs(deps),
     ...listRequiredBundledPluginMetadataOutputs(builtPluginEntries, deps),
     ...listRequiredBundledPluginRuntimeOverlayOutputs(deps),
@@ -681,7 +681,7 @@ const logRunner = (message, deps) => {
   if (deps.env.NEXISCLAW_RUNNER_LOG === "0") {
     return;
   }
-  const line = `[NexisClaw] ${message}\n`;
+  const line = `[FirstNexus] ${message}\n`;
   deps.stderr.write(line);
   deps.outputTee?.write(line);
 };
@@ -708,7 +708,7 @@ const resolveRunNodeCpuProfileArgs = (deps) => {
   const commandName = sanitizeCpuProfileNamePart(deps.args[0]);
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
   const pid = Number.isInteger(deps.process.pid) && deps.process.pid > 0 ? deps.process.pid : "pid";
-  const profileName = `NexisClaw-${commandName}-${pid}-${timestamp}.cpuprofile`;
+  const profileName = `FirstNexus-${commandName}-${pid}-${timestamp}.cpuprofile`;
   const profilePath = path.join(absoluteProfileDir, profileName);
   const relativeProfilePath = path.relative(deps.cwd, profilePath) || profilePath;
   logRunner(`Writing Node CPU profile to ${relativeProfilePath}.`, deps);
@@ -793,13 +793,17 @@ const getInterruptedSpawnExitCode = (res) => {
   return null;
 };
 
-const runNexisClaw = async (deps) => {
+const runFirstNexus = async (deps) => {
   const diagnosticArgs = resolveRunNodeDiagnosticArgs(deps);
-  const nodeProcess = deps.spawn(deps.execPath, [...diagnosticArgs, "NexisClaw.mjs", ...deps.args], {
-    cwd: deps.cwd,
-    env: deps.env,
-    stdio: deps.outputTee ? ["inherit", "pipe", "pipe"] : "inherit",
-  });
+  const nodeProcess = deps.spawn(
+    deps.execPath,
+    [...diagnosticArgs, "FirstNexus.mjs", ...deps.args],
+    {
+      cwd: deps.cwd,
+      env: deps.env,
+      stdio: deps.outputTee ? ["inherit", "pipe", "pipe"] : "inherit",
+    },
+  );
   pipeSpawnedOutput(nodeProcess, deps);
   const res = await waitForSpawnedProcess(nodeProcess, deps);
   const interruptedExitCode = getInterruptedSpawnExitCode(res);
@@ -895,7 +899,7 @@ const closeRunNodeOutputTee = async (deps, exitCode) => {
     await deps.outputTee.close();
   } catch (error) {
     deps.stderr.write(
-      `[NexisClaw] Failed to write output log: ${error?.message ?? "unknown error"}\n`,
+      `[FirstNexus] Failed to write output log: ${error?.message ?? "unknown error"}\n`,
     );
     return exitCode === 0 ? 1 : exitCode;
   }
@@ -1228,7 +1232,7 @@ export async function runNodeMain(params = {}) {
           }
         }
       }
-      exitCode = await runNexisClaw(deps);
+      exitCode = await runFirstNexus(deps);
       return await closeRunNodeOutputTee(deps, exitCode);
     }
 
@@ -1293,7 +1297,7 @@ export async function runNodeMain(params = {}) {
     if (buildExitCode !== 0) {
       return await closeRunNodeOutputTee(deps, buildExitCode);
     }
-    exitCode = await runNexisClaw(deps);
+    exitCode = await runFirstNexus(deps);
     return await closeRunNodeOutputTee(deps, exitCode);
   } catch (error) {
     await closeRunNodeOutputTee(deps, 1);

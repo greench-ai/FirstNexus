@@ -12,7 +12,7 @@ import {
   assertLiveImageProbeReply,
   buildLiveCronProbeMessage,
   createLiveCronProbeSpec,
-  runNexisClawCliJson,
+  runFirstNexusCliJson,
   type CronListJob,
 } from "./live-agent-probes.js";
 import { renderCatFacePngBase64 } from "./live-image-probe.js";
@@ -81,7 +81,7 @@ async function removeCliCronJobBestEffort(params: {
   env: NodeJS.ProcessEnv;
 }): Promise<void> {
   try {
-    await runNexisClawCliJson(
+    await runFirstNexusCliJson(
       [
         "cron",
         "rm",
@@ -183,10 +183,10 @@ async function callLoopbackJsonRpc(params: {
     "x-session-key": params.sessionKey,
   };
   if (params.messageProvider) {
-    headers["x-NexisClaw-message-channel"] = params.messageProvider;
+    headers["x-FirstNexus-message-channel"] = params.messageProvider;
   }
   if (params.accountId) {
-    headers["x-NexisClaw-account-id"] = params.accountId;
+    headers["x-FirstNexus-account-id"] = params.accountId;
   }
   const response = await fetch(`http://127.0.0.1:${runtime.port}/mcp`, {
     method: "POST",

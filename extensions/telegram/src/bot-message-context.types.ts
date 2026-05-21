@@ -1,13 +1,13 @@
-import type { Bot } from "grammy";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import type {
   DmPolicy,
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
-import type { HistoryEntry } from "NexisClaw/plugin-sdk/reply-history";
-import type { MsgContext } from "NexisClaw/plugin-sdk/reply-runtime";
+} from "FirstNexus/plugin-sdk/config-contracts";
+import type { HistoryEntry } from "FirstNexus/plugin-sdk/reply-history";
+import type { MsgContext } from "FirstNexus/plugin-sdk/reply-runtime";
+import type { Bot } from "grammy";
 import type { StickerMetadata, TelegramContext } from "./bot/types.js";
 import type { TelegramReplyChainEntry } from "./message-cache.js";
 
@@ -82,7 +82,7 @@ export type BuildTelegramMessageContextParams = {
   storeAllowFrom: string[];
   options?: TelegramMessageContextOptions;
   bot: Bot;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: { accountId: string };
   historyLimit: number;
   groupHistories: Map<string, HistoryEntry[]>;
@@ -94,10 +94,10 @@ export type BuildTelegramMessageContextParams = {
   resolveGroupActivation: ResolveGroupActivation;
   resolveGroupRequireMention: ResolveGroupRequireMention;
   resolveTelegramGroupConfig: ResolveTelegramGroupConfig;
-  loadFreshConfig?: () => NexisClawConfig;
+  loadFreshConfig?: () => FirstNexusConfig;
   runtime?: TelegramMessageContextRuntimeOverrides;
   sessionRuntime?: TelegramMessageContextSessionRuntimeOverrides;
-  upsertPairingRequest?: typeof import("NexisClaw/plugin-sdk/conversation-runtime").upsertChannelPairingRequest;
+  upsertPairingRequest?: typeof import("FirstNexus/plugin-sdk/conversation-runtime").upsertChannelPairingRequest;
   /** Global (per-account) handler for sendChatAction 401 backoff (#27092). */
   sendChatActionHandler: import("./sendchataction-401-backoff.js").TelegramSendChatActionHandler;
 };

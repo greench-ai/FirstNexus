@@ -1,14 +1,14 @@
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it } from "vitest";
 import { resolveDefaultAgentDir } from "../src/agents/agent-scope.js";
 import { collectProviderApiKeys } from "../src/agents/live-auth-keys.js";
 import { isLiveProfileKeyModeEnabled, isLiveTestEnabled } from "../src/agents/live-test-helpers.js";
 import { resolveApiKeyForProvider } from "../src/agents/model-auth.js";
 import { isBillingErrorMessage } from "../src/agents/pi-embedded-helpers/failover-matches.js";
-import { loadConfig, type NexisClawConfig } from "../src/config/config.js";
+import { loadConfig, type FirstNexusConfig } from "../src/config/config.js";
 import {
   DEFAULT_LIVE_IMAGE_MODELS,
   parseCaseFilter,
@@ -26,7 +26,8 @@ import { loadBundledProviderPlugin as loadBundledProviderPluginFromTestHelper } 
 
 const LIVE = isLiveTestEnabled();
 const REQUIRE_PROFILE_KEYS =
-  isLiveProfileKeyModeEnabled() || isTruthyEnvValue(process.env.NEXISCLAW_LIVE_REQUIRE_PROFILE_KEYS);
+  isLiveProfileKeyModeEnabled() ||
+  isTruthyEnvValue(process.env.NEXISCLAW_LIVE_REQUIRE_PROFILE_KEYS);
 const describeLive = LIVE ? describe : describe.skip;
 const providerFilter = parseCsvFilter(process.env.NEXISCLAW_LIVE_IMAGE_GENERATION_PROVIDERS);
 const caseFilter = parseCaseFilter(process.env.NEXISCLAW_LIVE_IMAGE_GENERATION_CASES);
@@ -138,7 +139,7 @@ function createEditReferencePng(): Buffer {
   return encodePngRgba(buf, width, height);
 }
 
-function withPluginsEnabled(cfg: NexisClawConfig): NexisClawConfig {
+function withPluginsEnabled(cfg: FirstNexusConfig): FirstNexusConfig {
   return {
     ...cfg,
     plugins: {

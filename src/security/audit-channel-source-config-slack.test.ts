@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { stubAuditChannelPlugin } from "./audit-channel-test-helpers.js";
 import { collectChannelSecurityFindings } from "./audit-channel.js";
 
 function stubSlackPlugin(params: {
-  resolveAccount: (cfg: NexisClawConfig, accountId: string | null | undefined) => unknown;
-  inspectAccount?: (cfg: NexisClawConfig, accountId: string | null | undefined) => unknown;
-  isConfigured?: (account: unknown, cfg: NexisClawConfig) => boolean;
+  resolveAccount: (cfg: FirstNexusConfig, accountId: string | null | undefined) => unknown;
+  inspectAccount?: (cfg: FirstNexusConfig, accountId: string | null | undefined) => unknown;
+  isConfigured?: (account: unknown, cfg: FirstNexusConfig) => boolean;
 }) {
   return stubAuditChannelPlugin({
     id: "slack",
@@ -38,7 +38,7 @@ function stubSlackPlugin(params: {
   });
 }
 
-function makeSlackHttpConfig(): NexisClawConfig {
+function makeSlackHttpConfig(): FirstNexusConfig {
   return {
     channels: {
       slack: {
@@ -48,7 +48,7 @@ function makeSlackHttpConfig(): NexisClawConfig {
         slashCommand: { enabled: true },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function makeSlackInspection(
@@ -80,7 +80,7 @@ describe("security audit channel source-config fallback slack", () => {
         name: "slack resolved inspection only exposes signingSecret status",
         sourceConfig: makeSlackHttpConfig(),
         resolvedConfig: makeSlackHttpConfig(),
-        plugin: (sourceConfig: NexisClawConfig) =>
+        plugin: (sourceConfig: FirstNexusConfig) =>
           stubSlackPlugin({
             inspectAccount: (cfg) => {
               const channel = cfg.channels?.slack ?? {};
@@ -102,7 +102,7 @@ describe("security audit channel source-config fallback slack", () => {
         name: "slack source config still wins when resolved inspection is unconfigured",
         sourceConfig: makeSlackHttpConfig(),
         resolvedConfig: makeSlackHttpConfig(),
-        plugin: (sourceConfig: NexisClawConfig) =>
+        plugin: (sourceConfig: FirstNexusConfig) =>
           stubSlackPlugin({
             inspectAccount: (cfg) => {
               const channel = cfg.channels?.slack ?? {};

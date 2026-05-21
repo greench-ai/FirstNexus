@@ -6,7 +6,7 @@ read_when:
 title: "Background exec and process tool"
 ---
 
-NexisClaw runs shell commands through the `exec` tool and keeps long-running tasks in memory. The `process` tool manages those background sessions.
+FirstNexus runs shell commands through the `exec` tool and keeps long-running tasks in memory. The `process` tool manages those background sessions.
 
 ## exec tool
 

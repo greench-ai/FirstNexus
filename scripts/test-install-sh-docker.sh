@@ -137,13 +137,13 @@ console.log(
 ' "$baseline_pack_json_file" "$update_pack_json_file"
 }
 
-SMOKE_IMAGE="${NEXISCLAW_INSTALL_SMOKE_IMAGE:-NexisClaw-install-smoke:local}"
-NONROOT_IMAGE="${NEXISCLAW_INSTALL_NONROOT_IMAGE:-NexisClaw-install-nonroot:local}"
+SMOKE_IMAGE="${NEXISCLAW_INSTALL_SMOKE_IMAGE:-FirstNexus-install-smoke:local}"
+NONROOT_IMAGE="${NEXISCLAW_INSTALL_NONROOT_IMAGE:-FirstNexus-install-nonroot:local}"
 SMOKE_PLATFORM="$(resolve_default_smoke_platform)"
 NONROOT_PLATFORM="${NEXISCLAW_INSTALL_NONROOT_PLATFORM:-$SMOKE_PLATFORM}"
-INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://NexisClaw.bot/install.sh}"
-CLI_INSTALL_URL="${NEXISCLAW_INSTALL_CLI_URL:-https://NexisClaw.bot/install-cli.sh}"
-PACKAGE_NAME="${NEXISCLAW_INSTALL_PACKAGE:-NexisClaw}"
+INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://FirstNexus.bot/install.sh}"
+CLI_INSTALL_URL="${NEXISCLAW_INSTALL_CLI_URL:-https://FirstNexus.bot/install-cli.sh}"
+PACKAGE_NAME="${NEXISCLAW_INSTALL_PACKAGE:-FirstNexus}"
 SKIP_NONROOT="${NEXISCLAW_INSTALL_SMOKE_SKIP_NONROOT:-0}"
 SKIP_SMOKE_IMAGE_BUILD="${NEXISCLAW_INSTALL_SMOKE_SKIP_IMAGE_BUILD:-0}"
 SKIP_NONROOT_IMAGE_BUILD="${NEXISCLAW_INSTALL_NONROOT_SKIP_IMAGE_BUILD:-0}"
@@ -274,7 +274,7 @@ process.stdout.write(last.filename);
 ' "$pack_json_file"
   )"
   if [[ -z "$UPDATE_PACKAGE_SPEC" ]]; then
-    node scripts/check-NexisClaw-package-tarball.mjs "${UPDATE_DIR}/${UPDATE_TGZ_FILE}"
+    node scripts/check-FirstNexus-package-tarball.mjs "${UPDATE_DIR}/${UPDATE_TGZ_FILE}"
   fi
   print_pack_audit "update" "$pack_json_file"
   assert_pack_unpacked_size_budget "update" "$pack_json_file"

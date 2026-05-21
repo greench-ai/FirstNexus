@@ -2,7 +2,7 @@ import {
   type AnyAgentTool,
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
-} from "NexisClaw/plugin-sdk/channel-entry-contract";
+} from "FirstNexus/plugin-sdk/channel-entry-contract";
 
 function createZalouserTool(context?: unknown): AnyAgentTool {
   const createTool = loadBundledEntryExportSync<(context?: unknown) => AnyAgentTool>(

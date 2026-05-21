@@ -14,12 +14,12 @@ type ResolveBonjourCliPathOptions = {
 export function formatBonjourInstanceName(displayName: string) {
   const trimmed = displayName.trim();
   if (!trimmed) {
-    return "NexisClaw";
+    return "FirstNexus";
   }
-  if (/NexisClaw/i.test(trimmed)) {
+  if (/FirstNexus/i.test(trimmed)) {
     return trimmed;
   }
-  return `${trimmed} (NexisClaw)`;
+  return `${trimmed} (FirstNexus)`;
 }
 
 export function resolveBonjourCliPath(opts: ResolveBonjourCliPathOptions = {}): string | undefined {
@@ -40,7 +40,7 @@ export function resolveBonjourCliPath(opts: ResolveBonjourCliPathOptions = {}): 
 
   const execPath = opts.execPath ?? process.execPath;
   const execDir = path.dirname(execPath);
-  const siblingCli = path.join(execDir, "NexisClaw");
+  const siblingCli = path.join(execDir, "FirstNexus");
   if (isFile(siblingCli)) {
     return siblingCli;
   }
@@ -56,7 +56,7 @@ export function resolveBonjourCliPath(opts: ResolveBonjourCliPathOptions = {}): 
   if (isFile(distCli)) {
     return distCli;
   }
-  const binCli = path.join(cwd, "bin", "NexisClaw");
+  const binCli = path.join(cwd, "bin", "FirstNexus");
   if (isFile(binCli)) {
     return binCli;
   }

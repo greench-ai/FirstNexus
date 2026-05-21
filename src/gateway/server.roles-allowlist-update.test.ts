@@ -354,13 +354,13 @@ describe("gateway node command allowlist", () => {
 
     try {
       const systemDeviceIdentity = loadOrCreateDeviceIdentity(
-        path.join(os.tmpdir(), `NexisClaw-node-system-run-${Date.now()}-${Math.random()}.json`),
+        path.join(os.tmpdir(), `FirstNexus-node-system-run-${Date.now()}-${Math.random()}.json`),
       );
       const emptyDeviceIdentity = loadOrCreateDeviceIdentity(
-        path.join(os.tmpdir(), `NexisClaw-node-empty-${Date.now()}-${Math.random()}.json`),
+        path.join(os.tmpdir(), `FirstNexus-node-empty-${Date.now()}-${Math.random()}.json`),
       );
       const allowedDeviceIdentity = loadOrCreateDeviceIdentity(
-        path.join(os.tmpdir(), `NexisClaw-node-allowed-${Date.now()}-${Math.random()}.json`),
+        path.join(os.tmpdir(), `FirstNexus-node-allowed-${Date.now()}-${Math.random()}.json`),
       );
 
       systemClient = await connectNodeClientWithPairing({
@@ -495,7 +495,7 @@ describe("gateway node command allowlist", () => {
   test("records only allowlisted commands in pending node pairing requests", async () => {
     const deviceIdentityPath = path.join(
       os.tmpdir(),
-      `NexisClaw-allowlisted-pending-${Date.now()}-${Math.random().toString(36).slice(2)}.json`,
+      `FirstNexus-allowlisted-pending-${Date.now()}-${Math.random().toString(36).slice(2)}.json`,
     );
     const deviceIdentity = loadOrCreateDeviceIdentity(deviceIdentityPath);
     const displayName = "node-pending-allowlisted-only";
@@ -535,7 +535,7 @@ describe("gateway node command allowlist", () => {
   test("rejects reconnect metadata spoof for paired node devices", async () => {
     const deviceIdentityPath = path.join(
       os.tmpdir(),
-      `NexisClaw-spoof-test-device-${Date.now()}-${Math.random().toString(36).slice(2)}.json`,
+      `FirstNexus-spoof-test-device-${Date.now()}-${Math.random().toString(36).slice(2)}.json`,
     );
     const deviceIdentity = loadOrCreateDeviceIdentity(deviceIdentityPath);
 
@@ -581,7 +581,7 @@ describe("gateway node command allowlist", () => {
   test("filters system.run for confusable iOS metadata at connect time", async () => {
     const deviceIdentityPath = path.join(
       os.tmpdir(),
-      `NexisClaw-confusable-node-greek-omicron-${Date.now()}-${Math.random().toString(36).slice(2)}.json`,
+      `FirstNexus-confusable-node-greek-omicron-${Date.now()}-${Math.random().toString(36).slice(2)}.json`,
     );
     const deviceIdentity = loadOrCreateDeviceIdentity(deviceIdentityPath);
     const displayName = "node-greek-omicron-family";

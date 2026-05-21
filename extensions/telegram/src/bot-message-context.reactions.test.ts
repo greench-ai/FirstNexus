@@ -76,7 +76,7 @@ describe("buildTelegramMessageContext reactions", () => {
       },
       cfg: {
         agents: {
-          defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/NexisClaw" },
+          defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/FirstNexus" },
         },
         channels: {
           telegram: {
@@ -125,7 +125,7 @@ describe("buildTelegramMessageContext reactions", () => {
       },
       cfg: {
         agents: {
-          defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/NexisClaw" },
+          defaults: { model: "anthropic/claude-opus-4-5", workspace: "/tmp/FirstNexus" },
         },
         channels: { telegram: { dmPolicy: "open", allowFrom: ["*"] } },
         messages: {

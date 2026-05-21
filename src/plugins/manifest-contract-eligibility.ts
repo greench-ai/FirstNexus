@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { getCurrentPluginMetadataSnapshot } from "./current-plugin-metadata-snapshot.js";
 import { isInstalledPluginEnabled } from "./installed-plugin-index.js";
 import type { PluginManifestContractListKey, PluginManifestRecord } from "./manifest-registry.js";
@@ -15,7 +15,7 @@ export function isManifestPluginAvailableForControlPlane(params: {
     PluginManifestRecord,
     "id" | "origin" | "enabledByDefault" | "enabledByDefaultOnPlatforms"
   >;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 }): boolean {
   if (params.plugin.origin === "bundled") {
     return true;
@@ -36,7 +36,7 @@ export function listAvailableManifestContractPlugins(params: {
   snapshot: Pick<PluginMetadataSnapshot, "index" | "plugins">;
   contract: PluginManifestContractListKey;
   value?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 }): PluginManifestRecord[] {
   return params.snapshot.plugins.filter(
     (plugin) =>
@@ -56,7 +56,7 @@ export function listAvailableManifestContractPlugins(params: {
 export function listAvailableManifestContractValues(params: {
   snapshot: Pick<PluginMetadataSnapshot, "index" | "plugins">;
   contract: PluginManifestContractListKey;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 }): string[] {
   const values = new Set<string>();
   for (const plugin of listAvailableManifestContractPlugins(params)) {
@@ -68,7 +68,7 @@ export function listAvailableManifestContractValues(params: {
 }
 
 export function loadManifestContractSnapshot(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): PluginMetadataManifestView {
@@ -80,7 +80,7 @@ export function loadManifestContractSnapshot(params: {
 }
 
 export function loadManifestMetadataRegistry(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): PluginMetadataRegistryView {
@@ -92,7 +92,7 @@ export function loadManifestMetadataRegistry(params: {
 }
 
 export function loadManifestMetadataSnapshot(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): PluginMetadataSnapshot {

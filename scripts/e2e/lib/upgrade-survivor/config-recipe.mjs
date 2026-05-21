@@ -109,7 +109,7 @@ const scenarioConfigSteps = new Map([
       {
         id: "logging-file",
         intent: "logging",
-        argv: ["config", "set", "logging.file", "~/NexisClaw-upgrade-survivor/gateway.jsonl"],
+        argv: ["config", "set", "logging.file", "~/FirstNexus-upgrade-survivor/gateway.jsonl"],
       },
     ],
   ],
@@ -195,15 +195,15 @@ function adaptStepForBaseline(step, baselineVersion, summary) {
   return step;
 }
 
-function runNexisClaw(step) {
-  const result = spawnSync("NexisClaw", step.argv, {
+function runFirstNexus(step) {
+  const result = spawnSync("FirstNexus", step.argv, {
     encoding: "utf8",
     env: process.env,
   });
   return {
     id: step.id,
     intent: step.intent,
-    command: ["NexisClaw", ...step.argv].join(" "),
+    command: ["FirstNexus", ...step.argv].join(" "),
     status: result.status,
     signal: result.signal,
     ok: result.status === 0,
@@ -243,7 +243,7 @@ function applyRecipe() {
     if (!adaptedStep) {
       continue;
     }
-    const outcome = runNexisClaw(adaptedStep);
+    const outcome = runFirstNexus(adaptedStep);
     summary.steps.push(outcome);
     writeJson(summaryPath, summary);
     if (!outcome.ok) {

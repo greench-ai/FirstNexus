@@ -1,9 +1,9 @@
 import {
   createDirectoryTestRuntime,
   expectDirectorySurface,
-} from "NexisClaw/plugin-sdk/channel-test-helpers";
+} from "FirstNexus/plugin-sdk/channel-test-helpers";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig, RuntimeEnv } from "../runtime-api.js";
+import type { FirstNexusConfig, RuntimeEnv } from "../runtime-api.js";
 import { msteamsPlugin } from "./channel.js";
 import { resolveMSTeamsOutboundSessionRoute } from "./session-route.js";
 
@@ -35,7 +35,7 @@ describe("msteams directory", () => {
             tenantId: "tenant-id-5678",
           },
         },
-      } as unknown as NexisClawConfig;
+      } as unknown as FirstNexusConfig;
 
       const result = await directorySelf({ cfg, runtime: runtimeEnv });
       expect(result).toEqual({ kind: "user", id: "test-app-id-1234", name: "test-app-id-1234" });
@@ -45,7 +45,7 @@ describe("msteams directory", () => {
       vi.stubEnv("MSTEAMS_APP_ID", "");
       vi.stubEnv("MSTEAMS_APP_PASSWORD", "");
       vi.stubEnv("MSTEAMS_TENANT_ID", "");
-      const cfg = { channels: {} } as unknown as NexisClawConfig;
+      const cfg = { channels: {} } as unknown as FirstNexusConfig;
       const result = await directorySelf({ cfg, runtime: runtimeEnv });
       expect(result).toBeNull();
     });
@@ -67,7 +67,7 @@ describe("msteams directory", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const directory = expectDirectorySurface(msteamsDirectoryAdapter);
 
@@ -104,7 +104,7 @@ describe("msteams directory", () => {
           dms: { "  Carol  ": {}, "user:Dave": {} },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const directory = expectDirectorySurface(msteamsDirectoryAdapter);
 

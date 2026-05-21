@@ -10,13 +10,13 @@
  * QQBot falls back to "always handle, anyone can approve".
  */
 
-import { createChannelApprovalCapability } from "NexisClaw/plugin-sdk/approval-delivery-runtime";
-import { createLazyChannelApprovalNativeRuntimeAdapter } from "NexisClaw/plugin-sdk/approval-handler-adapter-runtime";
-import type { ChannelApprovalNativeRuntimeAdapter } from "NexisClaw/plugin-sdk/approval-handler-runtime";
-import { resolveApprovalRequestSessionConversation } from "NexisClaw/plugin-sdk/approval-native-runtime";
-import type { ChannelApprovalCapability } from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { createChannelApprovalCapability } from "FirstNexus/plugin-sdk/approval-delivery-runtime";
+import { createLazyChannelApprovalNativeRuntimeAdapter } from "FirstNexus/plugin-sdk/approval-handler-adapter-runtime";
+import type { ChannelApprovalNativeRuntimeAdapter } from "FirstNexus/plugin-sdk/approval-handler-runtime";
+import { resolveApprovalRequestSessionConversation } from "FirstNexus/plugin-sdk/approval-native-runtime";
+import type { ChannelApprovalCapability } from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveApprovalTarget } from "../../engine/approval/index.js";
 import {
   isQQBotExecApprovalClientEnabled,
@@ -38,7 +38,7 @@ import { getBridgeLogger } from "../logger.js";
  * delivery fails with 500 on the QQ Bot API).
  */
 function shouldHandleRequest(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   request: {
     request: {
@@ -63,14 +63,14 @@ function shouldHandleRequest(params: {
 }
 
 function hasExecApprovalConfig(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): boolean {
   return resolveQQBotExecApprovalConfig(params) !== undefined;
 }
 
 function isNativeDeliveryEnabled(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): boolean {
   if (hasExecApprovalConfig(params)) {
@@ -108,7 +108,7 @@ function createQQBotApprovalCapability(): ChannelApprovalCapability {
       cfg,
       accountId,
     }: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       accountId?: string | null;
       action: "approve";
     }) => {
@@ -120,7 +120,7 @@ function createQQBotApprovalCapability(): ChannelApprovalCapability {
       cfg,
       accountId,
     }: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       accountId?: string | null;
       action: "approve";
     }) => {

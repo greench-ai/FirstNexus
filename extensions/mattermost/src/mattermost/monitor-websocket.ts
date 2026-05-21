@@ -1,10 +1,13 @@
 import { randomUUID } from "node:crypto";
-import { safeParseJsonWithSchema, safeParseWithSchema } from "NexisClaw/plugin-sdk/extension-shared";
+import {
+  safeParseJsonWithSchema,
+  safeParseWithSchema,
+} from "FirstNexus/plugin-sdk/extension-shared";
 import {
   captureWsEvent,
   createDebugProxyWebSocketAgent,
   resolveDebugProxySettings,
-} from "NexisClaw/plugin-sdk/proxy-capture";
+} from "FirstNexus/plugin-sdk/proxy-capture";
 import WebSocket from "ws";
 import { z } from "zod";
 import { MattermostPostSchema, type MattermostPost } from "./client.js";

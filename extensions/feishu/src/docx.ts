@@ -3,11 +3,11 @@ import { homedir } from "node:os";
 import { isAbsolute, resolve } from "node:path";
 import { basename } from "node:path";
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { Type } from "typebox";
-import type { NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusPluginApi } from "../runtime-api.js";
 import { listEnabledFeishuAccounts } from "./accounts.js";
 import { FeishuDocSchema, type FeishuDocParams } from "./doc-schema.js";
 import { BATCH_SIZE, insertBlocksInBatches } from "./docx-batch-insert.js";
@@ -1364,7 +1364,7 @@ async function listAppScopes(client: Lark.Client) {
 
 // ============ Tool Registration ============
 
-export function registerFeishuDocTools(api: NexisClawPluginApi) {
+export function registerFeishuDocTools(api: FirstNexusPluginApi) {
   if (!api.config) {
     return;
   }

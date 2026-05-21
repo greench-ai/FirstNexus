@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { captureEnv } from "../../test-utils/env.js";
 import { __testing as externalAuthTesting } from "./external-auth.js";
 import {
@@ -32,7 +32,11 @@ function createCredential(overrides: Partial<OAuthCredential> = {}): OAuthCreden
 }
 
 const tempDirs: string[] = [];
-const envSnapshot = captureEnv(["NEXISCLAW_STATE_DIR", "NEXISCLAW_AGENT_DIR", "PI_CODING_AGENT_DIR"]);
+const envSnapshot = captureEnv([
+  "NEXISCLAW_STATE_DIR",
+  "NEXISCLAW_AGENT_DIR",
+  "PI_CODING_AGENT_DIR",
+]);
 
 beforeEach(() => {
   externalAuthTesting.setResolveExternalAuthProfilesForTest(() => []);
@@ -165,7 +169,7 @@ describe("createOAuthManager", () => {
           "openai-codex": { auth: "oauth", baseUrl: "", models: [] },
         },
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
     const buildApiKey = vi.fn(async (_provider, value: OAuthCredential) => value.access);
     const manager = createOAuthManager({
       buildApiKey,

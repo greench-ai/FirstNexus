@@ -31,7 +31,7 @@ export type {
   MSTeamsConfig,
   MSTeamsReplyStyle,
   MSTeamsTeamConfig,
-  NexisClawConfig,
+  FirstNexusConfig,
   ReplyToMode,
   ResolvedTtsPersona,
   SignalReactionNotificationMode,

@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   emitDiagnosticsTimelineEvent,
   flushDiagnosticsTimelineForTest,
@@ -14,7 +14,7 @@ import {
 const tempDirs: string[] = [];
 
 async function createTimelineEnv() {
-  const dir = await mkdtemp(join(tmpdir(), "NexisClaw-diagnostics-timeline-"));
+  const dir = await mkdtemp(join(tmpdir(), "FirstNexus-diagnostics-timeline-"));
   tempDirs.push(dir);
   return {
     env: {
@@ -63,7 +63,9 @@ describe("diagnostics timeline", () => {
     const { env } = await createTimelineEnv();
 
     expect(isDiagnosticsTimelineEnabled({ env })).toBe(true);
-    expect(isDiagnosticsTimelineEnabled({ env: { ...env, NEXISCLAW_DIAGNOSTICS: "1" } })).toBe(true);
+    expect(isDiagnosticsTimelineEnabled({ env: { ...env, NEXISCLAW_DIAGNOSTICS: "1" } })).toBe(
+      true,
+    );
     expect(isDiagnosticsTimelineEnabled({ env: { ...env, NEXISCLAW_DIAGNOSTICS: "yes" } })).toBe(
       true,
     );
@@ -73,7 +75,9 @@ describe("diagnostics timeline", () => {
     expect(isDiagnosticsTimelineEnabled({ env: { ...env, NEXISCLAW_DIAGNOSTICS: "all" } })).toBe(
       true,
     );
-    expect(isDiagnosticsTimelineEnabled({ env: { ...env, NEXISCLAW_DIAGNOSTICS: "*" } })).toBe(true);
+    expect(isDiagnosticsTimelineEnabled({ env: { ...env, NEXISCLAW_DIAGNOSTICS: "*" } })).toBe(
+      true,
+    );
     expect(
       isDiagnosticsTimelineEnabled({
         env: { ...env, NEXISCLAW_DIAGNOSTICS: "diagnostics.timeline" },
@@ -96,9 +100,9 @@ describe("diagnostics timeline", () => {
     const { env } = await createTimelineEnv();
     const envWithoutFlag = { ...env };
     delete envWithoutFlag.NEXISCLAW_DIAGNOSTICS;
-    const configWithTimeline = { diagnostics: { flags: ["timeline"] } } as NexisClawConfig;
-    const configWithWildcard = { diagnostics: { flags: ["*"] } } as NexisClawConfig;
-    const configWithoutTimeline = { diagnostics: { flags: ["telegram.http"] } } as NexisClawConfig;
+    const configWithTimeline = { diagnostics: { flags: ["timeline"] } } as FirstNexusConfig;
+    const configWithWildcard = { diagnostics: { flags: ["*"] } } as FirstNexusConfig;
+    const configWithoutTimeline = { diagnostics: { flags: ["telegram.http"] } } as FirstNexusConfig;
 
     expect(isDiagnosticsTimelineEnabled({ config: configWithTimeline, env: envWithoutFlag })).toBe(
       true,
@@ -113,7 +117,7 @@ describe("diagnostics timeline", () => {
 
   it("lets false-like env diagnostics disable config-enabled timeline output", async () => {
     const { env } = await createTimelineEnv();
-    const configWithTimeline = { diagnostics: { flags: ["timeline"] } } as NexisClawConfig;
+    const configWithTimeline = { diagnostics: { flags: ["timeline"] } } as FirstNexusConfig;
 
     expect(
       isDiagnosticsTimelineEnabled({
@@ -141,7 +145,7 @@ describe("diagnostics timeline", () => {
     );
 
     const [event] = await readTimeline(path);
-    expect(event?.schemaVersion).toBe("NexisClaw.diagnostics.v1");
+    expect(event?.schemaVersion).toBe("FirstNexus.diagnostics.v1");
     expect(event?.type).toBe("mark");
     expect(event?.name).toBe("gateway.ready");
     expect(event?.runId).toBe("run-1");
@@ -164,7 +168,7 @@ describe("diagnostics timeline", () => {
       measureDiagnosticsTimelineSpan("runtimeDeps.stage", () => "ok", {
         phase: "startup",
         attributes: { pluginCount: 3 },
-        config: { diagnostics: { flags: ["timeline"] } } as NexisClawConfig,
+        config: { diagnostics: { flags: ["timeline"] } } as FirstNexusConfig,
         env: configOnlyEnv,
       }),
     ).resolves.toBe("ok");

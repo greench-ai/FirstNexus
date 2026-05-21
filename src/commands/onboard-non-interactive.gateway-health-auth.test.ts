@@ -2,11 +2,11 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveGatewayHealthProbeToken } from "./onboard-non-interactive/local.js";
 
 async function withTempDir<T>(run: (dir: string) => Promise<T>): Promise<T> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-gateway-health-auth-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-gateway-health-auth-"));
   try {
     return await run(dir);
   } finally {
@@ -62,7 +62,7 @@ describe("resolveGatewayHealthProbeToken", () => {
             },
           },
         },
-      } as NexisClawConfig);
+      } as FirstNexusConfig);
 
       expect(resolved).toEqual({ token: "file-secret-token" });
     });
@@ -92,7 +92,7 @@ describe("resolveGatewayHealthProbeToken", () => {
             },
           },
         },
-      } as NexisClawConfig);
+      } as FirstNexusConfig);
 
       expect(resolved.token).toBeUndefined();
       expect(resolved.unresolvedRefReason).toBe(
@@ -116,7 +116,7 @@ describe("resolveGatewayHealthProbeToken", () => {
           },
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     expect(resolved).toEqual({ password: "resolved-password" });
   });

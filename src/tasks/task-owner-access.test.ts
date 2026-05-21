@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 import {
   findLatestTaskForRelatedSessionKeyForOwner,
   findTaskByRunIdForOwner,
@@ -20,10 +20,10 @@ afterEach(() => {
 });
 
 async function withTaskRegistryTempDir<T>(run: () => Promise<T> | T): Promise<T> {
-  return await withNexisClawTestState(
+  return await withFirstNexusTestState(
     {
       layout: "state-only",
-      prefix: "NexisClaw-task-owner-access-",
+      prefix: "FirstNexus-task-owner-access-",
     },
     async () => {
       resetTaskRegistryForTests({ persist: false });

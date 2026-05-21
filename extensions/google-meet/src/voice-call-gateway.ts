@@ -1,10 +1,10 @@
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import {
   GatewayClient,
   startGatewayClientWhenEventLoopReady,
-} from "NexisClaw/plugin-sdk/gateway-runtime";
-import type { RuntimeLogger } from "NexisClaw/plugin-sdk/plugin-runtime";
-import { sleep } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/gateway-runtime";
+import type { RuntimeLogger } from "FirstNexus/plugin-sdk/plugin-runtime";
+import { sleep } from "FirstNexus/plugin-sdk/runtime-env";
 import type { GoogleMeetConfig } from "./config.js";
 
 type VoiceCallGatewayClient = InstanceType<typeof GatewayClient>;

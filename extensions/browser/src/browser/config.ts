@@ -3,11 +3,11 @@ import path from "node:path";
 import {
   normalizeOptionalString,
   normalizeOptionalTrimmedStringList,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   type BrowserConfig,
   type BrowserProfileConfig,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../config/config.js";
 import { resolveGatewayPort } from "../config/paths.js";
 import {
@@ -101,7 +101,7 @@ export type ResolvedBrowserProfile = {
   mcpCommand?: string;
   mcpArgs?: string[];
   color: string;
-  driver: "NexisClaw" | "existing-session";
+  driver: "FirstNexus" | "existing-session";
   executablePath?: string;
   headless: boolean;
   headlessSource?: "profile" | "config" | "default";
@@ -213,7 +213,7 @@ function hasLinuxDisplay(env: NodeJS.ProcessEnv): boolean {
 }
 
 function isLocalManagedProfile(profile: ResolvedBrowserProfile): boolean {
-  return profile.driver === "NexisClaw" && profile.cdpIsLoopback && !profile.attachOnly;
+  return profile.driver === "FirstNexus" && profile.cdpIsLoopback && !profile.attachOnly;
 }
 
 function resolveBrowserTabCleanupConfig(
@@ -328,7 +328,7 @@ function ensureDefaultUserBrowserProfile(
 
 export function resolveBrowserConfig(
   cfg: BrowserConfig | undefined,
-  rootConfig?: NexisClawConfig,
+  rootConfig?: FirstNexusConfig,
 ): ResolvedBrowserConfig {
   const enabled = cfg?.enabled ?? DEFAULT_NEXISCLAW_BROWSER_ENABLED;
   const evaluateEnabled = cfg?.evaluateEnabled ?? DEFAULT_BROWSER_EVALUATE_ENABLED;
@@ -463,7 +463,7 @@ export function resolveProfile(
   let cdpHost = resolved.cdpHost;
   let cdpPort = profile.cdpPort ?? 0;
   let cdpUrl = "";
-  const driver = profile.driver === "existing-session" ? "existing-session" : "NexisClaw";
+  const driver = profile.driver === "existing-session" ? "existing-session" : "FirstNexus";
   const headless = profile.headless ?? resolved.headless;
   const headlessSource =
     typeof profile.headless === "boolean" ? "profile" : resolved.headlessSource;

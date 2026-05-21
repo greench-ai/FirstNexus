@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 
 const getLoadedChannelPluginMock = vi.hoisted(() => vi.fn());
 const getChannelPluginMock = vi.hoisted(() => vi.fn());
@@ -210,7 +210,7 @@ describe("looksLikeTargetId", () => {
 });
 
 describe("maybeResolvePluginMessagingTarget", () => {
-  const cfg = {} as NexisClawConfig;
+  const cfg = {} as FirstNexusConfig;
 
   it("returns undefined when requireIdLike is set and the target is not id-like", async () => {
     getLoadedChannelPluginMock.mockReturnValueOnce({

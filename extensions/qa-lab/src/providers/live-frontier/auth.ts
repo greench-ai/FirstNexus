@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   applyAuthProfileConfig,
   resolveEnvApiKey,
   validateAnthropicSetupToken,
-} from "NexisClaw/plugin-sdk/provider-auth";
+} from "FirstNexus/plugin-sdk/provider-auth";
 import { resolveQaAgentAuthDir, writeQaAuthProfiles } from "../shared/auth-store.js";
 
 export const QA_LIVE_ANTHROPIC_SETUP_TOKEN_ENV = "NEXISCLAW_QA_LIVE_ANTHROPIC_SETUP_TOKEN";
@@ -36,10 +36,10 @@ function resolveQaLiveAnthropicSetupToken(env: NodeJS.ProcessEnv = process.env) 
 }
 
 export async function stageQaLiveAnthropicSetupToken(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   stateDir: string;
   env?: NodeJS.ProcessEnv;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const resolved = resolveQaLiveAnthropicSetupToken(params.env);
   if (!resolved) {
     return params.cfg;
@@ -63,12 +63,12 @@ export async function stageQaLiveAnthropicSetupToken(params: {
 }
 
 export async function stageQaLiveApiKeyProfiles(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   stateDir: string;
   providerIds: readonly string[];
   env?: NodeJS.ProcessEnv;
   agentIds?: readonly string[];
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const env = params.env ?? process.env;
   const providerIds = [...new Set(params.providerIds.map((providerId) => providerId.trim()))]
     .filter((providerId) => providerId.length > 0)

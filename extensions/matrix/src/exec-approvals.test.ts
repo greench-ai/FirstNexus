@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   getMatrixExecApprovalApprovers,
@@ -28,15 +28,15 @@ afterEach(() => {
 });
 
 function createTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-matrix-exec-approvals-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-matrix-exec-approvals-"));
   tempDirs.push(dir);
   return dir;
 }
 
 function buildConfig(
-  execApprovals?: NonNullable<NonNullable<NexisClawConfig["channels"]>["matrix"]>["execApprovals"],
-  channelOverrides?: Partial<NonNullable<NonNullable<NexisClawConfig["channels"]>["matrix"]>>,
-): NexisClawConfig {
+  execApprovals?: NonNullable<NonNullable<FirstNexusConfig["channels"]>["matrix"]>["execApprovals"],
+  channelOverrides?: Partial<NonNullable<NonNullable<FirstNexusConfig["channels"]>["matrix"]>>,
+): FirstNexusConfig {
   return {
     channels: {
       matrix: {
@@ -47,7 +47,7 @@ function buildConfig(
         execApprovals,
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function matrixAccount(
@@ -70,7 +70,7 @@ function buildMultiAccountMatrixConfig(params: {
   opsExecApprovals?: MatrixExecApprovalConfig;
   defaultOverrides?: Partial<MatrixAccountConfig>;
   opsOverrides?: Partial<MatrixAccountConfig>;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   return {
     ...(params.sessionStorePath ? { session: { store: params.sessionStorePath } } : {}),
     channels: {
@@ -95,7 +95,7 @@ function buildMultiAccountMatrixConfig(params: {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function makeForeignChannelApprovalRequest(params: {
@@ -183,7 +183,7 @@ describe("matrix exec approvals", () => {
           ],
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(isMatrixExecApprovalTargetRecipient({ cfg, senderId: "@target:example.org" })).toBe(
       true,

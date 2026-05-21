@@ -1,13 +1,13 @@
 import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/account-resolution";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/account-resolution";
 import {
   hasConfiguredSecretInput,
   normalizeSecretInputString,
-} from "NexisClaw/plugin-sdk/secret-input";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/secret-input";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { SlackAccountSurfaceFields } from "./account-surface-fields.js";
 import {
   mergeSlackAccountConfig,
@@ -65,7 +65,7 @@ function inspectSlackToken(value: unknown): {
 }
 
 export function inspectSlackAccount(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   envBotToken?: string | null;
   envAppToken?: string | null;

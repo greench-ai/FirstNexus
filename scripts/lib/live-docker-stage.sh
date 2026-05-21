@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NexisClaw_live_stage_source_tree() {
+FirstNexus_live_stage_source_tree() {
   local dest_dir="${1:?destination directory required}"
   local stage_mode="${NEXISCLAW_LIVE_DOCKER_SOURCE_STAGE_MODE:-copy}"
 
@@ -22,7 +22,7 @@ NexisClaw_live_stage_source_tree() {
     --exclude=.tmp \
     --exclude=.tmp-precommit-venv \
     --exclude=.worktrees \
-    --exclude=__NexisClaw_vitest__ \
+    --exclude=__FirstNexus_vitest__ \
     --exclude=relay.sock \
     --exclude='*.sock' \
     --exclude='*/*.sock' \
@@ -39,7 +39,7 @@ NexisClaw_live_stage_source_tree() {
   fi
 }
 
-NexisClaw_live_link_runtime_tree() {
+FirstNexus_live_link_runtime_tree() {
   local dest_dir="${1:?destination directory required}"
 
   if [ ! -e "$dest_dir/node_modules" ]; then
@@ -53,7 +53,7 @@ NexisClaw_live_link_runtime_tree() {
   fi
 }
 
-NexisClaw_live_stage_node_modules() {
+FirstNexus_live_stage_node_modules() {
   local dest_dir="${1:?destination directory required}"
   local target_dir="$dest_dir/node_modules"
 
@@ -63,9 +63,9 @@ NexisClaw_live_stage_node_modules() {
   mkdir -p "$target_dir/.vite-temp"
 }
 
-NexisClaw_live_stage_state_dir() {
+FirstNexus_live_stage_state_dir() {
   local dest_dir="${1:?destination directory required}"
-  local source_dir="${HOME}/.NexisClaw"
+  local source_dir="${HOME}/.FirstNexus"
 
   mkdir -p "$dest_dir"
   if [ -d "$source_dir" ]; then
@@ -96,10 +96,10 @@ NexisClaw_live_stage_state_dir() {
   fi
 
   export NEXISCLAW_STATE_DIR="$dest_dir"
-  export NEXISCLAW_CONFIG_PATH="$dest_dir/NexisClaw.json"
+  export NEXISCLAW_CONFIG_PATH="$dest_dir/FirstNexus.json"
 }
 
-NexisClaw_live_prepare_staged_config() {
+FirstNexus_live_prepare_staged_config() {
   if [ ! -f "${NEXISCLAW_CONFIG_PATH:-}" ]; then
     return 0
   fi

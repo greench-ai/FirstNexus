@@ -3,13 +3,17 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { Readable, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { runPluginCommandWithTimeout } from "NexisClaw/plugin-sdk/run-command";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { CONFIG_DIR, extractArchive, resolveBrewExecutable } from "NexisClaw/plugin-sdk/setup-tools";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { runPluginCommandWithTimeout } from "FirstNexus/plugin-sdk/run-command";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import {
+  CONFIG_DIR,
+  extractArchive,
+  resolveBrewExecutable,
+} from "FirstNexus/plugin-sdk/setup-tools";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 
 export type ReleaseAsset = {
   name?: string;
@@ -283,7 +287,7 @@ export async function installSignalCliFromRelease(
     auditContext: "signal-cli-release-info",
     init: {
       headers: {
-        "User-Agent": "NexisClaw",
+        "User-Agent": "FirstNexus",
         Accept: "application/vnd.github+json",
       },
     },
@@ -312,7 +316,9 @@ export async function installSignalCliFromRelease(
     };
   }
 
-  const tmpDir = await fs.mkdtemp(path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-signal-"));
+  const tmpDir = await fs.mkdtemp(
+    path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-signal-"),
+  );
   const archivePath = path.join(tmpDir, asset.name);
 
   runtime.log(`Downloading signal-cli ${version} (${asset.name})…`);

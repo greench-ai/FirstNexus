@@ -2,13 +2,13 @@ import fs from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { clearRuntimeAuthProfileStoreSnapshots } from "../agents/auth-profiles/store.js";
 import {
-  createNexisClawTestState,
-  type NexisClawTestState,
-} from "../test-utils/NexisClaw-test-state.js";
+  createFirstNexusTestState,
+  type FirstNexusTestState,
+} from "../test-utils/FirstNexus-test-state.js";
 import { maybeRepairLegacyFlatAuthProfileStores } from "./doctor-auth-flat-profiles.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 
-const states: NexisClawTestState[] = [];
+const states: FirstNexusTestState[] = [];
 
 function makePrompter(shouldRepair: boolean): DoctorPrompter {
   return {
@@ -29,10 +29,10 @@ function makePrompter(shouldRepair: boolean): DoctorPrompter {
   };
 }
 
-async function makeTestState(): Promise<NexisClawTestState> {
-  const state = await createNexisClawTestState({
+async function makeTestState(): Promise<FirstNexusTestState> {
+  const state = await createFirstNexusTestState({
     layout: "state-only",
-    prefix: "NexisClaw-doctor-flat-auth-",
+    prefix: "FirstNexus-doctor-flat-auth-",
     env: {
       NEXISCLAW_AGENT_DIR: undefined,
     },

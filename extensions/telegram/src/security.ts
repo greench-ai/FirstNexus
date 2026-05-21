@@ -1,6 +1,6 @@
-import { createScopedDmSecurityResolver } from "NexisClaw/plugin-sdk/channel-config-helpers";
-import type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import { createAllowlistProviderRouteAllowlistWarningCollector } from "NexisClaw/plugin-sdk/channel-policy";
+import { createScopedDmSecurityResolver } from "FirstNexus/plugin-sdk/channel-config-helpers";
+import type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import { createAllowlistProviderRouteAllowlistWarningCollector } from "FirstNexus/plugin-sdk/channel-policy";
 import type { ResolvedTelegramAccount } from "./accounts.js";
 import { collectTelegramSecurityAuditFindings } from "./security-audit.js";
 

@@ -1,12 +1,12 @@
 import { mkdtempSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   finalizeDebugProxyCapture,
   getDebugProxyCaptureStore,
   initializeDebugProxyCapture,
-} from "NexisClaw/plugin-sdk/proxy-capture";
+} from "FirstNexus/plugin-sdk/proxy-capture";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { installDebugProxyTestResetHooks } from "../test-support/debug-proxy-env-test-helpers.js";
 
@@ -23,7 +23,7 @@ import {
 } from "./speech-provider.js";
 import * as ttsModule from "./tts.js";
 
-const TEST_CFG = {} as NexisClawConfig;
+const TEST_CFG = {} as FirstNexusConfig;
 
 function requireFirstEdgeTtsCall(edgeSpy: ReturnType<typeof vi.spyOn>): {
   config?: unknown;
@@ -116,8 +116,8 @@ describe("listMicrosoftVoices", () => {
       id: "ms-voices-session",
       startedAt: Date.now(),
       mode: "test",
-      sourceScope: "NexisClaw",
-      sourceProcess: "NexisClaw",
+      sourceScope: "FirstNexus",
+      sourceProcess: "FirstNexus",
       dbPath: process.env.NEXISCLAW_DEBUG_PROXY_DB_PATH,
       blobDir: process.env.NEXISCLAW_DEBUG_PROXY_BLOB_DIR,
     });
@@ -159,8 +159,8 @@ describe("listMicrosoftVoices", () => {
       id: "ms-voices-global-session",
       startedAt: Date.now(),
       mode: "test",
-      sourceScope: "NexisClaw",
-      sourceProcess: "NexisClaw",
+      sourceScope: "FirstNexus",
+      sourceProcess: "FirstNexus",
       dbPath: process.env.NEXISCLAW_DEBUG_PROXY_DB_PATH,
       blobDir: process.env.NEXISCLAW_DEBUG_PROXY_BLOB_DIR,
     });

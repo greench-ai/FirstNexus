@@ -3,8 +3,8 @@ summary: "Delegate gateway authentication to a trusted reverse proxy (Pomerium, 
 title: "Trusted proxy auth"
 sidebarTitle: "Trusted proxy auth"
 read_when:
-  - Running NexisClaw behind an identity-aware proxy
-  - Setting up Pomerium, Caddy, or nginx with OAuth in front of NexisClaw
+  - Running FirstNexus behind an identity-aware proxy
+  - Setting up Pomerium, Caddy, or nginx with OAuth in front of FirstNexus
   - Fixing WebSocket 1008 unauthorized errors with reverse proxy setups
   - Deciding where to set HSTS and other HTTP hardening headers
 ---
@@ -17,7 +17,7 @@ read_when:
 
 Use `trusted-proxy` auth mode when:
 
-- You run NexisClaw behind an **identity-aware proxy** (Pomerium, Caddy + OAuth, nginx + oauth2-proxy, Traefik + forward auth).
+- You run FirstNexus behind an **identity-aware proxy** (Pomerium, Caddy + OAuth, nginx + oauth2-proxy, Traefik + forward auth).
 - Your proxy handles all authentication and passes user identity via headers.
 - You're in a Kubernetes or container environment where the proxy is the only path to the Gateway.
 - You're hitting WebSocket `1008 unauthorized` errors because browsers can't pass tokens in WS payloads.
@@ -39,10 +39,10 @@ Use `trusted-proxy` auth mode when:
     Proxy adds a header with the authenticated user identity (e.g., `x-forwarded-user: nick@example.com`).
   </Step>
   <Step title="Gateway verifies trusted source">
-    NexisClaw checks that the request came from a **trusted proxy IP** (configured in `gateway.trustedProxies`).
+    FirstNexus checks that the request came from a **trusted proxy IP** (configured in `gateway.trustedProxies`).
   </Step>
   <Step title="Gateway extracts identity">
-    NexisClaw extracts the user identity from the configured header.
+    FirstNexus extracts the user identity from the configured header.
   </Step>
   <Step title="Authorize">
     If everything checks out, the request is authorized.
@@ -137,7 +137,7 @@ Use one TLS termination point and apply HSTS there.
 
     - Good fit for internet-facing deployments.
     - Keeps certificate + HTTP hardening policy in one place.
-    - NexisClaw can stay on loopback HTTP behind the proxy.
+    - FirstNexus can stay on loopback HTTP behind the proxy.
 
     Example header value:
 
@@ -147,7 +147,7 @@ Use one TLS termination point and apply HSTS there.
 
   </Tab>
   <Tab title="Gateway TLS termination">
-    If NexisClaw itself serves HTTPS directly (no TLS-terminating proxy), set:
+    If FirstNexus itself serves HTTPS directly (no TLS-terminating proxy), set:
 
     ```json5
     {
@@ -201,8 +201,8 @@ Use one TLS termination point and apply HSTS there.
 
     ```yaml
     routes:
-      - from: https://NexisClaw.example.com
-        to: http://NexisClaw-gateway:18789
+      - from: https://FirstNexus.example.com
+        to: http://FirstNexus-gateway:18789
         policy:
           - allow:
               or:
@@ -233,11 +233,11 @@ Use one TLS termination point and apply HSTS there.
     Caddyfile snippet:
 
     ```
-    NexisClaw.example.com {
+    FirstNexus.example.com {
         authenticate with oauth2_provider
         authorize with policy1
 
-        reverse_proxy NexisClaw:18789 {
+        reverse_proxy FirstNexus:18789 {
             header_up X-Forwarded-User {http.auth.user.email}
         }
     }
@@ -269,7 +269,7 @@ Use one TLS termination point and apply HSTS there.
         auth_request /oauth2/auth;
         auth_request_set $user $upstream_http_x_auth_request_email;
 
-        proxy_pass http://NexisClaw:18789;
+        proxy_pass http://FirstNexus:18789;
         proxy_set_header X-Auth-Request-Email $user;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -298,34 +298,34 @@ Use one TLS termination point and apply HSTS there.
 
 ## Mixed token configuration
 
-NexisClaw rejects ambiguous configurations where both a `gateway.auth.token` (or `NEXISCLAW_GATEWAY_TOKEN`) and `trusted-proxy` mode are active at the same time. Mixed token configs can cause loopback requests to silently authenticate on the wrong auth path.
+FirstNexus rejects ambiguous configurations where both a `gateway.auth.token` (or `NEXISCLAW_GATEWAY_TOKEN`) and `trusted-proxy` mode are active at the same time. Mixed token configs can cause loopback requests to silently authenticate on the wrong auth path.
 
 If you see a `mixed_trusted_proxy_token` error on startup:
 
 - Remove the shared token when using trusted-proxy mode, or
 - Switch `gateway.auth.mode` to `"token"` if you intend token-based auth.
 
-Loopback trusted-proxy identity headers still fail closed: same-host callers are not silently authenticated as proxy users. Internal NexisClaw callers that bypass the proxy may authenticate with `gateway.auth.password` / `NEXISCLAW_GATEWAY_PASSWORD` instead. Token fallback remains intentionally unsupported in trusted-proxy mode.
+Loopback trusted-proxy identity headers still fail closed: same-host callers are not silently authenticated as proxy users. Internal FirstNexus callers that bypass the proxy may authenticate with `gateway.auth.password` / `NEXISCLAW_GATEWAY_PASSWORD` instead. Token fallback remains intentionally unsupported in trusted-proxy mode.
 
 ## Operator scopes header
 
-Trusted-proxy auth is an **identity-bearing** HTTP mode, so callers may optionally declare operator scopes with `x-NexisClaw-scopes`.
+Trusted-proxy auth is an **identity-bearing** HTTP mode, so callers may optionally declare operator scopes with `x-FirstNexus-scopes`.
 
 Examples:
 
-- `x-NexisClaw-scopes: operator.read`
-- `x-NexisClaw-scopes: operator.read,operator.write`
-- `x-NexisClaw-scopes: operator.admin,operator.write`
+- `x-FirstNexus-scopes: operator.read`
+- `x-FirstNexus-scopes: operator.read,operator.write`
+- `x-FirstNexus-scopes: operator.admin,operator.write`
 
 Behavior:
 
-- When the header is present, NexisClaw honors the declared scope set.
+- When the header is present, FirstNexus honors the declared scope set.
 - When the header is present but empty, the request declares **no** operator scopes.
 - When the header is absent, normal identity-bearing HTTP APIs fall back to the standard operator default scope set.
-- Gateway-auth **plugin HTTP routes** are narrower by default: when `x-NexisClaw-scopes` is absent, their runtime scope falls back to `operator.write`.
+- Gateway-auth **plugin HTTP routes** are narrower by default: when `x-FirstNexus-scopes` is absent, their runtime scope falls back to `operator.write`.
 - Browser-origin HTTP requests still have to pass `gateway.controlUi.allowedOrigins` (or deliberate Host-header fallback mode) even after trusted-proxy auth succeeds.
 
-Practical rule: send `x-NexisClaw-scopes` explicitly when you want a trusted-proxy request to be narrower than the defaults, or when a gateway-auth plugin route needs something stronger than write scope.
+Practical rule: send `x-FirstNexus-scopes` explicitly when you want a trusted-proxy request to be narrower than the defaults, or when a gateway-auth plugin route needs something stronger than write scope.
 
 ## Security checklist
 
@@ -343,7 +343,7 @@ Before enabling trusted-proxy auth, verify:
 
 ## Security audit
 
-`NexisClaw security audit` will flag trusted-proxy auth with a **critical** severity finding. This is intentional — it's a reminder that you're delegating security to your proxy setup.
+`FirstNexus security audit` will flag trusted-proxy auth with a **critical** severity finding. This is intentional — it's a reminder that you're delegating security to your proxy setup.
 
 The audit checks for:
 
@@ -366,7 +366,7 @@ The audit checks for:
 
   </Accordion>
   <Accordion title="trusted_proxy_loopback_source">
-    NexisClaw rejected a loopback-source trusted-proxy request.
+    FirstNexus rejected a loopback-source trusted-proxy request.
 
     Check:
 
@@ -429,8 +429,8 @@ If you're moving from token auth to trusted-proxy:
   <Step title="Test the proxy independently">
     Test the proxy setup independently (curl with headers).
   </Step>
-  <Step title="Update NexisClaw config">
-    Update NexisClaw config with trusted-proxy auth.
+  <Step title="Update FirstNexus config">
+    Update FirstNexus config with trusted-proxy auth.
   </Step>
   <Step title="Restart the Gateway">
     Restart the Gateway.
@@ -439,7 +439,7 @@ If you're moving from token auth to trusted-proxy:
     Test WebSocket connections from the Control UI.
   </Step>
   <Step title="Audit">
-    Run `NexisClaw security audit` and review findings.
+    Run `FirstNexus security audit` and review findings.
   </Step>
 </Steps>
 

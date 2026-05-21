@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { isRecord } from "../utils.js";
 import { loadEnabledBundleLspConfig } from "./bundle-lsp.js";
 import { loadEnabledBundleMcpConfig } from "./bundle-mcp.js";
@@ -44,7 +44,7 @@ afterEach(async () => {
   await tempHarness.cleanup();
 });
 
-function createEnabledBundleConfig(pluginIds: string[]): NexisClawConfig {
+function createEnabledBundleConfig(pluginIds: string[]): FirstNexusConfig {
   return {
     plugins: {
       entries: createEnabledPluginEntries(pluginIds),
@@ -90,11 +90,11 @@ describe("loadEnabledBundleMcpConfig", () => {
   it("loads enabled Claude bundle MCP config and absolutizes relative args", async () => {
     await withBundleHomeEnv(
       tempHarness,
-      "NexisClaw-bundle-mcp",
+      "FirstNexus-bundle-mcp",
       async ({ homeDir, workspaceDir }) => {
         const { pluginRoot, serverPath } = await createBundleProbePlugin(homeDir);
 
-        const config: NexisClawConfig = {
+        const config: FirstNexusConfig = {
           plugins: {
             entries: {
               "bundle-probe": { enabled: true },
@@ -129,7 +129,7 @@ describe("loadEnabledBundleMcpConfig", () => {
   it("merges inline bundle MCP servers and skips disabled bundles", async () => {
     await withBundleHomeEnv(
       tempHarness,
-      "NexisClaw-bundle-inline",
+      "FirstNexus-bundle-inline",
       async ({ homeDir, workspaceDir }) => {
         await writeClaudeBundleManifest({
           homeDir,
@@ -187,7 +187,7 @@ describe("loadEnabledBundleMcpConfig", () => {
   it("resolves inline Claude MCP paths from the plugin root and expands CLAUDE_PLUGIN_ROOT", async () => {
     await withBundleHomeEnv(
       tempHarness,
-      "NexisClaw-bundle-inline-placeholder",
+      "FirstNexus-bundle-inline-placeholder",
       async ({ homeDir, workspaceDir }) => {
         const pluginRoot = await writeClaudeBundleManifest({
           homeDir,
@@ -230,7 +230,7 @@ describe("loadEnabledBundleMcpConfig", () => {
   it("reports malformed file-backed MCP configs instead of silently dropping servers", async () => {
     await withBundleHomeEnv(
       tempHarness,
-      "NexisClaw-bundle-malformed-mcp",
+      "FirstNexus-bundle-malformed-mcp",
       async ({ homeDir, workspaceDir }) => {
         const pluginRoot = await writeClaudeBundleManifest({
           homeDir,
@@ -258,7 +258,7 @@ describe("loadEnabledBundleMcpConfig", () => {
   it("reports malformed file-backed LSP configs instead of silently dropping servers", async () => {
     await withBundleHomeEnv(
       tempHarness,
-      "NexisClaw-bundle-malformed-lsp",
+      "FirstNexus-bundle-malformed-lsp",
       async ({ homeDir, workspaceDir }) => {
         const pluginRoot = await writeClaudeBundleManifest({
           homeDir,

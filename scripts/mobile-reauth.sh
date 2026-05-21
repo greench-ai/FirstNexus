@@ -69,11 +69,11 @@ if claude setup-token; then
     echo ""
     "$SCRIPT_DIR/claude-auth-status.sh" full
 
-    # Restart NexisClaw service if running
-    if systemctl --user is-active NexisClaw >/dev/null 2>&1; then
+    # Restart FirstNexus service if running
+    if systemctl --user is-active FirstNexus >/dev/null 2>&1; then
         echo ""
-        echo "Restarting NexisClaw service..."
-        systemctl --user restart NexisClaw
+        echo "Restarting FirstNexus service..."
+        systemctl --user restart FirstNexus
         echo -e "${GREEN}Service restarted.${NC}"
     fi
 else

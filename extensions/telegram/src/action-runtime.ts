@@ -1,5 +1,5 @@
 import type { AgentToolResult } from "@earendil-works/pi-agent-core";
-import { readBooleanParam } from "NexisClaw/plugin-sdk/boolean-param";
+import { readBooleanParam } from "FirstNexus/plugin-sdk/boolean-param";
 import {
   jsonResult,
   readNumberParam,
@@ -9,14 +9,14 @@ import {
   readStringParam,
   resolvePollMaxSelections,
   resolveReactionMessageId,
-} from "NexisClaw/plugin-sdk/channel-actions";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-actions";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   normalizeMessagePresentation,
   presentationToInteractiveReply,
   renderMessagePresentationFallbackText,
-} from "NexisClaw/plugin-sdk/interactive-runtime";
-import type { MessagePresentation } from "NexisClaw/plugin-sdk/interactive-runtime";
+} from "FirstNexus/plugin-sdk/interactive-runtime";
+import type { MessagePresentation } from "FirstNexus/plugin-sdk/interactive-runtime";
 import { createTelegramActionGate, resolveTelegramPollActionGateState } from "./accounts.js";
 import { resolveTelegramInlineButtons } from "./button-types.js";
 import { notifyTelegramInboundTurnOutboundSuccess } from "./inbound-turn-delivery.js";
@@ -194,7 +194,7 @@ function normalizeTelegramDeliveryPin(params: Record<string, unknown>) {
 
 async function maybePinTelegramActionSend(params: {
   args: Record<string, unknown>;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
   to: string;
   messageId?: string;
@@ -225,7 +225,7 @@ async function maybePinTelegramActionSend(params: {
 
 export async function handleTelegramAction(
   params: Record<string, unknown>,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   options?: {
     mediaLocalRoots?: readonly string[];
     mediaReadFile?: (filePath: string) => Promise<Buffer>;

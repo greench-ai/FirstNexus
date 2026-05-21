@@ -1,10 +1,10 @@
 {
-  "name": "@NexisClaw/memory-lancedb",
+  "name": "@FirstNexus/memory-lancedb",
   "version": "2026.5.12-beta.1",
-  "description": "NexisClaw LanceDB-backed long-term memory plugin with auto-recall/capture",
+  "description": "FirstNexus LanceDB-backed long-term memory plugin with auto-recall/capture",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexisClaw/NexisClaw"
+    "url": "https://github.com/FirstNexus/FirstNexus"
   },
   "type": "module",
   "dependencies": {
@@ -14,14 +14,14 @@
     "typebox": "1.1.38"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@NexisClaw/memory-lancedb",
+      "npmSpec": "@FirstNexus/memory-lancedb",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10"
     },
@@ -29,7 +29,7 @@
       "pluginApi": ">=2026.5.12-beta.1"
     },
     "build": {
-      "NexisClawVersion": "2026.5.12-beta.1"
+      "FirstNexusVersion": "2026.5.12-beta.1"
     },
     "release": {
       "publishToClawHub": true,

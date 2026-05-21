@@ -19,10 +19,10 @@ describe("createTempHomeEnv", () => {
     const previousUserProfile = process.env.USERPROFILE;
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
 
-    const tempHome = await createTempHomeEnv("NexisClaw-temp-home-");
+    const tempHome = await createTempHomeEnv("FirstNexus-temp-home-");
     expect(process.env.HOME).toBe(tempHome.home);
     expect(process.env.USERPROFILE).toBe(tempHome.home);
-    expect(process.env.NEXISCLAW_STATE_DIR).toBe(path.join(tempHome.home, ".NexisClaw"));
+    expect(process.env.NEXISCLAW_STATE_DIR).toBe(path.join(tempHome.home, ".FirstNexus"));
     const homeStat = await fs.stat(tempHome.home);
     expect(homeStat.isDirectory()).toBe(true);
 

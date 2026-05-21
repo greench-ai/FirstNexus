@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: NexisClaw-home-pvc
+  name: FirstNexus-home-pvc
   labels:
-    app: NexisClaw
+    app: FirstNexus
 spec:
   accessModes:
     - ReadWriteOnce

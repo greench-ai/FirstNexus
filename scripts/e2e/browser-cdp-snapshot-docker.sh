@@ -4,14 +4,14 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 
-BASE_IMAGE="$(docker_e2e_resolve_image "NexisClaw-browser-cdp-base-e2e" NEXISCLAW_BROWSER_CDP_BASE_E2E_IMAGE)"
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-browser-cdp-snapshot-e2e" NEXISCLAW_BROWSER_CDP_SNAPSHOT_E2E_IMAGE)"
+BASE_IMAGE="$(docker_e2e_resolve_image "FirstNexus-browser-cdp-base-e2e" NEXISCLAW_BROWSER_CDP_BASE_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-browser-cdp-snapshot-e2e" NEXISCLAW_BROWSER_CDP_SNAPSHOT_E2E_IMAGE)"
 SKIP_BUILD="${NEXISCLAW_BROWSER_CDP_SNAPSHOT_E2E_SKIP_BUILD:-0}"
 PORT="18789"
 CDP_PORT="19222"
 FIXTURE_PORT="18080"
 TOKEN="browser-cdp-e2e-token"
-CONTAINER_NAME="NexisClaw-browser-cdp-e2e-$$"
+CONTAINER_NAME="FirstNexus-browser-cdp-e2e-$$"
 DOCKER_COMMAND_TIMEOUT="${NEXISCLAW_BROWSER_CDP_SNAPSHOT_DOCKER_COMMAND_TIMEOUT:-900s}"
 
 cleanup() {
@@ -24,7 +24,7 @@ if [ "${NEXISCLAW_SKIP_DOCKER_BUILD:-0}" = "1" ] || [ "$SKIP_BUILD" = "1" ]; the
   docker_e2e_docker_cmd image inspect "$IMAGE_NAME" >/dev/null
 else
   docker_e2e_build_or_reuse "$BASE_IMAGE" browser-cdp-base "$ROOT_DIR/scripts/e2e/Dockerfile" "$ROOT_DIR" "" "0"
-  build_dir="$(mktemp -d "${TMPDIR:-/tmp}/NexisClaw-browser-cdp-build.XXXXXX")"
+  build_dir="$(mktemp -d "${TMPDIR:-/tmp}/FirstNexus-browser-cdp-build.XXXXXX")"
   trap 'cleanup; rm -rf "$build_dir"' EXIT
   cat >"$build_dir/Dockerfile" <<EOF
 FROM $BASE_IMAGE
@@ -55,26 +55,26 @@ docker_e2e_docker_cmd run -d \
   -e "NEXISCLAW_TEST_STATE_SCRIPT_B64=$NEXISCLAW_TEST_STATE_SCRIPT_B64" \
   "$IMAGE_NAME" \
   bash -lc "set -euo pipefail
-source scripts/lib/NexisClaw-e2e-instance.sh
-NexisClaw_e2e_eval_test_state_from_b64 \"\${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}\"
-NexisClaw_e2e_write_state_env
-entry=\"\$(NexisClaw_e2e_resolve_entrypoint)\"
-mkdir -p /tmp/NexisClaw-browser-cdp/chrome
-find dist -maxdepth 1 -type f -name 'pw-ai-*.js' ! -name 'pw-ai-state-*' -exec mv {} /tmp/NexisClaw-browser-cdp/ \;
+source scripts/lib/FirstNexus-e2e-instance.sh
+FirstNexus_e2e_eval_test_state_from_b64 \"\${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}\"
+FirstNexus_e2e_write_state_env
+entry=\"\$(FirstNexus_e2e_resolve_entrypoint)\"
+mkdir -p /tmp/FirstNexus-browser-cdp/chrome
+find dist -maxdepth 1 -type f -name 'pw-ai-*.js' ! -name 'pw-ai-state-*' -exec mv {} /tmp/FirstNexus-browser-cdp/ \;
 PORT=$PORT CDP_PORT=$CDP_PORT node scripts/e2e/lib/fixture.mjs browser-cdp
 chromium --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage \\
   --remote-debugging-address=127.0.0.1 \\
   --remote-debugging-port=$CDP_PORT \\
-  --user-data-dir=/tmp/NexisClaw-browser-cdp/chrome \\
+  --user-data-dir=/tmp/FirstNexus-browser-cdp/chrome \\
   about:blank >/tmp/browser-cdp-chromium.log 2>&1 &
 FIXTURE_PORT=$FIXTURE_PORT node scripts/e2e/lib/browser-cdp-snapshot/fixture-server.mjs >/tmp/browser-cdp-fixture.log 2>&1 &
-NexisClaw_e2e_exec_gateway \"\$entry\" $PORT loopback /tmp/browser-cdp-gateway.log" >/dev/null
+FirstNexus_e2e_exec_gateway \"\$entry\" $PORT loopback /tmp/browser-cdp-gateway.log" >/dev/null
 
 echo "Waiting for Chromium and Gateway..."
 if ! docker_e2e_wait_container_bash "$CONTAINER_NAME" 180 0.5 "
-    source scripts/lib/NexisClaw-e2e-instance.sh
-    NexisClaw_e2e_probe_http_status http://127.0.0.1:$CDP_PORT/json/version
-    NexisClaw_e2e_probe_tcp 127.0.0.1 $PORT
+    source scripts/lib/FirstNexus-e2e-instance.sh
+    FirstNexus_e2e_probe_http_status http://127.0.0.1:$CDP_PORT/json/version
+    FirstNexus_e2e_probe_tcp 127.0.0.1 $PORT
 "; then
   echo "Browser CDP snapshot container failed to become ready"
   docker_e2e_tail_container_file_if_running "$CONTAINER_NAME" "/tmp/browser-cdp-chromium.log /tmp/browser-cdp-gateway.log /tmp/browser-cdp-fixture.log" 120
@@ -84,9 +84,9 @@ fi
 echo "Running browser CDP snapshot smoke..."
 docker_e2e_docker_cmd exec "$CONTAINER_NAME" bash -lc "
 set -euo pipefail
-source /tmp/NexisClaw-test-state-env
-source scripts/lib/NexisClaw-e2e-instance.sh
-entry=\"\$(NexisClaw_e2e_resolve_entrypoint)\"
+source /tmp/FirstNexus-test-state-env
+source scripts/lib/FirstNexus-e2e-instance.sh
+entry=\"\$(FirstNexus_e2e_resolve_entrypoint)\"
 base_args=(--url ws://127.0.0.1:$PORT --token '$TOKEN')
 node \"\$entry\" browser \"\${base_args[@]}\" --browser-profile docker-cdp doctor --deep >/tmp/browser-cdp-doctor.txt
 grep -q 'OK live-snapshot' /tmp/browser-cdp-doctor.txt

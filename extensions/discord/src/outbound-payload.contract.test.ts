@@ -2,7 +2,7 @@ import {
   installChannelOutboundPayloadContractSuite,
   primeChannelOutboundSendMock,
   type OutboundPayloadHarnessParams,
-} from "NexisClaw/plugin-sdk/channel-contract-testing";
+} from "FirstNexus/plugin-sdk/channel-contract-testing";
 import { describe, vi } from "vitest";
 import { discordOutbound } from "./outbound-adapter.js";
 

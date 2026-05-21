@@ -278,7 +278,7 @@ export class GatewayClient {
           (allowPrivateWs
             ? ""
             : "Break-glass (trusted private networks only): set NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS=1. ") +
-          "Run `NexisClaw doctor --fix` for guidance.",
+          "Run `FirstNexus doctor --fix` for guidance.",
       );
       this.opts.onConnectError?.(error);
       return;

@@ -1,4 +1,4 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
 import { buildAzureSpeechProvider } from "./speech-provider.js";
 
 export default definePluginEntry({

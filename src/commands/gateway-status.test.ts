@@ -450,7 +450,7 @@ describe("gateway-status command", () => {
       warnings?: Array<{ code?: string; message?: string }>;
     };
     const warning = parsed.warnings?.find((entry) => entry.code === "no_gateway_reachable");
-    expect(warning?.message).toContain("NexisClaw gateway status --deep --require-rpc");
+    expect(warning?.message).toContain("FirstNexus gateway status --deep --require-rpc");
     expect(warning?.message).toContain("ss -ltnp");
   });
 

@@ -69,11 +69,11 @@ function createOpenAiProviderConfig(apiKey: unknown = "sk-openai-plaintext") {
 }
 
 function buildFixturePaths(rootDir: string) {
-  const stateDir = path.join(rootDir, ".NexisClaw");
+  const stateDir = path.join(rootDir, ".FirstNexus");
   return {
     rootDir,
     stateDir,
-    configPath: path.join(stateDir, "NexisClaw.json"),
+    configPath: path.join(stateDir, "FirstNexus.json"),
     authStorePath: path.join(stateDir, "agents", "main", "agent", "auth-profiles.json"),
     authJsonPath: path.join(stateDir, "agents", "main", "agent", "auth.json"),
     envPath: path.join(stateDir, ".env"),
@@ -82,7 +82,7 @@ function buildFixturePaths(rootDir: string) {
 
 async function createApplyFixture(): Promise<ApplyFixture> {
   const paths = buildFixturePaths(
-    await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-secrets-apply-")),
+    await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-secrets-apply-")),
   );
   await fs.mkdir(path.dirname(paths.configPath), { recursive: true });
   await fs.mkdir(path.dirname(paths.authStorePath), { recursive: true });

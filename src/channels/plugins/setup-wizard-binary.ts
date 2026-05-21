@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { detectBinary as defaultDetectBinary } from "../../plugins/setup-binary.js";
 import type {
   ChannelSetupWizard,
@@ -19,10 +19,10 @@ export function createDetectedBinaryStatus(params: {
   configuredScore: number;
   unconfiguredScore: number;
   resolveConfigured: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string;
   }) => boolean | Promise<boolean>;
-  resolveBinaryPath: (params: { cfg: NexisClawConfig; accountId?: string }) => string;
+  resolveBinaryPath: (params: { cfg: FirstNexusConfig; accountId?: string }) => string;
   detectBinary?: (path: string) => Promise<boolean>;
 }): ChannelSetupWizardStatus {
   const detectBinary = params.detectBinary ?? defaultDetectBinary;
@@ -47,7 +47,7 @@ export function createDetectedBinaryStatus(params: {
       cfg,
       accountId,
     }: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       accountId?: string;
       configured: boolean;
     }): Promise<string | undefined> {
@@ -59,7 +59,7 @@ export function createDetectedBinaryStatus(params: {
       cfg,
       accountId,
     }: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       accountId?: string;
       configured: boolean;
     }): Promise<number | undefined> {

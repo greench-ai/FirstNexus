@@ -211,7 +211,7 @@ describe("sending", () => {
     expect(result.ok).toBe(true);
     expect(vi.mocked(webPush.setVapidDetails)).toHaveBeenCalledTimes(1);
     expect(vi.mocked(webPush.setVapidDetails)).toHaveBeenCalledWith(
-      "mailto:NexisClaw@localhost",
+      "mailto:FirstNexus@localhost",
       "test-public-key-base64url",
       "test-private-key-base64url",
     );

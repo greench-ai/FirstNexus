@@ -1,9 +1,9 @@
 import {
   resolveAllowlistMatchByCandidates,
   type AllowlistMatch,
-} from "NexisClaw/plugin-sdk/allow-from";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { normalizeStringEntries } from "NexisClaw/plugin-sdk/string-normalization-runtime";
+} from "FirstNexus/plugin-sdk/allow-from";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { normalizeStringEntries } from "FirstNexus/plugin-sdk/string-normalization-runtime";
 
 function normalizeAllowList(list?: Array<string | number>) {
   return normalizeStringEntries(list);

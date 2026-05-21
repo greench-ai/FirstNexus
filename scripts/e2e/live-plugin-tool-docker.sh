@@ -7,12 +7,12 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-live-plugin-tool-e2e" NEXISCLAW_LIVE_PLUGIN_TOOL_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-live-plugin-tool-e2e" NEXISCLAW_LIVE_PLUGIN_TOOL_E2E_IMAGE)"
 DOCKER_TARGET="${NEXISCLAW_LIVE_PLUGIN_TOOL_DOCKER_TARGET:-bare}"
 HOST_BUILD="${NEXISCLAW_LIVE_PLUGIN_TOOL_HOST_BUILD:-1}"
 PACKAGE_TGZ="${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}"
 AGENT_TURN_TIMEOUT_SECONDS="${NEXISCLAW_LIVE_PLUGIN_TOOL_TIMEOUT_SECONDS:-300}"
-PROFILE_FILE="${NEXISCLAW_LIVE_PLUGIN_TOOL_PROFILE_FILE:-${NEXISCLAW_TESTBOX_PROFILE_FILE:-$HOME/.NexisClaw-testbox-live.profile}}"
+PROFILE_FILE="${NEXISCLAW_LIVE_PLUGIN_TOOL_PROFILE_FILE:-${NEXISCLAW_TESTBOX_PROFILE_FILE:-$HOME/.FirstNexus-testbox-live.profile}}"
 if [ ! -f "$PROFILE_FILE" ] && [ -f "$HOME/.profile" ]; then
   PROFILE_FILE="$HOME/.profile"
 fi
@@ -62,8 +62,8 @@ if ! docker_e2e_run_with_harness \
   -i "$IMAGE_NAME" bash -s >"$run_log" 2>&1 <<'EOF'; then
 set -euo pipefail
 
-source scripts/lib/NexisClaw-e2e-instance.sh
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+source scripts/lib/FirstNexus-e2e-instance.sh
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 export NPM_CONFIG_PREFIX="$HOME/.npm-global"
 export npm_config_prefix="$NPM_CONFIG_PREFIX"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
@@ -91,34 +91,34 @@ fi
 
 MODEL_REF="${NEXISCLAW_LIVE_PLUGIN_TOOL_MODEL:?missing NEXISCLAW_LIVE_PLUGIN_TOOL_MODEL}"
 PLUGIN_ID="e2e-slug-tool"
-PLUGIN_NAME="@NexisClaw/e2e-slug-tool"
+PLUGIN_NAME="@FirstNexus/e2e-slug-tool"
 PLUGIN_VERSION="0.0.0-e2e.1"
 TOOL_NAME="e2e_slug_probe"
-SEED="NexisClaw E2E Plugin Tool $(date +%s)-$RANDOM"
+SEED="FirstNexus E2E Plugin Tool $(date +%s)-$RANDOM"
 EXPECTED_SLUG="$(printf '%s' "$SEED" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')"
 export MODEL_REF PLUGIN_ID PLUGIN_NAME PLUGIN_VERSION TOOL_NAME SEED EXPECTED_SLUG
 
 dump_debug_logs() {
   local status="$1"
   echo "Live plugin tool scenario failed with exit code $status" >&2
-  NexisClaw_e2e_dump_logs \
-    /tmp/NexisClaw-install.log \
-    /tmp/NexisClaw-plugin-install.log \
-    /tmp/NexisClaw-plugin-enable.log \
-    /tmp/NexisClaw-plugins-list.json \
-    /tmp/NexisClaw-plugin-inspect.json \
-    /tmp/NexisClaw-agent.json \
-    /tmp/NexisClaw-agent.err
+  FirstNexus_e2e_dump_logs \
+    /tmp/FirstNexus-install.log \
+    /tmp/FirstNexus-plugin-install.log \
+    /tmp/FirstNexus-plugin-enable.log \
+    /tmp/FirstNexus-plugins-list.json \
+    /tmp/FirstNexus-plugin-inspect.json \
+    /tmp/FirstNexus-agent.json \
+    /tmp/FirstNexus-agent.err
 }
 trap 'status=$?; dump_debug_logs "$status"; exit "$status"' ERR
 
 mkdir -p "$NPM_CONFIG_PREFIX" "$XDG_CACHE_HOME" "$NPM_CONFIG_CACHE"
 chmod 700 "$XDG_CACHE_HOME" "$NPM_CONFIG_CACHE" || true
 
-NexisClaw_e2e_install_package /tmp/NexisClaw-install.log
-command -v NexisClaw >/dev/null
+FirstNexus_e2e_install_package /tmp/FirstNexus-install.log
+command -v FirstNexus >/dev/null
 
-fixture_dir="$(mktemp -d /tmp/NexisClaw-live-plugin-tool.XXXXXX)"
+fixture_dir="$(mktemp -d /tmp/FirstNexus-live-plugin-tool.XXXXXX)"
 plugin_dir="$fixture_dir/package"
 mkdir -p "$plugin_dir"
 node scripts/e2e/lib/live-plugin-tool/assertions.mjs write-fixture "$plugin_dir"
@@ -126,22 +126,22 @@ plugin_pack="$(cd "$plugin_dir" && npm pack --pack-destination "$fixture_dir" --
 plugin_tgz="$fixture_dir/$plugin_pack"
 
 echo "Installing fixture plugin from npm-pack: $plugin_tgz"
-NexisClaw plugins install "npm-pack:$plugin_tgz" --force >/tmp/NexisClaw-plugin-install.log 2>&1
+FirstNexus plugins install "npm-pack:$plugin_tgz" --force >/tmp/FirstNexus-plugin-install.log 2>&1
 node scripts/e2e/lib/live-plugin-tool/assertions.mjs configure
-NexisClaw plugins enable "$PLUGIN_ID" >/tmp/NexisClaw-plugin-enable.log 2>&1
-NexisClaw plugins list --json >/tmp/NexisClaw-plugins-list.json
-NexisClaw plugins inspect "$PLUGIN_ID" --runtime --json >/tmp/NexisClaw-plugin-inspect.json
+FirstNexus plugins enable "$PLUGIN_ID" >/tmp/FirstNexus-plugin-enable.log 2>&1
+FirstNexus plugins list --json >/tmp/FirstNexus-plugins-list.json
+FirstNexus plugins inspect "$PLUGIN_ID" --runtime --json >/tmp/FirstNexus-plugin-inspect.json
 node scripts/e2e/lib/live-plugin-tool/assertions.mjs assert-installed
 
 echo "Running live OpenAI agent turn that must call $TOOL_NAME..."
-NexisClaw agent --local \
+FirstNexus agent --local \
   --agent main \
   --session-id live-plugin-tool \
   --model "$MODEL_REF" \
   --message "Call the tool named ${TOOL_NAME}. Reply with only the exact text returned by that tool. Do not compute, transform, or explain it." \
   --thinking off \
   --timeout "${NEXISCLAW_LIVE_PLUGIN_TOOL_TIMEOUT_SECONDS:-300}" \
-  --json >/tmp/NexisClaw-agent.json 2>/tmp/NexisClaw-agent.err
+  --json >/tmp/FirstNexus-agent.json 2>/tmp/FirstNexus-agent.err
 
 node scripts/e2e/lib/live-plugin-tool/assertions.mjs assert-agent-turn
 

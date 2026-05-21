@@ -3,7 +3,7 @@ import { expect } from "vitest";
 
 export const IS_WINDOWS = process.platform === "win32";
 
-export function resolveConfigPathFromTempState(fileName = "NexisClaw.json"): string {
+export function resolveConfigPathFromTempState(fileName = "FirstNexus.json"): string {
   const stateDir = process.env.NEXISCLAW_STATE_DIR?.trim();
   if (!stateDir) {
     throw new Error("Expected NEXISCLAW_STATE_DIR to be set by withTempHome");

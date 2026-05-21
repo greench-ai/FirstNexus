@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { getLoadedRuntimePluginRegistry } from "./active-runtime-registry.js";
 import {
   withBundledPluginAllowlistCompat,
@@ -17,9 +17,9 @@ function findMigrationProviderById(
 }
 
 function resolveMigrationProviderConfig(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   bundledCompatPluginIds: readonly string[];
-}): NexisClawConfig | undefined {
+}): FirstNexusConfig | undefined {
   const allowlistCompat = withBundledPluginAllowlistCompat({
     config: params.cfg,
     pluginIds: [...params.bundledCompatPluginIds],
@@ -56,7 +56,7 @@ function mergeMigrationProviders(
 
 export function ensureStandaloneMigrationProviderRegistryLoaded(
   params: {
-    cfg?: NexisClawConfig;
+    cfg?: FirstNexusConfig;
   } = {},
 ): void {
   const resolution = resolveManifestContractRuntimePluginResolution({
@@ -83,7 +83,7 @@ export function ensureStandaloneMigrationProviderRegistryLoaded(
 
 export function resolvePluginMigrationProvider(params: {
   providerId: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
 }): MigrationProviderPlugin | undefined {
   const activeRegistry = getLoadedRuntimePluginRegistry();
   const activeProvider = findMigrationProviderById(
@@ -111,7 +111,7 @@ export function resolvePluginMigrationProvider(params: {
 
 export function resolvePluginMigrationProviders(
   params: {
-    cfg?: NexisClawConfig;
+    cfg?: FirstNexusConfig;
   } = {},
 ): MigrationProviderPlugin[] {
   const activeRegistry = getLoadedRuntimePluginRegistry();

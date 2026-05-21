@@ -23,10 +23,10 @@ function createInstalledRuntimePluginDir(
   pluginRoot: string;
 } {
   const bundledDir = fs.mkdtempSync(
-    path.join(os.tmpdir(), `NexisClaw-runtime-contract-bundled-${pluginId}-`),
+    path.join(os.tmpdir(), `FirstNexus-runtime-contract-bundled-${pluginId}-`),
   );
   const stateDir = fs.mkdtempSync(
-    path.join(os.tmpdir(), `NexisClaw-runtime-contract-state-${pluginId}-`),
+    path.join(os.tmpdir(), `FirstNexus-runtime-contract-state-${pluginId}-`),
   );
   tempDirs.push(bundledDir, stateDir);
   const pluginRoot = path.join(stateDir, "extensions", pluginId);
@@ -39,9 +39,9 @@ function createInstalledRuntimePluginDir(
   fs.writeFileSync(
     path.join(pluginRoot, "package.json"),
     JSON.stringify({
-      name: `@NexisClaw/${pluginId}`,
+      name: `@FirstNexus/${pluginId}`,
       version: "0.0.0",
-      NexisClaw: {
+      FirstNexus: {
         extensions: ["./runtime-api.js"],
         channel: { id: pluginId },
       },
@@ -49,7 +49,7 @@ function createInstalledRuntimePluginDir(
     "utf8",
   );
   fs.writeFileSync(
-    path.join(pluginRoot, "NexisClaw.plugin.json"),
+    path.join(pluginRoot, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: pluginId,
       channels: [pluginId],

@@ -1,9 +1,9 @@
-import type { ChannelGroupContext } from "NexisClaw/plugin-sdk/channel-contract";
+import type { ChannelGroupContext } from "FirstNexus/plugin-sdk/channel-contract";
 import {
   resolveChannelGroupRequireMention,
   resolveChannelGroupToolsPolicy,
   type GroupToolPolicyConfig,
-} from "NexisClaw/plugin-sdk/channel-policy";
+} from "FirstNexus/plugin-sdk/channel-policy";
 
 function parseTelegramGroupId(value?: string | null) {
   const raw = value?.trim() ?? "";

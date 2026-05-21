@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { buildNpmResolutionFields, type NpmSpecResolution } from "../infra/install-source-utils.js";
 
@@ -14,9 +14,9 @@ export function buildNpmResolutionInstallFields(
 }
 
 export function recordPluginInstall(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   update: PluginInstallUpdate,
-): NexisClawConfig {
+): FirstNexusConfig {
   const { pluginId, ...record } = update;
   const installs = {
     ...cfg.plugins?.installs,

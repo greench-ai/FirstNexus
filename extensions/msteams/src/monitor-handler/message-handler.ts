@@ -1,25 +1,25 @@
-import { formatAllowlistMatchMeta } from "NexisClaw/plugin-sdk/allow-from";
-import { resolveInboundMentionDecision } from "NexisClaw/plugin-sdk/channel-inbound";
+import { formatAllowlistMatchMeta } from "FirstNexus/plugin-sdk/allow-from";
+import { resolveInboundMentionDecision } from "FirstNexus/plugin-sdk/channel-inbound";
 import {
   logInboundDrop,
   resolveInboundSessionEnvelopeContext,
-} from "NexisClaw/plugin-sdk/channel-inbound";
+} from "FirstNexus/plugin-sdk/channel-inbound";
 import {
   filterSupplementalContextItems,
   resolveChannelContextVisibilityMode,
   shouldIncludeSupplementalContext,
-} from "NexisClaw/plugin-sdk/context-visibility-runtime";
+} from "FirstNexus/plugin-sdk/context-visibility-runtime";
 import {
   dispatchReplyFromConfigWithSettledDispatcher,
   hasFinalInboundReplyDispatch,
   resolveInboundReplyDispatchCounts,
-} from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
+} from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
 import {
   buildPendingHistoryContextFromMap,
   DEFAULT_GROUP_HISTORY_LIMIT,
   recordPendingHistoryEntryIfEnabled,
   type HistoryEntry,
-} from "NexisClaw/plugin-sdk/reply-history";
+} from "FirstNexus/plugin-sdk/reply-history";
 import {
   buildMSTeamsAttachmentPlaceholder,
   buildMSTeamsMediaPayload,

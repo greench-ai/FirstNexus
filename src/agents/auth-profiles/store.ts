@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { isDeepStrictEqual } from "node:util";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { withFileLock } from "../../infra/file-lock.js";
 import { loadJsonFile, saveJsonFile } from "../../infra/json-file.js";
 import { cloneAuthProfileStore } from "./clone.js";
@@ -45,7 +45,7 @@ import type { AuthProfileStore } from "./types.js";
 
 type LoadAuthProfileStoreOptions = {
   allowKeychainPrompt?: boolean;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   externalCli?: ExternalCliAuthDiscovery;
   readOnly?: boolean;
   syncExternalCli?: boolean;
@@ -60,7 +60,7 @@ type SaveAuthProfileStoreOptions = {
 
 type ResolvedExternalCliOverlayOptions = {
   allowKeychainPrompt?: boolean;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   externalCliProviderIds?: Iterable<string>;
   externalCliProfileIds?: Iterable<string>;
 };
@@ -631,7 +631,7 @@ export function ensureAuthProfileStore(
   agentDir?: string,
   options?: {
     allowKeychainPrompt?: boolean;
-    config?: NexisClawConfig;
+    config?: FirstNexusConfig;
     externalCli?: ExternalCliAuthDiscovery;
     externalCliProviderIds?: Iterable<string>;
     externalCliProfileIds?: Iterable<string>;

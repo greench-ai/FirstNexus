@@ -1,10 +1,10 @@
 import {
   definePluginEntry,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type ProviderCatalogContext,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "NexisClaw/plugin-sdk/provider-auth-api-key";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "FirstNexus/plugin-sdk/provider-auth-api-key";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   applyStepFunPlanConfig,
   applyStepFunPlanConfigCn,
@@ -131,7 +131,7 @@ function createStepFunApiKeyMethod(params: {
   choiceId: string;
   choiceLabel: string;
   choiceHint: string;
-  applyConfig: (cfg: NexisClawConfig) => NexisClawConfig;
+  applyConfig: (cfg: FirstNexusConfig) => FirstNexusConfig;
 }) {
   return createProviderApiKeyAuthMethod({
     providerId: params.providerId,

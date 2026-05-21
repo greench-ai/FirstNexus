@@ -4,7 +4,7 @@ import path from "node:path";
 import type { AssistantMessage, Message, Tool } from "@earendil-works/pi-ai";
 import { Type } from "typebox";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   buildAssistantHistoryTurn as buildTypedAssistantHistoryTurn,
   buildStableCachePrefix,
@@ -235,7 +235,7 @@ function buildEmbeddedRunnerConfig(
     cacheRetention: "none" | "short" | "long";
     transport?: "sse" | "websocket";
   },
-): NexisClawConfig {
+): FirstNexusConfig {
   const provider = params.model.provider;
   const modelKey = `${provider}/${params.model.id}`;
   const providerBaseUrl =
@@ -754,7 +754,7 @@ async function runAnthropicImageCacheProbe(params: {
 
 describeCacheLive("pi embedded runner prompt caching (live)", () => {
   beforeAll(async () => {
-    liveRunnerRootDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-live-cache-"));
+    liveRunnerRootDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-live-cache-"));
     liveCacheTraceFile = path.join(liveRunnerRootDir, "cache-trace.jsonl");
     liveTestPngBase64 = (await fs.readFile(LIVE_TEST_PNG_URL)).toString("base64");
     previousCacheTraceEnv = {

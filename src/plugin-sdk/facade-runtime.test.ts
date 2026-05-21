@@ -42,7 +42,7 @@ function writePluginPackageJson(
   type: "commonjs" | "module" = "module",
 ): void {
   writeJsonFile(path.join(pluginDir, "package.json"), {
-    name: `@NexisClaw/plugin-${name}`,
+    name: `@FirstNexus/plugin-${name}`,
     version: "0.0.0",
     type,
   });
@@ -113,8 +113,8 @@ afterEach(() => {
 
 describe("plugin-sdk facade runtime", () => {
   it("honors trusted bundled plugin dir overrides", () => {
-    const overrideA = createBundledPluginDir("NexisClaw-facade-runtime-a-", "override-a");
-    const overrideB = createBundledPluginDir("NexisClaw-facade-runtime-b-", "override-b");
+    const overrideA = createBundledPluginDir("FirstNexus-facade-runtime-a-", "override-a");
+    const overrideB = createBundledPluginDir("FirstNexus-facade-runtime-b-", "override-b");
 
     useBundledPluginDirOverrideForTest(overrideA);
     const fromA = __testing.resolveFacadeModuleLocation({
@@ -138,7 +138,7 @@ describe("plugin-sdk facade runtime", () => {
   });
 
   it("falls back to package source surfaces when an override dir is partial", () => {
-    const overrideDir = createTrustedBundledFixtureRoot("NexisClaw-facade-runtime-empty-");
+    const overrideDir = createTrustedBundledFixtureRoot("FirstNexus-facade-runtime-empty-");
     useBundledPluginDirOverrideForTest(overrideDir);
 
     const resolved = __testing.resolveFacadeModuleLocation({
@@ -165,7 +165,7 @@ describe("plugin-sdk facade runtime", () => {
   });
 
   it("returns the same object identity on repeated calls (sentinel consistency)", () => {
-    const dir = createBundledPluginDir("NexisClaw-facade-identity-", "identity-check");
+    const dir = createBundledPluginDir("FirstNexus-facade-identity-", "identity-check");
     useBundledPluginDirOverrideForTest(dir);
     const location = {
       modulePath: path.join(dir, "demo", "api.js"),
@@ -190,7 +190,7 @@ describe("plugin-sdk facade runtime", () => {
   });
 
   it("breaks circular facade re-entry during module evaluation", () => {
-    const dir = createBundledPluginDir("NexisClaw-facade-circular-", "circular-ok");
+    const dir = createBundledPluginDir("FirstNexus-facade-circular-", "circular-ok");
     const location = {
       modulePath: path.join(dir, "demo", "api.js"),
       boundaryRoot: dir,
@@ -218,7 +218,7 @@ describe("plugin-sdk facade runtime", () => {
   });
 
   it("back-fills the sentinel before post-load facade tracking re-enters", () => {
-    const dir = createBundledPluginDir("NexisClaw-facade-post-load-", "post-load-ok");
+    const dir = createBundledPluginDir("FirstNexus-facade-post-load-", "post-load-ok");
     const location = {
       modulePath: path.join(dir, "demo", "api.js"),
       boundaryRoot: dir,
@@ -248,7 +248,7 @@ describe("plugin-sdk facade runtime", () => {
     expect(loader).toHaveBeenCalledTimes(1);
   });
   it("clears the cache on load failure so retries re-execute", () => {
-    const dir = createThrowingPluginDir("NexisClaw-facade-throw-");
+    const dir = createThrowingPluginDir("FirstNexus-facade-throw-");
     useBundledPluginDirOverrideForTest(dir);
 
     expect(() =>
@@ -304,7 +304,7 @@ describe("plugin-sdk facade runtime", () => {
   });
 
   it("allows runtime-api facade loads when the bundled plugin is explicitly enabled", () => {
-    const dir = createTempDirSync("NexisClaw-facade-runtime-enabled-");
+    const dir = createTempDirSync("FirstNexus-facade-runtime-enabled-");
     fs.mkdirSync(path.join(dir, "discord"), { recursive: true });
     fs.writeFileSync(
       path.join(dir, "discord", "runtime-api.js"),
@@ -354,7 +354,7 @@ describe("plugin-sdk facade runtime", () => {
   });
 
   it("resolves a globally-installed plugin whose rootDir basename matches the dirName", () => {
-    const lineDir = createTempDirSync("NexisClaw-facade-global-line-");
+    const lineDir = createTempDirSync("FirstNexus-facade-global-line-");
     fs.mkdirSync(lineDir, { recursive: true });
     fs.writeFileSync(
       path.join(lineDir, "runtime-api.js"),
@@ -364,9 +364,9 @@ describe("plugin-sdk facade runtime", () => {
     fs.writeFileSync(
       path.join(lineDir, "package.json"),
       JSON.stringify({
-        name: "@NexisClaw/line",
+        name: "@FirstNexus/line",
         version: "0.0.0",
-        NexisClaw: {
+        FirstNexus: {
           extensions: ["./runtime-api.js"],
           channel: { id: "line" },
         },
@@ -374,7 +374,7 @@ describe("plugin-sdk facade runtime", () => {
       "utf8",
     );
     fs.writeFileSync(
-      path.join(lineDir, "NexisClaw.plugin.json"),
+      path.join(lineDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "line",
         channels: ["line"],
@@ -402,7 +402,7 @@ describe("plugin-sdk facade runtime", () => {
   });
 
   it("resolves a globally-installed plugin with an encoded scoped rootDir basename", () => {
-    const encodedDir = createTempDirSync("NexisClaw-facade-encoded-line-");
+    const encodedDir = createTempDirSync("FirstNexus-facade-encoded-line-");
     fs.mkdirSync(encodedDir, { recursive: true });
     fs.writeFileSync(
       path.join(encodedDir, "runtime-api.js"),
@@ -412,9 +412,9 @@ describe("plugin-sdk facade runtime", () => {
     fs.writeFileSync(
       path.join(encodedDir, "package.json"),
       JSON.stringify({
-        name: "@NexisClaw/line",
+        name: "@FirstNexus/line",
         version: "0.0.0",
-        NexisClaw: {
+        FirstNexus: {
           extensions: ["./runtime-api.js"],
           channel: { id: "line" },
         },
@@ -422,7 +422,7 @@ describe("plugin-sdk facade runtime", () => {
       "utf8",
     );
     fs.writeFileSync(
-      path.join(encodedDir, "NexisClaw.plugin.json"),
+      path.join(encodedDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "line",
         channels: ["line"],
@@ -469,7 +469,7 @@ describe("plugin-sdk facade runtime", () => {
   });
 
   it("prefers the source runtime snapshot for facade activation checks", () => {
-    const dir = createTempDirSync("NexisClaw-facade-source-snapshot-");
+    const dir = createTempDirSync("FirstNexus-facade-source-snapshot-");
     fs.mkdirSync(path.join(dir, "demo"), { recursive: true });
     fs.writeFileSync(
       path.join(dir, "demo", "runtime-api.js"),
@@ -477,7 +477,7 @@ describe("plugin-sdk facade runtime", () => {
       "utf8",
     );
     fs.writeFileSync(
-      path.join(dir, "demo", "NexisClaw.plugin.json"),
+      path.join(dir, "demo", "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "demo",
       }),

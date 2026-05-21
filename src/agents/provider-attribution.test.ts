@@ -98,13 +98,13 @@ import {
 } from "./provider-attribution.js";
 
 describe("provider attribution", () => {
-  it("resolves the canonical NexisClaw product and runtime version", () => {
+  it("resolves the canonical FirstNexus product and runtime version", () => {
     const identity = resolveProviderAttributionIdentity({
       NEXISCLAW_VERSION: "2026.3.99",
     });
 
     expect(identity).toEqual({
-      product: "NexisClaw",
+      product: "FirstNexus",
       version: "2026.3.99",
     });
   });
@@ -120,12 +120,12 @@ describe("provider attribution", () => {
       verification: "vendor-documented",
       hook: "request-headers",
       docsUrl: "https://openrouter.ai/docs/app-attribution",
-      reviewNote: "Documented app attribution headers. Verified in NexisClaw runtime wrapper.",
-      product: "NexisClaw",
+      reviewNote: "Documented app attribution headers. Verified in FirstNexus runtime wrapper.",
+      product: "FirstNexus",
       version: "2026.3.22",
       headers: {
-        "HTTP-Referer": "https://NexisClaw.ai",
-        "X-OpenRouter-Title": "NexisClaw",
+        "HTTP-Referer": "https://FirstNexus.ai",
+        "X-OpenRouter-Title": "FirstNexus",
         "X-OpenRouter-Categories":
           "cli-agent,cloud-agent,programming-app,creative-writing,writing-assistant,general-chat,personal-agent",
       },
@@ -138,8 +138,8 @@ describe("provider attribution", () => {
         NEXISCLAW_VERSION: "2026.3.22",
       }),
     ).toEqual({
-      "HTTP-Referer": "https://NexisClaw.ai",
-      "X-OpenRouter-Title": "NexisClaw",
+      "HTTP-Referer": "https://FirstNexus.ai",
+      "X-OpenRouter-Title": "FirstNexus",
       "X-OpenRouter-Categories":
         "cli-agent,cloud-agent,programming-app,creative-writing,writing-assistant,general-chat,personal-agent",
     });
@@ -153,19 +153,21 @@ describe("provider attribution", () => {
       hook: "request-headers",
       reviewNote:
         "OpenAI native traffic supports hidden originator/User-Agent attribution. Verified against the Codex wire contract.",
-      product: "NexisClaw",
+      product: "FirstNexus",
       version: "2026.3.22",
       headers: {
-        originator: "NexisClaw",
+        originator: "FirstNexus",
         version: "2026.3.22",
-        "User-Agent": "NexisClaw/2026.3.22",
+        "User-Agent": "FirstNexus/2026.3.22",
       },
     });
-    expect(resolveProviderAttributionHeaders("openai", { NEXISCLAW_VERSION: "2026.3.22" })).toEqual({
-      originator: "NexisClaw",
-      version: "2026.3.22",
-      "User-Agent": "NexisClaw/2026.3.22",
-    });
+    expect(resolveProviderAttributionHeaders("openai", { NEXISCLAW_VERSION: "2026.3.22" })).toEqual(
+      {
+        originator: "FirstNexus",
+        version: "2026.3.22",
+        "User-Agent": "FirstNexus/2026.3.22",
+      },
+    );
   });
 
   it("returns a hidden-spec OpenAI Codex attribution policy", () => {
@@ -178,12 +180,12 @@ describe("provider attribution", () => {
       hook: "request-headers",
       reviewNote:
         "OpenAI Codex ChatGPT-backed traffic supports the same hidden originator/User-Agent attribution contract.",
-      product: "NexisClaw",
+      product: "FirstNexus",
       version: "2026.3.22",
       headers: {
-        originator: "NexisClaw",
+        originator: "FirstNexus",
         version: "2026.3.22",
-        "User-Agent": "NexisClaw/2026.3.22",
+        "User-Agent": "FirstNexus/2026.3.22",
       },
     });
   });

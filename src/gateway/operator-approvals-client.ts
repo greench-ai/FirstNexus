@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isLoopbackIpAddress } from "../shared/net/ip.js";
 import { resolveGatewayClientBootstrap } from "./client-bootstrap.js";
 import { startGatewayClientWhenEventLoopReady } from "./client-start-readiness.js";
@@ -34,7 +34,7 @@ export async function createOperatorApprovalsGatewayClient(
     | "onHelloOk"
     | "onReconnectPaused"
   > & {
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     gatewayUrl?: string;
   },
 ): Promise<GatewayClient> {
@@ -70,7 +70,7 @@ export async function createOperatorApprovalsGatewayClient(
 
 export async function withOperatorApprovalsGatewayClient<T>(
   params: {
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     gatewayUrl?: string;
     clientDisplayName: string;
   },

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const tempDirs: string[] = [];
@@ -9,7 +9,7 @@ const originalBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
 const originalTrustBundledPluginsDir = process.env.NEXISCLAW_TEST_TRUST_BUNDLED_PLUGINS_DIR;
 
 function createTempDir(): string {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-public-surface-loader-"));
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-public-surface-loader-"));
   tempDirs.push(tempDir);
   return tempDir;
 }

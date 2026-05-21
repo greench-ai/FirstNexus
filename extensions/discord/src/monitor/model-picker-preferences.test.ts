@@ -10,7 +10,7 @@ import {
 const tempDirs: string[] = [];
 
 async function createStateEnv(): Promise<NodeJS.ProcessEnv> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-model-picker-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-model-picker-"));
   tempDirs.push(dir);
   return { ...process.env, NEXISCLAW_STATE_DIR: dir };
 }

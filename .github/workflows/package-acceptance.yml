@@ -26,7 +26,7 @@ on:
       package_spec:
         description: Published package spec when source=npm
         required: false
-        default: NexisClaw@beta
+        default: FirstNexus@beta
         type: string
       package_url:
         description: HTTPS .tgz URL when source=url
@@ -65,9 +65,9 @@ on:
         default: ""
         type: string
       published_upgrade_survivor_baseline:
-        description: Published NexisClaw package baseline for the published-upgrade-survivor Docker lane
+        description: Published FirstNexus package baseline for the published-upgrade-survivor Docker lane
         required: false
-        default: NexisClaw@latest
+        default: FirstNexus@latest
         type: string
       published_upgrade_survivor_baselines:
         description: Optional baseline list for published-upgrade-survivor/update-migration; use last-stable-4, all-since-2026.4.23, release-history, or exact versions
@@ -112,7 +112,7 @@ on:
       package_spec:
         description: Published package spec when source=npm
         required: false
-        default: NexisClaw@beta
+        default: FirstNexus@beta
         type: string
       package_url:
         description: HTTPS .tgz URL when source=url
@@ -145,9 +145,9 @@ on:
         default: ""
         type: string
       published_upgrade_survivor_baseline:
-        description: Published NexisClaw package baseline for the published-upgrade-survivor Docker lane
+        description: Published FirstNexus package baseline for the published-upgrade-survivor Docker lane
         required: false
-        default: NexisClaw@latest
+        default: FirstNexus@latest
         type: string
       published_upgrade_survivor_baselines:
         description: Optional baseline list for published-upgrade-survivor/update-migration; use last-stable-4, all-since-2026.4.23, release-history, or exact versions
@@ -353,7 +353,7 @@ jobs:
             artifact_dir=".artifacts/package-candidate-input"
           fi
 
-          node scripts/resolve-NexisClaw-package-candidate.mjs \
+          node scripts/resolve-FirstNexus-package-candidate.mjs \
             --source "$SOURCE" \
             --package-ref "$PACKAGE_REF" \
             --package-spec "$PACKAGE_SPEC" \
@@ -361,7 +361,7 @@ jobs:
             --package-sha256 "$PACKAGE_SHA256" \
             --artifact-dir "${artifact_dir:-.}" \
             --output-dir .artifacts/docker-e2e-package \
-            --output-name NexisClaw-current.tgz \
+            --output-name FirstNexus-current.tgz \
             --metadata .artifacts/docker-e2e-package/package-candidate.json \
             --github-output "$GITHUB_OUTPUT"
 
@@ -443,11 +443,11 @@ jobs:
           releases_json=""
           npm_versions_json=""
           if [[ "$REQUESTED_BASELINES" == *"release-history"* || "$REQUESTED_BASELINES" == *"all-since-"* || "$REQUESTED_BASELINES" == *"last-stable-"* ]]; then
-            releases_json=".artifacts/package-candidate-input/NexisClaw-releases.json"
-            npm_versions_json=".artifacts/package-candidate-input/NexisClaw-npm-versions.json"
+            releases_json=".artifacts/package-candidate-input/FirstNexus-releases.json"
+            npm_versions_json=".artifacts/package-candidate-input/FirstNexus-npm-versions.json"
             mkdir -p "$(dirname "$releases_json")"
             gh release list --repo "$GITHUB_REPOSITORY" --limit 100 --json tagName,publishedAt,isPrerelease > "$releases_json"
-            npm view NexisClaw versions --json > "$npm_versions_json"
+            npm view FirstNexus versions --json > "$npm_versions_json"
           fi
           args=(
             --requested "$REQUESTED_BASELINES"
@@ -470,7 +470,7 @@ jobs:
         with:
           name: ${{ env.PACKAGE_ARTIFACT_NAME }}
           path: |
-            .artifacts/docker-e2e-package/NexisClaw-current.tgz
+            .artifacts/docker-e2e-package/FirstNexus-current.tgz
             .artifacts/docker-e2e-package/package-candidate.json
           retention-days: 14
           if-no-files-found: error
@@ -507,7 +507,7 @@ jobs:
   docker_acceptance:
     name: Docker product acceptance
     needs: resolve_package
-    uses: ./.github/workflows/NexisClaw-live-and-e2e-checks-reusable.yml
+    uses: ./.github/workflows/FirstNexus-live-and-e2e-checks-reusable.yml
     with:
       ref: ${{ needs.resolve_package.outputs.package_source_sha || inputs.workflow_ref }}
       include_repo_e2e: false
@@ -575,7 +575,7 @@ jobs:
     with:
       package_spec: ${{ inputs.package_spec }}
       package_artifact_name: ${{ needs.resolve_package.outputs.package_artifact_name }}
-      package_label: NexisClaw@${{ needs.resolve_package.outputs.package_version }}
+      package_label: FirstNexus@${{ needs.resolve_package.outputs.package_version }}
       harness_ref: ${{ needs.resolve_package.outputs.package_source_sha || inputs.workflow_ref }}
       provider_mode: ${{ needs.resolve_package.outputs.telegram_mode }}
       scenario: ${{ inputs.telegram_scenarios }}

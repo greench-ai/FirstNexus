@@ -1,15 +1,15 @@
 import nodeFs from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolveUserPath } from "NexisClaw/plugin-sdk/agent-harness-runtime";
+import { resolveUserPath } from "FirstNexus/plugin-sdk/agent-harness-runtime";
 import type {
   EmbeddedRunAttemptParams,
   EmbeddedRunAttemptResult,
-} from "NexisClaw/plugin-sdk/agent-harness-runtime";
+} from "FirstNexus/plugin-sdk/agent-harness-runtime";
 import {
   appendRegularFile,
   resolveRegularFileAppendFlags,
-} from "NexisClaw/plugin-sdk/security-runtime";
+} from "FirstNexus/plugin-sdk/security-runtime";
 
 type CodexTrajectoryRecorder = {
   filePath: string;
@@ -120,7 +120,7 @@ function writeTrajectoryPointerBestEffort(params: {
         fd,
         `${JSON.stringify(
           {
-            traceSchema: "NexisClaw-trajectory-pointer",
+            traceSchema: "FirstNexus-trajectory-pointer",
             schemaVersion: 1,
             sessionId: params.sessionId,
             runtimeFile: params.filePath,
@@ -168,7 +168,7 @@ export function createCodexTrajectoryRecorder(
     filePath,
     recordEvent: (type, data) => {
       const event = {
-        traceSchema: "NexisClaw-trajectory",
+        traceSchema: "FirstNexus-trajectory",
         schemaVersion: 1,
         traceId: params.attempt.sessionId,
         source: "runtime",

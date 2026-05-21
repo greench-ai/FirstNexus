@@ -146,7 +146,7 @@ console.log(result);
     expect(packageArtifact).toContain("withPackageLock");
     expect(packageArtifact).toContain("Wait for Parallels package lock");
     expect(packageArtifact).toContain("export async function packageVersionFromTgz");
-    expect(packageArtifact).toContain("export async function packNexisClaw");
+    expect(packageArtifact).toContain("export async function packFirstNexus");
     expect(parallelsVm).toContain("export function resolveUbuntuVmName");
     expect(parallelsVm).toContain("export function waitForVmStatus");
     expect(hostServer).toContain("export async function startHostServer");
@@ -163,7 +163,7 @@ console.log(result);
   });
 
   it("quotes shell args and resolves fuzzy snapshot hints through the shared TypeScript helper", () => {
-    const tempDir = mkdtempSync(join(tmpdir(), "NexisClaw-parallels-helper-"));
+    const tempDir = mkdtempSync(join(tmpdir(), "FirstNexus-parallels-helper-"));
     const prlctlPath = join(tempDir, "prlctl");
     writeFileSync(
       prlctlPath,
@@ -203,7 +203,7 @@ console.log([snapshot.id, snapshot.state, snapshot.name].join("\\t"));
   });
 
   it("uses one Ubuntu VM fallback resolver for Linux lanes", () => {
-    const tempDir = mkdtempSync(join(tmpdir(), "NexisClaw-parallels-vm-helper-"));
+    const tempDir = mkdtempSync(join(tmpdir(), "FirstNexus-parallels-vm-helper-"));
     const prlctlPath = join(tempDir, "prlctl");
     writeFileSync(
       prlctlPath,
@@ -249,7 +249,7 @@ console.log(resolveUbuntuVmName("Ubuntu missing"));
     const script = readFileSync(TS_PATHS.linux, "utf8");
 
     expect(script).toContain('BAD_PLUGIN_DIAGNOSTIC_MIN_VERSION = "2026.5.7"');
-    expect(script).toContain("parseNexisClawPackageVersion");
+    expect(script).toContain("parseFirstNexusPackageVersion");
     expect(script).toContain("maybeInjectBadPluginFixture");
     expect(script).toContain("maybeVerifyBadPluginDiagnostic");
     expect(script).toContain("Skipping bad plugin diagnostic fixture");
@@ -455,7 +455,7 @@ console.log(JSON.stringify(result));
     expect(orchestrator).not.toContain("Remove-FuturePluginEntries");
     expect(updateScripts).toContain("Remove-FuturePluginEntries");
     expect(updateScripts).toContain("scrub_future_plugin_entries");
-    expect(updateScripts).toContain("Invoke-NexisClaw update");
+    expect(updateScripts).toContain("Invoke-FirstNexus update");
     expect(updateScripts).toContain("Parallels npm update smoke test assistant.");
   });
 
@@ -573,7 +573,7 @@ console.log(JSON.stringify({
     expect(windows).toContain(
       "Invoke-WithScopedEnv @{ NEXISCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS",
     );
-    expect(windows).toContain("$script:NexisClawUpdateExit = $LASTEXITCODE");
+    expect(windows).toContain("$script:FirstNexusUpdateExit = $LASTEXITCODE");
     expect(windows).not.toContain("$env:NEXISCLAW_DISABLE_BUNDLED_PLUGINS = '1'");
   });
 
@@ -587,11 +587,11 @@ console.log(JSON.stringify({
     expect(npmUpdate).toContain("recordTiming");
   });
 
-  it("resolves Windows NexisClaw commands without assuming the npm shim path", () => {
+  it("resolves Windows FirstNexus commands without assuming the npm shim path", () => {
     const powershell = readFileSync(TS_PATHS.powershell, "utf8");
     const windows = readFileSync(TS_PATHS.windows, "utf8");
 
-    expect(powershell).toContain("windowsNexisClawResolver");
+    expect(powershell).toContain("windowsFirstNexusResolver");
     expect(powershell).toContain("providerTimeoutConfigJson");
     expect(powershell).toContain("models.providers.${providerId}");
     expect(powershell).toContain("agents.defaults.models${configPathMapKey(modelId)}");
@@ -601,12 +601,12 @@ console.log(JSON.stringify({
     expect(powershell).toContain("delete providerEntry.agentRuntime");
     expect(powershell).toContain("configPathMapKey");
     expect(powershell).toContain('transport: "sse"');
-    expect(powershell).toContain("Resolve-NexisClawCommand");
-    expect(powershell).toContain("npm\\node_modules\\NexisClaw\\NexisClaw.mjs");
+    expect(powershell).toContain("Resolve-FirstNexusCommand");
+    expect(powershell).toContain("npm\\node_modules\\FirstNexus\\FirstNexus.mjs");
     expect(powershell).toContain("$ErrorActionPreference = 'Continue'");
     expect(powershell).toContain("$PSNativeCommandUseErrorActionPreference = $false");
-    expect(windows).toContain("windowsNexisClawResolver");
-    expect(windows).toContain("Invoke-NexisClaw gateway");
-    expect(windows).not.toContain("Join-Path $env:APPDATA 'npm\\\\NexisClaw.cmd'");
+    expect(windows).toContain("windowsFirstNexusResolver");
+    expect(windows).toContain("Invoke-FirstNexus gateway");
+    expect(windows).not.toContain("Join-Path $env:APPDATA 'npm\\\\FirstNexus.cmd'");
   });
 });

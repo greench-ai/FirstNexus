@@ -1,9 +1,9 @@
 import {
   getRuntimeConfig,
   getRuntimeConfigSourceSnapshot,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../config/config.js";
 
-export function loadBrowserConfigForRuntimeRefresh(): NexisClawConfig {
+export function loadBrowserConfigForRuntimeRefresh(): FirstNexusConfig {
   return getRuntimeConfigSourceSnapshot() ?? getRuntimeConfig();
 }

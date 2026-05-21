@@ -186,7 +186,7 @@ async function requestManagedImage(params: {
             openUrl: params.pathName,
           },
         ],
-        __NexisClaw: { id: "msg-1" },
+        __FirstNexus: { id: "msg-1" },
       },
     ],
   );
@@ -296,7 +296,7 @@ describe("handleManagedOutgoingImageHttpRequest", () => {
       stateDir,
       pathName: `/api/chat/media/outgoing/${encodeURIComponent(sessionKey)}/${attachmentId}/full`,
       authResponse: { authMethod: "trusted-proxy", trustDeclaredOperatorScopes: true },
-      headers: { "x-NexisClaw-requester-session-key": sessionKey },
+      headers: { "x-FirstNexus-requester-session-key": sessionKey },
     });
 
     expect(result.statusCode).toBe(403);
@@ -309,7 +309,7 @@ describe("handleManagedOutgoingImageHttpRequest", () => {
       stateDir,
       pathName: `/api/chat/media/outgoing/${encodeURIComponent(sessionKey)}/${attachmentId}/full`,
       authResponse: { authMethod: "device-token" },
-      headers: { "x-NexisClaw-requester-session-key": sessionKey },
+      headers: { "x-FirstNexus-requester-session-key": sessionKey },
     });
 
     expect(result.statusCode).toBe(403);
@@ -336,7 +336,7 @@ describe("handleManagedOutgoingImageHttpRequest", () => {
       stateDir,
       pathName: `/api/chat/media/outgoing/${encodeURIComponent(sessionKey)}/${attachmentId}/full`,
       method: "POST",
-      headers: { "x-NexisClaw-requester-session-key": sessionKey },
+      headers: { "x-FirstNexus-requester-session-key": sessionKey },
     });
 
     expect(result.statusCode).toBe(405);
@@ -362,7 +362,7 @@ describe("handleManagedOutgoingImageHttpRequest", () => {
 
     const transcriptMessages = [
       {
-        __NexisClaw: { id: "msg-1" },
+        __FirstNexus: { id: "msg-1" },
         content: [
           {
             type: "image",
@@ -941,7 +941,7 @@ describe("cleanupManagedOutgoingImageRecords", () => {
     });
     readSessionMessagesMock.mockReturnValue([
       {
-        __NexisClaw: { id: "msg-1" },
+        __FirstNexus: { id: "msg-1" },
         content: [
           {
             type: "image",
@@ -975,7 +975,7 @@ describe("cleanupManagedOutgoingImageRecords", () => {
     });
     readSessionMessagesMock.mockReturnValue([
       {
-        __NexisClaw: { id: "msg-1" },
+        __FirstNexus: { id: "msg-1" },
         content: [
           {
             type: "image",

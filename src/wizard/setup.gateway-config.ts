@@ -5,7 +5,7 @@ import {
   validateGatewayPasswordInput,
 } from "../commands/onboard-helpers.js";
 import type { GatewayAuthChoice, SecretInputMode } from "../commands/onboard-types.js";
-import type { GatewayBindMode, GatewayTailscaleMode, NexisClawConfig } from "../config/config.js";
+import type { GatewayBindMode, GatewayTailscaleMode, FirstNexusConfig } from "../config/config.js";
 import { ensureControlUiAllowedOriginsForNonLoopbackBind } from "../config/gateway-control-ui-origins.js";
 import {
   normalizeSecretInputString,
@@ -35,8 +35,8 @@ import type {
 
 type ConfigureGatewayOptions = {
   flow: WizardFlow;
-  baseConfig: NexisClawConfig;
-  nextConfig: NexisClawConfig;
+  baseConfig: FirstNexusConfig;
+  nextConfig: FirstNexusConfig;
   localPort: number;
   quickstartGateway: QuickstartGatewayDefaults;
   secretInputMode?: SecretInputMode;
@@ -45,7 +45,7 @@ type ConfigureGatewayOptions = {
 };
 
 type ConfigureGatewayResult = {
-  nextConfig: NexisClawConfig;
+  nextConfig: FirstNexusConfig;
   settings: GatewayWizardSettings;
 };
 
@@ -221,7 +221,8 @@ export async function configureGatewayForSetup(
       }
     } else if (flow === "quickstart") {
       gatewayToken =
-        (quickstartTokenString ?? normalizeGatewayTokenInput(process.env.NEXISCLAW_GATEWAY_TOKEN)) ||
+        (quickstartTokenString ??
+          normalizeGatewayTokenInput(process.env.NEXISCLAW_GATEWAY_TOKEN)) ||
         randomToken();
       gatewayTokenInput = gatewayToken;
     } else {
@@ -262,7 +263,7 @@ export async function configureGatewayForSetup(
         copy: {
           modeMessage: "How do you want to provide the gateway password?",
           plaintextLabel: "Enter password now",
-          plaintextHint: "Stores the password directly in NexisClaw config",
+          plaintextHint: "Stores the password directly in FirstNexus config",
         },
       });
       if (selectedMode === "ref") {

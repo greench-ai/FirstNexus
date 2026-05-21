@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { buildActiveSubagentSystemPromptAddition } from "./subagent-active-context.js";
 import {
   addSubagentRunForTests,
@@ -15,7 +15,7 @@ describe("buildActiveSubagentSystemPromptAddition", () => {
   it("returns nothing without active children", () => {
     expect(
       buildActiveSubagentSystemPromptAddition({
-        cfg: {} as NexisClawConfig,
+        cfg: {} as FirstNexusConfig,
         controllerSessionKey: "agent:main:main",
       }),
     ).toBeUndefined();
@@ -38,7 +38,7 @@ describe("buildActiveSubagentSystemPromptAddition", () => {
     addSubagentRunForTests(run);
 
     const prompt = buildActiveSubagentSystemPromptAddition({
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       controllerSessionKey: "agent:main:main",
       hasSessionsYield: true,
     });
@@ -66,7 +66,7 @@ describe("buildActiveSubagentSystemPromptAddition", () => {
     addSubagentRunForTests(run);
 
     const prompt = buildActiveSubagentSystemPromptAddition({
-      cfg: { session: { mainKey: "agent:main:main" } } as NexisClawConfig,
+      cfg: { session: { mainKey: "agent:main:main" } } as FirstNexusConfig,
       controllerSessionKey: "main",
       hasSessionsYield: true,
     });
@@ -91,7 +91,7 @@ describe("buildActiveSubagentSystemPromptAddition", () => {
     addSubagentRunForTests(run);
 
     const prompt = buildActiveSubagentSystemPromptAddition({
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       controllerSessionKey: "agent:main:main",
       hasSessionsYield: true,
     });
@@ -118,7 +118,7 @@ describe("buildActiveSubagentSystemPromptAddition", () => {
     addSubagentRunForTests(run);
 
     const prompt = buildActiveSubagentSystemPromptAddition({
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       controllerSessionKey: "agent:main:main",
       hasSessionsYield: false,
     });

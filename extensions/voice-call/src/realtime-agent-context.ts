@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { buildRealtimeVoiceAgentConsultPolicyInstructions } from "NexisClaw/plugin-sdk/realtime-voice";
-import { root } from "NexisClaw/plugin-sdk/security-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { buildRealtimeVoiceAgentConsultPolicyInstructions } from "FirstNexus/plugin-sdk/realtime-voice";
+import { root } from "FirstNexus/plugin-sdk/security-runtime";
 import type { VoiceCallConfig } from "./config.js";
 import type { CoreAgentDeps, CoreConfig } from "./core-bridge.js";
 
@@ -97,15 +97,15 @@ export async function buildRealtimeVoiceInstructions(params: {
 
   const agentId = config.agentId ?? "main";
   const capsule: string[] = [
-    "NexisClaw agent voice context:",
+    "FirstNexus agent voice context:",
     `- Agent id: ${agentId}`,
-    "- Use this context to match the NexisClaw agent's personality and standing preferences on fast voice turns.",
-    "- Treat this as compact context only; call NexisClaw_agent_consult when the caller needs the full agent brain, tools, memory, or workspace state.",
+    "- Use this context to match the FirstNexus agent's personality and standing preferences on fast voice turns.",
+    "- Treat this as compact context only; call FirstNexus_agent_consult when the caller needs the full agent brain, tools, memory, or workspace state.",
   ];
 
   if (contextConfig.includeIdentity) {
     const identity = params.agentRuntime.resolveAgentIdentity(
-      params.coreConfig as NexisClawConfig,
+      params.coreConfig as FirstNexusConfig,
       agentId,
     ) as VoiceIdentityLike | undefined;
     const identityLines = [
@@ -131,7 +131,7 @@ export async function buildRealtimeVoiceInstructions(params: {
 
   if (contextConfig.includeWorkspaceFiles) {
     const workspaceDir = params.agentRuntime.resolveAgentWorkspaceDir(
-      params.coreConfig as NexisClawConfig,
+      params.coreConfig as FirstNexusConfig,
       agentId,
     );
     const fileSections = await readWorkspaceVoiceContextFiles({

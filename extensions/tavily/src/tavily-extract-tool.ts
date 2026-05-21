@@ -1,24 +1,24 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { NexisClawPluginToolContext } from "NexisClaw/plugin-sdk/plugin-entry";
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { FirstNexusPluginToolContext } from "FirstNexus/plugin-sdk/plugin-entry";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-runtime";
 import {
   jsonResult,
   readNumberParam,
   readStringParam,
-} from "NexisClaw/plugin-sdk/provider-web-search";
+} from "FirstNexus/plugin-sdk/provider-web-search";
 import { Type } from "typebox";
 import { runTavilyExtract } from "./tavily-client.js";
 import { optionalStringEnum } from "./tavily-tool-schema.js";
 
 type TavilyToolConfigContext = Pick<
-  NexisClawPluginToolContext,
+  FirstNexusPluginToolContext,
   "config" | "runtimeConfig" | "getRuntimeConfig"
 >;
 
 function resolveTavilyToolConfig(
-  api: NexisClawPluginApi,
+  api: FirstNexusPluginApi,
   ctx?: TavilyToolConfigContext,
-): NexisClawConfig {
+): FirstNexusConfig {
   return ctx?.getRuntimeConfig?.() ?? ctx?.runtimeConfig ?? ctx?.config ?? api.config;
 }
 
@@ -53,7 +53,7 @@ const TavilyExtractToolSchema = Type.Object(
   { additionalProperties: false },
 );
 
-export function createTavilyExtractTool(api: NexisClawPluginApi, ctx?: TavilyToolConfigContext) {
+export function createTavilyExtractTool(api: FirstNexusPluginApi, ctx?: TavilyToolConfigContext) {
   return {
     name: "tavily_extract",
     label: "Tavily Extract",

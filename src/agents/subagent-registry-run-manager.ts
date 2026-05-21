@@ -1,5 +1,5 @@
 import { getRuntimeConfig } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { callGateway } from "../gateway/call.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { getGlobalHookRunner } from "../plugins/hook-runner-global.js";
@@ -112,7 +112,7 @@ export function createSubagentRunManager(params: {
   ensureRuntimePluginsLoaded:
     | typeof ensureRuntimePluginsLoadedFn
     | ((args: {
-        config: NexisClawConfig;
+        config: FirstNexusConfig;
         workspaceDir?: string;
         allowGatewaySubagentBinding?: boolean;
       }) => void | Promise<void>);
@@ -121,7 +121,7 @@ export function createSubagentRunManager(params: {
   stopSweeper(): void;
   resumeSubagentRun(runId: string): void;
   clearPendingLifecycleError(runId: string): void;
-  resolveSubagentWaitTimeoutMs(cfg: NexisClawConfig, runTimeoutSeconds?: number): number;
+  resolveSubagentWaitTimeoutMs(cfg: FirstNexusConfig, runTimeoutSeconds?: number): number;
   scheduleOrphanRecovery(args?: { delayMs?: number; maxRetries?: number }): void;
   notifyContextEngineSubagentEnded(args: {
     childSessionKey: string;

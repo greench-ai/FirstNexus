@@ -2,7 +2,7 @@
  * Cross-platform path and detection helpers for core/ modules.
  *
  * Provides home/data/media directory helpers, platform detection,
- * silk-wasm availability checks — all without importing `NexisClaw/plugin-sdk`.
+ * silk-wasm availability checks — all without importing `FirstNexus/plugin-sdk`.
  * The temp-directory fallback is delegated to the PlatformAdapter.
  */
 
@@ -39,12 +39,12 @@ export function getHomeDir(): string {
   return getPlatformAdapter().getTempDir();
 }
 
-/** Return a path under `~/.NexisClaw/qqbot` without creating it. */
+/** Return a path under `~/.FirstNexus/qqbot` without creating it. */
 export function getQQBotDataPath(...subPaths: string[]): string {
-  return path.join(getHomeDir(), ".NexisClaw", "qqbot", ...subPaths);
+  return path.join(getHomeDir(), ".FirstNexus", "qqbot", ...subPaths);
 }
 
-/** Return a path under `~/.NexisClaw/qqbot`, creating it on demand. */
+/** Return a path under `~/.FirstNexus/qqbot`, creating it on demand. */
 export function getQQBotDataDir(...subPaths: string[]): string {
   const dir = getQQBotDataPath(...subPaths);
   if (!fs.existsSync(dir)) {
@@ -54,16 +54,16 @@ export function getQQBotDataDir(...subPaths: string[]): string {
 }
 
 /**
- * Return a path under `~/.NexisClaw/media/qqbot` without creating it.
+ * Return a path under `~/.FirstNexus/media/qqbot` without creating it.
  *
- * Unlike `getQQBotDataPath`, this lives under NexisClaw's core media allowlist so
+ * Unlike `getQQBotDataPath`, this lives under FirstNexus's core media allowlist so
  * downloaded images and audio can be accessed by framework media tooling.
  */
 export function getQQBotMediaPath(...subPaths: string[]): string {
-  return path.join(getHomeDir(), ".NexisClaw", "media", "qqbot", ...subPaths);
+  return path.join(getHomeDir(), ".FirstNexus", "media", "qqbot", ...subPaths);
 }
 
-/** Return a path under `~/.NexisClaw/media/qqbot`, creating it on demand. */
+/** Return a path under `~/.FirstNexus/media/qqbot`, creating it on demand. */
 export function getQQBotMediaDir(...subPaths: string[]): string {
   const dir = getQQBotMediaPath(...subPaths);
   if (!fs.existsSync(dir)) {
@@ -73,17 +73,17 @@ export function getQQBotMediaDir(...subPaths: string[]): string {
 }
 
 /**
- * Return `~/.NexisClaw/media`, NexisClaw's shared media root.
+ * Return `~/.FirstNexus/media`, FirstNexus's shared media root.
  *
  * This mirrors the directory that core's `buildMediaLocalRoots` exposes as an
- * allowlisted location (see `NexisClaw/src/media/local-roots.ts`). Using it as a
+ * allowlisted location (see `FirstNexus/src/media/local-roots.ts`). Using it as a
  * QQ Bot payload root lets the plugin trust framework-produced files that live
  * in sibling subdirectories such as `outbound/` (written by
  * `saveMediaBuffer(..., "outbound", ...)`) or `inbound/`, while still keeping
  * the check anchored to a single, well-known directory.
  */
-function getNexisClawMediaDir(): string {
-  return path.join(getHomeDir(), ".NexisClaw", "media");
+function getFirstNexusMediaDir(): string {
+  return path.join(getHomeDir(), ".FirstNexus", "media");
 }
 
 // ---- Basic platform information ----
@@ -206,7 +206,7 @@ export function resolveQQBotLocalMediaPath(p: string): string {
   const homeDir = getHomeDir();
   const mediaRoot = getQQBotMediaPath();
   const dataRoot = getQQBotDataPath();
-  const workspaceRoot = path.join(homeDir, ".NexisClaw", "workspace", "qqbot");
+  const workspaceRoot = path.join(homeDir, ".FirstNexus", "workspace", "qqbot");
   const candidateRoots = [
     { from: workspaceRoot, to: mediaRoot },
     { from: dataRoot, to: mediaRoot },
@@ -244,12 +244,12 @@ export function resolveQQBotPayloadLocalFilePath(p: string): string | null {
   }
 
   const canonicalCandidate = fs.realpathSync(resolvedCandidate);
-  // Trust both the QQ Bot-owned subdirectory and NexisClaw's shared `~/.NexisClaw/media`
+  // Trust both the QQ Bot-owned subdirectory and FirstNexus's shared `~/.FirstNexus/media`
   // root. Core helpers like `saveMediaBuffer(..., "outbound", ...)` place framework
   // attachments under sibling directories (e.g. `media/outbound/`) that are already
   // part of the core media allowlist; we mirror that so auto-routed sends work
   // without leaving the plugin's trust boundary.
-  const allowedRoots = [getNexisClawMediaDir(), getQQBotMediaPath()];
+  const allowedRoots = [getFirstNexusMediaDir(), getQQBotMediaPath()];
 
   for (const root of allowedRoots) {
     const resolvedRoot = path.resolve(root);

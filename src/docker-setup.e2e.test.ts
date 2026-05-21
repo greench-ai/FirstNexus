@@ -81,14 +81,14 @@ async function createDockerSetupSandbox(): Promise<DockerSetupSandbox> {
   await writeFile(dockerfilePath, "FROM scratch\n");
   await writeFile(
     composePath,
-    "services:\n  NexisClaw-gateway:\n    image: noop\n  NexisClaw-cli:\n    image: noop\n",
+    "services:\n  FirstNexus-gateway:\n    image: noop\n  FirstNexus-cli:\n    image: noop\n",
   );
   await writeDockerStub(binDir, logPath);
 
   return { rootDir, scriptPath, logPath, binDir };
 }
 
-const sandboxRootTracker = createSuiteTempRootTracker({ prefix: "NexisClaw-docker-setup-" });
+const sandboxRootTracker = createSuiteTempRootTracker({ prefix: "FirstNexus-docker-setup-" });
 
 function createEnv(
   sandbox: DockerSetupSandbox,
@@ -103,7 +103,7 @@ function createEnv(
     DOCKER_STUB_LOG: sandbox.logPath,
     NEXISCLAW_GATEWAY_TOKEN: "test-token",
     NEXISCLAW_CONFIG_DIR: join(sandbox.rootDir, "config"),
-    NEXISCLAW_WORKSPACE_DIR: join(sandbox.rootDir, "NexisClaw"),
+    NEXISCLAW_WORKSPACE_DIR: join(sandbox.rootDir, "FirstNexus"),
     NEXISCLAW_AUTH_PROFILE_SECRET_DIR: join(sandbox.rootDir, "auth-profile-secrets"),
   };
 
@@ -165,7 +165,7 @@ function collectMatchingLines(lines: string[], predicate: (line: string) => bool
 }
 
 function isGatewayStartLine(line: string) {
-  return line.includes("compose") && line.includes(" up -d") && line.includes("NexisClaw-gateway");
+  return line.includes("compose") && line.includes(" up -d") && line.includes("FirstNexus-gateway");
 }
 
 function findGatewayStartLineIndex(lines: string[]) {
@@ -251,13 +251,13 @@ describe("scripts/docker/setup.sh", () => {
     const result = runDockerSetup(activeSandbox, {
       NEXISCLAW_DOCKER_APT_PACKAGES: "ffmpeg build-essential",
       NEXISCLAW_EXTRA_MOUNTS: undefined,
-      NEXISCLAW_HOME_VOLUME: "NexisClaw-home",
+      NEXISCLAW_HOME_VOLUME: "FirstNexus-home",
     });
     expect(result.status).toBe(0);
     const envFile = await readFile(join(activeSandbox.rootDir, ".env"), "utf8");
     expect(envFile).toContain("NEXISCLAW_DOCKER_APT_PACKAGES=ffmpeg build-essential");
     expect(envFile).toContain("NEXISCLAW_EXTRA_MOUNTS=");
-    expect(envFile).toContain("NEXISCLAW_HOME_VOLUME=NexisClaw-home"); // pragma: allowlist secret
+    expect(envFile).toContain("NEXISCLAW_HOME_VOLUME=FirstNexus-home"); // pragma: allowlist secret
     expect(envFile).toContain("NEXISCLAW_DISABLE_BONJOUR=");
     expect(envFile).toContain(
       `NEXISCLAW_AUTH_PROFILE_SECRET_DIR=${join(activeSandbox.rootDir, "auth-profile-secrets")}`,
@@ -266,21 +266,21 @@ describe("scripts/docker/setup.sh", () => {
       join(activeSandbox.rootDir, "docker-compose.extra.yml"),
       "utf8",
     );
-    expect(extraCompose).toContain("NexisClaw-home:/home/node");
+    expect(extraCompose).toContain("FirstNexus-home:/home/node");
     expect(extraCompose).toContain(
-      `${join(activeSandbox.rootDir, "auth-profile-secrets")}:/home/node/.config/NexisClaw`,
+      `${join(activeSandbox.rootDir, "auth-profile-secrets")}:/home/node/.config/FirstNexus`,
     );
     expect(extraCompose).toContain("volumes:");
-    expect(extraCompose).toContain("NexisClaw-home:");
+    expect(extraCompose).toContain("FirstNexus-home:");
     const log = await readDockerLog(activeSandbox);
     expect(log).toContain("--build-arg NEXISCLAW_DOCKER_APT_PACKAGES=ffmpeg build-essential");
     expect(log).toContain(
-      "run --rm --no-deps --entrypoint node NexisClaw-gateway dist/index.js onboard --mode local --no-install-daemon",
+      "run --rm --no-deps --entrypoint node FirstNexus-gateway dist/index.js onboard --mode local --no-install-daemon",
     );
     expect(log).toContain(
-      'run --rm --no-deps --entrypoint node NexisClaw-gateway dist/index.js config set --batch-json [{"path":"gateway.mode","value":"local"},{"path":"gateway.bind","value":"lan"},{"path":"gateway.controlUi.allowedOrigins","value":["http://localhost:18789","http://127.0.0.1:18789"]}]',
+      'run --rm --no-deps --entrypoint node FirstNexus-gateway dist/index.js config set --batch-json [{"path":"gateway.mode","value":"local"},{"path":"gateway.bind","value":"lan"},{"path":"gateway.controlUi.allowedOrigins","value":["http://localhost:18789","http://127.0.0.1:18789"]}]',
     );
-    expect(log).not.toContain("run --rm NexisClaw-cli onboard --mode local --no-install-daemon");
+    expect(log).not.toContain("run --rm FirstNexus-cli onboard --mode local --no-install-daemon");
   });
 
   it("persists explicit Docker Bonjour opt-in overrides", async () => {
@@ -295,7 +295,7 @@ describe("scripts/docker/setup.sh", () => {
     expect(envFile).toContain("NEXISCLAW_DISABLE_BONJOUR=0");
   });
 
-  it("avoids shared-network NexisClaw-cli before the gateway is started", async () => {
+  it("avoids shared-network FirstNexus-cli before the gateway is started", async () => {
     const activeSandbox = requireSandbox(sandbox);
 
     await resetDockerLog(activeSandbox);
@@ -308,7 +308,7 @@ describe("scripts/docker/setup.sh", () => {
 
     const prestartLines = lines.slice(0, gatewayStartIdx);
     const prestartCliRunLines = collectMatchingLines(prestartLines, (line) =>
-      /\bcompose\b.*\brun\b.*\bNexisClaw-cli\b/.test(line),
+      /\bcompose\b.*\brun\b.*\bFirstNexus-cli\b/.test(line),
     );
     expect(prestartCliRunLines).toStrictEqual([]);
   });
@@ -387,7 +387,7 @@ describe("scripts/docker/setup.sh", () => {
     const onboardIdx = log.indexOf("onboard");
     expect(chownIdx).toBeGreaterThanOrEqual(0);
     expect(onboardIdx).toBeGreaterThan(chownIdx);
-    expect(log).toContain("run --rm --no-deps --user root --entrypoint sh NexisClaw-gateway -c");
+    expect(log).toContain("run --rm --no-deps --user root --entrypoint sh FirstNexus-gateway -c");
   });
 
   it("precreates auth profile secret key dir outside the mounted state dir", async () => {
@@ -408,7 +408,7 @@ describe("scripts/docker/setup.sh", () => {
     expect(secretDir.startsWith(`${configDir}/`)).toBe(false);
 
     const log = await readDockerLog(activeSandbox);
-    expect(log).toContain("find /home/node/.config/NexisClaw -xdev");
+    expect(log).toContain("find /home/node/.config/FirstNexus -xdev");
   });
 
   it("reuses existing config token when NEXISCLAW_GATEWAY_TOKEN is unset", async () => {
@@ -418,7 +418,7 @@ describe("scripts/docker/setup.sh", () => {
       "token-reuse",
       async (configDir) => {
         await writeFile(
-          join(configDir, "NexisClaw.json"),
+          join(configDir, "FirstNexus.json"),
           JSON.stringify({ gateway: { auth: { mode: "token", token: "config-token-123" } } }),
         );
       },
@@ -488,12 +488,12 @@ describe("scripts/docker/setup.sh", () => {
     await resetDockerLog(activeSandbox);
     await writeFile(
       join(activeSandbox.rootDir, "docker-compose.sandbox.yml"),
-      "services:\n  NexisClaw-gateway:\n    volumes:\n      - /var/run/docker.sock:/var/run/docker.sock\n",
+      "services:\n  FirstNexus-gateway:\n    volumes:\n      - /var/run/docker.sock:/var/run/docker.sock\n",
     );
 
     const result = runDockerSetup(activeSandbox, {
       NEXISCLAW_SANDBOX: "1",
-      DOCKER_STUB_FAIL_MATCH: "--entrypoint docker NexisClaw-gateway --version",
+      DOCKER_STUB_FAIL_MATCH: "--entrypoint docker FirstNexus-gateway --version",
     });
 
     expect(result.status).toBe(0);
@@ -525,14 +525,14 @@ describe("scripts/docker/setup.sh", () => {
       );
       expect(gatewayStarts).toHaveLength(2);
       expect(log).toContain(
-        "run --rm --no-deps NexisClaw-cli config set agents.defaults.sandbox.mode non-main",
+        "run --rm --no-deps FirstNexus-cli config set agents.defaults.sandbox.mode non-main",
       );
       expect(log).toContain("config set agents.defaults.sandbox.mode off");
       const forceRecreateLine = log
         .split("\n")
-        .find((line) => line.includes("up -d --force-recreate NexisClaw-gateway"));
+        .find((line) => line.includes("up -d --force-recreate FirstNexus-gateway"));
       expect(forceRecreateLine).toBe(
-        `compose compose -f ${join(activeSandbox.rootDir, "docker-compose.yml")} up -d --force-recreate NexisClaw-gateway`,
+        `compose compose -f ${join(activeSandbox.rootDir, "docker-compose.yml")} up -d --force-recreate FirstNexus-gateway`,
       );
       expect(forceRecreateLine).not.toContain("docker-compose.sandbox.yml");
       await expectMissingPath(join(activeSandbox.rootDir, "docker-compose.sandbox.yml"));
@@ -662,8 +662,8 @@ describe("scripts/docker/setup.sh", () => {
 
   it("keeps docker-compose CLI network namespace settings in sync", async () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
-    expect(compose).toContain('network_mode: "service:NexisClaw-gateway"');
-    expect(compose).toContain("depends_on:\n      - NexisClaw-gateway");
+    expect(compose).toContain('network_mode: "service:FirstNexus-gateway"');
+    expect(compose).toContain("depends_on:\n      - FirstNexus-gateway");
   });
 
   it("keeps docker-compose gateway token env defaults aligned across services", async () => {
@@ -677,7 +677,7 @@ describe("scripts/docker/setup.sh", () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
     expect(
       compose.split(
-        "${NEXISCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.NexisClaw-auth-profile-secrets}:/home/node/.config/NexisClaw",
+        "${NEXISCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.FirstNexus-auth-profile-secrets}:/home/node/.config/FirstNexus",
       ),
     ).toHaveLength(3);
   });
@@ -696,11 +696,11 @@ describe("scripts/docker/setup.sh", () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
     // Both gateway and CLI services must override the env_file values with the
     // canonical container paths so a host-style NEXISCLAW_WORKSPACE_DIR like
-    // `/Users/<you>/.NexisClaw/workspace` written to `.env` by docker-setup.sh
+    // `/Users/<you>/.FirstNexus/workspace` written to `.env` by docker-setup.sh
     // cannot reach runtime code inside Linux Docker.
-    expect(compose.match(/NEXISCLAW_CONFIG_DIR: \/home\/node\/\.NexisClaw$/gm)).toHaveLength(2);
+    expect(compose.match(/NEXISCLAW_CONFIG_DIR: \/home\/node\/\.FirstNexus$/gm)).toHaveLength(2);
     expect(
-      compose.match(/NEXISCLAW_WORKSPACE_DIR: \/home\/node\/\.NexisClaw\/workspace$/gm),
+      compose.match(/NEXISCLAW_WORKSPACE_DIR: \/home\/node\/\.FirstNexus\/workspace$/gm),
     ).toHaveLength(2);
   });
 });

@@ -1,4 +1,4 @@
-import { createLoggerBackedRuntime } from "NexisClaw/plugin-sdk/runtime";
+import { createLoggerBackedRuntime } from "FirstNexus/plugin-sdk/runtime";
 
 export function resolveLoggerBackedRuntime<TRuntime>(
   runtime: TRuntime | undefined,

@@ -16,7 +16,7 @@ type ExpectedTranscriptMatch = RegExp | string;
 
 export const NEXISCLAW_LIVE_TRANSCRIPT_MARKER_RE = /open(?:claw|cl|flaw|clar|core)/;
 
-export function expectNexisClawLiveTranscriptMarker(value: string): void {
+export function expectFirstNexusLiveTranscriptMarker(value: string): void {
   expect(normalizeTranscriptForMatch(value)).toMatch(NEXISCLAW_LIVE_TRANSCRIPT_MARKER_RE);
 }
 

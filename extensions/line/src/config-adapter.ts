@@ -1,4 +1,4 @@
-import { createScopedChannelConfigAdapter } from "NexisClaw/plugin-sdk/channel-config-helpers";
+import { createScopedChannelConfigAdapter } from "FirstNexus/plugin-sdk/channel-config-helpers";
 import {
   listLineAccountIds,
   resolveDefaultLineAccountId,

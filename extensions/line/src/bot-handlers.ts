@@ -1,30 +1,33 @@
 import type { webhook } from "@line/bot-sdk";
-import { buildMentionRegexes, matchesMentionPatterns } from "NexisClaw/plugin-sdk/channel-inbound";
-import { resolveStableChannelMessageIngress } from "NexisClaw/plugin-sdk/channel-ingress-runtime";
-import { createChannelPairingChallengeIssuer } from "NexisClaw/plugin-sdk/channel-pairing";
-import { shouldComputeCommandAuthorized } from "NexisClaw/plugin-sdk/command-auth-native";
-import type { GroupPolicy, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { buildMentionRegexes, matchesMentionPatterns } from "FirstNexus/plugin-sdk/channel-inbound";
+import { resolveStableChannelMessageIngress } from "FirstNexus/plugin-sdk/channel-ingress-runtime";
+import { createChannelPairingChallengeIssuer } from "FirstNexus/plugin-sdk/channel-pairing";
+import { shouldComputeCommandAuthorized } from "FirstNexus/plugin-sdk/command-auth-native";
+import type { GroupPolicy, FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   readChannelAllowFromStore,
   resolvePairingIdLabel,
   upsertChannelPairingRequest,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { createClaimableDedupe, type ClaimableDedupe } from "NexisClaw/plugin-sdk/persistent-dedupe";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import {
+  createClaimableDedupe,
+  type ClaimableDedupe,
+} from "FirstNexus/plugin-sdk/persistent-dedupe";
 import {
   DEFAULT_GROUP_HISTORY_LIMIT,
   clearHistoryEntriesIfEnabled,
   recordPendingHistoryEntryIfEnabled,
   type HistoryEntry,
-} from "NexisClaw/plugin-sdk/reply-history";
-import { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime";
-import { danger, logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/reply-history";
+import { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime";
+import { danger, logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
-import { normalizeStringEntries } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
+import { normalizeStringEntries } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { firstDefined, normalizeLineAllowEntry } from "./bot-access.js";
 import {
   buildLineMessageContext,
@@ -64,7 +67,7 @@ function isDownloadableLineMessageType(
 }
 
 export interface LineHandlerContext {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedLineAccount;
   runtime: RuntimeEnv;
   mediaMaxBytes: number;

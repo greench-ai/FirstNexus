@@ -1,1 +1,1 @@
-export { createSubsystemLogger } from "NexisClaw/plugin-sdk/logging-core";
+export { createSubsystemLogger } from "FirstNexus/plugin-sdk/logging-core";

@@ -6,28 +6,28 @@ import {
   matchesMentionWithExplicit,
   resolveInboundMentionDecision,
   type NormalizedLocation,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import { resolveChannelGroupPolicy } from "NexisClaw/plugin-sdk/channel-policy";
-import { hasControlCommand } from "NexisClaw/plugin-sdk/command-detection";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import { resolveChannelGroupPolicy } from "FirstNexus/plugin-sdk/channel-policy";
+import { hasControlCommand } from "FirstNexus/plugin-sdk/command-detection";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import type {
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/config-contracts";
 import {
   createInternalHookEvent,
   fireAndForgetHook,
   toInternalMessageReceivedContext,
   triggerInternalHook,
-} from "NexisClaw/plugin-sdk/hook-runtime";
+} from "FirstNexus/plugin-sdk/hook-runtime";
 import {
   recordPendingHistoryEntryIfEnabled,
   type HistoryEntry,
-} from "NexisClaw/plugin-sdk/reply-history";
-import type { MsgContext } from "NexisClaw/plugin-sdk/reply-runtime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/reply-history";
+import type { MsgContext } from "FirstNexus/plugin-sdk/reply-runtime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { NormalizedAllowFrom } from "./bot-access.js";
 import type {
   TelegramLogger,
@@ -120,7 +120,7 @@ function formatSavedMediaPlaceholder(allMedia: TelegramMediaRef[]): string | und
 }
 
 async function resolveStickerVisionSupport(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
 }): Promise<boolean> {
   try {
@@ -132,7 +132,7 @@ async function resolveStickerVisionSupport(params: {
 }
 
 export async function resolveTelegramInboundBody(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   primaryCtx: TelegramContext;
   msg: TelegramContext["message"];
   allMedia: TelegramMediaRef[];

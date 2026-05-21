@@ -6,7 +6,7 @@ import {
   resolveStorePath,
   type SessionEntry,
 } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ResolveContextEngineOptions } from "../context-engine/registry.js";
 import type { ContextEngine, SubagentEndReason } from "../context-engine/types.js";
 import { callGateway } from "../gateway/call.js";
@@ -99,7 +99,7 @@ type SubagentRegistryDeps = {
   ensureContextEnginesInitialized?: () => void;
   ensureRuntimePluginsLoaded?: typeof ensureRuntimePluginsLoadedFn;
   resolveContextEngine?: (
-    cfg?: NexisClawConfig,
+    cfg?: FirstNexusConfig,
     options?: ResolveContextEngineOptions,
   ) => Promise<ContextEngine>;
 };
@@ -147,7 +147,7 @@ type ContextEngineInitModule = Pick<
 type ContextEngineRegistryModule = Pick<
   {
     resolveContextEngine: (
-      cfg?: NexisClawConfig,
+      cfg?: FirstNexusConfig,
       options?: ResolveContextEngineOptions,
     ) => Promise<ContextEngine>;
   },
@@ -299,7 +299,7 @@ function loadRuntimePluginsModule(): Promise<RuntimePluginsModule> {
 }
 
 async function ensureSubagentRegistryPluginRuntimeLoaded(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   workspaceDir?: string;
   allowGatewaySubagentBinding?: boolean;
 }) {
@@ -312,7 +312,7 @@ async function ensureSubagentRegistryPluginRuntimeLoaded(params: {
 }
 
 async function resolveSubagentRegistryContextEngine(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   options?: ResolveContextEngineOptions,
 ) {
   const initModule = await loadContextEngineInitModule();
@@ -714,7 +714,7 @@ function restoreSubagentRunsOnce() {
   }
 }
 
-function resolveSubagentWaitTimeoutMs(cfg: NexisClawConfig, runTimeoutSeconds?: number) {
+function resolveSubagentWaitTimeoutMs(cfg: FirstNexusConfig, runTimeoutSeconds?: number) {
   return subagentRegistryDeps.resolveAgentTimeoutMs({
     cfg,
     overrideSeconds: runTimeoutSeconds ?? 0,
@@ -977,7 +977,7 @@ const subagentRunManager = createSubagentRunManager({
   callGateway: (request) => subagentRegistryDeps.callGateway(request),
   getRuntimeConfig: () => subagentRegistryDeps.getRuntimeConfig(),
   ensureRuntimePluginsLoaded: (args: {
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     workspaceDir?: string;
     allowGatewaySubagentBinding?: boolean;
   }) => ensureSubagentRegistryPluginRuntimeLoaded(args),

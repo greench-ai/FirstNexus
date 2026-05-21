@@ -37,10 +37,10 @@ import {
   type EmbeddedContextFile,
   type NativeHookRelayEvent,
   type NativeHookRelayRegistrationHandle,
-} from "NexisClaw/plugin-sdk/agent-harness-runtime";
-import { markAuthProfileBlockedUntil, resolveAgentDir } from "NexisClaw/plugin-sdk/agent-runtime";
-import { emitTrustedDiagnosticEvent } from "NexisClaw/plugin-sdk/diagnostic-runtime";
-import { pathExists } from "NexisClaw/plugin-sdk/security-runtime";
+} from "FirstNexus/plugin-sdk/agent-harness-runtime";
+import { markAuthProfileBlockedUntil, resolveAgentDir } from "FirstNexus/plugin-sdk/agent-runtime";
+import { emitTrustedDiagnosticEvent } from "FirstNexus/plugin-sdk/diagnostic-runtime";
+import { pathExists } from "FirstNexus/plugin-sdk/security-runtime";
 import {
   buildCodexAppInventoryCacheKey,
   defaultCodexAppInventoryCache,
@@ -167,11 +167,13 @@ const CODEX_BOOTSTRAP_CONTEXT_ORDER = new Map<string, number>([
   ["heartbeat.md", 70],
 ]);
 
-type NexisClawCodingToolsOptions = NonNullable<
-  Parameters<(typeof import("NexisClaw/plugin-sdk/agent-harness"))["createNexisClawCodingTools"]>[0]
+type FirstNexusCodingToolsOptions = NonNullable<
+  Parameters<
+    (typeof import("FirstNexus/plugin-sdk/agent-harness"))["createFirstNexusCodingTools"]
+  >[0]
 >;
-type NexisClawCodingToolsFactory =
-  (typeof import("NexisClaw/plugin-sdk/agent-harness"))["createNexisClawCodingTools"];
+type FirstNexusCodingToolsFactory =
+  (typeof import("FirstNexus/plugin-sdk/agent-harness"))["createFirstNexusCodingTools"];
 type CodexBootstrapContext = Awaited<ReturnType<typeof resolveBootstrapContextForRun>>;
 type CodexBootstrapFile = CodexBootstrapContext["bootstrapFiles"][number];
 type CodexSystemPromptReport = NonNullable<EmbeddedRunAttemptResult["systemPromptReport"]>;
@@ -180,7 +182,7 @@ type CodexWorkspaceBootstrapContext = CodexBootstrapContext & { instructions?: s
 
 const testClientFactoryStorage = new AsyncLocalStorage<CodexAppServerClientFactory | undefined>();
 const clientFactory = defaultCodexAppServerClientFactory;
-let openClawCodingToolsFactoryForTests: NexisClawCodingToolsFactory | undefined;
+let openClawCodingToolsFactoryForTests: FirstNexusCodingToolsFactory | undefined;
 
 function resolveCodexAppServerClientFactory(): CodexAppServerClientFactory {
   return testClientFactoryStorage.getStore() ?? clientFactory;
@@ -274,7 +276,7 @@ function formatDynamicToolTimeoutDetails(params: {
 
   if (tool !== "process" || !isJsonObject(params.call.arguments)) {
     return {
-      responseMessage: `NexisClaw dynamic tool call timed out after ${params.timeoutMs}ms while running tool ${tool}.`,
+      responseMessage: `FirstNexus dynamic tool call timed out after ${params.timeoutMs}ms while running tool ${tool}.`,
       consoleMessage: `codex dynamic tool timeout: tool=${tool} toolTimeoutMs=${params.timeoutMs}; per-tool-call watchdog, not session idle`,
       meta: baseMeta,
     };
@@ -297,7 +299,7 @@ function formatDynamicToolTimeoutDetails(params: {
       : " while waiting for the process tool";
 
   return {
-    responseMessage: `NexisClaw dynamic tool call timed out after ${params.timeoutMs}ms${responseTarget}. This is a tool RPC timeout, not a session idle timeout.`,
+    responseMessage: `FirstNexus dynamic tool call timed out after ${params.timeoutMs}ms${responseTarget}. This is a tool RPC timeout, not a session idle timeout.`,
     consoleMessage: `codex process tool timeout:${actionPart}${sessionPart} toolTimeoutMs=${params.timeoutMs}${requestedPart}; per-tool-call watchdog, not session idle${retryHint}`,
     meta: {
       ...baseMeta,
@@ -412,7 +414,7 @@ function fingerprintCodexPluginAppCacheCredentials(
     return null;
   }
   const hash = createHash("sha256");
-  hash.update("NexisClaw:codex:plugin-app-cache-credentials:v1");
+  hash.update("FirstNexus:codex:plugin-app-cache-credentials:v1");
   hash.update("\0");
   hash.update(authToken);
   for (const [key, value] of headers) {
@@ -435,7 +437,7 @@ function resolveCodexPluginAppCacheCodexHome(
   return appServer.start.transport === "stdio" ? resolveCodexAppServerHomeDir(agentDir) : undefined;
 }
 
-function restrictCodexAppServerSandboxForNexisClawSandbox(
+function restrictCodexAppServerSandboxForFirstNexusSandbox(
   appServer: CodexAppServerRuntimeOptions,
   sandbox: Awaited<ReturnType<typeof resolveSandboxContext>>,
 ): CodexAppServerRuntimeOptions {
@@ -484,7 +486,7 @@ export async function runCodexAppServerAttempt(
       : sandbox.workspaceDir
     : resolvedWorkspace;
   await fs.mkdir(effectiveWorkspace, { recursive: true });
-  const appServer = restrictCodexAppServerSandboxForNexisClawSandbox(configuredAppServer, sandbox);
+  const appServer = restrictCodexAppServerSandboxForFirstNexusSandbox(configuredAppServer, sandbox);
   let pluginAppServer: CodexAppServerRuntimeOptions = appServer;
   const nativeHookRelayEvents = resolveCodexNativeHookRelayEvents({
     configuredEvents: options.nativeHookRelay?.events,
@@ -1271,14 +1273,14 @@ export async function runCodexAppServerAttempt(
       isCurrentTurnNotification
     ) {
       // The short completion-idle watchdog only guards the blind gap after
-      // NexisClaw hands a turn-scoped request result back to Codex. Once Codex
+      // FirstNexus hands a turn-scoped request result back to Codex. Once Codex
       // sends another current-turn notification, the app-server is alive again;
       // the longer terminal watchdog remains the stuck-turn backstop.
       disarmTurnCompletionIdleWatch();
     }
     // Determine terminal-turn status before invoking the projector so a throw
     // inside projector.handleNotification still releases the session lane.
-    // See NexisClaw/NexisClaw#67996.
+    // See FirstNexus/FirstNexus#67996.
     const isTurnAbortMarker =
       isCurrentTurnNotification &&
       isCodexTurnAbortMarkerNotification(notification, { currentPromptText: promptBuild.prompt });
@@ -1903,7 +1905,7 @@ async function handleDynamicToolCallWithTimeout(params: {
   onTimeout?: () => void;
 }): Promise<CodexDynamicToolCallResponse> {
   if (params.signal.aborted) {
-    return failedDynamicToolResponse("NexisClaw dynamic tool call aborted before execution.");
+    return failedDynamicToolResponse("FirstNexus dynamic tool call aborted before execution.");
   }
 
   const controller = new AbortController();
@@ -1911,7 +1913,7 @@ async function handleDynamicToolCallWithTimeout(params: {
   let timedOut = false;
   let resolveAbort: ((response: CodexDynamicToolCallResponse) => void) | undefined;
   const abortFromRun = () => {
-    const message = "NexisClaw dynamic tool call aborted.";
+    const message = "FirstNexus dynamic tool call aborted.";
     controller.abort(params.signal.reason ?? new Error(message));
     resolveAbort?.(failedDynamicToolResponse(message));
   };
@@ -1953,7 +1955,7 @@ async function handleDynamicToolCallWithTimeout(params: {
     params.signal.removeEventListener("abort", abortFromRun);
     resolveAbort = undefined;
     if (!timedOut && !controller.signal.aborted) {
-      controller.abort(new Error("NexisClaw dynamic tool call finished."));
+      controller.abort(new Error("FirstNexus dynamic tool call finished."));
     }
   }
 }
@@ -2078,7 +2080,7 @@ function resolveCodexNativeHookRelayEvents(params: {
   // Codex emits PermissionRequest before the app-server approval reviewer has
   // resolved the command. In native approval modes, let Codex's app-server
   // approval bridge own the real escalation instead of surfacing a stale
-  // pre-guardian NexisClaw plugin approval prompt.
+  // pre-guardian FirstNexus plugin approval prompt.
   return params.appServer.approvalPolicy === "never"
     ? CODEX_NATIVE_HOOK_RELAY_EVENTS
     : CODEX_NATIVE_HOOK_RELAY_EVENTS_WITH_APP_SERVER_APPROVALS;
@@ -2107,7 +2109,7 @@ function buildCodexNativeHookRelayId(params: {
   sessionKey: string | undefined;
 }): string {
   const hash = createHash("sha256");
-  hash.update("NexisClaw:codex:native-hook-relay:v1");
+  hash.update("FirstNexus:codex:native-hook-relay:v1");
   hash.update("\0");
   hash.update(params.agentId?.trim() || "");
   hash.update("\0");
@@ -2175,10 +2177,10 @@ type DynamicToolBuildParams = {
   onYieldDetected: () => void;
 };
 
-function resolveNexisClawCodingToolsSessionKeys(
+function resolveFirstNexusCodingToolsSessionKeys(
   params: EmbeddedRunAttemptParams,
   sandboxSessionKey: string,
-): Pick<NexisClawCodingToolsOptions, "sessionKey" | "runSessionKey"> {
+): Pick<FirstNexusCodingToolsOptions, "sessionKey" | "runSessionKey"> {
   return {
     sessionKey: sandboxSessionKey,
     runSessionKey:
@@ -2193,11 +2195,11 @@ async function buildDynamicTools(input: DynamicToolBuildParams) {
   }
   const modelHasVision = params.model.input?.includes("image") ?? false;
   const agentDir = params.agentDir ?? resolveAgentDir(params.config ?? {}, input.sessionAgentId);
-  const createNexisClawCodingTools =
+  const createFirstNexusCodingTools =
     openClawCodingToolsFactoryForTests ??
-    (await import("NexisClaw/plugin-sdk/agent-harness")).createNexisClawCodingTools;
-  const sessionKeys = resolveNexisClawCodingToolsSessionKeys(params, input.sandboxSessionKey);
-  const allTools = createNexisClawCodingTools({
+    (await import("FirstNexus/plugin-sdk/agent-harness")).createFirstNexusCodingTools;
+  const sessionKeys = resolveFirstNexusCodingToolsSessionKeys(params, input.sandboxSessionKey);
+  const allTools = createFirstNexusCodingTools({
     agentId: input.sessionAgentId,
     ...buildEmbeddedAttemptToolRunContext(params),
     exec: {
@@ -2234,7 +2236,7 @@ async function buildDynamicTools(input: DynamicToolBuildParams) {
     modelId: params.modelId,
     modelCompat:
       params.model.compat && typeof params.model.compat === "object"
-        ? (params.model.compat as NexisClawCodingToolsOptions["modelCompat"])
+        ? (params.model.compat as FirstNexusCodingToolsOptions["modelCompat"])
         : undefined,
     modelApi: params.model.api,
     modelContextWindowTokens: params.model.contextWindow,
@@ -2989,7 +2991,7 @@ function renderCodexWorkspaceBootstrapInstructions(
   }
   const hasSoulFile = files.some((file) => getCodexContextFileBasename(file.path) === "soul.md");
   const lines = [
-    "NexisClaw loaded these user-editable workspace files. Treat them as project/user context. Codex loads AGENTS.md natively, so AGENTS.md is not repeated here.",
+    "FirstNexus loaded these user-editable workspace files. Treat them as project/user context. Codex loads AGENTS.md natively, so AGENTS.md is not repeated here.",
     "",
     "# Project Context",
     "",
@@ -3156,13 +3158,13 @@ export const __testing = {
   handleDynamicToolCallWithTimeout,
   resolveDynamicToolCallTimeoutMs,
   resolveCodexPluginAppCacheEndpoint,
-  restrictCodexAppServerSandboxForNexisClawSandbox,
-  resolveNexisClawCodingToolsSessionKeys,
+  restrictCodexAppServerSandboxForFirstNexusSandbox,
+  resolveFirstNexusCodingToolsSessionKeys,
   shouldForceMessageTool,
-  setNexisClawCodingToolsFactoryForTests(factory: NexisClawCodingToolsFactory): void {
+  setFirstNexusCodingToolsFactoryForTests(factory: FirstNexusCodingToolsFactory): void {
     openClawCodingToolsFactoryForTests = factory;
   },
-  resetNexisClawCodingToolsFactoryForTests(): void {
+  resetFirstNexusCodingToolsFactoryForTests(): void {
     openClawCodingToolsFactoryForTests = undefined;
   },
   setCodexAppServerClientFactoryForTests(factory: CodexAppServerClientFactory): void {

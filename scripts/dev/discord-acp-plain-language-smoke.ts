@@ -55,7 +55,7 @@ type DiscordUser = {
 
 const execFileAsync = promisify(execFile);
 
-type DriverMode = "token" | "webhook" | "NexisClaw";
+type DriverMode = "token" | "webhook" | "FirstNexus";
 
 type Args = {
   channelId: string;
@@ -70,7 +70,7 @@ type Args = {
   mentionUserId?: string;
   instruction?: string;
   threadBindingsPath: string;
-  NexisClawBin: string;
+  FirstNexusBin: string;
   json: boolean;
 };
 
@@ -141,7 +141,7 @@ function resolveStateDir(): string {
       : path.resolve(override);
   }
   const home = process.env.NEXISCLAW_HOME?.trim() || process.env.HOME || "";
-  return path.join(home, ".NexisClaw");
+  return path.join(home, ".FirstNexus");
 }
 
 function resolveArg(flag: string): string | undefined {
@@ -164,13 +164,13 @@ function hasFlag(flag: string): boolean {
 function usage(): string {
   return (
     "Usage: bun scripts/dev/discord-acp-plain-language-smoke.ts " +
-    "--channel <discord-channel-id> [--token <driver-token> | --driver webhook --bot-token <bot-token> | --driver NexisClaw] [options]\n\n" +
+    "--channel <discord-channel-id> [--token <driver-token> | --driver webhook --bot-token <bot-token> | --driver FirstNexus] [options]\n\n" +
     "Manual live smoke only (not CI). Sends a plain-language instruction in Discord and verifies:\n" +
-    "1) NexisClaw spawned an ACP thread binding\n" +
+    "1) FirstNexus spawned an ACP thread binding\n" +
     "2) agent replied in that bound thread with the expected ACK token\n\n" +
     "Options:\n" +
     "  --channel <id>               Parent Discord channel id (required)\n" +
-    "  --driver <token|webhook|NexisClaw> Driver transport mode (default: token)\n" +
+    "  --driver <token|webhook|FirstNexus> Driver transport mode (default: token)\n" +
     "  --token <token>              Driver Discord token (required for driver=token)\n" +
     "  --token-prefix <prefix>      Auth prefix for --token (default: Bot)\n" +
     "  --bot-token <token>          Bot token for webhook driver mode\n" +
@@ -181,7 +181,7 @@ function usage(): string {
     "  --timeout-ms <n>             Total timeout in ms (default: 240000)\n" +
     "  --poll-ms <n>                Poll interval in ms (default: 1500)\n" +
     "  --thread-bindings-path <p>   Override thread-bindings json path\n" +
-    "  --NexisClaw-bin <path>        NexisClaw CLI binary for driver=NexisClaw (default: NexisClaw)\n" +
+    "  --FirstNexus-bin <path>        FirstNexus CLI binary for driver=FirstNexus (default: FirstNexus)\n" +
     "  --json                       Emit JSON output\n" +
     "\n" +
     "Environment fallbacks:\n" +
@@ -208,15 +208,17 @@ function parseArgs(): Args {
   const driverMode: DriverMode =
     normalizedDriverMode === "webhook"
       ? "webhook"
-      : normalizedDriverMode === "NexisClaw"
-        ? "NexisClaw"
+      : normalizedDriverMode === "FirstNexus"
+        ? "FirstNexus"
         : normalizedDriverMode === "token"
           ? "token"
           : "token";
   const driverToken =
     resolveArg("--token") || process.env.NEXISCLAW_DISCORD_SMOKE_DRIVER_TOKEN || "";
   const driverTokenPrefix =
-    resolveArg("--token-prefix") || process.env.NEXISCLAW_DISCORD_SMOKE_DRIVER_TOKEN_PREFIX || "Bot";
+    resolveArg("--token-prefix") ||
+    process.env.NEXISCLAW_DISCORD_SMOKE_DRIVER_TOKEN_PREFIX ||
+    "Bot";
   const botToken =
     resolveArg("--bot-token") ||
     process.env.NEXISCLAW_DISCORD_SMOKE_BOT_TOKEN ||
@@ -244,8 +246,10 @@ function parseArgs(): Args {
     resolveArg("--thread-bindings-path") ||
     process.env.NEXISCLAW_DISCORD_SMOKE_THREAD_BINDINGS_PATH ||
     defaultBindingsPath;
-  const NexisClawBin =
-    resolveArg("--NexisClaw-bin") || process.env.NEXISCLAW_DISCORD_SMOKE_NEXISCLAW_BIN || "NexisClaw";
+  const FirstNexusBin =
+    resolveArg("--FirstNexus-bin") ||
+    process.env.NEXISCLAW_DISCORD_SMOKE_NEXISCLAW_BIN ||
+    "FirstNexus";
   const json = hasFlag("--json");
 
   if (!channelId) {
@@ -271,34 +275,34 @@ function parseArgs(): Args {
     mentionUserId,
     instruction,
     threadBindingsPath,
-    NexisClawBin,
+    FirstNexusBin,
     json,
   };
 }
 
-async function NexisClawCliJson<T>(params: { NexisClawBin: string; args: string[] }): Promise<T> {
-  const result = await execFileAsync(params.NexisClawBin, params.args, {
+async function FirstNexusCliJson<T>(params: { FirstNexusBin: string; args: string[] }): Promise<T> {
+  const result = await execFileAsync(params.FirstNexusBin, params.args, {
     maxBuffer: 8 * 1024 * 1024,
     env: process.env,
   });
   const stdout = (result.stdout || "").trim();
   if (!stdout) {
-    throw new Error(`NexisClaw ${params.args.join(" ")} returned empty stdout`);
+    throw new Error(`FirstNexus ${params.args.join(" ")} returned empty stdout`);
   }
   return JSON.parse(stdout) as T;
 }
 
 async function readMessagesWithOpenclaw(params: {
-  NexisClawBin: string;
+  FirstNexusBin: string;
   target: string;
   limit: number;
 }): Promise<DiscordMessage[]> {
-  const response = await NexisClawCliJson<{
+  const response = await FirstNexusCliJson<{
     payload?: {
       messages?: DiscordMessage[];
     };
   }>({
-    NexisClawBin: params.NexisClawBin,
+    FirstNexusBin: params.FirstNexusBin,
     args: [
       "message",
       "read",
@@ -475,9 +479,9 @@ async function loadParentRecentMessages(params: {
   args: Args;
   readAuthHeader: string;
 }): Promise<DiscordMessage[]> {
-  if (params.args.driverMode === "NexisClaw") {
+  if (params.args.driverMode === "FirstNexus") {
     return await readMessagesWithOpenclaw({
-      NexisClawBin: params.args.NexisClawBin,
+      FirstNexusBin: params.args.FirstNexusBin,
       target: params.args.channelId,
       limit: 20,
     });
@@ -609,7 +613,7 @@ async function run(): Promise<SuccessResult | FailureResult> {
         path: `/channels/${encodeURIComponent(args.channelId)}/webhooks`,
         authHeader: botAuthHeader,
         body: {
-          name: `NexisClaw-acp-smoke-${smokeId.slice(-8)}`,
+          name: `FirstNexus-acp-smoke-${smokeId.slice(-8)}`,
         },
       });
       if (!webhook.id || !webhook.token) {
@@ -639,14 +643,14 @@ async function run(): Promise<SuccessResult | FailureResult> {
       senderAuthorId = sent.author?.id;
     } else {
       setupStage = "send-message";
-      const sent = await NexisClawCliJson<{
+      const sent = await FirstNexusCliJson<{
         payload?: {
           result?: {
             messageId?: string;
           };
         };
       }>({
-        NexisClawBin: args.NexisClawBin,
+        FirstNexusBin: args.FirstNexusBin,
         args: [
           "message",
           "send",
@@ -661,7 +665,7 @@ async function run(): Promise<SuccessResult | FailureResult> {
       });
       sentMessageId = sent.payload?.result?.messageId || "";
       if (!sentMessageId) {
-        throw new Error("NexisClaw message send did not return payload.result.messageId");
+        throw new Error("FirstNexus message send did not return payload.result.messageId");
       }
     }
   } catch (err) {
@@ -727,9 +731,9 @@ async function run(): Promise<SuccessResult | FailureResult> {
     while (Date.now() < deadline && !ackMessage) {
       try {
         const threadMessages =
-          args.driverMode === "NexisClaw"
+          args.driverMode === "FirstNexus"
             ? await readMessagesWithOpenclaw({
-                NexisClawBin: args.NexisClawBin,
+                FirstNexusBin: args.FirstNexusBin,
                 target: threadId,
                 limit: 50,
               })
@@ -766,7 +770,7 @@ async function run(): Promise<SuccessResult | FailureResult> {
         ok: false,
         stage: "wait-ack",
         smokeId,
-        error: `Thread bound (${threadId}) but timed out waiting for ACK token "${ackToken}" from NexisClaw.`,
+        error: `Thread bound (${threadId}) but timed out waiting for ACK token "${ackToken}" from FirstNexus.`,
         diagnostics: {
           bindingCandidates: [
             {

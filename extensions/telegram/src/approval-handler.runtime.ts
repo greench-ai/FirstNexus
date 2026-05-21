@@ -1,21 +1,21 @@
 import type {
   ChannelApprovalCapabilityHandlerContext,
   PendingApprovalView,
-} from "NexisClaw/plugin-sdk/approval-handler-runtime";
-import { createChannelApprovalNativeRuntimeAdapter } from "NexisClaw/plugin-sdk/approval-handler-runtime";
-import { buildChannelApprovalNativeTargetKey } from "NexisClaw/plugin-sdk/approval-native-runtime";
-import { buildPluginApprovalPendingReplyPayload } from "NexisClaw/plugin-sdk/approval-reply-runtime";
+} from "FirstNexus/plugin-sdk/approval-handler-runtime";
+import { createChannelApprovalNativeRuntimeAdapter } from "FirstNexus/plugin-sdk/approval-handler-runtime";
+import { buildChannelApprovalNativeTargetKey } from "FirstNexus/plugin-sdk/approval-native-runtime";
+import { buildPluginApprovalPendingReplyPayload } from "FirstNexus/plugin-sdk/approval-reply-runtime";
 import {
   buildApprovalInteractiveReplyFromActionDescriptors,
   buildExecApprovalPendingReplyPayload,
-} from "NexisClaw/plugin-sdk/approval-reply-runtime";
-import type { ExecApprovalPendingReplyParams } from "NexisClaw/plugin-sdk/approval-reply-runtime";
+} from "FirstNexus/plugin-sdk/approval-reply-runtime";
+import type { ExecApprovalPendingReplyParams } from "FirstNexus/plugin-sdk/approval-reply-runtime";
 import type {
   ExecApprovalRequest,
   PluginApprovalRequest,
-} from "NexisClaw/plugin-sdk/approval-runtime";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/approval-runtime";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveTelegramInlineButtons } from "./button-types.js";
 import {
   isTelegramExecApprovalHandlerConfigured,

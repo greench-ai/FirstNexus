@@ -42,7 +42,7 @@ function nextGatewayId(prefix: string): string {
 }
 
 async function createEmptyBundledPluginsDir(tempHome: string): Promise<string> {
-  const bundledPluginsDir = path.join(tempHome, "NexisClaw-test-empty-bundled-plugins");
+  const bundledPluginsDir = path.join(tempHome, "FirstNexus-test-empty-bundled-plugins");
   await fs.mkdir(bundledPluginsDir, { recursive: true });
   return bundledPluginsDir;
 }
@@ -53,10 +53,10 @@ async function writeWorkspacePlugin(params: {
   body: string;
   activation?: { onStartup?: boolean };
 }): Promise<void> {
-  const pluginDir = path.join(params.workspaceDir, ".NexisClaw", "extensions", params.id);
+  const pluginDir = path.join(params.workspaceDir, ".FirstNexus", "extensions", params.id);
   await fs.mkdir(pluginDir, { recursive: true });
   await fs.writeFile(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     `${JSON.stringify(
       {
         id: params.id,
@@ -109,7 +109,7 @@ async function setupGatewayTempHome(params: { prefix: string; minimalGateway?: b
 
   const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), params.prefix));
   process.env.HOME = tempHome;
-  process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".NexisClaw");
+  process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".FirstNexus");
   delete process.env.NEXISCLAW_CONFIG_PATH;
   process.env.NEXISCLAW_SKIP_CHANNELS = "1";
   process.env.NEXISCLAW_SKIP_GMAIL_WATCHER = "1";
@@ -123,7 +123,7 @@ async function setupGatewayTempHome(params: { prefix: string; minimalGateway?: b
     delete process.env.NEXISCLAW_TEST_MINIMAL_GATEWAY;
   }
 
-  const workspaceDir = path.join(tempHome, "NexisClaw");
+  const workspaceDir = path.join(tempHome, "FirstNexus");
   await fs.mkdir(workspaceDir, { recursive: true });
   process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = await createEmptyBundledPluginsDir(tempHome);
   process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS = "1";
@@ -159,16 +159,16 @@ describe("gateway e2e", () => {
     async () => {
       const { baseUrl: openaiBaseUrl, restore } = installOpenAiResponsesMock();
       const { envSnapshot, tempHome, workspaceDir } = await setupGatewayTempHome({
-        prefix: "NexisClaw-gw-mock-home-",
+        prefix: "FirstNexus-gw-mock-home-",
         minimalGateway: true,
       });
 
       const token = nextGatewayId("test-token");
       process.env.NEXISCLAW_GATEWAY_TOKEN = token;
 
-      const configDir = path.join(tempHome, ".NexisClaw");
+      const configDir = path.join(tempHome, ".FirstNexus");
       await fs.mkdir(configDir, { recursive: true });
-      const configPath = path.join(configDir, "NexisClaw.json");
+      const configPath = path.join(configDir, "FirstNexus.json");
       const mockProvider = buildMockOpenAiResponsesProvider(openaiBaseUrl);
 
       const cfg = {
@@ -239,7 +239,7 @@ describe("gateway e2e", () => {
     { timeout: GATEWAY_E2E_TIMEOUT_MS },
     async () => {
       const { envSnapshot, tempHome, workspaceDir } = await setupGatewayTempHome({
-        prefix: "NexisClaw-gw-http-tools-home-",
+        prefix: "FirstNexus-gw-http-tools-home-",
       });
 
       const token = nextGatewayId("http-tools-token");
@@ -264,9 +264,9 @@ module.exports = {
 `.trimStart(),
       });
 
-      const configDir = path.join(tempHome, ".NexisClaw");
+      const configDir = path.join(tempHome, ".FirstNexus");
       await fs.mkdir(configDir, { recursive: true });
-      const configPath = path.join(configDir, "NexisClaw.json");
+      const configPath = path.join(configDir, "FirstNexus.json");
       const cfg = {
         agents: {
           defaults: { workspace: workspaceDir },
@@ -354,10 +354,10 @@ module.exports = {
       process.env.NEXISCLAW_TEST_MINIMAL_GATEWAY = "1";
       delete process.env.NEXISCLAW_GATEWAY_TOKEN;
 
-      const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-wizard-home-"));
-      const configPath = path.join(tempHome, ".NexisClaw", "NexisClaw.json");
+      const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-wizard-home-"));
+      const configPath = path.join(tempHome, ".FirstNexus", "FirstNexus.json");
       process.env.HOME = tempHome;
-      process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".NexisClaw");
+      process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".FirstNexus");
       process.env.NEXISCLAW_CONFIG_PATH = configPath;
       process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = await createEmptyBundledPluginsDir(tempHome);
       process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS = "1";
@@ -496,11 +496,11 @@ module.exports = {
         "DISCORD_BOT_TOKEN",
       ]);
 
-      const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-minimal-gateway-home-"));
-      const configPath = path.join(tempHome, ".NexisClaw", "NexisClaw.json");
-      const bundledPluginsDir = path.join(tempHome, "NexisClaw-test-no-bundled-extensions");
+      const tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-minimal-gateway-home-"));
+      const configPath = path.join(tempHome, ".FirstNexus", "FirstNexus.json");
+      const bundledPluginsDir = path.join(tempHome, "FirstNexus-test-no-bundled-extensions");
       process.env.HOME = tempHome;
-      process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".NexisClaw");
+      process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".FirstNexus");
       process.env.NEXISCLAW_CONFIG_PATH = configPath;
       process.env.NEXISCLAW_SKIP_CHANNELS = "1";
       process.env.NEXISCLAW_SKIP_GMAIL_WATCHER = "1";

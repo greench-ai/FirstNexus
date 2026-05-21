@@ -16,10 +16,10 @@ const tokenAuth = { mode: "token" as const };
 const noneAuth = { mode: "none" as const };
 
 describe("resolveGatewayRequestContext", () => {
-  it("uses normalized x-NexisClaw-message-channel when enabled", () => {
+  it("uses normalized x-FirstNexus-message-channel when enabled", () => {
     const result = resolveGatewayRequestContext({
-      req: createReq({ "x-NexisClaw-message-channel": " Custom-Channel " }),
-      model: "NexisClaw",
+      req: createReq({ "x-FirstNexus-message-channel": " Custom-Channel " }),
+      model: "FirstNexus",
       sessionPrefix: "openai",
       defaultMessageChannel: "webchat",
       useMessageChannelHeader: true,
@@ -30,8 +30,8 @@ describe("resolveGatewayRequestContext", () => {
 
   it("uses default messageChannel when header support is disabled", () => {
     const result = resolveGatewayRequestContext({
-      req: createReq({ "x-NexisClaw-message-channel": "custom-channel" }),
-      model: "NexisClaw",
+      req: createReq({ "x-FirstNexus-message-channel": "custom-channel" }),
+      model: "FirstNexus",
       sessionPrefix: "openresponses",
       defaultMessageChannel: "webchat",
       useMessageChannelHeader: false,
@@ -43,7 +43,7 @@ describe("resolveGatewayRequestContext", () => {
   it("includes session prefix and user in generated session key", () => {
     const result = resolveGatewayRequestContext({
       req: createReq(),
-      model: "NexisClaw",
+      model: "FirstNexus",
       user: "alice",
       sessionPrefix: "openresponses",
       defaultMessageChannel: "webchat",
@@ -58,7 +58,7 @@ describe("resolveTrustedHttpOperatorScopes", () => {
     const scopes = resolveTrustedHttpOperatorScopes(
       createReq({
         authorization: "Bearer secret",
-        "x-NexisClaw-scopes": "operator.admin, operator.write",
+        "x-FirstNexus-scopes": "operator.admin, operator.write",
       }),
       tokenAuth,
     );
@@ -69,7 +69,7 @@ describe("resolveTrustedHttpOperatorScopes", () => {
   it("keeps declared scopes for non-bearer HTTP requests", () => {
     const scopes = resolveTrustedHttpOperatorScopes(
       createReq({
-        "x-NexisClaw-scopes": "operator.admin, operator.write",
+        "x-FirstNexus-scopes": "operator.admin, operator.write",
       }),
       noneAuth,
     );
@@ -81,7 +81,7 @@ describe("resolveTrustedHttpOperatorScopes", () => {
     const scopes = resolveTrustedHttpOperatorScopes(
       createReq({
         authorization: "Bearer upstream-idp-token",
-        "x-NexisClaw-scopes": "operator.admin, operator.write",
+        "x-FirstNexus-scopes": "operator.admin, operator.write",
       }),
       noneAuth,
     );
@@ -93,7 +93,7 @@ describe("resolveTrustedHttpOperatorScopes", () => {
     const scopes = resolveTrustedHttpOperatorScopes(
       createReq({
         authorization: "Bearer upstream-idp-token",
-        "x-NexisClaw-scopes": "operator.admin, operator.write",
+        "x-FirstNexus-scopes": "operator.admin, operator.write",
       }),
       { trustDeclaredOperatorScopes: false },
     );
@@ -105,10 +105,10 @@ describe("resolveTrustedHttpOperatorScopes", () => {
 describe("resolveHttpSenderIsOwner", () => {
   it("requires operator.admin on a trusted HTTP scope-bearing request", () => {
     expect(
-      resolveHttpSenderIsOwner(createReq({ "x-NexisClaw-scopes": "operator.admin" }), noneAuth),
+      resolveHttpSenderIsOwner(createReq({ "x-FirstNexus-scopes": "operator.admin" }), noneAuth),
     ).toBe(true);
     expect(
-      resolveHttpSenderIsOwner(createReq({ "x-NexisClaw-scopes": "operator.write" }), noneAuth),
+      resolveHttpSenderIsOwner(createReq({ "x-FirstNexus-scopes": "operator.write" }), noneAuth),
     ).toBe(false);
   });
 
@@ -117,7 +117,7 @@ describe("resolveHttpSenderIsOwner", () => {
       resolveHttpSenderIsOwner(
         createReq({
           authorization: "Bearer secret",
-          "x-NexisClaw-scopes": "operator.admin",
+          "x-FirstNexus-scopes": "operator.admin",
         }),
         tokenAuth,
       ),
@@ -130,7 +130,7 @@ describe("resolveOpenAiCompatibleHttpOperatorScopes", () => {
     const scopes = resolveOpenAiCompatibleHttpOperatorScopes(
       createReq({
         authorization: "Bearer secret",
-        "x-NexisClaw-scopes": "operator.approvals",
+        "x-FirstNexus-scopes": "operator.approvals",
       }),
       { authMethod: "token", trustDeclaredOperatorScopes: false },
     );
@@ -148,7 +148,7 @@ describe("resolveOpenAiCompatibleHttpOperatorScopes", () => {
   it("keeps declared scopes for trusted HTTP identity-bearing requests", () => {
     const scopes = resolveOpenAiCompatibleHttpOperatorScopes(
       createReq({
-        "x-NexisClaw-scopes": "operator.write",
+        "x-FirstNexus-scopes": "operator.write",
       }),
       { authMethod: "trusted-proxy", trustDeclaredOperatorScopes: true },
     );
@@ -163,7 +163,7 @@ describe("resolveOpenAiCompatibleHttpSenderIsOwner", () => {
       resolveOpenAiCompatibleHttpSenderIsOwner(
         createReq({
           authorization: "Bearer secret",
-          "x-NexisClaw-scopes": "operator.approvals",
+          "x-FirstNexus-scopes": "operator.approvals",
         }),
         { authMethod: "token", trustDeclaredOperatorScopes: false },
       ),
@@ -173,13 +173,13 @@ describe("resolveOpenAiCompatibleHttpSenderIsOwner", () => {
   it("still requires operator.admin for trusted scope-bearing requests", () => {
     expect(
       resolveOpenAiCompatibleHttpSenderIsOwner(
-        createReq({ "x-NexisClaw-scopes": "operator.write" }),
+        createReq({ "x-FirstNexus-scopes": "operator.write" }),
         { authMethod: "trusted-proxy", trustDeclaredOperatorScopes: true },
       ),
     ).toBe(false);
     expect(
       resolveOpenAiCompatibleHttpSenderIsOwner(
-        createReq({ "x-NexisClaw-scopes": "operator.admin" }),
+        createReq({ "x-FirstNexus-scopes": "operator.admin" }),
         { authMethod: "trusted-proxy", trustDeclaredOperatorScopes: true },
       ),
     ).toBe(true);

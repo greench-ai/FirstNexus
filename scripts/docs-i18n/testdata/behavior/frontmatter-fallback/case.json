@@ -7,7 +7,7 @@
   "rules": [
     {
       "method": "masked",
-      "match_all": ["Deploying NexisClaw on Fly.io"],
+      "match_all": ["Deploying FirstNexus on Fly.io"],
       "response_file": "masked-tagged-wrapper.txt"
     }
   ]

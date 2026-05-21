@@ -14,9 +14,9 @@ export type {
   ChannelResolveKind,
   ChannelResolveResult,
   ChannelStatusAdapter,
-} from "NexisClaw/plugin-sdk/channel-contract";
-export type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-export type { OutboundDeliveryResult } from "NexisClaw/plugin-sdk/channel-send-result";
-export type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-export type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime";
-export type { WizardPrompter } from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/channel-contract";
+export type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+export type { OutboundDeliveryResult } from "FirstNexus/plugin-sdk/channel-send-result";
+export type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+export type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime";
+export type { WizardPrompter } from "FirstNexus/plugin-sdk/setup";

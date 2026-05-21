@@ -101,11 +101,11 @@ async function main() {
     maxProtocol: 3,
     client: {
       id: "cli",
-      displayName: "NexisClaw ios node e2e",
+      displayName: "FirstNexus ios node e2e",
       version: "dev",
       platform: "dev",
       mode: "cli",
-      instanceId: "NexisClaw-dev-ios-node-e2e",
+      instanceId: "FirstNexus-dev-ios-node-e2e",
     },
     locale: "en-US",
     userAgent: "ios-node-e2e",
@@ -161,7 +161,7 @@ async function main() {
     {
       id: "system.notify",
       command: "system.notify",
-      params: { title: "NexisClaw E2E", body: `ios-node-e2e @ ${isoNow()}`, delivery: "system" },
+      params: { title: "FirstNexus E2E", body: `ios-node-e2e @ ${isoNow()}`, delivery: "system" },
     },
     {
       id: "contacts.search",

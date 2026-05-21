@@ -1,1 +1,1 @@
-export { resolveDefaultAgentId } from "NexisClaw/plugin-sdk/agent-runtime";
+export { resolveDefaultAgentId } from "FirstNexus/plugin-sdk/agent-runtime";

@@ -148,7 +148,7 @@ export function createScopedVitestConfig(
     environment?: string;
     exclude?: string[];
     argv?: string[];
-    includeNexisClawRuntimeSetup?: boolean;
+    includeFirstNexusRuntimeSetup?: boolean;
     isolate?: boolean;
     name?: string;
     fileParallelism?: boolean;
@@ -177,7 +177,9 @@ export function createScopedVitestConfig(
     ...new Set([
       ...(baseTest.setupFiles ?? []),
       ...(options?.setupFiles ?? []),
-      ...(options?.includeNexisClawRuntimeSetup === false ? [] : ["test/setup-NexisClaw-runtime.ts"]),
+      ...(options?.includeFirstNexusRuntimeSetup === false
+        ? []
+        : ["test/setup-FirstNexus-runtime.ts"]),
     ]),
   ].map(resolveRepoRootPath);
   const useNonIsolatedRunner = options?.useNonIsolatedRunner ?? !isolate;

@@ -3,7 +3,7 @@ import { requireApiKey } from "../../agents/model-auth.js";
 import { resolveDefaultModelForAgent } from "../../agents/model-selection.js";
 import { resolveModelAsync } from "../../agents/pi-embedded-runner/model.js";
 import { prepareModelForSimpleCompletion } from "../../agents/simple-completion-transport.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { logVerbose } from "../../globals.js";
 import { getRuntimeAuthForModel } from "../../plugins/runtime/runtime-model-auth.runtime.js";
 
@@ -13,7 +13,7 @@ const TIMEOUT_MS = 15_000;
 export type ConversationLabelParams = {
   userMessage: string;
   prompt: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   agentDir?: string;
   maxLength?: number;

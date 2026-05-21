@@ -1,9 +1,9 @@
 import {
   createChannelInboundDebouncer,
   shouldDebounceTextInbound,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import { danger, logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { resolveOpenProviderRuntimeGroupPolicy } from "NexisClaw/plugin-sdk/runtime-group-policy";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import { danger, logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { resolveOpenProviderRuntimeGroupPolicy } from "FirstNexus/plugin-sdk/runtime-group-policy";
 import { createDiscordRestClient } from "../client.js";
 import type { Client } from "../internal/discord.js";
 import {

@@ -6,8 +6,8 @@
  */
 
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { safeEqualSecret } from "NexisClaw/plugin-sdk/security-runtime";
-import { isPrivateNetworkOptInEnabled } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import { safeEqualSecret } from "FirstNexus/plugin-sdk/security-runtime";
+import { isPrivateNetworkOptInEnabled } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import type { ResolvedMattermostAccount } from "../mattermost/accounts.js";
 import { getMattermostRuntime } from "../runtime.js";
 import {
@@ -34,7 +34,7 @@ import {
   isRequestBodyLimitError,
   logTypingFailure,
   readRequestBodyWithLimit,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type ReplyPayload,
   type RuntimeEnv,
 } from "./runtime-api.js";
@@ -54,7 +54,7 @@ import {
 
 type SlashHttpHandlerParams = {
   account: ResolvedMattermostAccount;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   runtime: RuntimeEnv;
   /** Commands registered or reconciled during monitor startup. */
   registeredCommands: readonly MattermostRegisteredCommand[];
@@ -429,7 +429,7 @@ type SlashInvocationAuth = {
 
 async function authorizeSlashInvocation(params: {
   account: ResolvedMattermostAccount;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   client: ReturnType<typeof createMattermostClient>;
   commandText: string;
   channelId: string;
@@ -697,7 +697,7 @@ export function createSlashCommandHttpHandler(params: SlashHttpHandlerParams) {
 
 async function handleSlashCommandAsync(params: {
   account: ResolvedMattermostAccount;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   runtime: RuntimeEnv;
   client: ReturnType<typeof createMattermostClient>;
   commandText: string;

@@ -1,5 +1,5 @@
 import { normalizeThinkLevel } from "../auto-reply/thinking.shared.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 function asRecord(value: unknown): Record<string, unknown> | undefined {
   return value && typeof value === "object" ? (value as Record<string, unknown>) : undefined;
@@ -11,7 +11,7 @@ function readString(value: Record<string, unknown>, key: string): string | undef
 }
 
 export function resolveSubagentThinkingOverride(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   targetAgentConfig?: unknown;
   thinkingOverrideRaw?: string;
 }) {

@@ -34,7 +34,7 @@ function profileContext(tabs: Array<{ targetId: string; url: string }>) {
   return {
     profile: {
       cdpIsLoopback: true,
-      driver: "NexisClaw",
+      driver: "FirstNexus",
     },
     listTabs: async () => tabs,
   };

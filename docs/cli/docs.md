@@ -1,20 +1,20 @@
 ---
-summary: "CLI reference for `NexisClaw docs` (search the live docs index)"
+summary: "CLI reference for `FirstNexus docs` (search the live docs index)"
 read_when:
-  - You want to search the live NexisClaw docs from the terminal
+  - You want to search the live FirstNexus docs from the terminal
   - You need to know which helper binaries the docs CLI shells out to
 title: "Docs"
 ---
 
-# `NexisClaw docs`
+# `FirstNexus docs`
 
-Search the live NexisClaw docs index from the terminal. The command shells out to the public Mintlify-hosted docs MCP search endpoint at `https://docs.NexisClaw.ai/mcp.SearchNexisClaw` and renders the results in your terminal.
+Search the live FirstNexus docs index from the terminal. The command shells out to the public Mintlify-hosted docs MCP search endpoint at `https://docs.FirstNexus.ai/mcp.SearchFirstNexus` and renders the results in your terminal.
 
 ## Usage
 
 ```bash
-NexisClaw docs                       # print docs entrypoint and example search
-NexisClaw docs <query...>            # search the live docs index
+FirstNexus docs                       # print docs entrypoint and example search
+FirstNexus docs <query...>            # search the live docs index
 ```
 
 Arguments:
@@ -26,18 +26,18 @@ Arguments:
 ## Examples
 
 ```bash
-NexisClaw docs browser existing-session
-NexisClaw docs sandbox allowHostControl
-NexisClaw docs gateway token secretref
+FirstNexus docs browser existing-session
+FirstNexus docs sandbox allowHostControl
+FirstNexus docs gateway token secretref
 ```
 
-With no query, `NexisClaw docs` prints the docs entrypoint URL plus a sample search command instead of running a search.
+With no query, `FirstNexus docs` prints the docs entrypoint URL plus a sample search command instead of running a search.
 
 ## How it works
 
-`NexisClaw docs` invokes the `mcporter` CLI to call the docs search MCP tool, then parses the `Title: / Link: / Content:` blocks from the tool output into a list of results.
+`FirstNexus docs` invokes the `mcporter` CLI to call the docs search MCP tool, then parses the `Title: / Link: / Content:` blocks from the tool output into a list of results.
 
-To resolve `mcporter`, NexisClaw checks in order:
+To resolve `mcporter`, FirstNexus checks in order:
 
 1. `mcporter` on `PATH` (used directly if present).
 2. `pnpm dlx mcporter ...` if `pnpm` is installed.
@@ -56,8 +56,8 @@ In non-rich output (piped, `--no-color`, scripts), the same data renders as Mark
 ```markdown
 # Docs search: <query>
 
-- [Title](https://docs.NexisClaw.ai/...) - snippet
-- [Title](https://docs.NexisClaw.ai/...) - snippet
+- [Title](https://docs.FirstNexus.ai/...) - snippet
+- [Title](https://docs.FirstNexus.ai/...) - snippet
 ```
 
 ## Exit codes
@@ -70,4 +70,4 @@ In non-rich output (piped, `--no-color`, scripts), the same data renders as Mark
 ## Related
 
 - [CLI reference](/cli)
-- [Live docs](https://docs.NexisClaw.ai)
+- [Live docs](https://docs.FirstNexus.ai)

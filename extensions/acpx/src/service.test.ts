@@ -11,8 +11,8 @@ const { prepareAcpxCodexAuthConfigMock } = vi.hoisted(() => ({
     async ({ pluginConfig }: { pluginConfig: unknown }) => pluginConfig,
   ),
 }));
-const { cleanupNexisClawOwnedAcpxProcessTreeMock } = vi.hoisted(() => ({
-  cleanupNexisClawOwnedAcpxProcessTreeMock: vi.fn(
+const { cleanupFirstNexusOwnedAcpxProcessTreeMock } = vi.hoisted(() => ({
+  cleanupFirstNexusOwnedAcpxProcessTreeMock: vi.fn(
     async (): Promise<{
       inspectedPids: number[];
       terminatedPids: number[];
@@ -23,8 +23,8 @@ const { cleanupNexisClawOwnedAcpxProcessTreeMock } = vi.hoisted(() => ({
     }),
   ),
 }));
-const { reapStaleNexisClawOwnedAcpxOrphansMock } = vi.hoisted(() => ({
-  reapStaleNexisClawOwnedAcpxOrphansMock: vi.fn(
+const { reapStaleFirstNexusOwnedAcpxOrphansMock } = vi.hoisted(() => ({
+  reapStaleFirstNexusOwnedAcpxOrphansMock: vi.fn(
     async (): Promise<{
       inspectedPids: number[];
       terminatedPids: number[];
@@ -84,8 +84,8 @@ vi.mock("./codex-auth-bridge.js", () => ({
 }));
 
 vi.mock("./process-reaper.js", () => ({
-  cleanupNexisClawOwnedAcpxProcessTree: cleanupNexisClawOwnedAcpxProcessTreeMock,
-  reapStaleNexisClawOwnedAcpxOrphans: reapStaleNexisClawOwnedAcpxOrphansMock,
+  cleanupFirstNexusOwnedAcpxProcessTree: cleanupFirstNexusOwnedAcpxProcessTreeMock,
+  reapStaleFirstNexusOwnedAcpxOrphans: reapStaleFirstNexusOwnedAcpxOrphansMock,
 }));
 
 import { getAcpRuntimeBackend } from "../runtime-api.js";
@@ -108,7 +108,7 @@ function restoreEnv(name: keyof typeof previousEnv): void {
 }
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-acpx-service-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-acpx-service-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -116,8 +116,8 @@ async function makeTempDir(): Promise<string> {
 afterEach(async () => {
   runtimeRegistry.clear();
   prepareAcpxCodexAuthConfigMock.mockClear();
-  cleanupNexisClawOwnedAcpxProcessTreeMock.mockClear();
-  reapStaleNexisClawOwnedAcpxOrphansMock.mockClear();
+  cleanupFirstNexusOwnedAcpxProcessTreeMock.mockClear();
+  reapStaleFirstNexusOwnedAcpxOrphansMock.mockClear();
   acpxRuntimeConstructorMock.mockClear();
   createAgentRegistryMock.mockClear();
   createFileSessionStoreMock.mockClear();
@@ -132,7 +132,7 @@ afterEach(async () => {
 function createServiceContext(workspaceDir: string) {
   return {
     workspaceDir,
-    stateDir: path.join(workspaceDir, ".NexisClaw-plugin-state"),
+    stateDir: path.join(workspaceDir, ".FirstNexus-plugin-state"),
     config: {},
     logger: {
       info: vi.fn(),
@@ -285,7 +285,7 @@ describe("createAcpxRuntimeService", () => {
         ],
       }),
     );
-    cleanupNexisClawOwnedAcpxProcessTreeMock.mockResolvedValueOnce({
+    cleanupFirstNexusOwnedAcpxProcessTreeMock.mockResolvedValueOnce({
       inspectedPids: [101, 102],
       terminatedPids: [101, 102],
     });
@@ -296,14 +296,14 @@ describe("createAcpxRuntimeService", () => {
 
     await service.start(ctx);
 
-    expect(cleanupNexisClawOwnedAcpxProcessTreeMock).toHaveBeenCalledWith({
+    expect(cleanupFirstNexusOwnedAcpxProcessTreeMock).toHaveBeenCalledWith({
       rootPid: 101,
       expectedLeaseId: "lease-1",
       expectedGatewayInstanceId: "gw-test",
       wrapperRoot: path.join(ctx.stateDir, "acpx"),
       deps: processCleanupDeps,
     });
-    expect(ctx.logger.info).toHaveBeenCalledWith("reaped 2 stale NexisClaw-owned ACPX processes");
+    expect(ctx.logger.info).toHaveBeenCalledWith("reaped 2 stale FirstNexus-owned ACPX processes");
 
     await service.stop?.(ctx);
   });
@@ -335,7 +335,7 @@ describe("createAcpxRuntimeService", () => {
         ],
       }),
     );
-    reapStaleNexisClawOwnedAcpxOrphansMock.mockResolvedValueOnce({
+    reapStaleFirstNexusOwnedAcpxOrphansMock.mockResolvedValueOnce({
       inspectedPids: [201, 202],
       terminatedPids: [201, 202],
     });
@@ -346,12 +346,12 @@ describe("createAcpxRuntimeService", () => {
 
     await service.start(ctx);
 
-    expect(cleanupNexisClawOwnedAcpxProcessTreeMock).not.toHaveBeenCalled();
-    expect(reapStaleNexisClawOwnedAcpxOrphansMock).toHaveBeenCalledWith({
+    expect(cleanupFirstNexusOwnedAcpxProcessTreeMock).not.toHaveBeenCalled();
+    expect(reapStaleFirstNexusOwnedAcpxOrphansMock).toHaveBeenCalledWith({
       wrapperRoot,
       deps: processCleanupDeps,
     });
-    expect(ctx.logger.info).toHaveBeenCalledWith("reaped 2 stale NexisClaw-owned ACPX processes");
+    expect(ctx.logger.info).toHaveBeenCalledWith("reaped 2 stale FirstNexus-owned ACPX processes");
     const leaseFile = JSON.parse(
       await fs.readFile(path.join(wrapperRoot, "process-leases.json"), "utf8"),
     );
@@ -370,7 +370,7 @@ describe("createAcpxRuntimeService", () => {
 
     await service.start(ctx);
 
-    expect(cleanupNexisClawOwnedAcpxProcessTreeMock).not.toHaveBeenCalled();
+    expect(cleanupFirstNexusOwnedAcpxProcessTreeMock).not.toHaveBeenCalled();
     expect(ctx.logger.warn).not.toHaveBeenCalled();
 
     await service.stop?.(ctx);

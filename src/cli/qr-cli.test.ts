@@ -214,7 +214,7 @@ describe("registerQrCli", () => {
     expect(output).toContain("Pairing QR");
     expect(output).toContain("ASCII-QR");
     expect(output).toContain("Gateway:");
-    expect(output).toContain("NexisClaw devices approve <requestId>");
+    expect(output).toContain("FirstNexus devices approve <requestId>");
   });
 
   it("fails fast for insecure remote mobile pairing setup urls", async () => {

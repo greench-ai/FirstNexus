@@ -5,11 +5,11 @@
  * file so that the plugin-level `index.ts` stays a pure declaration.
  */
 
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/core";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/core";
 import { registerChannelTool } from "./channel.js";
 import { registerRemindTool } from "./remind.js";
 
-export function registerQQBotTools(api: NexisClawPluginApi): void {
+export function registerQQBotTools(api: FirstNexusPluginApi): void {
   registerChannelTool(api);
   registerRemindTool(api);
 }

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://NexisClaw.bot/install.sh}"
+INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://FirstNexus.bot/install.sh}"
 SMOKE_MODE="${NEXISCLAW_INSTALL_SMOKE_MODE:-install}"
 SMOKE_PREVIOUS_VERSION="${NEXISCLAW_INSTALL_SMOKE_PREVIOUS:-}"
 SKIP_PREVIOUS="${NEXISCLAW_INSTALL_SMOKE_SKIP_PREVIOUS:-0}"
-DEFAULT_PACKAGE="NexisClaw"
+DEFAULT_PACKAGE="FirstNexus"
 PACKAGE_NAME="${NEXISCLAW_INSTALL_PACKAGE:-$DEFAULT_PACKAGE}"
 FRESH_VERSION="${NEXISCLAW_INSTALL_FRESH_VERSION:-}"
 FRESH_TAG_URL="${NEXISCLAW_INSTALL_FRESH_TAG_URL:-}"
@@ -111,9 +111,9 @@ run_with_heartbeat() {
 
 is_self_swapped_package_process_exit() {
   local stderr="$1"
-  [[ "$stderr" == *"[NexisClaw] Failed to start CLI:"* ]] &&
+  [[ "$stderr" == *"[FirstNexus] Failed to start CLI:"* ]] &&
     [[ "$stderr" == *"ERR_MODULE_NOT_FOUND"* ]] &&
-    [[ "$stderr" == *"/node_modules/NexisClaw/dist/"* ]]
+    [[ "$stderr" == *"/node_modules/FirstNexus/dist/"* ]]
 }
 
 npm_install_global() {
@@ -249,16 +249,16 @@ run_update_smoke() {
   print_install_audit "baseline install"
   verify_installed_cli "$PACKAGE_NAME" "$UPDATE_BASELINE_VERSION"
 
-  echo "==> Run NexisClaw update from host-served tgz"
+  echo "==> Run FirstNexus update from host-served tgz"
   local update_status
   local update_stderr_file
   local update_stderr
   update_stderr_file="$(mktemp)"
   set +e
   UPDATE_JSON="$(
-    run_with_heartbeat "NexisClaw update" \
+    run_with_heartbeat "FirstNexus update" \
       env npm_config_omit=optional NPM_CONFIG_OMIT=optional NEXISCLAW_ALLOW_ROOT=1 \
-      NexisClaw update --tag "$UPDATE_TAG_URL" --yes --json 2>"$update_stderr_file"
+      FirstNexus update --tag "$UPDATE_TAG_URL" --yes --json 2>"$update_stderr_file"
   )"
   update_status=$?
   set -e
@@ -272,7 +272,7 @@ run_update_smoke() {
     if is_self_swapped_package_process_exit "$update_stderr"; then
       echo "WARN: legacy updater process exited after self-swap; validating update JSON and installed CLI" >&2
     else
-      echo "ERROR: NexisClaw update failed with exit code $update_status" >&2
+      echo "ERROR: FirstNexus update failed with exit code $update_status" >&2
       return "$update_status"
     fi
   fi

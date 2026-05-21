@@ -51,7 +51,7 @@ vi.mock("../infra/runtime-guard.js", () => ({
 }));
 
 vi.mock("../infra/path-env.js", () => ({
-  ensureNexisClawCliOnPath: vi.fn(),
+  ensureFirstNexusCliOnPath: vi.fn(),
 }));
 
 vi.mock("./route.js", () => ({
@@ -144,7 +144,7 @@ describe("runCli profile env bootstrap", () => {
 
   it("applies --profile before dotenv loading", async () => {
     fileState.hasCliDotEnv = true;
-    await runCli(["node", "NexisClaw", "--profile", "rawdog", "status"]);
+    await runCli(["node", "FirstNexus", "--profile", "rawdog", "status"]);
 
     expect(dotenvState.loadDotEnv).toHaveBeenCalledOnce();
     expect(dotenvState.state.profileAtDotenvLoad).toBe("rawdog");
@@ -153,7 +153,7 @@ describe("runCli profile env bootstrap", () => {
 
   it("rejects --container combined with --profile", async () => {
     await expect(
-      runCli(["node", "NexisClaw", "--container", "demo", "--profile", "rawdog", "status"]),
+      runCli(["node", "FirstNexus", "--container", "demo", "--profile", "rawdog", "status"]),
     ).rejects.toThrow("--container cannot be combined with --profile/--dev");
 
     expect(dotenvState.loadDotEnv).not.toHaveBeenCalled();
@@ -162,13 +162,13 @@ describe("runCli profile env bootstrap", () => {
 
   it("rejects --container combined with interleaved --profile", async () => {
     await expect(
-      runCli(["node", "NexisClaw", "status", "--container", "demo", "--profile", "rawdog"]),
+      runCli(["node", "FirstNexus", "status", "--container", "demo", "--profile", "rawdog"]),
     ).rejects.toThrow("--container cannot be combined with --profile/--dev");
   });
 
   it("rejects --container combined with interleaved --dev", async () => {
     await expect(
-      runCli(["node", "NexisClaw", "status", "--container", "demo", "--dev"]),
+      runCli(["node", "FirstNexus", "status", "--container", "demo", "--dev"]),
     ).rejects.toThrow("--container cannot be combined with --profile/--dev");
   });
 
@@ -180,15 +180,15 @@ describe("runCli profile env bootstrap", () => {
       dotenvState.state.containerAtDotenvLoad = process.env.NEXISCLAW_CONTAINER;
     });
 
-    await runCli(["node", "NexisClaw", "status"]);
+    await runCli(["node", "FirstNexus", "status"]);
 
     expect(dotenvState.loadDotEnv).toHaveBeenCalledOnce();
     expect(process.env.NEXISCLAW_CONTAINER).toBe("demo");
     expect(dotenvState.state.containerAtDotenvLoad).toBe("demo");
-    expect(maybeRunCliInContainerMock).toHaveBeenCalledWith(["node", "NexisClaw", "status"]);
+    expect(maybeRunCliInContainerMock).toHaveBeenCalledWith(["node", "FirstNexus", "status"]);
     expect(maybeRunCliInContainerMock).toHaveReturnedWith({
       handled: false,
-      argv: ["node", "NexisClaw", "status"],
+      argv: ["node", "FirstNexus", "status"],
     });
   });
 
@@ -196,7 +196,7 @@ describe("runCli profile env bootstrap", () => {
     process.env.NEXISCLAW_PROFILE = "work";
 
     await expect(
-      runCli(["node", "NexisClaw", "--container", "demo", "status"]),
+      runCli(["node", "FirstNexus", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 
@@ -209,23 +209,23 @@ describe("runCli profile env bootstrap", () => {
     process.env[key] = value;
 
     await expect(
-      runCli(["node", "NexisClaw", "--container", "demo", "status"]),
+      runCli(["node", "FirstNexus", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 
   it("allows container mode when only NEXISCLAW_STATE_DIR is set in env", async () => {
-    process.env.NEXISCLAW_STATE_DIR = "/tmp/NexisClaw-host-state";
+    process.env.NEXISCLAW_STATE_DIR = "/tmp/FirstNexus-host-state";
 
     await expect(
-      runCli(["node", "NexisClaw", "--container", "demo", "status"]),
+      runCli(["node", "FirstNexus", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 
   it("allows container mode when only NEXISCLAW_CONFIG_PATH is set in env", async () => {
-    process.env.NEXISCLAW_CONFIG_PATH = "/tmp/NexisClaw-host-state/NexisClaw.json";
+    process.env.NEXISCLAW_CONFIG_PATH = "/tmp/FirstNexus-host-state/FirstNexus.json";
 
     await expect(
-      runCli(["node", "NexisClaw", "--container", "demo", "status"]),
+      runCli(["node", "FirstNexus", "--container", "demo", "status"]),
     ).resolves.toBeUndefined();
   });
 });

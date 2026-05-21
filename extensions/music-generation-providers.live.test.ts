@@ -1,13 +1,13 @@
 import {
   resolveApiKeyForProvider,
   resolveDefaultAgentDir,
-} from "NexisClaw/plugin-sdk/agent-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/agent-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
 import {
   DEFAULT_LIVE_MUSIC_MODELS,
   collectProviderApiKeys,
@@ -28,7 +28,7 @@ import {
   redactLiveApiKey,
   resolveConfiguredLiveMusicModels,
   resolveLiveMusicAuthStore,
-} from "NexisClaw/plugin-sdk/test-env";
+} from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import googlePlugin from "./google/index.js";
 import minimaxPlugin from "./minimax/index.js";
@@ -36,7 +36,8 @@ import { maybeLoadShellEnvForGenerationProviders } from "./test-support/generati
 
 const LIVE = isLiveTestEnabled();
 const REQUIRE_PROFILE_KEYS =
-  isLiveProfileKeyModeEnabled() || isTruthyEnvValue(process.env.NEXISCLAW_LIVE_REQUIRE_PROFILE_KEYS);
+  isLiveProfileKeyModeEnabled() ||
+  isTruthyEnvValue(process.env.NEXISCLAW_LIVE_REQUIRE_PROFILE_KEYS);
 const describeLive = LIVE ? describe : describe.skip;
 const providerFilter = parseCsvFilter(process.env.NEXISCLAW_LIVE_MUSIC_GENERATION_PROVIDERS);
 const envModelMap = parseProviderModelMap(process.env.NEXISCLAW_LIVE_MUSIC_GENERATION_MODELS);
@@ -65,7 +66,7 @@ const CASES: LiveProviderCase[] = [
   .filter((entry) => (providerFilter ? providerFilter.has(entry.providerId) : true))
   .toSorted((left, right) => left.providerId.localeCompare(right.providerId));
 
-function withPluginsEnabled(cfg: NexisClawConfig): NexisClawConfig {
+function withPluginsEnabled(cfg: FirstNexusConfig): FirstNexusConfig {
   return {
     ...cfg,
     plugins: {

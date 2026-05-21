@@ -1,15 +1,15 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
 import {
   resolveOAuthApiKeyMarker,
   type ProviderAuthContext,
   type ProviderAuthResult,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { buildOauthProviderAuthResult } from "NexisClaw/plugin-sdk/provider-auth";
-import { createProviderApiKeyAuthMethod } from "NexisClaw/plugin-sdk/provider-auth-api-key";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { buildOauthProviderAuthResult } from "FirstNexus/plugin-sdk/provider-auth";
+import { createProviderApiKeyAuthMethod } from "FirstNexus/plugin-sdk/provider-auth-api-key";
 import {
   normalizeOptionalString,
   readStringValue,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { loginChutes } from "./oauth.js";
 import {
   CHUTES_DEFAULT_MODEL_REF,

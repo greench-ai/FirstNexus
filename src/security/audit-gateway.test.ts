@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { collectGatewayConfigFindings } from "./audit-gateway-config.js";
 
@@ -43,7 +43,7 @@ describe("security audit gateway config findings", () => {
         },
       ),
       (async () => {
-        const cfg: NexisClawConfig = {
+        const cfg: FirstNexusConfig = {
           gateway: {
             bind: "lan",
             auth: {
@@ -59,7 +59,7 @@ describe("security audit gateway config findings", () => {
         expect(hasFinding("gateway.bind_no_auth", findings)).toBe(false);
       })(),
       (async () => {
-        const sourceConfig: NexisClawConfig = {
+        const sourceConfig: FirstNexusConfig = {
           gateway: {
             bind: "lan",
             auth: {
@@ -76,7 +76,7 @@ describe("security audit gateway config findings", () => {
             },
           },
         };
-        const resolvedConfig: NexisClawConfig = {
+        const resolvedConfig: FirstNexusConfig = {
           gateway: {
             bind: "lan",
             auth: {},
@@ -87,7 +87,7 @@ describe("security audit gateway config findings", () => {
         expect(hasFinding("gateway.bind_no_auth", findings)).toBe(false);
       })(),
       (async () => {
-        const cfg: NexisClawConfig = {
+        const cfg: FirstNexusConfig = {
           gateway: {
             bind: "lan",
             auth: { token: "secret" },
@@ -97,7 +97,7 @@ describe("security audit gateway config findings", () => {
         expect(hasFindingWithSeverity("gateway.auth_no_rate_limit", "warn", findings)).toBe(true);
       })(),
       (async () => {
-        const cfg: NexisClawConfig = {
+        const cfg: FirstNexusConfig = {
           gateway: {
             bind: "lan",
             auth: {
@@ -113,7 +113,7 @@ describe("security audit gateway config findings", () => {
   });
 
   it("warns when NEXISCLAW_GATEWAY_TOKEN shadows a different configured token source", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       gateway: { auth: { token: "config-token" } },
     };
     const findings = collectGatewayConfigFindings(cfg, cfg, {
@@ -124,7 +124,7 @@ describe("security audit gateway config findings", () => {
   });
 
   it("does not warn inside the managed gateway service credential context", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       gateway: { auth: { token: "config-token" } },
     };
     const findings = collectGatewayConfigFindings(cfg, cfg, {
@@ -136,7 +136,7 @@ describe("security audit gateway config findings", () => {
   });
 
   it("does not warn when gateway.auth.token resolves from NEXISCLAW_GATEWAY_TOKEN", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       gateway: { auth: { token: "${NEXISCLAW_GATEWAY_TOKEN}" } },
       secrets: { providers: { default: { source: "env" } } },
     };
@@ -148,7 +148,7 @@ describe("security audit gateway config findings", () => {
   });
 
   it("does not warn about local gateway auth token precedence in remote mode", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       gateway: {
         mode: "remote",
         remote: { token: "remote-token" },

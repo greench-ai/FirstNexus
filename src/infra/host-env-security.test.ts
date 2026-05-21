@@ -3,6 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { NEXISCLAW_CLI_ENV_VALUE } from "./FirstNexus-exec-env.js";
 import {
   isDangerousHostEnvOverrideVarName,
   isDangerousHostInheritedEnvVarName,
@@ -12,7 +13,6 @@ import {
   sanitizeHostExecEnvWithDiagnostics,
   sanitizeSystemRunEnvOverrides,
 } from "./host-env-security.js";
-import { NEXISCLAW_CLI_ENV_VALUE } from "./NexisClaw-exec-env.js";
 
 function findSystemCommandPath(command: string) {
   if (process.platform === "win32") {
@@ -97,7 +97,7 @@ async function initGitRepoWithCommits(gitPath: string, repoDir: string, commitCo
         "-C",
         repoDir,
         "-c",
-        "user.name=NexisClaw Test",
+        "user.name=FirstNexus Test",
         "-c",
         "user.email=test@example.com",
         "commit",
@@ -1249,7 +1249,7 @@ describe("shell wrapper exploit regression", () => {
     if (process.platform === "win32" || !fs.existsSync(bashPath)) {
       return;
     }
-    const marker = path.join(os.tmpdir(), `NexisClaw-ps4-marker-${process.pid}-${Date.now()}`);
+    const marker = path.join(os.tmpdir(), `FirstNexus-ps4-marker-${process.pid}-${Date.now()}`);
     try {
       fs.unlinkSync(marker);
     } catch {
@@ -1288,16 +1288,16 @@ describe("git env exploit regression", () => {
     }
 
     const repoDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `NexisClaw-git-sequence-editor-${process.pid}-${Date.now()}-`),
+      path.join(os.tmpdir(), `FirstNexus-git-sequence-editor-${process.pid}-${Date.now()}-`),
     );
     const safeRepoDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `NexisClaw-git-sequence-editor-safe-${process.pid}-${Date.now()}-`),
+      path.join(os.tmpdir(), `FirstNexus-git-sequence-editor-safe-${process.pid}-${Date.now()}-`),
     );
     const editorPath = path.join(repoDir, "sequence-editor.sh");
     const safeEditorPath = path.join(safeRepoDir, "sequence-editor.sh");
     const marker = path.join(
       os.tmpdir(),
-      `NexisClaw-git-sequence-editor-marker-${process.pid}-${Date.now()}`,
+      `FirstNexus-git-sequence-editor-marker-${process.pid}-${Date.now()}`,
     );
 
     try {
@@ -1349,12 +1349,12 @@ describe("git env exploit regression", () => {
     }
 
     const helperDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `NexisClaw-git-exec-path-${process.pid}-${Date.now()}-`),
+      path.join(os.tmpdir(), `FirstNexus-git-exec-path-${process.pid}-${Date.now()}-`),
     );
     const helperPath = path.join(helperDir, "git-remote-https");
     const marker = path.join(
       os.tmpdir(),
-      `NexisClaw-git-exec-path-marker-${process.pid}-${Date.now()}`,
+      `FirstNexus-git-exec-path-marker-${process.pid}-${Date.now()}`,
     );
     try {
       clearMarker(marker);
@@ -1393,23 +1393,23 @@ describe("git env exploit regression", () => {
     }
 
     const repoDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `NexisClaw-git-template-source-${process.pid}-${Date.now()}-`),
+      path.join(os.tmpdir(), `FirstNexus-git-template-source-${process.pid}-${Date.now()}-`),
     );
     const cloneDir = path.join(
       os.tmpdir(),
-      `NexisClaw-git-template-clone-${process.pid}-${Date.now()}`,
+      `FirstNexus-git-template-clone-${process.pid}-${Date.now()}`,
     );
     const safeCloneDir = path.join(
       os.tmpdir(),
-      `NexisClaw-git-template-safe-clone-${process.pid}-${Date.now()}`,
+      `FirstNexus-git-template-safe-clone-${process.pid}-${Date.now()}`,
     );
     const templateDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `NexisClaw-git-template-dir-${process.pid}-${Date.now()}-`),
+      path.join(os.tmpdir(), `FirstNexus-git-template-dir-${process.pid}-${Date.now()}-`),
     );
     const hooksDir = path.join(templateDir, "hooks");
     const marker = path.join(
       os.tmpdir(),
-      `NexisClaw-git-template-marker-${process.pid}-${Date.now()}`,
+      `FirstNexus-git-template-marker-${process.pid}-${Date.now()}`,
     );
 
     try {
@@ -1429,7 +1429,7 @@ describe("git env exploit regression", () => {
           "-C",
           repoDir,
           "-c",
-          "user.name=NexisClaw Test",
+          "user.name=FirstNexus Test",
           "-c",
           "user.email=test@example.com",
           "commit",
@@ -1477,7 +1477,10 @@ describe("git env exploit regression", () => {
       return;
     }
 
-    const marker = path.join(os.tmpdir(), `NexisClaw-git-ssh-command-${process.pid}-${Date.now()}`);
+    const marker = path.join(
+      os.tmpdir(),
+      `FirstNexus-git-ssh-command-${process.pid}-${Date.now()}`,
+    );
     clearMarker(marker);
 
     const target = "ssh://127.0.0.1:1/does-not-matter";
@@ -1518,12 +1521,12 @@ describe("compiler override exploit regression", () => {
     }
 
     const tempDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `NexisClaw-compiler-override-${process.pid}-${Date.now()}-`),
+      path.join(os.tmpdir(), `FirstNexus-compiler-override-${process.pid}-${Date.now()}-`),
     );
     const exploitPath = path.join(tempDir, "evil-cc");
     const marker = path.join(
       os.tmpdir(),
-      `NexisClaw-compiler-override-marker-${process.pid}-${Date.now()}`,
+      `FirstNexus-compiler-override-marker-${process.pid}-${Date.now()}`,
     );
 
     try {
@@ -1575,10 +1578,13 @@ describe("make env exploit regression", () => {
     }
 
     const tempDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), `NexisClaw-makeflags-override-${process.pid}-${Date.now()}-`),
+      path.join(os.tmpdir(), `FirstNexus-makeflags-override-${process.pid}-${Date.now()}-`),
     );
     const exploitPath = path.join(tempDir, "evil-makeflags.sh");
-    const marker = path.join(os.tmpdir(), `NexisClaw-makeflags-marker-${process.pid}-${Date.now()}`);
+    const marker = path.join(
+      os.tmpdir(),
+      `FirstNexus-makeflags-marker-${process.pid}-${Date.now()}`,
+    );
 
     try {
       clearMarker(marker);

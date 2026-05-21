@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   deletePathStrict,
   getPath,
@@ -7,11 +7,11 @@ import {
   setPathExistingStrict,
 } from "./path-utils.js";
 
-function asConfig(value: unknown): NexisClawConfig {
-  return value as NexisClawConfig;
+function asConfig(value: unknown): FirstNexusConfig {
+  return value as FirstNexusConfig;
 }
 
-function createAgentListConfig(): NexisClawConfig {
+function createAgentListConfig(): FirstNexusConfig {
   return asConfig({
     agents: {
       list: [{ id: "a" }],

@@ -1,12 +1,12 @@
 {
-  "name": "@NexisClaw/irc",
+  "name": "@FirstNexus/irc",
   "version": "2026.5.12-beta.1",
-  "description": "NexisClaw IRC channel plugin",
+  "description": "FirstNexus IRC channel plugin",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],

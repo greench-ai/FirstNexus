@@ -1,8 +1,8 @@
 {
-  "name": "@NexisClaw/oc-path",
+  "name": "@FirstNexus/oc-path",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw oc:// workspace path plugin",
+  "description": "FirstNexus oc:// workspace path plugin",
   "type": "module",
   "dependencies": {
     "commander": "14.0.3",
@@ -10,18 +10,18 @@
     "markdown-it": "14.1.1"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*",
-    "NexisClaw": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*",
+    "FirstNexus": "workspace:*"
   },
   "peerDependencies": {
-    "NexisClaw": ">=2026.5.12-beta.1"
+    "FirstNexus": ">=2026.5.12-beta.1"
   },
   "peerDependenciesMeta": {
-    "NexisClaw": {
+    "FirstNexus": {
       "optional": true
     }
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

@@ -6,9 +6,9 @@ import {
   defineStableChannelIngressIdentity,
   type ChannelIngressIdentitySubjectInput,
   type ResolveChannelMessageIngressParams,
-} from "NexisClaw/plugin-sdk/channel-ingress-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/channel-ingress-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import type { RequestClient } from "../internal/discord.js";
 import { canViewDiscordGuildChannel } from "../send.permissions.js";
 import { normalizeDiscordAllowList } from "./allow-list.js";
@@ -91,7 +91,7 @@ function createDiscordDmIngressSubject(sender: {
 }
 
 function createDiscordDynamicAccessGroupResolver(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   token?: string;
   rest?: RequestClient;
 }): ResolveChannelMessageIngressParams["resolveAccessGroupMembership"] {
@@ -127,7 +127,7 @@ function createDiscordDynamicAccessGroupResolver(params: {
 
 function createDiscordIngressResolver(params: {
   accountId: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   token?: string;
   rest?: RequestClient;
   readStoreAllowFrom?: ResolveChannelMessageIngressParams["readStoreAllowFrom"];
@@ -174,7 +174,7 @@ export async function resolveDiscordDmCommandAccess(params: {
   configuredAllowFrom: string[];
   sender: { id: string; name?: string; tag?: string };
   allowNameMatching: boolean;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   token?: string;
   rest?: RequestClient;
   readStoreAllowFrom?: ResolveChannelMessageIngressParams["readStoreAllowFrom"];
@@ -220,7 +220,7 @@ export async function resolveDiscordTextCommandAccess(params: {
   allowNameMatching: boolean;
   allowTextCommands: boolean;
   hasControlCommand: boolean;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   token?: string;
   rest?: RequestClient;
 }) {

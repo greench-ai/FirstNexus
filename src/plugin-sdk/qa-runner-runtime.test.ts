@@ -12,14 +12,14 @@ import {
 const loadPluginManifestRegistry = vi.hoisted(() => vi.fn());
 const loadBundledPluginPublicSurfaceModuleSync = vi.hoisted(() => vi.fn());
 const tryLoadActivatedBundledPluginPublicSurfaceModuleSync = vi.hoisted(() => vi.fn());
-const resolveNexisClawPackageRootSync = vi.hoisted(() => vi.fn());
+const resolveFirstNexusPackageRootSync = vi.hoisted(() => vi.fn());
 
 vi.mock("../plugins/manifest-registry.js", () => ({
   loadPluginManifestRegistry,
 }));
 
-vi.mock("../infra/NexisClaw-root.js", () => ({
-  resolveNexisClawPackageRootSync,
+vi.mock("../infra/FirstNexus-root.js", () => ({
+  resolveFirstNexusPackageRootSync,
 }));
 
 vi.mock("./facade-runtime.js", () => ({
@@ -38,7 +38,7 @@ describe("plugin-sdk qa-runner-runtime", () => {
     });
     loadBundledPluginPublicSurfaceModuleSync.mockReset();
     tryLoadActivatedBundledPluginPublicSurfaceModuleSync.mockReset();
-    resolveNexisClawPackageRootSync.mockReset().mockReturnValue(null);
+    resolveFirstNexusPackageRootSync.mockReset().mockReturnValue(null);
     delete process.env.NEXISCLAW_ENABLE_PRIVATE_QA_CLI;
   });
 
@@ -67,13 +67,13 @@ describe("plugin-sdk qa-runner-runtime", () => {
       tempDirs,
       importRuntime: () => import("./qa-runner-runtime.js"),
       loadBundledPluginPublicSurfaceModuleSync,
-      resolveNexisClawPackageRootSync,
+      resolveFirstNexusPackageRootSync,
     });
   });
 
   it("loads bundled plugin test APIs with the private QA source tree override", async () => {
-    const sourceRoot = makePrivateQaSourceRoot(tempDirs, "NexisClaw-qa-test-api-root-");
-    resolveNexisClawPackageRootSync.mockReturnValue(sourceRoot);
+    const sourceRoot = makePrivateQaSourceRoot(tempDirs, "FirstNexus-qa-test-api-root-");
+    resolveFirstNexusPackageRootSync.mockReturnValue(sourceRoot);
 
     const testApi = { marker: "matrix-test-api" };
     loadBundledPluginPublicSurfaceModuleSync.mockReturnValue(testApi);
@@ -170,8 +170,8 @@ describe("plugin-sdk qa-runner-runtime", () => {
   });
 
   it("prefers the source bundled tree for private qa discovery in repo checkouts", async () => {
-    const sourceRoot = makePrivateQaSourceRoot(tempDirs, "NexisClaw-qa-runner-root-");
-    resolveNexisClawPackageRootSync.mockReturnValue(sourceRoot);
+    const sourceRoot = makePrivateQaSourceRoot(tempDirs, "FirstNexus-qa-runner-root-");
+    resolveFirstNexusPackageRootSync.mockReturnValue(sourceRoot);
 
     const register = vi.fn((qa: Command) => qa);
     loadPluginManifestRegistry.mockReturnValue({
@@ -270,7 +270,7 @@ describe("plugin-sdk qa-runner-runtime", () => {
     const module = await import("./qa-runner-runtime.js");
 
     expect(() => module.listQaRunnerCliContributions()).toThrow(
-      'QA runner plugin "qa-matrix" exported "extra" from runtime-api.js but did not declare it in NexisClaw.plugin.json',
+      'QA runner plugin "qa-matrix" exported "extra" from runtime-api.js but did not declare it in FirstNexus.plugin.json',
     );
   });
 });

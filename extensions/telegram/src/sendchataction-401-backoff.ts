@@ -1,10 +1,10 @@
-import type { Bot } from "grammy";
 import {
   computeBackoff,
   sleepWithAbort,
   type BackoffPolicy,
-} from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import type { Bot } from "grammy";
 
 export type TelegramSendChatActionLogger = (message: string) => void;
 
@@ -138,7 +138,7 @@ export function createTelegramSendChatActionHandler({
           logger(
             `CRITICAL: sendChatAction suspended after ${consecutive401Failures} consecutive 401 errors. ` +
               `Bot token is likely invalid. Telegram may DELETE the bot if requests continue. ` +
-              `Replace the token and restart: NexisClaw channels restart telegram`,
+              `Replace the token and restart: FirstNexus channels restart telegram`,
           );
         } else {
           logger(

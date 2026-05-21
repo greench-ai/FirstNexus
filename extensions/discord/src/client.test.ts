@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createDiscordRestClient } from "./client.js";
 import type { RequestClient } from "./internal/discord.js";
@@ -21,7 +21,7 @@ describe("createDiscordRestClient", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     const result = createDiscordRestClient({ cfg, token: "Bot explicit-token", rest: fakeRest });
 
@@ -48,7 +48,7 @@ describe("createDiscordRestClient", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     const result = createDiscordRestClient({
       cfg,
@@ -74,7 +74,7 @@ describe("createDiscordRestClient", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(() => createDiscordRestClient({ cfg, rest: fakeRest })).toThrow(
       /configured for account "default" is unavailable/i,

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import {
   loadInstalledPluginIndexInstallRecords,
@@ -65,9 +65,9 @@ export function writePersistedInstalledPluginIndexInstallRecordsSync(
 }
 
 export function withPluginInstallRecords(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   records: Record<string, PluginInstallRecord>,
-): NexisClawConfig {
+): FirstNexusConfig {
   return {
     ...config,
     plugins: {
@@ -77,7 +77,7 @@ export function withPluginInstallRecords(
   };
 }
 
-export function withoutPluginInstallRecords(config: NexisClawConfig): NexisClawConfig {
+export function withoutPluginInstallRecords(config: FirstNexusConfig): FirstNexusConfig {
   if (!config.plugins?.installs) {
     return config;
   }

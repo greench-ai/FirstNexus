@@ -1,5 +1,5 @@
-import { expectChannelInboundContextContract } from "NexisClaw/plugin-sdk/channel-contract-testing";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { expectChannelInboundContextContract } from "FirstNexus/plugin-sdk/channel-contract-testing";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, it } from "vitest";
 import { buildTelegramMessageContextForTest } from "./bot-message-context.test-harness.js";
 
@@ -18,7 +18,7 @@ describe("Telegram inbound context contract", () => {
             groups: { "*": { requireMention: false } },
           },
         },
-      } satisfies NexisClawConfig,
+      } satisfies FirstNexusConfig,
       message: {
         chat: { id: 42, type: "group", title: "Ops" },
         text: "hello",

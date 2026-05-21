@@ -306,10 +306,10 @@ async function writeFakePlugin(params: {
     path.join(pluginDir, "package.json"),
     `${JSON.stringify(
       {
-        name: "@NexisClaw/tool-search-e2e-fixture",
+        name: "@FirstNexus/tool-search-e2e-fixture",
         version: "0.0.0",
         type: "module",
-        NexisClaw: {
+        FirstNexus: {
           extensions: ["./index.js"],
         },
       },
@@ -319,7 +319,7 @@ async function writeFakePlugin(params: {
     "utf8",
   );
   await fs.writeFile(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     `${JSON.stringify(
       {
         id: FAKE_PLUGIN_ID,
@@ -384,7 +384,7 @@ async function runLane(params: {
   fakePluginDir: string;
 }): Promise<LaneResult> {
   const stateDir = path.join(params.rootDir, params.lane, "state");
-  const configPath = path.join(stateDir, "NexisClaw.json");
+  const configPath = path.join(stateDir, "FirstNexus.json");
   const workspaceDir = path.join(params.rootDir, params.lane, "workspace");
   const gatewayPort = await freePort();
   await fs.mkdir(workspaceDir, { recursive: true });
@@ -417,11 +417,11 @@ async function runLane(params: {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-NexisClaw-scopes": "operator.write",
-        "x-NexisClaw-agent": "qa",
+        "x-FirstNexus-scopes": "operator.write",
+        "x-FirstNexus-agent": "qa",
       },
       body: JSON.stringify({
-        model: "NexisClaw/qa",
+        model: "FirstNexus/qa",
         input: [
           {
             type: "message",
@@ -473,7 +473,7 @@ async function runLane(params: {
 }
 
 async function main() {
-  const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-tool-search-"));
+  const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-tool-search-"));
   const provider = await startQaMockOpenAiServer();
   const fakeTools = buildFakeTools();
   const fakePluginDir = await writeFakePlugin({

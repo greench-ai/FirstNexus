@@ -7,9 +7,9 @@ install_update_restart_systemctl_shim() {
 #!/usr/bin/env bash
 set -euo pipefail
 
-log_file="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_LOG:-/tmp/NexisClaw-systemctl-shim.log}"
-pid_file="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_PID_FILE:-/tmp/NexisClaw-systemctl-shim.pid}"
-daemon_log="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_DAEMON_LOG:-/tmp/NexisClaw-systemctl-shim-gateway.log}"
+log_file="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_LOG:-/tmp/FirstNexus-systemctl-shim.log}"
+pid_file="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_PID_FILE:-/tmp/FirstNexus-systemctl-shim.pid}"
+daemon_log="${NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_DAEMON_LOG:-/tmp/FirstNexus-systemctl-shim-gateway.log}"
 printf '%s\n' "$*" >>"$log_file"
 
 filtered=()
@@ -53,7 +53,7 @@ stop_gateway() {
 }
 
 unit_path() {
-  printf '%s/.config/systemd/user/NexisClaw-gateway.service\n' "${HOME:?missing HOME}"
+  printf '%s/.config/systemd/user/FirstNexus-gateway.service\n' "${HOME:?missing HOME}"
 }
 
 load_unit_environment() {
@@ -202,7 +202,7 @@ writeJson(path.join(stateDir, "devices", "paired.json"), {
     publicKey: publicKeyRaw,
     displayName: "upgrade survivor restart probe",
     platform: process.platform,
-    clientId: "NexisClaw-cli",
+    clientId: "FirstNexus-cli",
     clientMode: "probe",
     role: "operator",
     roles: ["operator"],
@@ -248,14 +248,14 @@ prepare_update_restart_probe_current_install() {
   install_update_restart_systemctl_shim
   seed_update_restart_probe_device_auth
   start_epoch="$(node -e "process.stdout.write(String(Date.now()))")"
-  env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NexisClaw gateway --port "$port" --bind loopback --allow-unconfigured >"$log_file" 2>&1 &
+  env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD FirstNexus gateway --port "$port" --bind loopback --allow-unconfigured >"$log_file" 2>&1 &
   gateway_pid="$!"
   printf '%s\n' "$gateway_pid" >"$NEXISCLAW_UPGRADE_SURVIVOR_SYSTEMCTL_SHIM_PID_FILE"
-  NexisClaw_e2e_wait_gateway_ready "$gateway_pid" "$log_file" 360
+  FirstNexus_e2e_wait_gateway_ready "$gateway_pid" "$log_file" 360
   ready_epoch="$(node -e "process.stdout.write(String(Date.now()))")"
   start_seconds=$(((ready_epoch - start_epoch + 999) / 1000))
   write_update_restart_service_auth_env
-  if ! env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NexisClaw gateway install --force --json >"$NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SERVICE_INSTALL_JSON" 2>"$NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SERVICE_INSTALL_ERR"; then
+  if ! env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD FirstNexus gateway install --force --json >"$NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SERVICE_INSTALL_JSON" 2>"$NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SERVICE_INSTALL_ERR"; then
     echo "gateway service install failed" >&2
     cat "$NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SERVICE_INSTALL_ERR" >&2 || true
     cat "$NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SERVICE_INSTALL_JSON" >&2 || true

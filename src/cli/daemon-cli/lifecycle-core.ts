@@ -254,7 +254,7 @@ export async function runServiceStart(params: {
       fail(
         preflight.hints
           ? `${params.serviceNoun} start blocked: ${preflight.message}`
-          : `${params.serviceNoun} aborted: config is invalid.\n${preflight.message}\nFix the config and retry, or run "NexisClaw doctor" to repair.`,
+          : `${params.serviceNoun} aborted: config is invalid.\n${preflight.message}\nFix the config and retry, or run "FirstNexus doctor" to repair.`,
         preflight.hints,
       );
       return;
@@ -342,7 +342,7 @@ export async function runServiceStart(params: {
         `${params.serviceNoun} service needs repair before it can start: ${startResult.issues
           .map((issue) => issue.message)
           .join("; ")}`,
-        [formatCliCommand("NexisClaw gateway install --force")],
+        [formatCliCommand("FirstNexus gateway install --force")],
       );
       return;
     }
@@ -498,7 +498,7 @@ export async function runServiceRestart(params: {
       fail(
         preflight.hints
           ? `${params.serviceNoun} restart blocked: ${preflight.message}`
-          : `${params.serviceNoun} aborted: config is invalid.\n${preflight.message}\nFix the config and retry, or run "NexisClaw doctor" to repair.`,
+          : `${params.serviceNoun} aborted: config is invalid.\n${preflight.message}\nFix the config and retry, or run "FirstNexus doctor" to repair.`,
         preflight.hints,
       );
       return false;

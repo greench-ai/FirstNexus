@@ -48,7 +48,7 @@ import { createLiveTargetMatcher } from "./live-target-matcher.js";
 import { isLiveProfileKeyModeEnabled, isLiveTestEnabled } from "./live-test-helpers.js";
 import { getApiKeyForModel, requireApiKey } from "./model-auth.js";
 import { shouldSuppressBuiltInModel } from "./model-suppression.js";
-import { ensureNexisClawModelsJson } from "./models-config.js";
+import { ensureFirstNexusModelsJson } from "./models-config.js";
 import {
   isCloudflareOrHtmlErrorPage,
   isRateLimitErrorMessage,
@@ -787,7 +787,7 @@ describeLive("live models (profile keys)", () => {
       );
       logProgress("[live-models] preparing models.json");
       await withLiveStageTimeout(
-        ensureNexisClawModelsJson(cfg),
+        ensureFirstNexusModelsJson(cfg),
         "[live-models] prepare models.json",
         LIVE_MODELS_JSON_TIMEOUT_MS,
       );

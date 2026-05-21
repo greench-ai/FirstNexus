@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs the packed NexisClaw tarball over dirty old-user state. When
+# Installs the packed FirstNexus tarball over dirty old-user state. When
 # NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC is set, installs that published
 # baseline first and upgrades it to the selected candidate.
 set -euo pipefail
@@ -8,7 +8,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-upgrade-survivor-e2e" NEXISCLAW_UPGRADE_SURVIVOR_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-upgrade-survivor-e2e" NEXISCLAW_UPGRADE_SURVIVOR_E2E_IMAGE)"
 SKIP_BUILD="${NEXISCLAW_UPGRADE_SURVIVOR_E2E_SKIP_BUILD:-0}"
 DOCKER_RUN_TIMEOUT="${NEXISCLAW_UPGRADE_SURVIVOR_DOCKER_RUN_TIMEOUT:-900s}"
 BASELINE_SPEC="${NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC:-}"
@@ -22,17 +22,17 @@ normalize_npm_candidate() {
   local raw="$1"
   case "$raw" in
     latest | beta)
-      printf 'NexisClaw@%s\n' "$raw"
+      printf 'FirstNexus@%s\n' "$raw"
       ;;
-    NexisClaw@*)
+    FirstNexus@*)
       printf '%s\n' "$raw"
       ;;
     *@*)
-      echo "NEXISCLAW_UPGRADE_SURVIVOR_CANDIDATE must be current, latest, beta, NexisClaw@<version>, a bare version, or a .tgz path." >&2
+      echo "NEXISCLAW_UPGRADE_SURVIVOR_CANDIDATE must be current, latest, beta, FirstNexus@<version>, a bare version, or a .tgz path." >&2
       return 1
       ;;
     *)
-      printf 'NexisClaw@%s\n' "$raw"
+      printf 'FirstNexus@%s\n' "$raw"
       ;;
   esac
 }
@@ -55,21 +55,21 @@ if [ "${NEXISCLAW_UPGRADE_SURVIVOR_PUBLISHED_BASELINE:-0}" = "1" ]; then
     PACKAGE_TGZ="$(docker_e2e_prepare_package_tgz upgrade-survivor "$NEXISCLAW_CURRENT_PACKAGE_TGZ")"
     docker_e2e_package_mount_args "$PACKAGE_TGZ"
     CANDIDATE_KIND="tarball"
-    CANDIDATE_SPEC="/tmp/NexisClaw-current.tgz"
+    CANDIDATE_SPEC="/tmp/FirstNexus-current.tgz"
   elif [ "$CANDIDATE_RAW" = "current" ]; then
     PACKAGE_TGZ="$(docker_e2e_prepare_package_tgz upgrade-survivor)"
     docker_e2e_package_mount_args "$PACKAGE_TGZ"
     CANDIDATE_KIND="tarball"
-    CANDIDATE_SPEC="/tmp/NexisClaw-current.tgz"
+    CANDIDATE_SPEC="/tmp/FirstNexus-current.tgz"
   elif [[ "$CANDIDATE_RAW" == *.tgz ]]; then
     if [ ! -f "$CANDIDATE_RAW" ]; then
-      echo "NexisClaw candidate tarball does not exist: $CANDIDATE_RAW" >&2
+      echo "FirstNexus candidate tarball does not exist: $CANDIDATE_RAW" >&2
       exit 1
     fi
     PACKAGE_TGZ="$(docker_e2e_prepare_package_tgz upgrade-survivor "$CANDIDATE_RAW")"
     docker_e2e_package_mount_args "$PACKAGE_TGZ"
     CANDIDATE_KIND="tarball"
-    CANDIDATE_SPEC="/tmp/NexisClaw-current.tgz"
+    CANDIDATE_SPEC="/tmp/FirstNexus-current.tgz"
   else
     CANDIDATE_KIND="npm"
     CANDIDATE_SPEC="$(normalize_npm_candidate "$CANDIDATE_RAW")"
@@ -89,10 +89,10 @@ if [ "${NEXISCLAW_UPGRADE_SURVIVOR_PUBLISHED_BASELINE:-0}" = "1" ]; then
     -e NEXISCLAW_UPGRADE_SURVIVOR_SCENARIO="$SCENARIO" \
     -e NEXISCLAW_UPGRADE_SURVIVOR_UPDATE_RESTART_MODE="$UPDATE_RESTART_MODE" \
     -e NEXISCLAW_UPGRADE_SURVIVOR_LEGACY_RUNTIME_DEPS_SYMLINK="${NEXISCLAW_UPGRADE_SURVIVOR_LEGACY_RUNTIME_DEPS_SYMLINK:-}" \
-    -e NEXISCLAW_UPGRADE_SURVIVOR_SUMMARY_JSON=/tmp/NexisClaw-upgrade-survivor-artifacts/summary.json \
+    -e NEXISCLAW_UPGRADE_SURVIVOR_SUMMARY_JSON=/tmp/FirstNexus-upgrade-survivor-artifacts/summary.json \
     -e NEXISCLAW_UPGRADE_SURVIVOR_START_BUDGET_SECONDS="${NEXISCLAW_UPGRADE_SURVIVOR_START_BUDGET_SECONDS:-90}" \
     -e NEXISCLAW_UPGRADE_SURVIVOR_STATUS_BUDGET_SECONDS="${NEXISCLAW_UPGRADE_SURVIVOR_STATUS_BUDGET_SECONDS:-30}" \
-    -v "$ARTIFACT_DIR:/tmp/NexisClaw-upgrade-survivor-artifacts" \
+    -v "$ARTIFACT_DIR:/tmp/FirstNexus-upgrade-survivor-artifacts" \
     "${DOCKER_E2E_PACKAGE_ARGS[@]}" \
     "$IMAGE_NAME" \
     timeout "$DOCKER_RUN_TIMEOUT" bash scripts/e2e/lib/upgrade-survivor/run.sh
@@ -111,21 +111,21 @@ echo "Running upgrade survivor Docker E2E..."
 docker_e2e_run_with_harness \
   -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
   -e NEXISCLAW_TEST_STATE_SCRIPT_B64="$NEXISCLAW_TEST_STATE_SCRIPT_B64" \
-  -e NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT=/tmp/NexisClaw-upgrade-survivor-artifacts \
+  -e NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT=/tmp/FirstNexus-upgrade-survivor-artifacts \
   -e NEXISCLAW_UPGRADE_SURVIVOR_SCENARIO="$SCENARIO" \
   -e NEXISCLAW_UPGRADE_SURVIVOR_UPDATE_RESTART_MODE="$UPDATE_RESTART_MODE" \
   -e NEXISCLAW_UPGRADE_SURVIVOR_START_BUDGET_SECONDS="${NEXISCLAW_UPGRADE_SURVIVOR_START_BUDGET_SECONDS:-90}" \
   -e NEXISCLAW_UPGRADE_SURVIVOR_STATUS_BUDGET_SECONDS="${NEXISCLAW_UPGRADE_SURVIVOR_STATUS_BUDGET_SECONDS:-30}" \
-  -v "$ARTIFACT_DIR:/tmp/NexisClaw-upgrade-survivor-artifacts" \
+  -v "$ARTIFACT_DIR:/tmp/FirstNexus-upgrade-survivor-artifacts" \
   "${DOCKER_E2E_PACKAGE_ARGS[@]}" \
   "$IMAGE_NAME" \
   timeout "$DOCKER_RUN_TIMEOUT" bash -lc 'set -euo pipefail
-source scripts/lib/NexisClaw-e2e-instance.sh
+source scripts/lib/FirstNexus-e2e-instance.sh
 
 export npm_config_loglevel=error
 export npm_config_fund=false
 export npm_config_audit=false
-export NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT="${NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT:-/tmp/NexisClaw-upgrade-survivor-artifacts}"
+export NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT="${NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT:-/tmp/FirstNexus-upgrade-survivor-artifacts}"
 mkdir -p "$NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT"
 export TMPDIR="$NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT/tmp"
 export NEXISCLAW_TEST_STATE_TMPDIR="$NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT/state-tmp"
@@ -142,7 +142,7 @@ export NEXISCLAW_SKIP_PROVIDERS=1
 export NEXISCLAW_SKIP_CHANNELS=1
 export NEXISCLAW_DISABLE_BONJOUR=1
 export GATEWAY_AUTH_TOKEN_REF="upgrade-survivor-token"
-export OPENAI_API_KEY="sk-NexisClaw-upgrade-survivor"
+export OPENAI_API_KEY="sk-FirstNexus-upgrade-survivor"
 export DISCORD_BOT_TOKEN="upgrade-survivor-discord-token"
 export TELEGRAM_BOT_TOKEN="123456:upgrade-survivor-telegram-token"
 export FEISHU_APP_SECRET="upgrade-survivor-feishu-secret"
@@ -170,9 +170,9 @@ cleanup() {
   if [ -n "${plugin_registry_pid:-}" ]; then
     kill "$plugin_registry_pid" >/dev/null 2>&1 || true
   fi
-  NexisClaw_e2e_terminate_gateways "${gateway_pid:-}"
+  FirstNexus_e2e_terminate_gateways "${gateway_pid:-}"
   if [ -s "$SYSTEMCTL_SHIM_PID_FILE" ]; then
-    NexisClaw_e2e_terminate_gateways "$(cat "$SYSTEMCTL_SHIM_PID_FILE" 2>/dev/null || true)"
+    FirstNexus_e2e_terminate_gateways "$(cat "$SYSTEMCTL_SHIM_PID_FILE" 2>/dev/null || true)"
   fi
 }
 trap cleanup EXIT
@@ -182,7 +182,7 @@ configure_configured_plugin_install_fixture_registry() {
 
   local fixture_root="$NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT/configured-plugin-installs-npm-fixture"
   local package_dir="$fixture_root/package"
-  local tarball="$fixture_root/NexisClaw-brave-plugin-2026.5.2.tgz"
+  local tarball="$fixture_root/FirstNexus-brave-plugin-2026.5.2.tgz"
   local port_file="$fixture_root/npm-registry-port"
   local log_file="$fixture_root/npm-registry.log"
   mkdir -p "$package_dir"
@@ -195,16 +195,16 @@ fs.writeFileSync(
   path.join(root, "package.json"),
   `${JSON.stringify(
     {
-      name: "@NexisClaw/brave-plugin",
+      name: "@FirstNexus/brave-plugin",
       version: "2026.5.2",
-      NexisClaw: { extensions: ["./index.js"] },
+      FirstNexus: { extensions: ["./index.js"] },
     },
     null,
     2,
   )}\n`,
 );
 fs.writeFileSync(
-  path.join(root, "NexisClaw.plugin.json"),
+  path.join(root, "FirstNexus.plugin.json"),
   `${JSON.stringify(
     {
       id: "brave",
@@ -239,7 +239,7 @@ NODE
   tar -czf "$tarball" -C "$fixture_root" package
   node scripts/e2e/lib/plugins/npm-registry-server.mjs \
     "$port_file" \
-    "@NexisClaw/brave-plugin" \
+    "@FirstNexus/brave-plugin" \
     "2026.5.2" \
     "$tarball" \
     >"$log_file" 2>&1 &
@@ -263,12 +263,12 @@ NODE
   return 1
 }
 
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 node scripts/e2e/lib/upgrade-survivor/assertions.mjs seed
 
-NexisClaw_e2e_install_package "$NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT/install.log" "upgrade survivor package" "$npm_config_prefix"
-command -v NexisClaw >/dev/null
-package_version="$(node -p "JSON.parse(require(\"node:fs\").readFileSync(process.argv[1] + \"/lib/node_modules/NexisClaw/package.json\", \"utf8\")).version" "$npm_config_prefix")"
+FirstNexus_e2e_install_package "$NEXISCLAW_UPGRADE_SURVIVOR_ARTIFACT_ROOT/install.log" "upgrade survivor package" "$npm_config_prefix"
+command -v FirstNexus >/dev/null
+package_version="$(node -p "JSON.parse(require(\"node:fs\").readFileSync(process.argv[1] + \"/lib/node_modules/FirstNexus/package.json\", \"utf8\")).version" "$npm_config_prefix")"
 NEXISCLAW_PACKAGE_ACCEPTANCE_LEGACY_COMPAT="$(
   node scripts/e2e/lib/package-compat.mjs "$package_version"
 )"
@@ -289,13 +289,13 @@ if [ "$UPDATE_RESTART_MODE" != "auto-auth" ]; then
   update_args+=(--no-restart)
 fi
 set +e
-env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NEXISCLAW_ALLOW_ROOT=1 NexisClaw "${update_args[@]}" >/tmp/NexisClaw-upgrade-survivor-update.json 2>/tmp/NexisClaw-upgrade-survivor-update.err
+env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NEXISCLAW_ALLOW_ROOT=1 FirstNexus "${update_args[@]}" >/tmp/FirstNexus-upgrade-survivor-update.json 2>/tmp/FirstNexus-upgrade-survivor-update.err
 update_status=$?
 set -e
 if [ "$update_status" -ne 0 ]; then
-  echo "NexisClaw update failed" >&2
-  cat /tmp/NexisClaw-upgrade-survivor-update.err >&2 || true
-  cat /tmp/NexisClaw-upgrade-survivor-update.json >&2 || true
+  echo "FirstNexus update failed" >&2
+  cat /tmp/FirstNexus-upgrade-survivor-update.err >&2 || true
+  cat /tmp/FirstNexus-upgrade-survivor-update.json >&2 || true
   exit "$update_status"
 fi
 
@@ -304,14 +304,14 @@ if [ "$UPDATE_RESTART_MODE" = "auto-auth" ]; then
 else
   echo "Running non-interactive doctor repair..."
   configure_configured_plugin_install_fixture_registry
-  if ! NexisClaw doctor --fix --non-interactive >/tmp/NexisClaw-upgrade-survivor-doctor.log 2>&1; then
-    echo "NexisClaw doctor failed" >&2
-    cat /tmp/NexisClaw-upgrade-survivor-doctor.log >&2 || true
+  if ! FirstNexus doctor --fix --non-interactive >/tmp/FirstNexus-upgrade-survivor-doctor.log 2>&1; then
+    echo "FirstNexus doctor failed" >&2
+    cat /tmp/FirstNexus-upgrade-survivor-doctor.log >&2 || true
     exit 1
   fi
-  if ! NexisClaw config validate >>/tmp/NexisClaw-upgrade-survivor-doctor.log 2>&1; then
+  if ! FirstNexus config validate >>/tmp/FirstNexus-upgrade-survivor-doctor.log 2>&1; then
     echo "post-doctor config validation failed" >&2
-    cat /tmp/NexisClaw-upgrade-survivor-doctor.log >&2 || true
+    cat /tmp/FirstNexus-upgrade-survivor-doctor.log >&2 || true
     exit 1
   fi
 fi
@@ -321,13 +321,13 @@ node scripts/e2e/lib/upgrade-survivor/assertions.mjs assert-config
 node scripts/e2e/lib/upgrade-survivor/assertions.mjs assert-state
 
 if [ "$UPDATE_RESTART_MODE" = "auto-auth" ]; then
-  echo "Gateway restart was handled by NexisClaw update."
+  echo "Gateway restart was handled by FirstNexus update."
 else
   echo "Starting gateway from upgraded state..."
   start_epoch="$(node -e "process.stdout.write(String(Date.now()))")"
-  NexisClaw gateway --port "$PORT" --bind loopback --allow-unconfigured >"$GATEWAY_LOG" 2>&1 &
+  FirstNexus gateway --port "$PORT" --bind loopback --allow-unconfigured >"$GATEWAY_LOG" 2>&1 &
   gateway_pid="$!"
-  NexisClaw_e2e_wait_gateway_ready "$gateway_pid" "$GATEWAY_LOG" 360
+  FirstNexus_e2e_wait_gateway_ready "$gateway_pid" "$GATEWAY_LOG" 360
   ready_epoch="$(node -e "process.stdout.write(String(Date.now()))")"
   start_seconds=$(((ready_epoch - start_epoch + 999) / 1000))
   if [ "$start_seconds" -gt "$START_BUDGET" ]; then
@@ -342,19 +342,19 @@ node scripts/e2e/lib/upgrade-survivor/probe-gateway.mjs \
   --base-url "http://127.0.0.1:$PORT" \
   --path /healthz \
   --expect live \
-  --out /tmp/NexisClaw-upgrade-survivor-healthz.json
+  --out /tmp/FirstNexus-upgrade-survivor-healthz.json
 node scripts/e2e/lib/upgrade-survivor/probe-gateway.mjs \
   --base-url "http://127.0.0.1:$PORT" \
   --path /readyz \
   --expect ready \
   --allow-failing discord,telegram,whatsapp,feishu,matrix \
-  --out /tmp/NexisClaw-upgrade-survivor-readyz.json
+  --out /tmp/FirstNexus-upgrade-survivor-readyz.json
 
 echo "Checking gateway RPC status..."
 status_start="$(node -e "process.stdout.write(String(Date.now()))")"
-if ! NexisClaw gateway status --url "ws://127.0.0.1:$PORT" --token "$GATEWAY_AUTH_TOKEN_REF" --require-rpc --timeout 30000 --json >/tmp/NexisClaw-upgrade-survivor-status.json 2>/tmp/NexisClaw-upgrade-survivor-status.err; then
+if ! FirstNexus gateway status --url "ws://127.0.0.1:$PORT" --token "$GATEWAY_AUTH_TOKEN_REF" --require-rpc --timeout 30000 --json >/tmp/FirstNexus-upgrade-survivor-status.json 2>/tmp/FirstNexus-upgrade-survivor-status.err; then
   echo "gateway status failed" >&2
-  cat /tmp/NexisClaw-upgrade-survivor-status.err >&2 || true
+  cat /tmp/FirstNexus-upgrade-survivor-status.err >&2 || true
   cat "$GATEWAY_LOG" >&2 || true
   cat "$SYSTEMCTL_SHIM_DAEMON_LOG" >&2 || true
   exit 1
@@ -363,10 +363,10 @@ status_end="$(node -e "process.stdout.write(String(Date.now()))")"
 status_seconds=$(((status_end - status_start + 999) / 1000))
 if [ "$status_seconds" -gt "$STATUS_BUDGET" ]; then
   echo "gateway status exceeded survivor budget: ${status_seconds}s > ${STATUS_BUDGET}s" >&2
-  cat /tmp/NexisClaw-upgrade-survivor-status.json >&2 || true
+  cat /tmp/FirstNexus-upgrade-survivor-status.json >&2 || true
   exit 1
 fi
-node scripts/e2e/lib/upgrade-survivor/assertions.mjs assert-status-json /tmp/NexisClaw-upgrade-survivor-status.json
+node scripts/e2e/lib/upgrade-survivor/assertions.mjs assert-status-json /tmp/FirstNexus-upgrade-survivor-status.json
 
 echo "Upgrade survivor Docker E2E passed scenario=${NEXISCLAW_UPGRADE_SURVIVOR_SCENARIO:-base} updateRestartMode=${UPDATE_RESTART_MODE} startup=${start_seconds}s status=${status_seconds}s."
 '

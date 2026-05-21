@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { HarnessContextEngine as ContextEngine } from "NexisClaw/plugin-sdk/agent-harness-runtime";
+import type { HarnessContextEngine as ContextEngine } from "FirstNexus/plugin-sdk/agent-harness-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { CodexAppServerClient } from "./client.js";
 import { maybeCompactCodexAppServerSession, __testing } from "./compact.js";
@@ -45,7 +45,7 @@ function compactDetails(result: CompactResult): Record<string, unknown> {
 
 describe("maybeCompactCodexAppServerSession", () => {
   beforeEach(async () => {
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-codex-compact-"));
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-codex-compact-"));
   });
 
   afterEach(async () => {

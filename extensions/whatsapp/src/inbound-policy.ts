@@ -1,16 +1,16 @@
-import { resolveStableChannelMessageIngress } from "NexisClaw/plugin-sdk/channel-ingress-runtime";
+import { resolveStableChannelMessageIngress } from "FirstNexus/plugin-sdk/channel-ingress-runtime";
 import {
   resolveChannelGroupPolicy,
   resolveChannelGroupRequireMention,
-} from "NexisClaw/plugin-sdk/channel-policy";
+} from "FirstNexus/plugin-sdk/channel-policy";
 import type {
   ChannelGroupPolicy,
   DmPolicy,
   GroupPolicy,
-  NexisClawConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveDefaultGroupPolicy } from "NexisClaw/plugin-sdk/runtime-group-policy";
-import { resolveGroupSessionKey } from "NexisClaw/plugin-sdk/session-store-runtime";
+  FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveDefaultGroupPolicy } from "FirstNexus/plugin-sdk/runtime-group-policy";
+import { resolveGroupSessionKey } from "FirstNexus/plugin-sdk/session-store-runtime";
 import { resolveWhatsAppAccount, type ResolvedWhatsAppAccount } from "./accounts.js";
 import { getSelfIdentity, getSenderIdentity } from "./identity.js";
 import type { WebInboundMessage } from "./inbound/types.js";
@@ -63,7 +63,7 @@ function maybeSamePhoneDmAllowFrom(params: {
 function buildResolvedWhatsAppGroupConfig(params: {
   groupPolicy: GroupPolicy;
   groups: ResolvedWhatsAppAccount["groups"];
-}): NexisClawConfig {
+}): FirstNexusConfig {
   return {
     channels: {
       whatsapp: {
@@ -71,11 +71,11 @@ function buildResolvedWhatsAppGroupConfig(params: {
         groups: params.groups,
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 export function resolveWhatsAppInboundPolicy(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   selfE164?: string | null;
 }): ResolvedWhatsAppInboundPolicy {
@@ -134,7 +134,7 @@ export function resolveWhatsAppInboundPolicy(params: {
 }
 
 export async function resolveWhatsAppIngressAccess(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   policy: ResolvedWhatsAppInboundPolicy;
   isGroup: boolean;
   conversationId: string;
@@ -177,7 +177,7 @@ export async function resolveWhatsAppIngressAccess(params: {
 }
 
 export async function resolveWhatsAppCommandAuthorized(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   msg: WebInboundMessage;
   policy?: ResolvedWhatsAppInboundPolicy;
 }): Promise<boolean> {

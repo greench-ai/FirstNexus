@@ -3,8 +3,8 @@ import type {
   ProviderCatalogContext,
   ProviderResolveDynamicModelContext,
   ProviderRuntimeModel,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import type { ProviderPlugin } from "NexisClaw/plugin-sdk/provider-model-shared";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import type { ProviderPlugin } from "FirstNexus/plugin-sdk/provider-model-shared";
 
 export function createProviderDynamicModelContext(params: {
   provider: string;

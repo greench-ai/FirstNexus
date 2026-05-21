@@ -5,8 +5,8 @@ describe("isSafeExecutableValue", () => {
   it.each([
     ["node", true],
     ["/usr/bin/node", true],
-    ["./bin/NexisClaw", true],
-    ["C:\\Tools\\NexisClaw.exe", true],
+    ["./bin/FirstNexus", true],
+    ["C:\\Tools\\FirstNexus.exe", true],
     [" tool ", true],
     [undefined, false],
     ["   ", false],

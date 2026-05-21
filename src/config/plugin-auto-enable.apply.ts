@@ -8,10 +8,10 @@ import type {
   PluginAutoEnableCandidate,
   PluginAutoEnableResult,
 } from "./plugin-auto-enable.types.js";
-import type { NexisClawConfig } from "./types.NexisClaw.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 
 export function materializePluginAutoEnableCandidates(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   candidates: readonly PluginAutoEnableCandidate[];
   env?: NodeJS.ProcessEnv;
   manifestRegistry?: PluginManifestRegistry;
@@ -41,7 +41,7 @@ export function materializePluginAutoEnableCandidates(params: {
 }
 
 export function applyPluginAutoEnable(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   manifestRegistry?: PluginManifestRegistry;
 }): PluginAutoEnableResult {

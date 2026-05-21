@@ -1,6 +1,6 @@
-name: NexisClaw
+name: FirstNexus
 options:
-  bundleIdPrefix: ai.NexisClaw
+  bundleIdPrefix: ai.FirstNexus
   deploymentTarget:
     iOS: "18.0"
   xcodeVersion: "16.0"
@@ -11,32 +11,32 @@ settings:
     ENABLE_APP_INTENTS_METADATA_GENERATION: NO
 
 packages:
-  NexisClawKit:
-    path: ../shared/NexisClawKit
+  FirstNexusKit:
+    path: ../shared/FirstNexusKit
   Swabble:
     path: ../swabble
 
 schemes:
-  NexisClaw:
+  FirstNexus:
     shared: true
     build:
       targets:
-        NexisClaw: all
+        FirstNexus: all
     test:
       targets:
-        - NexisClawTests
-        - NexisClawLogicTests
-  NexisClawLogicTests:
+        - FirstNexusTests
+        - FirstNexusLogicTests
+  FirstNexusLogicTests:
     shared: true
     build:
       targets:
-        NexisClawLogicTests: all
+        FirstNexusLogicTests: all
     test:
       targets:
-        - NexisClawLogicTests
+        - FirstNexusLogicTests
 
 targets:
-  NexisClaw:
+  FirstNexus:
     type: application
     platform: iOS
     configFiles:
@@ -45,16 +45,16 @@ targets:
     sources:
       - path: Sources
     dependencies:
-      - target: NexisClawShareExtension
+      - target: FirstNexusShareExtension
         embed: true
-      - target: NexisClawActivityWidget
+      - target: FirstNexusActivityWidget
         embed: true
-      - target: NexisClawWatchApp
-      - package: NexisClawKit
-      - package: NexisClawKit
-        product: NexisClawChatUI
-      - package: NexisClawKit
-        product: NexisClawProtocol
+      - target: FirstNexusWatchApp
+      - package: FirstNexusKit
+      - package: FirstNexusKit
+        product: FirstNexusChatUI
+      - package: FirstNexusKit
+        product: FirstNexusProtocol
       - package: Swabble
         product: SwabbleKit
       - sdk: AppIntents.framework
@@ -71,7 +71,7 @@ targets:
             exit 1
           fi
           swiftformat --lint --config "$SRCROOT/../../config/swiftformat" \
-            --unexclude "$SRCROOT/Sources,$SRCROOT/ShareExtension,$SRCROOT/ActivityWidget,$SRCROOT/WatchExtension,$SRCROOT/../shared/NexisClawKit,$SRCROOT/../swabble" \
+            --unexclude "$SRCROOT/Sources,$SRCROOT/ShareExtension,$SRCROOT/ActivityWidget,$SRCROOT/WatchExtension,$SRCROOT/../shared/FirstNexusKit,$SRCROOT/../swabble" \
             --filelist "$SRCROOT/SwiftSources.input.xcfilelist"
       - name: SwiftLint
         basedOnDependencyAnalysis: false
@@ -88,7 +88,7 @@ targets:
     settings:
       base:
         CODE_SIGN_IDENTITY: "Apple Development"
-        CODE_SIGN_ENTITLEMENTS: Sources/NexisClaw.entitlements
+        CODE_SIGN_ENTITLEMENTS: Sources/FirstNexus.entitlements
         CODE_SIGN_STYLE: "$(NEXISCLAW_CODE_SIGN_STYLE)"
         DEVELOPMENT_TEAM: "$(NEXISCLAW_DEVELOPMENT_TEAM)"
         PRODUCT_BUNDLE_IDENTIFIER: "$(NEXISCLAW_APP_BUNDLE_ID)"
@@ -113,14 +113,14 @@ targets:
     info:
       path: Sources/Info.plist
       properties:
-        CFBundleDisplayName: NexisClaw
+        CFBundleDisplayName: FirstNexus
         CFBundleIconName: AppIcon
         CFBundleURLTypes:
-          - CFBundleURLName: ai.NexisClaw.ios
+          - CFBundleURLName: ai.FirstNexus.ios
             CFBundleURLSchemes:
-              - NexisClaw
+              - FirstNexus
         CFBundleShortVersionString: "$(NEXISCLAW_MARKETING_VERSION)"
-        NexisClawCanonicalVersion: "$(NEXISCLAW_IOS_VERSION)"
+        FirstNexusCanonicalVersion: "$(NEXISCLAW_IOS_VERSION)"
         CFBundleVersion: "$(NEXISCLAW_BUILD_VERSION)"
         UILaunchScreen: {}
         UIApplicationSceneManifest:
@@ -129,25 +129,25 @@ targets:
           - audio
           - remote-notification
         BGTaskSchedulerPermittedIdentifiers:
-          - ai.NexisClaw.ios.bgrefresh
-        NSLocalNetworkUsageDescription: NexisClaw discovers and connects to your NexisClaw gateway on the local network.
+          - ai.FirstNexus.ios.bgrefresh
+        NSLocalNetworkUsageDescription: FirstNexus discovers and connects to your FirstNexus gateway on the local network.
         NSAppTransportSecurity:
           NSAllowsArbitraryLoadsInWebContent: true
         NSBonjourServices:
-          - _NexisClaw-gw._tcp
-        NSCameraUsageDescription: NexisClaw can capture photos or short video clips when requested via the gateway.
-        NSLocationWhenInUseUsageDescription: NexisClaw uses your location when you allow location sharing.
-        NSLocationAlwaysAndWhenInUseUsageDescription: NexisClaw can share your location in the background when you enable Always.
-        NSMicrophoneUsageDescription: NexisClaw needs microphone access for voice wake.
-        NSMotionUsageDescription: NexisClaw may use motion data to support device-aware interactions and automations.
-        NSPhotoLibraryUsageDescription: NexisClaw needs photo library access when you choose existing photos to share with your assistant.
-        NSSpeechRecognitionUsageDescription: NexisClaw uses on-device speech recognition for voice wake.
+          - _FirstNexus-gw._tcp
+        NSCameraUsageDescription: FirstNexus can capture photos or short video clips when requested via the gateway.
+        NSLocationWhenInUseUsageDescription: FirstNexus uses your location when you allow location sharing.
+        NSLocationAlwaysAndWhenInUseUsageDescription: FirstNexus can share your location in the background when you enable Always.
+        NSMicrophoneUsageDescription: FirstNexus needs microphone access for voice wake.
+        NSMotionUsageDescription: FirstNexus may use motion data to support device-aware interactions and automations.
+        NSPhotoLibraryUsageDescription: FirstNexus needs photo library access when you choose existing photos to share with your assistant.
+        NSSpeechRecognitionUsageDescription: FirstNexus uses on-device speech recognition for voice wake.
         NSSupportsLiveActivities: true
         ITSAppUsesNonExemptEncryption: false
-        NexisClawPushTransport: "$(NEXISCLAW_PUSH_TRANSPORT)"
-        NexisClawPushDistribution: "$(NEXISCLAW_PUSH_DISTRIBUTION)"
-        NexisClawPushRelayBaseURL: "$(NEXISCLAW_PUSH_RELAY_BASE_URL)"
-        NexisClawPushAPNsEnvironment: "$(NEXISCLAW_PUSH_APNS_ENVIRONMENT)"
+        FirstNexusPushTransport: "$(NEXISCLAW_PUSH_TRANSPORT)"
+        FirstNexusPushDistribution: "$(NEXISCLAW_PUSH_DISTRIBUTION)"
+        FirstNexusPushRelayBaseURL: "$(NEXISCLAW_PUSH_RELAY_BASE_URL)"
+        FirstNexusPushAPNsEnvironment: "$(NEXISCLAW_PUSH_APNS_ENVIRONMENT)"
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
           - UIInterfaceOrientationPortraitUpsideDown
@@ -159,7 +159,7 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
 
-  NexisClawShareExtension:
+  FirstNexusShareExtension:
     type: app-extension
     platform: iOS
     configFiles:
@@ -168,7 +168,7 @@ targets:
     sources:
       - path: ShareExtension
     dependencies:
-      - package: NexisClawKit
+      - package: FirstNexusKit
       - sdk: AppIntents.framework
     settings:
       base:
@@ -184,7 +184,7 @@ targets:
     info:
       path: ShareExtension/Info.plist
       properties:
-        CFBundleDisplayName: NexisClaw Share
+        CFBundleDisplayName: FirstNexus Share
         CFBundleShortVersionString: "$(NEXISCLAW_MARKETING_VERSION)"
         CFBundleVersion: "$(NEXISCLAW_BUILD_VERSION)"
         NSExtension:
@@ -197,7 +197,7 @@ targets:
               NSExtensionActivationSupportsImageWithMaxCount: 10
               NSExtensionActivationSupportsMovieWithMaxCount: 1
 
-  NexisClawActivityWidget:
+  FirstNexusActivityWidget:
     type: app-extension
     platform: iOS
     configFiles:
@@ -205,7 +205,7 @@ targets:
       Release: Signing.xcconfig
     sources:
       - path: ActivityWidget
-      - path: Sources/LiveActivity/NexisClawActivityAttributes.swift
+      - path: Sources/LiveActivity/FirstNexusActivityAttributes.swift
     dependencies:
       - sdk: WidgetKit.framework
       - sdk: ActivityKit.framework
@@ -221,21 +221,21 @@ targets:
     info:
       path: ActivityWidget/Info.plist
       properties:
-        CFBundleDisplayName: NexisClaw Activity
+        CFBundleDisplayName: FirstNexus Activity
         CFBundleShortVersionString: "$(NEXISCLAW_MARKETING_VERSION)"
         CFBundleVersion: "$(NEXISCLAW_BUILD_VERSION)"
         NSSupportsLiveActivities: true
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
 
-  NexisClawWatchApp:
+  FirstNexusWatchApp:
     type: application.watchapp2
     platform: watchOS
     deploymentTarget: "11.0"
     sources:
       - path: WatchApp
     dependencies:
-      - target: NexisClawWatchExtension
+      - target: FirstNexusWatchExtension
     configFiles:
       Debug: Config/Signing.xcconfig
       Release: Config/Signing.xcconfig
@@ -255,13 +255,13 @@ targets:
     info:
       path: WatchApp/Info.plist
       properties:
-        CFBundleDisplayName: NexisClaw
+        CFBundleDisplayName: FirstNexus
         CFBundleShortVersionString: "$(NEXISCLAW_MARKETING_VERSION)"
         CFBundleVersion: "$(NEXISCLAW_BUILD_VERSION)"
         WKCompanionAppBundleIdentifier: "$(NEXISCLAW_APP_BUNDLE_ID)"
         WKWatchKitApp: true
 
-  NexisClawWatchExtension:
+  FirstNexusWatchExtension:
     type: watchkit2-extension
     platform: watchOS
     deploymentTarget: "11.0"
@@ -287,7 +287,7 @@ targets:
     info:
       path: WatchExtension/Info.plist
       properties:
-        CFBundleDisplayName: NexisClaw
+        CFBundleDisplayName: FirstNexus
         CFBundleShortVersionString: "$(NEXISCLAW_MARKETING_VERSION)"
         CFBundleVersion: "$(NEXISCLAW_BUILD_VERSION)"
         NSExtension:
@@ -295,7 +295,7 @@ targets:
             WKAppBundleIdentifier: "$(NEXISCLAW_WATCH_APP_BUNDLE_ID)"
           NSExtensionPointIdentifier: com.apple.watchkit
 
-  NexisClawTests:
+  FirstNexusTests:
     type: bundle.unit-test
     platform: iOS
     configFiles:
@@ -306,7 +306,7 @@ targets:
         excludes:
           - Logic
     dependencies:
-      - target: NexisClaw
+      - target: FirstNexus
       - package: Swabble
         product: SwabbleKit
       - sdk: AppIntents.framework
@@ -315,20 +315,20 @@ targets:
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: "$(NEXISCLAW_CODE_SIGN_STYLE)"
         DEVELOPMENT_TEAM: "$(NEXISCLAW_DEVELOPMENT_TEAM)"
-        PRODUCT_BUNDLE_IDENTIFIER: ai.NexisClaw.ios.tests
+        PRODUCT_BUNDLE_IDENTIFIER: ai.FirstNexus.ios.tests
         ENABLE_APP_INTENTS_METADATA_GENERATION: NO
         SWIFT_VERSION: "6.0"
         SWIFT_STRICT_CONCURRENCY: complete
-        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/NexisClaw.app/NexisClaw"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/FirstNexus.app/FirstNexus"
         BUNDLE_LOADER: "$(TEST_HOST)"
     info:
       path: Tests/Info.plist
       properties:
-        CFBundleDisplayName: NexisClawTests
+        CFBundleDisplayName: FirstNexusTests
         CFBundleShortVersionString: "$(NEXISCLAW_MARKETING_VERSION)"
         CFBundleVersion: "$(NEXISCLAW_BUILD_VERSION)"
 
-  NexisClawLogicTests:
+  FirstNexusLogicTests:
     type: bundle.unit-test
     platform: iOS
     configFiles:
@@ -337,13 +337,13 @@ targets:
     sources:
       - path: Tests/Logic
     dependencies:
-      - package: NexisClawKit
+      - package: FirstNexusKit
     settings:
       base:
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: "$(NEXISCLAW_CODE_SIGN_STYLE)"
         DEVELOPMENT_TEAM: "$(NEXISCLAW_DEVELOPMENT_TEAM)"
-        PRODUCT_BUNDLE_IDENTIFIER: ai.NexisClaw.ios.logic-tests
+        PRODUCT_BUNDLE_IDENTIFIER: ai.FirstNexus.ios.logic-tests
         ENABLE_APP_INTENTS_METADATA_GENERATION: NO
         SWIFT_EMIT_CONST_VALUE_PROTOCOLS: ""
         SWIFT_VERSION: "6.0"
@@ -351,6 +351,6 @@ targets:
     info:
       path: Tests/Info.plist
       properties:
-        CFBundleDisplayName: NexisClawLogicTests
+        CFBundleDisplayName: FirstNexusLogicTests
         CFBundleShortVersionString: "$(NEXISCLAW_MARKETING_VERSION)"
         CFBundleVersion: "$(NEXISCLAW_BUILD_VERSION)"

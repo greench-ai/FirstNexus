@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "../api.js";
+import type { FirstNexusConfig } from "../api.js";
 
 const DEFAULT_GATEWAY_PORT = 18789;
 type ViewerBaseUrlFieldName = "baseUrl" | "viewerBaseUrl";
 
 export function buildViewerUrl(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   viewerPath: string;
   baseUrl?: string;
 }): string {
@@ -44,7 +44,7 @@ export function normalizeViewerBaseUrl(
   return withoutTrailingSlash;
 }
 
-function resolveGatewayBaseUrl(config: NexisClawConfig): string {
+function resolveGatewayBaseUrl(config: FirstNexusConfig): string {
   const scheme = config.gateway?.tls?.enabled ? "https" : "http";
   const port =
     typeof config.gateway?.port === "number" ? config.gateway.port : DEFAULT_GATEWAY_PORT;

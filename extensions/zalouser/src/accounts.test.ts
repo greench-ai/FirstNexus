@@ -1,6 +1,6 @@
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/account-id";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/account-id";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../runtime-api.js";
+import type { FirstNexusConfig } from "../runtime-api.js";
 import {
   getZcaUserInfo,
   listEnabledZalouserAccounts,
@@ -21,8 +21,8 @@ const mockGetUserInfo = vi.mocked(getZaloUserInfo);
 const originalZalouserProfile = process.env.ZALOUSER_PROFILE;
 const originalZcaProfile = process.env.ZCA_PROFILE;
 
-function asConfig(value: unknown): NexisClawConfig {
-  return value as NexisClawConfig;
+function asConfig(value: unknown): FirstNexusConfig {
+  return value as FirstNexusConfig;
 }
 
 describe("zalouser account resolution", () => {

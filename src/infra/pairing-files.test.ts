@@ -8,10 +8,10 @@ import {
 
 describe("pairing file helpers", () => {
   it("resolves pairing file paths from explicit base dirs", () => {
-    expect(resolvePairingPaths("/tmp/NexisClaw-state", "devices")).toEqual({
-      dir: path.join("/tmp/NexisClaw-state", "devices"),
-      pendingPath: path.join("/tmp/NexisClaw-state", "devices", "pending.json"),
-      pairedPath: path.join("/tmp/NexisClaw-state", "devices", "paired.json"),
+    expect(resolvePairingPaths("/tmp/FirstNexus-state", "devices")).toEqual({
+      dir: path.join("/tmp/FirstNexus-state", "devices"),
+      pendingPath: path.join("/tmp/FirstNexus-state", "devices", "pending.json"),
+      pairedPath: path.join("/tmp/FirstNexus-state", "devices", "paired.json"),
     });
   });
 

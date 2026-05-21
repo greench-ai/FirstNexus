@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import {
   __testing,
@@ -9,7 +9,7 @@ describe("buildElevenLabsRealtimeTranscriptionProvider", () => {
   it("normalizes nested provider config", () => {
     const provider = buildElevenLabsRealtimeTranscriptionProvider();
     const resolved = provider.resolveConfig?.({
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       rawConfig: {
         providers: {
           elevenlabs: {

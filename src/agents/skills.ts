@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
@@ -19,7 +19,7 @@ export {
   applySkillEnvOverridesFromSnapshot,
 } from "./skills/env-overrides.js";
 export type {
-  NexisClawSkillMetadata,
+  FirstNexusSkillMetadata,
   SkillEligibilityContext,
   SkillCommandSpec,
   SkillEntry,
@@ -38,7 +38,9 @@ export {
 } from "./skills/workspace.js";
 export { buildWorkspaceSkillCommandSpecs } from "./skills/command-specs.js";
 
-export function resolveSkillsInstallPreferences(config?: NexisClawConfig): SkillsInstallPreferences {
+export function resolveSkillsInstallPreferences(
+  config?: FirstNexusConfig,
+): SkillsInstallPreferences {
   const raw = config?.skills?.install;
   const preferBrew = raw?.preferBrew ?? true;
   const manager = normalizeLowercaseStringOrEmpty(normalizeOptionalString(raw?.nodeManager));

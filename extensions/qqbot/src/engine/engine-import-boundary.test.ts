@@ -1,8 +1,8 @@
 /**
  * Engine import boundary test.
  *
- * Ensures that engine/ sources only import from `NexisClaw/plugin-sdk/*`
- * and never reach into other NexisClaw internals directly.
+ * Ensures that engine/ sources only import from `FirstNexus/plugin-sdk/*`
+ * and never reach into other FirstNexus internals directly.
  */
 
 import fs from "node:fs";
@@ -34,31 +34,31 @@ function walkSourceFiles(dir: string, files: string[] = []): string[] {
 }
 
 /**
- * Extract all `NexisClaw/...` import specifiers from source text.
- * Matches: import ... from "NexisClaw/...", import("NexisClaw/...")
+ * Extract all `FirstNexus/...` import specifiers from source text.
+ * Matches: import ... from "FirstNexus/...", import("FirstNexus/...")
  */
 function findOpenclawImports(source: string): string[] {
   return [
-    ...source.matchAll(/from\s+["'](NexisClaw\/[^"']+)["']/g),
-    ...source.matchAll(/import\(\s*["'](NexisClaw\/[^"']+)["']\s*\)/g),
+    ...source.matchAll(/from\s+["'](FirstNexus\/[^"']+)["']/g),
+    ...source.matchAll(/import\(\s*["'](FirstNexus\/[^"']+)["']\s*\)/g),
   ].map((match) => match[1]);
 }
 
-/** Check if an import specifier is an allowed NexisClaw/plugin-sdk subpath. */
-const ALLOWED_PREFIX = ["NexisClaw", "plugin-sdk"].join("/");
+/** Check if an import specifier is an allowed FirstNexus/plugin-sdk subpath. */
+const ALLOWED_PREFIX = ["FirstNexus", "plugin-sdk"].join("/");
 function isAllowedImport(specifier: string): boolean {
   return specifier.startsWith(ALLOWED_PREFIX);
 }
 
 describe("engine import boundary", () => {
-  it("only imports from NexisClaw/plugin-sdk, never from other NexisClaw internals", () => {
+  it("only imports from FirstNexus/plugin-sdk, never from other FirstNexus internals", () => {
     const sourceFiles = walkSourceFiles(ENGINE_DIR);
     const offenders: Array<{ file: string; imports: string[] }> = [];
 
     for (const file of sourceFiles) {
       const source = fs.readFileSync(file, "utf8");
-      const NexisClawImports = findOpenclawImports(source);
-      const forbidden = NexisClawImports.filter((specifier) => !isAllowedImport(specifier));
+      const FirstNexusImports = findOpenclawImports(source);
+      const forbidden = FirstNexusImports.filter((specifier) => !isAllowedImport(specifier));
 
       if (forbidden.length > 0) {
         offenders.push({

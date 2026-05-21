@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/venice-provider",
+  "name": "@FirstNexus/venice-provider",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw Venice provider plugin",
+  "description": "FirstNexus Venice provider plugin",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

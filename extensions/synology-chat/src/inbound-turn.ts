@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { sendMessage } from "./client.js";
 import type { SynologyInboundMessage } from "./inbound-context.js";
 import { getSynologyRuntime } from "./runtime.js";
@@ -12,7 +12,7 @@ type SynologyChannelLog = {
 };
 
 function resolveSynologyChatInboundRoute(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedSynologyChatAccount;
   userId: string;
 }) {
@@ -62,7 +62,7 @@ export async function dispatchSynologyChatInboundTurn(params: {
   log?: SynologyChannelLog;
 }): Promise<null> {
   const rt = getSynologyRuntime();
-  const currentCfg = rt.config.current() as NexisClawConfig;
+  const currentCfg = rt.config.current() as FirstNexusConfig;
 
   // The Chat API user_id (for sending) may differ from the webhook
   // user_id (used for sessions/pairing). Use chatUserId for API calls.

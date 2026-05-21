@@ -1,11 +1,11 @@
 import type { ReplyPayload } from "../../auto-reply/reply-payload.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { hasActiveApprovalNativeRouteRuntime } from "../../infra/approval-native-route-coordinator.js";
 import { getChannelPlugin, normalizeChannelId } from "./registry.js";
 
 export function shouldSuppressLocalExecApprovalPrompt(params: {
   channel?: string | null;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   payload: ReplyPayload;
 }): boolean {

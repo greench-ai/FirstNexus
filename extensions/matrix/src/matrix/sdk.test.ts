@@ -236,7 +236,7 @@ function createMatrixJsClientStub(): MatrixJsClientStub {
   client.redactEvent = vi.fn(async () => ({ event_id: "$redact" }));
   client.getProfileInfo = vi.fn(async () => ({}));
   client.getDevices = vi.fn(async () => ({
-    devices: [{ device_id: "DEVICE123", display_name: "NexisClaw" }],
+    devices: [{ device_id: "DEVICE123", display_name: "FirstNexus" }],
   }));
   client.joinRoom = vi.fn(async () => ({}));
   client.mxcUrlToHttp = vi.fn(() => null);
@@ -644,7 +644,7 @@ describe("MatrixClient request hardening", () => {
   });
 
   it("wires the sync store into the SDK and flushes it on shutdown", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-matrix-sdk-store-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-matrix-sdk-store-"));
     const storagePath = path.join(tempDir, "bot-storage.json");
 
     try {
@@ -1385,13 +1385,13 @@ describe("MatrixClient crypto bootstrapping", () => {
 
     const client = new MatrixClient("https://matrix.example.org", "token", {
       encryption: true,
-      cryptoDatabasePrefix: "NexisClaw-matrix-test",
+      cryptoDatabasePrefix: "FirstNexus-matrix-test",
     });
 
     await client.start();
 
     expect(matrixJsClient.initRustCrypto).toHaveBeenCalledWith({
-      cryptoDatabasePrefix: "NexisClaw-matrix-test",
+      cryptoDatabasePrefix: "FirstNexus-matrix-test",
     });
   });
 
@@ -1697,7 +1697,7 @@ describe("MatrixClient crypto bootstrapping", () => {
     const client = new MatrixClient("https://matrix.example.org", "token", {
       encryption: true,
       idbSnapshotPath: path.join(os.tmpdir(), "matrix-idb-interval.json"),
-      cryptoDatabasePrefix: "NexisClaw-matrix-interval",
+      cryptoDatabasePrefix: "FirstNexus-matrix-interval",
     });
 
     await client.start();

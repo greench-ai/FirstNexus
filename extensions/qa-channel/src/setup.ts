@@ -1,12 +1,12 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { DEFAULT_ACCOUNT_ID } from "./accounts.js";
 import type { CoreConfig } from "./types.js";
 
 export function applyQaSetup(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   input: Record<string, unknown>;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   const nextCfg = structuredClone(params.cfg) as CoreConfig;
   const section = nextCfg.channels?.["qa-channel"] ?? {};
   const accounts = { ...section.accounts };
@@ -34,5 +34,5 @@ export function applyQaSetup(params: {
       accounts,
     };
   }
-  return nextCfg as NexisClawConfig;
+  return nextCfg as FirstNexusConfig;
 }

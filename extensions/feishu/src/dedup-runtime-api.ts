@@ -1,1 +1,1 @@
-export { createPersistentDedupe } from "NexisClaw/plugin-sdk/persistent-dedupe";
+export { createPersistentDedupe } from "FirstNexus/plugin-sdk/persistent-dedupe";

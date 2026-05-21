@@ -3,7 +3,7 @@ import {
   normalizeLegacyDotBetaVersion,
 } from "../infra/semver-compare.js";
 
-type NexisClawVersion = {
+type FirstNexusVersion = {
   major: number;
   minor: number;
   patch: number;
@@ -13,7 +13,7 @@ type NexisClawVersion = {
 
 const VERSION_RE = /^v?(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/;
 
-export function parseNexisClawVersion(raw: string | null | undefined): NexisClawVersion | null {
+export function parseFirstNexusVersion(raw: string | null | undefined): FirstNexusVersion | null {
   if (!raw) {
     return null;
   }
@@ -33,20 +33,20 @@ export function parseNexisClawVersion(raw: string | null | undefined): NexisClaw
   };
 }
 
-export function normalizeNexisClawVersionBase(raw: string | null | undefined): string | null {
-  const parsed = parseNexisClawVersion(raw);
+export function normalizeFirstNexusVersionBase(raw: string | null | undefined): string | null {
+  const parsed = parseFirstNexusVersion(raw);
   if (!parsed) {
     return null;
   }
   return `${parsed.major}.${parsed.minor}.${parsed.patch}`;
 }
 
-export function isSameNexisClawStableFamily(
+export function isSameFirstNexusStableFamily(
   a: string | null | undefined,
   b: string | null | undefined,
 ): boolean {
-  const parsedA = parseNexisClawVersion(a);
-  const parsedB = parseNexisClawVersion(b);
+  const parsedA = parseFirstNexusVersion(a);
+  const parsedB = parseFirstNexusVersion(b);
   if (!parsedA || !parsedB) {
     return false;
   }
@@ -60,12 +60,12 @@ export function isSameNexisClawStableFamily(
   );
 }
 
-export function compareNexisClawVersions(
+export function compareFirstNexusVersions(
   a: string | null | undefined,
   b: string | null | undefined,
 ): number | null {
-  const parsedA = parseNexisClawVersion(a);
-  const parsedB = parseNexisClawVersion(b);
+  const parsedA = parseFirstNexusVersion(a);
+  const parsedB = parseFirstNexusVersion(b);
   if (!parsedA || !parsedB) {
     return null;
   }
@@ -104,8 +104,8 @@ export function shouldWarnOnTouchedVersion(
   current: string | null | undefined,
   touched: string | null | undefined,
 ): boolean {
-  const parsedCurrent = parseNexisClawVersion(current);
-  const parsedTouched = parseNexisClawVersion(touched);
+  const parsedCurrent = parseFirstNexusVersion(current);
+  const parsedTouched = parseFirstNexusVersion(touched);
   if (
     parsedCurrent &&
     parsedTouched &&
@@ -117,14 +117,14 @@ export function shouldWarnOnTouchedVersion(
       return false;
     }
   }
-  if (isSameNexisClawStableFamily(current, touched)) {
+  if (isSameFirstNexusStableFamily(current, touched)) {
     return false;
   }
-  const cmp = compareNexisClawVersions(current, touched);
+  const cmp = compareFirstNexusVersions(current, touched);
   return cmp !== null && cmp < 0;
 }
 
-function releaseRank(version: NexisClawVersion): number {
+function releaseRank(version: FirstNexusVersion): number {
   if (version.prerelease?.length) {
     return 0;
   }

@@ -5,7 +5,7 @@ import * as tar from "tar";
 import { describe, expect, it, vi } from "vitest";
 import { backupVerifyCommand } from "../commands/backup-verify.js";
 import type { RuntimeEnv } from "../runtime.js";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 import {
   __test as backupCreateInternals,
   buildExtensionsNodeModulesFilter,
@@ -17,8 +17,8 @@ import {
 function makeResult(overrides: Partial<BackupCreateResult> = {}): BackupCreateResult {
   return {
     createdAt: "2026-01-01T00:00:00.000Z",
-    archiveRoot: "NexisClaw-backup-2026-01-01",
-    archivePath: "/tmp/NexisClaw-backup.tar.gz",
+    archiveRoot: "FirstNexus-backup-2026-01-01",
+    archivePath: "/tmp/FirstNexus-backup.tar.gz",
     dryRun: false,
     includeWorkspace: true,
     onlyConfig: false,
@@ -44,7 +44,7 @@ async function listArchiveEntries(archivePath: string): Promise<string[]> {
 }
 
 describe("formatBackupCreateSummary", () => {
-  const backupArchiveLine = "Backup archive: /tmp/NexisClaw-backup.tar.gz";
+  const backupArchiveLine = "Backup archive: /tmp/FirstNexus-backup.tar.gz";
 
   it.each([
     {
@@ -56,26 +56,26 @@ describe("formatBackupCreateSummary", () => {
             kind: "state",
             sourcePath: "/state",
             archivePath: "archive/state",
-            displayPath: "~/.NexisClaw",
+            displayPath: "~/.FirstNexus",
           },
         ],
         skipped: [
           {
             kind: "workspace",
             sourcePath: "/workspace",
-            displayPath: "~/Projects/NexisClaw",
+            displayPath: "~/Projects/FirstNexus",
             reason: "covered",
-            coveredBy: "~/.NexisClaw",
+            coveredBy: "~/.FirstNexus",
           },
         ],
       }),
       expected: [
         backupArchiveLine,
         "Included 1 path:",
-        "- state: ~/.NexisClaw",
+        "- state: ~/.FirstNexus",
         "Skipped 1 path:",
-        "- workspace: ~/Projects/NexisClaw (covered by ~/.NexisClaw)",
-        "Created /tmp/NexisClaw-backup.tar.gz",
+        "- workspace: ~/Projects/FirstNexus (covered by ~/.FirstNexus)",
+        "Created /tmp/FirstNexus-backup.tar.gz",
         "Archive verification: passed",
       ],
     },
@@ -88,21 +88,21 @@ describe("formatBackupCreateSummary", () => {
             kind: "config",
             sourcePath: "/config",
             archivePath: "archive/config",
-            displayPath: "~/.NexisClaw/config.json",
+            displayPath: "~/.FirstNexus/config.json",
           },
           {
             kind: "credentials",
             sourcePath: "/oauth",
             archivePath: "archive/oauth",
-            displayPath: "~/.NexisClaw/oauth",
+            displayPath: "~/.FirstNexus/oauth",
           },
         ],
       }),
       expected: [
         backupArchiveLine,
         "Included 2 paths:",
-        "- config: ~/.NexisClaw/config.json",
-        "- credentials: ~/.NexisClaw/oauth",
+        "- config: ~/.FirstNexus/config.json",
+        "- credentials: ~/.FirstNexus/oauth",
         "Dry run only; archive was not written.",
       ],
     },
@@ -119,17 +119,17 @@ describe("formatBackupCreateSummary", () => {
               kind: "state",
               sourcePath: "/state",
               archivePath: "archive/state",
-              displayPath: "~/.NexisClaw",
+              displayPath: "~/.FirstNexus",
             },
           ],
           skippedVolatileCount: 3,
         }),
       ),
     ).toEqual([
-      "Backup archive: /tmp/NexisClaw-backup.tar.gz",
+      "Backup archive: /tmp/FirstNexus-backup.tar.gz",
       "Included 1 path:",
-      "- state: ~/.NexisClaw",
-      "Created /tmp/NexisClaw-backup.tar.gz",
+      "- state: ~/.FirstNexus",
+      "Created /tmp/FirstNexus-backup.tar.gz",
       "Skipped 3 volatile files (live sessions, cron logs, queues, sockets, pid/tmp).",
     ]);
   });
@@ -268,7 +268,7 @@ describe("buildExtensionsNodeModulesFilter", () => {
   it("excludes dependency trees only under state extensions", () => {
     const filter = buildExtensionsNodeModulesFilter("/state/");
 
-    expect(filter("/state/extensions/demo/NexisClaw.plugin.json")).toBe(true);
+    expect(filter("/state/extensions/demo/FirstNexus.plugin.json")).toBe(true);
     expect(filter("/state/extensions/demo/src/index.js")).toBe(true);
     expect(filter("/state/extensions/demo/node_modules/dep/index.js")).toBe(false);
     expect(filter("/state/extensions/demo/vendor/node_modules/dep/index.js")).toBe(false);
@@ -277,21 +277,21 @@ describe("buildExtensionsNodeModulesFilter", () => {
   });
 
   it("normalizes Windows path separators", () => {
-    const filter = buildExtensionsNodeModulesFilter("C:\\Users\\me\\.NexisClaw\\");
+    const filter = buildExtensionsNodeModulesFilter("C:\\Users\\me\\.FirstNexus\\");
 
-    expect(filter(String.raw`C:\Users\me\.NexisClaw\extensions\demo\index.js`)).toBe(true);
+    expect(filter(String.raw`C:\Users\me\.FirstNexus\extensions\demo\index.js`)).toBe(true);
     expect(
-      filter(String.raw`C:\Users\me\.NexisClaw\extensions\demo\node_modules\dep\index.js`),
+      filter(String.raw`C:\Users\me\.FirstNexus\extensions\demo\node_modules\dep\index.js`),
     ).toBe(false);
   });
 });
 
 describe("createBackupArchive", () => {
   it("skips current live volatile state files while preserving workspace locks", async () => {
-    await withNexisClawTestState(
+    await withFirstNexusTestState(
       {
         layout: "split",
-        prefix: "NexisClaw-backup-volatile-",
+        prefix: "FirstNexus-backup-volatile-",
         scenario: "minimal",
       },
       async (state) => {
@@ -347,10 +347,10 @@ describe("createBackupArchive", () => {
   });
 
   it("omits installed plugin node_modules from the real archive while keeping plugin files", async () => {
-    await withNexisClawTestState(
+    await withFirstNexusTestState(
       {
         layout: "state-only",
-        prefix: "NexisClaw-backup-plugin-deps-",
+        prefix: "FirstNexus-backup-plugin-deps-",
         scenario: "minimal",
       },
       async (state) => {
@@ -362,7 +362,7 @@ describe("createBackupArchive", () => {
         await fs.mkdir(path.join(stateDir, "extensions", "demo", "src"), { recursive: true });
         await fs.mkdir(path.join(stateDir, "node_modules", "root-dep"), { recursive: true });
         await fs.writeFile(
-          path.join(stateDir, "extensions", "demo", "NexisClaw.plugin.json"),
+          path.join(stateDir, "extensions", "demo", "FirstNexus.plugin.json"),
           '{"id":"demo"}\n',
           "utf8",
         );
@@ -391,7 +391,7 @@ describe("createBackupArchive", () => {
         const entries = await listArchiveEntries(result.archivePath);
 
         const entrySuffixes = entries.map((entry) => entry.replace(/^.*\/state\//, "/state/"));
-        expect(entrySuffixes).toContain("/state/extensions/demo/NexisClaw.plugin.json");
+        expect(entrySuffixes).toContain("/state/extensions/demo/FirstNexus.plugin.json");
         expect(entrySuffixes).toContain("/state/extensions/demo/src/index.js");
         expect(entrySuffixes).toContain("/state/node_modules/root-dep/index.js");
         const pluginNodeModuleEntries = entries.filter((entry) =>
@@ -407,10 +407,10 @@ describe("createBackupArchive", () => {
   });
 
   it("does not duplicate the root manifest when the system tempdir lives inside the state dir", async () => {
-    await withNexisClawTestState(
+    await withFirstNexusTestState(
       {
         layout: "state-only",
-        prefix: "NexisClaw-backup-tmp-overlap-",
+        prefix: "FirstNexus-backup-tmp-overlap-",
         scenario: "minimal",
       },
       async (state) => {
@@ -444,10 +444,10 @@ describe("createBackupArchive", () => {
   });
 
   it("does not duplicate the root manifest when the system tempdir is the state dir itself", async () => {
-    await withNexisClawTestState(
+    await withFirstNexusTestState(
       {
         layout: "state-only",
-        prefix: "NexisClaw-backup-tmp-equals-state-",
+        prefix: "FirstNexus-backup-tmp-equals-state-",
         scenario: "minimal",
       },
       async (state) => {

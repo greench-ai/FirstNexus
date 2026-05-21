@@ -1,6 +1,6 @@
-import { installedPluginRoot } from "NexisClaw/plugin-sdk/test-fixtures";
+import { installedPluginRoot } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   applyPluginUninstallDirectoryRemoval,
   buildPluginDiagnosticsReport,
@@ -20,7 +20,7 @@ import {
   writePersistedInstalledPluginIndexInstallRecords,
 } from "./plugins-cli-test-helpers.js";
 
-const CLI_STATE_ROOT = "/tmp/NexisClaw-state";
+const CLI_STATE_ROOT = "/tmp/FirstNexus-state";
 const ALPHA_INSTALL_PATH = installedPluginRoot(CLI_STATE_ROOT, "alpha");
 const ORIGINAL_NEXISCLAW_NIX_MODE = process.env.NEXISCLAW_NIX_MODE;
 
@@ -96,14 +96,14 @@ describe("plugins cli uninstall", () => {
           contextEngine: "alpha",
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
     buildPluginSnapshotReport.mockReturnValue({
       plugins: [{ id: "alpha", name: "alpha" }],
       diagnostics: [],
     });
     planPluginUninstall.mockReturnValue({
       ok: true,
-      config: {} as NexisClawConfig,
+      config: {} as FirstNexusConfig,
       actions: {
         entry: true,
         install: true,
@@ -142,13 +142,13 @@ describe("plugins cli uninstall", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const nextConfig = {
       plugins: {
         entries: {},
         installs: {},
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     loadConfig.mockReturnValue(baseConfig);
     setInstalledPluginIndexInstallRecords(baseConfig.plugins?.installs ?? {});
@@ -207,7 +207,7 @@ describe("plugins cli uninstall", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     loadConfig.mockReturnValue(baseConfig);
     setInstalledPluginIndexInstallRecords(baseConfig.plugins?.installs ?? {});
     buildPluginSnapshotReport.mockReturnValue({
@@ -216,7 +216,7 @@ describe("plugins cli uninstall", () => {
     });
     planPluginUninstall.mockReturnValue({
       ok: true,
-      config: { plugins: { entries: {}, installs: {} } } as NexisClawConfig,
+      config: { plugins: { entries: {}, installs: {} } } as FirstNexusConfig,
       actions: {
         entry: true,
         install: true,
@@ -259,13 +259,13 @@ describe("plugins cli uninstall", () => {
         },
         installs: installRecords,
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const nextConfig = {
       plugins: {
         entries: {},
         installs: {},
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     loadConfig.mockReturnValue(baseConfig);
     setInstalledPluginIndexInstallRecords(installRecords);
@@ -318,13 +318,13 @@ describe("plugins cli uninstall", () => {
         },
         installs: installRecords,
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const nextConfig = {
       plugins: {
         entries: {},
         installs: {},
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     loadConfig.mockReturnValue(baseConfig);
     setInstalledPluginIndexInstallRecords(installRecords);
@@ -375,12 +375,12 @@ describe("plugins cli uninstall", () => {
         allow: ["alpha", "beta"],
         deny: ["alpha"],
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const nextConfig = {
       plugins: {
         allow: ["beta"],
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     loadConfig.mockReturnValue(baseConfig);
     buildPluginSnapshotReport.mockReturnValue({
@@ -418,8 +418,8 @@ describe("plugins cli uninstall", () => {
           alpha: { enabled: true },
         },
       },
-    } as NexisClawConfig;
-    const nextConfig = {} as NexisClawConfig;
+    } as FirstNexusConfig;
+    const nextConfig = {} as FirstNexusConfig;
 
     loadConfig.mockReturnValue(baseConfig);
     buildPluginSnapshotReport.mockReturnValue({
@@ -479,14 +479,14 @@ describe("plugins cli uninstall", () => {
           enabled: true,
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const nextConfig = {
       channels: {
         discord: {
           enabled: true,
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     loadConfig.mockReturnValue(baseConfig);
     setInstalledPluginIndexInstallRecords(installRecords);
@@ -530,7 +530,7 @@ describe("plugins cli uninstall", () => {
         entries: {},
         installs: {},
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
     buildPluginSnapshotReport.mockReturnValue({
       plugins: [{ id: "alpha", name: "alpha" }],
       diagnostics: [],

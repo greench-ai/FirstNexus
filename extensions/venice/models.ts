@@ -1,9 +1,9 @@
-import { buildManifestModelProviderConfig } from "NexisClaw/plugin-sdk/provider-catalog-shared";
-import type { ModelDefinitionConfig } from "NexisClaw/plugin-sdk/provider-model-shared";
-import { createSubsystemLogger, retryAsync } from "NexisClaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import manifest from "./NexisClaw.plugin.json" with { type: "json" };
+import { buildManifestModelProviderConfig } from "FirstNexus/plugin-sdk/provider-catalog-shared";
+import type { ModelDefinitionConfig } from "FirstNexus/plugin-sdk/provider-model-shared";
+import { createSubsystemLogger, retryAsync } from "FirstNexus/plugin-sdk/runtime-env";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import manifest from "./FirstNexus.plugin.json" with { type: "json" };
 
 const log = createSubsystemLogger("venice-models");
 

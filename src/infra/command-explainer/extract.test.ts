@@ -196,14 +196,14 @@ describe("command explainer tree-sitter runtime", () => {
   it("reports missing parser packages and wasm files with explainer context", () => {
     expect(() =>
       resolvePackageFileForCommandExplanation(
-        "definitely-missing-NexisClaw-parser-package",
+        "definitely-missing-FirstNexus-parser-package",
         "parser.wasm",
       ),
-    ).toThrow("Unable to resolve definitely-missing-NexisClaw-parser-package");
+    ).toThrow("Unable to resolve definitely-missing-FirstNexus-parser-package");
 
     expect(() =>
-      resolvePackageFileForCommandExplanation("web-tree-sitter", "missing-NexisClaw-parser.wasm"),
-    ).toThrow("Unable to locate missing-NexisClaw-parser.wasm in web-tree-sitter");
+      resolvePackageFileForCommandExplanation("web-tree-sitter", "missing-FirstNexus-parser.wasm"),
+    ).toThrow("Unable to locate missing-FirstNexus-parser.wasm in web-tree-sitter");
   });
 
   it("reports parser progress cancellation as a timeout", async () => {

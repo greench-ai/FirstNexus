@@ -2,8 +2,8 @@ import {
   installChannelActionsContractSuite,
   installChannelSetupContractSuite,
   installChannelStatusContractSuite,
-} from "NexisClaw/plugin-sdk/channel-test-helpers";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-test-helpers";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect } from "vitest";
 import { slackPlugin } from "../api.js";
 import { slackSetupPlugin } from "../setup-plugin-api.js";
@@ -38,7 +38,7 @@ describe("slack actions contract", () => {
               appToken: "xapp-test",
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         expectedActions: slackDefaultActions,
         expectedCapabilities: ["presentation"],
       },
@@ -54,7 +54,7 @@ describe("slack actions contract", () => {
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         expectedActions: slackDefaultActions,
         expectedCapabilities: ["presentation"],
       },
@@ -66,7 +66,7 @@ describe("slack actions contract", () => {
               enabled: true,
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         expectedActions: [],
         expectedCapabilities: [],
       },
@@ -80,7 +80,7 @@ describe("slack setup contract", () => {
     cases: [
       {
         name: "default account stores tokens and enables the channel",
-        cfg: {} as NexisClawConfig,
+        cfg: {} as FirstNexusConfig,
         input: {
           botToken: "xoxb-test",
           appToken: "xapp-test",
@@ -94,7 +94,7 @@ describe("slack setup contract", () => {
       },
       {
         name: "non-default env setup is rejected",
-        cfg: {} as NexisClawConfig,
+        cfg: {} as FirstNexusConfig,
         accountId: "ops",
         input: {
           useEnv: true,
@@ -119,7 +119,7 @@ describe("slack status contract", () => {
               appToken: "xapp-test",
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         runtime: {
           accountId: "default",
           connected: true,

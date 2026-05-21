@@ -1,13 +1,13 @@
 import { Command } from "commander";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 
 const mocks = vi.hoisted(() => ({
   memoryRegister: vi.fn(),
   otherRegister: vi.fn(),
   memoryListAction: vi.fn(),
-  loadNexisClawPluginCliRegistry: vi.fn(),
-  loadNexisClawPlugins: vi.fn(),
+  loadFirstNexusPluginCliRegistry: vi.fn(),
+  loadFirstNexusPlugins: vi.fn(),
   resolveManifestActivationPluginIds: vi.fn(),
   applyPluginAutoEnable: vi.fn(),
   loadConfig: vi.fn(),
@@ -15,9 +15,9 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("./loader.js", () => ({
-  loadNexisClawPluginCliRegistry: (...args: unknown[]) =>
-    mocks.loadNexisClawPluginCliRegistry(...args),
-  loadNexisClawPlugins: (...args: unknown[]) => mocks.loadNexisClawPlugins(...args),
+  loadFirstNexusPluginCliRegistry: (...args: unknown[]) =>
+    mocks.loadFirstNexusPluginCliRegistry(...args),
+  loadFirstNexusPlugins: (...args: unknown[]) => mocks.loadFirstNexusPlugins(...args),
 }));
 
 vi.mock("./activation-planner.js", () => ({
@@ -89,7 +89,7 @@ function createAutoEnabledCliFixture() {
   const rawConfig = {
     plugins: {},
     channels: { demo: { enabled: true } },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
   const autoEnabledConfig = {
     ...rawConfig,
     plugins: {
@@ -97,7 +97,7 @@ function createAutoEnabledCliFixture() {
         demo: { enabled: true },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
   return { rawConfig, autoEnabledConfig };
 }
 
@@ -110,15 +110,15 @@ function getMockCallObject(mock: ReturnType<typeof vi.fn>, callIndex = 0, argInd
 }
 
 function expectAutoEnabledCliLoad(params: {
-  rawConfig: NexisClawConfig;
-  autoEnabledConfig: NexisClawConfig;
+  rawConfig: FirstNexusConfig;
+  autoEnabledConfig: FirstNexusConfig;
   autoEnabledReasons?: Record<string, string[]>;
 }) {
   expect(mocks.applyPluginAutoEnable).toHaveBeenCalledWith({
     config: params.rawConfig,
     env: process.env,
   });
-  const loadOptions = getMockCallObject(mocks.loadNexisClawPlugins);
+  const loadOptions = getMockCallObject(mocks.loadFirstNexusPlugins);
   expect(loadOptions.config).toBe(params.autoEnabledConfig);
   expect(loadOptions.activationSourceConfig).toBe(params.rawConfig);
   expect(loadOptions.autoEnabledReasons).toEqual(params.autoEnabledReasons ?? {});
@@ -145,10 +145,10 @@ describe("registerPluginCliCommands", () => {
       program.command("other").description("Other commands");
     });
     mocks.memoryListAction.mockReset();
-    mocks.loadNexisClawPluginCliRegistry.mockReset();
-    mocks.loadNexisClawPluginCliRegistry.mockResolvedValue(createCliRegistry());
-    mocks.loadNexisClawPlugins.mockReset();
-    mocks.loadNexisClawPlugins.mockReturnValue({
+    mocks.loadFirstNexusPluginCliRegistry.mockReset();
+    mocks.loadFirstNexusPluginCliRegistry.mockResolvedValue(createCliRegistry());
+    mocks.loadFirstNexusPlugins.mockReset();
+    mocks.loadFirstNexusPlugins.mockReturnValue({
       ...createCliRegistry(),
       diagnostics: [],
     });
@@ -161,7 +161,7 @@ describe("registerPluginCliCommands", () => {
       autoEnabledReasons: {},
     }));
     mocks.loadConfig.mockReset();
-    mocks.loadConfig.mockReturnValue({} as NexisClawConfig);
+    mocks.loadConfig.mockReturnValue({} as FirstNexusConfig);
     mocks.readConfigFileSnapshot.mockReset();
     mocks.readConfigFileSnapshot.mockResolvedValue({
       valid: true,
@@ -172,25 +172,25 @@ describe("registerPluginCliCommands", () => {
   it("skips plugin CLI registrars when commands already exist", async () => {
     const program = createProgram("memory");
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig);
+    await registerPluginCliCommands(program, {} as FirstNexusConfig);
 
     expect(mocks.memoryRegister).not.toHaveBeenCalled();
     expect(mocks.otherRegister).toHaveBeenCalledTimes(1);
   });
 
   it("forwards an explicit env to plugin loading", async () => {
-    const env = { NEXISCLAW_HOME: "/srv/NexisClaw-home" } as NodeJS.ProcessEnv;
+    const env = { NEXISCLAW_HOME: "/srv/FirstNexus-home" } as NodeJS.ProcessEnv;
 
-    await registerPluginCliCommands(createProgram(), {} as NexisClawConfig, env);
+    await registerPluginCliCommands(createProgram(), {} as FirstNexusConfig, env);
 
-    const loadOptions = getMockCallObject(mocks.loadNexisClawPlugins);
+    const loadOptions = getMockCallObject(mocks.loadFirstNexusPlugins);
     expect(loadOptions.env).toBe(env);
   });
 
   it("injects gateway-backed node runtime into plugin CLI commands", async () => {
-    await registerPluginCliCommands(createProgram(), {} as NexisClawConfig);
+    await registerPluginCliCommands(createProgram(), {} as FirstNexusConfig);
 
-    const loadOptions = getMockCallObject(mocks.loadNexisClawPlugins) as {
+    const loadOptions = getMockCallObject(mocks.loadFirstNexusPlugins) as {
       runtimeOptions?: { nodes?: { list?: unknown; invoke?: unknown } };
     };
     expect(typeof loadOptions.runtimeOptions?.nodes?.list).toBe("function");
@@ -200,21 +200,21 @@ describe("registerPluginCliCommands", () => {
   it("reuses loaded plugin CLI entries on repeat calls for the same program", async () => {
     const program = createProgram();
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig);
-    await registerPluginCliCommands(program, {} as NexisClawConfig);
+    await registerPluginCliCommands(program, {} as FirstNexusConfig);
+    await registerPluginCliCommands(program, {} as FirstNexusConfig);
 
-    expect(mocks.loadNexisClawPlugins).toHaveBeenCalledTimes(1);
+    expect(mocks.loadFirstNexusPlugins).toHaveBeenCalledTimes(1);
   });
 
   it("reloads plugin CLI entries when the requested primary command changes", async () => {
     const program = createProgram();
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig, undefined, undefined, {
+    await registerPluginCliCommands(program, {} as FirstNexusConfig, undefined, undefined, {
       primary: "memory",
     });
-    await registerPluginCliCommands(program, {} as NexisClawConfig);
+    await registerPluginCliCommands(program, {} as FirstNexusConfig);
 
-    expect(mocks.loadNexisClawPlugins).toHaveBeenCalledTimes(2);
+    expect(mocks.loadFirstNexusPlugins).toHaveBeenCalledTimes(2);
   });
 
   it("loads plugin CLI commands from the auto-enabled config snapshot", async () => {
@@ -249,7 +249,7 @@ describe("registerPluginCliCommands", () => {
         demo: ["demo configured"],
       },
     });
-    mocks.loadNexisClawPluginCliRegistry.mockResolvedValue({
+    mocks.loadFirstNexusPluginCliRegistry.mockResolvedValue({
       cliRegistrars: [
         {
           pluginId: "matrix",
@@ -287,7 +287,7 @@ describe("registerPluginCliCommands", () => {
         hasSubcommands: true,
       },
     ]);
-    const registryOptions = getMockCallObject(mocks.loadNexisClawPluginCliRegistry);
+    const registryOptions = getMockCallObject(mocks.loadFirstNexusPluginCliRegistry);
     expect(registryOptions.config).toBe(autoEnabledConfig);
     expect(registryOptions.activationSourceConfig).toBe(rawConfig);
     expect(registryOptions.autoEnabledReasons).toEqual({
@@ -304,7 +304,7 @@ describe("registerPluginCliCommands", () => {
         demo: ["demo configured"],
       },
     });
-    mocks.loadNexisClawPlugins.mockReturnValue(
+    mocks.loadFirstNexusPlugins.mockReturnValue(
       createCliRegistry({
         memoryCommands: ["legacy-channel"],
         memoryDescriptors: [
@@ -321,7 +321,7 @@ describe("registerPluginCliCommands", () => {
       mode: "lazy",
     });
 
-    const loadOptions = getMockCallObject(mocks.loadNexisClawPlugins);
+    const loadOptions = getMockCallObject(mocks.loadFirstNexusPlugins);
     expect(loadOptions.config).toBe(autoEnabledConfig);
     expect(loadOptions.activationSourceConfig).toBe(rawConfig);
     expect(loadOptions.autoEnabledReasons).toEqual({
@@ -329,14 +329,14 @@ describe("registerPluginCliCommands", () => {
     });
     expect(loadOptions.activate).toBe(false);
     expect(loadOptions.cache).toBe(false);
-    expect(mocks.loadNexisClawPluginCliRegistry).not.toHaveBeenCalled();
+    expect(mocks.loadFirstNexusPluginCliRegistry).not.toHaveBeenCalled();
   });
 
   it("lazy-registers descriptor-backed plugin commands on first invocation", async () => {
     const program = createProgram();
     program.exitOverride();
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig, undefined, undefined, {
+    await registerPluginCliCommands(program, {} as FirstNexusConfig, undefined, undefined, {
       mode: "lazy",
     });
 
@@ -351,7 +351,7 @@ describe("registerPluginCliCommands", () => {
   });
 
   it("falls back to eager registration when descriptors do not cover every command root", async () => {
-    mocks.loadNexisClawPlugins.mockReturnValue(
+    mocks.loadFirstNexusPlugins.mockReturnValue(
       createCliRegistry({
         memoryCommands: ["memory", "memory-admin"],
         memoryDescriptors: [
@@ -368,7 +368,7 @@ describe("registerPluginCliCommands", () => {
       program.command("memory-admin");
     });
 
-    await registerPluginCliCommands(createProgram(), {} as NexisClawConfig, undefined, undefined, {
+    await registerPluginCliCommands(createProgram(), {} as FirstNexusConfig, undefined, undefined, {
       mode: "lazy",
     });
 
@@ -380,7 +380,7 @@ describe("registerPluginCliCommands", () => {
     program.exitOverride();
     mocks.resolveManifestActivationPluginIds.mockReturnValue(["memory-core"]);
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig, undefined, undefined, {
+    await registerPluginCliCommands(program, {} as FirstNexusConfig, undefined, undefined, {
       mode: "lazy",
       primary: "memory",
     });
@@ -388,7 +388,7 @@ describe("registerPluginCliCommands", () => {
     expect(
       program.commands.reduce((count, command) => count + (command.name() === "memory" ? 1 : 0), 0),
     ).toBe(1);
-    const loadOptions = getMockCallObject(mocks.loadNexisClawPlugins);
+    const loadOptions = getMockCallObject(mocks.loadFirstNexusPlugins);
     expect(loadOptions.onlyPluginIds).toEqual(["memory-core"]);
 
     await program.parseAsync(["memory", "list"], { from: "user" });
@@ -401,7 +401,7 @@ describe("registerPluginCliCommands", () => {
     const program = createProgram("nodes");
     program.exitOverride();
     mocks.resolveManifestActivationPluginIds.mockReturnValue(["memory-core"]);
-    mocks.loadNexisClawPlugins.mockReturnValue(
+    mocks.loadFirstNexusPlugins.mockReturnValue(
       createCliRegistry({
         memoryParentPath: ["nodes"],
         memoryCommands: ["canvas"],
@@ -419,7 +419,7 @@ describe("registerPluginCliCommands", () => {
       canvas.command("snapshot").action(mocks.memoryListAction);
     });
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig, undefined, undefined, {
+    await registerPluginCliCommands(program, {} as FirstNexusConfig, undefined, undefined, {
       mode: "lazy",
       primary: "nodes",
     });
@@ -438,13 +438,13 @@ describe("registerPluginCliCommands", () => {
     const program = createProgram();
     program.exitOverride();
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig, undefined, undefined, {
+    await registerPluginCliCommands(program, {} as FirstNexusConfig, undefined, undefined, {
       mode: "lazy",
       primary: "memory",
     });
 
-    expect(mocks.loadNexisClawPluginCliRegistry).toHaveBeenCalled();
-    const loadOptions = getMockCallObject(mocks.loadNexisClawPlugins);
+    expect(mocks.loadFirstNexusPluginCliRegistry).toHaveBeenCalled();
+    const loadOptions = getMockCallObject(mocks.loadFirstNexusPlugins);
     expect(loadOptions.onlyPluginIds).toEqual(["memory-core"]);
   });
 
@@ -460,17 +460,17 @@ describe("registerPluginCliCommands", () => {
         },
       ],
     });
-    mocks.loadNexisClawPluginCliRegistry.mockResolvedValue(nestedRegistry);
-    mocks.loadNexisClawPlugins.mockReturnValue(nestedRegistry);
+    mocks.loadFirstNexusPluginCliRegistry.mockResolvedValue(nestedRegistry);
+    mocks.loadFirstNexusPlugins.mockReturnValue(nestedRegistry);
     const program = createProgram("nodes");
     program.exitOverride();
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig, undefined, undefined, {
+    await registerPluginCliCommands(program, {} as FirstNexusConfig, undefined, undefined, {
       mode: "lazy",
       primary: "nodes",
     });
 
-    const loadOptions = getMockCallObject(mocks.loadNexisClawPlugins);
+    const loadOptions = getMockCallObject(mocks.loadFirstNexusPlugins);
     expect(loadOptions.onlyPluginIds).toEqual(["memory-core"]);
   });
 
@@ -478,13 +478,13 @@ describe("registerPluginCliCommands", () => {
     const program = createProgram();
     program.exitOverride();
 
-    await registerPluginCliCommands(program, {} as NexisClawConfig, undefined, undefined, {
+    await registerPluginCliCommands(program, {} as FirstNexusConfig, undefined, undefined, {
       mode: "lazy",
       primary: "missing-command",
     });
 
-    expect(mocks.loadNexisClawPluginCliRegistry).toHaveBeenCalled();
-    expect(mocks.loadNexisClawPlugins).not.toHaveBeenCalled();
+    expect(mocks.loadFirstNexusPluginCliRegistry).toHaveBeenCalled();
+    expect(mocks.loadFirstNexusPlugins).not.toHaveBeenCalled();
     expect(program.commands.map((command) => command.name())).not.toContain("missing-command");
   });
 
@@ -499,7 +499,7 @@ describe("registerPluginCliCommands", () => {
   });
 
   it("loads validated plugin CLI config when the snapshot is valid", async () => {
-    const loadedConfig = { plugins: { enabled: true } } as NexisClawConfig;
+    const loadedConfig = { plugins: { enabled: true } } as FirstNexusConfig;
     mocks.readConfigFileSnapshot.mockResolvedValueOnce({
       valid: true,
       config: loadedConfig,
@@ -517,6 +517,6 @@ describe("registerPluginCliCommands", () => {
     });
 
     await expect(registerPluginCliCommandsFromValidatedConfig(createProgram())).resolves.toBeNull();
-    expect(mocks.loadNexisClawPlugins).not.toHaveBeenCalled();
+    expect(mocks.loadFirstNexusPlugins).not.toHaveBeenCalled();
   });
 });

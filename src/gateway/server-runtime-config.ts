@@ -1,16 +1,16 @@
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type {
   GatewayAuthConfig,
   GatewayBindMode,
   GatewayTailscaleConfig,
 } from "../config/types.gateway.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
 import {
   assertGatewayAuthConfigured,
   type ResolvedGatewayAuth,
   resolveGatewayAuth,
 } from "./auth.js";
 import { normalizeControlUiBasePath } from "./control-ui-shared.js";
-import { warnLegacyNexisClawEnvVars } from "./env-deprecation.js";
+import { warnLegacyFirstNexusEnvVars } from "./env-deprecation.js";
 import { resolveHooksConfig } from "./hooks.js";
 import {
   defaultGatewayBindMode,
@@ -38,7 +38,7 @@ type GatewayRuntimeConfig = {
 };
 
 export async function resolveGatewayRuntimeConfig(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   port: number;
   bind?: GatewayBindMode;
   host?: string;
@@ -48,7 +48,7 @@ export async function resolveGatewayRuntimeConfig(params: {
   auth?: GatewayAuthConfig;
   tailscale?: GatewayTailscaleConfig;
 }): Promise<GatewayRuntimeConfig> {
-  warnLegacyNexisClawEnvVars();
+  warnLegacyFirstNexusEnvVars();
 
   // Tailscale serve/funnel hard-requires loopback.  When bind is not
   // explicitly set, we must resolve Tailscale mode *before* choosing the

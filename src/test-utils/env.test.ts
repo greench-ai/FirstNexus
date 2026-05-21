@@ -119,14 +119,14 @@ describe("env test utils", () => {
   });
 
   it("createPathResolutionEnv clears leaked path overrides before applying explicit ones", () => {
-    const homeDir = path.join(path.sep, "tmp", "NexisClaw-home");
+    const homeDir = path.join(path.sep, "tmp", "FirstNexus-home");
     const resolvedHomeDir = path.resolve(homeDir);
-    const previousNexisClawHome = process.env.NEXISCLAW_HOME;
+    const previousFirstNexusHome = process.env.NEXISCLAW_HOME;
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     const previousBundledDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
-    process.env.NEXISCLAW_HOME = "/srv/NexisClaw-home";
-    process.env.NEXISCLAW_STATE_DIR = "/srv/NexisClaw-state";
-    process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = "/srv/NexisClaw-bundled";
+    process.env.NEXISCLAW_HOME = "/srv/FirstNexus-home";
+    process.env.NEXISCLAW_STATE_DIR = "/srv/FirstNexus-state";
+    process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = "/srv/FirstNexus-bundled";
 
     try {
       const env = createPathResolutionEnv(homeDir, {
@@ -138,17 +138,17 @@ describe("env test utils", () => {
       expect(env.NEXISCLAW_BUNDLED_PLUGINS_DIR).toBeUndefined();
       expect(env.NEXISCLAW_STATE_DIR).toBe("~/state");
     } finally {
-      restoreEnvKey("NEXISCLAW_HOME", previousNexisClawHome);
+      restoreEnvKey("NEXISCLAW_HOME", previousFirstNexusHome);
       restoreEnvKey("NEXISCLAW_STATE_DIR", previousStateDir);
       restoreEnvKey("NEXISCLAW_BUNDLED_PLUGINS_DIR", previousBundledDir);
     }
   });
 
   it("withPathResolutionEnv only applies the explicit path env inside the callback", () => {
-    const homeDir = path.join(path.sep, "tmp", "NexisClaw-home");
+    const homeDir = path.join(path.sep, "tmp", "FirstNexus-home");
     const resolvedHomeDir = path.resolve(homeDir);
-    const previousNexisClawHome = process.env.NEXISCLAW_HOME;
-    process.env.NEXISCLAW_HOME = "/srv/NexisClaw-home";
+    const previousFirstNexusHome = process.env.NEXISCLAW_HOME;
+    process.env.NEXISCLAW_HOME = "/srv/FirstNexus-home";
 
     try {
       const seen = withPathResolutionEnv(
@@ -156,7 +156,7 @@ describe("env test utils", () => {
         { NEXISCLAW_BUNDLED_PLUGINS_DIR: "~/bundled" },
         (env) => ({
           processHome: process.env.HOME,
-          processNexisClawHome: process.env.NEXISCLAW_HOME,
+          processFirstNexusHome: process.env.NEXISCLAW_HOME,
           processBundledDir: process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR,
           envBundledDir: env.NEXISCLAW_BUNDLED_PLUGINS_DIR,
         }),
@@ -164,13 +164,13 @@ describe("env test utils", () => {
 
       expect(seen).toEqual({
         processHome: resolvedHomeDir,
-        processNexisClawHome: undefined,
+        processFirstNexusHome: undefined,
         processBundledDir: "~/bundled",
         envBundledDir: "~/bundled",
       });
-      expect(process.env.NEXISCLAW_HOME).toBe("/srv/NexisClaw-home");
+      expect(process.env.NEXISCLAW_HOME).toBe("/srv/FirstNexus-home");
     } finally {
-      restoreEnvKey("NEXISCLAW_HOME", previousNexisClawHome);
+      restoreEnvKey("NEXISCLAW_HOME", previousFirstNexusHome);
     }
   });
 });

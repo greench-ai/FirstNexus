@@ -2,9 +2,9 @@ import { randomUUID } from "node:crypto";
 import { performance } from "node:perf_hooks";
 import { normalizeModelRef, parseModelRef } from "../agents/model-selection.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizePluginsConfig } from "../plugins/config-state.js";
-import { clearActivatedPluginRuntimeState, loadNexisClawPlugins } from "../plugins/loader.js";
+import { clearActivatedPluginRuntimeState, loadFirstNexusPlugins } from "../plugins/loader.js";
 import { loadPluginLookUpTable, type PluginLookUpTable } from "../plugins/plugin-lookup-table.js";
 import { getPluginModuleLoaderStats } from "../plugins/plugin-module-loader-cache.js";
 import { createEmptyPluginRegistry } from "../plugins/registry-empty.js";
@@ -32,7 +32,7 @@ import type {
 // dispatchGatewayMethod can use it as a fallback.
 
 const FALLBACK_GATEWAY_CONTEXT_STATE_KEY: unique symbol = Symbol.for(
-  "NexisClaw.fallbackGatewayContextState",
+  "FirstNexus.fallbackGatewayContextState",
 );
 
 type FallbackGatewayContextState = {
@@ -100,7 +100,7 @@ type PluginSubagentPolicyState = {
 };
 
 const PLUGIN_SUBAGENT_POLICY_STATE_KEY: unique symbol = Symbol.for(
-  "NexisClaw.pluginSubagentOverridePolicyState",
+  "FirstNexus.pluginSubagentOverridePolicyState",
 );
 
 const getPluginSubagentPolicyState = () =>
@@ -129,7 +129,7 @@ function normalizeAllowedModelRef(raw: string): string | null {
   return `${normalized.provider}/${normalized.model}`;
 }
 
-export function setPluginSubagentOverridePolicies(cfg: NexisClawConfig): void {
+export function setPluginSubagentOverridePolicies(cfg: FirstNexusConfig): void {
   const pluginSubagentPolicyState = getPluginSubagentPolicyState();
   const normalized = normalizePluginsConfig(cfg.plugins);
   const policies: PluginSubagentPolicyState["policies"] = {};
@@ -187,7 +187,7 @@ function authorizeFallbackModelOverride(params: {
       allowed: false,
       reason:
         `plugin "${pluginId}" is not trusted for fallback provider/model override requests. ` +
-        "See https://docs.NexisClaw.ai/tools/plugin#runtime-helpers and search for: " +
+        "See https://docs.FirstNexus.ai/tools/plugin#runtime-helpers and search for: " +
         "plugins.entries.<id>.subagent.allowModelOverride",
     };
   }
@@ -516,8 +516,8 @@ function createGatewayPluginRegistrationLogger(params?: {
 }
 
 export function loadGatewayPlugins(params: {
-  cfg: NexisClawConfig;
-  activationSourceConfig?: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  activationSourceConfig?: FirstNexusConfig;
   autoEnabledReasons?: Readonly<Record<string, string[]>>;
   workspaceDir: string;
   log: {
@@ -603,7 +603,7 @@ export function loadGatewayPlugins(params: {
   }
   const beforeLoad = performance.now();
   const loaderStatsBefore = getPluginModuleLoaderStats();
-  const pluginRegistry = loadNexisClawPlugins({
+  const pluginRegistry = loadFirstNexusPlugins({
     config: resolvedConfig,
     activationSourceConfig: params.activationSourceConfig ?? params.cfg,
     autoEnabledReasons: autoEnabled.autoEnabledReasons,

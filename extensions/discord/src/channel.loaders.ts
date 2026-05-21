@@ -1,4 +1,4 @@
-import { createLazyRuntimeModule } from "NexisClaw/plugin-sdk/lazy-runtime";
+import { createLazyRuntimeModule } from "FirstNexus/plugin-sdk/lazy-runtime";
 
 let discordProviderRuntimePromise:
   | Promise<typeof import("./monitor/provider.runtime.js")>

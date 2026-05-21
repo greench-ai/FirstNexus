@@ -2,36 +2,36 @@ import {
   formatReasoningMessage,
   resolveAckReaction,
   resolveHumanDelayConfig,
-} from "NexisClaw/plugin-sdk/agent-runtime";
+} from "FirstNexus/plugin-sdk/agent-runtime";
 import {
   createStatusReactionController,
   DEFAULT_TIMING,
   logAckFailure,
   logTypingFailure,
   shouldAckReaction as shouldAckReactionGate,
-} from "NexisClaw/plugin-sdk/channel-feedback";
+} from "FirstNexus/plugin-sdk/channel-feedback";
 import {
   createChannelMessageReplyPipeline,
   defineFinalizableLivePreviewAdapter,
   deliverWithFinalizableLivePreviewAdapter,
   resolveChannelMessageSourceReplyDeliveryMode,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import {
   buildChannelProgressDraftLine,
   buildChannelProgressDraftLineForEntry,
   resolveChannelStreamingBlockEnabled,
-} from "NexisClaw/plugin-sdk/channel-streaming";
-import { recordInboundSession } from "NexisClaw/plugin-sdk/conversation-runtime";
+} from "FirstNexus/plugin-sdk/channel-streaming";
+import { recordInboundSession } from "FirstNexus/plugin-sdk/conversation-runtime";
 import {
   hasFinalInboundReplyDispatch,
   runInboundReplyTurn,
-} from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import { getAgentScopedMediaLocalRoots } from "NexisClaw/plugin-sdk/media-runtime";
-import { resolveChunkMode } from "NexisClaw/plugin-sdk/reply-chunking";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-dispatch-runtime";
-import { resolveSendableOutboundReplyParts } from "NexisClaw/plugin-sdk/reply-payload";
-import { danger, logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import { getAgentScopedMediaLocalRoots } from "FirstNexus/plugin-sdk/media-runtime";
+import { resolveChunkMode } from "FirstNexus/plugin-sdk/reply-chunking";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-dispatch-runtime";
+import { resolveSendableOutboundReplyParts } from "FirstNexus/plugin-sdk/reply-payload";
+import { danger, logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import { resolveDiscordMaxLinesPerMessage } from "../accounts.js";
 import { createDiscordRestClient } from "../client.js";
 import { removeReactionDiscord } from "../send.js";
@@ -61,10 +61,10 @@ function sleep(ms: number): Promise<void> {
 }
 
 const DISCORD_TYPING_MAX_DURATION_MS = 20 * 60_000;
-let replyRuntimePromise: Promise<typeof import("NexisClaw/plugin-sdk/reply-runtime")> | undefined;
+let replyRuntimePromise: Promise<typeof import("FirstNexus/plugin-sdk/reply-runtime")> | undefined;
 
 async function loadReplyRuntime() {
-  replyRuntimePromise ??= import("NexisClaw/plugin-sdk/reply-runtime");
+  replyRuntimePromise ??= import("FirstNexus/plugin-sdk/reply-runtime");
   return await replyRuntimePromise;
 }
 

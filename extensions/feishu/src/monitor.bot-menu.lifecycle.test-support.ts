@@ -1,4 +1,4 @@
-import { createRuntimeEnv } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+import { createRuntimeEnv } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import "./lifecycle.test-support.js";
 import {
@@ -94,7 +94,7 @@ describe("Feishu bot-menu lifecycle", () => {
     resetFeishuLifecycleTestMocks();
     _handlers = {};
     lastRuntime = createRuntimeEnv();
-    setFeishuLifecycleStateDir("NexisClaw-feishu-bot-menu");
+    setFeishuLifecycleStateDir("FirstNexus-feishu-bot-menu");
 
     createFeishuReplyDispatcherMock.mockReturnValue(createFeishuLifecycleReplyDispatcher());
 

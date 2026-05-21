@@ -1,18 +1,18 @@
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
-import { formatNormalizedAllowFromEntries } from "NexisClaw/plugin-sdk/allow-from";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
+import { formatNormalizedAllowFromEntries } from "FirstNexus/plugin-sdk/allow-from";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
-import type { ChannelMessageActionName } from "NexisClaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import { buildPassiveProbedChannelStatusSummary } from "NexisClaw/plugin-sdk/extension-shared";
-import { createLazyRuntimeNamedExport } from "NexisClaw/plugin-sdk/lazy-runtime";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
+import type { ChannelMessageActionName } from "FirstNexus/plugin-sdk/channel-contract";
+import { createChatChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import { buildPassiveProbedChannelStatusSummary } from "FirstNexus/plugin-sdk/extension-shared";
+import { createLazyRuntimeNamedExport } from "FirstNexus/plugin-sdk/lazy-runtime";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "NexisClaw/plugin-sdk/status-helpers";
-import { extractToolSend } from "NexisClaw/plugin-sdk/tool-send";
+} from "FirstNexus/plugin-sdk/status-helpers";
+import { extractToolSend } from "FirstNexus/plugin-sdk/tool-send";
 import { googleChatApprovalAuth } from "./approval-auth.js";
 import {
   formatAllowFromEntry,

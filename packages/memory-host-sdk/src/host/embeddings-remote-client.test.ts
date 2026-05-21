@@ -7,7 +7,7 @@ describe("resolveRemoteEmbeddingBearerClient", () => {
       provider: "openai",
       defaultBaseUrl: "https://api.openai.com/v1",
       options: {
-        agentDir: "/tmp/NexisClaw-agent",
+        agentDir: "/tmp/FirstNexus-agent",
         config: {
           models: {
             providers: {
@@ -27,7 +27,7 @@ describe("resolveRemoteEmbeddingBearerClient", () => {
     expect(client.baseUrl).toBe("https://proxy.example.test/openai/v1");
   });
 
-  it("adds NexisClaw attribution to native OpenAI embedding requests", async () => {
+  it("adds FirstNexus attribution to native OpenAI embedding requests", async () => {
     vi.stubEnv("NEXISCLAW_VERSION", "2026.3.22");
     const client = await resolveRemoteEmbeddingBearerClient({
       provider: "openai",
@@ -48,9 +48,9 @@ describe("resolveRemoteEmbeddingBearerClient", () => {
     expect(client.headers).toEqual({
       Authorization: "Bearer sk-test",
       "Content-Type": "application/json",
-      originator: "NexisClaw",
+      originator: "FirstNexus",
       version: "2026.3.22",
-      "User-Agent": "NexisClaw/2026.3.22",
+      "User-Agent": "FirstNexus/2026.3.22",
     });
   });
 });

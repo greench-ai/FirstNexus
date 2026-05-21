@@ -11,4 +11,4 @@ export {
   stripInvalidGoogleThinkingBudget,
   type GoogleThinkingInputLevel,
   type GoogleThinkingLevel,
-} from "NexisClaw/plugin-sdk/provider-stream-shared";
+} from "FirstNexus/plugin-sdk/provider-stream-shared";

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { ChannelApprovalKind } from "../../infra/approval-types.js";
 import type { ExecApprovalRequest } from "../../infra/exec-approvals.js";
 import type { PluginApprovalRequest } from "../../infra/plugin-approvals.js";
@@ -24,19 +24,19 @@ export type ChannelApprovalNativeDeliveryCapabilities = {
 
 export type ChannelApprovalNativeAdapter = {
   describeDeliveryCapabilities: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     approvalKind: ChannelApprovalKind;
     request: ChannelApprovalNativeRequest;
   }) => ChannelApprovalNativeDeliveryCapabilities;
   resolveOriginTarget?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     approvalKind: ChannelApprovalKind;
     request: ChannelApprovalNativeRequest;
   }) => ChannelApprovalNativeTarget | null | Promise<ChannelApprovalNativeTarget | null>;
   resolveApproverDmTargets?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     approvalKind: ChannelApprovalKind;
     request: ChannelApprovalNativeRequest;

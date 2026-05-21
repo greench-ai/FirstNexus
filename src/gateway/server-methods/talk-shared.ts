@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.js";
+import type { FirstNexusConfig } from "../../config/types.js";
 import { listRealtimeTranscriptionProviders } from "../../realtime-transcription/provider-registry.js";
 import type { RealtimeTranscriptionProviderConfig } from "../../realtime-transcription/provider-types.js";
 import {
@@ -59,7 +59,7 @@ function getRecord(value: unknown): Record<string, unknown> | undefined {
   return asRecord(value) ?? undefined;
 }
 
-function getVoiceCallRealtimeConfig(config: NexisClawConfig): {
+function getVoiceCallRealtimeConfig(config: FirstNexusConfig): {
   provider?: string;
   providers?: Record<string, RealtimeVoiceProviderConfig>;
 } {
@@ -84,7 +84,7 @@ function getVoiceCallRealtimeConfig(config: NexisClawConfig): {
   };
 }
 
-export function getVoiceCallStreamingConfig(config: NexisClawConfig): {
+export function getVoiceCallStreamingConfig(config: FirstNexusConfig): {
   provider?: string;
   providers?: Record<string, RealtimeTranscriptionProviderConfig>;
 } {
@@ -109,7 +109,7 @@ export function getVoiceCallStreamingConfig(config: NexisClawConfig): {
   };
 }
 
-export function buildTalkRealtimeConfig(config: NexisClawConfig, requestedProvider?: string) {
+export function buildTalkRealtimeConfig(config: FirstNexusConfig, requestedProvider?: string) {
   const voiceCallRealtime = getVoiceCallRealtimeConfig(config);
   const talkRealtime = getRecord(config.talk?.realtime);
   const talkRealtimeProviderConfigs = talkRealtime?.providers as
@@ -134,7 +134,7 @@ export function buildTalkRealtimeConfig(config: NexisClawConfig, requestedProvid
   };
 }
 
-export function buildTalkTranscriptionConfig(config: NexisClawConfig, requestedProvider?: string) {
+export function buildTalkTranscriptionConfig(config: FirstNexusConfig, requestedProvider?: string) {
   const streamingConfig = getVoiceCallStreamingConfig(config);
   return {
     provider: normalizeOptionalString(requestedProvider) ?? streamingConfig.provider,
@@ -177,7 +177,7 @@ export function configuredOrFalse(callback: () => boolean): boolean {
 }
 
 export function resolveConfiguredRealtimeTranscriptionProvider(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   configuredProviderId?: string;
   providerConfigs: Record<string, RealtimeTranscriptionProviderConfig>;
 }) {
@@ -211,7 +211,7 @@ export function resolveConfiguredRealtimeTranscriptionProvider(params: {
   throw new Error("No realtime transcription provider registered");
 }
 
-const DEFAULT_REALTIME_INSTRUCTIONS = `You are NexisClaw's realtime voice interface. Keep spoken replies concise. If the user asks for code, repository state, tools, files, current NexisClaw context, or deeper reasoning, call ${REALTIME_VOICE_AGENT_CONSULT_TOOL_NAME} and then summarize the result naturally.`;
+const DEFAULT_REALTIME_INSTRUCTIONS = `You are FirstNexus's realtime voice interface. Keep spoken replies concise. If the user asks for code, repository state, tools, files, current FirstNexus context, or deeper reasoning, call ${REALTIME_VOICE_AGENT_CONSULT_TOOL_NAME} and then summarize the result naturally.`;
 
 export function buildRealtimeInstructions(configuredInstructions?: string): string {
   const extra = normalizeOptionalString(configuredInstructions);

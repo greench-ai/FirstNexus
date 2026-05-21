@@ -1,5 +1,5 @@
-import { installChannelActionsContractSuite } from "NexisClaw/plugin-sdk/channel-test-helpers";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { installChannelActionsContractSuite } from "FirstNexus/plugin-sdk/channel-test-helpers";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe } from "vitest";
 import { telegramPlugin } from "../api.js";
 
@@ -15,7 +15,7 @@ describe("telegram actions contract", () => {
               botToken: "123:telegram-test-token",
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         expectedActions: ["send", "poll", "react", "delete", "edit", "topic-create", "topic-edit"],
         expectedCapabilities: ["delivery-pin", "presentation"],
       },

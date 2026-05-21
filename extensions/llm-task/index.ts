@@ -1,11 +1,11 @@
-import { definePluginEntry, type AnyAgentTool, type NexisClawPluginApi } from "./api.js";
+import { definePluginEntry, type AnyAgentTool, type FirstNexusPluginApi } from "./api.js";
 import { createLlmTaskTool } from "./src/llm-task-tool.js";
 
 export default definePluginEntry({
   id: "llm-task",
   name: "LLM Task",
   description: "Optional tool for structured subtask execution",
-  register(api: NexisClawPluginApi) {
+  register(api: FirstNexusPluginApi) {
     api.registerTool(createLlmTaskTool(api) as unknown as AnyAgentTool, { optional: true });
   },
 });

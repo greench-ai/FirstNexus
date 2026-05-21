@@ -22,7 +22,7 @@ type TaskResponsePayload = {
 let stateDir: string;
 
 beforeEach(async () => {
-  stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-gateway-tasks-"));
+  stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-gateway-tasks-"));
   process.env.NEXISCLAW_STATE_DIR = stateDir;
   resetTaskRegistryForTests();
 });
@@ -144,7 +144,7 @@ describe("tasks gateway handlers", () => {
       scopeKind: "session",
       runId: "run-sanitized",
       label:
-        "Compile artifact\nNexisClaw runtime context (internal): Keep internal details private.",
+        "Compile artifact\nFirstNexus runtime context (internal): Keep internal details private.",
       task: "Compile artifact",
       status: "running",
       deliveryStatus: "pending",
@@ -152,15 +152,15 @@ describe("tasks gateway handlers", () => {
     recordTaskProgressByRunId({
       runId: "run-sanitized",
       progressSummary:
-        "Bundling output\nNexisClaw runtime context (internal): Keep internal details private.",
+        "Bundling output\nFirstNexus runtime context (internal): Keep internal details private.",
     });
     markTaskTerminalById({
       taskId: task.taskId,
       status: "failed",
       endedAt: Date.now(),
       terminalSummary:
-        "Failed after build\nNexisClaw runtime context (internal): Keep internal details private.",
-      error: "Tool failed\nNexisClaw runtime context (internal): Keep internal details private.",
+        "Failed after build\nFirstNexus runtime context (internal): Keep internal details private.",
+      error: "Tool failed\nFirstNexus runtime context (internal): Keep internal details private.",
     });
 
     const { calls, respond } = captureRespond();
@@ -179,7 +179,7 @@ describe("tasks gateway handlers", () => {
     expect(payload?.task?.title).toBe("Compile artifact");
     expect(payload?.task?.terminalSummary).toBe("Failed after build");
     expect(payload?.task?.error).toBe("Tool failed");
-    expect(JSON.stringify(calls[0]?.[1])).not.toContain("NexisClaw runtime context");
+    expect(JSON.stringify(calls[0]?.[1])).not.toContain("FirstNexus runtime context");
   });
 
   it("cancels running task records and returns the updated task", async () => {

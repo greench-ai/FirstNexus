@@ -1,10 +1,10 @@
 {
-  "name": "@NexisClaw/googlechat",
+  "name": "@FirstNexus/googlechat",
   "version": "2026.5.12-beta.1",
-  "description": "NexisClaw Google Chat channel plugin",
+  "description": "FirstNexus Google Chat channel plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexisClaw/NexisClaw"
+    "url": "https://github.com/FirstNexus/FirstNexus"
   },
   "type": "module",
   "dependencies": {
@@ -13,18 +13,18 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*",
-    "NexisClaw": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*",
+    "FirstNexus": "workspace:*"
   },
   "peerDependencies": {
-    "NexisClaw": ">=2026.5.12-beta.1"
+    "FirstNexus": ">=2026.5.12-beta.1"
   },
   "peerDependenciesMeta": {
-    "NexisClaw": {
+    "FirstNexus": {
       "optional": true
     }
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
@@ -70,7 +70,7 @@
       ]
     },
     "install": {
-      "npmSpec": "@NexisClaw/googlechat",
+      "npmSpec": "@FirstNexus/googlechat",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10"
     },
@@ -78,7 +78,7 @@
       "pluginApi": ">=2026.5.12-beta.1"
     },
     "build": {
-      "NexisClawVersion": "2026.5.12-beta.1"
+      "FirstNexusVersion": "2026.5.12-beta.1"
     },
     "release": {
       "publishToClawHub": true,

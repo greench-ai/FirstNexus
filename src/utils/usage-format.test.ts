@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   __resetGatewayModelPricingCacheForTest,
   __setGatewayModelPricingForTest,
@@ -45,7 +45,7 @@ describe("usage-format", () => {
   let stateDir: string;
 
   beforeEach(async () => {
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-usage-format-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-usage-format-"));
     agentDir = path.join(stateDir, "agents", "main", "agent");
     process.env.NEXISCLAW_STATE_DIR = stateDir;
     delete process.env.NEXISCLAW_AGENT_DIR;
@@ -99,7 +99,7 @@ describe("usage-format", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const cost = resolveModelCostConfig({
       provider: "test",
@@ -138,7 +138,7 @@ describe("usage-format", () => {
     ).toBeUndefined();
   });
 
-  it("prefers models.json pricing over NexisClaw config and cached pricing", async () => {
+  it("prefers models.json pricing over FirstNexus config and cached pricing", async () => {
     const config = {
       models: {
         providers: {
@@ -152,7 +152,7 @@ describe("usage-format", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     await fs.writeFile(
       path.join(agentDir, "models.json"),
@@ -197,7 +197,7 @@ describe("usage-format", () => {
     });
   });
 
-  it("falls back to NexisClaw config pricing when models.json is absent", () => {
+  it("falls back to FirstNexus config pricing when models.json is absent", () => {
     const config = {
       models: {
         providers: {
@@ -211,7 +211,7 @@ describe("usage-format", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     __setGatewayModelPricingForTest([
       {
@@ -271,7 +271,7 @@ describe("usage-format", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     expect(
       resolveModelCostConfig({

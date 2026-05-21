@@ -1,5 +1,5 @@
 import path from "node:path";
-import { resolvePreferredNexisClawTmpDir } from "../../infra/tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../../infra/tmp-FirstNexus-dir.js";
 import { resetLogger, setLoggerOverride } from "../logger.js";
 import { createDiagnosticLogRecordCapture } from "./diagnostic-log-capture.js";
 
@@ -8,7 +8,10 @@ export function createWarnLogCapture(prefix: string) {
   setLoggerOverride({
     level: "warn",
     consoleLevel: "silent",
-    file: path.join(resolvePreferredNexisClawTmpDir(), `${prefix}-${process.pid}-${Date.now()}.log`),
+    file: path.join(
+      resolvePreferredFirstNexusTmpDir(),
+      `${prefix}-${process.pid}-${Date.now()}.log`,
+    ),
   });
   return {
     async findText(needle: string): Promise<string | undefined> {

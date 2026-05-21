@@ -3,7 +3,7 @@ import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "n
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { normalizeOptionalString } from "../../src/shared/string-coerce.ts";
-import { parseReleaseVersion } from "../NexisClaw-npm-release-check.ts";
+import { parseReleaseVersion } from "../FirstNexus-npm-release-check.ts";
 import { resolveNpmPublishPlan } from "./npm-publish-plan.mjs";
 
 export type PluginPackageJson = {
@@ -16,7 +16,7 @@ export type PluginPackageJson = {
         type?: string;
         url?: string;
       };
-  NexisClaw?: {
+  FirstNexus?: {
     extensions?: string[];
     install?: {
       defaultChoice?: string;
@@ -72,7 +72,7 @@ export type PublishablePluginPackageCandidate<
   packageJson: TPackageJson;
 };
 
-export const NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL = "https://github.com/NexisClaw/NexisClaw";
+export const NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL = "https://github.com/FirstNexus/FirstNexus";
 
 // oxlint-disable-next-line typescript/no-unnecessary-type-parameters -- Release helper preserves caller-specific package.json shape.
 function readPluginPackageJson<TPackageJson extends PluginPackageJson = PluginPackageJson>(
@@ -220,16 +220,16 @@ export function collectPublishablePluginPackageErrors(
   const errors: string[] = [];
   const packageName = packageJson.name?.trim() ?? "";
   const packageVersion = packageJson.version?.trim() ?? "";
-  const installNpmSpec = normalizeOptionalString(packageJson.NexisClaw?.install?.npmSpec);
+  const installNpmSpec = normalizeOptionalString(packageJson.FirstNexus?.install?.npmSpec);
   const repositoryUrl =
     typeof packageJson.repository === "string"
       ? packageJson.repository.trim()
       : (packageJson.repository?.url?.trim() ?? "");
-  const extensions = packageJson.NexisClaw?.extensions ?? [];
+  const extensions = packageJson.FirstNexus?.extensions ?? [];
 
-  if (!packageName.startsWith("@NexisClaw/")) {
+  if (!packageName.startsWith("@FirstNexus/")) {
     errors.push(
-      `package name must start with "@NexisClaw/"; found "${packageName || "<missing>"}".`,
+      `package name must start with "@FirstNexus/"; found "${packageName || "<missing>"}".`,
     );
   }
   if (packageJson.private === true) {
@@ -248,13 +248,13 @@ export function collectPublishablePluginPackageErrors(
     );
   }
   if (!Array.isArray(extensions) || extensions.length === 0) {
-    errors.push("NexisClaw.extensions must contain at least one entry.");
+    errors.push("FirstNexus.extensions must contain at least one entry.");
   }
   if (extensions.some((entry) => typeof entry !== "string" || !entry.trim())) {
-    errors.push("NexisClaw.extensions must contain only non-empty strings.");
+    errors.push("FirstNexus.extensions must contain only non-empty strings.");
   }
   if (!installNpmSpec) {
-    errors.push("NexisClaw.install.npmSpec must be a non-empty string for publishable plugins.");
+    errors.push("FirstNexus.install.npmSpec must be a non-empty string for publishable plugins.");
   }
 
   return errors;
@@ -285,7 +285,7 @@ export function collectPublishablePluginPackages(
     if (hasSelectedPackageNames && !selectedPackageNames.has(packageName)) {
       continue;
     }
-    if (packageJson.NexisClaw?.release?.publishToNpm !== true) {
+    if (packageJson.FirstNexus?.release?.publishToNpm !== true) {
       continue;
     }
 
@@ -312,7 +312,7 @@ export function collectPublishablePluginPackages(
       version,
       channel: parsedVersion.channel,
       publishTag: resolveNpmPublishPlan(version).publishTag,
-      installNpmSpec: normalizeOptionalString(packageJson.NexisClaw?.install?.npmSpec),
+      installNpmSpec: normalizeOptionalString(packageJson.FirstNexus?.install?.npmSpec),
     });
   }
 
@@ -456,7 +456,7 @@ export function resolveChangedPublishablePluginPackages(params: {
 }
 
 function isPluginVersionPublished(packageName: string, version: string): boolean {
-  const tempDir = mkdtempSync(join(tmpdir(), "NexisClaw-plugin-npm-view-"));
+  const tempDir = mkdtempSync(join(tmpdir(), "FirstNexus-plugin-npm-view-"));
   const userconfigPath = join(tempDir, "npmrc");
   writeFileSync(userconfigPath, "");
 

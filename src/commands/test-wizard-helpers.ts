@@ -3,6 +3,6 @@ export {
   createExitThrowingRuntime,
   createWizardPrompter,
   readAuthProfilesForAgent,
-  requireNexisClawAgentDir,
+  requireFirstNexusAgentDir,
   setupAuthTestEnv,
 } from "../../test/helpers/auth-wizard.js";

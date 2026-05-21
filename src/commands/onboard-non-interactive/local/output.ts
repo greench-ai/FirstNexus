@@ -135,17 +135,17 @@ function recoveryHintForGatewayHealthFailure(
 ): string | undefined {
   switch (classification) {
     case "auth-mismatch":
-      return "Fix: run `NexisClaw doctor --fix`.";
+      return "Fix: run `FirstNexus doctor --fix`.";
     case "module-missing":
-      return "Fix: run `NexisClaw doctor --fix`.";
+      return "Fix: run `FirstNexus doctor --fix`.";
     case "service-missing":
-      return "Fix: run `NexisClaw gateway install --force`.";
+      return "Fix: run `FirstNexus gateway install --force`.";
     case "service-stopped":
-      return "Fix: run `NexisClaw gateway restart`.";
+      return "Fix: run `FirstNexus gateway restart`.";
     case "startup-blocked":
-      return "Fix: run `NexisClaw gateway status --deep`.";
+      return "Fix: run `FirstNexus gateway status --deep`.";
     case "not-listening":
-      return "Fix: start `NexisClaw gateway run`, or run `NexisClaw gateway restart` for a managed gateway.";
+      return "Fix: start `FirstNexus gateway run`, or run `FirstNexus gateway restart` for a managed gateway.";
     default:
       return undefined;
   }

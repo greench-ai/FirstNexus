@@ -27,7 +27,7 @@ const providerEnvVarsById = vi.hoisted(
 );
 
 vi.mock("../config/paths.js", () => ({
-  resolveStateDir: () => process.env.NEXISCLAW_STATE_DIR ?? "/tmp/NexisClaw-state",
+  resolveStateDir: () => process.env.NEXISCLAW_STATE_DIR ?? "/tmp/FirstNexus-state",
 }));
 
 vi.mock("../agents/auth-profiles/profiles.js", async () => {
@@ -35,7 +35,7 @@ vi.mock("../agents/auth-profiles/profiles.js", async () => {
   const path = await import("node:path");
   return {
     upsertAuthProfile: (params: { profileId: string; credential: unknown; agentDir?: string }) => {
-      const stateDir = process.env.NEXISCLAW_STATE_DIR ?? "/tmp/NexisClaw-state";
+      const stateDir = process.env.NEXISCLAW_STATE_DIR ?? "/tmp/FirstNexus-state";
       const agentDir = params.agentDir ?? path.join(stateDir, "agents", "main", "agent");
       const file = path.join(agentDir, "auth-profiles.json");
       fs.mkdirSync(agentDir, { recursive: true });
@@ -122,7 +122,7 @@ describe("writeOAuthCredentials", () => {
   });
 
   it("writes auth-profiles.json under the default agent dir", async () => {
-    const env = await setupAuthTestEnv("NexisClaw-oauth-");
+    const env = await setupAuthTestEnv("FirstNexus-oauth-");
     lifecycle.setStateDir(env.stateDir);
     const defaultAgentDir = path.join(env.stateDir, "agents", "main", "agent");
 
@@ -147,7 +147,7 @@ describe("writeOAuthCredentials", () => {
   });
 
   it("writes OAuth credentials to all sibling agent dirs when syncSiblingAgents=true", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-oauth-sync-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-oauth-sync-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
 
     const mainAgentDir = path.join(tempStateDir, "agents", "main", "agent");
@@ -184,7 +184,7 @@ describe("writeOAuthCredentials", () => {
   });
 
   it("writes OAuth credentials only to target dir by default", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-oauth-nosync-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-oauth-nosync-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
 
     const mainAgentDir = path.join(tempStateDir, "agents", "main", "agent");
@@ -216,7 +216,7 @@ describe("writeOAuthCredentials", () => {
   });
 
   it("syncs siblings from explicit agentDir outside NEXISCLAW_STATE_DIR", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-oauth-external-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-oauth-external-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
 
     // Create standard-layout agents tree *outside* NEXISCLAW_STATE_DIR
@@ -287,7 +287,7 @@ describe("upsertApiKeyProfile secret refs", () => {
   }
 
   it("handles plaintext, ref mode, and inline env-ref provider keys", async () => {
-    const env = await setupAuthTestEnv("NexisClaw-onboard-auth-credentials-");
+    const env = await setupAuthTestEnv("FirstNexus-onboard-auth-credentials-");
     lifecycle.setStateDir(env.stateDir);
     process.env.MOONSHOT_API_KEY = "sk-moonshot-env"; // pragma: allowlist secret
     process.env.OPENAI_API_KEY = "sk-openai-env"; // pragma: allowlist secret
@@ -352,7 +352,7 @@ describe("upsertApiKeyProfile secret refs", () => {
   });
 
   it("stores provider-specific env refs and metadata in ref mode", async () => {
-    const env = await setupAuthTestEnv("NexisClaw-onboard-auth-credentials-provider-ref-");
+    const env = await setupAuthTestEnv("FirstNexus-onboard-auth-credentials-provider-ref-");
     lifecycle.setStateDir(env.stateDir);
     process.env.CLOUDFLARE_AI_GATEWAY_API_KEY = "cf-secret"; // pragma: allowlist secret
     process.env.VOLCANO_ENGINE_API_KEY = "volcengine-secret"; // pragma: allowlist secret
@@ -415,7 +415,7 @@ describe("upsertApiKeyProfile", () => {
   });
 
   it("writes to the default agent dir", async () => {
-    const env = await setupAuthTestEnv("NexisClaw-minimax-", { agentSubdir: "custom-agent" });
+    const env = await setupAuthTestEnv("FirstNexus-minimax-", { agentSubdir: "custom-agent" });
     lifecycle.setStateDir(env.stateDir);
     const defaultAgentDir = path.join(env.stateDir, "agents", "main", "agent");
 

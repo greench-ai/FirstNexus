@@ -189,7 +189,7 @@ describe("normalizePluginsConfig", () => {
   });
 
   it("normalizes unknown plugin ids without consulting discovery", async () => {
-    const discoverPlugins = vi.spyOn(discovery, "discoverNexisClawPlugins");
+    const discoverPlugins = vi.spyOn(discovery, "discoverFirstNexusPlugins");
     discoverPlugins.mockClear();
 
     const result = normalizePluginsConfig({
@@ -209,12 +209,12 @@ describe("normalizePluginsConfig", () => {
   });
 
   it("does not consult discovery or manifests for alias lookup", async () => {
-    const discoverPlugins = vi.spyOn(discovery, "discoverNexisClawPlugins").mockReturnValue({
+    const discoverPlugins = vi.spyOn(discovery, "discoverFirstNexusPlugins").mockReturnValue({
       candidates: [
         {
           idHint: "anthropic",
-          source: "/tmp/NexisClaw-bundled-anthropic/index.js",
-          rootDir: "/tmp/NexisClaw-bundled-anthropic",
+          source: "/tmp/FirstNexus-bundled-anthropic/index.js",
+          rootDir: "/tmp/FirstNexus-bundled-anthropic",
           origin: "bundled",
           bundledManifest: {
             id: "anthropic",
@@ -224,8 +224,8 @@ describe("normalizePluginsConfig", () => {
         },
         {
           idHint: "external-anthropic",
-          source: "/tmp/NexisClaw-global-anthropic/index.js",
-          rootDir: "/tmp/NexisClaw-global-anthropic",
+          source: "/tmp/FirstNexus-global-anthropic/index.js",
+          rootDir: "/tmp/FirstNexus-global-anthropic",
           origin: "global",
         },
       ],
@@ -233,7 +233,7 @@ describe("normalizePluginsConfig", () => {
     });
     const loadManifest = vi.spyOn(manifest, "loadPluginManifest").mockReturnValue({
       ok: true,
-      manifestPath: "/tmp/NexisClaw-global-anthropic/NexisClaw.plugin.json",
+      manifestPath: "/tmp/FirstNexus-global-anthropic/FirstNexus.plugin.json",
       manifest: {
         id: "external-anthropic",
         configSchema: {},

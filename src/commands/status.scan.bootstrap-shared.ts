@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import type { UpdateCheckResult } from "../infra/update-check.js";
 import { runExec } from "../process/exec.js";
 import { createEmptyTaskAuditSummary } from "../tasks/task-registry.audit.shared.js";
@@ -59,7 +59,7 @@ type StatusScanExecRunner = (
 
 type StatusScanCoreBootstrapParams<TAgentStatus> = {
   coldStart: boolean;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   hasConfiguredChannels: boolean;
   opts: { timeoutMs?: number; all?: boolean };
   getTailnetHostname: (runner: StatusScanExecRunner) => Promise<string | null>;
@@ -69,7 +69,7 @@ type StatusScanCoreBootstrapParams<TAgentStatus> = {
     includeRegistry: boolean;
     updateConfigChannel?: string | null;
   }) => Promise<UpdateCheckResult>;
-  getAgentLocalStatuses: (cfg: NexisClawConfig) => Promise<TAgentStatus>;
+  getAgentLocalStatuses: (cfg: FirstNexusConfig) => Promise<TAgentStatus>;
 };
 
 export async function createStatusScanCoreBootstrap<TAgentStatus>(

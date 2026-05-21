@@ -102,10 +102,10 @@ export function buildSubagentSystemPrompt(params: {
         ? [
             ...nativeCommandGuidanceLines,
             'For ACP harness sessions (claudecode/gemini/opencode, or Codex only when explicit ACP/acpx), use `sessions_spawn` with `runtime: "acp"` (set `agentId` unless `acp.defaultAgent` is configured).',
-            '`agents_list` and `subagents` apply to NexisClaw sub-agents (`runtime: "subagent"`); ACP harness ids are controlled by `acp.allowedAgents`.',
+            '`agents_list` and `subagents` apply to FirstNexus sub-agents (`runtime: "subagent"`); ACP harness ids are controlled by `acp.allowedAgents`.',
             "Do not ask users to run slash commands or CLI when `sessions_spawn` can do it directly.",
-            "Do not use `exec` (`NexisClaw ...`, `acpx ...`) to spawn ACP sessions.",
-            'Use `subagents` only for NexisClaw subagents (`runtime: "subagent"`).',
+            "Do not use `exec` (`FirstNexus ...`, `acpx ...`) to spawn ACP sessions.",
+            'Use `subagents` only for FirstNexus subagents (`runtime: "subagent"`).',
             "Subagent results auto-announce back to you; ACP sessions continue in their bound thread.",
             "Avoid polling loops; spawn, orchestrate, and synthesize results.",
           ]

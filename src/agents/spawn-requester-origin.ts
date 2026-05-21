@@ -1,5 +1,5 @@
 import type { ChatType } from "../channels/chat-type.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveFirstBoundAccountId } from "../routing/bound-account-read.js";
 import { normalizeDeliveryContext } from "../utils/delivery-context.shared.js";
 
@@ -92,7 +92,7 @@ function extractRequesterPeer(
 }
 
 export function resolveRequesterOriginForChild(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   targetAgentId: string;
   requesterAgentId: string;
   requesterChannel?: string;

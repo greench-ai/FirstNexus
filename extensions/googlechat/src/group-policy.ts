@@ -1,8 +1,8 @@
-import { resolveChannelGroupRequireMention } from "NexisClaw/plugin-sdk/channel-policy";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/core";
+import { resolveChannelGroupRequireMention } from "FirstNexus/plugin-sdk/channel-policy";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/core";
 
 type GoogleChatGroupContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   groupId?: string | null;
 };

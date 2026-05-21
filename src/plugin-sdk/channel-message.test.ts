@@ -5,10 +5,10 @@ describe("defineChannelMessageAdapter", () => {
   it("keeps new and legacy channel plugin SDK subpaths importable", async () => {
     const [channelMessage, channelMessageRuntime, channelReplyPipeline, compat] = await Promise.all(
       [
-        import("NexisClaw/plugin-sdk/channel-message"),
-        import("NexisClaw/plugin-sdk/channel-message-runtime"),
-        import("NexisClaw/plugin-sdk/channel-reply-pipeline"),
-        import("NexisClaw/plugin-sdk/compat"),
+        import("FirstNexus/plugin-sdk/channel-message"),
+        import("FirstNexus/plugin-sdk/channel-message-runtime"),
+        import("FirstNexus/plugin-sdk/channel-reply-pipeline"),
+        import("FirstNexus/plugin-sdk/compat"),
       ],
     );
 

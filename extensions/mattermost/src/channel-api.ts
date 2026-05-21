@@ -1,4 +1,4 @@
-export { createAccountStatusSink } from "NexisClaw/plugin-sdk/channel-lifecycle";
-export type { ChannelPlugin } from "NexisClaw/plugin-sdk/core";
-export { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/core";
-export { chunkTextForOutbound } from "NexisClaw/plugin-sdk/text-chunking";
+export { createAccountStatusSink } from "FirstNexus/plugin-sdk/channel-lifecycle";
+export type { ChannelPlugin } from "FirstNexus/plugin-sdk/core";
+export { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/core";
+export { chunkTextForOutbound } from "FirstNexus/plugin-sdk/text-chunking";

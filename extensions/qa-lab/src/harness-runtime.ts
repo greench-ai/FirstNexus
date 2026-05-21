@@ -4,8 +4,8 @@ import {
   matchesMentionPatterns,
   matchesMentionWithExplicit,
   resolveInboundMentionDecision,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import type { PluginRuntime } from "NexisClaw/plugin-sdk/runtime-store";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import type { PluginRuntime } from "FirstNexus/plugin-sdk/runtime-store";
 
 type SessionRecord = {
   sessionKey: string;

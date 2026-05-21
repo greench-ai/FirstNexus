@@ -1,4 +1,4 @@
 export {
   buildChannelConfigSchema,
   MSTeamsConfigSchema,
-} from "NexisClaw/plugin-sdk/bundled-channel-config-schema";
+} from "FirstNexus/plugin-sdk/bundled-channel-config-schema";

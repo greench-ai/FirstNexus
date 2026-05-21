@@ -1,5 +1,5 @@
-import type { PluginRuntime } from "NexisClaw/plugin-sdk/channel-core";
-import { createPluginRuntimeStore } from "NexisClaw/plugin-sdk/runtime-store";
+import type { PluginRuntime } from "FirstNexus/plugin-sdk/channel-core";
+import { createPluginRuntimeStore } from "FirstNexus/plugin-sdk/runtime-store";
 
 type DiscordChannelRuntime = {
   messageActions?: typeof import("./channel-actions.js").discordMessageActions;

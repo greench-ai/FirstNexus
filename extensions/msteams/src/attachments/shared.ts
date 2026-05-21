@@ -6,12 +6,12 @@ import {
   isPrivateIpAddress,
   normalizeHostnameSuffixAllowlist,
   type SsrFPolicy,
-} from "NexisClaw/plugin-sdk/ssrf-policy";
+} from "FirstNexus/plugin-sdk/ssrf-policy";
 import {
   isRecord,
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { MSTeamsAttachmentLike } from "./types.js";
 
 type InlineImageCandidate =

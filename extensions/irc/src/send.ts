@@ -1,10 +1,10 @@
 import {
   createMessageReceiptFromOutboundResults,
   type MessageReceipt,
-} from "NexisClaw/plugin-sdk/channel-message";
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import { convertMarkdownTables } from "NexisClaw/plugin-sdk/text-chunking";
+} from "FirstNexus/plugin-sdk/channel-message";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import { convertMarkdownTables } from "FirstNexus/plugin-sdk/text-chunking";
 import { resolveIrcAccount } from "./accounts.js";
 import type { IrcClient } from "./client.js";
 import { connectIrcClient } from "./client.js";

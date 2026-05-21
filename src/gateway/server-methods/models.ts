@@ -3,7 +3,7 @@ import { DEFAULT_PROVIDER } from "../../agents/defaults.js";
 import { resolveVisibleModelCatalog } from "../../agents/model-catalog-visibility.js";
 import { parseConfiguredModelVisibilityEntries } from "../../agents/model-selection-shared.js";
 import { resolveDefaultAgentWorkspaceDir } from "../../agents/workspace.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   ErrorCodes,
   errorShape,
@@ -26,7 +26,7 @@ function resolveModelsListView(params: Record<string, unknown>): ModelsListView 
 async function loadModelsListCatalog(
   context: GatewayRequestContext,
   view: ModelsListView,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): Promise<GatewayModelCatalog> {
   if (view === "all") {
     return await context.loadGatewayModelCatalog({ readOnly: false });

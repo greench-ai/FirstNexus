@@ -57,7 +57,7 @@ describe("agents add command", () => {
 
     expect(runtime.error).toHaveBeenCalledOnce();
     expect(runtime.error).toHaveBeenCalledWith(
-      `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("NexisClaw agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
+      `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("FirstNexus agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
     expect(writeConfigFileMock).not.toHaveBeenCalled();
@@ -72,7 +72,7 @@ describe("agents add command", () => {
 
     expect(runtime.error).toHaveBeenCalledOnce();
     expect(runtime.error).toHaveBeenCalledWith(
-      `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("NexisClaw agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
+      `Non-interactive agent creation requires --workspace. Re-run ${formatCliCommand("FirstNexus agents add <id> --workspace <path>")} or omit flags to use the wizard.`,
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
     expect(writeConfigFileMock).not.toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe("agents add command", () => {
   });
 
   it("copies only portable auth profiles when seeding a new agent store", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-agents-add-auth-copy-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-agents-add-auth-copy-"));
     try {
       const sourceAgentDir = path.join(root, "main", "agent");
       const destAgentDir = path.join(root, "work", "agent");
@@ -151,7 +151,7 @@ describe("agents add command", () => {
   });
 
   it("copies portable Codex OAuth profiles without inline token material", async () => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-agents-add-oauth-copy-"));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-agents-add-oauth-copy-"));
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     process.env.NEXISCLAW_STATE_DIR = root;
     try {
@@ -196,7 +196,7 @@ describe("agents add command", () => {
         expires,
         copyToAgents: true,
         oauthRef: {
-          source: "NexisClaw-credentials",
+          source: "FirstNexus-credentials",
           provider: "openai-codex",
           id: oauthProfileSecretId(destAuthPath, "openai-codex:default"),
         },

@@ -4,7 +4,7 @@ import { unwrapRemoteConfigSnapshot } from "../../test/helpers/gateway/android-n
 import { shouldFetchRemotePolicyConfig } from "../../test/helpers/gateway/android-node-capabilities-policy-source.js";
 import { isLiveTestEnabled } from "../agents/live-test-helpers.js";
 import { getRuntimeConfig } from "../config/config.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { parseNodeList, parsePairingList } from "../shared/node-list-parse.js";
 import type { NodeListNode } from "../shared/node-list-types.js";
@@ -299,8 +299,8 @@ function resolveGatewayConnection() {
 async function resolvePolicyConfigForRun(params: {
   client: GatewayClient;
   connectionDetails: ReturnType<typeof buildGatewayConnectionDetails>;
-  loadLocalConfig?: () => NexisClawConfig;
-}): Promise<NexisClawConfig> {
+  loadLocalConfig?: () => FirstNexusConfig;
+}): Promise<FirstNexusConfig> {
   if (shouldFetchRemotePolicyConfig(params.connectionDetails)) {
     const raw = await params.client.request("config.get", {});
     return unwrapRemoteConfigSnapshot(raw);
@@ -333,7 +333,7 @@ describe("resolvePolicyConfigForRun", () => {
   });
 
   it("still uses local config loading for local loopback runs", async () => {
-    const localConfig = { gateway: { bind: "127.0.0.1" } } as unknown as NexisClawConfig;
+    const localConfig = { gateway: { bind: "127.0.0.1" } } as unknown as FirstNexusConfig;
     const loadLocalConfig = vi.fn(() => localConfig);
 
     const result = await resolvePolicyConfigForRun({
@@ -533,7 +533,7 @@ describeLive("android node capability integration (preconditioned)", () => {
         [
           `selected node is not ready (nodeId=${nodeId}, connected=${String(target.connected)}, paired=${String(target.paired)})`,
           pendingHint,
-          "precondition: open app, keep foreground, ensure pairing approved (`NexisClaw nodes pending` / `NexisClaw nodes approve <requestId>`)",
+          "precondition: open app, keep foreground, ensure pairing approved (`FirstNexus nodes pending` / `FirstNexus nodes approve <requestId>`)",
         ].join("\n"),
       );
     }

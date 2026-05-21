@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import {
   resolveTelegramGroupRequireMention,
@@ -24,7 +24,7 @@ describe("resolveTelegramGroupRequireMention", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(
       resolveTelegramGroupRequireMention({
@@ -48,7 +48,7 @@ describe("resolveTelegramGroupToolPolicy", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(
       resolveTelegramGroupToolPolicy({

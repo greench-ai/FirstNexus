@@ -54,8 +54,8 @@ import {
 import { createTempDirHarness } from "./temp-dir.test-helper.js";
 
 const { cleanup, makeTempDir } = createTempDirHarness();
-const repoRoot = "/repo/NexisClaw";
-const gatewayTempRoot = "/tmp/NexisClaw-qa-runtime";
+const repoRoot = "/repo/FirstNexus";
+const gatewayTempRoot = "/tmp/FirstNexus-qa-runtime";
 
 afterEach(cleanup);
 

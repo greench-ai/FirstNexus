@@ -1,7 +1,7 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
-import type { ProviderAuthContext, ProviderAuthResult } from "NexisClaw/plugin-sdk/plugin-entry";
-import type { ProviderAuthMethod } from "NexisClaw/plugin-sdk/plugin-entry";
-import type { ProviderPlugin } from "NexisClaw/plugin-sdk/provider-model-shared";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
+import type { ProviderAuthContext, ProviderAuthResult } from "FirstNexus/plugin-sdk/plugin-entry";
+import type { ProviderAuthMethod } from "FirstNexus/plugin-sdk/plugin-entry";
+import type { ProviderPlugin } from "FirstNexus/plugin-sdk/provider-model-shared";
 import {
   OPENAI_ACCOUNT_WIZARD_GROUP,
   OPENAI_API_KEY_LABEL,

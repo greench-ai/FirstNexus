@@ -1,5 +1,5 @@
 /**
- * Smoke tests for the `NexisClaw path` CLI handlers.
+ * Smoke tests for the `FirstNexus path` CLI handlers.
  *
  * Tests invoke each subcommand handler directly with a capturing
  * `OutputRuntimeEnv` — no commander wiring, no child process spawn.
@@ -48,7 +48,7 @@ function createTestRuntime(): TestRuntime {
 const stdoutText = (rt: TestRuntime): string => rt.stdout.join("\n");
 const stderrText = (rt: TestRuntime): string => rt.stderr.join("\n");
 
-describe("NexisClaw path CLI", () => {
+describe("FirstNexus path CLI", () => {
   let workspaceDir: string;
 
   beforeEach(() => {

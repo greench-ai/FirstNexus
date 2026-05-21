@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { findLegacyConfigIssues } from "../config/legacy.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import {
   applyPluginDoctorCompatibilityMigrations,
   clearPluginDoctorContractRegistryCache,
@@ -15,7 +15,7 @@ const tempDirs: string[] = [];
 
 function makeTempDir(): string {
   const dir = fs.mkdtempSync(
-    path.join(fs.realpathSync(os.tmpdir()), "NexisClaw-doctor-contract-load-paths-"),
+    path.join(fs.realpathSync(os.tmpdir()), "FirstNexus-doctor-contract-load-paths-"),
   );
   tempDirs.push(dir);
   return dir;
@@ -27,7 +27,7 @@ function makeHermeticDoctorEnv(stateDir: string): NodeJS.ProcessEnv {
     HOME: stateDir,
     NEXISCLAW_HOME: stateDir,
     NEXISCLAW_STATE_DIR: stateDir,
-    NEXISCLAW_CONFIG_PATH: path.join(stateDir, "NexisClaw.json"),
+    NEXISCLAW_CONFIG_PATH: path.join(stateDir, "FirstNexus.json"),
     NEXISCLAW_DISABLE_BUNDLED_PLUGINS: "1",
   };
 }
@@ -35,7 +35,7 @@ function makeHermeticDoctorEnv(stateDir: string): NodeJS.ProcessEnv {
 function writeDoctorPlugin(pluginRoot: string, pluginId: string): void {
   fs.mkdirSync(pluginRoot, { recursive: true });
   fs.writeFileSync(
-    path.join(pluginRoot, "NexisClaw.plugin.json"),
+    path.join(pluginRoot, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id: pluginId,
@@ -97,7 +97,7 @@ module.exports = {
 function writeDoctorSessionOwnerPlugin(pluginRoot: string, pluginId: string): void {
   fs.mkdirSync(pluginRoot, { recursive: true });
   fs.writeFileSync(
-    path.join(pluginRoot, "NexisClaw.plugin.json"),
+    path.join(pluginRoot, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id: pluginId,
@@ -131,7 +131,7 @@ module.exports = {
   );
 }
 
-function createDoctorPluginConfig(pluginRoot: string, pluginId: string): NexisClawConfig {
+function createDoctorPluginConfig(pluginRoot: string, pluginId: string): FirstNexusConfig {
   return {
     plugins: {
       load: { paths: [pluginRoot] },
@@ -147,7 +147,7 @@ function createDoctorPluginConfig(pluginRoot: string, pluginId: string): NexisCl
   };
 }
 
-function readPluginLlmPolicy(config: NexisClawConfig, pluginId: string): Record<string, unknown> {
+function readPluginLlmPolicy(config: FirstNexusConfig, pluginId: string): Record<string, unknown> {
   const entry = config.plugins?.entries?.[pluginId] as { llm?: unknown } | undefined;
   return entry?.llm && typeof entry.llm === "object" && !Array.isArray(entry.llm)
     ? (entry.llm as Record<string, unknown>)

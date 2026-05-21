@@ -1,22 +1,22 @@
 {
-  "name": "@NexisClaw/diagnostics-prometheus",
+  "name": "@FirstNexus/diagnostics-prometheus",
   "version": "2026.5.12-beta.1",
-  "description": "NexisClaw diagnostics Prometheus exporter",
+  "description": "FirstNexus diagnostics Prometheus exporter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexisClaw/NexisClaw"
+    "url": "https://github.com/FirstNexus/FirstNexus"
   },
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@NexisClaw/diagnostics-prometheus",
-      "npmSpec": "@NexisClaw/diagnostics-prometheus",
+      "clawhubSpec": "clawhub:@FirstNexus/diagnostics-prometheus",
+      "npmSpec": "@FirstNexus/diagnostics-prometheus",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.25"
     },
@@ -24,7 +24,7 @@
       "pluginApi": ">=2026.5.12-beta.1"
     },
     "build": {
-      "NexisClawVersion": "2026.5.12-beta.1"
+      "FirstNexusVersion": "2026.5.12-beta.1"
     },
     "release": {
       "publishToClawHub": true,

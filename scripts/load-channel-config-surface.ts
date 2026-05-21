@@ -12,7 +12,7 @@ import {
 
 type CreateJiti = typeof createJiti;
 
-const jitiFactoryOverrideKey = Symbol.for("NexisClaw.channelConfigSurfaceJitiFactoryOverride");
+const jitiFactoryOverrideKey = Symbol.for("FirstNexus.channelConfigSurfaceJitiFactoryOverride");
 const requireForJiti = createRequire(import.meta.url);
 let createJitiLoaderFactory: CreateJiti | undefined;
 
@@ -158,7 +158,7 @@ export async function loadChannelConfigSurfaceModule(
       pluginSdkResolution: "src",
     });
     const aliasMap = {
-      ...(pluginSdkAlias ? { "NexisClaw/plugin-sdk": pluginSdkAlias } : {}),
+      ...(pluginSdkAlias ? { "FirstNexus/plugin-sdk": pluginSdkAlias } : {}),
       ...resolvePluginSdkScopedAliasMap({
         modulePath: resolvedPath,
         pluginSdkResolution: "src",

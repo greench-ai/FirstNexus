@@ -17,7 +17,7 @@ function readJsonFile(filePath) {
 }
 
 export function isPublishablePluginPackage(packageJson) {
-  return packageJson.NexisClaw?.release?.publishToNpm === true;
+  return packageJson.FirstNexus?.release?.publishToNpm === true;
 }
 
 function normalizePackageEntry(value) {
@@ -61,7 +61,7 @@ function getRecord(value) {
 function createNeverBundleDependencyMatcher(packageJson) {
   const externalDependencies = collectExternalDependencyNames(packageJson);
   return (id) => {
-    if (id === "NexisClaw" || id.startsWith("NexisClaw/")) {
+    if (id === "FirstNexus" || id.startsWith("FirstNexus/")) {
       return true;
     }
     for (const dependency of externalDependencies) {
@@ -116,8 +116,8 @@ export function resolvePluginNpmRuntimePackageFiles(plan) {
       : [],
   );
   merged.add("dist/**");
-  if (packageRelativePathExists(plan.packageDir, "NexisClaw.plugin.json")) {
-    merged.add("NexisClaw.plugin.json");
+  if (packageRelativePathExists(plan.packageDir, "FirstNexus.plugin.json")) {
+    merged.add("FirstNexus.plugin.json");
   }
   if (packageRelativePathExists(plan.packageDir, "README.md")) {
     merged.add("README.md");
@@ -131,7 +131,7 @@ export function resolvePluginNpmRuntimePackageFiles(plan) {
   return [...merged];
 }
 
-function normalizeNexisClawPeerRange(value) {
+function normalizeFirstNexusPeerRange(value) {
   const normalized = normalizePackageEntry(value);
   if (!normalized) {
     return "";
@@ -141,35 +141,35 @@ function normalizeNexisClawPeerRange(value) {
     : `>=${normalized}`;
 }
 
-function resolveNexisClawPeerRange(packageJson, rootPackageJson) {
+function resolveFirstNexusPeerRange(packageJson, rootPackageJson) {
   return (
-    normalizeNexisClawPeerRange(packageJson.NexisClaw?.compat?.pluginApi) ||
-    normalizeNexisClawPeerRange(packageJson.peerDependencies?.NexisClaw) ||
-    normalizeNexisClawPeerRange(packageJson.NexisClaw?.build?.NexisClawVersion) ||
-    normalizeNexisClawPeerRange(rootPackageJson?.version) ||
-    normalizeNexisClawPeerRange(packageJson.version)
+    normalizeFirstNexusPeerRange(packageJson.FirstNexus?.compat?.pluginApi) ||
+    normalizeFirstNexusPeerRange(packageJson.peerDependencies?.FirstNexus) ||
+    normalizeFirstNexusPeerRange(packageJson.FirstNexus?.build?.FirstNexusVersion) ||
+    normalizeFirstNexusPeerRange(rootPackageJson?.version) ||
+    normalizeFirstNexusPeerRange(packageJson.version)
   );
 }
 
 export function resolvePluginNpmRuntimePackagePeerMetadata(plan) {
-  const NexisClawPeerRange = resolveNexisClawPeerRange(plan.packageJson, plan.rootPackageJson);
-  if (!NexisClawPeerRange) {
+  const FirstNexusPeerRange = resolveFirstNexusPeerRange(plan.packageJson, plan.rootPackageJson);
+  if (!FirstNexusPeerRange) {
     throw new Error(
-      `cannot infer NexisClaw peerDependency range for ${plan.pluginDir}; set NexisClaw.compat.pluginApi or package version`,
+      `cannot infer FirstNexus peerDependency range for ${plan.pluginDir}; set FirstNexus.compat.pluginApi or package version`,
     );
   }
   const existingPeerDependencies = getStringRecord(plan.packageJson.peerDependencies);
   const existingPeerDependenciesMeta = getRecord(plan.packageJson.peerDependenciesMeta);
-  const existingNexisClawMeta = getRecord(existingPeerDependenciesMeta.NexisClaw);
+  const existingFirstNexusMeta = getRecord(existingPeerDependenciesMeta.FirstNexus);
   return {
     peerDependencies: {
       ...existingPeerDependencies,
-      NexisClaw: NexisClawPeerRange,
+      FirstNexus: FirstNexusPeerRange,
     },
     peerDependenciesMeta: {
       ...existingPeerDependenciesMeta,
-      NexisClaw: {
-        ...existingNexisClawMeta,
+      FirstNexus: {
+        ...existingFirstNexusMeta,
         optional: true,
       },
     },
@@ -221,15 +221,15 @@ export function resolvePluginNpmRuntimeBuildPlan(params) {
     sourceEntries,
     entry,
     outDir: path.join(packageDir, "dist"),
-    runtimeExtensions: (Array.isArray(packageJson.NexisClaw?.extensions)
-      ? packageJson.NexisClaw.extensions
+    runtimeExtensions: (Array.isArray(packageJson.FirstNexus?.extensions)
+      ? packageJson.FirstNexus.extensions
       : []
     )
       .map(normalizePackageEntry)
       .filter(Boolean)
       .map(toPackageRuntimeEntry),
-    runtimeSetupEntry: normalizePackageEntry(packageJson.NexisClaw?.setupEntry)
-      ? toPackageRuntimeEntry(packageJson.NexisClaw.setupEntry)
+    runtimeSetupEntry: normalizePackageEntry(packageJson.FirstNexus?.setupEntry)
+      ? toPackageRuntimeEntry(packageJson.FirstNexus.setupEntry)
       : undefined,
   };
   return {

@@ -1,4 +1,4 @@
-import { resolveHumanDelayConfig } from "NexisClaw/plugin-sdk/agent-runtime";
+import { resolveHumanDelayConfig } from "FirstNexus/plugin-sdk/agent-runtime";
 import {
   createStatusReactionController,
   DEFAULT_TIMING,
@@ -6,13 +6,13 @@ import {
   logTypingFailure,
   removeAckReactionAfterReply,
   type StatusReactionAdapter,
-} from "NexisClaw/plugin-sdk/channel-feedback";
+} from "FirstNexus/plugin-sdk/channel-feedback";
 import {
   createChannelMessageReplyPipeline,
   defineFinalizableLivePreviewAdapter,
   deliverWithFinalizableLivePreviewAdapter,
   resolveChannelMessageSourceReplyDeliveryMode,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import {
   buildChannelProgressDraftLine,
   buildChannelProgressDraftLineForEntry,
@@ -27,21 +27,21 @@ import {
   resolveChannelStreamingPreviewToolProgress,
   resolveChannelStreamingSuppressDefaultToolProgressMessages,
   type ChannelProgressDraftLine,
-} from "NexisClaw/plugin-sdk/channel-streaming";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+} from "FirstNexus/plugin-sdk/channel-streaming";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import {
   type ChannelTurnRecordOptions,
   hasVisibleInboundReplyDispatch,
   runInboundReplyTurn,
-} from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
-import { resolveAgentOutboundIdentity } from "NexisClaw/plugin-sdk/outbound-runtime";
-import { clearHistoryEntriesIfEnabled } from "NexisClaw/plugin-sdk/reply-history";
-import { resolveSendableOutboundReplyParts } from "NexisClaw/plugin-sdk/reply-payload";
-import type { ReplyDispatchKind, ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
-import { resolveInboundLastRouteSessionKey } from "NexisClaw/plugin-sdk/routing";
-import { danger, logVerbose, shouldLogVerbose, sleep } from "NexisClaw/plugin-sdk/runtime-env";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "NexisClaw/plugin-sdk/security-runtime";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
+import { resolveAgentOutboundIdentity } from "FirstNexus/plugin-sdk/outbound-runtime";
+import { clearHistoryEntriesIfEnabled } from "FirstNexus/plugin-sdk/reply-history";
+import { resolveSendableOutboundReplyParts } from "FirstNexus/plugin-sdk/reply-payload";
+import type { ReplyDispatchKind, ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
+import { resolveInboundLastRouteSessionKey } from "FirstNexus/plugin-sdk/routing";
+import { danger, logVerbose, shouldLogVerbose, sleep } from "FirstNexus/plugin-sdk/runtime-env";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "FirstNexus/plugin-sdk/security-runtime";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { reactSlackMessage, removeSlackReaction } from "../../actions.js";
 import { createSlackDraftStream } from "../../draft-stream.js";
 import { formatSlackError } from "../../errors.js";

@@ -1,12 +1,12 @@
-import { resolveAckReaction } from "NexisClaw/plugin-sdk/channel-feedback";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { resolveAckReaction } from "FirstNexus/plugin-sdk/channel-feedback";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import type { CoreConfig } from "../../types.js";
 import { resolveMatrixAccountConfig } from "../account-config.js";
 
 type MatrixAckReactionScope = "group-mentions" | "group-all" | "direct" | "all" | "none" | "off";
 
 export function resolveMatrixAckReactionConfig(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   accountId?: string | null;
 }): { ackReaction: string; ackReactionScope: MatrixAckReactionScope } {

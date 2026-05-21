@@ -1,6 +1,6 @@
-import { buildDispatchInboundCaptureMock } from "NexisClaw/plugin-sdk/channel-contract-testing";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { MsgContext } from "NexisClaw/plugin-sdk/reply-runtime";
+import { buildDispatchInboundCaptureMock } from "FirstNexus/plugin-sdk/channel-contract-testing";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { MsgContext } from "FirstNexus/plugin-sdk/reply-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 type SignalMsgContext = Pick<MsgContext, "Body" | "WasMentioned"> & {
@@ -28,9 +28,9 @@ function getGroupHistoryEntries(
   return entries;
 }
 
-vi.mock("NexisClaw/plugin-sdk/reply-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/reply-runtime")>(
-    "NexisClaw/plugin-sdk/reply-runtime",
+vi.mock("FirstNexus/plugin-sdk/reply-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/reply-runtime")>(
+    "FirstNexus/plugin-sdk/reply-runtime",
   );
   return buildDispatchInboundCaptureMock(actual, (ctx) => {
     capturedCtx = ctx as SignalMsgContext;
@@ -106,7 +106,7 @@ function createSignalConfig(params: { requireMention: boolean; mentionPattern?: 
         groups: { "*": { requireMention: params.requireMention } },
       },
     },
-  } as unknown as NexisClawConfig;
+  } as unknown as FirstNexusConfig;
 }
 
 async function expectSkippedGroupHistory(opts: GroupEventOpts, expectedBody: string) {
@@ -160,7 +160,7 @@ describe("signal mention gating", () => {
               groups: { g1: {} },
             },
           },
-        } as unknown as NexisClawConfig,
+        } as unknown as FirstNexusConfig,
         groupPolicy: "allowlist",
         groupAllowFrom: ["group:g1"],
       }),

@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
-export function collectCoreInsecureOrDangerousFlags(cfg: NexisClawConfig): string[] {
+export function collectCoreInsecureOrDangerousFlags(cfg: FirstNexusConfig): string[] {
   const enabledFlags: string[] = [];
   if (cfg.gateway?.controlUi?.allowInsecureAuth === true) {
     enabledFlags.push("gateway.controlUi.allowInsecureAuth=true");

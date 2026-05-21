@@ -1,24 +1,24 @@
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
-import { isProviderApiKeyConfigured } from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
+import { isProviderApiKeyConfigured } from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   resolveProviderHttpRequestConfig,
-} from "NexisClaw/plugin-sdk/provider-http";
+} from "FirstNexus/plugin-sdk/provider-http";
 import {
   fetchWithSsrFGuard,
   type SsrFPolicy,
   ssrfPolicyFromDangerouslyAllowPrivateNetwork,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type {
   GeneratedVideoAsset,
   VideoGenerationProvider,
   VideoGenerationRequest,
-} from "NexisClaw/plugin-sdk/video-generation";
+} from "FirstNexus/plugin-sdk/video-generation";
 
 const DEFAULT_FAL_BASE_URL = "https://fal.run";
 const DEFAULT_FAL_QUEUE_BASE_URL = "https://queue.fal.run";

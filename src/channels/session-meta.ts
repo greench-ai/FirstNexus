@@ -1,5 +1,5 @@
 import type { MsgContext } from "../auto-reply/templating.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 let inboundSessionRuntimePromise: Promise<
   typeof import("../config/sessions/inbound.runtime.js")
@@ -11,7 +11,7 @@ function loadInboundSessionRuntime() {
 }
 
 export async function recordInboundSessionMetaSafe(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   sessionKey: string;
   ctx: MsgContext;

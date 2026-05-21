@@ -42,10 +42,10 @@ describe("plugin npm runtime build planning", () => {
       expectDistRelativePaths(plan.runtimeExtensions);
       expectDistRelativePaths(plan.runtimeBuildOutputs);
       expect(plan.packageFiles).toContain("dist/**");
-      expect(plan.packagePeerMetadata.peerDependencies.NexisClaw).toBe(
-        plan.packageJson.NexisClaw.compat.pluginApi,
+      expect(plan.packagePeerMetadata.peerDependencies.FirstNexus).toBe(
+        plan.packageJson.FirstNexus.compat.pluginApi,
       );
-      expect(plan.packagePeerMetadata.peerDependenciesMeta.NexisClaw.optional).toBe(true);
+      expect(plan.packagePeerMetadata.peerDependenciesMeta.FirstNexus.optional).toBe(true);
     }
   });
 
@@ -79,7 +79,7 @@ describe("plugin npm runtime build planning", () => {
     });
     expect(diffsRuntimePlan.packageFiles).toEqual([
       "dist/**",
-      "NexisClaw.plugin.json",
+      "FirstNexus.plugin.json",
       "README.md",
       "skills/**",
     ]);

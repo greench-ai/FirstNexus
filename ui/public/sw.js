@@ -1,7 +1,7 @@
-// NexisClaw Control – Service Worker
+// FirstNexus Control – Service Worker
 // Handles offline caching and push notifications.
 
-const CACHE_NAME = "NexisClaw-control-v1";
+const CACHE_NAME = "FirstNexus-control-v1";
 
 // Minimal app-shell files to precache.
 const PRECACHE_URLS = ["./"];
@@ -80,15 +80,15 @@ self.addEventListener("push", (event) => {
   try {
     data = event.data.json();
   } catch {
-    data = { title: "NexisClaw", body: event.data.text() };
+    data = { title: "FirstNexus", body: event.data.text() };
   }
 
-  const title = data.title || "NexisClaw";
+  const title = data.title || "FirstNexus";
   const options = {
     body: data.body || "",
     icon: "./apple-touch-icon.png",
     badge: "./favicon-32.png",
-    tag: data.tag || "NexisClaw-notification",
+    tag: data.tag || "FirstNexus-notification",
     data: { url: data.url || "./" },
   };
 

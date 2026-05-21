@@ -1,4 +1,4 @@
-import { stopNexisClawChrome } from "./chrome.js";
+import { stopFirstNexusChrome } from "./chrome.js";
 import type { ResolvedBrowserConfig } from "./config.js";
 import {
   type BrowserServerState,
@@ -32,7 +32,7 @@ export async function stopKnownBrowserProfiles(params: {
       try {
         const runtime = current.profiles.get(name);
         if (runtime?.running) {
-          await stopNexisClawChrome(runtime.running);
+          await stopFirstNexusChrome(runtime.running);
           runtime.running = null;
           continue;
         }
@@ -42,6 +42,6 @@ export async function stopKnownBrowserProfiles(params: {
       }
     }
   } catch (err) {
-    params.onWarn(`NexisClaw browser stop failed: ${String(err)}`);
+    params.onWarn(`FirstNexus browser stop failed: ${String(err)}`);
   }
 }

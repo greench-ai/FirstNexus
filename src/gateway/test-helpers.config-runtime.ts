@@ -9,14 +9,14 @@ import type {
 } from "../config/io.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
 import type { AgentBinding } from "../config/types.agents.js";
-import type { ConfigFileSnapshot, NexisClawConfig } from "../config/types.js";
+import type { ConfigFileSnapshot, FirstNexusConfig } from "../config/types.js";
 import { buildTestConfigSnapshot } from "./test-helpers.config-snapshots.js";
 import { testConfigRoot, testIsNixMode, testState } from "./test-helpers.runtime-state.js";
 
 type GatewayConfigModule = typeof import("../config/config.js");
 
 export function createGatewayConfigModuleMock(actual: GatewayConfigModule): GatewayConfigModule {
-  const resolveConfigPath = () => path.join(testConfigRoot.value, "NexisClaw.json");
+  const resolveConfigPath = () => path.join(testConfigRoot.value, "FirstNexus.json");
 
   const composeTestConfig = (baseConfig: Record<string, unknown>) => {
     const fileAgents =
@@ -33,7 +33,7 @@ export function createGatewayConfigModuleMock(actual: GatewayConfigModule): Gate
         : {};
     const defaults = {
       model: { primary: "anthropic/claude-opus-4-6" },
-      workspace: path.join(os.tmpdir(), "NexisClaw-gateway-test"),
+      workspace: path.join(os.tmpdir(), "FirstNexus-gateway-test"),
       ...fileDefaults,
       ...testState.agentConfig,
     };
@@ -136,7 +136,7 @@ export function createGatewayConfigModuleMock(actual: GatewayConfigModule): Gate
       gateway,
       hooks,
       cron,
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
   };
 
   const readConfigFileSnapshot = async (): Promise<ConfigFileSnapshot> => {
@@ -268,7 +268,7 @@ export function createGatewayConfigModuleMock(actual: GatewayConfigModule): Gate
     get isNixMode() {
       return testIsNixMode.value;
     },
-    applyConfigOverrides: (cfg: NexisClawConfig) =>
+    applyConfigOverrides: (cfg: FirstNexusConfig) =>
       composeTestConfig(cfg as Record<string, unknown>),
     getRuntimeConfig: loadRuntimeAwareTestConfig,
     parseConfigJson5: (raw: string) => {

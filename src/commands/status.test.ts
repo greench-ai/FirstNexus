@@ -201,7 +201,7 @@ async function createStatusServiceSummary(
     label: service.label,
     installed: Boolean(command) || runtime?.status === "running",
     loaded,
-    managedByNexisClaw: Boolean(command),
+    managedByFirstNexus: Boolean(command),
     externallyManaged: !command && runtime?.status === "running",
     loadedText: service.loadedText,
     runtime,
@@ -326,11 +326,11 @@ async function createMockStatusScanResult(params: { includePluginCompatibility?:
     tailscaleDns: null,
     tailscaleHttpsUrl: null,
     update: {
-      root: "/tmp/NexisClaw",
+      root: "/tmp/FirstNexus",
       installKind: "git",
       packageManager: "pnpm",
       git: {
-        root: "/tmp/NexisClaw",
+        root: "/tmp/FirstNexus",
         branch: "main",
         upstream: "origin/main",
         dirty: false,
@@ -341,8 +341,8 @@ async function createMockStatusScanResult(params: { includePluginCompatibility?:
       deps: {
         manager: "pnpm",
         status: "ok",
-        lockfilePath: "/tmp/NexisClaw/pnpm-lock.yaml",
-        markerPath: "/tmp/NexisClaw/node_modules/.modules.yaml",
+        lockfilePath: "/tmp/FirstNexus/pnpm-lock.yaml",
+        markerPath: "/tmp/FirstNexus/node_modules/.modules.yaml",
       },
       registry: { latestVersion: "0.0.0" },
     },
@@ -473,7 +473,7 @@ const mocks = vi.hoisted(() => ({
     readRuntime: async () => ({ status: "running", pid: 1234 }),
     readCommand: async () => ({
       programArguments: ["node", "dist/entry.js", "gateway"],
-      sourcePath: "/tmp/Library/LaunchAgents/ai.NexisClaw.gateway.plist",
+      sourcePath: "/tmp/Library/LaunchAgents/ai.FirstNexus.gateway.plist",
     }),
   }),
   resolveNodeService: vi.fn().mockReturnValue({
@@ -489,7 +489,7 @@ const mocks = vi.hoisted(() => ({
     readRuntime: async () => ({ status: "running", pid: 4321 }),
     readCommand: async () => ({
       programArguments: ["node", "dist/entry.js", "node-host"],
-      sourcePath: "/tmp/Library/LaunchAgents/ai.NexisClaw.node.plist",
+      sourcePath: "/tmp/Library/LaunchAgents/ai.FirstNexus.node.plist",
     }),
   }),
 }));
@@ -516,7 +516,7 @@ vi.mock("../plugins/memory-runtime.js", () => ({
         files: 2,
         chunks: 3,
         dirty: false,
-        workspaceDir: "/tmp/NexisClaw",
+        workspaceDir: "/tmp/FirstNexus",
         dbPath: "/tmp/memory.sqlite",
         provider: "openai",
         model: "text-embedding-3-small",
@@ -671,9 +671,9 @@ vi.mock("../gateway/call.js", () => ({
 vi.mock("../gateway/agent-list.js", () => ({
   listGatewayAgentsBasic: mocks.listGatewayAgentsBasic,
 }));
-vi.mock("../infra/NexisClaw-root.js", () => ({
-  resolveNexisClawPackageRoot: vi.fn().mockResolvedValue("/tmp/NexisClaw"),
-  resolveNexisClawPackageRootSync: vi.fn(() => "/tmp/NexisClaw"),
+vi.mock("../infra/FirstNexus-root.js", () => ({
+  resolveFirstNexusPackageRoot: vi.fn().mockResolvedValue("/tmp/FirstNexus"),
+  resolveFirstNexusPackageRootSync: vi.fn(() => "/tmp/FirstNexus"),
 }));
 vi.mock("../infra/os-summary.js", () => ({
   resolveOsSummary: () => ({
@@ -685,11 +685,11 @@ vi.mock("../infra/os-summary.js", () => ({
 }));
 vi.mock("../infra/update-check.js", () => ({
   checkUpdateStatus: vi.fn().mockResolvedValue({
-    root: "/tmp/NexisClaw",
+    root: "/tmp/FirstNexus",
     installKind: "git",
     packageManager: "pnpm",
     git: {
-      root: "/tmp/NexisClaw",
+      root: "/tmp/FirstNexus",
       branch: "main",
       upstream: "origin/main",
       dirty: false,
@@ -700,8 +700,8 @@ vi.mock("../infra/update-check.js", () => ({
     deps: {
       manager: "pnpm",
       status: "ok",
-      lockfilePath: "/tmp/NexisClaw/pnpm-lock.yaml",
-      markerPath: "/tmp/NexisClaw/node_modules/.modules.yaml",
+      lockfilePath: "/tmp/FirstNexus/pnpm-lock.yaml",
+      markerPath: "/tmp/FirstNexus/node_modules/.modules.yaml",
     },
     registry: { latestVersion: "0.0.0" },
   }),
@@ -857,7 +857,7 @@ vi.mock("./status.daemon.js", () => ({
       label: service.label,
       installed: Boolean(command) || runtime?.status === "running",
       loaded,
-      managedByNexisClaw: Boolean(command),
+      managedByFirstNexus: Boolean(command),
       externallyManaged: !command && runtime?.status === "running",
       loadedText: loaded ? service.loadedText : service.notLoadedText,
       runtimeShort: runtime?.pid ? `pid ${runtime.pid}` : null,
@@ -872,7 +872,7 @@ vi.mock("./status.daemon.js", () => ({
       label: service.label,
       installed: Boolean(command) || runtime?.status === "running",
       loaded,
-      managedByNexisClaw: Boolean(command),
+      managedByFirstNexus: Boolean(command),
       externallyManaged: !command && runtime?.status === "running",
       loadedText: loaded ? service.loadedText : service.notLoadedText,
       runtimeShort: runtime?.pid ? `pid ${runtime.pid}` : null,
@@ -961,7 +961,7 @@ describe("statusCommand", () => {
       readRuntime: async () => ({ status: "running", pid: 1234 }),
       readCommand: async () => ({
         programArguments: ["node", "dist/entry.js", "gateway"],
-        sourcePath: "/tmp/Library/LaunchAgents/ai.NexisClaw.gateway.plist",
+        sourcePath: "/tmp/Library/LaunchAgents/ai.FirstNexus.gateway.plist",
       }),
     });
     mocks.resolveNodeService.mockReset();
@@ -978,7 +978,7 @@ describe("statusCommand", () => {
       readRuntime: async () => ({ status: "running", pid: 4321 }),
       readCommand: async () => ({
         programArguments: ["node", "dist/entry.js", "node-host"],
-        sourcePath: "/tmp/Library/LaunchAgents/ai.NexisClaw.node.plist",
+        sourcePath: "/tmp/Library/LaunchAgents/ai.FirstNexus.node.plist",
       }),
     });
     runtimeLogMock.mockClear();
@@ -1116,7 +1116,7 @@ describe("statusCommand", () => {
     ]);
     const logs = await runStatusAndGetLogs({ verbose: true });
     for (const token of [
-      "NexisClaw status",
+      "FirstNexus status",
       "Overview",
       "Security audit",
       "Skipped in fast status",
@@ -1140,7 +1140,7 @@ describe("statusCommand", () => {
       expectLogsInclude(logs, token);
     }
     expectLogsInclude(logs, "legacy-plugin still uses legacy before_agent_start");
-    expectLogsMatch(logs, /NexisClaw (?:--profile isolated )?status --all/);
+    expectLogsMatch(logs, /FirstNexus (?:--profile isolated )?status --all/);
     expectLogsInclude(logs, "Cache");
     expectLogsInclude(logs, "40% hit");
     expectLogsInclude(logs, "read 2.0k");
@@ -1237,7 +1237,7 @@ describe("statusCommand", () => {
     const joined = await runStatusAndGetJoinedLogs();
     expect(joined).toContain("node → gateway.example.com:19000 · no local gateway");
     expect(joined).not.toContain("Gateway: local · ws://127.0.0.1:18789");
-    expect(joined).toContain("NexisClaw --profile isolated node status");
+    expect(joined).toContain("FirstNexus --profile isolated node status");
     expect(joined).not.toContain("Fix reachability first");
   });
 

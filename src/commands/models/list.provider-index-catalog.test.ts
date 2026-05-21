@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { loadProviderIndexCatalogRowsForList } from "./list.provider-index-catalog.js";
 
-const baseConfig = {} satisfies NexisClawConfig;
+const baseConfig = {} satisfies FirstNexusConfig;
 
 describe("loadProviderIndexCatalogRowsForList", () => {
   it("returns provider-index preview rows when the provider plugin is enabled", () => {

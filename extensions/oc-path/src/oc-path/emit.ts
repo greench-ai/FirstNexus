@@ -19,7 +19,7 @@
  * `OcEmitSentinelError`. This is the substrate guard: callers can't
  * accidentally write a redacted view to disk through this emitter.
  *
- * @module @NexisClaw/oc-path/emit
+ * @module @FirstNexus/oc-path/emit
  */
 
 import type { FrontmatterEntry, MdAst } from "./ast.js";

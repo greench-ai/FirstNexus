@@ -50,7 +50,7 @@ function createListSessionsRequest(params: {
 
 function createResumeSessionRequest(
   sessionId: string,
-  cwd = "/tmp/NexisClaw",
+  cwd = "/tmp/FirstNexus",
 ): ResumeSessionRequest {
   return {
     sessionId,
@@ -318,7 +318,7 @@ describe("acp translator stable lifecycle handlers", () => {
         return createGatewaySessions([
           createSessionRow({
             key: "agent:main:work",
-            cwd: "/tmp/NexisClaw",
+            cwd: "/tmp/FirstNexus",
             title: "Work session",
           }),
         ]);
@@ -353,7 +353,7 @@ describe("acp translator stable lifecycle handlers", () => {
         _meta: {
           sessionKey: "agent:main:work",
           kind: "direct",
-          spawnedWorkspaceDir: "/tmp/NexisClaw",
+          spawnedWorkspaceDir: "/tmp/FirstNexus",
         },
       },
     });
@@ -397,7 +397,7 @@ describe("acp translator stable lifecycle handlers", () => {
     sessionStore.createSession({
       sessionId: "session-1",
       sessionKey: "agent:main:work",
-      cwd: "/tmp/NexisClaw",
+      cwd: "/tmp/FirstNexus",
     });
     const agent = new AcpGatewayAgent(createAcpConnection(), createAcpGateway(request), {
       sessionStore,

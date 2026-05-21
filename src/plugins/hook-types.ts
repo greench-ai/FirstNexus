@@ -6,7 +6,7 @@ import type {
   ReplyDispatcher,
 } from "../auto-reply/reply/reply-dispatcher.types.js";
 import type { FinalizedMsgContext } from "../auto-reply/templating.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { TtsAutoMode } from "../config/types.tts.js";
 import type { DiagnosticTraceContext } from "../infra/diagnostic-trace-context.js";
 import type {
@@ -380,7 +380,7 @@ export type PluginHookReplyDispatchEvent = {
 };
 
 export type PluginHookReplyDispatchContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   dispatcher: ReplyDispatcher;
   abortSignal?: AbortSignal;
   onReplyStart?: () => Promise<void> | void;
@@ -613,7 +613,7 @@ export type PluginHookSubagentEndedEvent = {
 
 export type PluginHookGatewayContext = {
   port?: number;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   getCron?: () => PluginHookGatewayCronService | undefined;
 };

@@ -132,7 +132,7 @@ function collectGatewayServiceStartRepairIssues(
   if (serviceVersion && serviceVersion !== VERSION) {
     issues.push({
       code: "version-mismatch",
-      message: `service was installed by NexisClaw ${serviceVersion}, current CLI is ${VERSION}`,
+      message: `service was installed by FirstNexus ${serviceVersion}, current CLI is ${VERSION}`,
     });
   }
   for (const candidate of command.programArguments.slice(0, 2)) {

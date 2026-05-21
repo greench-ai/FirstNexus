@@ -24,8 +24,8 @@ async function startLocalStreamableHttpMcpServer(): Promise<{
   url: string;
   close: () => Promise<void>;
 }> {
-  const mcpServer = new McpServer({ name: "NexisClaw-gemini-live-probe", version: "1.0.0" });
-  mcpServer.tool("NexisClaw_live_probe", "NexisClaw Gemini MCP live probe", async () => ({
+  const mcpServer = new McpServer({ name: "FirstNexus-gemini-live-probe", version: "1.0.0" });
+  mcpServer.tool("FirstNexus_live_probe", "FirstNexus Gemini MCP live probe", async () => ({
     content: [{ type: "text", text: "ok" }],
   }));
 
@@ -57,7 +57,7 @@ async function startLocalStreamableHttpMcpServer(): Promise<{
 }
 
 describeLive("Gemini CLI MCP settings smoke", () => {
-  it("connects to an NexisClaw-configured streamable-http server", async () => {
+  it("connects to an FirstNexus-configured streamable-http server", async () => {
     const geminiCommand = process.env.NEXISCLAW_LIVE_GEMINI_COMMAND ?? "gemini";
     if (!(await canRunGemini(geminiCommand))) {
       console.warn(`Skipping Gemini MCP live smoke: ${geminiCommand} is not runnable.`);
@@ -77,7 +77,7 @@ describeLive("Gemini CLI MCP settings smoke", () => {
         plugins: { enabled: false },
         mcp: {
           servers: {
-            NexisClawLiveProbe: {
+            FirstNexusLiveProbe: {
               transport: "streamable-http",
               url: probeServer.url,
             },
@@ -96,7 +96,7 @@ describeLive("Gemini CLI MCP settings smoke", () => {
         maxBuffer: 1024 * 1024,
       });
       const output = `${result.stdout}\n${result.stderr}`;
-      expect(output).toContain("NexisClawLiveProbe");
+      expect(output).toContain("FirstNexusLiveProbe");
       expect(output).toMatch(/\(http\)|type:\s*http|http/i);
       expect(output).not.toContain("transport");
     } finally {

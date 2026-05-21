@@ -1,25 +1,25 @@
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/account-id";
-import { buildDmGroupAccountAllowlistAdapter } from "NexisClaw/plugin-sdk/allowlist-config-edit";
-import { createChatChannelPlugin, type ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import { defineChannelMessageAdapter } from "NexisClaw/plugin-sdk/channel-message";
-import { createPairingPrefixStripper } from "NexisClaw/plugin-sdk/channel-pairing";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/account-id";
+import { buildDmGroupAccountAllowlistAdapter } from "FirstNexus/plugin-sdk/allowlist-config-edit";
+import { createChatChannelPlugin, type ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import { defineChannelMessageAdapter } from "FirstNexus/plugin-sdk/channel-message";
+import { createPairingPrefixStripper } from "FirstNexus/plugin-sdk/channel-pairing";
 import {
   attachChannelToResult,
   attachChannelToResults,
-} from "NexisClaw/plugin-sdk/channel-send-result";
-import { PAIRING_APPROVED_MESSAGE } from "NexisClaw/plugin-sdk/channel-status";
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import { resolveChannelMediaMaxBytes } from "NexisClaw/plugin-sdk/media-runtime";
-import { resolveOutboundSendDep } from "NexisClaw/plugin-sdk/outbound-send-deps";
-import { chunkText, resolveTextChunkLimit } from "NexisClaw/plugin-sdk/reply-chunking";
-import { buildOutboundBaseSessionKey, type RoutePeer } from "NexisClaw/plugin-sdk/routing";
+} from "FirstNexus/plugin-sdk/channel-send-result";
+import { PAIRING_APPROVED_MESSAGE } from "FirstNexus/plugin-sdk/channel-status";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import { resolveChannelMediaMaxBytes } from "FirstNexus/plugin-sdk/media-runtime";
+import { resolveOutboundSendDep } from "FirstNexus/plugin-sdk/outbound-send-deps";
+import { chunkText, resolveTextChunkLimit } from "FirstNexus/plugin-sdk/reply-chunking";
+import { buildOutboundBaseSessionKey, type RoutePeer } from "FirstNexus/plugin-sdk/routing";
 import {
   buildBaseChannelStatusSummary,
   collectStatusIssuesFromLastError,
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "NexisClaw/plugin-sdk/status-helpers";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/status-helpers";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveSignalAccount, type ResolvedSignalAccount } from "./accounts.js";
 import { signalApprovalAuth } from "./approval-auth.js";
 import { markdownToSignalTextChunks } from "./format.js";

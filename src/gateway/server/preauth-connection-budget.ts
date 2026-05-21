@@ -1,5 +1,5 @@
 const DEFAULT_MAX_PREAUTH_CONNECTIONS_PER_IP = 32;
-const UNKNOWN_CLIENT_IP_BUDGET_KEY = "__NexisClaw_unknown_client_ip__";
+const UNKNOWN_CLIENT_IP_BUDGET_KEY = "__FirstNexus_unknown_client_ip__";
 
 function getMaxPreauthConnectionsPerIpFromEnv(env: NodeJS.ProcessEnv = process.env): number {
   const configured =

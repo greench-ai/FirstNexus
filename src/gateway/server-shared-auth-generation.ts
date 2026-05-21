@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveGatewayReloadSettings } from "./config-reload-settings.js";
 
 export type SharedGatewayAuthClient = {
@@ -69,7 +69,7 @@ export function setCurrentSharedGatewaySessionGeneration(
 
 export function enforceSharedGatewaySessionGenerationForConfigWrite(params: {
   state: SharedGatewaySessionGenerationState;
-  nextConfig: NexisClawConfig;
+  nextConfig: FirstNexusConfig;
   resolveRuntimeSnapshotGeneration: () => string | undefined;
   clients: Iterable<SharedGatewayAuthClient>;
 }): void {

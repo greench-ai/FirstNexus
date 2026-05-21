@@ -6,15 +6,17 @@ describe("formatCliFailureLines", () => {
     const lines = formatCliFailureLines({
       title: "Could not start the CLI.",
       error: new Error("config file is invalid"),
-      argv: ["node", "NexisClaw", "status"],
+      argv: ["node", "FirstNexus", "status"],
       env: {},
     });
 
-    expect(lines).toContain("[NexisClaw] Could not start the CLI.");
-    expect(lines).toContain("[NexisClaw] Reason: config file is invalid");
-    expect(lines).toContain("[NexisClaw] Debug: set NEXISCLAW_DEBUG=1 to include the stack trace.");
-    expect(lines).toContain("[NexisClaw] Try: NexisClaw doctor");
-    expect(lines).toContain("[NexisClaw] Help: NexisClaw --help");
+    expect(lines).toContain("[FirstNexus] Could not start the CLI.");
+    expect(lines).toContain("[FirstNexus] Reason: config file is invalid");
+    expect(lines).toContain(
+      "[FirstNexus] Debug: set NEXISCLAW_DEBUG=1 to include the stack trace.",
+    );
+    expect(lines).toContain("[FirstNexus] Try: FirstNexus doctor");
+    expect(lines).toContain("[FirstNexus] Help: FirstNexus --help");
   });
 
   it("prints stack details when debug output is requested", () => {
@@ -24,7 +26,7 @@ describe("formatCliFailureLines", () => {
       env: { NEXISCLAW_DEBUG: "1" },
     });
 
-    expect(lines).toContain("[NexisClaw] Stack:");
+    expect(lines).toContain("[FirstNexus] Stack:");
     expect(lines.some((line) => line.includes("Error: boom"))).toBe(true);
   });
 });

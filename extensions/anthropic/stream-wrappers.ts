@@ -1,6 +1,6 @@
 import type { StreamFn } from "@earendil-works/pi-agent-core";
 import { streamSimple } from "@earendil-works/pi-ai";
-import type { ProviderWrapStreamFnContext } from "NexisClaw/plugin-sdk/plugin-entry";
+import type { ProviderWrapStreamFnContext } from "FirstNexus/plugin-sdk/plugin-entry";
 import {
   applyAnthropicPayloadPolicyToParams,
   composeProviderStreamWrappers,
@@ -8,13 +8,13 @@ import {
   resolveAnthropicPayloadPolicy,
   stripTrailingAnthropicAssistantPrefillWhenThinking,
   streamWithPayloadPatch,
-} from "NexisClaw/plugin-sdk/provider-stream-shared";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/provider-stream-shared";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   normalizeFastMode,
   normalizeLowercaseStringOrEmpty,
   readStringValue,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 const log = createSubsystemLogger("anthropic-stream");
 

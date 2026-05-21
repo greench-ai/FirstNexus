@@ -262,7 +262,7 @@ describe("plugin contract boundary invariants", () => {
       }
       const source = readRepoSource(file);
       return (
-        source.includes("NexisClaw/plugin-sdk/test-fixtures") &&
+        source.includes("FirstNexus/plugin-sdk/test-fixtures") &&
         /\b(?:BUNDLED_PLUGIN_|bundled(?:Dist)?Plugin(?:Root|File|DirPrefix)|installedPluginRoot|repoInstallSpec)\b/u.test(
           source,
         )

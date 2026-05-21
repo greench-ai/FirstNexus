@@ -2,12 +2,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { ChannelType } from "discord-api-types/v10";
-import { getSessionBindingService } from "NexisClaw/plugin-sdk/conversation-runtime";
+import { getSessionBindingService } from "FirstNexus/plugin-sdk/conversation-runtime";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/runtime-config-snapshot";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/runtime-config-snapshot";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { EMPTY_DISCORD_TEST_CONFIG } from "../test-support/config.js";
 
@@ -69,11 +69,11 @@ const { resolveThreadBindingInactivityExpiresAt, resolveThreadBindingMaxAgeExpir
 const { resolveThreadBindingIntroText } = await import("./thread-bindings.messages.js");
 const discordClientModule = await import("../client.js");
 const discordThreadBindingApi = await import("./thread-bindings.discord-api.js");
-const acpRuntime = await import("NexisClaw/plugin-sdk/acp-runtime");
+const acpRuntime = await import("FirstNexus/plugin-sdk/acp-runtime");
 
 function createTestThreadBindingManager(
   params: Omit<Parameters<typeof createThreadBindingManager>[0], "cfg"> & {
-    cfg?: NexisClawConfig;
+    cfg?: FirstNexusConfig;
   },
 ) {
   return createThreadBindingManager({
@@ -718,7 +718,7 @@ describe("thread binding lifecycle", () => {
   it("persists touched activity timestamps across restart when persistence is enabled", async () => {
     vi.useFakeTimers();
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-thread-bindings-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-thread-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDir;
     try {
       __testing.resetThreadBindingsForTests();
@@ -919,7 +919,7 @@ describe("thread binding lifecycle", () => {
   it("passes manager token when resolving parent channels for auto-bind", async () => {
     const cfg = {
       channels: { discord: { token: "tok" } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     createTestThreadBindingManager({
       accountId: "runtime",
       token: "runtime-token",
@@ -978,10 +978,10 @@ describe("thread binding lifecycle", () => {
   it("uses the active runtime snapshot cfg for manager operations", async () => {
     const startupCfg = {
       channels: { discord: { token: "startup-token" } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const refreshedCfg = {
       channels: { discord: { token: "refreshed-token" } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const manager = createTestThreadBindingManager({
       accountId: "runtime",
       token: "runtime-token",
@@ -1223,7 +1223,7 @@ describe("thread binding lifecycle", () => {
     hoisted.restPost.mockClear();
 
     const bound = await getSessionBindingService().bind({
-      targetSessionKey: "plugin-binding:NexisClaw-codex-app-server:dm",
+      targetSessionKey: "plugin-binding:FirstNexus-codex-app-server:dm",
       targetKind: "session",
       conversation: {
         channel: "discord",
@@ -1233,8 +1233,8 @@ describe("thread binding lifecycle", () => {
       placement: "current",
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "NexisClaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/NexisClaw-app-server",
+        pluginId: "FirstNexus-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/FirstNexus-app-server",
       },
     });
 
@@ -1273,7 +1273,7 @@ describe("thread binding lifecycle", () => {
     });
 
     await getSessionBindingService().bind({
-      targetSessionKey: "plugin-binding:NexisClaw-codex-app-server:dm",
+      targetSessionKey: "plugin-binding:FirstNexus-codex-app-server:dm",
       targetKind: "session",
       conversation: {
         channel: "discord",
@@ -1283,15 +1283,15 @@ describe("thread binding lifecycle", () => {
       placement: "current",
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "NexisClaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/NexisClaw-app-server",
+        pluginId: "FirstNexus-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/FirstNexus-app-server",
         agentId: "codex",
         boundBy: "system",
       },
     });
 
     await getSessionBindingService().bind({
-      targetSessionKey: "plugin-binding:NexisClaw-codex-app-server:dm",
+      targetSessionKey: "plugin-binding:FirstNexus-codex-app-server:dm",
       targetKind: "session",
       conversation: {
         channel: "discord",
@@ -1314,8 +1314,8 @@ describe("thread binding lifecycle", () => {
     );
     expectFields(requireRecord(resolved.metadata, "resolved metadata"), "resolved metadata", {
       pluginBindingOwner: "plugin",
-      pluginId: "NexisClaw-codex-app-server",
-      pluginRoot: "/Users/huntharo/github/NexisClaw-app-server",
+      pluginId: "FirstNexus-codex-app-server",
+      pluginRoot: "/Users/huntharo/github/FirstNexus-app-server",
       agentId: "codex",
       boundBy: "system",
       label: "codex-dm",
@@ -1509,12 +1509,12 @@ describe("thread binding lifecycle", () => {
       threadId: "user:1177378744822943744",
       channelId: "user:1177378744822943744",
       targetKind: "acp",
-      targetSessionKey: "plugin-binding:NexisClaw-codex-app-server:dm",
+      targetSessionKey: "plugin-binding:FirstNexus-codex-app-server:dm",
       agentId: "codex",
       metadata: {
         pluginBindingOwner: "plugin",
-        pluginId: "NexisClaw-codex-app-server",
-        pluginRoot: "/Users/huntharo/github/NexisClaw-app-server",
+        pluginId: "FirstNexus-codex-app-server",
+        pluginRoot: "/Users/huntharo/github/FirstNexus-app-server",
       },
     });
 
@@ -1537,7 +1537,7 @@ describe("thread binding lifecycle", () => {
     );
     expectFields(requireRecord(binding.metadata, "binding metadata"), "binding metadata", {
       pluginBindingOwner: "plugin",
-      pluginId: "NexisClaw-codex-app-server",
+      pluginId: "FirstNexus-codex-app-server",
     });
   });
 
@@ -1836,7 +1836,7 @@ describe("thread binding lifecycle", () => {
 
   it("migrates legacy expiresAt bindings to idle/max-age semantics", () => {
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-thread-bindings-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-thread-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDir;
     try {
       __testing.resetThreadBindingsForTests();
@@ -1938,7 +1938,7 @@ describe("thread binding lifecycle", () => {
 
   it("persists unbinds even when no manager is active", () => {
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-thread-bindings-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-thread-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = stateDir;
     try {
       __testing.resetThreadBindingsForTests();

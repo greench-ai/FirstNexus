@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { ensureRepoBoundDirectory, resolveRepoRelativeOutputDir } from "../cli-paths.js";
 
 export type MantisDiscordSmokeOptions = {

@@ -1,31 +1,31 @@
 /**
- * Synology Chat Channel Plugin for NexisClaw.
+ * Synology Chat Channel Plugin for FirstNexus.
  *
  * Implements the ChannelPlugin interface following the LINE pattern.
  */
 
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/account-id";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/account-resolution";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/account-id";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/account-resolution";
 import {
   createHybridChannelConfigAdapter,
   createScopedDmSecurityResolver,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
-import { createChatChannelPlugin, type ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import { waitUntilAbort } from "NexisClaw/plugin-sdk/channel-lifecycle";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
+import { createChatChannelPlugin, type ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import { waitUntilAbort } from "FirstNexus/plugin-sdk/channel-lifecycle";
 import {
   createMessageReceiptFromOutboundResults,
   defineChannelMessageAdapter,
   type MessageReceipt,
   type MessageReceiptPartKind,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import {
   composeWarningCollectors,
   createConditionalWarningCollector,
   projectAccountConfigWarningCollector,
   projectAccountWarningCollector,
-} from "NexisClaw/plugin-sdk/channel-policy";
-import { createEmptyChannelDirectoryAdapter } from "NexisClaw/plugin-sdk/directory-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-policy";
+import { createEmptyChannelDirectoryAdapter } from "FirstNexus/plugin-sdk/directory-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { listAccountIds, resolveAccount } from "./accounts.js";
 import { synologyChatApprovalAuth } from "./approval-auth.js";
 import { sendMessage, sendFileUrl } from "./client.js";
@@ -47,12 +47,12 @@ const resolveSynologyChatDmPolicy = createScopedDmSecurityResolver<ResolvedSynol
   resolveAllowFrom: (account) => account.allowedUserIds,
   policyPathSuffix: "dmPolicy",
   defaultPolicy: "allowlist",
-  approveHint: "NexisClaw pairing approve synology-chat <code>",
+  approveHint: "FirstNexus pairing approve synology-chat <code>",
   normalizeEntry: (raw) => normalizeLowercaseStringOrEmpty(raw),
 });
 
 type SynologyChannelGatewayContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   abortSignal: AbortSignal;
   log?: {
@@ -62,7 +62,7 @@ type SynologyChannelGatewayContext = {
   };
 };
 type SynologyChannelOutboundContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   to: string;
   text?: string;
   mediaUrl?: string;
@@ -71,7 +71,7 @@ type SynologyChannelOutboundContext = {
 type SynologyChannelSendTextContext = SynologyChannelOutboundContext & { text: string };
 type SynologyChannelSendMediaContext = SynologyChannelOutboundContext & { mediaUrl: string };
 type SynologySecurityWarningContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedSynologyChatAccount;
 };
 
@@ -144,16 +144,16 @@ type SynologyChatPlugin = Omit<
   pairing: {
     idLabel: string;
     normalizeAllowEntry?: (entry: string) => string;
-    notifyApproval: (params: { cfg: NexisClawConfig; id: string }) => Promise<void>;
+    notifyApproval: (params: { cfg: FirstNexusConfig; id: string }) => Promise<void>;
   };
   security: {
-    resolveDmPolicy: (params: { cfg: NexisClawConfig; account: ResolvedSynologyChatAccount }) => {
+    resolveDmPolicy: (params: { cfg: FirstNexusConfig; account: ResolvedSynologyChatAccount }) => {
       policy: string | null | undefined;
       allowFrom?: Array<string | number>;
       normalizeEntry?: (raw: string) => string;
     } | null;
     collectWarnings: (params: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       account: ResolvedSynologyChatAccount;
     }) => string[];
   };
@@ -188,7 +188,7 @@ type SynologyChatPlugin = Omit<
 
 const collectSynologyChatRoutingWarnings = projectAccountConfigWarningCollector<
   ResolvedSynologyChatAccount,
-  NexisClawConfig,
+  FirstNexusConfig,
   SynologySecurityWarningContext
 >(
   (cfg) => cfg,
@@ -196,7 +196,7 @@ const collectSynologyChatRoutingWarnings = projectAccountConfigWarningCollector<
 );
 
 function resolveOutboundAccount(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   accountId?: string | null,
 ): ResolvedSynologyChatAccount {
   return resolveAccount(cfg ?? {}, accountId);
@@ -290,7 +290,7 @@ export function createSynologyChatPlugin(): SynologyChatPlugin {
         selectionLabel: "Synology Chat (Webhook)",
         detailLabel: "Synology Chat (Webhook)",
         docsPath: "/channels/synology-chat",
-        blurb: "Connect your Synology NAS Chat to NexisClaw",
+        blurb: "Connect your Synology NAS Chat to FirstNexus",
         order: 90,
       },
       capabilities: {
@@ -393,7 +393,7 @@ export function createSynologyChatPlugin(): SynologyChatPlugin {
     pairing: {
       text: {
         idLabel: "synologyChatUserId",
-        message: "NexisClaw: your access has been approved.",
+        message: "FirstNexus: your access has been approved.",
         normalizeAllowEntry: (entry: string) => normalizeLowercaseStringOrEmpty(entry),
         notify: async ({ cfg, id, message }) => {
           const account = resolveAccount(cfg);

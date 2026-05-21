@@ -5,20 +5,20 @@ import { resolveCodexAppServerProtocolSource } from "../../scripts/lib/codex-app
 import { createScriptTestHarness } from "./test-helpers.js";
 
 const { createTempDir } = createScriptTestHarness();
-const originalNexisClawCodexRepo = process.env.NEXISCLAW_CODEX_REPO;
+const originalFirstNexusCodexRepo = process.env.NEXISCLAW_CODEX_REPO;
 
 afterEach(() => {
-  if (originalNexisClawCodexRepo === undefined) {
+  if (originalFirstNexusCodexRepo === undefined) {
     delete process.env.NEXISCLAW_CODEX_REPO;
   } else {
-    process.env.NEXISCLAW_CODEX_REPO = originalNexisClawCodexRepo;
+    process.env.NEXISCLAW_CODEX_REPO = originalFirstNexusCodexRepo;
   }
 });
 
 describe("codex app-server protocol source resolver", () => {
   it("uses NEXISCLAW_CODEX_REPO when provided", async () => {
-    const root = createTempDir("NexisClaw-protocol-source-root-");
-    const codexRepo = createTempDir("NexisClaw-protocol-source-codex-");
+    const root = createTempDir("FirstNexus-protocol-source-root-");
+    const codexRepo = createTempDir("FirstNexus-protocol-source-codex-");
     createProtocolSchema(codexRepo);
     process.env.NEXISCLAW_CODEX_REPO = codexRepo;
 
@@ -29,17 +29,17 @@ describe("codex app-server protocol source resolver", () => {
   });
 
   it("finds the primary checkout sibling from a git worktree", async () => {
-    const parentDir = createTempDir("NexisClaw-protocol-source-parent-");
-    const primaryNexisClaw = path.join(parentDir, "NexisClaw");
+    const parentDir = createTempDir("FirstNexus-protocol-source-parent-");
+    const primaryFirstNexus = path.join(parentDir, "FirstNexus");
     const codexRepo = path.join(parentDir, "codex");
-    const worktreeRoot = createTempDir("NexisClaw-protocol-source-worktree-");
-    fs.mkdirSync(path.join(primaryNexisClaw, ".git", "worktrees", "codex-harness"), {
+    const worktreeRoot = createTempDir("FirstNexus-protocol-source-worktree-");
+    fs.mkdirSync(path.join(primaryFirstNexus, ".git", "worktrees", "codex-harness"), {
       recursive: true,
     });
     fs.mkdirSync(worktreeRoot, { recursive: true });
     fs.writeFileSync(
       path.join(worktreeRoot, ".git"),
-      `gitdir: ${path.join(primaryNexisClaw, ".git", "worktrees", "codex-harness")}\n`,
+      `gitdir: ${path.join(primaryFirstNexus, ".git", "worktrees", "codex-harness")}\n`,
     );
     createProtocolSchema(codexRepo);
     delete process.env.NEXISCLAW_CODEX_REPO;

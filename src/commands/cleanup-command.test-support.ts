@@ -30,15 +30,15 @@ export function createCleanupCommandRuntime() {
 export function resetCleanupCommandMocks() {
   vi.clearAllMocks();
   resolveCleanupPlanFromDisk.mockReturnValue({
-    stateDir: "/tmp/.NexisClaw",
-    configPath: "/tmp/.NexisClaw/NexisClaw.json",
-    oauthDir: "/tmp/.NexisClaw/credentials",
+    stateDir: "/tmp/.FirstNexus",
+    configPath: "/tmp/.FirstNexus/FirstNexus.json",
+    oauthDir: "/tmp/.FirstNexus/credentials",
     configInsideState: true,
     oauthInsideState: true,
-    workspaceDirs: ["/tmp/.NexisClaw/workspace"],
+    workspaceDirs: ["/tmp/.FirstNexus/workspace"],
   });
   removePath.mockResolvedValue({ ok: true });
-  listAgentSessionDirs.mockResolvedValue(["/tmp/.NexisClaw/agents/main/sessions"]);
+  listAgentSessionDirs.mockResolvedValue(["/tmp/.FirstNexus/agents/main/sessions"]);
   removeStateAndLinkedPaths.mockResolvedValue(undefined);
   removeWorkspaceDirs.mockResolvedValue(undefined);
 }

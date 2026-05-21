@@ -5,10 +5,10 @@ import {
   AUTH_PROFILE_RUNTIME_CONTRACT,
   createAuthAliasManifestRegistry,
   expectedForwardedAuthProfile,
-} from "NexisClaw/plugin-sdk/agent-runtime-test-contracts";
+} from "FirstNexus/plugin-sdk/agent-runtime-test-contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { SessionEntry } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type * as ManifestRegistryModule from "../plugins/manifest-registry.js";
 import { runAgentAttempt } from "./command/attempt-execution.js";
 import type { RunEmbeddedPiAgentParams } from "./pi-embedded-runner/run/params.js";
@@ -134,18 +134,18 @@ function makeEmbeddedResult(text: string): EmbeddedPiRunResult {
   };
 }
 
-function providerRuntimeConfig(provider: string, runtime: string): NexisClawConfig {
+function providerRuntimeConfig(provider: string, runtime: string): FirstNexusConfig {
   return {
     models: {
       providers: {
         [provider]: {
-          baseUrl: "https://api.NexisClaw.test/v1",
+          baseUrl: "https://api.FirstNexus.test/v1",
           agentRuntime: { id: runtime },
           models: [],
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 async function runAuthContractAttempt(params: {
@@ -154,10 +154,10 @@ async function runAuthContractAttempt(params: {
   providerOverride: string;
   authProfileProvider: string;
   authProfileOverride: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   sessionHasHistory?: boolean;
 }) {
-  const cfg = params.cfg ?? ({} as NexisClawConfig);
+  const cfg = params.cfg ?? ({} as FirstNexusConfig);
   const sessionEntry: SessionEntry = {
     sessionId: AUTH_PROFILE_RUNTIME_CONTRACT.sessionId,
     updatedAt: Date.now(),
@@ -212,7 +212,7 @@ describe("Auth profile runtime contract - Pi and CLI adapter", () => {
   let storePath: string;
 
   beforeEach(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-auth-contract-"));
+    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-auth-contract-"));
     storePath = path.join(tmpDir, "sessions.json");
     loadPluginManifestRegistry.mockReset().mockReturnValue(createAuthAliasManifestRegistry());
     runCliAgentMock.mockReset();
@@ -244,7 +244,7 @@ describe("Auth profile runtime contract - Pi and CLI adapter", () => {
     (provider, expectedAuthProvider) => {
       expect(
         resolveProviderIdForAuth(provider, {
-          config: {} as NexisClawConfig,
+          config: {} as FirstNexusConfig,
           workspaceDir: tmpDir,
         }),
       ).toBe(expectedAuthProvider);
@@ -328,13 +328,13 @@ describe("Auth profile runtime contract - Pi and CLI adapter", () => {
         models: {
           providers: {
             [AUTH_PROFILE_RUNTIME_CONTRACT.openAiProvider]: {
-              baseUrl: "https://api.NexisClaw.test/v1",
+              baseUrl: "https://api.FirstNexus.test/v1",
               agentRuntime: { id: "codex" },
               models: [],
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(runCliAgentMock).toHaveBeenCalledTimes(1);

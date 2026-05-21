@@ -1,4 +1,4 @@
-import { isBlockedHostnameOrIp } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import { isBlockedHostnameOrIp } from "FirstNexus/plugin-sdk/ssrf-runtime";
 
 type UrbitBaseUrlValidation =
   | { ok: true; baseUrl: string; hostname: string }

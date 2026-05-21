@@ -1,5 +1,5 @@
 ---
-summary: "Adds xAI model provider support to NexisClaw."
+summary: "Adds xAI model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the xai plugin
 title: "xAI plugin"
@@ -7,12 +7,12 @@ title: "xAI plugin"
 
 # xAI plugin
 
-Adds xAI model provider support to NexisClaw.
+Adds xAI model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/xai-plugin`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/xai-plugin`
+- Install route: included in FirstNexus
 
 ## Surface
 

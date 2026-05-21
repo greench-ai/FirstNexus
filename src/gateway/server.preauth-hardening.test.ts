@@ -290,7 +290,7 @@ describe("gateway pre-auth hardening", () => {
           trustedProxies: ["127.0.0.1"],
         },
       },
-      prefix: "NexisClaw-preauth-proxy-",
+      prefix: "FirstNexus-preauth-proxy-",
       run: async () => {
         const harness = await createGatewaySuiteHarness();
         try {

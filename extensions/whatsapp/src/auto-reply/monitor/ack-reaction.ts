@@ -2,9 +2,9 @@ import {
   createAckReactionHandle,
   shouldAckReactionForWhatsApp,
   type AckReactionHandle,
-} from "NexisClaw/plugin-sdk/channel-feedback";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/channel-feedback";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import { getSenderIdentity } from "../../identity.js";
 import { resolveWhatsAppReactionLevel } from "../../reaction-level.js";
 import { sendReactionWhatsApp } from "../../send.js";
@@ -13,7 +13,7 @@ import type { WebInboundMsg } from "../types.js";
 import { resolveGroupActivationFor } from "./group-activation.js";
 
 export async function maybeSendAckReaction(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   msg: WebInboundMsg;
   agentId: string;
   sessionKey: string;

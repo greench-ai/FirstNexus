@@ -10,7 +10,7 @@ export const msteamsRuntimeStub = {
         return override;
       }
       const resolvedHome = homedir ? homedir() : os.homedir();
-      return path.join(resolvedHome, ".NexisClaw");
+      return path.join(resolvedHome, ".FirstNexus");
     },
   },
 } as unknown as PluginRuntime;

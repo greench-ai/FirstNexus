@@ -6,5 +6,5 @@ export {
   optimizeImageToJpeg,
   optimizeImageToPng,
   type WebMediaResult,
-} from "NexisClaw/plugin-sdk/web-media";
-export type { LocalMediaAccessErrorCode } from "NexisClaw/plugin-sdk/web-media";
+} from "FirstNexus/plugin-sdk/web-media";
+export type { LocalMediaAccessErrorCode } from "FirstNexus/plugin-sdk/web-media";

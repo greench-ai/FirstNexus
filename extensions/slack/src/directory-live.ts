@@ -1,12 +1,12 @@
 import type {
   ChannelDirectoryEntry,
   DirectoryConfigParams,
-} from "NexisClaw/plugin-sdk/directory-runtime";
+} from "FirstNexus/plugin-sdk/directory-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   normalizeOptionalLowercaseString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveSlackAccount } from "./accounts.js";
 import { createSlackWebClient } from "./client.js";
 

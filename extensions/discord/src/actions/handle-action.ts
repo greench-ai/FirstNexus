@@ -3,15 +3,15 @@ import {
   readNumberParam,
   readStringArrayParam,
   readStringParam,
-} from "NexisClaw/plugin-sdk/agent-runtime";
-import { readBooleanParam } from "NexisClaw/plugin-sdk/boolean-param";
-import { resolveReactionMessageId } from "NexisClaw/plugin-sdk/channel-actions";
-import type { ChannelMessageActionContext } from "NexisClaw/plugin-sdk/channel-contract";
+} from "FirstNexus/plugin-sdk/agent-runtime";
+import { readBooleanParam } from "FirstNexus/plugin-sdk/boolean-param";
+import { resolveReactionMessageId } from "FirstNexus/plugin-sdk/channel-actions";
+import type { ChannelMessageActionContext } from "FirstNexus/plugin-sdk/channel-contract";
 import {
   normalizeInteractiveReply,
   normalizeMessagePresentation,
-} from "NexisClaw/plugin-sdk/interactive-runtime";
-import { normalizeOptionalStringifiedId } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/interactive-runtime";
+import { normalizeOptionalStringifiedId } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { handleDiscordAction } from "../../action-runtime-api.js";
 import {
   buildDiscordInteractiveComponents,

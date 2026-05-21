@@ -6,6 +6,16 @@ import { CANONICAL_ROOT_MEMORY_FILENAME } from "./config-utils.js";
 import { estimateStructuredEmbeddingInputBytes } from "./embedding-input-limits.js";
 import { buildTextEmbeddingInput, type EmbeddingInput } from "./embedding-inputs.js";
 import {
+  CHARS_PER_TOKEN_ESTIMATE,
+  detectMime,
+  estimateStringChars,
+  runTasksWithConcurrency,
+} from "./FirstNexus-runtime-io.js";
+import {
+  resolveCanonicalRootMemoryFile,
+  shouldSkipRootMemoryAuxiliaryPath,
+} from "./FirstNexus-runtime-memory.js";
+import {
   isFileMissingError,
   readRegularFile,
   statRegularFile,
@@ -18,16 +28,6 @@ import {
   type MemoryMultimodalModality,
   type MemoryMultimodalSettings,
 } from "./multimodal.js";
-import {
-  CHARS_PER_TOKEN_ESTIMATE,
-  detectMime,
-  estimateStringChars,
-  runTasksWithConcurrency,
-} from "./NexisClaw-runtime-io.js";
-import {
-  resolveCanonicalRootMemoryFile,
-  shouldSkipRootMemoryAuxiliaryPath,
-} from "./NexisClaw-runtime-memory.js";
 
 export { hashText } from "./hash.js";
 import { hashText } from "./hash.js";
@@ -116,7 +116,7 @@ function shouldDescendMemoryEntry(
   if (shouldSkipPath?.(entry.path)) {
     return false;
   }
-  return entry.kind === "directory" && entry.name !== ".NexisClaw-repair";
+  return entry.kind === "directory" && entry.name !== ".FirstNexus-repair";
 }
 
 async function collectMemoryFilesFromDir(

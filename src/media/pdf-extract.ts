@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type {
   DocumentExtractedImage,
   DocumentExtractionResult,
@@ -14,7 +14,7 @@ export async function extractPdfContent(params: {
   maxPixels: number;
   minTextChars: number;
   pageNumbers?: number[];
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   onImageExtractionError?: (error: unknown) => void;
 }): Promise<PdfExtractedContent> {
   const extracted = await extractDocumentContent({

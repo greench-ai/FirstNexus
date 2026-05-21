@@ -1,35 +1,35 @@
 ---
-summary: "Updating NexisClaw safely (global install or source), plus rollback strategy"
+summary: "Updating FirstNexus safely (global install or source), plus rollback strategy"
 read_when:
-  - Updating NexisClaw
+  - Updating FirstNexus
   - Something breaks after an update
 title: "Updating"
 ---
 
-Keep NexisClaw up to date.
+Keep FirstNexus up to date.
 
-## Recommended: `NexisClaw update`
+## Recommended: `FirstNexus update`
 
-The fastest way to update. It detects your install type (npm or git), fetches the latest version, runs `NexisClaw doctor`, and restarts the gateway.
+The fastest way to update. It detects your install type (npm or git), fetches the latest version, runs `FirstNexus doctor`, and restarts the gateway.
 
 ```bash
-NexisClaw update
+FirstNexus update
 ```
 
 To switch channels or target a specific version:
 
 ```bash
-NexisClaw update --channel beta
-NexisClaw update --channel dev
-NexisClaw update --tag main
-NexisClaw update --dry-run   # preview without applying
+FirstNexus update --channel beta
+FirstNexus update --channel dev
+FirstNexus update --tag main
+FirstNexus update --dry-run   # preview without applying
 ```
 
-`NexisClaw update` does not accept `--verbose`. For update diagnostics, use
+`FirstNexus update` does not accept `--verbose`. For update diagnostics, use
 `--dry-run` to preview the planned actions, `--json` for structured results, or
-`NexisClaw update status --json` to inspect channel and availability state. The
+`FirstNexus update status --json` to inspect channel and availability state. The
 installer has its own `--verbose` flag, but that flag is not part of
-`NexisClaw update`.
+`FirstNexus update`.
 
 `--channel beta` prefers beta, but the runtime falls back to stable/latest when
 the beta tag is missing or older than the latest stable release. Use `--tag beta`
@@ -44,106 +44,106 @@ See [Development channels](/install/development-channels) for channel semantics.
 ## Switch between npm and git installs
 
 Use channels when you want to change the install type. The updater keeps your
-state, config, credentials, and workspace in `~/.NexisClaw`; it only changes
-which NexisClaw code install the CLI and gateway use.
+state, config, credentials, and workspace in `~/.FirstNexus`; it only changes
+which FirstNexus code install the CLI and gateway use.
 
 ```bash
 # npm package install -> editable git checkout
-NexisClaw update --channel dev
+FirstNexus update --channel dev
 
 # git checkout -> npm package install
-NexisClaw update --channel stable
+FirstNexus update --channel stable
 ```
 
 Run with `--dry-run` first to preview the exact install-mode switch:
 
 ```bash
-NexisClaw update --channel dev --dry-run
-NexisClaw update --channel stable --dry-run
+FirstNexus update --channel dev --dry-run
+FirstNexus update --channel stable --dry-run
 ```
 
 The `dev` channel ensures a git checkout, builds it, and installs the global CLI
 from that checkout. The `stable` and `beta` channels use package installs. If the
-gateway is already installed, `NexisClaw update` refreshes the service metadata
+gateway is already installed, `FirstNexus update` refreshes the service metadata
 and restarts it unless you pass `--no-restart`.
 
 ## Alternative: re-run the installer
 
 ```bash
-curl -fsSL https://NexisClaw.ai/install.sh | bash
+curl -fsSL https://FirstNexus.ai/install.sh | bash
 ```
 
 Add `--no-onboard` to skip onboarding. To force a specific install type through
 the installer, pass `--install-method git --no-onboard` or
 `--install-method npm --no-onboard`.
 
-If `NexisClaw update` fails after the npm package install phase, re-run the
+If `FirstNexus update` fails after the npm package install phase, re-run the
 installer. The installer does not call the old updater; it runs the global
 package install directly and can recover a partially updated npm install.
 
 ```bash
-curl -fsSL https://NexisClaw.ai/install.sh | bash -s -- --install-method npm
+curl -fsSL https://FirstNexus.ai/install.sh | bash -s -- --install-method npm
 ```
 
 To pin the recovery to a specific version or dist-tag, add `--version`:
 
 ```bash
-curl -fsSL https://NexisClaw.ai/install.sh | bash -s -- --install-method npm --version <version-or-dist-tag>
+curl -fsSL https://FirstNexus.ai/install.sh | bash -s -- --install-method npm --version <version-or-dist-tag>
 ```
 
 ## Alternative: manual npm, pnpm, or bun
 
 ```bash
-npm i -g NexisClaw@latest
+npm i -g FirstNexus@latest
 ```
 
-Prefer `NexisClaw update` for supervised installs because it can coordinate the
+Prefer `FirstNexus update` for supervised installs because it can coordinate the
 package swap with the running Gateway service. If you update manually while a
 managed Gateway is running, restart the Gateway immediately after the package
 manager finishes so the old process does not keep serving from replaced package
 files.
 
-When `NexisClaw update` manages a global npm install, it installs the target into
+When `FirstNexus update` manages a global npm install, it installs the target into
 a temporary npm prefix first, verifies the packaged `dist` inventory, then swaps
 the clean package tree into the real global prefix. That avoids npm overlaying a
 new package onto stale files from the old package. If the install command fails,
-NexisClaw retries once with `--omit=optional`. That retry helps hosts where native
+FirstNexus retries once with `--omit=optional`. That retry helps hosts where native
 optional dependencies cannot compile, while keeping the original failure visible
 if the fallback also fails.
 
 ```bash
-pnpm add -g NexisClaw@latest
+pnpm add -g FirstNexus@latest
 ```
 
 ```bash
-bun add -g NexisClaw@latest
+bun add -g FirstNexus@latest
 ```
 
 ### Advanced npm install topics
 
 <AccordionGroup>
   <Accordion title="Read-only package tree">
-    NexisClaw treats packaged global installs as read-only at runtime, even when the global package directory is writable by the current user. Plugin package installs live in NexisClaw-owned npm/git roots under the user config directory, and Gateway startup does not mutate the NexisClaw package tree.
+    FirstNexus treats packaged global installs as read-only at runtime, even when the global package directory is writable by the current user. Plugin package installs live in FirstNexus-owned npm/git roots under the user config directory, and Gateway startup does not mutate the FirstNexus package tree.
 
-    Some Linux npm setups install global packages under root-owned directories such as `/usr/lib/node_modules/NexisClaw`. NexisClaw supports that layout because plugin install/update commands write outside that global package directory.
+    Some Linux npm setups install global packages under root-owned directories such as `/usr/lib/node_modules/FirstNexus`. FirstNexus supports that layout because plugin install/update commands write outside that global package directory.
 
   </Accordion>
   <Accordion title="Hardened systemd units">
-    Give NexisClaw write access to its config/state roots so explicit plugin installs, plugin updates, and doctor cleanup can persist their changes:
+    Give FirstNexus write access to its config/state roots so explicit plugin installs, plugin updates, and doctor cleanup can persist their changes:
 
     ```ini
-    ReadWritePaths=/var/lib/NexisClaw /home/NexisClaw/.NexisClaw /tmp
+    ReadWritePaths=/var/lib/FirstNexus /home/FirstNexus/.FirstNexus /tmp
     ```
 
   </Accordion>
   <Accordion title="Disk-space preflight">
-    Before package updates and explicit plugin installs, NexisClaw tries a best-effort disk-space check for the target volume. Low space produces a warning with the checked path, but does not block the update because filesystem quotas, snapshots, and network volumes can change after the check. The actual package-manager install and post-install verification remain authoritative.
+    Before package updates and explicit plugin installs, FirstNexus tries a best-effort disk-space check for the target volume. Low space produces a warning with the checked path, but does not block the update because filesystem quotas, snapshots, and network volumes can change after the check. The actual package-manager install and post-install verification remain authoritative.
   </Accordion>
 </AccordionGroup>
 
 ## Auto-updater
 
-The auto-updater is off by default. Enable it in `~/.NexisClaw/NexisClaw.json`:
+The auto-updater is off by default. Enable it in `~/.FirstNexus/FirstNexus.json`:
 
 ```json5
 {
@@ -163,7 +163,7 @@ The auto-updater is off by default. Enable it in `~/.NexisClaw/NexisClaw.json`:
 | -------- | ------------------------------------------------------------------------------------------------------------- |
 | `stable` | Waits `stableDelayHours`, then applies with deterministic jitter across `stableJitterHours` (spread rollout). |
 | `beta`   | Checks every `betaCheckIntervalHours` (default: hourly) and applies immediately.                              |
-| `dev`    | No automatic apply. Use `NexisClaw update` manually.                                                           |
+| `dev`    | No automatic apply. Use `FirstNexus update` manually.                                                         |
 
 The gateway also logs an update hint on startup (disable with `update.checkOnStart: false`).
 For downgrade or incident recovery, set `NEXISCLAW_NO_AUTO_UPDATE=1` in the gateway environment to block automatic applies even when `update.auto.enabled` is configured. Startup update hints can still run unless `update.checkOnStart` is also disabled.
@@ -171,7 +171,7 @@ For downgrade or incident recovery, set `NEXISCLAW_NO_AUTO_UPDATE=1` in the gate
 Package-manager updates requested through the live Gateway control-plane handler
 force a non-deferred, no-cooldown update restart after the package swap. That
 avoids leaving an old in-memory process around long enough to lazy-load chunks
-from a package tree that has already been replaced. Shell `NexisClaw update`
+from a package tree that has already been replaced. Shell `FirstNexus update`
 remains the preferred path for supervised installs because it can stop and
 restart the service around the update.
 
@@ -182,7 +182,7 @@ restart the service around the update.
 ### Run doctor
 
 ```bash
-NexisClaw doctor
+FirstNexus doctor
 ```
 
 Migrates config, audits DM policies, and checks gateway health. Details: [Doctor](/gateway/doctor)
@@ -190,13 +190,13 @@ Migrates config, audits DM policies, and checks gateway health. Details: [Doctor
 ### Restart the gateway
 
 ```bash
-NexisClaw gateway restart
+FirstNexus gateway restart
 ```
 
 ### Verify
 
 ```bash
-NexisClaw health
+FirstNexus health
 ```
 
 </Steps>
@@ -206,13 +206,13 @@ NexisClaw health
 ### Pin a version (npm)
 
 ```bash
-npm i -g NexisClaw@<version>
-NexisClaw doctor
-NexisClaw gateway restart
+npm i -g FirstNexus@<version>
+FirstNexus doctor
+FirstNexus gateway restart
 ```
 
 <Tip>
-`npm view NexisClaw version` shows the current published version.
+`npm view FirstNexus version` shows the current published version.
 </Tip>
 
 ### Pin a commit (source)
@@ -221,15 +221,15 @@ NexisClaw gateway restart
 git fetch origin
 git checkout "$(git rev-list -n 1 --before=\"2026-01-01\" origin/main)"
 pnpm install && pnpm build
-NexisClaw gateway restart
+FirstNexus gateway restart
 ```
 
 To return to latest: `git checkout main && git pull`.
 
 ## If you are stuck
 
-- Run `NexisClaw doctor` again and read the output carefully.
-- For `NexisClaw update --channel dev` on source checkouts, the updater auto-bootstraps `pnpm` when needed. If you see a pnpm/corepack bootstrap error, install `pnpm` manually (or re-enable `corepack`) and rerun the update.
+- Run `FirstNexus doctor` again and read the output carefully.
+- For `FirstNexus update --channel dev` on source checkouts, the updater auto-bootstraps `pnpm` when needed. If you see a pnpm/corepack bootstrap error, install `pnpm` manually (or re-enable `corepack`) and rerun the update.
 - Check: [Troubleshooting](/gateway/troubleshooting)
 - Ask in Discord: [https://discord.gg/clawd](https://discord.gg/clawd)
 

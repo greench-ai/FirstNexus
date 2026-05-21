@@ -1,4 +1,4 @@
-import { EmbeddedBlockChunker } from "NexisClaw/plugin-sdk/agent-runtime";
+import { EmbeddedBlockChunker } from "FirstNexus/plugin-sdk/agent-runtime";
 import {
   createChannelProgressDraftGate,
   type ChannelProgressDraftLine,
@@ -8,13 +8,13 @@ import {
   resolveChannelStreamingBlockEnabled,
   resolveChannelStreamingPreviewToolProgress,
   resolveChannelStreamingSuppressDefaultToolProgressMessages,
-} from "NexisClaw/plugin-sdk/channel-streaming";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-streaming";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   convertMarkdownTables,
   stripInlineDirectiveTagsForDelivery,
   stripReasoningTagsFromText,
-} from "NexisClaw/plugin-sdk/text-chunking";
+} from "FirstNexus/plugin-sdk/text-chunking";
 import { chunkDiscordTextWithMode } from "../chunk.js";
 import { resolveDiscordDraftStreamingChunking } from "../draft-chunking.js";
 import { createDiscordDraftStream } from "../draft-stream.js";
@@ -25,10 +25,10 @@ type DraftReplyReference = {
   peek: () => string | undefined;
 };
 
-type DiscordConfig = NonNullable<NexisClawConfig["channels"]>["discord"];
+type DiscordConfig = NonNullable<FirstNexusConfig["channels"]>["discord"];
 
 export function createDiscordDraftPreviewController(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordConfig;
   accountId: string;
   sourceRepliesAreToolOnly: boolean;

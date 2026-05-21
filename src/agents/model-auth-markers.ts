@@ -1,5 +1,5 @@
 import type { SecretRefSource } from "../config/types.secrets.js";
-import { listNexisClawPluginManifestMetadata } from "../plugins/manifest-metadata-scan.js";
+import { listFirstNexusPluginManifestMetadata } from "../plugins/manifest-metadata-scan.js";
 import { listKnownProviderEnvApiKeyNames } from "./model-auth-env-vars.js";
 
 /** @deprecated MiniMax provider-owned marker; do not use from third-party plugins. */
@@ -57,7 +57,7 @@ export function listKnownNonSecretApiKeyMarkers(): string[] {
   knownNonSecretApiKeyMarkersCache ??= [
     ...new Set([
       ...CORE_NON_SECRET_API_KEY_MARKERS,
-      ...listNexisClawPluginManifestMetadata().flatMap((plugin) =>
+      ...listFirstNexusPluginManifestMetadata().flatMap((plugin) =>
         plugin.origin === "bundled"
           ? normalizeStringList(plugin.manifest.nonSecretAuthMarkers)
           : [],

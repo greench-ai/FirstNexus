@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { setLoggerOverride } from "../logging/logger.js";
 import { loggingState } from "../logging/state.js";
 import { stripAnsi } from "../terminal/ansi.js";
@@ -25,7 +25,7 @@ describe("loader", () => {
   let envSnapshot: ReturnType<typeof captureEnv>;
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-hooks-loader-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-hooks-loader-"));
   });
 
   beforeEach(async () => {
@@ -61,7 +61,7 @@ describe("loader", () => {
         "---",
         `name: ${params.hookName}`,
         `description: ${params.hookName} test hook`,
-        'metadata: {"NexisClaw":{"events":["command:new"]}}',
+        'metadata: {"FirstNexus":{"events":["command:new"]}}',
         "---",
         "",
         `# ${params.hookName}`,
@@ -87,9 +87,9 @@ describe("loader", () => {
   }
 
   function withLegacyInternalHookHandlers(
-    config: NexisClawConfig,
+    config: FirstNexusConfig,
     handlers?: Array<{ event: string; module: string; export?: string }>,
-  ): NexisClawConfig {
+  ): FirstNexusConfig {
     if (!handlers) {
       return config;
     }
@@ -102,12 +102,12 @@ describe("loader", () => {
           handlers,
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
   }
 
   function createEnabledHooksConfig(
     handlers?: Array<{ event: string; module: string; export?: string }>,
-  ): NexisClawConfig {
+  ): FirstNexusConfig {
     return withLegacyInternalHookHandlers(
       {
         hooks: {
@@ -135,36 +135,36 @@ describe("loader", () => {
 
   describe("loadInternalHooks", () => {
     it("detects configured internal hook surfaces", () => {
-      expect(hasConfiguredInternalHooks({} satisfies NexisClawConfig)).toBe(false);
+      expect(hasConfiguredInternalHooks({} satisfies FirstNexusConfig)).toBe(false);
       expect(
         hasConfiguredInternalHooks({
           hooks: { internal: { entries: { "session-memory": { enabled: true } } } },
-        } satisfies NexisClawConfig),
+        } satisfies FirstNexusConfig),
       ).toBe(true);
       expect(
         hasConfiguredInternalHooks({
           hooks: { internal: { entries: { "session-memory": { enabled: false } } } },
-        } satisfies NexisClawConfig),
+        } satisfies FirstNexusConfig),
       ).toBe(false);
       expect(
         hasConfiguredInternalHooks({
           hooks: { internal: { load: { extraDirs: ["/tmp/hooks"] } } },
-        } satisfies NexisClawConfig),
+        } satisfies FirstNexusConfig),
       ).toBe(true);
       expect(
         resolveConfiguredInternalHookNames({
           hooks: { internal: { entries: { "session-memory": { enabled: true } } } },
-        } satisfies NexisClawConfig),
+        } satisfies FirstNexusConfig),
       ).toEqual(new Set(["session-memory"]));
       expect(
         resolveConfiguredInternalHookNames({
           hooks: { internal: { enabled: true } },
-        } satisfies NexisClawConfig),
+        } satisfies FirstNexusConfig),
       ).toBeNull();
       expect(
         resolveConfiguredInternalHookNames({
           hooks: { internal: { installs: { pack: { source: "path" } } } },
-        } satisfies NexisClawConfig),
+        } satisfies FirstNexusConfig),
       ).toBeNull();
     });
 
@@ -176,7 +176,7 @@ describe("loader", () => {
         },
       ]);
 
-    const expectNoCommandHookRegistration = async (cfg: NexisClawConfig) => {
+    const expectNoCommandHookRegistration = async (cfg: FirstNexusConfig) => {
       const count = await loadInternalHooks(cfg, tmpDir);
       expect(count).toBe(0);
       expect(getRegisteredEventKeys()).not.toContain("command:new");
@@ -190,7 +190,7 @@ describe("loader", () => {
               enabled: false,
             },
           },
-        } satisfies NexisClawConfig,
+        } satisfies FirstNexusConfig,
         withLegacyInternalHookHandlers(
           {
             hooks: {
@@ -198,7 +198,7 @@ describe("loader", () => {
                 enabled: false,
               },
             },
-          } satisfies NexisClawConfig,
+          } satisfies FirstNexusConfig,
           [],
         ),
       ]) {
@@ -209,9 +209,9 @@ describe("loader", () => {
 
     it("skips hook discovery until internal hooks are configured", async () => {
       for (const cfg of [
-        {} satisfies NexisClawConfig,
-        { hooks: {} } satisfies NexisClawConfig,
-        { hooks: { internal: {} } } satisfies NexisClawConfig,
+        {} satisfies FirstNexusConfig,
+        { hooks: {} } satisfies FirstNexusConfig,
+        { hooks: { internal: {} } } satisfies FirstNexusConfig,
       ]) {
         const count = await loadInternalHooks(cfg, tmpDir);
         expect(count).toBe(0);
@@ -232,7 +232,7 @@ describe("loader", () => {
               },
             },
           },
-        } satisfies NexisClawConfig,
+        } satisfies FirstNexusConfig,
         tmpDir,
         { managedHooksDir: hooksDir, bundledHooksDir: "/nonexistent/bundled/hooks" },
       );
@@ -387,7 +387,7 @@ describe("loader", () => {
           "---",
           "name: symlink-hook",
           "description: symlink test",
-          'metadata: {"NexisClaw":{"events":["command:new"]}}',
+          'metadata: {"FirstNexus":{"events":["command:new"]}}',
           "---",
           "",
           "# Symlink Hook",
@@ -432,7 +432,7 @@ describe("loader", () => {
           "---",
           "name: hardlink-hook",
           "description: hardlink test",
-          'metadata: {"NexisClaw":{"events":["command:new"]}}',
+          'metadata: {"FirstNexus":{"events":["command:new"]}}',
           "---",
           "",
           "# Hardlink Hook",

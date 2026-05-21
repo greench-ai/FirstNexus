@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../runtime-api.js";
+import type { FirstNexusConfig } from "../runtime-api.js";
 import { type GraphResponse, fetchGraphJson, resolveGraphToken } from "./graph.js";
 
 // ---------------------------------------------------------------------------
@@ -15,7 +15,7 @@ type GraphTeamsChannel = {
 };
 
 type ListChannelsMSTeamsParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   teamId: string;
 };
 
@@ -30,7 +30,7 @@ type ListChannelsMSTeamsResult = {
 };
 
 type GetChannelInfoMSTeamsParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   teamId: string;
   channelId: string;
 };

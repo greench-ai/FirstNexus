@@ -1,4 +1,4 @@
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export function shouldBypassConfiguredAcpEnsure(commandName: string): boolean {
   const normalized = normalizeLowercaseStringOrEmpty(commandName);

@@ -1,6 +1,6 @@
 import os from "node:os";
 import path from "node:path";
-import { createCapturedPluginRegistration } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+import { createCapturedPluginRegistration } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { afterEach, describe, expect, it } from "vitest";
 import { resolveHomePath } from "./helpers.js";
 import pluginEntry from "./index.js";
@@ -28,7 +28,7 @@ describe("Hermes migration provider", () => {
 
   it("resolves tilde source paths against the OS home when NEXISCLAW_HOME is set", () => {
     const previous = process.env.NEXISCLAW_HOME;
-    process.env.NEXISCLAW_HOME = path.join(path.sep, "tmp", "NexisClaw-home");
+    process.env.NEXISCLAW_HOME = path.join(path.sep, "tmp", "FirstNexus-home");
     try {
       expect(resolveHomePath("~/.hermes")).toBe(path.join(os.homedir(), ".hermes"));
     } finally {

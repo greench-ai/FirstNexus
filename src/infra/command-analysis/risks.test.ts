@@ -241,7 +241,7 @@ describe("command-analysis risks", () => {
     expect(buildCommandPayloadCandidates(["env", "-P", "/usr/bin", "/approve", "abc"])).toEqual([
       "/approve abc",
     ]);
-    expect(buildCommandPayloadCandidates(["exec", "-a", "NexisClaw", "/approve", "abc"])).toEqual([
+    expect(buildCommandPayloadCandidates(["exec", "-a", "FirstNexus", "/approve", "abc"])).toEqual([
       "/approve abc",
     ]);
     expect(buildCommandPayloadCandidates(["command", "-v", "/approve"])).toEqual([
@@ -255,13 +255,13 @@ describe("command-analysis risks", () => {
         "env",
         "env",
         "env",
-        "NexisClaw",
+        "FirstNexus",
         "channels",
         "login",
         "--channel",
         "whatsapp",
       ]),
-    ).toContain("NexisClaw channels login --channel whatsapp");
+    ).toContain("FirstNexus channels login --channel whatsapp");
   });
 
   it("checks both effective and original argv for segment inline eval", () => {

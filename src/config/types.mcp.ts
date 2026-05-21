@@ -21,7 +21,7 @@ export type McpServerConfig = {
 };
 
 export type McpConfig = {
-  /** Named MCP server definitions managed by NexisClaw. */
+  /** Named MCP server definitions managed by FirstNexus. */
   servers?: Record<string, McpServerConfig>;
   /**
    * Idle TTL for session-scoped bundled MCP runtimes, in milliseconds.

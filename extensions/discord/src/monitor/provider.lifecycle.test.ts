@@ -1,5 +1,5 @@
 import { EventEmitter } from "node:events";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import { beforeAll, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 import type { GatewayPlugin } from "../internal/gateway.js";
 import type { WaitForDiscordGatewayStopParams } from "../monitor.gateway.js";

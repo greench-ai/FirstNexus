@@ -1,5 +1,5 @@
 import { resolveGatewayPort } from "../../config/config.js";
-import type { NexisClawConfig } from "../../config/types.js";
+import type { FirstNexusConfig } from "../../config/types.js";
 import { resolveControlUiLinks } from "../../gateway/control-ui-links.js";
 import { formatDurationPrecise } from "../../infra/format-time/format-duration.ts";
 import {
@@ -48,7 +48,7 @@ type StatusGatewaySelf =
 type StatusManagedService = {
   label: string;
   installed: boolean | null;
-  managedByNexisClaw?: boolean;
+  managedByFirstNexus?: boolean;
   loadedText: string;
   runtimeShort?: string | null;
   runtime?: {
@@ -142,7 +142,7 @@ export function formatStatusTailscaleValue(params: {
 export function formatStatusServiceValue(params: {
   label: string;
   installed: boolean;
-  managedByNexisClaw?: boolean;
+  managedByFirstNexus?: boolean;
   loadedText: string;
   runtimeShort?: string | null;
   runtimeStatus?: string | null;
@@ -151,7 +151,7 @@ export function formatStatusServiceValue(params: {
   if (!params.installed) {
     return `${params.label} not installed`;
   }
-  const installedPrefix = params.managedByNexisClaw ? "installed · " : "";
+  const installedPrefix = params.managedByFirstNexus ? "installed · " : "";
   const runtimeSuffix = params.runtimeShort
     ? ` · ${params.runtimeShort}`
     : [
@@ -162,7 +162,7 @@ export function formatStatusServiceValue(params: {
 }
 
 export function resolveStatusDashboardUrl(params: {
-  cfg: Pick<NexisClawConfig, "gateway">;
+  cfg: Pick<FirstNexusConfig, "gateway">;
 }): string | null {
   if (!(params.cfg.gateway?.controlUi?.enabled ?? true)) {
     return null;
@@ -225,7 +225,7 @@ export function buildStatusOverviewRows(params: {
 }
 
 export function buildStatusOverviewSurfaceRows(params: {
-  cfg: Pick<NexisClawConfig, "update" | "gateway">;
+  cfg: Pick<FirstNexusConfig, "update" | "gateway">;
   update: StatusUpdateLike;
   tailscaleMode: string;
   tailscaleDns?: string | null;
@@ -384,7 +384,7 @@ export function buildGatewayStatusSummaryParts(params: {
 }
 
 export function buildStatusGatewaySurfaceValues(params: {
-  cfg: Pick<NexisClawConfig, "gateway">;
+  cfg: Pick<FirstNexusConfig, "gateway">;
   gatewayMode: "local" | "remote";
   remoteUrlMissing: boolean;
   gatewayConnection: StatusGatewayConnection;
@@ -434,7 +434,7 @@ export function buildStatusGatewaySurfaceValues(params: {
     gatewayServiceValue: formatStatusServiceValue({
       label: params.gatewayService.label,
       installed: params.gatewayService.installed !== false,
-      managedByNexisClaw: params.gatewayService.managedByNexisClaw,
+      managedByFirstNexus: params.gatewayService.managedByFirstNexus,
       loadedText: params.gatewayService.loadedText,
       runtimeShort: params.gatewayService.runtimeShort,
       runtimeStatus: params.gatewayService.runtime?.status,
@@ -443,7 +443,7 @@ export function buildStatusGatewaySurfaceValues(params: {
     nodeServiceValue: formatStatusServiceValue({
       label: params.nodeService.label,
       installed: params.nodeService.installed !== false,
-      managedByNexisClaw: params.nodeService.managedByNexisClaw,
+      managedByFirstNexus: params.nodeService.managedByFirstNexus,
       loadedText: params.nodeService.loadedText,
       runtimeShort: params.nodeService.runtimeShort,
       runtimeStatus: params.nodeService.runtime?.status,

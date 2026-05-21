@@ -1,8 +1,8 @@
 import { getChannelPlugin } from "../../channels/plugins/index.js";
 import type { ChannelThreadingAdapter } from "../../channels/plugins/types.core.js";
 import { normalizeAnyChannelId } from "../../channels/registry.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { ReplyToMode } from "../../config/types.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
 import { normalizeOptionalLowercaseString } from "../../shared/string-coerce.js";
 import { copyReplyPayloadMetadata } from "../reply-payload.js";
 import type { OriginatingChannelType } from "../templating.js";
@@ -26,7 +26,7 @@ function normalizeReplyToModeChatType(
 }
 
 export function resolveConfiguredReplyToMode(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   channel?: OriginatingChannelType,
   chatType?: string | null,
 ): ReplyToMode {
@@ -54,7 +54,7 @@ export function resolveConfiguredReplyToMode(
 }
 
 export function resolveReplyToModeWithThreading(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   threading: ChannelThreadingAdapter | undefined,
   params: {
     channel?: OriginatingChannelType;
@@ -71,7 +71,7 @@ export function resolveReplyToModeWithThreading(
 }
 
 export function resolveReplyToMode(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   channel?: OriginatingChannelType,
   accountId?: string | null,
   chatType?: string | null,

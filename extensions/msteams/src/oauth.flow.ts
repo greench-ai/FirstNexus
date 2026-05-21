@@ -1,10 +1,10 @@
-import { generateHexPkceVerifierChallenge } from "NexisClaw/plugin-sdk/provider-auth";
+import { generateHexPkceVerifierChallenge } from "FirstNexus/plugin-sdk/provider-auth";
 import {
   generateOAuthState,
   parseOAuthCallbackInput,
   waitForLocalOAuthCallback,
-} from "NexisClaw/plugin-sdk/provider-auth-runtime";
-import { isWSL2Sync } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/provider-auth-runtime";
+import { isWSL2Sync } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   MSTEAMS_DEFAULT_DELEGATED_SCOPES,
   MSTEAMS_OAUTH_CALLBACK_PATH,

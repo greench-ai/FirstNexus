@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { resolveGatewayInstallToken } from "./gateway-install-token.js";
 
 const readConfigFileSnapshotMock = vi.hoisted(() => vi.fn());
@@ -97,7 +97,7 @@ describe("resolveGatewayInstallToken", () => {
     const result = await resolveGatewayInstallToken({
       config: {
         gateway: { auth: { token: "config-token" } },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {} as NodeJS.ProcessEnv,
     });
 
@@ -119,7 +119,7 @@ describe("resolveGatewayInstallToken", () => {
     const result = await resolveGatewayInstallToken({
       config: {
         gateway: { auth: { mode: "token", token: tokenRef } },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: { NEXISCLAW_GATEWAY_TOKEN: "resolved-token" } as NodeJS.ProcessEnv,
     });
 
@@ -138,7 +138,7 @@ describe("resolveGatewayInstallToken", () => {
     const result = await resolveGatewayInstallToken({
       config: {
         gateway: { auth: { mode: "token", token: "${MISSING_GATEWAY_TOKEN}" } },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {} as NodeJS.ProcessEnv,
     });
 
@@ -157,7 +157,7 @@ describe("resolveGatewayInstallToken", () => {
             password: "password-value", // pragma: allowlist secret
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {} as NodeJS.ProcessEnv,
       autoGenerateWhenMissing: true,
       persistGeneratedToken: true,
@@ -165,8 +165,8 @@ describe("resolveGatewayInstallToken", () => {
 
     expect(result.token).toBeUndefined();
     expect(result.unavailableReason).toContain("gateway.auth.mode is unset");
-    expect(result.unavailableReason).toContain("NexisClaw config set gateway.auth.mode token");
-    expect(result.unavailableReason).toContain("NexisClaw config set gateway.auth.mode password");
+    expect(result.unavailableReason).toContain("FirstNexus config set gateway.auth.mode token");
+    expect(result.unavailableReason).toContain("FirstNexus config set gateway.auth.mode password");
     expect(replaceConfigFileMock).not.toHaveBeenCalled();
     expect(resolveSecretRefValuesMock).not.toHaveBeenCalled();
   });
@@ -175,7 +175,7 @@ describe("resolveGatewayInstallToken", () => {
     const result = await resolveGatewayInstallToken({
       config: {
         gateway: { auth: { mode: "token" } },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {} as NodeJS.ProcessEnv,
       autoGenerateWhenMissing: true,
     });
@@ -193,7 +193,7 @@ describe("resolveGatewayInstallToken", () => {
     const result = await resolveGatewayInstallToken({
       config: {
         gateway: { auth: { mode: "token" } },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {} as NodeJS.ProcessEnv,
       autoGenerateWhenMissing: true,
       persistGeneratedToken: true,
@@ -238,7 +238,7 @@ describe("resolveGatewayInstallToken", () => {
     const result = await resolveGatewayInstallToken({
       config: {
         gateway: { auth: { mode: "token" } },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {} as NodeJS.ProcessEnv,
       autoGenerateWhenMissing: true,
       persistGeneratedToken: true,
@@ -264,7 +264,7 @@ describe("resolveGatewayInstallToken", () => {
             default: { source: "env" },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {} as NodeJS.ProcessEnv,
       autoGenerateWhenMissing: true,
       persistGeneratedToken: true,
@@ -291,7 +291,7 @@ describe("resolveGatewayInstallToken", () => {
     const result = await resolveGatewayInstallToken({
       config: {
         gateway: { auth: {} },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env,
       autoGenerateWhenMissing: true,
       persistGeneratedToken: true,
@@ -321,7 +321,7 @@ describe("resolveGatewayInstallToken", () => {
             token: tokenRef,
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {} as NodeJS.ProcessEnv,
     });
 

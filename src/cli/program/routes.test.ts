@@ -97,7 +97,7 @@ describe("program routes", () => {
   });
 
   it("passes parsed agents list flags through", async () => {
-    await expect(expectRoute(["agents"]).run(["node", "NexisClaw", "agents"])).resolves.toBe(true);
+    await expect(expectRoute(["agents"]).run(["node", "FirstNexus", "agents"])).resolves.toBe(true);
     expect(agentsListCommandMock).toHaveBeenCalledWith(
       { json: false, bindings: false },
       defaultRuntime,
@@ -106,7 +106,7 @@ describe("program routes", () => {
     await expect(
       expectRoute(["agents", "list"]).run([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "agents",
         "list",
         "--json",
@@ -121,7 +121,7 @@ describe("program routes", () => {
 
   it("passes parsed channel read-only route flags through", async () => {
     const listRoute = expectRoute(["channels", "list"]);
-    await expect(listRoute.run(["node", "NexisClaw", "channels", "list", "--json"])).resolves.toBe(
+    await expect(listRoute.run(["node", "FirstNexus", "channels", "list", "--json"])).resolves.toBe(
       true,
     );
     expect(channelsListCommandMock).toHaveBeenCalledWith(
@@ -133,7 +133,7 @@ describe("program routes", () => {
     await expect(
       statusRoute.run([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "channels",
         "status",
         "--json",
@@ -156,33 +156,36 @@ describe("program routes", () => {
   });
 
   it("returns false for gateway status route when option values are missing", async () => {
-    await expectRunFalse(["gateway", "status"], ["node", "NexisClaw", "gateway", "status", "--url"]);
     await expectRunFalse(
       ["gateway", "status"],
-      ["node", "NexisClaw", "gateway", "status", "--token"],
+      ["node", "FirstNexus", "gateway", "status", "--url"],
     );
     await expectRunFalse(
       ["gateway", "status"],
-      ["node", "NexisClaw", "gateway", "status", "--password"],
+      ["node", "FirstNexus", "gateway", "status", "--token"],
     );
     await expectRunFalse(
       ["gateway", "status"],
-      ["node", "NexisClaw", "gateway", "status", "--timeout"],
+      ["node", "FirstNexus", "gateway", "status", "--password"],
+    );
+    await expectRunFalse(
+      ["gateway", "status"],
+      ["node", "FirstNexus", "gateway", "status", "--timeout"],
     );
   });
 
   it("returns false for gateway status route when probe-only flags are present", async () => {
     await expectRunFalse(
       ["gateway", "status"],
-      ["node", "NexisClaw", "gateway", "status", "--ssh", "user@host"],
+      ["node", "FirstNexus", "gateway", "status", "--ssh", "user@host"],
     );
     await expectRunFalse(
       ["gateway", "status"],
-      ["node", "NexisClaw", "gateway", "status", "--ssh-identity", "~/.ssh/id_test"],
+      ["node", "FirstNexus", "gateway", "status", "--ssh-identity", "~/.ssh/id_test"],
     );
     await expectRunFalse(
       ["gateway", "status"],
-      ["node", "NexisClaw", "gateway", "status", "--ssh-auto"],
+      ["node", "FirstNexus", "gateway", "status", "--ssh-auto"],
     );
   });
 
@@ -191,7 +194,7 @@ describe("program routes", () => {
     await expect(
       route.run([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "--profile",
         "work",
         "gateway",
@@ -225,9 +228,9 @@ describe("program routes", () => {
 
   it("passes --no-probe through to daemon status", async () => {
     const route = expectRoute(["gateway", "status"]);
-    await expect(route.run(["node", "NexisClaw", "gateway", "status", "--no-probe"])).resolves.toBe(
-      true,
-    );
+    await expect(
+      route.run(["node", "FirstNexus", "gateway", "status", "--no-probe"]),
+    ).resolves.toBe(true);
 
     expect(runDaemonStatusMock).toHaveBeenCalledWith({
       rpc: {
@@ -244,13 +247,22 @@ describe("program routes", () => {
   });
 
   it("returns false when status timeout flag value is missing", async () => {
-    await expectRunFalse(["status"], ["node", "NexisClaw", "status", "--timeout"]);
+    await expectRunFalse(["status"], ["node", "FirstNexus", "status", "--timeout"]);
   });
 
   it("routes status --json through the lean JSON command", async () => {
     const route = expectRoute(["status"]);
     await expect(
-      route.run(["node", "NexisClaw", "status", "--json", "--deep", "--usage", "--timeout", "5000"]),
+      route.run([
+        "node",
+        "FirstNexus",
+        "status",
+        "--json",
+        "--deep",
+        "--usage",
+        "--timeout",
+        "5000",
+      ]),
     ).resolves.toBe(true);
     expect(statusJsonCommandMock).toHaveBeenCalledWith(
       { deep: true, all: false, usage: true, timeoutMs: 5000 },
@@ -259,15 +271,15 @@ describe("program routes", () => {
   });
 
   it("returns false for sessions route when --store value is missing", async () => {
-    await expectRunFalse(["sessions"], ["node", "NexisClaw", "sessions", "--store"]);
+    await expectRunFalse(["sessions"], ["node", "FirstNexus", "sessions", "--store"]);
   });
 
   it("returns false for sessions route when --active value is missing", async () => {
-    await expectRunFalse(["sessions"], ["node", "NexisClaw", "sessions", "--active"]);
+    await expectRunFalse(["sessions"], ["node", "FirstNexus", "sessions", "--active"]);
   });
 
   it("returns false for sessions route when --agent value is missing", async () => {
-    await expectRunFalse(["sessions"], ["node", "NexisClaw", "sessions", "--agent"]);
+    await expectRunFalse(["sessions"], ["node", "FirstNexus", "sessions", "--agent"]);
   });
 
   it("does not fast-route sessions subcommands", () => {
@@ -279,11 +291,11 @@ describe("program routes", () => {
   });
 
   it("returns false for config get route when path argument is missing", async () => {
-    await expectRunFalse(["config", "get"], ["node", "NexisClaw", "config", "get", "--json"]);
+    await expectRunFalse(["config", "get"], ["node", "FirstNexus", "config", "get", "--json"]);
   });
 
   it("returns false for config unset route when path argument is missing", async () => {
-    await expectRunFalse(["config", "unset"], ["node", "NexisClaw", "config", "unset"]);
+    await expectRunFalse(["config", "unset"], ["node", "FirstNexus", "config", "unset"]);
   });
 
   it("passes config get path correctly when root option values precede command", async () => {
@@ -291,7 +303,7 @@ describe("program routes", () => {
     await expect(
       route.run([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "--log-level",
         "debug",
         "config",
@@ -306,7 +318,7 @@ describe("program routes", () => {
   it("passes config unset path correctly when root option values precede command", async () => {
     const route = expectRoute(["config", "unset"]);
     await expect(
-      route.run(["node", "NexisClaw", "--profile", "work", "config", "unset", "update.channel"]),
+      route.run(["node", "FirstNexus", "--profile", "work", "config", "unset", "update.channel"]),
     ).resolves.toBe(true);
     expect(runConfigUnsetMock).toHaveBeenCalledWith({ path: "update.channel" });
   });
@@ -316,7 +328,7 @@ describe("program routes", () => {
     await expect(
       route.run([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "config",
         "get",
         "--log-level",
@@ -331,7 +343,7 @@ describe("program routes", () => {
   it("passes config unset path when root value options appear after subcommand", async () => {
     const route = expectRoute(["config", "unset"]);
     await expect(
-      route.run(["node", "NexisClaw", "config", "unset", "--profile", "work", "update.channel"]),
+      route.run(["node", "FirstNexus", "config", "unset", "--profile", "work", "update.channel"]),
     ).resolves.toBe(true);
     expect(runConfigUnsetMock).toHaveBeenCalledWith({ path: "update.channel" });
   });
@@ -339,41 +351,44 @@ describe("program routes", () => {
   it("returns false for config get route when unknown option appears", async () => {
     await expectRunFalse(
       ["config", "get"],
-      ["node", "NexisClaw", "config", "get", "--mystery", "value", "update.channel"],
+      ["node", "FirstNexus", "config", "get", "--mystery", "value", "update.channel"],
     );
   });
 
   it("returns false for models list route when --provider value is missing", async () => {
-    await expectRunFalse(["models", "list"], ["node", "NexisClaw", "models", "list", "--provider"]);
+    await expectRunFalse(
+      ["models", "list"],
+      ["node", "FirstNexus", "models", "list", "--provider"],
+    );
   });
 
   it("returns false for models status route when probe flags are missing values", async () => {
     await expectRunFalse(
       ["models", "status"],
-      ["node", "NexisClaw", "models", "status", "--probe-provider"],
+      ["node", "FirstNexus", "models", "status", "--probe-provider"],
     );
     await expectRunFalse(
       ["models", "status"],
-      ["node", "NexisClaw", "models", "status", "--probe-timeout"],
+      ["node", "FirstNexus", "models", "status", "--probe-timeout"],
     );
     await expectRunFalse(
       ["models", "status"],
-      ["node", "NexisClaw", "models", "status", "--probe-concurrency"],
+      ["node", "FirstNexus", "models", "status", "--probe-concurrency"],
     );
     await expectRunFalse(
       ["models", "status"],
-      ["node", "NexisClaw", "models", "status", "--probe-max-tokens"],
+      ["node", "FirstNexus", "models", "status", "--probe-max-tokens"],
     );
     await expectRunFalse(
       ["models", "status"],
-      ["node", "NexisClaw", "models", "status", "--probe-provider", "openai", "--agent"],
+      ["node", "FirstNexus", "models", "status", "--probe-provider", "openai", "--agent"],
     );
   });
 
   it("returns false for models status route when --probe-profile has no value", async () => {
     await expectRunFalse(
       ["models", "status"],
-      ["node", "NexisClaw", "models", "status", "--probe-profile"],
+      ["node", "FirstNexus", "models", "status", "--probe-profile"],
     );
   });
 
@@ -382,7 +397,7 @@ describe("program routes", () => {
     await expect(
       route.run([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "models",
         "status",
         "--probe-provider",
@@ -419,11 +434,11 @@ describe("program routes", () => {
   it("routes tasks list JSON through the lean task JSON command", async () => {
     const rootRoute = expectRoute(["tasks"]);
     expect(rootRoute.loadPlugins).toBeUndefined();
-    expect(rootRoute.canRun?.(["node", "NexisClaw", "tasks"])).toBe(false);
+    expect(rootRoute.canRun?.(["node", "FirstNexus", "tasks"])).toBe(false);
     await expect(
       rootRoute.run([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "tasks",
         "--json",
         "--runtime",
@@ -439,7 +454,7 @@ describe("program routes", () => {
     const listRoute = expectRoute(["tasks", "list"]);
     expect(listRoute.loadPlugins).toBeUndefined();
     await expect(
-      listRoute.run(["node", "NexisClaw", "tasks", "list", "--json", "--runtime=cron"]),
+      listRoute.run(["node", "FirstNexus", "tasks", "list", "--json", "--runtime=cron"]),
     ).resolves.toBe(true);
     expect(tasksListJsonCommandMock).toHaveBeenLastCalledWith(
       { json: true, runtime: "cron", status: undefined },
@@ -450,7 +465,7 @@ describe("program routes", () => {
   it("routes parent task filter values that command-path discovery sees as positionals", async () => {
     const separateValueArgv = [
       "node",
-      "NexisClaw",
+      "FirstNexus",
       "tasks",
       "--json",
       "--runtime",
@@ -467,7 +482,7 @@ describe("program routes", () => {
 
     const parentOptionBeforeSubcommandArgv = [
       "node",
-      "NexisClaw",
+      "FirstNexus",
       "tasks",
       "--runtime",
       "cli",
@@ -490,11 +505,11 @@ describe("program routes", () => {
   it("routes tasks audit JSON through the lean task JSON command", async () => {
     const route = expectRoute(["tasks", "audit"]);
     expect(route.loadPlugins).toBeUndefined();
-    expect(route.canRun?.(["node", "NexisClaw", "tasks", "audit"])).toBe(false);
+    expect(route.canRun?.(["node", "FirstNexus", "tasks", "audit"])).toBe(false);
     await expect(
       route.run([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "tasks",
         "audit",
         "--json",
@@ -512,18 +527,18 @@ describe("program routes", () => {
   });
 
   it("returns false for task JSON routes when option values are missing or unknown", async () => {
-    await expectRunFalse(["tasks"], ["node", "NexisClaw", "tasks", "--json", "--runtime"]);
-    await expectRunFalse(["tasks", "list"], ["node", "NexisClaw", "tasks", "list"]);
+    await expectRunFalse(["tasks"], ["node", "FirstNexus", "tasks", "--json", "--runtime"]);
+    await expectRunFalse(["tasks", "list"], ["node", "FirstNexus", "tasks", "list"]);
     await expectRunFalse(
       ["tasks", "audit"],
-      ["node", "NexisClaw", "tasks", "audit", "--json", "--limit"],
+      ["node", "FirstNexus", "tasks", "audit", "--json", "--limit"],
     );
     await expectRunFalse(
       ["tasks", "audit"],
-      ["node", "NexisClaw", "tasks", "audit", "--json", "--unknown"],
+      ["node", "FirstNexus", "tasks", "audit", "--json", "--unknown"],
     );
     expect(
-      findRoutedCommand(["tasks", "cli"], ["node", "NexisClaw", "tasks", "--runtime", "cli"]),
+      findRoutedCommand(["tasks", "cli"], ["node", "FirstNexus", "tasks", "--runtime", "cli"]),
     ).toBeNull();
   });
 });

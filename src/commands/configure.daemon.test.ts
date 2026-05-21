@@ -86,7 +86,7 @@ describe("maybeInstallDaemon", () => {
       warnings: [],
     });
     buildGatewayInstallPlan.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {},
     });

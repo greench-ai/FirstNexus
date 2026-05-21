@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source scripts/lib/NexisClaw-e2e-instance.sh
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+source scripts/lib/FirstNexus-e2e-instance.sh
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 export NEXISCLAW_SKIP_CHANNELS=1
 export NEXISCLAW_SKIP_GMAIL_WATCHER=1
 export NEXISCLAW_SKIP_CRON=1
@@ -33,19 +33,19 @@ fi
 PORT="${PORT:?missing PORT}"
 TOKEN="${NEXISCLAW_GATEWAY_TOKEN:?missing NEXISCLAW_GATEWAY_TOKEN}"
 MODEL_REF="${NEXISCLAW_OPENAI_CHAT_TOOLS_MODEL:?missing NEXISCLAW_OPENAI_CHAT_TOOLS_MODEL}"
-GATEWAY_LOG="/tmp/NexisClaw-openai-chat-tools-gateway.log"
-CLIENT_LOG="/tmp/NexisClaw-openai-chat-tools-client.log"
+GATEWAY_LOG="/tmp/FirstNexus-openai-chat-tools-gateway.log"
+CLIENT_LOG="/tmp/FirstNexus-openai-chat-tools-client.log"
 gateway_pid=""
 
 cleanup() {
-  NexisClaw_e2e_stop_process "$gateway_pid"
+  FirstNexus_e2e_stop_process "$gateway_pid"
 }
 trap cleanup EXIT
 
 dump_debug_logs() {
   local status="$1"
   echo "OpenAI Chat Completions tools Docker E2E failed with exit code $status" >&2
-  NexisClaw_e2e_dump_logs "$GATEWAY_LOG" "$CLIENT_LOG"
+  FirstNexus_e2e_dump_logs "$GATEWAY_LOG" "$CLIENT_LOG"
   if [ -f "$NEXISCLAW_CONFIG_PATH" ]; then
     echo "--- $NEXISCLAW_CONFIG_PATH keys ---" >&2
     node -e "const fs=require('fs'); const cfg=JSON.parse(fs.readFileSync(process.argv[1],'utf8')); console.error(JSON.stringify({model:cfg.agents?.defaults?.model, tools:cfg.tools, provider:cfg.models?.providers?.openai && {api:cfg.models.providers.openai.api, baseUrl:cfg.models.providers.openai.baseUrl, agentRuntime:cfg.models.providers.openai.agentRuntime}}, null, 2));" "$NEXISCLAW_CONFIG_PATH" || true
@@ -53,12 +53,12 @@ dump_debug_logs() {
 }
 trap 'status=$?; dump_debug_logs "$status"; exit "$status"' ERR
 
-entry="$(NexisClaw_e2e_resolve_entrypoint)"
+entry="$(FirstNexus_e2e_resolve_entrypoint)"
 mkdir -p "$NEXISCLAW_STATE_DIR" "$NEXISCLAW_TEST_WORKSPACE_DIR"
 
 node scripts/e2e/lib/openai-chat-tools/write-config.mjs
 
-gateway_pid="$(NexisClaw_e2e_start_gateway "$entry" "$PORT" "$GATEWAY_LOG")"
+gateway_pid="$(FirstNexus_e2e_start_gateway "$entry" "$PORT" "$GATEWAY_LOG")"
 for _ in $(seq 1 360); do
   if ! kill -0 "$gateway_pid" 2>/dev/null; then
     echo "gateway exited before listening" >&2

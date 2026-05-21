@@ -9,9 +9,9 @@ const originalConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
 let tempDirs: string[] = [];
 
 function writeConfig(source: string): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-logging-config-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-logging-config-"));
   tempDirs.push(dir);
-  const configPath = path.join(dir, "NexisClaw.json");
+  const configPath = path.join(dir, "FirstNexus.json");
   fs.writeFileSync(configPath, source);
   process.env.NEXISCLAW_CONFIG_PATH = configPath;
   return configPath;
@@ -32,7 +32,7 @@ describe("readLoggingConfig", () => {
   });
 
   it("skips mutating config loads for config schema", () => {
-    process.argv = ["node", "NexisClaw", "config", "schema"];
+    process.argv = ["node", "FirstNexus", "config", "schema"];
     const configPath = writeConfig(`{ logging: { file: "/tmp/should-not-read.log" } }`);
     fs.rmSync(configPath);
 
@@ -43,21 +43,21 @@ describe("readLoggingConfig", () => {
     writeConfig(`{
       logging: {
         level: "debug",
-        file: "/tmp/NexisClaw-custom.log",
+        file: "/tmp/FirstNexus-custom.log",
         maxFileBytes: 1234,
       },
     }`);
 
     expect(readLoggingConfig()).toStrictEqual({
       level: "debug",
-      file: "/tmp/NexisClaw-custom.log",
+      file: "/tmp/FirstNexus-custom.log",
       maxFileBytes: 1234,
     });
   });
 
   it("supports JSON5 comments and trailing commas", () => {
     writeConfig(`{
-      // users commonly keep comments in NexisClaw.json
+      // users commonly keep comments in FirstNexus.json
       logging: {
         consoleLevel: "warn",
       },
@@ -69,7 +69,7 @@ describe("readLoggingConfig", () => {
   });
 
   it("returns undefined for missing or malformed config files", () => {
-    process.env.NEXISCLAW_CONFIG_PATH = path.join(os.tmpdir(), "NexisClaw-missing-config.json");
+    process.env.NEXISCLAW_CONFIG_PATH = path.join(os.tmpdir(), "FirstNexus-missing-config.json");
     expect(readLoggingConfig()).toBeUndefined();
 
     writeConfig(`{ logging: `);

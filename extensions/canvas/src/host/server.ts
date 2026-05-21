@@ -10,14 +10,14 @@ import {
   setTimeout as scheduleNativeTimeout,
 } from "node:timers";
 import chokidar from "chokidar";
-import { detectMime } from "NexisClaw/plugin-sdk/media-mime";
-import { isTruthyEnvValue, type RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { resolveStateDir } from "NexisClaw/plugin-sdk/state-paths";
+import { detectMime } from "FirstNexus/plugin-sdk/media-mime";
+import { isTruthyEnvValue, type RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { resolveStateDir } from "FirstNexus/plugin-sdk/state-paths";
 import {
   lowercasePreservingWhitespace,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { ensureDir, resolveUserPath } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { ensureDir, resolveUserPath } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { type WebSocket, WebSocketServer } from "ws";
 import {
   CANVAS_HOST_PATH,
@@ -73,7 +73,7 @@ function defaultIndexHTML() {
   return `<!doctype html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>NexisClaw Canvas</title>
+<title>FirstNexus Canvas</title>
 <style>
   html, body { height: 100%; margin: 0; background: #000; color: #fff; font: 16px/1.4 -apple-system, BlinkMacSystemFont, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
   .wrap { min-height: 100%; display: grid; place-items: center; padding: 24px; }
@@ -91,7 +91,7 @@ function defaultIndexHTML() {
 <div class="wrap">
   <div class="card">
     <div class="title">
-      <h1>NexisClaw Canvas</h1>
+      <h1>FirstNexus Canvas</h1>
       <div class="sub">Interactive test page (auto-reload enabled)</div>
     </div>
 
@@ -116,14 +116,14 @@ function defaultIndexHTML() {
     !!(
       window.webkit &&
       window.webkit.messageHandlers &&
-      window.webkit.messageHandlers.NexisClawCanvasA2UIAction
+      window.webkit.messageHandlers.FirstNexusCanvasA2UIAction
     );
   const hasAndroid = () =>
     !!(
-      (window.NexisClawCanvasA2UIAction &&
-        typeof window.NexisClawCanvasA2UIAction.postMessage === "function")
+      (window.FirstNexusCanvasA2UIAction &&
+        typeof window.FirstNexusCanvasA2UIAction.postMessage === "function")
     );
-  const hasHelper = () => typeof window.NexisClawSendUserAction === "function";
+  const hasHelper = () => typeof window.FirstNexusSendUserAction === "function";
   const helperReady = hasHelper();
   statusEl.textContent = "";
   statusEl.appendChild(document.createTextNode("Bridge: "));
@@ -141,16 +141,16 @@ function defaultIndexHTML() {
     const d = ev && ev.detail || {};
     log("Action status: id=" + (d.id || "?") + " ok=" + String(!!d.ok) + (d.error ? (" error=" + d.error) : ""));
   };
-  window.addEventListener("NexisClaw:a2ui-action-status", onStatus);
+  window.addEventListener("FirstNexus:a2ui-action-status", onStatus);
 
   function send(name, sourceComponentId) {
     if (!hasHelper()) {
-      log("No action bridge found. Ensure you're viewing this on an iOS/Android NexisClaw node canvas.");
+      log("No action bridge found. Ensure you're viewing this on an iOS/Android FirstNexus node canvas.");
       return;
     }
     const sendUserAction =
-      typeof window.NexisClawSendUserAction === "function"
-        ? window.NexisClawSendUserAction
+      typeof window.FirstNexusSendUserAction === "function"
+        ? window.FirstNexusSendUserAction
         : undefined;
     const ok = sendUserAction({
       name,
@@ -375,7 +375,7 @@ export async function createCanvasHostHandler(
           res.statusCode = 404;
           res.setHeader("Content-Type", "text/html; charset=utf-8");
           res.end(
-            `<!doctype html><meta charset="utf-8" /><title>NexisClaw Canvas</title><pre>Missing file.\nCreate ${rootDir}/index.html</pre>`,
+            `<!doctype html><meta charset="utf-8" /><title>FirstNexus Canvas</title><pre>Missing file.\nCreate ${rootDir}/index.html</pre>`,
           );
           return true;
         }

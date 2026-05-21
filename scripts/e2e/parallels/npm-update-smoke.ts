@@ -6,13 +6,13 @@ import {
   die,
   ensureValue,
   makeTempDir,
-  packNexisClaw,
+  packFirstNexus,
   parsePlatformList,
   parseProvider,
   repoRoot,
   resolveHostIp,
   resolveLatestVersion,
-  resolveNexisClawRegistryVersion,
+  resolveFirstNexusRegistryVersion,
   resolveProviderAuth,
   resolveWindowsProviderAuth,
   run,
@@ -100,8 +100,8 @@ function usage(): string {
   return `Usage: bash scripts/e2e/parallels-npm-update-smoke.sh [options]
 
 Options:
-  --package-spec <npm-spec>  Baseline npm package spec. Default: NexisClaw@latest
-  --update-target <target>    Target passed to guest 'NexisClaw update --tag'.
+  --package-spec <npm-spec>  Baseline npm package spec. Default: FirstNexus@latest
+  --update-target <target>    Target passed to guest 'FirstNexus update --tag'.
                              Default: host-served tgz packed from current checkout.
   --fresh-target <npm-spec>   Also run fresh install smoke for this package after update lanes.
   --beta-validation [target]  Resolve a beta tag/alias/version, then run latest->target update
@@ -242,11 +242,11 @@ class NpmUpdateSmoke {
 
   async run(): Promise<void> {
     this.startedAt = Date.now();
-    this.runDir = await makeTempDir("NexisClaw-parallels-npm-update.");
-    this.tgzDir = await makeTempDir("NexisClaw-parallels-npm-update-tgz.");
+    this.runDir = await makeTempDir("FirstNexus-parallels-npm-update.");
+    this.tgzDir = await makeTempDir("FirstNexus-parallels-npm-update-tgz.");
     try {
       this.latestVersion = resolveLatestVersion();
-      this.packageSpec = this.options.packageSpec || `NexisClaw@${this.latestVersion}`;
+      this.packageSpec = this.options.packageSpec || `FirstNexus@${this.latestVersion}`;
       this.currentHead = run("git", ["rev-parse", "HEAD"], { quiet: true }).stdout.trim();
       this.currentHeadShort = run("git", ["rev-parse", "--short=7", "HEAD"], {
         quiet: true,
@@ -265,7 +265,7 @@ class NpmUpdateSmoke {
       await this.runFreshBaselines();
 
       await this.prepareUpdateTarget();
-      say(`Run same-guest NexisClaw update to ${this.updateTargetEffective}`);
+      say(`Run same-guest FirstNexus update to ${this.updateTargetEffective}`);
       await this.runSameGuestUpdates();
 
       if (this.freshTargetSpec) {
@@ -402,7 +402,7 @@ class NpmUpdateSmoke {
 
   private async prepareUpdateTarget(): Promise<void> {
     if (!this.options.updateTarget || this.options.updateTarget === "local-main") {
-      this.artifact = await packNexisClaw({
+      this.artifact = await packFirstNexus({
         destination: this.tgzDir,
         requireControlUi: true,
       });
@@ -424,7 +424,7 @@ class NpmUpdateSmoke {
     this.updateTargetEffective = this.options.updateTarget;
     this.updateExpectedNeedle = this.isExplicitPackageTarget(this.updateTargetEffective)
       ? ""
-      : resolveNexisClawRegistryVersion(this.updateTargetEffective) || this.updateTargetEffective;
+      : resolveFirstNexusRegistryVersion(this.updateTargetEffective) || this.updateTargetEffective;
     const metadata = this.resolveRegistryPackageMetadata(this.updateTargetEffective);
     this.updateTargetPackageVersion = metadata.version;
     this.updateTargetBuildCommit =
@@ -463,7 +463,7 @@ class NpmUpdateSmoke {
     if (this.isExplicitPackageTarget(target)) {
       return { gitHead: "", tarball: "", version: "" };
     }
-    const spec = target.startsWith("NexisClaw@") ? target : `NexisClaw@${target}`;
+    const spec = target.startsWith("FirstNexus@") ? target : `FirstNexus@${target}`;
     const output = run("npm", ["view", spec, "version", "dist.tarball", "gitHead", "--json"], {
       check: false,
       quiet: true,
@@ -661,7 +661,7 @@ class NpmUpdateSmoke {
     const scriptPath = this.writeGuestScript(
       macosVm,
       script,
-      "NexisClaw-parallels-npm-update-macos",
+      "FirstNexus-parallels-npm-update-macos",
     );
     const macosExecArgs = this.resolveMacosUpdateExecArgs(ctx);
     const sudoUserArgIndex = macosExecArgs.indexOf("-u");
@@ -795,7 +795,7 @@ class NpmUpdateSmoke {
     const scriptPath = this.writeGuestScript(
       this.linuxVm,
       script,
-      "NexisClaw-parallels-npm-update-linux",
+      "FirstNexus-parallels-npm-update-linux",
     );
     try {
       const status = await this.runStreamingToJobLog(
@@ -902,11 +902,11 @@ class NpmUpdateSmoke {
     ) {
       return;
     }
-    const baseline = resolveNexisClawRegistryVersion(this.packageSpec);
-    const target = resolveNexisClawRegistryVersion(this.options.updateTarget);
+    const baseline = resolveFirstNexusRegistryVersion(this.packageSpec);
+    const target = resolveFirstNexusRegistryVersion(this.options.updateTarget);
     if (baseline && target && baseline === target) {
       die(
-        `--update-target ${this.options.updateTarget} resolves to NexisClaw@${target}, same as baseline ${this.packageSpec}; publish or choose a newer --update-target before running VM update coverage`,
+        `--update-target ${this.options.updateTarget} resolves to FirstNexus@${target}, same as baseline ${this.packageSpec}; publish or choose a newer --update-target before running VM update coverage`,
       );
     }
   }
@@ -920,7 +920,7 @@ class NpmUpdateSmoke {
 
   private async extractLastVersion(logPath: string): Promise<string> {
     const log = await readFile(logPath, "utf8").catch(() => "");
-    const matches = [...log.matchAll(/NexisClaw\s+([0-9][^\s]*)/gi)];
+    const matches = [...log.matchAll(/FirstNexus\s+([0-9][^\s]*)/gi)];
     return matches.at(-1)?.[1] ?? "";
   }
 
@@ -944,27 +944,27 @@ class NpmUpdateSmoke {
 
   private configurePublishedTargets(): void {
     if (this.options.betaValidation) {
-      const version = resolveNexisClawRegistryVersion(this.options.betaValidation);
+      const version = resolveFirstNexusRegistryVersion(this.options.betaValidation);
       if (!version) {
         die(`could not resolve beta validation target: ${this.options.betaValidation}`);
       }
       this.options.updateTarget = version;
-      this.options.freshTargetSpec = `NexisClaw@${version}`;
-      say(`Beta validation target: NexisClaw@${version}`);
+      this.options.freshTargetSpec = `FirstNexus@${version}`;
+      say(`Beta validation target: FirstNexus@${version}`);
     } else if (
       this.options.updateTarget &&
       this.options.updateTarget !== "local-main" &&
       !this.isExplicitPackageTarget(this.options.updateTarget)
     ) {
-      const version = resolveNexisClawRegistryVersion(this.options.updateTarget);
+      const version = resolveFirstNexusRegistryVersion(this.options.updateTarget);
       if (version) {
         this.options.updateTarget = version;
       }
     }
 
     if (this.options.freshTargetSpec) {
-      const version = resolveNexisClawRegistryVersion(this.options.freshTargetSpec);
-      this.freshTargetSpec = version ? `NexisClaw@${version}` : this.options.freshTargetSpec;
+      const version = resolveFirstNexusRegistryVersion(this.options.freshTargetSpec);
+      this.freshTargetSpec = version ? `FirstNexus@${version}` : this.options.freshTargetSpec;
     }
   }
 

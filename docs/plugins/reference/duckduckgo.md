@@ -11,8 +11,8 @@ Adds web search provider support.
 
 ## Distribution
 
-- Package: `@NexisClaw/duckduckgo-plugin`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/duckduckgo-plugin`
+- Install route: included in FirstNexus
 
 ## Surface
 

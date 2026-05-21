@@ -300,7 +300,7 @@ async function monitorWithAutoAbort(opts: Omit<MonitorTelegramOpts, "abortSignal
   });
 }
 
-vi.mock("NexisClaw/plugin-sdk/runtime-config-snapshot", async () => {
+vi.mock("FirstNexus/plugin-sdk/runtime-config-snapshot", async () => {
   return {
     getRuntimeConfig: getRuntimeConfigMock,
   };
@@ -343,9 +343,9 @@ vi.mock("@grammyjs/runner", () => ({
   run: runSpy,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/runtime-env")>(
-    "NexisClaw/plugin-sdk/runtime-env",
+vi.mock("FirstNexus/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/runtime-env")>(
+    "FirstNexus/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -925,7 +925,7 @@ describe("monitorTelegramProvider (grammY)", () => {
       persistedOffset: 549076203,
     });
 
-    // NexisClaw middleware skips duplicates using the persisted update offset.
+    // FirstNexus middleware skips duplicates using the persisted update offset.
     expect(api.getUpdates).not.toHaveBeenCalled();
     expect(order).toEqual(["deleteWebhook", "run"]);
   });

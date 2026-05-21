@@ -1,7 +1,7 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { danger, logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { enqueueSystemEvent } from "NexisClaw/plugin-sdk/system-event-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { danger, logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { enqueueSystemEvent } from "FirstNexus/plugin-sdk/system-event-runtime";
 import {
   ChannelType,
   type Client,
@@ -23,8 +23,8 @@ import { formatDiscordReactionEmoji, formatDiscordUserTag } from "./format.js";
 import { runDiscordListenerWithSlowLog, type DiscordListenerLogger } from "./listeners.queue.js";
 import { resolveFetchedDiscordThreadLikeChannelContext } from "./thread-channel-context.js";
 
-type LoadedConfig = NexisClawConfig;
-type RuntimeEnv = import("NexisClaw/plugin-sdk/runtime-env").RuntimeEnv;
+type LoadedConfig = FirstNexusConfig;
+type RuntimeEnv = import("FirstNexus/plugin-sdk/runtime-env").RuntimeEnv;
 
 type DiscordReactionEvent = Parameters<MessageReactionAddListener["handle"]>[0];
 

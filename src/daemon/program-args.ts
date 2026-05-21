@@ -44,7 +44,7 @@ async function resolveCliEntrypointPathForService(): Promise<string> {
     }
     // Prefer the original (possibly symlinked) path over the resolved realpath.
     // This keeps LaunchAgent/systemd paths stable across package version updates,
-    // since symlinks like node_modules/NexisClaw -> .pnpm/NexisClaw@X.Y.Z/...
+    // since symlinks like node_modules/FirstNexus -> .pnpm/FirstNexus@X.Y.Z/...
     // are automatically updated by pnpm, while the resolved path contains
     // version-specific directories that break after updates.
     const normalizedLooksLikeDist = isGatewayDistEntrypointPath(normalized);
@@ -180,7 +180,7 @@ async function resolveBinaryPath(binary: string): Promise<string> {
   }
 }
 
-export async function resolveNexisClawWrapperPath(
+export async function resolveFirstNexusWrapperPath(
   inputPath: string | undefined,
 ): Promise<string | undefined> {
   const trimmed = inputPath?.trim();
@@ -211,7 +211,7 @@ async function resolveCliProgramArguments(params: {
   nodePath?: string;
   wrapperPath?: string;
 }): Promise<GatewayProgramArgs> {
-  const wrapperPath = await resolveNexisClawWrapperPath(params.wrapperPath);
+  const wrapperPath = await resolveFirstNexusWrapperPath(params.wrapperPath);
   if (wrapperPath) {
     return { programArguments: [wrapperPath, ...params.args] };
   }

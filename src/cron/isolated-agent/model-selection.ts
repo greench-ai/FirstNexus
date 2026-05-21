@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { CronJob } from "../types.js";
 import {
   DEFAULT_MODEL,
@@ -17,8 +17,8 @@ type CronSessionModelOverrides = {
 };
 
 export type ResolveCronModelSelectionParams = {
-  cfg: NexisClawConfig;
-  cfgWithAgentDefaults: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  cfgWithAgentDefaults: FirstNexusConfig;
   agentConfigOverride?: {
     model?: unknown;
     subagents?: {
@@ -42,7 +42,7 @@ export type ResolveCronModelSelectionResult =
       error: string;
     };
 
-function formatAllowedModelRefs(params: { cfg: NexisClawConfig }): string {
+function formatAllowedModelRefs(params: { cfg: FirstNexusConfig }): string {
   const configured = params.cfg.agents?.defaults?.models;
   if (configured && typeof configured === "object" && Object.keys(configured).length > 0) {
     return Object.keys(configured).toSorted().join(", ");
@@ -51,7 +51,7 @@ function formatAllowedModelRefs(params: { cfg: NexisClawConfig }): string {
 }
 
 function formatCronPayloadModelRejection(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   modelOverride: string;
   error: string;
 }): string {

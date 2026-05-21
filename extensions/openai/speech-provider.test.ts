@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildOpenAISpeechProvider } from "./speech-provider.js";
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: async ({
     url,
     init,

@@ -37,7 +37,7 @@ describe("resolveAttemptTranscriptPolicy", () => {
       },
     } as unknown as AgentRuntimePlan;
     const runtimePlanModelContext = {
-      workspaceDir: "/tmp/NexisClaw-transcript-policy",
+      workspaceDir: "/tmp/FirstNexus-transcript-policy",
       modelApi: "anthropic-messages",
       model: {
         id: "claude-opus-4.6",
@@ -68,7 +68,7 @@ describe("resolveAttemptTranscriptPolicy", () => {
     const env = { NEXISCLAW_TEST_TRANSCRIPT_POLICY: "1" } as NodeJS.ProcessEnv;
     const policy = resolveAttemptTranscriptPolicy({
       runtimePlanModelContext: {
-        workspaceDir: "/tmp/NexisClaw-transcript-policy",
+        workspaceDir: "/tmp/FirstNexus-transcript-policy",
         modelApi: "openai-responses",
       },
       provider: "custom-openai-compatible",
@@ -85,7 +85,7 @@ describe("resolveAttemptTranscriptPolicy", () => {
     expect(resolveProviderRuntimePluginMock).toHaveBeenCalledWith({
       provider: "custom-openai-compatible",
       config: undefined,
-      workspaceDir: "/tmp/NexisClaw-transcript-policy",
+      workspaceDir: "/tmp/FirstNexus-transcript-policy",
       env,
     });
   });
@@ -93,7 +93,7 @@ describe("resolveAttemptTranscriptPolicy", () => {
   it("inherits Claude-family OpenAI Responses turn validation from legacy fallback", () => {
     const policy = resolveAttemptTranscriptPolicy({
       runtimePlanModelContext: {
-        workspaceDir: "/tmp/NexisClaw-transcript-policy",
+        workspaceDir: "/tmp/FirstNexus-transcript-policy",
         modelApi: "openai-responses",
       },
       provider: "anthropic-foundry",

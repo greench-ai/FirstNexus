@@ -1,8 +1,8 @@
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 
 export { normalizePluginsConfig, resolveEffectiveEnableState } from "../plugins/config-state.js";
 
-export function requireRuntimeConfig(config: NexisClawConfig, context: string): NexisClawConfig {
+export function requireRuntimeConfig(config: FirstNexusConfig, context: string): FirstNexusConfig {
   if (config) {
     return config;
   }
@@ -12,7 +12,7 @@ export function requireRuntimeConfig(config: NexisClawConfig, context: string): 
 }
 
 export function resolvePluginConfigObject(
-  config: NexisClawConfig | undefined,
+  config: FirstNexusConfig | undefined,
   pluginId: string,
 ): Record<string, unknown> | undefined {
   const plugins =
@@ -34,7 +34,7 @@ export function resolvePluginConfigObject(
 }
 
 export function resolveLivePluginConfigObject(
-  runtimeConfigLoader: (() => NexisClawConfig | undefined) | undefined,
+  runtimeConfigLoader: (() => FirstNexusConfig | undefined) | undefined,
   pluginId: string,
   startupPluginConfig?: Record<string, unknown>,
 ): Record<string, unknown> | undefined {

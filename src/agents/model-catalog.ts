@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { getRuntimeConfig } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { planManifestModelCatalogRows } from "../model-catalog/manifest-planner.js";
 import { getCurrentPluginMetadataSnapshot } from "../plugins/current-plugin-metadata-snapshot.js";
@@ -18,7 +18,7 @@ import { modelSupportsInput as modelCatalogEntrySupportsInput } from "./model-ca
 import type { ModelCatalogEntry, ModelInputType } from "./model-catalog.types.js";
 import { normalizeConfiguredProviderCatalogModelId } from "./model-ref-shared.js";
 import { buildConfiguredModelCatalog } from "./model-selection-shared.js";
-import { ensureNexisClawModelsJson } from "./models-config.js";
+import { ensureFirstNexusModelsJson } from "./models-config.js";
 import { normalizeProviderId } from "./provider-id.js";
 
 const log = createSubsystemLogger("model-catalog");
@@ -118,7 +118,7 @@ function appendCatalogEntriesIfAbsent(
 }
 
 export function loadManifestModelCatalog(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   fallbackToMetadataScan?: boolean;
@@ -243,7 +243,7 @@ function normalizePersistedModelCatalogEntry(
 }
 
 async function loadReadOnlyPersistedModelCatalog(params?: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 }): Promise<ModelCatalogEntry[]> {
   const cfg = params?.config ?? getRuntimeConfig();
   const agentDir = resolveDefaultAgentDir(cfg);
@@ -288,7 +288,9 @@ async function loadReadOnlyPersistedModelCatalog(params?: {
   return sortModelCatalogEntries(models);
 }
 
-function loadReadOnlyStaticModelCatalog(params?: { config?: NexisClawConfig }): ModelCatalogEntry[] {
+function loadReadOnlyStaticModelCatalog(params?: {
+  config?: FirstNexusConfig;
+}): ModelCatalogEntry[] {
   const cfg = params?.config ?? getRuntimeConfig();
   const models: ModelCatalogEntry[] = [];
   try {
@@ -315,7 +317,7 @@ function loadReadOnlyStaticModelCatalog(params?: { config?: NexisClawConfig }): 
 }
 
 export async function loadModelCatalog(params?: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   useCache?: boolean;
   readOnly?: boolean;
 }): Promise<ModelCatalogEntry[]> {
@@ -351,7 +353,7 @@ export async function loadModelCatalog(params?: {
     try {
       const cfg = params?.config ?? getRuntimeConfig();
       if (!readOnly) {
-        await ensureNexisClawModelsJson(cfg);
+        await ensureFirstNexusModelsJson(cfg);
         logStage("models-json-ready");
       }
       // IMPORTANT: keep the dynamic import *inside* the try/catch.

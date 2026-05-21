@@ -6,7 +6,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { prepareRestartScript, runRestartScript } from "./restart-helper.js";
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeBuiltinModule } = await import("NexisClaw/plugin-sdk/test-node-mocks");
+  const { mockNodeBuiltinModule } = await import("FirstNexus/plugin-sdk/test-node-mocks");
   return mockNodeBuiltinModule(
     () => vi.importActual<typeof import("node:child_process")>("node:child_process"),
     {
@@ -75,17 +75,17 @@ exit 0
   }
 
   function expectWindowsRestartWaitOrdering(content: string, port = 18789) {
-    const stateCheck = "$taskState = Get-NexisClawScheduledTaskState -TaskName $taskName";
+    const stateCheck = "$taskState = Get-FirstNexusScheduledTaskState -TaskName $taskName";
     const runningGuard = 'if ($taskState -eq "Running")';
     const endCommand =
-      'Invoke-NexisClawSchtasksWithTimeout -Arguments @("/End", "/TN", $taskName) -TimeoutSeconds 10';
-    const skipEndLog = "NexisClaw restart skipped schtasks end";
+      'Invoke-FirstNexusSchtasksWithTimeout -Arguments @("/End", "/TN", $taskName) -TimeoutSeconds 10';
+    const skipEndLog = "FirstNexus restart skipped schtasks end";
     const pollLoop = "for ($attempt = 1; $attempt -le 10; $attempt++)";
-    const pollCall = `Get-NexisClawListenerPids -Port $port`;
+    const pollCall = `Get-FirstNexusListenerPids -Port $port`;
     const forceKillBranch = "if ($attempt -eq 10)";
     const forceKillCommand = "Stop-Process -Id $listenerPid -Force";
     const runCommand =
-      'Invoke-NexisClawSchtasksWithTimeout -Arguments @("/Run", "/TN", $taskName) -TimeoutSeconds 30';
+      'Invoke-FirstNexusSchtasksWithTimeout -Arguments @("/Run", "/TN", $taskName) -TimeoutSeconds 30';
     const portAssignment = `$port = ${port}`;
     const stateCheckIndex = content.indexOf(stateCheck);
     const runningGuardIndex = content.indexOf(runningGuard, stateCheckIndex);
@@ -132,7 +132,7 @@ exit 0
       });
       expect(scriptPath.endsWith(".sh")).toBe(true);
       expect(content).toContain("#!/bin/sh");
-      expect(content).toContain("systemctl --user restart 'NexisClaw-gateway.service'");
+      expect(content).toContain("systemctl --user restart 'FirstNexus-gateway.service'");
       // Script should self-cleanup
       expect(content).toContain('rm -f "$0"');
       await cleanupScript(scriptPath);
@@ -150,7 +150,7 @@ exit 0
 
     it("fails with sudo systemd guidance when the gateway unit is system-scoped", async () => {
       Object.defineProperty(process, "platform", { value: "linux" });
-      const tmpDir = await makeTempDir("NexisClaw-restart-helper-");
+      const tmpDir = await makeTempDir("FirstNexus-restart-helper-");
       const fakeBinDir = path.join(tmpDir, "bin");
       const callsPath = path.join(tmpDir, "systemctl-calls.log");
       await fs.mkdir(fakeBinDir, { recursive: true });
@@ -181,11 +181,11 @@ exit 1
       const calls = await fs.readFile(callsPath, "utf-8");
 
       expect(result.code).toBe(78);
-      expect(result.stderr).toContain("system-scoped NexisClaw gateway unit detected");
-      expect(result.stderr).toContain("sudo systemctl restart NexisClaw-gateway.service");
-      expect(calls).toContain("--user is-active --quiet NexisClaw-gateway.service");
-      expect(calls).toContain("is-active --quiet NexisClaw-gateway.service");
-      expect(calls).not.toContain("--user restart NexisClaw-gateway.service");
+      expect(result.stderr).toContain("system-scoped FirstNexus gateway unit detected");
+      expect(result.stderr).toContain("sudo systemctl restart FirstNexus-gateway.service");
+      expect(calls).toContain("--user is-active --quiet FirstNexus-gateway.service");
+      expect(calls).toContain("is-active --quiet FirstNexus-gateway.service");
+      expect(calls).not.toContain("--user restart FirstNexus-gateway.service");
     });
 
     it("creates a launchd restart script on macOS", async () => {
@@ -197,16 +197,16 @@ exit 1
       });
       expect(scriptPath.endsWith(".sh")).toBe(true);
       expect(content).toContain("#!/bin/sh");
-      expect(content).toContain("launchctl kickstart -k 'gui/501/ai.NexisClaw.gateway'");
+      expect(content).toContain("launchctl kickstart -k 'gui/501/ai.FirstNexus.gateway'");
       // Should clear disabled state and fall back to bootstrap when kickstart fails.
-      expect(content).toContain("launchctl enable 'gui/501/ai.NexisClaw.gateway'");
+      expect(content).toContain("launchctl enable 'gui/501/ai.FirstNexus.gateway'");
       expect(content).toContain("launchctl bootstrap 'gui/501'");
       expect(content).toContain("Bootstrap loads RunAtLoad agents");
       expect(content).toContain('rm -f "$0"');
       await cleanupScript(scriptPath);
     });
 
-    it("captures macOS launchctl stderr to ~/.NexisClaw/logs/gateway-restart.log (#68486)", async () => {
+    it("captures macOS launchctl stderr to ~/.FirstNexus/logs/gateway-restart.log (#68486)", async () => {
       // Silent failure in macOS update restart helper: previously every
       // launchctl call redirected stderr to /dev/null and the final kickstart
       // was chained with `|| true`, so bootstrap/kickstart failures were
@@ -220,7 +220,9 @@ exit 1
         NEXISCLAW_PROFILE: "default",
         HOME: "/Users/testuser",
       });
-      expect(content).toContain("exec >>'/Users/testuser/.NexisClaw/logs/gateway-restart.log' 2>&1");
+      expect(content).toContain(
+        "exec >>'/Users/testuser/.FirstNexus/logs/gateway-restart.log' 2>&1",
+      );
       // Every launchctl call should allow output through now (no `2>/dev/null`)
       // and the final kickstart must not swallow its exit code.
       expect(content).not.toMatch(/launchctl[^\n]*2>\/dev\/null/);
@@ -235,20 +237,20 @@ exit 1
       const { scriptPath, content } = await prepareAndReadScript({
         NEXISCLAW_PROFILE: "default",
         HOME: "/Users/testuser",
-        NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-state",
+        NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-state",
       });
 
       expect(content).toContain(
-        "if mkdir -p '/tmp/NexisClaw-state/logs' 2>/dev/null && : >>'/tmp/NexisClaw-state/logs/gateway-restart.log' 2>/dev/null; then",
+        "if mkdir -p '/tmp/FirstNexus-state/logs' 2>/dev/null && : >>'/tmp/FirstNexus-state/logs/gateway-restart.log' 2>/dev/null; then",
       );
-      expect(content).toContain("exec >>'/tmp/NexisClaw-state/logs/gateway-restart.log' 2>&1");
+      expect(content).toContain("exec >>'/tmp/FirstNexus-state/logs/gateway-restart.log' 2>&1");
       await cleanupScript(scriptPath);
     });
 
     it("returns the final macOS launchctl kickstart failure after logging cleanup", async () => {
       Object.defineProperty(process, "platform", { value: "darwin" });
       process.getuid = () => 501;
-      const tmpDir = await makeTempDir("NexisClaw-restart-helper-");
+      const tmpDir = await makeTempDir("FirstNexus-restart-helper-");
       const fakeBinDir = path.join(tmpDir, "bin");
       const stateDir = path.join(tmpDir, "state");
       await fs.mkdir(fakeBinDir, { recursive: true });
@@ -278,16 +280,18 @@ exit 0
       const log = await fs.readFile(path.join(stateDir, "logs", "gateway-restart.log"), "utf-8");
 
       expect(result.code).toBe(42);
-      expect(log).toContain("NexisClaw restart attempt source=update target=ai.NexisClaw.gateway");
-      expect(log).toContain("launchctl kickstart -k gui/501/ai.NexisClaw.gateway");
-      expect(log).toContain("NexisClaw restart failed source=update status=42");
-      expect(log).not.toContain("NexisClaw restart done source=update");
+      expect(log).toContain(
+        "FirstNexus restart attempt source=update target=ai.FirstNexus.gateway",
+      );
+      expect(log).toContain("launchctl kickstart -k gui/501/ai.FirstNexus.gateway");
+      expect(log).toContain("FirstNexus restart failed source=update status=42");
+      expect(log).not.toContain("FirstNexus restart done source=update");
     });
 
     it("continues the macOS restart path when log setup fails", async () => {
       Object.defineProperty(process, "platform", { value: "darwin" });
       process.getuid = () => 501;
-      const tmpDir = await makeTempDir("NexisClaw-restart-helper-");
+      const tmpDir = await makeTempDir("FirstNexus-restart-helper-");
       const fakeBinDir = path.join(tmpDir, "bin");
       const stateFile = path.join(tmpDir, "state-file");
       const markerPath = path.join(tmpDir, "launchctl-ran");
@@ -320,7 +324,7 @@ exit 0
     it("logs custom macOS launchd labels without shell expansion", async () => {
       Object.defineProperty(process, "platform", { value: "darwin" });
       process.getuid = () => 501;
-      const tmpDir = await makeTempDir("NexisClaw-restart-helper-");
+      const tmpDir = await makeTempDir("FirstNexus-restart-helper-");
       const fakeBinDir = path.join(tmpDir, "bin");
       const stateDir = path.join(tmpDir, "state");
       await fs.mkdir(fakeBinDir, { recursive: true });
@@ -328,7 +332,7 @@ exit 0
       await writeFakeLaunchctl(fakeBinDir);
 
       const { scriptPath } = await prepareAndReadScript({
-        NEXISCLAW_LAUNCHD_LABEL: "ai.NexisClaw.$(echo injected)",
+        NEXISCLAW_LAUNCHD_LABEL: "ai.FirstNexus.$(echo injected)",
         HOME: path.join(tmpDir, "home"),
         NEXISCLAW_STATE_DIR: stateDir,
       });
@@ -339,8 +343,8 @@ exit 0
       const log = await fs.readFile(path.join(stateDir, "logs", "gateway-restart.log"), "utf-8");
 
       expect(result.code).toBeNull();
-      expect(log).toContain("target=ai.NexisClaw.$(echo injected)");
-      expect(log).not.toContain("target=ai.NexisClaw.injected");
+      expect(log).toContain("target=ai.FirstNexus.$(echo injected)");
+      expect(log).not.toContain("target=ai.FirstNexus.injected");
     });
 
     it("uses NEXISCLAW_LAUNCHD_LABEL override on macOS", async () => {
@@ -349,9 +353,9 @@ exit 0
 
       const { scriptPath, content } = await prepareAndReadScript({
         NEXISCLAW_PROFILE: "default",
-        NEXISCLAW_LAUNCHD_LABEL: "com.custom.NexisClaw",
+        NEXISCLAW_LAUNCHD_LABEL: "com.custom.FirstNexus",
       });
-      expect(content).toContain("launchctl kickstart -k 'gui/501/com.custom.NexisClaw'");
+      expect(content).toContain("launchctl kickstart -k 'gui/501/com.custom.FirstNexus'");
       await cleanupScript(scriptPath);
     });
 
@@ -367,16 +371,16 @@ exit 0
       expect(content).not.toContain("powershell -NoProfile -ExecutionPolicy Bypass -File");
       expect(content).toContain('$ErrorActionPreference = "Continue"');
       expect(content).toContain("gateway-restart.log");
-      expect(content).toContain("$taskName = 'NexisClaw Gateway'");
-      expect(content).toContain("function Invoke-NexisClawSchtasksWithTimeout");
-      expect(content).toContain("function Get-NexisClawScheduledTaskState");
-      expect(content).toContain("function Invoke-NexisClawStartupLauncher");
+      expect(content).toContain("$taskName = 'FirstNexus Gateway'");
+      expect(content).toContain("function Invoke-FirstNexusSchtasksWithTimeout");
+      expect(content).toContain("function Get-FirstNexusScheduledTaskState");
+      expect(content).toContain("function Invoke-FirstNexusStartupLauncher");
       expect(content).toContain("Get-ScheduledTask -TaskName $TaskName");
-      expect(content).toContain("NexisClaw restart skipped schtasks end");
+      expect(content).toContain("FirstNexus restart skipped schtasks end");
       expect(content).toContain(
-        '$launcherPath = Join-Path $env:USERPROFILE ".NexisClaw\\gateway.cmd"',
+        '$launcherPath = Join-Path $env:USERPROFILE ".FirstNexus\\gateway.cmd"',
       );
-      expect(content).toContain("NexisClaw restart launched startup fallback");
+      expect(content).toContain("FirstNexus restart launched startup fallback");
       expectWindowsRestartWaitOrdering(content);
       expect(content).toContain('del "%~f0" >nul 2>&1');
       await cleanupScript(scriptPath);
@@ -387,14 +391,14 @@ exit 0
 
       const { scriptPath, content } = await prepareAndReadScript({
         NEXISCLAW_PROFILE: "default",
-        NEXISCLAW_WINDOWS_TASK_NAME: "NexisClaw Gateway (custom)",
+        NEXISCLAW_WINDOWS_TASK_NAME: "FirstNexus Gateway (custom)",
       });
-      expect(content).toContain("$taskName = 'NexisClaw Gateway (custom)'");
-      expect(content).toContain("Get-NexisClawScheduledTaskState -TaskName $taskName");
+      expect(content).toContain("$taskName = 'FirstNexus Gateway (custom)'");
+      expect(content).toContain("Get-FirstNexusScheduledTaskState -TaskName $taskName");
       expect(content).toContain(
-        'Invoke-NexisClawSchtasksWithTimeout -Arguments @("/End", "/TN", $taskName) -TimeoutSeconds 10',
+        'Invoke-FirstNexusSchtasksWithTimeout -Arguments @("/End", "/TN", $taskName) -TimeoutSeconds 10',
       );
-      expect(content).toContain("$status = Invoke-NexisClawStartupLauncher");
+      expect(content).toContain("$status = Invoke-FirstNexusStartupLauncher");
       expectWindowsRestartWaitOrdering(content);
       await cleanupScript(scriptPath);
     });
@@ -422,7 +426,7 @@ exit 0
       const { scriptPath, content } = await prepareAndReadScript({
         NEXISCLAW_PROFILE: "production",
       });
-      expect(content).toContain("NexisClaw-gateway-production.service");
+      expect(content).toContain("FirstNexus-gateway-production.service");
       await cleanupScript(scriptPath);
     });
 
@@ -433,7 +437,7 @@ exit 0
       const { scriptPath, content } = await prepareAndReadScript({
         NEXISCLAW_PROFILE: "staging",
       });
-      expect(content).toContain("gui/502/ai.NexisClaw.staging");
+      expect(content).toContain("gui/502/ai.FirstNexus.staging");
       await cleanupScript(scriptPath);
     });
 
@@ -443,7 +447,7 @@ exit 0
       const { scriptPath, content } = await prepareAndReadScript({
         NEXISCLAW_PROFILE: "production",
       });
-      expect(content).toContain("$taskName = 'NexisClaw Gateway (production)'");
+      expect(content).toContain("$taskName = 'FirstNexus Gateway (production)'");
       expectWindowsRestartWaitOrdering(content);
       await cleanupScript(scriptPath);
     });
@@ -511,10 +515,10 @@ exit 0
 
       const { scriptPath, content } = await prepareAndReadScript({
         HOME: "/Users/testuser",
-        NEXISCLAW_LAUNCHD_LABEL: "ai.NexisClaw.it's-a-test",
+        NEXISCLAW_LAUNCHD_LABEL: "ai.FirstNexus.it's-a-test",
       });
       // The plist path must also shell-escape the label to prevent injection
-      expect(content).toContain("ai.NexisClaw.it'\\''s-a-test.plist");
+      expect(content).toContain("ai.FirstNexus.it'\\''s-a-test.plist");
       await cleanupScript(scriptPath);
     });
 

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   LIVE_TRANSPORT_BASELINE_STANDARD_SCENARIO_IDS,
@@ -16,9 +16,9 @@ const fetchWithSsrFGuardMock = vi.hoisted(() =>
   })),
 );
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/ssrf-runtime")>(
-    "NexisClaw/plugin-sdk/ssrf-runtime",
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/ssrf-runtime")>(
+    "FirstNexus/plugin-sdk/ssrf-runtime",
   );
   return {
     ...actual,
@@ -172,7 +172,7 @@ describe("telegram live qa runtime", () => {
   });
 
   it("injects a temporary Telegram account into the QA gateway config", () => {
-    const baseCfg: NexisClawConfig = {
+    const baseCfg: FirstNexusConfig = {
       plugins: {
         allow: ["memory-core", "qa-channel"],
         entries: {
@@ -184,8 +184,8 @@ describe("telegram live qa runtime", () => {
         "qa-channel": {
           enabled: true,
           baseUrl: "http://127.0.0.1:43123",
-          botUserId: "NexisClaw",
-          botDisplayName: "NexisClaw QA",
+          botUserId: "FirstNexus",
+          botDisplayName: "FirstNexus QA",
           allowFrom: ["*"],
         },
       },
@@ -374,7 +374,7 @@ describe("telegram live qa runtime", () => {
     expect(
       scenarios.find((scenario) => scenario.id === "telegram-status-command")?.buildRun("sut_bot")
         .steps[0].expectedTextIncludes,
-    ).toEqual(["NexisClaw", "Model:", "Session:", "Activation:"]);
+    ).toEqual(["FirstNexus", "Model:", "Session:", "Activation:"]);
     expect(
       scenarios
         .find((scenario) => scenario.id === "telegram-repeated-command-authorization")
@@ -398,7 +398,7 @@ describe("telegram live qa runtime", () => {
       "sut_bot",
     ).steps[0];
     expect(otherBotStep?.expectReply).toBe(false);
-    expect(otherBotStep?.input).toBe("/status@NexisClawQaOtherBot");
+    expect(otherBotStep?.input).toBe("/status@FirstNexusQaOtherBot");
     const statusToolStep = requireScenario(
       scenarios,
       "telegram-current-session-status-tool",
@@ -491,13 +491,13 @@ describe("telegram live qa runtime", () => {
     const catalog = __testing.listTelegramQaScenarioCatalog("mock-openai");
     const status = requireScenario(catalog, "telegram-status-command");
     expect(status.defaultEnabled).toBe(true);
-    expect(status.regressionRefs).toEqual(["NexisClaw/NexisClaw#74698"]);
+    expect(status.regressionRefs).toEqual(["FirstNexus/FirstNexus#74698"]);
     expect(requireScenario(catalog, "telegram-current-session-status-tool").defaultEnabled).toBe(
       false,
     );
     const streamSingle = requireScenario(catalog, "telegram-stream-final-single-message");
     expect(streamSingle.defaultEnabled).toBe(true);
-    expect(streamSingle.regressionRefs).toEqual(["NexisClaw/NexisClaw#39905"]);
+    expect(streamSingle.regressionRefs).toEqual(["FirstNexus/FirstNexus#39905"]);
   });
 
   it("tracks Telegram live coverage against the shared transport contract", () => {

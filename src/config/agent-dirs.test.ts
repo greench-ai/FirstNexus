@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { findDuplicateAgentDirs } from "./agent-dirs.js";
-import type { NexisClawConfig } from "./types.js";
+import type { FirstNexusConfig } from "./types.js";
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -15,14 +15,14 @@ describe("resolveEffectiveAgentDir via findDuplicateAgentDirs", () => {
     // since they have different IDs.  Instead we just verify no crash and
     // that the env flows through by checking a two-agent config produces
     // distinct dirs (no duplicates).
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [{ id: "alpha" }, { id: "beta" }],
       },
     };
 
     const env = {
-      NEXISCLAW_HOME: "/srv/NexisClaw-home",
+      NEXISCLAW_HOME: "/srv/FirstNexus-home",
       HOME: "/home/other",
     } as NodeJS.ProcessEnv;
 
@@ -34,10 +34,10 @@ describe("resolveEffectiveAgentDir via findDuplicateAgentDirs", () => {
     // Force two agents to the same explicit agentDir to verify the path
     // that doesn't use the default — then test the default path by
     // checking that a single-agent config resolves without duplicates.
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
 
     const env = {
-      NEXISCLAW_HOME: "/srv/NexisClaw-home",
+      NEXISCLAW_HOME: "/srv/FirstNexus-home",
     } as NodeJS.ProcessEnv;
 
     // No duplicates for a single default agent

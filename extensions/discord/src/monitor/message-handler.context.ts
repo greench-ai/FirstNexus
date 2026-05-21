@@ -1,17 +1,20 @@
 import {
   formatInboundEnvelope,
   resolveEnvelopeFormatOptions,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import { resolveChannelContextVisibilityMode } from "NexisClaw/plugin-sdk/context-visibility-runtime";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "NexisClaw/plugin-sdk/conversation-runtime";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { finalizeInboundContext } from "NexisClaw/plugin-sdk/reply-dispatch-runtime";
-import { buildPendingHistoryContextFromMap } from "NexisClaw/plugin-sdk/reply-history";
-import { buildAgentSessionKey, resolveThreadSessionKeys } from "NexisClaw/plugin-sdk/routing";
-import { danger, logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { evaluateSupplementalContextVisibility } from "NexisClaw/plugin-sdk/security-runtime";
-import { readSessionUpdatedAt, resolveStorePath } from "NexisClaw/plugin-sdk/session-store-runtime";
-import { truncateUtf16Safe } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import { resolveChannelContextVisibilityMode } from "FirstNexus/plugin-sdk/context-visibility-runtime";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "FirstNexus/plugin-sdk/conversation-runtime";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { finalizeInboundContext } from "FirstNexus/plugin-sdk/reply-dispatch-runtime";
+import { buildPendingHistoryContextFromMap } from "FirstNexus/plugin-sdk/reply-history";
+import { buildAgentSessionKey, resolveThreadSessionKeys } from "FirstNexus/plugin-sdk/routing";
+import { danger, logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { evaluateSupplementalContextVisibility } from "FirstNexus/plugin-sdk/security-runtime";
+import {
+  readSessionUpdatedAt,
+  resolveStorePath,
+} from "FirstNexus/plugin-sdk/session-store-runtime";
+import { truncateUtf16Safe } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { resolveDiscordConversationIdentity } from "../conversation-identity.js";
 import { ChannelType } from "../internal/discord.js";
 import { normalizeDiscordAllowList, normalizeDiscordSlug } from "./allow-list.js";

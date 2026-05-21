@@ -1,6 +1,7 @@
 import { normalizeThinkLevel } from "../auto-reply/thinking.js";
 import { normalizeFastMode, normalizeOptionalString } from "../shared/string-coerce.js";
 import { isRecord } from "../utils.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 import type {
   ResolvedTalkConfig,
   TalkConfig,
@@ -8,7 +9,6 @@ import type {
   TalkProviderConfig,
   TalkRealtimeConfig,
 } from "./types.gateway.js";
-import type { NexisClawConfig } from "./types.NexisClaw.js";
 import { coerceSecretRef } from "./types.secrets.js";
 
 function normalizeTalkSecretInput(value: unknown): TalkProviderConfig["apiKey"] | undefined {
@@ -196,7 +196,7 @@ export function normalizeTalkSection(value: TalkConfig | undefined): TalkConfig 
   return Object.keys(normalized).length > 0 ? normalized : undefined;
 }
 
-export function normalizeTalkConfig(config: NexisClawConfig): NexisClawConfig {
+export function normalizeTalkConfig(config: FirstNexusConfig): FirstNexusConfig {
   if (!config.talk) {
     return config;
   }

@@ -35,14 +35,14 @@ const hoisted = vi.hoisted(() => {
   }));
   const resolveAgentModelPrimaryValue = vi.fn(() => "");
   const normalizeProviderId = vi.fn((provider: string) => provider.toLowerCase());
-  const resolveDefaultAgentDir = vi.fn(() => "/tmp/NexisClaw-state/agents/default/agent");
+  const resolveDefaultAgentDir = vi.fn(() => "/tmp/FirstNexus-state/agents/default/agent");
   const isCliProvider = vi.fn(() => false);
   const resolveConfiguredModelRef = vi.fn(() => ({
     provider: "openai",
     model: "gpt-5.4",
   }));
   const resolveEmbeddedAgentRuntime = vi.fn(() => "pi");
-  const ensureNexisClawModelsJson = vi.fn(async () => undefined);
+  const ensureFirstNexusModelsJson = vi.fn(async () => undefined);
   return {
     startPluginServices,
     startGmailWatcherWithLogs,
@@ -68,7 +68,7 @@ const hoisted = vi.hoisted(() => {
     isCliProvider,
     resolveConfiguredModelRef,
     resolveEmbeddedAgentRuntime,
-    ensureNexisClawModelsJson,
+    ensureFirstNexusModelsJson,
   };
 });
 
@@ -88,10 +88,10 @@ vi.mock("../config/paths.js", async () => {
   const actual = await vi.importActual<typeof import("../config/paths.js")>("../config/paths.js");
   return {
     ...actual,
-    STATE_DIR: "/tmp/NexisClaw-state",
-    resolveConfigPath: vi.fn(() => "/tmp/NexisClaw-state/NexisClaw.json"),
+    STATE_DIR: "/tmp/FirstNexus-state",
+    resolveConfigPath: vi.fn(() => "/tmp/FirstNexus-state/FirstNexus.json"),
     resolveGatewayPort: vi.fn(() => 18789),
-    resolveStateDir: vi.fn(() => "/tmp/NexisClaw-state"),
+    resolveStateDir: vi.fn(() => "/tmp/FirstNexus-state"),
   };
 });
 
@@ -156,7 +156,7 @@ vi.mock("../agents/provider-id.js", () => ({
 
 vi.mock("../agents/agent-scope.js", () => ({
   resolveDefaultAgentDir: hoisted.resolveDefaultAgentDir,
-  resolveAgentWorkspaceDir: vi.fn(() => "/tmp/NexisClaw-workspace"),
+  resolveAgentWorkspaceDir: vi.fn(() => "/tmp/FirstNexus-workspace"),
   resolveDefaultAgentId: vi.fn(() => "default"),
 }));
 
@@ -175,7 +175,7 @@ vi.mock("../agents/pi-embedded-runner/runtime.js", () => ({
 }));
 
 vi.mock("../agents/models-config.js", () => ({
-  ensureNexisClawModelsJson: hoisted.ensureNexisClawModelsJson,
+  ensureFirstNexusModelsJson: hoisted.ensureFirstNexusModelsJson,
 }));
 
 vi.mock("./server-tailscale.js", () => ({
@@ -210,9 +210,9 @@ function firstEnsureModelsJsonCall(): [
     providerDiscoveryProviderIds?: string[];
   },
 ] {
-  const call = hoisted.ensureNexisClawModelsJson.mock.calls.at(0);
+  const call = hoisted.ensureFirstNexusModelsJson.mock.calls.at(0);
   if (!call || call.length < 3) {
-    throw new Error("expected ensureNexisClawModelsJson call");
+    throw new Error("expected ensureFirstNexusModelsJson call");
   }
   return call as unknown as [
     unknown,
@@ -271,8 +271,8 @@ describe("startGatewayPostAttachRuntime", () => {
     hoisted.resolveConfiguredModelRef.mockClear();
     hoisted.resolveEmbeddedAgentRuntime.mockReset();
     hoisted.resolveEmbeddedAgentRuntime.mockReturnValue("pi");
-    hoisted.ensureNexisClawModelsJson.mockReset();
-    hoisted.ensureNexisClawModelsJson.mockResolvedValue(undefined);
+    hoisted.ensureFirstNexusModelsJson.mockReset();
+    hoisted.ensureFirstNexusModelsJson.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -333,7 +333,7 @@ describe("startGatewayPostAttachRuntime", () => {
   });
 
   it("skips heavy restart sentinel refresh when no sentinel file exists", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-no-sentinel-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-no-sentinel-"));
     vi.stubEnv("NEXISCLAW_STATE_DIR", stateDir);
 
     const result = await __testing.refreshLatestUpdateRestartSentinelIfPresent();
@@ -344,7 +344,7 @@ describe("startGatewayPostAttachRuntime", () => {
   });
 
   it("refreshes the restart sentinel when the sentinel file exists", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-sentinel-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-sentinel-"));
     fs.writeFileSync(path.join(stateDir, "restart-sentinel.json"), "{}\n");
     vi.stubEnv("NEXISCLAW_STATE_DIR", stateDir);
     const sentinel = { kind: "update", status: "ok", ts: 1 } as const;
@@ -358,28 +358,28 @@ describe("startGatewayPostAttachRuntime", () => {
   });
 
   it("expands tilde-based restart sentinel state paths", async () => {
-    const osHome = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-home-"));
+    const osHome = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-home-"));
     try {
-      const NexisClawHome = path.join(osHome, "NexisClaw-home");
-      const stateDirFromHome = path.join(NexisClawHome, ".NexisClaw");
+      const FirstNexusHome = path.join(osHome, "FirstNexus-home");
+      const stateDirFromHome = path.join(FirstNexusHome, ".FirstNexus");
       fs.mkdirSync(stateDirFromHome, { recursive: true });
       fs.writeFileSync(path.join(stateDirFromHome, "restart-sentinel.json"), "{}\n");
 
       expect(
         await __testing.hasRestartSentinelFileFast({
           HOME: osHome,
-          NEXISCLAW_HOME: "~/NexisClaw-home",
+          NEXISCLAW_HOME: "~/FirstNexus-home",
         } as NodeJS.ProcessEnv),
       ).toBe(true);
 
-      const backslashStateDir = path.resolve(`${osHome}\\NexisClaw-state`);
+      const backslashStateDir = path.resolve(`${osHome}\\FirstNexus-state`);
       fs.mkdirSync(backslashStateDir, { recursive: true });
       fs.writeFileSync(path.join(backslashStateDir, "restart-sentinel.json"), "{}\n");
 
       expect(
         await __testing.hasRestartSentinelFileFast({
           HOME: osHome,
-          NEXISCLAW_STATE_DIR: "~\\NexisClaw-state",
+          NEXISCLAW_STATE_DIR: "~\\FirstNexus-state",
         } as NodeJS.ProcessEnv),
       ).toBe(true);
     } finally {
@@ -388,7 +388,7 @@ describe("startGatewayPostAttachRuntime", () => {
   });
 
   it("avoids sync filesystem probes while checking restart sentinel presence", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-async-sentinel-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-async-sentinel-"));
     try {
       fs.writeFileSync(path.join(stateDir, "restart-sentinel.json"), "{}\n");
       const actualExistsSync = fs.existsSync;
@@ -567,7 +567,7 @@ describe("startGatewayPostAttachRuntime", () => {
           memory: { backend: "qmd", qmd: { update: { startup: "idle", startupDelayMs: 25 } } },
         } as never,
         pluginRegistry: createPostAttachParams().pluginRegistry,
-        defaultWorkspaceDir: "/tmp/NexisClaw-workspace",
+        defaultWorkspaceDir: "/tmp/FirstNexus-workspace",
         deps: {} as never,
         startChannels: vi.fn(async () => undefined),
         log: { warn: vi.fn() },
@@ -663,21 +663,21 @@ describe("startGatewayPostAttachRuntime", () => {
       },
     } as never;
     hoisted.resolveAgentModelPrimaryValue.mockReturnValue("openai/gpt-5.4");
-    hoisted.resolveDefaultAgentDir.mockReturnValue("/tmp/NexisClaw-state/agents/ops/agent");
+    hoisted.resolveDefaultAgentDir.mockReturnValue("/tmp/FirstNexus-state/agents/ops/agent");
 
     await __testing.prewarmConfiguredPrimaryModel({
       cfg,
-      workspaceDir: "/tmp/NexisClaw-workspace",
+      workspaceDir: "/tmp/FirstNexus-workspace",
       log: { warn: vi.fn() },
     });
 
     expect(hoisted.resolveDefaultAgentDir).toHaveBeenCalledWith(cfg);
-    expect(hoisted.ensureNexisClawModelsJson).toHaveBeenCalledTimes(1);
+    expect(hoisted.ensureFirstNexusModelsJson).toHaveBeenCalledTimes(1);
     const ensureCall = firstEnsureModelsJsonCall();
     expect(ensureCall[0]).toBe(cfg);
-    expect(ensureCall[1]).toBe("/tmp/NexisClaw-state/agents/ops/agent");
+    expect(ensureCall[1]).toBe("/tmp/FirstNexus-state/agents/ops/agent");
     const options = ensureCall[2];
-    expect(options?.workspaceDir).toBe("/tmp/NexisClaw-workspace");
+    expect(options?.workspaceDir).toBe("/tmp/FirstNexus-workspace");
     expect(options?.providerDiscoveryProviderIds).toEqual(["openai"]);
   });
 
@@ -700,7 +700,7 @@ describe("startGatewayPostAttachRuntime", () => {
             agents: { defaults: { model: "openai/gpt-5.4" } },
           } as never,
           pluginRegistry: createPostAttachParams().pluginRegistry,
-          defaultWorkspaceDir: "/tmp/NexisClaw-workspace",
+          defaultWorkspaceDir: "/tmp/FirstNexus-workspace",
           deps: {} as never,
           startChannels,
           prewarmPrimaryModel: prewarmPrimaryModel as never,
@@ -720,7 +720,7 @@ describe("startGatewayPostAttachRuntime", () => {
           () => {
             expect(prewarmPrimaryModel).toHaveBeenCalledTimes(1);
             expect(firstPrewarmCall(prewarmPrimaryModel)[0].workspaceDir).toBe(
-              "/tmp/NexisClaw-workspace",
+              "/tmp/FirstNexus-workspace",
             );
             expect(startChannels).toHaveBeenCalledTimes(1);
           },
@@ -787,7 +787,7 @@ describe("startGatewayPostAttachRuntime", () => {
       await startGatewaySidecars({
         cfg,
         pluginRegistry: createPostAttachParams().pluginRegistry,
-        defaultWorkspaceDir: "/tmp/NexisClaw-workspace",
+        defaultWorkspaceDir: "/tmp/FirstNexus-workspace",
         deps,
         startChannels: vi.fn(async () => undefined),
         log: { warn: vi.fn() },
@@ -814,7 +814,7 @@ describe("startGatewayPostAttachRuntime", () => {
         {
           cfg,
           deps,
-          workspaceDir: "/tmp/NexisClaw-workspace",
+          workspaceDir: "/tmp/FirstNexus-workspace",
         },
       );
       expect(hoisted.triggerInternalHook).toHaveBeenCalledWith(hoisted.startupHookEvent);
@@ -837,7 +837,7 @@ describe("startGatewayPostAttachRuntime", () => {
         acp: { enabled: true, backend: "acpx" },
       } as never,
       pluginRegistry: createPostAttachParams().pluginRegistry,
-      defaultWorkspaceDir: "/tmp/NexisClaw-workspace",
+      defaultWorkspaceDir: "/tmp/FirstNexus-workspace",
       deps: {} as never,
       startChannels: vi.fn(async () => undefined),
       log: { warn: vi.fn() },
@@ -899,7 +899,7 @@ describe("startGatewayPostAttachRuntime", () => {
     expect(event).toEqual({ port: 18789 });
     expect(ctx.port).toBe(18789);
     expect(ctx.config).toBe(params.gatewayPluginConfigAtStart);
-    expect(ctx.workspaceDir).toBe("/tmp/NexisClaw-workspace");
+    expect(ctx.workspaceDir).toBe("/tmp/FirstNexus-workspace");
     const getCron = ctx.getCron;
     if (!getCron) {
       throw new Error("gateway_start context did not expose getCron");
@@ -1012,7 +1012,7 @@ function createPostAttachParams(overrides: Partial<PostAttachParams> = {}): Post
       ],
       typedHooks: [],
     } as never,
-    defaultWorkspaceDir: "/tmp/NexisClaw-workspace",
+    defaultWorkspaceDir: "/tmp/FirstNexus-workspace",
     deps: {} as never,
     startChannels: vi.fn(async () => undefined),
     logHooks: {

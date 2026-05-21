@@ -57,8 +57,8 @@ external QA harnesses:
 
 ```bash
 NEXISCLAW_DIAGNOSTICS=timeline \
-NEXISCLAW_DIAGNOSTICS_TIMELINE_PATH=/tmp/NexisClaw-timeline.jsonl \
-NexisClaw gateway run
+NEXISCLAW_DIAGNOSTICS_TIMELINE_PATH=/tmp/FirstNexus-timeline.jsonl \
+FirstNexus gateway run
 ```
 
 You can also enable it in config:
@@ -73,7 +73,7 @@ You can also enable it in config:
 
 The timeline file path still comes from
 `NEXISCLAW_DIAGNOSTICS_TIMELINE_PATH`. When `timeline` is enabled only from
-config, the earliest config-loading spans are not emitted because NexisClaw has
+config, the earliest config-loading spans are not emitted because FirstNexus has
 not read config yet; subsequent startup spans use the config flag.
 
 `NEXISCLAW_DIAGNOSTICS=1`, `NEXISCLAW_DIAGNOSTICS=all`, and
@@ -81,7 +81,7 @@ not read config yet; subsequent startup spans use the config flag.
 diagnostics flag. Prefer `timeline` when you only want the JSONL timing
 artifact.
 
-Timeline records use the `NexisClaw.diagnostics.v1` envelope. Events can include
+Timeline records use the `FirstNexus.diagnostics.v1` envelope. Events can include
 process ids, phase names, span names, durations, plugin ids, dependency counts,
 event-loop delay samples, provider operation names, child-process exit state,
 and startup error names/messages. Treat timeline files as local diagnostics
@@ -92,7 +92,7 @@ artifacts; review them before sharing outside your machine.
 Flags emit logs into the standard diagnostics log file. By default:
 
 ```
-/tmp/NexisClaw/NexisClaw-YYYY-MM-DD.log
+/tmp/FirstNexus/FirstNexus-YYYY-MM-DD.log
 ```
 
 If you set `logging.file`, use that path instead. Logs are JSONL (one JSON object per line). Redaction still applies based on `logging.redactSensitive`.
@@ -102,28 +102,28 @@ If you set `logging.file`, use that path instead. Logs are JSONL (one JSON objec
 Pick the latest log file:
 
 ```bash
-ls -t /tmp/NexisClaw/NexisClaw-*.log | head -n 1
+ls -t /tmp/FirstNexus/FirstNexus-*.log | head -n 1
 ```
 
 Filter for Telegram HTTP diagnostics:
 
 ```bash
-rg "telegram http error" /tmp/NexisClaw/NexisClaw-*.log
+rg "telegram http error" /tmp/FirstNexus/FirstNexus-*.log
 ```
 
 Filter for Brave Search HTTP diagnostics:
 
 ```bash
-rg "brave http" /tmp/NexisClaw/NexisClaw-*.log
+rg "brave http" /tmp/FirstNexus/FirstNexus-*.log
 ```
 
 Or tail while reproducing:
 
 ```bash
-tail -f /tmp/NexisClaw/NexisClaw-$(date +%F).log | rg "telegram http error"
+tail -f /tmp/FirstNexus/FirstNexus-$(date +%F).log | rg "telegram http error"
 ```
 
-For remote gateways, you can also use `NexisClaw logs --follow` (see [/cli/logs](/cli/logs)).
+For remote gateways, you can also use `FirstNexus logs --follow` (see [/cli/logs](/cli/logs)).
 
 ## Notes
 

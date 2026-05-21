@@ -1,7 +1,7 @@
-import { resolveDirectStatusReplyForSession } from "NexisClaw/plugin-sdk/command-status-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveChunkMode, resolveTextChunkLimit } from "NexisClaw/plugin-sdk/reply-chunking";
-import type { ResolvedAgentRoute } from "NexisClaw/plugin-sdk/routing";
+import { resolveDirectStatusReplyForSession } from "FirstNexus/plugin-sdk/command-status-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveChunkMode, resolveTextChunkLimit } from "FirstNexus/plugin-sdk/reply-chunking";
+import type { ResolvedAgentRoute } from "FirstNexus/plugin-sdk/routing";
 import { resolveDiscordMaxLinesPerMessage } from "../accounts.js";
 import type {
   ButtonInteraction,
@@ -21,7 +21,7 @@ export async function maybeDeliverDiscordDirectStatus(params: {
   commandName: string;
   suppressReplies?: boolean;
   resolveDirectStatusReplyForSession: ResolveDirectStatusReplyForSession;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordConfig;
   accountId: string;
   sessionKey: string;

@@ -95,11 +95,12 @@ for (let attempt = 1; attempt <= modelAttempts; attempt += 1) {
     const modelsJson = await modelsRes.json();
     modelIds = extractModelIds(modelsJson);
     targetModel =
-      modelIds.find((id) => id === "NexisClaw/default") ?? modelIds.find((id) => id === "NexisClaw");
+      modelIds.find((id) => id === "FirstNexus/default") ??
+      modelIds.find((id) => id === "FirstNexus");
     if (targetModel) {
       break;
     }
-    lastModelsError = `missing NexisClaw model: ${JSON.stringify(modelIds)}`;
+    lastModelsError = `missing FirstNexus model: ${JSON.stringify(modelIds)}`;
   } else if (modelsRes) {
     lastModelsError = `HTTP ${modelsRes.status} ${await modelsRes.text()}`;
   }
@@ -107,7 +108,7 @@ for (let attempt = 1; attempt <= modelAttempts; attempt += 1) {
 }
 if (!targetModel) {
   throw new Error(
-    `NexisClaw model missing from Open WebUI model list after retry: ${JSON.stringify(modelIds)} (${lastModelsError})`,
+    `FirstNexus model missing from Open WebUI model list after retry: ${JSON.stringify(modelIds)} (${lastModelsError})`,
   );
 }
 if (smokeMode === "models") {

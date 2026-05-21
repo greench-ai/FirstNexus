@@ -1,8 +1,8 @@
-import { formatReasoningMessage } from "NexisClaw/plugin-sdk/agent-runtime";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { findCodeRegions, isInsideCode } from "NexisClaw/plugin-sdk/text-chunking";
-import { stripReasoningTagsFromText } from "NexisClaw/plugin-sdk/text-chunking";
+import { formatReasoningMessage } from "FirstNexus/plugin-sdk/agent-runtime";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { findCodeRegions, isInsideCode } from "FirstNexus/plugin-sdk/text-chunking";
+import { stripReasoningTagsFromText } from "FirstNexus/plugin-sdk/text-chunking";
 
 const REASONING_MESSAGE_PREFIX = "Reasoning:\n";
 const REASONING_TAG_PREFIXES = [

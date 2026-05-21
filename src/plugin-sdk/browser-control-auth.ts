@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
 
 export type BrowserControlAuth = {
@@ -7,7 +7,7 @@ export type BrowserControlAuth = {
 };
 
 type EnsureBrowserControlAuthParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
 };
 
@@ -17,7 +17,10 @@ type EnsureBrowserControlAuthResult = {
 };
 
 type BrowserControlAuthSurface = {
-  resolveBrowserControlAuth: (cfg?: NexisClawConfig, env?: NodeJS.ProcessEnv) => BrowserControlAuth;
+  resolveBrowserControlAuth: (
+    cfg?: FirstNexusConfig,
+    env?: NodeJS.ProcessEnv,
+  ) => BrowserControlAuth;
   shouldAutoGenerateBrowserAuth: (env: NodeJS.ProcessEnv) => boolean;
   ensureBrowserControlAuth: (
     params: EnsureBrowserControlAuthParams,
@@ -36,7 +39,7 @@ function loadBrowserControlAuthSurface(): BrowserControlAuthSurface {
 }
 
 export function resolveBrowserControlAuth(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): BrowserControlAuth {
   return loadBrowserControlAuthSurface().resolveBrowserControlAuth(cfg, env);

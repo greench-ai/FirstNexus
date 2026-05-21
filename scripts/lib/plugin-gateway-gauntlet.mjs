@@ -3,7 +3,7 @@ import path from "node:path";
 import JSON5 from "json5";
 import { collectBundledPluginBuildEntries } from "./bundled-plugin-build-entries.mjs";
 
-const MANIFEST_NAMES = ["NexisClaw.plugin.json", "NexisClaw.plugin.json5"];
+const MANIFEST_NAMES = ["FirstNexus.plugin.json", "FirstNexus.plugin.json5"];
 
 function isPlainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);

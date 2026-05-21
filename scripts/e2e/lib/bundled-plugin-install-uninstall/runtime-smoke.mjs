@@ -32,7 +32,7 @@ function writeJson(file, value) {
 }
 
 function manifestPath(pluginDir) {
-  return path.join(process.cwd(), "dist", "extensions", pluginDir, "NexisClaw.plugin.json");
+  return path.join(process.cwd(), "dist", "extensions", pluginDir, "FirstNexus.plugin.json");
 }
 
 function loadManifest(pluginDir) {
@@ -45,7 +45,8 @@ function loadManifest(pluginDir) {
 
 function configPathFromEnv(env = process.env) {
   return (
-    env.NEXISCLAW_CONFIG_PATH || path.join(env.HOME || os.homedir(), ".NexisClaw", "NexisClaw.json")
+    env.NEXISCLAW_CONFIG_PATH ||
+    path.join(env.HOME || os.homedir(), ".FirstNexus", "FirstNexus.json")
   );
 }
 
@@ -261,7 +262,7 @@ async function assertReadyzProbe(options) {
 }
 
 async function rpcCall(method, params, options) {
-  const rpcStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-plugin-runtime-rpc-"));
+  const rpcStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-plugin-runtime-rpc-"));
   const args = [
     options.entrypoint,
     "gateway",
@@ -363,7 +364,8 @@ async function smokePlugin(pluginId, pluginDir, requiresConfig, pluginIndex) {
   const manifest = loadManifest(pluginDir);
   const plan = buildPluginPlan(manifest);
   const port =
-    readPositiveInt(process.env.NEXISCLAW_BUNDLED_PLUGIN_RUNTIME_PORT_BASE, 19000) + pluginIndex * 3;
+    readPositiveInt(process.env.NEXISCLAW_BUNDLED_PLUGIN_RUNTIME_PORT_BASE, 19000) +
+    pluginIndex * 3;
   const config = ensureGatewayConfig(activateSmokePlugin(readConfig(), pluginId), port);
   for (const channel of plan.channels) {
     config.channels = {
@@ -392,7 +394,7 @@ async function smokePlugin(pluginId, pluginDir, requiresConfig, pluginIndex) {
   }
   writeConfig(config);
 
-  const logPath = `/tmp/NexisClaw-plugin-runtime-${pluginIndex}-${pluginId}.log`;
+  const logPath = `/tmp/FirstNexus-plugin-runtime-${pluginIndex}-${pluginId}.log`;
   const child = startGateway({
     entrypoint,
     port,
@@ -620,7 +622,7 @@ async function smokeTtsGlobalDisable(pluginId, pluginDir, provider, pluginIndex)
     ),
     env,
   );
-  const logPath = `/tmp/NexisClaw-plugin-runtime-${pluginIndex}-${pluginId}-tts-disabled.log`;
+  const logPath = `/tmp/FirstNexus-plugin-runtime-${pluginIndex}-${pluginId}-tts-disabled.log`;
   const child = startGateway({ entrypoint, port, logPath, env, skipChannels: true });
   try {
     await waitForReady({ child, port, logPath });
@@ -683,7 +685,7 @@ async function smokeOpenAiTts(pluginIndex) {
     ),
     env,
   );
-  const logPath = `/tmp/NexisClaw-plugin-runtime-${pluginIndex}-openai-tts-live.log`;
+  const logPath = `/tmp/FirstNexus-plugin-runtime-${pluginIndex}-openai-tts-live.log`;
   const child = startGateway({ entrypoint, port, logPath, env, skipChannels: true });
   try {
     await waitForReady({ child, port, logPath });
@@ -707,10 +709,10 @@ async function smokeOpenAiTts(pluginIndex) {
 }
 
 function createIsolatedStateEnv(label) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), `NexisClaw-${label}-`));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), `FirstNexus-${label}-`));
   const home = path.join(root, "home");
-  const stateDir = path.join(home, ".NexisClaw");
-  const configPath = path.join(stateDir, "NexisClaw.json");
+  const stateDir = path.join(home, ".FirstNexus");
+  const configPath = path.join(stateDir, "FirstNexus.json");
   fs.mkdirSync(stateDir, { recursive: true });
   return {
     ...process.env,

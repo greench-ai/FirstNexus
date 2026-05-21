@@ -1,21 +1,21 @@
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/account-core";
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
-import { normalizeE164 } from "NexisClaw/plugin-sdk/account-resolution";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/account-core";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
+import { normalizeE164 } from "FirstNexus/plugin-sdk/account-resolution";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
   createScopedDmSecurityResolver,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
 import {
   collectOpenGroupPolicyRouteAllowlistWarnings,
   createAllowlistProviderGroupPolicyWarningCollector,
-} from "NexisClaw/plugin-sdk/channel-policy";
-import type { ChannelPlugin } from "NexisClaw/plugin-sdk/core";
-import { createChannelPluginBase, getChatChannelMeta } from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/channel-policy";
+import type { ChannelPlugin } from "FirstNexus/plugin-sdk/core";
+import { createChannelPluginBase, getChatChannelMeta } from "FirstNexus/plugin-sdk/core";
 import {
   createDelegatedSetupWizardProxy,
   type ChannelSetupWizard,
-} from "NexisClaw/plugin-sdk/setup-runtime";
+} from "FirstNexus/plugin-sdk/setup-runtime";
 import {
   hasAnyWhatsAppAuth,
   listWhatsAppAccountIds,

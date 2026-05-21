@@ -1,7 +1,7 @@
-import type { ChannelLegacyStateMigrationPlan } from "NexisClaw/plugin-sdk/channel-contract";
-import { resolveChannelAllowFromPath } from "NexisClaw/plugin-sdk/channel-pairing-paths";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { statRegularFileSync } from "NexisClaw/plugin-sdk/security-runtime";
+import type { ChannelLegacyStateMigrationPlan } from "FirstNexus/plugin-sdk/channel-contract";
+import { resolveChannelAllowFromPath } from "FirstNexus/plugin-sdk/channel-pairing-paths";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { statRegularFileSync } from "FirstNexus/plugin-sdk/security-runtime";
 import { resolveDefaultTelegramAccountId } from "./account-selection.js";
 
 function fileExists(pathValue: string): boolean {
@@ -13,7 +13,7 @@ function fileExists(pathValue: string): boolean {
 }
 
 export function detectTelegramLegacyStateMigrations(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
 }): ChannelLegacyStateMigrationPlan[] {
   const legacyPath = resolveChannelAllowFromPath("telegram", params.env);

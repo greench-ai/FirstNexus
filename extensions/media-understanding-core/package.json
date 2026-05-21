@@ -1,14 +1,14 @@
 {
-  "name": "@NexisClaw/media-understanding-core",
+  "name": "@FirstNexus/media-understanding-core",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw media understanding runtime package",
+  "description": "FirstNexus media understanding runtime package",
   "type": "module",
   "dependencies": {
     "sharp": "0.34.5"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {}
+  "FirstNexus": {}
 }

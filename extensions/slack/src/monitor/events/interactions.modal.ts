@@ -1,4 +1,4 @@
-import { enqueueSystemEvent } from "NexisClaw/plugin-sdk/system-event-runtime";
+import { enqueueSystemEvent } from "FirstNexus/plugin-sdk/system-event-runtime";
 import { parseSlackModalPrivateMetadata } from "../../modal-metadata.js";
 import { authorizeSlackSystemEventSender } from "../auth.js";
 import type { SlackMonitorContext } from "../context.js";

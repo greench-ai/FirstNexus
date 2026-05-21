@@ -14,30 +14,33 @@ type CommandOptions = Record<string, unknown>;
 
 const SANDBOX_EXAMPLES = {
   main: [
-    ["NexisClaw sandbox list", "List all sandbox containers."],
-    ["NexisClaw sandbox list --browser", "List only browser containers."],
-    ["NexisClaw sandbox recreate --all", "Recreate all containers."],
-    ["NexisClaw sandbox recreate --session main", "Recreate a specific session."],
-    ["NexisClaw sandbox recreate --agent mybot", "Recreate agent containers."],
-    ["NexisClaw sandbox explain", "Explain effective sandbox config."],
+    ["FirstNexus sandbox list", "List all sandbox containers."],
+    ["FirstNexus sandbox list --browser", "List only browser containers."],
+    ["FirstNexus sandbox recreate --all", "Recreate all containers."],
+    ["FirstNexus sandbox recreate --session main", "Recreate a specific session."],
+    ["FirstNexus sandbox recreate --agent mybot", "Recreate agent containers."],
+    ["FirstNexus sandbox explain", "Explain effective sandbox config."],
   ],
   list: [
-    ["NexisClaw sandbox list", "List all sandbox containers."],
-    ["NexisClaw sandbox list --browser", "List only browser containers."],
-    ["NexisClaw sandbox list --json", "JSON output."],
+    ["FirstNexus sandbox list", "List all sandbox containers."],
+    ["FirstNexus sandbox list --browser", "List only browser containers."],
+    ["FirstNexus sandbox list --json", "JSON output."],
   ],
   recreate: [
-    ["NexisClaw sandbox recreate --all", "Recreate all containers."],
-    ["NexisClaw sandbox recreate --session main", "Recreate a specific session."],
-    ["NexisClaw sandbox recreate --agent mybot", "Recreate a specific agent (includes sub-agents)."],
-    ["NexisClaw sandbox recreate --browser --all", "Recreate only browser containers."],
-    ["NexisClaw sandbox recreate --all --force", "Skip confirmation."],
+    ["FirstNexus sandbox recreate --all", "Recreate all containers."],
+    ["FirstNexus sandbox recreate --session main", "Recreate a specific session."],
+    [
+      "FirstNexus sandbox recreate --agent mybot",
+      "Recreate a specific agent (includes sub-agents).",
+    ],
+    ["FirstNexus sandbox recreate --browser --all", "Recreate only browser containers."],
+    ["FirstNexus sandbox recreate --all --force", "Skip confirmation."],
   ],
   explain: [
-    ["NexisClaw sandbox explain", "Show effective sandbox config."],
-    ["NexisClaw sandbox explain --session agent:main:main", "Explain a specific session."],
-    ["NexisClaw sandbox explain --agent work", "Explain an agent sandbox."],
-    ["NexisClaw sandbox explain --json", "JSON output."],
+    ["FirstNexus sandbox explain", "Show effective sandbox config."],
+    ["FirstNexus sandbox explain --session agent:main:main", "Explain a specific session."],
+    ["FirstNexus sandbox explain --agent work", "Explain an agent sandbox."],
+    ["FirstNexus sandbox explain --json", "JSON output."],
   ],
 } as const;
 
@@ -67,7 +70,7 @@ export function registerSandboxCli(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/sandbox", "docs.NexisClaw.ai/cli/sandbox")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/sandbox", "docs.FirstNexus.ai/cli/sandbox")}\n`,
     )
     .action(() => {
       sandbox.help({ error: true });

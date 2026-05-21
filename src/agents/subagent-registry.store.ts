@@ -68,7 +68,7 @@ function resolveSubagentStateDir(env: NodeJS.ProcessEnv = process.env): string {
     return resolveStateDir(env);
   }
   if (env.VITEST || env.NODE_ENV === "test") {
-    return path.join(os.tmpdir(), "NexisClaw-test-state", String(process.pid));
+    return path.join(os.tmpdir(), "FirstNexus-test-state", String(process.pid));
   }
   return resolveStateDir(env);
 }

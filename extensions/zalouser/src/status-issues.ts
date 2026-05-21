@@ -1,11 +1,11 @@
 import type {
   ChannelAccountSnapshot,
   ChannelStatusIssue,
-} from "NexisClaw/plugin-sdk/channel-contract";
+} from "FirstNexus/plugin-sdk/channel-contract";
 import {
   coerceStatusIssueAccountId,
   readStatusIssueFields,
-} from "NexisClaw/plugin-sdk/extension-shared";
+} from "FirstNexus/plugin-sdk/extension-shared";
 
 const ZALOUSER_STATUS_FIELDS = [
   "accountId",
@@ -38,7 +38,7 @@ export function collectZalouserStatusIssues(
         accountId,
         kind: "auth",
         message: "Not authenticated (no saved Zalo session).",
-        fix: "Run: NexisClaw channels login --channel zalouser",
+        fix: "Run: FirstNexus channels login --channel zalouser",
       });
       continue;
     }

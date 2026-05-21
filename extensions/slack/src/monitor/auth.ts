@@ -7,9 +7,9 @@ import {
   createChannelIngressResolver,
   defineStableChannelIngressIdentity,
   readChannelIngressStoreAllowFromForDmPolicy,
-} from "NexisClaw/plugin-sdk/channel-ingress-runtime";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/channel-ingress-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   allowListMatches,
   normalizeAllowList,

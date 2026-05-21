@@ -2,11 +2,11 @@ import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
   ChannelOutboundAdapter,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import type { ChannelPlugin } from "NexisClaw/plugin-sdk/core";
-import { resolveOutboundSendDep } from "NexisClaw/plugin-sdk/outbound-send-deps";
-import { collectStatusIssuesFromLastError } from "NexisClaw/plugin-sdk/status-helpers";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import type { ChannelPlugin } from "FirstNexus/plugin-sdk/core";
+import { resolveOutboundSendDep } from "FirstNexus/plugin-sdk/outbound-send-deps";
+import { collectStatusIssuesFromLastError } from "FirstNexus/plugin-sdk/status-helpers";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 function normalizeIMessageTestHandle(raw: string): string {
   let trimmed = raw.trim();

@@ -4,7 +4,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { ConfigMutationConflictError, mutateConfigFile, replaceConfigFile } from "./mutate.js";
 import { registerRuntimeConfigWriteListener, resetConfigRuntimeState } from "./runtime-snapshot.js";
-import type { ConfigFileSnapshot, NexisClawConfig } from "./types.js";
+import type { ConfigFileSnapshot, FirstNexusConfig } from "./types.js";
 
 const ioMocks = vi.hoisted(() => ({
   readConfigFileSnapshotForWrite: vi.fn(),
@@ -18,14 +18,14 @@ function createSnapshot(params: {
   hash: string;
   path?: string;
   parsed?: unknown;
-  sourceConfig: NexisClawConfig;
-  runtimeConfig?: NexisClawConfig;
+  sourceConfig: FirstNexusConfig;
+  runtimeConfig?: FirstNexusConfig;
 }): ConfigFileSnapshot {
   const runtimeConfig = (params.runtimeConfig ??
     params.sourceConfig) as ConfigFileSnapshot["config"];
   const sourceConfig = params.sourceConfig as ConfigFileSnapshot["sourceConfig"];
   return {
-    path: params.path ?? "/tmp/NexisClaw.json",
+    path: params.path ?? "/tmp/FirstNexus.json",
     exists: true,
     raw: "{}",
     parsed: params.parsed ?? params.sourceConfig,
@@ -42,7 +42,7 @@ function createSnapshot(params: {
 }
 
 describe("config mutate helpers", () => {
-  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "NexisClaw-config-mutate-" });
+  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "FirstNexus-config-mutate-" });
   const originalNixMode = process.env.NEXISCLAW_NIX_MODE;
 
   beforeAll(async () => {
@@ -141,7 +141,7 @@ describe("config mutate helpers", () => {
         nextConfig: { gateway: { port: 19001 } },
       }),
     ).rejects.toThrow(
-      "Agent-first Nix setup: https://github.com/NexisClaw/nix-NexisClaw#quick-start",
+      "Agent-first Nix setup: https://github.com/FirstNexus/nix-FirstNexus#quick-start",
     );
 
     expect(ioMocks.writeConfigFile).not.toHaveBeenCalled();
@@ -164,7 +164,7 @@ describe("config mutate helpers", () => {
           draft.gateway = { ...draft.gateway, port: 19001 };
         },
       }),
-    ).rejects.toThrow("NexisClaw Nix overview: https://docs.NexisClaw.ai/install/nix");
+    ).rejects.toThrow("FirstNexus Nix overview: https://docs.FirstNexus.ai/install/nix");
 
     expect(ioMocks.writeConfigFile).not.toHaveBeenCalled();
   });
@@ -225,8 +225,8 @@ describe("config mutate helpers", () => {
 
   it("writes through a single-file top-level plugins include", async () => {
     const home = await suiteRootTracker.make("include");
-    const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
-    const pluginsPath = path.join(home, ".NexisClaw", "config", "plugins.json5");
+    const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
+    const pluginsPath = path.join(home, ".FirstNexus", "config", "plugins.json5");
     await fs.mkdir(path.dirname(pluginsPath), { recursive: true });
     await fs.writeFile(
       configPath,
@@ -342,7 +342,7 @@ describe("config mutate helpers", () => {
   it("falls back to the root writer when a plugins include write is not isolated", async () => {
     const snapshot = createSnapshot({
       hash: "hash-multi",
-      path: "/tmp/NexisClaw.json",
+      path: "/tmp/FirstNexus.json",
       parsed: { plugins: { $include: "./config/plugins.json5" }, gateway: { mode: "local" } },
       sourceConfig: {
         gateway: { mode: "local" },

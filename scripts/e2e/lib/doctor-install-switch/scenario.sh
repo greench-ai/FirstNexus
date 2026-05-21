@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-source scripts/lib/NexisClaw-e2e-instance.sh
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_FUNCTION_B64:?missing NEXISCLAW_TEST_STATE_FUNCTION_B64}"
+source scripts/lib/FirstNexus-e2e-instance.sh
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_FUNCTION_B64:?missing NEXISCLAW_TEST_STATE_FUNCTION_B64}"
 
 # Keep logs focused; the npm global install step can emit noisy deprecation warnings.
 export npm_config_loglevel=error
@@ -10,35 +10,35 @@ export npm_config_audit=false
 export NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1
 
 # Stub systemd/loginctl so doctor + daemon flows work in Docker.
-export PATH="/tmp/NexisClaw-bin:$PATH"
-mkdir -p /tmp/NexisClaw-bin
-cp scripts/e2e/lib/doctor-install-switch/shims/systemctl /tmp/NexisClaw-bin/systemctl
-cp scripts/e2e/lib/doctor-install-switch/shims/loginctl /tmp/NexisClaw-bin/loginctl
-chmod +x /tmp/NexisClaw-bin/systemctl /tmp/NexisClaw-bin/loginctl
+export PATH="/tmp/FirstNexus-bin:$PATH"
+mkdir -p /tmp/FirstNexus-bin
+cp scripts/e2e/lib/doctor-install-switch/shims/systemctl /tmp/FirstNexus-bin/systemctl
+cp scripts/e2e/lib/doctor-install-switch/shims/loginctl /tmp/FirstNexus-bin/loginctl
+chmod +x /tmp/FirstNexus-bin/systemctl /tmp/FirstNexus-bin/loginctl
 
 package_tgz="${NEXISCLAW_CURRENT_PACKAGE_TGZ:?missing NEXISCLAW_CURRENT_PACKAGE_TGZ}"
-git_root="/tmp/NexisClaw-git"
+git_root="/tmp/FirstNexus-git"
 mkdir -p "$git_root"
 # The git-style install fixture is unpacked from the tarball so this lane does
 # not depend on checkout source files being present in the Docker image.
 tar -xzf "$package_tgz" -C "$git_root" --strip-components=1
 (
   cd "$git_root"
-  npm install --omit=optional --no-fund --no-audit >/tmp/NexisClaw-git-install.log 2>&1
+  npm install --omit=optional --no-fund --no-audit >/tmp/FirstNexus-git-install.log 2>&1
   git init -q
-  git config user.email "docker-e2e@NexisClaw.local"
-  git config user.name "NexisClaw Docker E2E"
+  git config user.email "docker-e2e@FirstNexus.local"
+  git config user.name "FirstNexus Docker E2E"
   git add -A
   git commit -qm "test fixture"
 )
-npm_log="/tmp/NexisClaw-doctor-switch-npm-install.log"
+npm_log="/tmp/FirstNexus-doctor-switch-npm-install.log"
 if ! npm install -g --prefix /tmp/npm-prefix --omit=optional "$package_tgz" >"$npm_log" 2>&1; then
   cat "$npm_log"
   exit 1
 fi
 
-npm_bin="/tmp/npm-prefix/bin/NexisClaw"
-npm_root="/tmp/npm-prefix/lib/node_modules/NexisClaw"
+npm_bin="/tmp/npm-prefix/bin/FirstNexus"
+npm_root="/tmp/npm-prefix/lib/node_modules/FirstNexus"
 if [ -f "$npm_root/dist/index.mjs" ]; then
   npm_entry="$npm_root/dist/index.mjs"
 else
@@ -50,7 +50,7 @@ if [ -f "$git_root/dist/index.mjs" ]; then
 else
   git_entry="$git_root/dist/index.js"
 fi
-git_cli="$git_root/NexisClaw.mjs"
+git_cli="$git_root/FirstNexus.mjs"
 
 package_version="$(node -p "require(\"$npm_root/package.json\").version")"
 is_legacy_package_acceptance_compat() {
@@ -127,12 +127,12 @@ run_flow() {
   local install_expected="$3"
   local doctor_cmd="$4"
   local doctor_expected="$5"
-  local install_log="/tmp/NexisClaw-doctor-switch-${name}-install.log"
-  local doctor_log="/tmp/NexisClaw-doctor-switch-${name}-doctor.log"
+  local install_log="/tmp/FirstNexus-doctor-switch-${name}-install.log"
+  local doctor_log="/tmp/FirstNexus-doctor-switch-${name}-doctor.log"
   local command_timeout="${NEXISCLAW_DOCKER_DOCTOR_SWITCH_COMMAND_TIMEOUT:-900s}"
 
   echo "== Flow: $name =="
-  NexisClaw_test_state_create "switch-${name}" empty
+  FirstNexus_test_state_create "switch-${name}" empty
   export USER="testuser"
 
   if ! timeout "$command_timeout" bash -c "$install_cmd" >"$install_log" 2>&1; then
@@ -142,7 +142,7 @@ run_flow() {
   rm -f "$HOME/.zshrc" "$HOME/.bashrc" "$HOME/.bash_profile"
   rm -rf "$HOME/.config/fish" "$HOME/.config/powershell"
 
-  unit_path="$HOME/.config/systemd/user/NexisClaw-gateway.service"
+  unit_path="$HOME/.config/systemd/user/FirstNexus-gateway.service"
   if [ ! -f "$unit_path" ]; then
     echo "Missing unit file: $unit_path"
     exit 1
@@ -173,15 +173,15 @@ run_flow \
 
 run_proxy_env_flow() {
   local name="proxy-env-cleanup"
-  local install_log="/tmp/NexisClaw-doctor-switch-${name}-install.log"
-  local doctor_log="/tmp/NexisClaw-doctor-switch-${name}-doctor.log"
+  local install_log="/tmp/FirstNexus-doctor-switch-${name}-install.log"
+  local doctor_log="/tmp/FirstNexus-doctor-switch-${name}-doctor.log"
   local command_timeout="${NEXISCLAW_DOCKER_DOCTOR_SWITCH_COMMAND_TIMEOUT:-900s}"
 
   echo "== Flow: $name =="
-  NexisClaw_test_state_create "switch-${name}" empty
+  FirstNexus_test_state_create "switch-${name}" empty
   export USER="testuser"
 
-  unit_path="$HOME/.config/systemd/user/NexisClaw-gateway.service"
+  unit_path="$HOME/.config/systemd/user/FirstNexus-gateway.service"
   if ! timeout "$command_timeout" env \
     HTTP_PROXY="http://proxy.local:7890" \
     HTTPS_PROXY="https://proxy.local:7890" \
@@ -211,24 +211,24 @@ run_proxy_env_flow
 
 run_wrapper_flow() {
   local name="wrapper-persistence"
-  local install_log="/tmp/NexisClaw-doctor-switch-${name}-install.log"
-  local reinstall_log="/tmp/NexisClaw-doctor-switch-${name}-reinstall.log"
-  local env_repair_log="/tmp/NexisClaw-doctor-switch-${name}-env-repair.log"
-  local doctor_log="/tmp/NexisClaw-doctor-switch-${name}-doctor.log"
-  local clear_log="/tmp/NexisClaw-doctor-switch-${name}-clear.log"
+  local install_log="/tmp/FirstNexus-doctor-switch-${name}-install.log"
+  local reinstall_log="/tmp/FirstNexus-doctor-switch-${name}-reinstall.log"
+  local env_repair_log="/tmp/FirstNexus-doctor-switch-${name}-env-repair.log"
+  local doctor_log="/tmp/FirstNexus-doctor-switch-${name}-doctor.log"
+  local clear_log="/tmp/FirstNexus-doctor-switch-${name}-clear.log"
   local command_timeout="${NEXISCLAW_DOCKER_DOCTOR_SWITCH_COMMAND_TIMEOUT:-900s}"
 
   echo "== Flow: $name =="
-  NexisClaw_test_state_create "switch-${name}" empty
+  FirstNexus_test_state_create "switch-${name}" empty
   export USER="testuser"
   mkdir -p "$HOME/.local/bin"
-  local wrapper="$HOME/.local/bin/NexisClaw-wrapper"
+  local wrapper="$HOME/.local/bin/FirstNexus-wrapper"
   node scripts/e2e/lib/doctor-install-switch/write-wrapper.mjs \
     "$wrapper" \
     "$npm_bin" \
-    "$HOME/NexisClaw-wrapper-argv.log"
+    "$HOME/FirstNexus-wrapper-argv.log"
 
-  local unit_path="$HOME/.config/systemd/user/NexisClaw-gateway.service"
+  local unit_path="$HOME/.config/systemd/user/FirstNexus-gateway.service"
 
   if ! timeout "$command_timeout" "$npm_bin" gateway install --wrapper "$wrapper" --force >"$install_log" 2>&1; then
     cat "$install_log"
@@ -254,7 +254,7 @@ run_wrapper_flow() {
   assert_exec_arg "$unit_path" 1 "$wrapper"
   assert_env_value "$unit_path" "NEXISCLAW_WRAPPER" "$wrapper"
 
-  sed -i "s#^Environment=NEXISCLAW_WRAPPER=.*#Environment=NEXISCLAW_WRAPPER=/tmp/stale-NexisClaw-wrapper#" "$unit_path"
+  sed -i "s#^Environment=NEXISCLAW_WRAPPER=.*#Environment=NEXISCLAW_WRAPPER=/tmp/stale-FirstNexus-wrapper#" "$unit_path"
   if ! timeout "$command_timeout" "$npm_bin" gateway install --wrapper "$wrapper" >"$env_repair_log" 2>&1; then
     cat "$env_repair_log"
     exit 1

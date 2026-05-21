@@ -1,11 +1,11 @@
 ---
 name: optimizetests
-description: Optimize NexisClaw slow tests, imports, misplaced coverage, and CI wall time without dropping coverage.
+description: Optimize FirstNexus slow tests, imports, misplaced coverage, and CI wall time without dropping coverage.
 ---
 
 # Optimize Tests
 
-Goal: real NexisClaw test/runtime speedups with coverage intact. Do not add shards,
+Goal: real FirstNexus test/runtime speedups with coverage intact. Do not add shards,
 skip assertions, weaken gates, or tune runner flags as the main fix.
 
 ## Runbook

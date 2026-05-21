@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   isProviderAuthProfileConfigured,
   resolveProviderAuthProfileApiKey,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveProviderRequestHeaders } from "NexisClaw/plugin-sdk/provider-http";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveProviderRequestHeaders } from "FirstNexus/plugin-sdk/provider-http";
 import {
   createRealtimeTranscriptionWebSocketSession,
   type RealtimeTranscriptionProviderConfig,
@@ -11,8 +11,8 @@ import {
   type RealtimeTranscriptionSession,
   type RealtimeTranscriptionSessionCreateRequest,
   type RealtimeTranscriptionWebSocketTransport,
-} from "NexisClaw/plugin-sdk/realtime-transcription";
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
+} from "FirstNexus/plugin-sdk/realtime-transcription";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
 import {
   asFiniteNumber,
   createOpenAIRealtimeTranscriptionClientSecret,
@@ -32,7 +32,7 @@ type OpenAIRealtimeTranscriptionProviderConfig = {
 
 type OpenAIRealtimeTranscriptionSessionConfig = RealtimeTranscriptionSessionCreateRequest & {
   apiKey?: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   language?: string;
   model: string;
   prompt?: string;

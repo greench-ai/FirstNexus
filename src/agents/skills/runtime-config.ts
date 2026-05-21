@@ -1,8 +1,8 @@
 import { getRuntimeConfigSnapshot } from "../../config/runtime-snapshot.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { coerceSecretRef } from "../../config/types.secrets.js";
 
-function hasConfiguredSkillApiKeyRef(config?: NexisClawConfig): boolean {
+function hasConfiguredSkillApiKeyRef(config?: FirstNexusConfig): boolean {
   const entries = config?.skills?.entries;
   if (!entries || typeof entries !== "object") {
     return false;
@@ -18,7 +18,7 @@ function hasConfiguredSkillApiKeyRef(config?: NexisClawConfig): boolean {
   return false;
 }
 
-export function resolveSkillRuntimeConfig(config?: NexisClawConfig): NexisClawConfig | undefined {
+export function resolveSkillRuntimeConfig(config?: FirstNexusConfig): FirstNexusConfig | undefined {
   const runtimeConfig = getRuntimeConfigSnapshot();
   if (!runtimeConfig) {
     return config;

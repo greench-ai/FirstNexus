@@ -1,11 +1,11 @@
 #!/bin/bash
 # Claude Code Authentication Status Checker
-# Checks both Claude Code and NexisClaw auth status
+# Checks both Claude Code and FirstNexus auth status
 
 set -euo pipefail
 
 CLAUDE_CREDS="$HOME/.claude/.credentials.json"
-NEXISCLAW_AUTH="$HOME/.NexisClaw/agents/main/agent/auth-profiles.json"
+NEXISCLAW_AUTH="$HOME/.FirstNexus/agents/main/agent/auth-profiles.json"
 
 # Colors for terminal output
 RED='\033[0;31m'
@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 OUTPUT_MODE="${1:-full}"
 
 fetch_models_status_json() {
-    NexisClaw models status --json 2>/dev/null || true
+    FirstNexus models status --json 2>/dev/null || true
 }
 
 STATUS_JSON="$(fetch_models_status_json)"
@@ -103,7 +103,7 @@ check_claude_code_auth() {
     calc_status_from_expires "$expires_at"
 }
 
-check_NexisClaw_auth() {
+check_FirstNexus_auth() {
     if [ "$USE_JSON" -eq 1 ]; then
         local api_keys
         api_keys=$(json_anthropic_api_key_count)
@@ -139,26 +139,26 @@ check_NexisClaw_auth() {
 # JSON output mode
 if [ "$OUTPUT_MODE" = "json" ]; then
     claude_status=$(check_claude_code_auth 2>/dev/null || true)
-    NexisClaw_status=$(check_NexisClaw_auth 2>/dev/null || true)
+    FirstNexus_status=$(check_FirstNexus_auth 2>/dev/null || true)
 
     claude_expires=0
-    NexisClaw_expires=0
+    FirstNexus_expires=0
     if [ "$USE_JSON" -eq 1 ]; then
         claude_expires=$(json_expires_for_claude_cli)
-        NexisClaw_expires=$(json_expires_for_anthropic_any)
+        FirstNexus_expires=$(json_expires_for_anthropic_any)
     else
         claude_expires=$(jq -r '.claudeAiOauth.expiresAt // 0' "$CLAUDE_CREDS" 2>/dev/null || echo "0")
-        NexisClaw_expires=$(jq -r '.profiles["anthropic:default"].expires // 0' "$NEXISCLAW_AUTH" 2>/dev/null || echo "0")
+        FirstNexus_expires=$(jq -r '.profiles["anthropic:default"].expires // 0' "$NEXISCLAW_AUTH" 2>/dev/null || echo "0")
     fi
 
     jq -n \
         --arg cs "$claude_status" \
         --arg ce "$claude_expires" \
-        --arg bs "$NexisClaw_status" \
-        --arg be "$NexisClaw_expires" \
+        --arg bs "$FirstNexus_status" \
+        --arg be "$FirstNexus_expires" \
         '{
             claude_code: {status: $cs, expires_at_ms: ($ce | tonumber)},
-            NexisClaw: {status: $bs, expires_at_ms: ($be | tonumber)},
+            FirstNexus: {status: $bs, expires_at_ms: ($be | tonumber)},
             needs_reauth: (($cs | startswith("EXPIRED") or startswith("EXPIRING") or startswith("MISSING")) or ($bs | startswith("EXPIRED") or startswith("EXPIRING") or startswith("MISSING")))
         }'
     exit 0
@@ -167,18 +167,18 @@ fi
 # Simple output mode (for scripts/widgets)
 if [ "$OUTPUT_MODE" = "simple" ]; then
     claude_status=$(check_claude_code_auth 2>/dev/null || true)
-    NexisClaw_status=$(check_NexisClaw_auth 2>/dev/null || true)
+    FirstNexus_status=$(check_FirstNexus_auth 2>/dev/null || true)
 
     if [[ "$claude_status" == EXPIRED* ]] || [[ "$claude_status" == MISSING* ]]; then
         echo "CLAUDE_EXPIRED"
         exit 1
-    elif [[ "$NexisClaw_status" == EXPIRED* ]] || [[ "$NexisClaw_status" == MISSING* ]]; then
+    elif [[ "$FirstNexus_status" == EXPIRED* ]] || [[ "$FirstNexus_status" == MISSING* ]]; then
         echo "NEXISCLAW_EXPIRED"
         exit 1
     elif [[ "$claude_status" == EXPIRING* ]]; then
         echo "CLAUDE_EXPIRING"
         exit 2
-    elif [[ "$NexisClaw_status" == EXPIRING* ]]; then
+    elif [[ "$FirstNexus_status" == EXPIRING* ]]; then
         echo "NEXISCLAW_EXPIRING"
         exit 2
     else
@@ -228,7 +228,7 @@ else
 fi
 
 echo ""
-echo "NexisClaw Auth (~/.NexisClaw/agents/main/agent/auth-profiles.json):"
+echo "FirstNexus Auth (~/.FirstNexus/agents/main/agent/auth-profiles.json):"
 if [ "$USE_JSON" -eq 1 ]; then
     best_profile=$(json_best_anthropic_profile)
     expires=$(json_expires_for_anthropic_any)
@@ -253,7 +253,7 @@ if [ "$expires" -le 0 ] && [ "$api_keys" -gt 0 ]; then
     echo -e "  Status: ${GREEN}OK${NC} (API key)"
 elif [ "$expires" -le 0 ]; then
     echo -e "  Status: ${RED}NOT FOUND${NC}"
-    echo "  Note: Run 'NexisClaw doctor --yes' to sync from Claude Code"
+    echo "  Note: Run 'FirstNexus doctor --yes' to sync from Claude Code"
 else
     now_ms=$(( $(date +%s) * 1000 ))
     diff_ms=$((expires - now_ms))
@@ -262,7 +262,7 @@ else
 
     if [ "$diff_ms" -lt 0 ]; then
         echo -e "  Status: ${RED}EXPIRED${NC}"
-        echo "  Note: Run 'NexisClaw doctor --yes' to sync from Claude Code"
+        echo "  Note: Run 'FirstNexus doctor --yes' to sync from Claude Code"
     elif [ "$diff_ms" -lt 3600000 ]; then
         echo -e "  Status: ${YELLOW}EXPIRING SOON (${mins}m remaining)${NC}"
     else
@@ -273,8 +273,8 @@ fi
 
 echo ""
 echo "=== Service Status ==="
-if systemctl --user is-active NexisClaw >/dev/null 2>&1; then
-    echo -e "NexisClaw service: ${GREEN}running${NC}"
+if systemctl --user is-active FirstNexus >/dev/null 2>&1; then
+    echo -e "FirstNexus service: ${GREEN}running${NC}"
 else
-    echo -e "NexisClaw service: ${RED}NOT running${NC}"
+    echo -e "FirstNexus service: ${RED}NOT running${NC}"
 fi

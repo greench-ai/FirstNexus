@@ -1,5 +1,5 @@
-import type { PluginRuntime } from "NexisClaw/plugin-sdk/channel-core";
-import { createPluginRuntimeStore } from "NexisClaw/plugin-sdk/runtime-store";
+import type { PluginRuntime } from "FirstNexus/plugin-sdk/channel-core";
+import { createPluginRuntimeStore } from "FirstNexus/plugin-sdk/runtime-store";
 
 type SlackChannelRuntime = {
   handleSlackAction?: typeof import("./action-runtime.js").handleSlackAction;

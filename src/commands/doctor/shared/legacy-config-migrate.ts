@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "../../../config/types.js";
+import type { FirstNexusConfig } from "../../../config/types.js";
 import { validateConfigObjectWithPlugins } from "../../../config/validation.js";
 import { applyLegacyDoctorMigrations } from "./legacy-config-compat.js";
 
 export function migrateLegacyConfig(raw: unknown): {
-  config: NexisClawConfig | null;
+  config: FirstNexusConfig | null;
   changes: string[];
   partiallyValid?: boolean;
 } {
@@ -14,7 +14,7 @@ export function migrateLegacyConfig(raw: unknown): {
   const validated = validateConfigObjectWithPlugins(next);
   if (!validated.ok) {
     changes.push("Migration applied; other validation issues remain — run doctor to review.");
-    return { config: next as NexisClawConfig, changes, partiallyValid: true };
+    return { config: next as FirstNexusConfig, changes, partiallyValid: true };
   }
   return { config: validated.config, changes };
 }

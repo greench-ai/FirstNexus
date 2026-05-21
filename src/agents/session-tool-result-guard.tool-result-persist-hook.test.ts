@@ -8,7 +8,7 @@ import {
   initializeGlobalHookRunner,
   resetGlobalHookRunner,
 } from "../plugins/hook-runner-global.js";
-import { loadNexisClawPlugins } from "../plugins/loader.js";
+import { loadFirstNexusPlugins } from "../plugins/loader.js";
 import { guardSessionManager } from "./session-tool-result-guard-wrapper.js";
 
 const EMPTY_PLUGIN_SCHEMA = { type: "object", additionalProperties: false, properties: {} };
@@ -20,7 +20,7 @@ function writeTempPlugin(params: { dir: string; id: string; body: string }): str
   const file = path.join(pluginDir, `${params.id}.mjs`);
   fs.writeFileSync(file, params.body, "utf-8");
   fs.writeFileSync(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id: params.id,
@@ -75,7 +75,7 @@ function initializeTempPlugin(params: { tmpPrefix: string; id: string; body: str
     id: params.id,
     body: params.body,
   });
-  const registry = loadNexisClawPlugins({
+  const registry = loadFirstNexusPlugins({
     cache: false,
     workspaceDir: tmp,
     config: {
@@ -312,7 +312,7 @@ describe("tool_result_persist hook", () => {
   });
 
   it("loads tool_result_persist hooks without breaking persistence", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-toolpersist-"));
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-toolpersist-"));
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = "/nonexistent/bundled/plugins";
 
     const pluginA = writeTempPlugin({
@@ -339,7 +339,7 @@ describe("tool_result_persist hook", () => {
 } };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       workspaceDir: tmp,
       config: {
@@ -367,7 +367,7 @@ describe("tool_result_persist hook", () => {
 
   it("reapplies the cap after tool_result_persist expands a tool result", () => {
     initializeTempPlugin({
-      tmpPrefix: "NexisClaw-toolpersist-expand-",
+      tmpPrefix: "FirstNexus-toolpersist-expand-",
       id: "persist-expand",
       body: `export default { id: "persist-expand", register(api) {
   api.on("tool_result_persist", (event) => {
@@ -393,7 +393,7 @@ describe("tool_result_persist hook", () => {
 
   it("reapplies the details cap after tool_result_persist expands details", () => {
     initializeTempPlugin({
-      tmpPrefix: "NexisClaw-toolpersist-details-expand-",
+      tmpPrefix: "FirstNexus-toolpersist-details-expand-",
       id: "persist-details-expand",
       body: `export default { id: "persist-details-expand", register(api) {
   api.on("tool_result_persist", (event) => {
@@ -424,7 +424,7 @@ describe("tool_result_persist hook", () => {
 describe("before_message_write hook", () => {
   it("continues persistence when a before_message_write hook throws", () => {
     initializeTempPlugin({
-      tmpPrefix: "NexisClaw-before-write-",
+      tmpPrefix: "FirstNexus-before-write-",
       id: "before-write-throws",
       body: `export default { id: "before-write-throws", register(api) {
   api.on("before_message_write", () => {
@@ -455,7 +455,7 @@ describe("before_message_write hook", () => {
 
   it("reapplies the cap after before_message_write expands a tool result", () => {
     initializeTempPlugin({
-      tmpPrefix: "NexisClaw-before-write-expand-",
+      tmpPrefix: "FirstNexus-before-write-expand-",
       id: "before-write-expand",
       body: `export default { id: "before-write-expand", register(api) {
   api.on("before_message_write", (event) => {

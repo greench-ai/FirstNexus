@@ -596,13 +596,13 @@ describe("buildServiceEnvironment", () => {
     }
     expect(env.NEXISCLAW_GATEWAY_PORT).toBe("18789");
     expect(env.NEXISCLAW_GATEWAY_TOKEN).toBeUndefined();
-    expect(env.NEXISCLAW_SERVICE_MARKER).toBe("NexisClaw");
+    expect(env.NEXISCLAW_SERVICE_MARKER).toBe("FirstNexus");
     expect(env.NEXISCLAW_SERVICE_KIND).toBe("gateway");
     expect(typeof env.NEXISCLAW_SERVICE_VERSION).toBe("string");
-    expect(env.NEXISCLAW_SYSTEMD_UNIT).toBe("NexisClaw-gateway.service");
-    expect(env.NEXISCLAW_WINDOWS_TASK_NAME).toBe("NexisClaw Gateway");
+    expect(env.NEXISCLAW_SYSTEMD_UNIT).toBe("FirstNexus-gateway.service");
+    expect(env.NEXISCLAW_WINDOWS_TASK_NAME).toBe("FirstNexus Gateway");
     if (process.platform === "darwin") {
-      expect(env.NEXISCLAW_LAUNCHD_LABEL).toBe("ai.NexisClaw.gateway");
+      expect(env.NEXISCLAW_LAUNCHD_LABEL).toBe("ai.FirstNexus.gateway");
     }
   });
 
@@ -610,12 +610,12 @@ describe("buildServiceEnvironment", () => {
     const env = buildServiceEnvironment({
       env: {
         HOME: "/home/user",
-        NEXISCLAW_WRAPPER: " /usr/local/bin/NexisClaw-doppler ",
+        NEXISCLAW_WRAPPER: " /usr/local/bin/FirstNexus-doppler ",
       },
       port: 18789,
     });
 
-    expect(env.NEXISCLAW_WRAPPER).toBe("/usr/local/bin/NexisClaw-doppler");
+    expect(env.NEXISCLAW_WRAPPER).toBe("/usr/local/bin/FirstNexus-doppler");
   });
 
   it("forwards TMPDIR from the host environment on Linux", () => {
@@ -633,7 +633,7 @@ describe("buildServiceEnvironment", () => {
       port: 18789,
       platform: "darwin",
     });
-    expect(env.TMPDIR).toBe(path.join("/Users/user", ".NexisClaw", "tmp"));
+    expect(env.TMPDIR).toBe(path.join("/Users/user", ".FirstNexus", "tmp"));
   });
 
   it("uses a canonical system PATH for macOS LaunchAgents", () => {
@@ -668,10 +668,10 @@ describe("buildServiceEnvironment", () => {
       env: { HOME: "/home/user", NEXISCLAW_PROFILE: "work" },
       port: 18789,
     });
-    expect(env.NEXISCLAW_SYSTEMD_UNIT).toBe("NexisClaw-gateway-work.service");
-    expect(env.NEXISCLAW_WINDOWS_TASK_NAME).toBe("NexisClaw Gateway (work)");
+    expect(env.NEXISCLAW_SYSTEMD_UNIT).toBe("FirstNexus-gateway-work.service");
+    expect(env.NEXISCLAW_WINDOWS_TASK_NAME).toBe("FirstNexus Gateway (work)");
     if (process.platform === "darwin") {
-      expect(env.NEXISCLAW_LAUNCHD_LABEL).toBe("ai.NexisClaw.work");
+      expect(env.NEXISCLAW_LAUNCHD_LABEL).toBe("ai.FirstNexus.work");
     }
   });
 
@@ -718,7 +718,7 @@ describe("buildServiceEnvironment", () => {
     });
 
     expect(env).not.toHaveProperty("PATH");
-    expect(env.NEXISCLAW_WINDOWS_TASK_NAME).toBe("NexisClaw Gateway");
+    expect(env.NEXISCLAW_WINDOWS_TASK_NAME).toBe("FirstNexus Gateway");
   });
 
   it("prepends extra runtime directories to the gateway service PATH", () => {
@@ -817,7 +817,7 @@ describe("buildNodeServiceEnvironment", () => {
       env: { HOME: "/Users/user", TMPDIR: "/var/folders/xw/abc123/T/" },
       platform: "darwin",
     });
-    expect(env.TMPDIR).toBe(path.join("/Users/user", ".NexisClaw", "tmp"));
+    expect(env.TMPDIR).toBe(path.join("/Users/user", ".FirstNexus", "tmp"));
   });
 
   it("falls back to os.tmpdir for node services when TMPDIR is not set on Linux", () => {
@@ -889,32 +889,32 @@ describe("shared Node TLS env defaults matrix", () => {
 describe("resolveGatewayStateDir", () => {
   it("uses the default state dir when no overrides are set", () => {
     const env = { HOME: "/Users/test" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".NexisClaw"));
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".FirstNexus"));
   });
 
   it("appends the profile suffix when set", () => {
     const env = { HOME: "/Users/test", NEXISCLAW_PROFILE: "rescue" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".NexisClaw-rescue"));
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".FirstNexus-rescue"));
   });
 
   it("treats default profiles as the base state dir", () => {
     const env = { HOME: "/Users/test", NEXISCLAW_PROFILE: "Default" };
-    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".NexisClaw"));
+    expect(resolveGatewayStateDir(env)).toBe(path.join("/Users/test", ".FirstNexus"));
   });
 
   it("uses NEXISCLAW_STATE_DIR when provided", () => {
-    const env = { HOME: "/Users/test", NEXISCLAW_STATE_DIR: "/var/lib/NexisClaw" };
-    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/var/lib/NexisClaw"));
+    const env = { HOME: "/Users/test", NEXISCLAW_STATE_DIR: "/var/lib/FirstNexus" };
+    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/var/lib/FirstNexus"));
   });
 
   it("expands ~ in NEXISCLAW_STATE_DIR", () => {
-    const env = { HOME: "/Users/test", NEXISCLAW_STATE_DIR: "~/NexisClaw-state" };
-    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/Users/test/NexisClaw-state"));
+    const env = { HOME: "/Users/test", NEXISCLAW_STATE_DIR: "~/FirstNexus-state" };
+    expect(resolveGatewayStateDir(env)).toBe(path.resolve("/Users/test/FirstNexus-state"));
   });
 
   it("preserves Windows absolute paths without HOME", () => {
-    const env = { NEXISCLAW_STATE_DIR: "C:\\State\\NexisClaw" };
-    expect(resolveGatewayStateDir(env)).toBe("C:\\State\\NexisClaw");
+    const env = { NEXISCLAW_STATE_DIR: "C:\\State\\FirstNexus" };
+    expect(resolveGatewayStateDir(env)).toBe("C:\\State\\FirstNexus");
   });
 });
 

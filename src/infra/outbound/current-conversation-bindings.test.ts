@@ -67,7 +67,7 @@ describe("generic current-conversation bindings", () => {
 
   beforeEach(async () => {
     previousStateDir = process.env.NEXISCLAW_STATE_DIR;
-    testStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-current-bindings-"));
+    testStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-current-bindings-"));
     process.env.NEXISCLAW_STATE_DIR = testStateDir;
     setMinimalCurrentConversationRegistry();
     __testing.resetCurrentConversationBindingsForTests({

@@ -1,12 +1,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolvePreferredNexisClawTmpDir } from "../../infra/tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../../infra/tmp-FirstNexus-dir.js";
 import { normalizeLowercaseStringOrEmpty } from "../../shared/string-coerce.js";
 import type { SkillSnapshot } from "../skills.js";
 import { cliBackendLog } from "./log.js";
 
 const CLAUDE_CLI_BACKEND_ID = "claude-cli";
-const NEXISCLAW_CLAUDE_PLUGIN_NAME = "NexisClaw-skills";
+const NEXISCLAW_CLAUDE_PLUGIN_NAME = "FirstNexus-skills";
 
 type MaterializedSkill = {
   name: string;
@@ -89,7 +89,7 @@ export async function prepareClaudeCliSkillsPlugin(params: {
   }
 
   const tempDir = await fs.mkdtemp(
-    path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-claude-skills-"),
+    path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-claude-skills-"),
   );
   const pluginDir = path.join(tempDir, NEXISCLAW_CLAUDE_PLUGIN_NAME);
   const manifestDir = path.join(pluginDir, ".claude-plugin");
@@ -100,7 +100,7 @@ export async function prepareClaudeCliSkillsPlugin(params: {
   const manifest = {
     name: NEXISCLAW_CLAUDE_PLUGIN_NAME,
     version: "0.0.0",
-    description: "Session-scoped NexisClaw skills selected for this agent run.",
+    description: "Session-scoped FirstNexus skills selected for this agent run.",
     skills: "./skills",
   };
   await fs.writeFile(

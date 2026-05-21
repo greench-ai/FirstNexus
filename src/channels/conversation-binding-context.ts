@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   resolveCommandConversationResolution,
   type ResolveCommandConversationResolutionInput,
@@ -16,7 +16,7 @@ type ResolveConversationBindingContextInput = Omit<
   ResolveCommandConversationResolutionInput,
   "includePlacementHint"
 > & {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 };
 
 export function resolveConversationBindingContext(

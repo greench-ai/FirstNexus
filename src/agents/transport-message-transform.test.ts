@@ -85,7 +85,7 @@ describe("transformTransportMessages synthetic tool-result policy", () => {
 
     const result = transformTransportMessages(
       messages,
-      makeModel("NexisClaw-openai-responses-transport" as Api, "openai", "gpt-5.4"),
+      makeModel("FirstNexus-openai-responses-transport" as Api, "openai", "gpt-5.4"),
     );
 
     expect(result.map((msg) => msg.role)).toEqual([
@@ -241,13 +241,13 @@ describe("transformTransportMessages synthetic tool-result policy", () => {
 
     const anthropicAlias = transformTransportMessages(
       messages,
-      makeModel("NexisClaw-anthropic-messages-transport" as Api, "anthropic", "claude-opus-4-6"),
+      makeModel("FirstNexus-anthropic-messages-transport" as Api, "anthropic", "claude-opus-4-6"),
     );
     expect(anthropicAlias.map((msg) => msg.role)).toEqual(["assistant", "toolResult", "user"]);
 
     const googleAlias = transformTransportMessages(
       messages,
-      makeModel("NexisClaw-google-generative-ai-transport" as Api, "google", "gemini-2.5-pro"),
+      makeModel("FirstNexus-google-generative-ai-transport" as Api, "google", "gemini-2.5-pro"),
     );
     expect(googleAlias.map((msg) => msg.role)).toEqual(["assistant", "toolResult", "user"]);
     const googleToolResult = requireToolResultMessage(googleAlias[1]);

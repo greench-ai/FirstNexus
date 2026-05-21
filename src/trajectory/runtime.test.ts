@@ -16,7 +16,7 @@ type TrajectoryRuntimeRecorder = NonNullable<ReturnType<typeof createTrajectoryR
 const tempDirs: string[] = [];
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-trajectory-runtime-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-trajectory-runtime-"));
   tempDirs.push(dir);
   return dir;
 }

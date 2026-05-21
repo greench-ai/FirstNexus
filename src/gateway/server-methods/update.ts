@@ -1,6 +1,6 @@
 import { isRestartEnabled } from "../../config/commands.flags.js";
 import { extractDeliveryInfo } from "../../config/sessions.js";
-import { resolveNexisClawPackageRoot } from "../../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRoot } from "../../infra/FirstNexus-root.js";
 import { readPackageVersion } from "../../infra/package-json.js";
 import {
   buildRestartSuccessContinuation,
@@ -59,7 +59,7 @@ export const updateHandlers: GatewayRequestHandlers = {
       const config = context.getRuntimeConfig();
       const configChannel = normalizeUpdateChannel(config.update?.channel);
       const root =
-        (await resolveNexisClawPackageRoot({
+        (await resolveFirstNexusPackageRoot({
           moduleUrl: import.meta.url,
           argv1: process.argv[1],
           cwd: process.cwd(),

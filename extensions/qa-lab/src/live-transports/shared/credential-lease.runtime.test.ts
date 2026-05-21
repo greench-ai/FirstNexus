@@ -119,7 +119,7 @@ describe("credential lease runtime", () => {
           credentialId: "cred-chunked",
           leaseToken: "lease-chunked",
           payload: {
-            __NexisClawQaCredentialPayloadChunksV1: true,
+            __FirstNexusQaCredentialPayloadChunksV1: true,
             byteLength: serialized.length,
             chunkCount: 2,
           },

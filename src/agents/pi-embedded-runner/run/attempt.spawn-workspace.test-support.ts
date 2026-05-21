@@ -64,7 +64,7 @@ type AttemptSpawnWorkspaceHoisted = {
   ensureGlobalUndiciDispatcherStreamTimeoutsMock: UnknownMock;
   ensureGlobalUndiciStreamTimeoutsMock: UnknownMock;
   buildEmbeddedMessageActionDiscoveryInputMock: UnknownMock;
-  createNexisClawCodingToolsMock: UnknownMock;
+  createFirstNexusCodingToolsMock: UnknownMock;
   subscribeEmbeddedPiSessionMock: Mock<SubscribeEmbeddedPiSessionFn>;
   acquireSessionWriteLockMock: Mock<AcquireSessionWriteLockFn>;
   installToolResultContextGuardMock: UnknownMock;
@@ -131,7 +131,7 @@ const hoisted = vi.hoisted((): AttemptSpawnWorkspaceHoisted => {
   const ensureGlobalUndiciDispatcherStreamTimeoutsMock = vi.fn();
   const ensureGlobalUndiciStreamTimeoutsMock = vi.fn();
   const buildEmbeddedMessageActionDiscoveryInputMock = vi.fn((params: unknown) => params);
-  const createNexisClawCodingToolsMock = vi.fn(() => []);
+  const createFirstNexusCodingToolsMock = vi.fn(() => []);
   const installToolResultContextGuardMock = vi.fn(() => () => {});
   const installContextEngineLoopHookMock = vi.fn(() => () => {});
   const flushPendingToolResultsAfterIdleMock = vi.fn(async () => {});
@@ -199,7 +199,7 @@ const hoisted = vi.hoisted((): AttemptSpawnWorkspaceHoisted => {
     ensureGlobalUndiciDispatcherStreamTimeoutsMock,
     ensureGlobalUndiciStreamTimeoutsMock,
     buildEmbeddedMessageActionDiscoveryInputMock,
-    createNexisClawCodingToolsMock,
+    createFirstNexusCodingToolsMock,
     subscribeEmbeddedPiSessionMock,
     acquireSessionWriteLockMock,
     installToolResultContextGuardMock,
@@ -381,7 +381,7 @@ vi.mock("../context-engine-maintenance.js", () => ({
 }));
 
 vi.mock("../../docs-path.js", () => ({
-  resolveNexisClawReferencePaths: async () => ({ docsPath: undefined, sourcePath: undefined }),
+  resolveFirstNexusReferencePaths: async () => ({ docsPath: undefined, sourcePath: undefined }),
 }));
 
 vi.mock("../../pi-project-settings.js", () => ({
@@ -541,8 +541,8 @@ vi.mock("../../cache-trace.js", () => ({
 }));
 
 vi.mock("../../pi-tools.js", () => ({
-  createNexisClawCodingTools: (options?: { workspaceDir?: string; spawnWorkspaceDir?: string }) =>
-    hoisted.createNexisClawCodingToolsMock(options),
+  createFirstNexusCodingTools: (options?: { workspaceDir?: string; spawnWorkspaceDir?: string }) =>
+    hoisted.createFirstNexusCodingToolsMock(options),
   resolveProcessToolScopeKey: ({
     scopeKey,
     sessionKey,
@@ -653,7 +653,7 @@ vi.mock("../cache-ttl.js", () => ({
   appendCacheTtlTimestamp: (
     sessionManager: { appendCustomEntry?: (customType: string, data: unknown) => void },
     data: unknown,
-  ) => sessionManager.appendCustomEntry?.("NexisClaw.cache-ttl", data),
+  ) => sessionManager.appendCustomEntry?.("FirstNexus.cache-ttl", data),
   isCacheTtlEligibleProvider: (provider?: string) => provider === "anthropic",
   readLastCacheTtlTimestamp: (
     sessionManager: {
@@ -664,7 +664,7 @@ vi.mock("../cache-ttl.js", () => ({
     const calls = sessionManager.appendCustomEntry?.mock?.calls ?? [];
     for (let index = calls.length - 1; index >= 0; index -= 1) {
       const [customType, data] = calls[index] ?? [];
-      if (customType !== "NexisClaw.cache-ttl") {
+      if (customType !== "FirstNexus.cache-ttl") {
         continue;
       }
       const entry = data as
@@ -877,7 +877,7 @@ export function resetEmbeddedAttemptHarness(
   hoisted.buildEmbeddedMessageActionDiscoveryInputMock
     .mockReset()
     .mockImplementation((params) => params);
-  hoisted.createNexisClawCodingToolsMock.mockReset().mockImplementation((...args: unknown[]) => {
+  hoisted.createFirstNexusCodingToolsMock.mockReset().mockImplementation((...args: unknown[]) => {
     const options = args[0] as
       | {
           workspaceDir?: string;
@@ -1106,8 +1106,8 @@ export async function createContextEngineAttemptRunner(params: {
   trajectory?: boolean;
 }) {
   const { maintain: rawMaintain, ...contextEngineRest } = params.contextEngine;
-  const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-ctx-engine-workspace-"));
-  const agentDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-ctx-engine-agent-"));
+  const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-ctx-engine-workspace-"));
+  const agentDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-ctx-engine-agent-"));
   const sessionFile = path.join(workspaceDir, "session.jsonl");
   params.tempPaths.push(workspaceDir, agentDir);
   await fs.writeFile(sessionFile, "", "utf8");

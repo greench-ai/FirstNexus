@@ -29,10 +29,10 @@ let currentMockSocket:
     }
   | undefined;
 
-vi.mock("NexisClaw/plugin-sdk/runtime-config-snapshot", async () => {
+vi.mock("FirstNexus/plugin-sdk/runtime-config-snapshot", async () => {
   const actual = await vi.importActual<
-    typeof import("NexisClaw/plugin-sdk/runtime-config-snapshot")
-  >("NexisClaw/plugin-sdk/runtime-config-snapshot");
+    typeof import("FirstNexus/plugin-sdk/runtime-config-snapshot")
+  >("FirstNexus/plugin-sdk/runtime-config-snapshot");
   return {
     ...actual,
     getRuntimeConfig: vi.fn().mockReturnValue({
@@ -49,9 +49,9 @@ vi.mock("NexisClaw/plugin-sdk/runtime-config-snapshot", async () => {
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/conversation-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/conversation-runtime")>(
-    "NexisClaw/plugin-sdk/conversation-runtime",
+vi.mock("FirstNexus/plugin-sdk/conversation-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/conversation-runtime")>(
+    "FirstNexus/plugin-sdk/conversation-runtime",
   );
   return {
     ...actual,
@@ -64,9 +64,9 @@ vi.mock("NexisClaw/plugin-sdk/conversation-runtime", async () => {
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/channel-pairing", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/channel-pairing")>(
-    "NexisClaw/plugin-sdk/channel-pairing",
+vi.mock("FirstNexus/plugin-sdk/channel-pairing", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/channel-pairing")>(
+    "FirstNexus/plugin-sdk/channel-pairing",
   );
   return {
     ...actual,
@@ -76,9 +76,9 @@ vi.mock("NexisClaw/plugin-sdk/channel-pairing", async () => {
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/media-store", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/media-store")>(
-    "NexisClaw/plugin-sdk/media-store",
+vi.mock("FirstNexus/plugin-sdk/media-store", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/media-store")>(
+    "FirstNexus/plugin-sdk/media-store",
   );
   return {
     ...actual,
@@ -89,7 +89,7 @@ vi.mock("NexisClaw/plugin-sdk/media-store", async () => {
   };
 });
 
-const HOME = path.join(os.tmpdir(), `NexisClaw-inbound-media-${crypto.randomUUID()}`);
+const HOME = path.join(os.tmpdir(), `FirstNexus-inbound-media-${crypto.randomUUID()}`);
 const ORIGINAL_HOME = process.env.HOME;
 process.env.HOME = HOME;
 

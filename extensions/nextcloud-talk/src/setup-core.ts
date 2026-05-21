@@ -1,10 +1,10 @@
-import type { ChannelSetupAdapter, ChannelSetupInput } from "NexisClaw/plugin-sdk/channel-setup";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/routing";
+import type { ChannelSetupAdapter, ChannelSetupInput } from "FirstNexus/plugin-sdk/channel-setup";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/routing";
 import {
   applyAccountNameToChannelSection,
   patchScopedAccountConfig,
-} from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/setup";
 import {
   createSetupInputPresenceValidator,
   mergeAllowFromEntries,
@@ -12,9 +12,9 @@ import {
   resolveSetupAccountId,
   type ChannelSetupDmPolicy,
   type WizardPrompter,
-} from "NexisClaw/plugin-sdk/setup-runtime";
-import { formatDocsLink } from "NexisClaw/plugin-sdk/setup-tools";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/setup-runtime";
+import { formatDocsLink } from "FirstNexus/plugin-sdk/setup-tools";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveDefaultNextcloudTalkAccountId, resolveNextcloudTalkAccount } from "./accounts.js";
 import type { CoreConfig } from "./types.js";
 
@@ -147,10 +147,10 @@ async function promptNextcloudTalkAllowFrom(params: {
 }
 
 async function promptNextcloudTalkAllowFromForAccount(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   prompter: WizardPrompter;
   accountId?: string;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const accountId = resolveSetupAccountId({
     accountId: params.accountId,
     defaultAccountId: resolveDefaultNextcloudTalkAccountId(params.cfg as CoreConfig),

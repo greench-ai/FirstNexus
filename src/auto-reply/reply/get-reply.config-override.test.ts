@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import {
   buildGetReplyCtx,
   createGetReplySessionState,
@@ -52,7 +52,7 @@ describe("getReplyFromConfig configOverride", () => {
           userTimezone: "UTC",
         },
       },
-    } satisfies NexisClawConfig);
+    } satisfies FirstNexusConfig);
 
     await getReplyFromConfig(buildGetReplyCtx(), undefined, {
       agents: {
@@ -60,7 +60,7 @@ describe("getReplyFromConfig configOverride", () => {
           userTimezone: "America/New_York",
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     expectResolvedTelegramTimezone(mocks.resolveReplyDirectives);
   });
@@ -85,7 +85,7 @@ describe("getReplyFromConfig configOverride", () => {
             userTimezone: "America/New_York",
           },
         },
-      } satisfies NexisClawConfig),
+      } satisfies FirstNexusConfig),
     );
 
     expect(loadConfigMock).not.toHaveBeenCalled();

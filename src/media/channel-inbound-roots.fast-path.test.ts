@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { MsgContext } from "../auto-reply/templating.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 
 const publicSurfaceLoaderMocks = vi.hoisted(() => ({
   loadBundledPluginPublicArtifactModuleSync: vi.fn(),
@@ -15,7 +15,7 @@ import {
 
 const cfg = {
   channels: {},
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 function unableToResolve(dirName: string, artifactBasename: string): Error {
   return new Error(

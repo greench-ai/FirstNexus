@@ -18,7 +18,7 @@ async function cleanupTestDirs(): Promise<void> {
 }
 
 async function makeSettings() {
-  testRoot = await mkdtemp(join(tmpdir(), "NexisClaw-debug-proxy-managed-proxy-"));
+  testRoot = await mkdtemp(join(tmpdir(), "FirstNexus-debug-proxy-managed-proxy-"));
   const certDir = join(testRoot, "certs");
   await mkdir(certDir, { recursive: true });
   await writeFile(join(certDir, "root-ca.pem"), "test root cert\n", "utf8");

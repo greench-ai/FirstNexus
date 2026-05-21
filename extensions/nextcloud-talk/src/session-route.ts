@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { buildOutboundBaseSessionKey } from "NexisClaw/plugin-sdk/routing";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { buildOutboundBaseSessionKey } from "FirstNexus/plugin-sdk/routing";
 import { stripNextcloudTalkTargetPrefix } from "./normalize.js";
 
 type NextcloudTalkOutboundSessionRouteParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   accountId?: string | null;
   target: string;

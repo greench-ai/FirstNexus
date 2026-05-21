@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-agents-delete-shared-workspace-e2e:local" NEXISCLAW_AGENTS_DELETE_SHARED_WORKSPACE_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-agents-delete-shared-workspace-e2e:local" NEXISCLAW_AGENTS_DELETE_SHARED_WORKSPACE_E2E_IMAGE)"
 SKIP_BUILD="${NEXISCLAW_AGENTS_DELETE_SHARED_WORKSPACE_E2E_SKIP_BUILD:-0}"
 DOCKER_COMMAND_TIMEOUT="${NEXISCLAW_AGENTS_DELETE_SHARED_WORKSPACE_DOCKER_COMMAND_TIMEOUT:-300s}"
 NEXISCLAW_TEST_STATE_SCRIPT_B64="$(docker_e2e_test_state_shell_b64 agents-delete-shared-workspace empty)"
@@ -27,22 +27,22 @@ run_logged agents-delete-shared-workspace docker_e2e_docker_cmd run --rm \
   "$IMAGE_NAME" \
   -lc '
 set -euo pipefail
-source scripts/lib/NexisClaw-e2e-instance.sh
+source scripts/lib/FirstNexus-e2e-instance.sh
 
-run_NexisClaw() {
-  if command -v NexisClaw >/dev/null 2>&1; then
-    NexisClaw "$@"
+run_FirstNexus() {
+  if command -v FirstNexus >/dev/null 2>&1; then
+    FirstNexus "$@"
     return
   fi
-  if [ -f /app/NexisClaw.mjs ]; then
-    node /app/NexisClaw.mjs "$@"
+  if [ -f /app/FirstNexus.mjs ]; then
+    node /app/FirstNexus.mjs "$@"
     return
   fi
-  echo "NexisClaw CLI not found in Docker image" >&2
+  echo "FirstNexus CLI not found in Docker image" >&2
   exit 1
 }
 
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 export SHARED_WORKSPACE="$HOME/workspace-shared"
 output_file="$HOME/delete.json"
 trap '\''rm -rf "$HOME"'\'' EXIT
@@ -50,7 +50,7 @@ trap '\''rm -rf "$HOME"'\'' EXIT
 mkdir -p "$NEXISCLAW_STATE_DIR" "$SHARED_WORKSPACE"
 node scripts/e2e/lib/fixture.mjs agents-delete-config
 
-run_NexisClaw agents delete ops --force --json > "$output_file"
+run_FirstNexus agents delete ops --force --json > "$output_file"
 
 node scripts/e2e/lib/fixture.mjs agents-delete-assert "$output_file"
 '

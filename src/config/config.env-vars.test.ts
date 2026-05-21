@@ -11,26 +11,30 @@ import {
   readStateDirDotEnvVars,
 } from "./env-vars.js";
 import { withEnvOverride, withTempHome, writeStateDirDotEnv } from "./test-helpers.js";
-import type { NexisClawConfig } from "./types.js";
+import type { FirstNexusConfig } from "./types.js";
 
 describe("config env vars", () => {
   it("applies env vars from env block when missing", async () => {
     await withEnvOverride({ OPENROUTER_API_KEY: undefined }, async () => {
-      applyConfigEnvVars({ env: { vars: { OPENROUTER_API_KEY: "config-key" } } } as NexisClawConfig);
+      applyConfigEnvVars({
+        env: { vars: { OPENROUTER_API_KEY: "config-key" } },
+      } as FirstNexusConfig);
       expect(process.env.OPENROUTER_API_KEY).toBe("config-key");
     });
   });
 
   it("does not override existing env vars", async () => {
     await withEnvOverride({ OPENROUTER_API_KEY: "existing-key" }, async () => {
-      applyConfigEnvVars({ env: { vars: { OPENROUTER_API_KEY: "config-key" } } } as NexisClawConfig);
+      applyConfigEnvVars({
+        env: { vars: { OPENROUTER_API_KEY: "config-key" } },
+      } as FirstNexusConfig);
       expect(process.env.OPENROUTER_API_KEY).toBe("existing-key");
     });
   });
 
   it("applies env vars from env.vars when missing", async () => {
     await withEnvOverride({ GROQ_API_KEY: undefined }, async () => {
-      applyConfigEnvVars({ env: { vars: { GROQ_API_KEY: "gsk-config" } } } as NexisClawConfig);
+      applyConfigEnvVars({ env: { vars: { GROQ_API_KEY: "gsk-config" } } } as FirstNexusConfig);
       expect(process.env.GROQ_API_KEY).toBe("gsk-config");
     });
   });
@@ -58,7 +62,7 @@ describe("config env vars", () => {
     await withEnvOverride({ OPENROUTER_API_KEY: undefined }, async () => {
       const merged = createConfigRuntimeEnv({
         env: { vars: { OPENROUTER_API_KEY: "config-key" } },
-      } as NexisClawConfig);
+      } as FirstNexusConfig);
       expect(merged.OPENROUTER_API_KEY).toBe("config-key");
       expect(process.env.OPENROUTER_API_KEY).toBeUndefined();
     });
@@ -85,14 +89,14 @@ describe("config env vars", () => {
             },
           },
         };
-        const entries = collectConfigRuntimeEnvVars(config as NexisClawConfig);
+        const entries = collectConfigRuntimeEnvVars(config as FirstNexusConfig);
         expect(entries.BASH_ENV).toBeUndefined();
         expect(entries.SHELL).toBeUndefined();
         expect(entries.HOME).toBeUndefined();
         expect(entries.ZDOTDIR).toBeUndefined();
         expect(entries.OPENROUTER_API_KEY).toBe("config-key");
 
-        applyConfigEnvVars(config as NexisClawConfig);
+        applyConfigEnvVars(config as FirstNexusConfig);
         expect(process.env.BASH_ENV).toBeUndefined();
         expect(process.env.SHELL).toBeUndefined();
         expect(process.env.HOME).toBeUndefined();
@@ -113,14 +117,14 @@ describe("config env vars", () => {
           "NOT-PORTABLE": "bad",
         },
       };
-      const entries = collectConfigRuntimeEnvVars(config as NexisClawConfig);
+      const entries = collectConfigRuntimeEnvVars(config as FirstNexusConfig);
       expect(entries.OPENROUTER_API_KEY).toBe("config-key");
       expect(entries[" BAD KEY"]).toBeUndefined();
       expect(entries["NOT-PORTABLE"]).toBeUndefined();
     });
   });
 
-  it("loads ${VAR} substitutions from ~/.NexisClaw/.env on repeated runtime loads", async () => {
+  it("loads ${VAR} substitutions from ~/.FirstNexus/.env on repeated runtime loads", async () => {
     await withTempHome(async (_home) => {
       await withEnvOverride({ BRAVE_API_KEY: undefined }, async () => {
         const stateDir = process.env.NEXISCLAW_STATE_DIR?.trim();
@@ -130,7 +134,7 @@ describe("config env vars", () => {
         await fs.mkdir(stateDir, { recursive: true });
         await fs.writeFile(path.join(stateDir, ".env"), "BRAVE_API_KEY=from-dotenv\n", "utf-8");
 
-        const config: NexisClawConfig = {
+        const config: FirstNexusConfig = {
           tools: {
             web: {
               search: {
@@ -141,12 +145,12 @@ describe("config env vars", () => {
         };
 
         loadDotEnv({ quiet: true });
-        const first = resolveConfigEnvVars(config, process.env) as NexisClawConfig;
+        const first = resolveConfigEnvVars(config, process.env) as FirstNexusConfig;
         expect(first.tools?.web?.search?.apiKey).toBe("from-dotenv");
 
         delete process.env.BRAVE_API_KEY;
         loadDotEnv({ quiet: true });
-        const second = resolveConfigEnvVars(config, process.env) as NexisClawConfig;
+        const second = resolveConfigEnvVars(config, process.env) as FirstNexusConfig;
         expect(second.tools?.web?.search?.apiKey).toBe("from-dotenv");
       });
     });
@@ -209,7 +213,7 @@ describe("config env vars", () => {
                 MY_KEY: "from-config",
               },
             },
-          } as NexisClawConfig,
+          } as FirstNexusConfig,
         }).MY_KEY,
       ).toBe("from-config");
     });

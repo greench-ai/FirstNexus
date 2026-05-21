@@ -3,11 +3,11 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
-import { startWhatsAppQaDriverSession } from "@NexisClaw/whatsapp/api.js";
-import { normalizeE164 } from "NexisClaw/plugin-sdk/account-resolution";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import { startWhatsAppQaDriverSession } from "@FirstNexus/whatsapp/api.js";
+import { normalizeE164 } from "FirstNexus/plugin-sdk/account-resolution";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 import { z } from "zod";
 import { startQaGatewayChild } from "../../gateway-child.js";
 import { DEFAULT_QA_LIVE_PROVIDER_MODE } from "../../providers/index.js";
@@ -183,7 +183,7 @@ const WHATSAPP_QA_SCENARIOS: WhatsAppQaScenarioDefinition[] = [
       configMode: "pairing",
       expectReply: true,
       input: `Do not run the agent for this pairing QA marker ${randomUUID().slice(0, 8)}`,
-      matchText: /NexisClaw: access not configured|Pairing code:/iu,
+      matchText: /FirstNexus: access not configured|Pairing code:/iu,
       target: "dm",
     }),
   },
@@ -199,7 +199,7 @@ const WHATSAPP_QA_SCENARIOS: WhatsAppQaScenarioDefinition[] = [
       return {
         configMode: "allowlist",
         expectReply: true,
-        input: `NexisClawqa reply with only this exact marker: ${replyToken}`,
+        input: `FirstNexusqa reply with only this exact marker: ${replyToken}`,
         matchText: replyToken,
         quietInput: `This group message is intentionally unmentioned. If you respond, include ${quietToken}.`,
         quietMatchText: quietToken,
@@ -303,7 +303,7 @@ function findScenarios(ids?: string[]) {
 }
 
 function buildWhatsAppQaConfig(
-  baseCfg: NexisClawConfig,
+  baseCfg: FirstNexusConfig,
   params: {
     allowFrom: string[];
     authDir: string;
@@ -311,7 +311,7 @@ function buildWhatsAppQaConfig(
     groupJid?: string;
     sutAccountId: string;
   },
-): NexisClawConfig {
+): FirstNexusConfig {
   const pluginAllow = [...new Set([...(baseCfg.plugins?.allow ?? []), "whatsapp"])];
   return {
     ...baseCfg,
@@ -356,7 +356,7 @@ function buildWhatsAppQaConfig(
               mentionPatterns: [
                 ...new Set([
                   ...(baseCfg.messages?.groupChat?.mentionPatterns ?? []),
-                  "\\bNexisClawqa\\b",
+                  "\\bFirstNexusqa\\b",
                 ]),
               ],
             },
@@ -740,7 +740,7 @@ export async function runWhatsAppQaLive(params: {
     };
     runtimeEnv = credentialLease.payload;
     tempAuthRoot = await fs.mkdtemp(
-      path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-whatsapp-qa-"),
+      path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-whatsapp-qa-"),
     );
     const [driverAuthDir, sutAuthDir] = await Promise.all([
       unpackWhatsAppAuthArchive({

@@ -144,7 +144,7 @@ async function main() {
   for (const variant of releaseVariants) {
     const outputPath = join(
       releaseOutputDir,
-      `NexisClaw-${nextVersion.versionName}-${variant.flavorName}-release.aab`,
+      `FirstNexus-${nextVersion.versionName}-${variant.flavorName}-release.aab`,
     );
 
     await copyBundle(variant.bundlePath, outputPath);

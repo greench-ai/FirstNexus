@@ -1,4 +1,4 @@
 export {
   getRealtimeTranscriptionProvider,
   listRealtimeTranscriptionProviders,
-} from "NexisClaw/plugin-sdk/realtime-transcription";
+} from "FirstNexus/plugin-sdk/realtime-transcription";

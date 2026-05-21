@@ -105,20 +105,20 @@ if (isMain) {
     }
     if (isBenignUncaughtExceptionError(error)) {
       console.warn(
-        "[NexisClaw] Non-fatal uncaught exception (continuing):",
+        "[FirstNexus] Non-fatal uncaught exception (continuing):",
         formatUncaughtError(error),
       );
       return;
     }
     for (const line of formatCliFailureLines({
-      title: "NexisClaw hit an unexpected runtime error.",
+      title: "FirstNexus hit an unexpected runtime error.",
       error,
       argv: process.argv,
     })) {
       console.error(line);
     }
     for (const message of runFatalErrorHooks({ reason: "uncaught_exception", error })) {
-      console.error("[NexisClaw]", message);
+      console.error("[FirstNexus]", message);
     }
     restoreTerminalState("uncaught exception", { resumeStdinIfPaused: false });
     process.exit(1);
@@ -133,7 +133,7 @@ if (isMain) {
       console.error(line);
     }
     for (const message of runFatalErrorHooks({ reason: "legacy_cli_failure", error: err })) {
-      console.error("[NexisClaw]", message);
+      console.error("[FirstNexus]", message);
     }
     restoreTerminalState("legacy cli failure", { resumeStdinIfPaused: false });
     process.exit(1);

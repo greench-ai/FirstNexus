@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { Logger as TsLogger } from "tslog";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { emitDiagnosticEvent } from "../infra/diagnostic-events.js";
 import {
   getActiveDiagnosticTraceContext,
@@ -16,8 +16,8 @@ import { isBlockedObjectKey } from "../infra/prototype-keys.js";
 import { appendRegularFileSync } from "../infra/regular-file.js";
 import {
   POSIX_NEXISCLAW_TMP_DIR,
-  resolvePreferredNexisClawTmpDir,
-} from "../infra/tmp-NexisClaw-dir.js";
+  resolvePreferredFirstNexusTmpDir,
+} from "../infra/tmp-FirstNexus-dir.js";
 import { readLoggingConfig, shouldSkipMutatingLoggingConfigRead } from "./config.js";
 import { resolveEnvLogLevelOverride } from "./env-log-level.js";
 import { type LogLevel, levelToMinLevel, normalizeLogLevel } from "./levels.js";
@@ -44,19 +44,19 @@ function canUseNodeFs(): boolean {
 }
 
 function resolveDefaultLogDir(): string {
-  return canUseNodeFs() ? resolvePreferredNexisClawTmpDir() : POSIX_NEXISCLAW_TMP_DIR;
+  return canUseNodeFs() ? resolvePreferredFirstNexusTmpDir() : POSIX_NEXISCLAW_TMP_DIR;
 }
 
 function resolveDefaultLogFile(defaultLogDir: string): string {
   return canUseNodeFs()
-    ? path.join(defaultLogDir, "NexisClaw.log")
-    : `${POSIX_NEXISCLAW_TMP_DIR}/NexisClaw.log`;
+    ? path.join(defaultLogDir, "FirstNexus.log")
+    : `${POSIX_NEXISCLAW_TMP_DIR}/FirstNexus.log`;
 }
 
 export const DEFAULT_LOG_DIR = resolveDefaultLogDir();
 export const DEFAULT_LOG_FILE = resolveDefaultLogFile(DEFAULT_LOG_DIR); // legacy single-file path
 
-const LOG_PREFIX = "NexisClaw";
+const LOG_PREFIX = "FirstNexus";
 const LOG_SUFFIX = ".log";
 const MAX_LOG_AGE_MS = 24 * 60 * 60 * 1000; // 24h
 const DEFAULT_MAX_LOG_FILE_BYTES = 100 * 1024 * 1024; // 100 MB
@@ -71,7 +71,7 @@ type ResolvedSettings = {
 };
 export type LoggerResolvedSettings = ResolvedSettings;
 type TsLogRecord = Record<string, unknown>;
-type LoggerConfigLoader = () => NexisClawConfig["logging"] | undefined;
+type LoggerConfigLoader = () => FirstNexusConfig["logging"] | undefined;
 
 type DiagnosticLogCode = {
   line?: number;
@@ -493,10 +493,12 @@ function resolveSettings(): ResolvedSettings {
     };
   }
 
-  const cfg: NexisClawConfig["logging"] | undefined =
+  const cfg: FirstNexusConfig["logging"] | undefined =
     (loggingState.overrideSettings as LoggerSettings | null) ?? loadLoggerConfig();
   const defaultLevel =
-    process.env.VITEST === "true" && process.env.NEXISCLAW_TEST_FILE_LOG !== "1" ? "silent" : "info";
+    process.env.VITEST === "true" && process.env.NEXISCLAW_TEST_FILE_LOG !== "1"
+      ? "silent"
+      : "info";
   const fromConfig = normalizeLogLevel(cfg?.level, defaultLevel);
   const level = envLevel ?? fromConfig;
   const file = cfg?.file ?? defaultRollingPathForToday();
@@ -527,7 +529,7 @@ export function isFileLogLevelEnabled(level: LogLevel): boolean {
 
 function buildLogger(settings: ResolvedSettings): TsLogger<LogObj> {
   const logger = new TsLogger<LogObj>({
-    name: "NexisClaw",
+    name: "FirstNexus",
     // Custom structured redaction runs at each transport boundary; avoid tslog pre-masking divergent records.
     maskValuesOfKeys: [],
     minLevel: levelToMinLevel(settings.level),
@@ -576,7 +578,7 @@ function buildLogger(settings: ResolvedSettings): TsLogger<LogObj> {
         } else if (!warnedAboutRotationFailure) {
           warnedAboutRotationFailure = true;
           process.stderr.write(
-            `[NexisClaw] log file rotation failed; continuing writes file=${activeFile} maxFileBytes=${settings.maxFileBytes}\n`,
+            `[FirstNexus] log file rotation failed; continuing writes file=${activeFile} maxFileBytes=${settings.maxFileBytes}\n`,
           );
         }
       }

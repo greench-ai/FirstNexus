@@ -1,5 +1,5 @@
 ---
-summary: "Testing utilities and patterns for NexisClaw plugins"
+summary: "Testing utilities and patterns for FirstNexus plugins"
 title: "Plugin testing"
 sidebarTitle: "Testing"
 read_when:
@@ -8,7 +8,7 @@ read_when:
   - You want to understand contract tests for bundled plugins
 ---
 
-Reference for test utilities, patterns, and lint enforcement for NexisClaw
+Reference for test utilities, patterns, and lint enforcement for FirstNexus
 plugins.
 
 <Tip>
@@ -19,35 +19,35 @@ plugins.
 
 ## Test utilities
 
-These test-helper subpaths are repo-local source entrypoints for NexisClaw's own
+These test-helper subpaths are repo-local source entrypoints for FirstNexus's own
 bundled plugin tests. They are not package exports for third-party plugins.
 
-**Plugin API mock import:** `NexisClaw/plugin-sdk/plugin-test-api`
+**Plugin API mock import:** `FirstNexus/plugin-sdk/plugin-test-api`
 
-**Agent runtime contract import:** `NexisClaw/plugin-sdk/agent-runtime-test-contracts`
+**Agent runtime contract import:** `FirstNexus/plugin-sdk/agent-runtime-test-contracts`
 
-**Channel contract import:** `NexisClaw/plugin-sdk/channel-contract-testing`
+**Channel contract import:** `FirstNexus/plugin-sdk/channel-contract-testing`
 
-**Channel test helper import:** `NexisClaw/plugin-sdk/channel-test-helpers`
+**Channel test helper import:** `FirstNexus/plugin-sdk/channel-test-helpers`
 
-**Channel target test import:** `NexisClaw/plugin-sdk/channel-target-testing`
+**Channel target test import:** `FirstNexus/plugin-sdk/channel-target-testing`
 
-**Plugin contract import:** `NexisClaw/plugin-sdk/plugin-test-contracts`
+**Plugin contract import:** `FirstNexus/plugin-sdk/plugin-test-contracts`
 
-**Plugin runtime test import:** `NexisClaw/plugin-sdk/plugin-test-runtime`
+**Plugin runtime test import:** `FirstNexus/plugin-sdk/plugin-test-runtime`
 
-**Provider contract import:** `NexisClaw/plugin-sdk/provider-test-contracts`
+**Provider contract import:** `FirstNexus/plugin-sdk/provider-test-contracts`
 
-**Provider HTTP mock import:** `NexisClaw/plugin-sdk/provider-http-test-mocks`
+**Provider HTTP mock import:** `FirstNexus/plugin-sdk/provider-http-test-mocks`
 
-**Environment/network test import:** `NexisClaw/plugin-sdk/test-env`
+**Environment/network test import:** `FirstNexus/plugin-sdk/test-env`
 
-**Generic fixture import:** `NexisClaw/plugin-sdk/test-fixtures`
+**Generic fixture import:** `FirstNexus/plugin-sdk/test-fixtures`
 
-**Node builtin mock import:** `NexisClaw/plugin-sdk/test-node-mocks`
+**Node builtin mock import:** `FirstNexus/plugin-sdk/test-node-mocks`
 
 Prefer the focused subpaths below for new plugin tests. The broad
-`NexisClaw/plugin-sdk/testing` barrel is legacy compatibility only.
+`FirstNexus/plugin-sdk/testing` barrel is legacy compatibility only.
 Repo guardrails reject new real imports from `plugin-sdk/testing` and
 `plugin-sdk/test-utils`; those names remain only as deprecated compatibility
 surfaces for compatibility-record tests.
@@ -56,23 +56,23 @@ surfaces for compatibility-record tests.
 import {
   shouldAckReaction,
   removeAckReactionAfterReply,
-} from "NexisClaw/plugin-sdk/channel-feedback";
-import { installCommonResolveTargetErrorCases } from "NexisClaw/plugin-sdk/channel-target-testing";
-import { AUTH_PROFILE_RUNTIME_CONTRACT } from "NexisClaw/plugin-sdk/agent-runtime-test-contracts";
-import { createTestPluginApi } from "NexisClaw/plugin-sdk/plugin-test-api";
-import { expectChannelInboundContextContract } from "NexisClaw/plugin-sdk/channel-contract-testing";
-import { createStartAccountContext } from "NexisClaw/plugin-sdk/channel-test-helpers";
-import { describePluginRegistrationContract } from "NexisClaw/plugin-sdk/plugin-test-contracts";
-import { registerSingleProviderPlugin } from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { describeOpenAIProviderRuntimeContract } from "NexisClaw/plugin-sdk/provider-test-contracts";
-import { getProviderHttpMocks } from "NexisClaw/plugin-sdk/provider-http-test-mocks";
-import { withEnv, withFetchPreconnect, withServer } from "NexisClaw/plugin-sdk/test-env";
+} from "FirstNexus/plugin-sdk/channel-feedback";
+import { installCommonResolveTargetErrorCases } from "FirstNexus/plugin-sdk/channel-target-testing";
+import { AUTH_PROFILE_RUNTIME_CONTRACT } from "FirstNexus/plugin-sdk/agent-runtime-test-contracts";
+import { createTestPluginApi } from "FirstNexus/plugin-sdk/plugin-test-api";
+import { expectChannelInboundContextContract } from "FirstNexus/plugin-sdk/channel-contract-testing";
+import { createStartAccountContext } from "FirstNexus/plugin-sdk/channel-test-helpers";
+import { describePluginRegistrationContract } from "FirstNexus/plugin-sdk/plugin-test-contracts";
+import { registerSingleProviderPlugin } from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { describeOpenAIProviderRuntimeContract } from "FirstNexus/plugin-sdk/provider-test-contracts";
+import { getProviderHttpMocks } from "FirstNexus/plugin-sdk/provider-http-test-mocks";
+import { withEnv, withFetchPreconnect, withServer } from "FirstNexus/plugin-sdk/test-env";
 import {
   bundledPluginRoot,
   createCliRuntimeCapture,
   typedCases,
-} from "NexisClaw/plugin-sdk/test-fixtures";
-import { mockNodeBuiltinModule } from "NexisClaw/plugin-sdk/test-node-mocks";
+} from "FirstNexus/plugin-sdk/test-fixtures";
+import { mockNodeBuiltinModule } from "FirstNexus/plugin-sdk/test-node-mocks";
 ```
 
 ### Available exports
@@ -146,7 +146,7 @@ import { mockNodeBuiltinModule } from "NexisClaw/plugin-sdk/test-node-mocks";
 
 Bundled-plugin contract suites also use SDK testing subpaths for test-only
 registry, manifest, public-artifact, and runtime fixture helpers. Core-only
-suites that depend on bundled NexisClaw inventory stay under `src/plugins/contracts`.
+suites that depend on bundled FirstNexus inventory stay under `src/plugins/contracts`.
 Keep new extension tests on a documented focused SDK subpath such as
 `plugin-sdk/plugin-test-api`, `plugin-sdk/channel-contract-testing`,
 `plugin-sdk/agent-runtime-test-contracts`, `plugin-sdk/channel-test-helpers`,
@@ -164,9 +164,9 @@ Focused testing subpaths also re-export types useful in test files:
 import type {
   ChannelAccountSnapshot,
   ChannelGatewayContext,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { MockFn, PluginRuntime, RuntimeEnv } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { MockFn, PluginRuntime, RuntimeEnv } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 ```
 
 ## Testing target resolution
@@ -176,7 +176,7 @@ channel target resolution:
 
 ```typescript
 import { describe } from "vitest";
-import { installCommonResolveTargetErrorCases } from "NexisClaw/plugin-sdk/channel-target-testing";
+import { installCommonResolveTargetErrorCases } from "FirstNexus/plugin-sdk/channel-target-testing";
 
 describe("my-channel target resolution", () => {
   installCommonResolveTargetErrorCases({
@@ -199,7 +199,7 @@ describe("my-channel target resolution", () => {
 ### Testing registration contracts
 
 Unit tests that pass a hand-written `api` mock to `register(api)` do not exercise
-NexisClaw's loader acceptance gates. Add at least one loader-backed smoke test
+FirstNexus's loader acceptance gates. Add at least one loader-backed smoke test
 for each registration surface your plugin depends on, especially hooks and
 exclusive capabilities such as memory.
 
@@ -211,7 +211,7 @@ entry to declare `kind: "memory"`.
 
 ### Testing runtime config access
 
-Prefer the shared plugin runtime mock from `NexisClaw/plugin-sdk/channel-test-helpers`
+Prefer the shared plugin runtime mock from `FirstNexus/plugin-sdk/channel-test-helpers`
 when testing bundled channel plugins. Its deprecated `runtime.config.loadConfig()` and
 `runtime.config.writeConfigFile(...)` mocks throw by default so tests catch new
 usage of compatibility APIs. Override those mocks only when the test is
@@ -286,8 +286,8 @@ describe("my-provider plugin", () => {
 For code that uses `createPluginRuntimeStore`, mock the runtime in tests:
 
 ```typescript
-import { createPluginRuntimeStore } from "NexisClaw/plugin-sdk/runtime-store";
-import type { PluginRuntime } from "NexisClaw/plugin-sdk/runtime-store";
+import { createPluginRuntimeStore } from "FirstNexus/plugin-sdk/runtime-store";
+import type { PluginRuntime } from "FirstNexus/plugin-sdk/runtime-store";
 
 const store = createPluginRuntimeStore<PluginRuntime>({
   pluginId: "test-plugin",
@@ -362,7 +362,7 @@ pnpm test -- src/plugins/contracts/runtime-seams.contract.test.ts
 
 Three rules are enforced by `pnpm check` for in-repo plugins:
 
-1. **No monolithic root imports** -- `NexisClaw/plugin-sdk` root barrel is rejected
+1. **No monolithic root imports** -- `FirstNexus/plugin-sdk` root barrel is rejected
 2. **No direct `src/` imports** -- plugins cannot import `../../src/` directly
 3. **No self-imports** -- plugins cannot import their own `plugin-sdk/<name>` subpath
 
@@ -371,7 +371,7 @@ patterns is recommended.
 
 ## Test configuration
 
-NexisClaw uses Vitest with V8 coverage thresholds. For plugin tests:
+FirstNexus uses Vitest with V8 coverage thresholds. For plugin tests:
 
 ```bash
 # Run all tests

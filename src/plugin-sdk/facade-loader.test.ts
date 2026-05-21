@@ -14,7 +14,7 @@ import { createPluginSdkTestHarness } from "./test-helpers.js";
 const { createTempDirSync } = createPluginSdkTestHarness();
 const originalBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
 const originalDisableBundledPlugins = process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS;
-const FACADE_LOADER_GLOBAL = "__NexisClawTestLoadBundledPluginPublicSurfaceModuleSync";
+const FACADE_LOADER_GLOBAL = "__FirstNexusTestLoadBundledPluginPublicSurfaceModuleSync";
 type FacadeLoaderSourceTransformFactory = NonNullable<
   Parameters<typeof setFacadeLoaderSourceTransformFactoryForTest>[0]
 >;
@@ -62,7 +62,7 @@ function writeFixturePackageJson(
   type: "commonjs" | "module" = "module",
 ): void {
   writeJsonFile(path.join(pluginRoot, "package.json"), {
-    name: `@NexisClaw/${pluginId}`,
+    name: `@FirstNexus/${pluginId}`,
     version: "0.0.0",
     type,
   });
@@ -184,17 +184,17 @@ afterEach(() => {
 
 describe("plugin-sdk facade loader", () => {
   it("honors trusted bundled plugin dir overrides under the package root", () => {
-    const pluginId = nextTrustedPluginId("NexisClaw-facade-loader-override-");
+    const pluginId = nextTrustedPluginId("FirstNexus-facade-loader-override-");
     const overrideA = createBundledPluginFixture({
       pluginId,
       kind: "dist",
-      prefix: "NexisClaw-facade-loader-a-",
+      prefix: "FirstNexus-facade-loader-a-",
       marker: "override-a",
     });
     const overrideB = createBundledPluginFixture({
       pluginId,
       kind: "dist-runtime",
-      prefix: "NexisClaw-facade-loader-b-",
+      prefix: "FirstNexus-facade-loader-b-",
       marker: "override-b",
     });
 
@@ -215,10 +215,12 @@ describe("plugin-sdk facade loader", () => {
 
   it("falls back to package source surfaces when an override dir lacks a bundled plugin", () => {
     const fixture = createPackageSourcePluginFixture({
-      prefix: "NexisClaw-facade-loader-source-fallback-",
+      prefix: "FirstNexus-facade-loader-source-fallback-",
       marker: "source-fallback",
     });
-    process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = createTempDirSync("NexisClaw-facade-loader-empty-");
+    process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = createTempDirSync(
+      "FirstNexus-facade-loader-empty-",
+    );
 
     const loaded = loadBundledPluginPublicSurfaceModuleSync<{
       marker: string;
@@ -244,7 +246,7 @@ describe("plugin-sdk facade loader", () => {
 
   it("shares loaded facade ids with facade-runtime", () => {
     const fixture = createBundledPluginFixture({
-      prefix: "NexisClaw-facade-loader-ids-",
+      prefix: "FirstNexus-facade-loader-ids-",
       marker: "identity-check",
     });
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = fixture.bundledPluginsDir;
@@ -266,7 +268,7 @@ describe("plugin-sdk facade loader", () => {
 
   it("uses native require for Windows dist facade loads", () => {
     const fixture = createBundledPluginFixture({
-      prefix: "NexisClaw-facade-loader-windows-",
+      prefix: "FirstNexus-facade-loader-windows-",
       marker: "windows-dist-ok",
     });
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = fixture.bundledPluginsDir;
@@ -296,7 +298,7 @@ describe("plugin-sdk facade loader", () => {
   });
 
   it("breaks circular facade re-entry during module evaluation", () => {
-    const fixture = createCircularPluginFixture("NexisClaw-facade-loader-circular-");
+    const fixture = createCircularPluginFixture("FirstNexus-facade-loader-circular-");
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = fixture.bundledPluginsDir;
     (globalThis as typeof globalThis & Record<string, unknown>)[FACADE_LOADER_GLOBAL] =
       loadBundledPluginPublicSurfaceModuleSync;
@@ -310,7 +312,7 @@ describe("plugin-sdk facade loader", () => {
   });
 
   it("clears the cache on load failure so retries re-execute", () => {
-    const fixture = createThrowingPluginFixture("NexisClaw-facade-loader-throw-");
+    const fixture = createThrowingPluginFixture("FirstNexus-facade-loader-throw-");
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = fixture.bundledPluginsDir;
 
     expect(() =>

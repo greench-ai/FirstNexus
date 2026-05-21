@@ -1,11 +1,11 @@
-import { createChatChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import { createAccountStatusSink } from "NexisClaw/plugin-sdk/channel-lifecycle";
-import { buildPassiveProbedChannelStatusSummary } from "NexisClaw/plugin-sdk/extension-shared";
-import { createLazyRuntimeModule } from "NexisClaw/plugin-sdk/lazy-runtime";
+import { createChatChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import { createAccountStatusSink } from "FirstNexus/plugin-sdk/channel-lifecycle";
+import { buildPassiveProbedChannelStatusSummary } from "FirstNexus/plugin-sdk/extension-shared";
+import { createLazyRuntimeModule } from "FirstNexus/plugin-sdk/lazy-runtime";
 import {
   createAsyncComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "NexisClaw/plugin-sdk/status-helpers";
+} from "FirstNexus/plugin-sdk/status-helpers";
 import {
   checkZcaAuthenticated,
   resolveZalouserAccountSync,

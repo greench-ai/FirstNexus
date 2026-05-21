@@ -144,9 +144,9 @@ if (candidatePids.length > 0) {
 const includePattern = /codex|claude/i;
 
 const excludePatterns = [
-  /NexisClaw-gateway/i,
+  /FirstNexus-gateway/i,
   /signal-cli/i,
-  /node_modules\/\.bin\/NexisClaw/i,
+  /node_modules\/\.bin\/FirstNexus/i,
   /recover-orphaned-processes\.sh/i,
 ];
 

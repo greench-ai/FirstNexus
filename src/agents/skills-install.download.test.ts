@@ -44,7 +44,7 @@ function buildEntry(name: string): SkillEntry {
       description: `${name} test skill`,
       filePath,
       baseDir: skillDir,
-      source: "NexisClaw-workspace",
+      source: "FirstNexus-workspace",
     }),
     frontmatter: {},
   };
@@ -143,7 +143,7 @@ let workspaceDir = "";
 let stateDir = "";
 
 beforeAll(async () => {
-  workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-skills-install-"));
+  workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-skills-install-"));
   stateDir = setTempStateDir(workspaceDir);
 });
 

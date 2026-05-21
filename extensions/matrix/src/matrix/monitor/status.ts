@@ -1,8 +1,8 @@
-import type { ChannelAccountSnapshot } from "NexisClaw/plugin-sdk/channel-contract";
+import type { ChannelAccountSnapshot } from "FirstNexus/plugin-sdk/channel-contract";
 import {
   createConnectedChannelStatusPatch,
   createTransportActivityStatusPatch,
-} from "NexisClaw/plugin-sdk/gateway-runtime";
+} from "FirstNexus/plugin-sdk/gateway-runtime";
 import { formatMatrixErrorMessage } from "../errors.js";
 import {
   isMatrixDisconnectedSyncState,

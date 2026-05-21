@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { emptyPluginConfigSchema } from "../plugins/config-schema.js";
 import type {
   AnyAgentTool,
@@ -11,22 +11,22 @@ import type {
   MigrationProviderContext,
   MigrationProviderPlugin,
   MigrationSummary,
-  NexisClawPluginApi,
-  NexisClawPluginCommandDefinition,
-  NexisClawPluginConfigSchema,
-  NexisClawPluginDefinition,
-  NexisClawPluginHttpRouteHandler,
-  NexisClawPluginNodeHostCommand,
-  NexisClawPluginNodeInvokePolicy,
-  NexisClawPluginNodeInvokePolicyContext,
-  NexisClawPluginNodeInvokePolicyResult,
-  NexisClawPluginReloadRegistration,
-  NexisClawPluginSecurityAuditCollector,
-  NexisClawPluginSecurityAuditContext,
-  NexisClawPluginService,
-  NexisClawPluginServiceContext,
-  NexisClawPluginToolContext,
-  NexisClawPluginToolFactory,
+  FirstNexusPluginApi,
+  FirstNexusPluginCommandDefinition,
+  FirstNexusPluginConfigSchema,
+  FirstNexusPluginDefinition,
+  FirstNexusPluginHttpRouteHandler,
+  FirstNexusPluginNodeHostCommand,
+  FirstNexusPluginNodeInvokePolicy,
+  FirstNexusPluginNodeInvokePolicyContext,
+  FirstNexusPluginNodeInvokePolicyResult,
+  FirstNexusPluginReloadRegistration,
+  FirstNexusPluginSecurityAuditCollector,
+  FirstNexusPluginSecurityAuditContext,
+  FirstNexusPluginService,
+  FirstNexusPluginServiceContext,
+  FirstNexusPluginToolContext,
+  FirstNexusPluginToolFactory,
   PluginLogger,
   ProviderAugmentModelCatalogContext,
   ProviderAuthContext,
@@ -80,8 +80,8 @@ import type {
   ProviderWrapStreamFnContext,
   UnifiedModelCatalogProviderContext,
   UnifiedModelCatalogProviderPlugin,
-  NexisClawGatewayDiscoveryAdvertiseContext,
-  NexisClawGatewayDiscoveryService,
+  FirstNexusGatewayDiscoveryAdvertiseContext,
+  FirstNexusGatewayDiscoveryService,
   SpeechProviderPlugin,
   PluginCommandContext,
   PluginCommandResult,
@@ -128,16 +128,16 @@ export type {
   MigrationProviderContext,
   MigrationProviderPlugin,
   MigrationSummary,
-  NexisClawPluginApi,
-  NexisClawPluginNodeHostCommand,
-  NexisClawPluginNodeInvokePolicy,
-  NexisClawPluginNodeInvokePolicyContext,
-  NexisClawPluginNodeInvokePolicyResult,
-  NexisClawPluginReloadRegistration,
-  NexisClawPluginSecurityAuditCollector,
-  NexisClawPluginSecurityAuditContext,
-  NexisClawPluginToolContext,
-  NexisClawPluginToolFactory,
+  FirstNexusPluginApi,
+  FirstNexusPluginNodeHostCommand,
+  FirstNexusPluginNodeInvokePolicy,
+  FirstNexusPluginNodeInvokePolicyContext,
+  FirstNexusPluginNodeInvokePolicyResult,
+  FirstNexusPluginReloadRegistration,
+  FirstNexusPluginSecurityAuditCollector,
+  FirstNexusPluginSecurityAuditContext,
+  FirstNexusPluginToolContext,
+  FirstNexusPluginToolFactory,
   PluginCommandContext,
   PluginCommandResult,
   PluginAgentEventEmitParams,
@@ -169,8 +169,8 @@ export type {
   PluginSessionExtensionProjection,
   PluginToolMetadataRegistration,
   PluginTrustedToolPolicyRegistration,
-  NexisClawPluginConfigSchema,
-  NexisClawPluginHttpRouteHandler,
+  FirstNexusPluginConfigSchema,
+  FirstNexusPluginHttpRouteHandler,
   ProviderDiscoveryContext,
   ProviderCatalogContext,
   ProviderCatalogResult,
@@ -219,17 +219,17 @@ export type {
   ProviderWrapStreamFnContext,
   UnifiedModelCatalogProviderContext,
   UnifiedModelCatalogProviderPlugin,
-  NexisClawGatewayDiscoveryAdvertiseContext,
-  NexisClawGatewayDiscoveryService,
-  NexisClawPluginService,
-  NexisClawPluginServiceContext,
+  FirstNexusGatewayDiscoveryAdvertiseContext,
+  FirstNexusGatewayDiscoveryService,
+  FirstNexusPluginService,
+  FirstNexusPluginServiceContext,
   ProviderAuthContext,
   ProviderAuthDoctorHintContext,
   ProviderAuthMethodNonInteractiveContext,
   ProviderAuthMethod,
   ProviderAuthResult,
-  NexisClawPluginCommandDefinition,
-  NexisClawPluginDefinition,
+  FirstNexusPluginCommandDefinition,
+  FirstNexusPluginDefinition,
   PluginLogger,
 };
 export type {
@@ -249,7 +249,7 @@ export type {
   UnifiedModelCatalogKind,
   UnifiedModelCatalogSource,
 } from "../model-catalog/types.js";
-export type { NexisClawConfig };
+export type { FirstNexusConfig };
 
 export {
   buildJsonPluginConfigSchema,
@@ -263,27 +263,27 @@ type DefinePluginEntryOptions = {
   name: string;
   description: string;
   /**
-   * @deprecated Declare exclusive plugin kind in `NexisClaw.plugin.json` via
+   * @deprecated Declare exclusive plugin kind in `FirstNexus.plugin.json` via
    * manifest `kind`. Runtime-entry `kind` remains only as a compatibility
    * fallback for older plugins.
    */
-  kind?: NexisClawPluginDefinition["kind"];
-  configSchema?: NexisClawPluginConfigSchema | (() => NexisClawPluginConfigSchema);
-  reload?: NexisClawPluginDefinition["reload"];
-  nodeHostCommands?: NexisClawPluginDefinition["nodeHostCommands"];
-  securityAuditCollectors?: NexisClawPluginDefinition["securityAuditCollectors"];
-  register: (api: NexisClawPluginApi) => void;
+  kind?: FirstNexusPluginDefinition["kind"];
+  configSchema?: FirstNexusPluginConfigSchema | (() => FirstNexusPluginConfigSchema);
+  reload?: FirstNexusPluginDefinition["reload"];
+  nodeHostCommands?: FirstNexusPluginDefinition["nodeHostCommands"];
+  securityAuditCollectors?: FirstNexusPluginDefinition["securityAuditCollectors"];
+  register: (api: FirstNexusPluginApi) => void;
 };
 
-/** Normalized object shape that NexisClaw loads from a plugin entry module. */
+/** Normalized object shape that FirstNexus loads from a plugin entry module. */
 type DefinedPluginEntry = {
   id: string;
   name: string;
   description: string;
-  configSchema: NexisClawPluginConfigSchema;
-  register: NonNullable<NexisClawPluginDefinition["register"]>;
+  configSchema: FirstNexusPluginConfigSchema;
+  register: NonNullable<FirstNexusPluginDefinition["register"]>;
 } & Pick<
-  NexisClawPluginDefinition,
+  FirstNexusPluginDefinition,
   "kind" | "reload" | "nodeHostCommands" | "securityAuditCollectors"
 >;
 
@@ -292,7 +292,7 @@ type DefinedPluginEntry = {
  *
  * Use this for provider, tool, command, service, memory, and context-engine
  * plugins. Channel plugins should use `defineChannelPluginEntry(...)` from
- * `NexisClaw/plugin-sdk/core` so they inherit the channel capability wiring.
+ * `FirstNexus/plugin-sdk/core` so they inherit the channel capability wiring.
  */
 export function definePluginEntry({
   id,

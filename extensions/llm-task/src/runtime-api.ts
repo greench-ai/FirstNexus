@@ -1,1 +1,4 @@
-export { resolvePreferredNexisClawTmpDir, withTempWorkspace } from "NexisClaw/plugin-sdk/temp-path";
+export {
+  resolvePreferredFirstNexusTmpDir,
+  withTempWorkspace,
+} from "FirstNexus/plugin-sdk/temp-path";

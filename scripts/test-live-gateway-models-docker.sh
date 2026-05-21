@@ -11,11 +11,11 @@ if [[ -z "$TRUSTED_HARNESS_DIR" || ! -d "$TRUSTED_HARNESS_DIR" ]]; then
 fi
 TRUSTED_HARNESS_DIR="$(cd "$TRUSTED_HARNESS_DIR" && pwd)"
 source "$TRUSTED_HARNESS_DIR/scripts/lib/live-docker-auth.sh"
-IMAGE_NAME="${NEXISCLAW_IMAGE:-NexisClaw:local}"
+IMAGE_NAME="${NEXISCLAW_IMAGE:-FirstNexus:local}"
 LIVE_IMAGE_NAME="${NEXISCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
-CONFIG_DIR="${NEXISCLAW_CONFIG_DIR:-$HOME/.NexisClaw}"
-WORKSPACE_DIR="${NEXISCLAW_WORKSPACE_DIR:-$HOME/.NexisClaw/workspace}"
-PROFILE_FILE="$(NexisClaw_live_default_profile_file)"
+CONFIG_DIR="${NEXISCLAW_CONFIG_DIR:-$HOME/.FirstNexus}"
+WORKSPACE_DIR="${NEXISCLAW_WORKSPACE_DIR:-$HOME/.FirstNexus/workspace}"
+PROFILE_FILE="$(FirstNexus_live_default_profile_file)"
 DOCKER_USER="${NEXISCLAW_DOCKER_USER:-node}"
 TEMP_DIRS=()
 DOCKER_HOME_MOUNT=()
@@ -30,16 +30,16 @@ cleanup_temp_dirs() {
 trap cleanup_temp_dirs EXIT
 if [[ -n "${NEXISCLAW_DOCKER_CACHE_HOME_DIR:-}" ]]; then
   CACHE_HOME_DIR="${NEXISCLAW_DOCKER_CACHE_HOME_DIR}"
-elif NexisClaw_live_is_ci; then
-  CACHE_HOME_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/NexisClaw-docker-cache.XXXXXX")"
+elif FirstNexus_live_is_ci; then
+  CACHE_HOME_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/FirstNexus-docker-cache.XXXXXX")"
   TEMP_DIRS+=("$CACHE_HOME_DIR")
 else
-  CACHE_HOME_DIR="$HOME/.cache/NexisClaw/docker-cache"
+  CACHE_HOME_DIR="$HOME/.cache/FirstNexus/docker-cache"
 fi
 mkdir -p "$CACHE_HOME_DIR"
-if NexisClaw_live_is_ci; then
+if FirstNexus_live_is_ci; then
   DOCKER_USER="$(id -u):$(id -g)"
-  DOCKER_HOME_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/NexisClaw-docker-home.XXXXXX")"
+  DOCKER_HOME_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/FirstNexus-docker-home.XXXXXX")"
   TEMP_DIRS+=("$DOCKER_HOME_DIR")
   DOCKER_HOME_MOUNT=(-v "$DOCKER_HOME_DIR":/home/node)
 fi
@@ -57,45 +57,45 @@ if [[ -n "${NEXISCLAW_DOCKER_AUTH_DIRS:-}" ]]; then
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
     AUTH_DIRS+=("$auth_dir")
-  done < <(NexisClaw_live_collect_auth_dirs)
+  done < <(FirstNexus_live_collect_auth_dirs)
   while IFS= read -r auth_file; do
     [[ -n "$auth_file" ]] || continue
     AUTH_FILES+=("$auth_file")
-  done < <(NexisClaw_live_collect_auth_files)
+  done < <(FirstNexus_live_collect_auth_files)
 elif [[ -n "${NEXISCLAW_LIVE_GATEWAY_PROVIDERS:-}" ]]; then
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
     AUTH_DIRS+=("$auth_dir")
-  done < <(NexisClaw_live_collect_auth_dirs_from_csv "${NEXISCLAW_LIVE_GATEWAY_PROVIDERS:-}")
+  done < <(FirstNexus_live_collect_auth_dirs_from_csv "${NEXISCLAW_LIVE_GATEWAY_PROVIDERS:-}")
   while IFS= read -r auth_file; do
     [[ -n "$auth_file" ]] || continue
     AUTH_FILES+=("$auth_file")
-  done < <(NexisClaw_live_collect_auth_files_from_csv "${NEXISCLAW_LIVE_GATEWAY_PROVIDERS:-}")
+  done < <(FirstNexus_live_collect_auth_files_from_csv "${NEXISCLAW_LIVE_GATEWAY_PROVIDERS:-}")
 else
   while IFS= read -r auth_dir; do
     [[ -n "$auth_dir" ]] || continue
     AUTH_DIRS+=("$auth_dir")
-  done < <(NexisClaw_live_collect_auth_dirs)
+  done < <(FirstNexus_live_collect_auth_dirs)
   while IFS= read -r auth_file; do
     [[ -n "$auth_file" ]] || continue
     AUTH_FILES+=("$auth_file")
-  done < <(NexisClaw_live_collect_auth_files)
+  done < <(FirstNexus_live_collect_auth_files)
 fi
 AUTH_DIRS_CSV=""
 if ((${#AUTH_DIRS[@]} > 0)); then
-  AUTH_DIRS_CSV="$(NexisClaw_live_join_csv "${AUTH_DIRS[@]}")"
+  AUTH_DIRS_CSV="$(FirstNexus_live_join_csv "${AUTH_DIRS[@]}")"
 fi
 AUTH_FILES_CSV=""
 if ((${#AUTH_FILES[@]} > 0)); then
-  AUTH_FILES_CSV="$(NexisClaw_live_join_csv "${AUTH_FILES[@]}")"
+  AUTH_FILES_CSV="$(FirstNexus_live_join_csv "${AUTH_FILES[@]}")"
 fi
 
 if [[ -n "${DOCKER_HOME_DIR:-}" ]]; then
-  NexisClaw_live_stage_auth_into_home "$DOCKER_HOME_DIR" "${AUTH_DIRS[@]}" --files "${AUTH_FILES[@]}"
+  FirstNexus_live_stage_auth_into_home "$DOCKER_HOME_DIR" "${AUTH_DIRS[@]}" --files "${AUTH_FILES[@]}"
   DOCKER_AUTH_PRESTAGED=1
 fi
 CONTAINER_NODE_OPTIONS="${NEXISCLAW_DOCKER_NODE_OPTIONS:-${NODE_OPTIONS:-}}"
-if [[ -z "$(NexisClaw_live_trim "$CONTAINER_NODE_OPTIONS")" ]]; then
+if [[ -z "$(FirstNexus_live_trim "$CONTAINER_NODE_OPTIONS")" ]]; then
   CONTAINER_NODE_OPTIONS="--max-old-space-size=4096"
 fi
 CONTAINER_NODE_OPTIONS="$CONTAINER_NODE_OPTIONS --disable-warning=ExperimentalWarning"
@@ -103,7 +103,7 @@ CONTAINER_NODE_OPTIONS="$CONTAINER_NODE_OPTIONS --disable-warning=ExperimentalWa
 EXTERNAL_AUTH_MOUNTS=()
 if ((${#AUTH_DIRS[@]} > 0)); then
   for auth_dir in "${AUTH_DIRS[@]}"; do
-    auth_dir="$(NexisClaw_live_validate_relative_home_path "$auth_dir")"
+    auth_dir="$(FirstNexus_live_validate_relative_home_path "$auth_dir")"
     host_path="$HOME/$auth_dir"
     if [[ -d "$host_path" ]]; then
       EXTERNAL_AUTH_MOUNTS+=(-v "$host_path":/host-auth/"$auth_dir":ro)
@@ -112,7 +112,7 @@ if ((${#AUTH_DIRS[@]} > 0)); then
 fi
 if ((${#AUTH_FILES[@]} > 0)); then
   for auth_file in "${AUTH_FILES[@]}"; do
-    auth_file="$(NexisClaw_live_validate_relative_home_path "$auth_file")"
+    auth_file="$(FirstNexus_live_validate_relative_home_path "$auth_file")"
     host_path="$HOME/$auth_file"
     if [[ -f "$host_path" ]]; then
       EXTERNAL_AUTH_MOUNTS+=(-v "$host_path":/host-auth-files/"$auth_file":ro)
@@ -156,11 +156,11 @@ fi
 tmp_dir="$(mktemp -d)"
 trusted_scripts_dir="${NEXISCLAW_LIVE_DOCKER_SCRIPTS_DIR:-/src/scripts}"
 source "$trusted_scripts_dir/lib/live-docker-stage.sh"
-NexisClaw_live_stage_source_tree "$tmp_dir"
-NexisClaw_live_stage_node_modules "$tmp_dir"
-NexisClaw_live_link_runtime_tree "$tmp_dir"
-NexisClaw_live_stage_state_dir "$tmp_dir/.NexisClaw-state"
-NexisClaw_live_prepare_staged_config
+FirstNexus_live_stage_source_tree "$tmp_dir"
+FirstNexus_live_stage_node_modules "$tmp_dir"
+FirstNexus_live_link_runtime_tree "$tmp_dir"
+FirstNexus_live_stage_state_dir "$tmp_dir/.FirstNexus-state"
+FirstNexus_live_prepare_staged_config
 cd "$tmp_dir"
 pnpm test:live:gateway-profiles
 EOF
@@ -197,15 +197,15 @@ DOCKER_RUN_ARGS=(docker run --rm -t \
   -e NEXISCLAW_LIVE_GATEWAY_STEP_TIMEOUT_MS="${NEXISCLAW_LIVE_GATEWAY_STEP_TIMEOUT_MS:-45000}" \
   -e NEXISCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS="${NEXISCLAW_LIVE_GATEWAY_MODEL_TIMEOUT_MS:-90000}" \
   -e NEXISCLAW_VITEST_FS_MODULE_CACHE=0)
-NexisClaw_live_append_array DOCKER_RUN_ARGS DOCKER_HOME_MOUNT
-NexisClaw_live_append_array DOCKER_RUN_ARGS DOCKER_TRUSTED_HARNESS_MOUNT
+FirstNexus_live_append_array DOCKER_RUN_ARGS DOCKER_HOME_MOUNT
+FirstNexus_live_append_array DOCKER_RUN_ARGS DOCKER_TRUSTED_HARNESS_MOUNT
 DOCKER_RUN_ARGS+=(\
   -v "$CACHE_HOME_DIR":/home/node/.cache \
   -v "$ROOT_DIR":/src:ro \
-  -v "$CONFIG_DIR":/home/node/.NexisClaw \
-  -v "$WORKSPACE_DIR":/home/node/.NexisClaw/workspace)
-NexisClaw_live_append_array DOCKER_RUN_ARGS EXTERNAL_AUTH_MOUNTS
-NexisClaw_live_append_array DOCKER_RUN_ARGS PROFILE_MOUNT
+  -v "$CONFIG_DIR":/home/node/.FirstNexus \
+  -v "$WORKSPACE_DIR":/home/node/.FirstNexus/workspace)
+FirstNexus_live_append_array DOCKER_RUN_ARGS EXTERNAL_AUTH_MOUNTS
+FirstNexus_live_append_array DOCKER_RUN_ARGS PROFILE_MOUNT
 DOCKER_RUN_ARGS+=(\
   "$LIVE_IMAGE_NAME" \
   -lc "$LIVE_TEST_CMD")

@@ -33,10 +33,10 @@ const resolveMarkdownTableModeMock = vi.fn(() => "code");
 const convertMarkdownTablesMock = vi.fn((text: string) => text);
 const chunkMarkdownTextWithModeMock = vi.fn((text: string) => (text ? [text] : []));
 
-vi.mock("NexisClaw/plugin-sdk/plugin-config-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/plugin-config-runtime")>(
-    "NexisClaw/plugin-sdk/plugin-config-runtime",
-  );
+vi.mock("FirstNexus/plugin-sdk/plugin-config-runtime", async () => {
+  const actual = await vi.importActual<
+    typeof import("FirstNexus/plugin-sdk/plugin-config-runtime")
+  >("FirstNexus/plugin-sdk/plugin-config-runtime");
   return {
     ...actual,
     requireRuntimeConfig: vi.fn((cfg: unknown) => cfg ?? loadConfigMock()),
@@ -457,7 +457,7 @@ describe("sendMessageMatrix media", () => {
       client,
       cfg: {} as never,
       mediaUrl: "file:///tmp/photo.png",
-      mediaLocalRoots: ["/tmp/NexisClaw-matrix-test"],
+      mediaLocalRoots: ["/tmp/FirstNexus-matrix-test"],
     });
 
     expect(mockCallArg(loadWebMediaMock, "loadWebMedia", 0)).toBe("file:///tmp/photo.png");
@@ -466,7 +466,7 @@ describe("sendMessageMatrix media", () => {
       "media options",
     );
     expect(mediaOptions.maxBytes).toBeUndefined();
-    expect(mediaOptions.localRoots).toEqual(["/tmp/NexisClaw-matrix-test"]);
+    expect(mediaOptions.localRoots).toEqual(["/tmp/FirstNexus-matrix-test"]);
   });
 });
 
@@ -669,16 +669,16 @@ describe("sendMessageMatrix threads", () => {
     await sendMessageMatrix("room:!room:example", "ignored", {
       client,
       cfg: {} as never,
-      extraContent: { "com.NexisClaw.approval": { id: "req-1" } },
+      extraContent: { "com.FirstNexus.approval": { id: "req-1" } },
     });
 
     expect(sendMessage).toHaveBeenCalledTimes(3);
     expect(sentContent(sendMessage, 0).body).toBe("first");
-    expect(sentContent(sendMessage, 0)["com.NexisClaw.approval"]).toEqual({ id: "req-1" });
+    expect(sentContent(sendMessage, 0)["com.FirstNexus.approval"]).toEqual({ id: "req-1" });
     expect(sentContent(sendMessage, 1).body).toBe("second");
-    expect(sendMessage.mock.calls.at(1)?.[1]).not.toHaveProperty("com.NexisClaw.approval");
+    expect(sendMessage.mock.calls.at(1)?.[1]).not.toHaveProperty("com.FirstNexus.approval");
     expect(sentContent(sendMessage, 2).body).toBe("third");
-    expect(sendMessage.mock.calls.at(2)?.[1]).not.toHaveProperty("com.NexisClaw.approval");
+    expect(sendMessage.mock.calls.at(2)?.[1]).not.toHaveProperty("com.FirstNexus.approval");
   });
 });
 

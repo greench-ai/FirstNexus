@@ -1,7 +1,7 @@
 import { RefreshingAuthProvider, StaticAuthProvider } from "@twurple/auth";
 import { ChatClient, LogLevel } from "@twurple/chat";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import { resolveTwitchToken } from "./token.js";
 import type { ChannelLogSink, TwitchAccountConfig, TwitchChatMessage } from "./types.js";
 import { normalizeToken } from "./utils/twitch.js";
@@ -77,7 +77,7 @@ export class TwitchClientManager {
    */
   async getClient(
     account: TwitchAccountConfig,
-    cfg?: NexisClawConfig,
+    cfg?: FirstNexusConfig,
     accountId?: string,
   ): Promise<ChatClient> {
     const key = this.getAccountKey(account);
@@ -237,7 +237,7 @@ export class TwitchClientManager {
     account: TwitchAccountConfig,
     channel: string,
     message: string,
-    cfg?: NexisClawConfig,
+    cfg?: FirstNexusConfig,
     accountId?: string,
   ): Promise<{ ok: boolean; error?: string; messageId?: string }> {
     try {

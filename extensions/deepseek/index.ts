@@ -1,6 +1,6 @@
-import { readConfiguredProviderCatalogEntries } from "NexisClaw/plugin-sdk/provider-catalog-shared";
-import { defineSingleProviderPluginEntry } from "NexisClaw/plugin-sdk/provider-entry";
-import { buildProviderReplayFamilyHooks } from "NexisClaw/plugin-sdk/provider-model-shared";
+import { readConfiguredProviderCatalogEntries } from "FirstNexus/plugin-sdk/provider-catalog-shared";
+import { defineSingleProviderPluginEntry } from "FirstNexus/plugin-sdk/provider-entry";
+import { buildProviderReplayFamilyHooks } from "FirstNexus/plugin-sdk/provider-model-shared";
 import { applyDeepSeekConfig, DEEPSEEK_DEFAULT_MODEL_REF } from "./onboard.js";
 import { buildDeepSeekProvider } from "./provider-catalog.js";
 import { createDeepSeekV4ThinkingWrapper } from "./stream.js";

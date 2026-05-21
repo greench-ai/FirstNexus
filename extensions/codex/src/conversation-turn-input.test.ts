@@ -70,14 +70,14 @@ describe("codex conversation turn input", () => {
           channel: "webchat",
           isGroup: false,
           metadata: {
-            mediaPath: "file:///tmp/NexisClaw%20QA/photo.png",
+            mediaPath: "file:///tmp/FirstNexus%20QA/photo.png",
             mediaType: "image/png",
           },
         },
       }),
     ).toEqual([
       { type: "text", text: "look", text_elements: [] },
-      { type: "localImage", path: "/tmp/NexisClaw QA/photo.png" },
+      { type: "localImage", path: "/tmp/FirstNexus QA/photo.png" },
     ]);
   });
 
@@ -107,7 +107,7 @@ describe("codex conversation turn input", () => {
           channel: "webchat",
           isGroup: false,
           metadata: {
-            mediaUrls: ["/tmp/staged-photo.png", "file:///tmp/NexisClaw%20QA/second.jpg"],
+            mediaUrls: ["/tmp/staged-photo.png", "file:///tmp/FirstNexus%20QA/second.jpg"],
             mediaTypes: ["image/png", "image/jpeg"],
           },
         },
@@ -115,7 +115,7 @@ describe("codex conversation turn input", () => {
     ).toEqual([
       { type: "text", text: "look", text_elements: [] },
       { type: "localImage", path: "/tmp/staged-photo.png" },
-      { type: "localImage", path: "/tmp/NexisClaw QA/second.jpg" },
+      { type: "localImage", path: "/tmp/FirstNexus QA/second.jpg" },
     ]);
   });
 
@@ -128,14 +128,14 @@ describe("codex conversation turn input", () => {
           channel: "webchat",
           isGroup: false,
           metadata: {
-            mediaUrl: "C:\\NexisClaw QA\\photo.png",
+            mediaUrl: "C:\\FirstNexus QA\\photo.png",
             mediaType: "image/png",
           },
         },
       }),
     ).toEqual([
       { type: "text", text: "look", text_elements: [] },
-      { type: "localImage", path: "C:\\NexisClaw QA\\photo.png" },
+      { type: "localImage", path: "C:\\FirstNexus QA\\photo.png" },
     ]);
   });
 });

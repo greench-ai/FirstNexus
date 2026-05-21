@@ -70,7 +70,7 @@ afterEach(() => {
 
 describe("scripts/changed-lanes", () => {
   it("includes untracked worktree files in the default local diff", () => {
-    const dir = makeTempRepoRoot(tempDirs, "NexisClaw-changed-lanes-");
+    const dir = makeTempRepoRoot(tempDirs, "FirstNexus-changed-lanes-");
     git(dir, ["init", "-q", "--initial-branch=main"]);
     writeFileSync(path.join(dir, "README.md"), "initial\n", "utf8");
     git(dir, ["add", "README.md"]);
@@ -105,7 +105,7 @@ describe("scripts/changed-lanes", () => {
   });
 
   it("includes deleted worktree files in the default local diff", () => {
-    const dir = makeTempRepoRoot(tempDirs, "NexisClaw-changed-lanes-deleted-");
+    const dir = makeTempRepoRoot(tempDirs, "FirstNexus-changed-lanes-deleted-");
     git(dir, ["init", "-q", "--initial-branch=main"]);
     mkdirSync(path.join(dir, "src", "shared"), { recursive: true });
     writeFileSync(
@@ -144,7 +144,7 @@ describe("scripts/changed-lanes", () => {
   });
 
   it("includes deleted staged files in the staged diff", () => {
-    const dir = makeTempRepoRoot(tempDirs, "NexisClaw-changed-lanes-staged-deleted-");
+    const dir = makeTempRepoRoot(tempDirs, "FirstNexus-changed-lanes-staged-deleted-");
     git(dir, ["init", "-q", "--initial-branch=main"]);
     mkdirSync(path.join(dir, "src", "shared"), { recursive: true });
     writeFileSync(
@@ -255,7 +255,7 @@ describe("scripts/changed-lanes", () => {
       "--provider",
       "blacksmith-testbox",
       "--blacksmith-org",
-      "NexisClaw",
+      "FirstNexus",
       "--blacksmith-workflow",
       ".github/workflows/ci-check-testbox.yml",
       "--blacksmith-job",
@@ -291,7 +291,9 @@ describe("scripts/changed-lanes", () => {
     expect(
       shouldDelegateChangedCheckToCrabbox([], { NEXISCLAW_TESTBOX: "1", GITHUB_ACTIONS: "true" }),
     ).toBe(false);
-    expect(shouldDelegateChangedCheckToCrabbox([], { NEXISCLAW_TESTBOX: "1", CI: "1" })).toBe(false);
+    expect(shouldDelegateChangedCheckToCrabbox([], { NEXISCLAW_TESTBOX: "1", CI: "1" })).toBe(
+      false,
+    );
     expect(
       shouldDelegateChangedCheckToCrabbox([], {
         NEXISCLAW_TESTBOX: "1",
@@ -408,7 +410,7 @@ describe("scripts/changed-lanes", () => {
       "config/swiftlint.yml",
       "deploy/fly.private.toml",
       "docker-setup.sh",
-      "NexisClaw.podman.env",
+      "FirstNexus.podman.env",
       "setup-podman.sh",
       "skills/pyproject.toml",
     ]);
@@ -546,7 +548,7 @@ describe("scripts/changed-lanes", () => {
   });
 
   it("classifies live Docker package script changes from the git diff", () => {
-    const dir = makeTempRepoRoot(tempDirs, "NexisClaw-live-docker-package-");
+    const dir = makeTempRepoRoot(tempDirs, "FirstNexus-live-docker-package-");
     git(dir, ["init", "-q", "--initial-branch=main"]);
     writeFileSync(
       path.join(dir, "package.json"),
@@ -608,7 +610,7 @@ describe("scripts/changed-lanes", () => {
   });
 
   it("classifies normal package script changes from the git diff", () => {
-    const dir = makeTempRepoRoot(tempDirs, "NexisClaw-package-scripts-");
+    const dir = makeTempRepoRoot(tempDirs, "FirstNexus-package-scripts-");
     git(dir, ["init", "-q", "--initial-branch=main"]);
     writeFileSync(
       path.join(dir, "package.json"),
@@ -737,7 +739,7 @@ describe("scripts/changed-lanes", () => {
       "apps/ios/Config/Version.xcconfig",
       "apps/ios/fastlane/metadata/en-US/release_notes.txt",
       "apps/ios/version.json",
-      "apps/macos/Sources/NexisClaw/Resources/Info.plist",
+      "apps/macos/Sources/FirstNexus/Resources/Info.plist",
       "docs/.generated/config-baseline.sha256",
       "package.json",
     ]);
@@ -774,7 +776,7 @@ describe("scripts/changed-lanes", () => {
   });
 
   it("guards release metadata package changes to the top-level version field", () => {
-    const dir = makeTempRepoRoot(tempDirs, "NexisClaw-release-metadata-");
+    const dir = makeTempRepoRoot(tempDirs, "FirstNexus-release-metadata-");
     git(dir, ["init", "-q", "--initial-branch=main"]);
     writeFileSync(
       path.join(dir, "package.json"),

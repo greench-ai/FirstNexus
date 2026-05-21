@@ -1,19 +1,19 @@
-import { buildDmGroupAccountAllowlistAdapter } from "NexisClaw/plugin-sdk/allowlist-config-edit";
-import { createChatChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
+import { buildDmGroupAccountAllowlistAdapter } from "FirstNexus/plugin-sdk/allowlist-config-edit";
+import { createChatChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
 import {
   createMessageReceiptFromOutboundResults,
   defineChannelMessageAdapter,
   type ChannelMessageSendResult,
   type MessageReceiptPartKind,
-} from "NexisClaw/plugin-sdk/channel-message";
-import { buildPassiveProbedChannelStatusSummary } from "NexisClaw/plugin-sdk/extension-shared";
-import { createLazyRuntimeModule } from "NexisClaw/plugin-sdk/lazy-runtime";
-import { sanitizeForPlainText } from "NexisClaw/plugin-sdk/outbound-runtime";
-import { buildOutboundBaseSessionKey, type RoutePeer } from "NexisClaw/plugin-sdk/routing";
+} from "FirstNexus/plugin-sdk/channel-message";
+import { buildPassiveProbedChannelStatusSummary } from "FirstNexus/plugin-sdk/extension-shared";
+import { createLazyRuntimeModule } from "FirstNexus/plugin-sdk/lazy-runtime";
+import { sanitizeForPlainText } from "FirstNexus/plugin-sdk/outbound-runtime";
+import { buildOutboundBaseSessionKey, type RoutePeer } from "FirstNexus/plugin-sdk/routing";
 import {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "NexisClaw/plugin-sdk/status-helpers";
+} from "FirstNexus/plugin-sdk/status-helpers";
 import { resolveIMessageAccount, type ResolvedIMessageAccount } from "./accounts.js";
 import { imessageMessageActions } from "./actions.js";
 import {
@@ -306,7 +306,7 @@ export const imessagePlugin: ChannelPlugin<ResolvedIMessageAccount, IMessageProb
     pairing: {
       text: {
         idLabel: "imessageSenderId",
-        message: "NexisClaw: your access has been approved.",
+        message: "FirstNexus: your access has been approved.",
         notify: async ({ id, cfg }) =>
           await (await loadIMessageChannelRuntime()).notifyIMessageApproval({ id, cfg }),
       },

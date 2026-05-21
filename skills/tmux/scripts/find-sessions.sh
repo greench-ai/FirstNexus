@@ -20,7 +20,7 @@ socket_name=""
 socket_path=""
 query=""
 scan_all=false
-socket_dir="${NEXISCLAW_TMUX_SOCKET_DIR:-${TMPDIR:-/tmp}/NexisClaw-tmux-sockets}"
+socket_dir="${NEXISCLAW_TMUX_SOCKET_DIR:-${TMPDIR:-/tmp}/FirstNexus-tmux-sockets}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in

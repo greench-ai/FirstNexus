@@ -1,7 +1,7 @@
 [
   {
-    "source": "NexisClaw",
-    "target": "NexisClaw"
+    "source": "FirstNexus",
+    "target": "FirstNexus"
   },
   {
     "source": "iMessage",
@@ -48,12 +48,12 @@
     "target": "Mantis"
   },
   {
-    "source": "NexisClaw App SDK",
-    "target": "NexisClaw 应用 SDK"
+    "source": "FirstNexus App SDK",
+    "target": "FirstNexus 应用 SDK"
   },
   {
-    "source": "NexisClaw App SDK API design",
-    "target": "NexisClaw 应用 SDK API 设计"
+    "source": "FirstNexus App SDK API design",
+    "target": "FirstNexus 应用 SDK API 设计"
   },
   {
     "source": "Message lifecycle refactor",

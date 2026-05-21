@@ -15,7 +15,7 @@
 set -euo pipefail
 
 # Defaults
-CLUSTER_NAME="NexisClaw"
+CLUSTER_NAME="FirstNexus"
 CONTAINER_CMD=""
 DELETE=false
 
@@ -37,7 +37,7 @@ Usage: $(basename "$0") [OPTIONS]
 
 
 Options:
-  --name NAME          Cluster name (default: NexisClaw)
+  --name NAME          Cluster name (default: FirstNexus)
   --delete             Delete the cluster instead of creating it
   -h, --help           Show this help message
 
@@ -174,7 +174,7 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
   labels:
-    NexisClaw.dev/role: control-plane
+    FirstNexus.dev/role: control-plane
   # Uncomment to expose services on host ports:
   # extraPortMappings:
   # - containerPort: 30080

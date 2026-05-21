@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   deliverTextOrMediaReply,
   resolveSendableOutboundReplyParts,
-} from "NexisClaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import type { IMessageRpcClient } from "../client.js";
 import { sendMessageIMessage } from "../send.js";
 import {
@@ -17,7 +17,7 @@ import type { SentMessageCache } from "./echo-cache.js";
 import { sanitizeOutboundText } from "./sanitize-outbound.js";
 
 export async function deliverReplies(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   replies: ReplyPayload[];
   target: string;
   client: IMessageRpcClient;

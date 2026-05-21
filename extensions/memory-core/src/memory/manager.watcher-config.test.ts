@@ -3,8 +3,8 @@ import os from "node:os";
 import path from "node:path";
 import type {
   MemorySearchConfig,
-  NexisClawConfig,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-foundation";
+  FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-foundation";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 type WatchIgnoredFn = (watchPath: string, stats?: { isDirectory?: () => boolean }) => boolean;
@@ -38,14 +38,16 @@ const { createdWatchers, memoryLoggerWarn, watchMock } = vi.hoisted(() => {
       return watcher;
     }),
   };
-  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("NexisClaw.test.memoryWatchFactory")] =
+  (globalThis as Record<PropertyKey, unknown>)[Symbol.for("FirstNexus.test.memoryWatchFactory")] =
     result.watchMock;
   return result;
 });
 
-vi.mock("NexisClaw/plugin-sdk/memory-core-host-engine-foundation", async (importOriginal) => {
+vi.mock("FirstNexus/plugin-sdk/memory-core-host-engine-foundation", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("NexisClaw/plugin-sdk/memory-core-host-engine-foundation")>();
+    await importOriginal<
+      typeof import("FirstNexus/plugin-sdk/memory-core-host-engine-foundation")
+    >();
   return {
     ...actual,
     createSubsystemLogger: (subsystem: string) => ({
@@ -74,7 +76,7 @@ vi.mock("./embeddings.js", () => ({
 import {
   clearMemoryEmbeddingProviders as clearRegistry,
   registerMemoryEmbeddingProvider as registerAdapter,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-embeddings";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-embeddings";
 import {
   closeAllMemorySearchManagers,
   getMemorySearchManager,
@@ -94,7 +96,7 @@ describe("memory watcher config", () => {
   });
 
   afterAll(() => {
-    Reflect.deleteProperty(globalThis, Symbol.for("NexisClaw.test.memoryWatchFactory"));
+    Reflect.deleteProperty(globalThis, Symbol.for("FirstNexus.test.memoryWatchFactory"));
   });
 
   afterEach(async () => {
@@ -115,15 +117,15 @@ describe("memory watcher config", () => {
   });
 
   async function setupWatcherWorkspace(seedFile: { name: string; contents: string }) {
-    workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-memory-watch-"));
+    workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-memory-watch-"));
     extraDir = path.join(workspaceDir, "extra");
     await fs.mkdir(path.join(workspaceDir, "memory"), { recursive: true });
     await fs.mkdir(extraDir, { recursive: true });
     await fs.writeFile(path.join(extraDir, seedFile.name), seedFile.contents);
   }
 
-  function createWatcherConfig(overrides?: Partial<MemorySearchConfig>): NexisClawConfig {
-    const defaults: NonNullable<NonNullable<NexisClawConfig["agents"]>["defaults"]> = {
+  function createWatcherConfig(overrides?: Partial<MemorySearchConfig>): FirstNexusConfig {
+    const defaults: NonNullable<NonNullable<FirstNexusConfig["agents"]>["defaults"]> = {
       workspace: workspaceDir,
       memorySearch: {
         provider: "openai",
@@ -141,10 +143,10 @@ describe("memory watcher config", () => {
         defaults,
         list: [{ id: "main", default: true }],
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
   }
 
-  async function expectWatcherManager(cfg: NexisClawConfig) {
+  async function expectWatcherManager(cfg: FirstNexusConfig) {
     const result = await getMemorySearchManager({ cfg, agentId: "main" });
     if (!result.manager) {
       throw new Error("manager missing");

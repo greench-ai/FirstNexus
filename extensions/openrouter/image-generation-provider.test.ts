@@ -23,11 +23,11 @@ const {
   })),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-auth-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-auth-runtime", () => ({
   resolveApiKeyForProvider: resolveApiKeyForProviderMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-http", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-http", () => ({
   assertOkOrThrowHttpError: assertOkOrThrowHttpErrorMock,
   postJsonRequest: postJsonRequestMock,
   resolveProviderHttpRequestConfig: resolveProviderHttpRequestConfigMock,
@@ -172,8 +172,8 @@ describe("openrouter image generation provider", () => {
       allowPrivateNetwork: false,
       defaultHeaders: {
         Authorization: "Bearer openrouter-key",
-        "HTTP-Referer": "https://NexisClaw.ai",
-        "X-OpenRouter-Title": "NexisClaw",
+        "HTTP-Referer": "https://FirstNexus.ai",
+        "X-OpenRouter-Title": "FirstNexus",
       },
       provider: "openrouter",
       capability: "image",
@@ -184,8 +184,8 @@ describe("openrouter image generation provider", () => {
     const headers = requireHeaders(request.headers);
     expect(Object.fromEntries(headers.entries())).toEqual({
       authorization: "Bearer openrouter-key",
-      "http-referer": "https://NexisClaw.ai",
-      "x-openrouter-title": "NexisClaw",
+      "http-referer": "https://FirstNexus.ai",
+      "x-openrouter-title": "FirstNexus",
     });
     expect(request).toEqual({
       url: "https://custom.openrouter.test/api/v1/chat/completions",

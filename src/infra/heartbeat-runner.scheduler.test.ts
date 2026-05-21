@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { startHeartbeatRunner } from "./heartbeat-runner.js";
 import { computeNextHeartbeatPhaseDueMs, resolveHeartbeatPhaseMs } from "./heartbeat-schedule.js";
 import {
@@ -29,14 +29,14 @@ describe("startHeartbeatRunner", () => {
   }
 
   function heartbeatConfig(
-    list?: NonNullable<NonNullable<NexisClawConfig["agents"]>["list"]>,
-  ): NexisClawConfig {
+    list?: NonNullable<NonNullable<FirstNexusConfig["agents"]>["list"]>,
+  ): FirstNexusConfig {
     return {
       agents: {
         defaults: { heartbeat: { every: "30m" } },
         ...(list ? { list } : {}),
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
   }
 
   function resolveDueFromNow(nowMs: number, intervalMs: number, agentId: string) {
@@ -142,7 +142,7 @@ describe("startHeartbeatRunner", () => {
   }
 
   async function expectWakeDispatch(params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     runSpy: MockRunOnce;
     wake: Parameters<typeof requestHeartbeat>[0];
     expectedCall: Record<string, unknown>;
@@ -189,7 +189,7 @@ describe("startHeartbeatRunner", () => {
           { id: "ops", heartbeat: { every: "15m" } },
         ],
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     const nowAfterReload = Date.now();
     const nextMainDueMs = resolveDueFromNow(nowAfterReload, 10 * 60_000, "main");
@@ -273,7 +273,7 @@ describe("startHeartbeatRunner", () => {
 
     const cfg = {
       agents: { defaults: { heartbeat: { every: "30m" } } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const firstDueMs = resolveDueFromNow(0, 30 * 60_000, "main");
 
     // Start runner A
@@ -421,7 +421,7 @@ describe("startHeartbeatRunner", () => {
           { id: "main", heartbeat: { every: "30m" } },
           { id: "ops", heartbeat: { every: "15m" } },
         ]),
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       runSpy,
       wake: {
         source: "cron",
@@ -483,7 +483,7 @@ describe("startHeartbeatRunner", () => {
             },
           },
         ]),
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       runSpy,
       wake: {
         source: "cron",
@@ -526,7 +526,7 @@ describe("startHeartbeatRunner", () => {
             },
           },
         ]),
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       runSpy,
       wake: {
         source: "hook",
@@ -580,7 +580,7 @@ describe("startHeartbeatRunner", () => {
           { id: "main", heartbeat: { every: "30m" } },
           { id: "finance", heartbeat: { every: "30m" } },
         ]),
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       runSpy,
       wake: {
         source: "exec-event",
@@ -655,7 +655,7 @@ describe("startHeartbeatRunner", () => {
   });
 
   it("preserves immediate delivery for repeated bare wake reasons", async () => {
-    // 'wake' is the immediate-path reason from `NexisClaw system event --mode now`
+    // 'wake' is the immediate-path reason from `FirstNexus system event --mode now`
     // and must NOT be deferred. Verify the runner allows multiple back-to-back
     // wake requests through (subject only to the flood guard backstop).
     useFakeHeartbeatTime();

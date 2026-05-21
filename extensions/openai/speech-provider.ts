@@ -1,14 +1,14 @@
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
   SpeechProviderOverrides,
   SpeechProviderPlugin,
-} from "NexisClaw/plugin-sdk/speech";
+} from "FirstNexus/plugin-sdk/speech";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   asFiniteNumber,
   asObjectRecord,

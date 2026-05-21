@@ -72,7 +72,7 @@ export const EXPECTED_CODEX_MODELS_COMMAND_TEXT = [
   "Active model: `codex/",
   "Current active model is `openai/",
   "Current active model is `codex/",
-  "Current NexisClaw session status reports the active model as:",
+  "Current FirstNexus session status reports the active model as:",
 ] as const;
 
 export const EXPECTED_CODEX_STATUS_COMMAND_TEXT = [
@@ -81,13 +81,13 @@ export const EXPECTED_CODEX_STATUS_COMMAND_TEXT = [
   "Model: codex/",
   "Session: `agent:dev:live-codex-harness`",
   "Session: agent:dev:live-codex-harness",
-  "NexisClaw `",
-  "NexisClaw status:",
+  "FirstNexus `",
+  "FirstNexus status:",
   "Status: running on",
   "model `codex/",
   "session `agent:dev:live-codex-harness`",
   "Model/status card shown above",
-  "NexisClaw status shown above.",
+  "FirstNexus status shown above.",
   "Status shown above.",
   "No active task is running.",
   "No active work is running.",
@@ -98,10 +98,10 @@ export const EXPECTED_CODEX_STATUS_COMMAND_TEXT = [
 
 export function isExpectedCodexStatusCommandText(text: string): boolean {
   const normalized = text.toLowerCase();
-  const mentionsNexisClawStatus =
-    normalized.includes("NexisClaw is running on") ||
-    /NexisClaw\s+\S+\s+is running on/u.test(normalized) ||
-    normalized.includes("NexisClaw status:") ||
+  const mentionsFirstNexusStatus =
+    normalized.includes("FirstNexus is running on") ||
+    /FirstNexus\s+\S+\s+is running on/u.test(normalized) ||
+    normalized.includes("FirstNexus status:") ||
     normalized.includes("status: running on") ||
     normalized.includes("session status: running on");
   const mentionsHarnessSession =
@@ -152,7 +152,7 @@ export function isExpectedCodexStatusCommandText(text: string): boolean {
     isIdleReadyStatus ||
     isReadyStatus ||
     isOnlineIdleStatus ||
-    (mentionsNexisClawStatus && mentionsHarnessSession && mentionsModel)
+    (mentionsFirstNexusStatus && mentionsHarnessSession && mentionsModel)
   );
 }
 
@@ -202,7 +202,7 @@ export function isExpectedCodexModelsCommandText(text: string): boolean {
   const mentionsSessionModel =
     normalized.includes("current session is using") ||
     normalized.includes("current session model") ||
-    normalized.includes("current session model from NexisClaw status") ||
+    normalized.includes("current session model from FirstNexus status") ||
     normalized.includes("visible session model") ||
     normalized.includes("the current session is using");
   const mentionsConfigSummary =
@@ -211,7 +211,7 @@ export function isExpectedCodexModelsCommandText(text: string): boolean {
     normalized.includes("registered models") ||
     normalized.includes("only listed model") ||
     normalized.includes("single codex model") ||
-    normalized.includes("live NexisClaw config shows") ||
+    normalized.includes("live FirstNexus config shows") ||
     normalized.includes("current gateway config");
   const isSessionConfigFallback =
     (text.includes("`openai/") || text.includes("`codex/")) &&

@@ -2,9 +2,9 @@ import {
   createStatusReactionController,
   logAckFailure,
   type StatusReactionAdapter,
-} from "NexisClaw/plugin-sdk/channel-feedback";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/channel-feedback";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import { createDiscordRuntimeAccountContext } from "../client.js";
 import type { RequestClient } from "../internal/discord.js";
 import { reactMessageDiscord, removeReactionDiscord } from "../send.js";
@@ -12,7 +12,7 @@ import type { DiscordReactionRuntimeContext } from "../send.types.js";
 
 export function createDiscordAckReactionContext(params: {
   rest: RequestClient;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
 }): DiscordReactionRuntimeContext {
   return {

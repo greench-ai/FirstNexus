@@ -106,7 +106,7 @@ export async function runQaDockerUp(
     composeFile,
   });
   await waitForDockerServiceHealth(
-    "NexisClaw-qa-gateway",
+    "FirstNexus-qa-gateway",
     composeFile,
     repoRoot,
     runCommand,
@@ -119,7 +119,7 @@ export async function runQaDockerUp(
       .catch(() => false))
   ) {
     const containerGatewayUrl = await resolveComposeServiceUrl(
-      "NexisClaw-qa-gateway",
+      "FirstNexus-qa-gateway",
       18789,
       composeFile,
       repoRoot,

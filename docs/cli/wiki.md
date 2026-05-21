@@ -1,12 +1,12 @@
 ---
-summary: "CLI reference for `NexisClaw wiki` (memory-wiki vault status, search, compile, lint, apply, bridge, and Obsidian helpers)"
+summary: "CLI reference for `FirstNexus wiki` (memory-wiki vault status, search, compile, lint, apply, bridge, and Obsidian helpers)"
 read_when:
   - You want to use the memory-wiki CLI
-  - You are documenting or changing `NexisClaw wiki`
+  - You are documenting or changing `FirstNexus wiki`
 title: "Wiki"
 ---
 
-# `NexisClaw wiki`
+# `FirstNexus wiki`
 
 Inspect and maintain the `memory-wiki` vault.
 
@@ -20,7 +20,7 @@ Related:
 
 ## What it is for
 
-Use `NexisClaw wiki` when you want a compiled knowledge vault with:
+Use `FirstNexus wiki` when you want a compiled knowledge vault with:
 
 - wiki-native search and page reads
 - provenance-rich syntheses
@@ -31,33 +31,33 @@ Use `NexisClaw wiki` when you want a compiled knowledge vault with:
 ## Common commands
 
 ```bash
-NexisClaw wiki status
-NexisClaw wiki doctor
-NexisClaw wiki init
-NexisClaw wiki ingest ./notes/alpha.md
-NexisClaw wiki compile
-NexisClaw wiki lint
-NexisClaw wiki search "alpha"
-NexisClaw wiki search "who should I ask about Teams?" --mode route-question
-NexisClaw wiki get entity.alpha --from 1 --lines 80
+FirstNexus wiki status
+FirstNexus wiki doctor
+FirstNexus wiki init
+FirstNexus wiki ingest ./notes/alpha.md
+FirstNexus wiki compile
+FirstNexus wiki lint
+FirstNexus wiki search "alpha"
+FirstNexus wiki search "who should I ask about Teams?" --mode route-question
+FirstNexus wiki get entity.alpha --from 1 --lines 80
 
-NexisClaw wiki apply synthesis "Alpha Summary" \
+FirstNexus wiki apply synthesis "Alpha Summary" \
   --body "Short synthesis body" \
   --source-id source.alpha
 
-NexisClaw wiki apply metadata entity.alpha \
+FirstNexus wiki apply metadata entity.alpha \
   --source-id source.alpha \
   --status review \
   --question "Still active?"
 
-NexisClaw wiki bridge import
-NexisClaw wiki unsafe-local import
+FirstNexus wiki bridge import
+FirstNexus wiki unsafe-local import
 
-NexisClaw wiki obsidian status
-NexisClaw wiki obsidian search "alpha"
-NexisClaw wiki obsidian open syntheses/alpha-summary.md
-NexisClaw wiki obsidian command workspace:quick-switcher
-NexisClaw wiki obsidian daily
+FirstNexus wiki obsidian status
+FirstNexus wiki obsidian search "alpha"
+FirstNexus wiki obsidian open syntheses/alpha-summary.md
+FirstNexus wiki obsidian command workspace:quick-switcher
+FirstNexus wiki obsidian daily
 ```
 
 ## Commands
@@ -110,8 +110,8 @@ Rebuild indexes, related blocks, dashboards, and compiled digests.
 
 This writes stable machine-facing artifacts under:
 
-- `.NexisClaw-wiki/cache/agent-digest.json`
-- `.NexisClaw-wiki/cache/claims.jsonl`
+- `.FirstNexus-wiki/cache/agent-digest.json`
+- `.FirstNexus-wiki/cache/claims.jsonl`
 
 If `render.createDashboards` is enabled, compile also refreshes report pages.
 
@@ -140,7 +140,7 @@ Behavior depends on config:
   `raw-claim`
 
 Use `wiki search` when you want wiki-specific ranking or provenance details.
-For one broad shared recall pass, prefer `NexisClaw memory search` when the
+For one broad shared recall pass, prefer `FirstNexus memory search` when the
 active memory plugin exposes shared search.
 
 Search modes help the agent choose the right surface:
@@ -153,10 +153,10 @@ Search modes help the agent choose the right surface:
 Examples:
 
 ```bash
-NexisClaw wiki search "bgroux" --mode find-person
-NexisClaw wiki search "who knows Teams rollout?" --mode route-question
-NexisClaw wiki search "maintainer-whois" --mode source-evidence
-NexisClaw wiki search "strong route Teams" --mode raw-claim --json
+FirstNexus wiki search "bgroux" --mode find-person
+FirstNexus wiki search "who knows Teams rollout?" --mode route-question
+FirstNexus wiki search "maintainer-whois" --mode source-evidence
+FirstNexus wiki search "strong route Teams" --mode raw-claim --json
 ```
 
 Text output includes `Claim:` and `Evidence:` lines when a result matches a
@@ -171,8 +171,8 @@ Read a wiki page by id or relative path.
 Examples:
 
 ```bash
-NexisClaw wiki get entity.alpha
-NexisClaw wiki get syntheses/alpha-summary.md --from 1 --lines 80
+FirstNexus wiki get entity.alpha
+FirstNexus wiki get syntheses/alpha-summary.md --from 1 --lines 80
 ```
 
 ### `wiki apply`
@@ -238,7 +238,7 @@ These require the official `obsidian` CLI on `PATH` when
 
 ## Configuration tie-ins
 
-`NexisClaw wiki` behavior is shaped by:
+`FirstNexus wiki` behavior is shaped by:
 
 - `plugins.entries.memory-wiki.config.vaultMode`
 - `plugins.entries.memory-wiki.config.search.backend`

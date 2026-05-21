@@ -511,13 +511,13 @@ describe("applyExtraParamsToAgent", () => {
       undefined,
       "high",
       "cass",
-      "/tmp/NexisClaw-workspace",
+      "/tmp/FirstNexus-workspace",
       model,
-      "/tmp/NexisClaw-agent",
+      "/tmp/FirstNexus-agent",
     );
 
-    expect(capturedContext?.agentDir).toBe("/tmp/NexisClaw-agent");
-    expect(capturedContext?.workspaceDir).toBe("/tmp/NexisClaw-workspace");
+    expect(capturedContext?.agentDir).toBe("/tmp/FirstNexus-agent");
+    expect(capturedContext?.workspaceDir).toBe("/tmp/FirstNexus-workspace");
   });
 
   function runResponsesPayloadMutationCase(params: {

@@ -1,5 +1,5 @@
 import { listConfiguredBindings } from "../../config/bindings.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { pickFirstExistingAgentId } from "../../routing/resolve-route.js";
 import {
   normalizeOptionalLowercaseString,
@@ -71,7 +71,7 @@ function compileConfiguredBindingTarget(params: {
 }
 
 function compileConfiguredBindingRule(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channel: ConfiguredBindingChannel;
   binding: CompiledConfiguredBinding["binding"];
   target: ChannelConfiguredBindingConversationRef;
@@ -119,7 +119,7 @@ function pushCompiledRule(
 }
 
 function compileConfiguredBindingRegistry(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 }): CompiledConfiguredBindingRegistry {
   const rulesByChannel = new Map<ConfiguredBindingChannel, CompiledConfiguredBinding[]>();
 
@@ -163,13 +163,13 @@ function compileConfiguredBindingRegistry(params: {
 }
 
 export function resolveCompiledBindingRegistry(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): CompiledConfiguredBindingRegistry {
   return compileConfiguredBindingRegistry({ cfg });
 }
 
 export function primeCompiledBindingRegistry(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): CompiledConfiguredBindingRegistry {
   return compileConfiguredBindingRegistry({ cfg });
 }

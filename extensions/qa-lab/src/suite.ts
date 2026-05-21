@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import { disposeRegisteredAgentHarnesses } from "NexisClaw/plugin-sdk/agent-harness";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { disposeRegisteredAgentHarnesses } from "FirstNexus/plugin-sdk/agent-harness";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import { startQaGatewayChild, type QaCliBackendAuthMode } from "./gateway-child.js";
 import type {
   QaLabLatestReport,
@@ -362,7 +362,7 @@ async function writeQaSuiteArtifacts(params: {
   scenarioIds?: readonly string[];
 }) {
   const report = renderQaMarkdownReport({
-    title: "NexisClaw QA Scenario Suite",
+    title: "FirstNexus QA Scenario Suite",
     startedAt: params.startedAt,
     finishedAt: params.finishedAt,
     checks: [],
@@ -741,7 +741,7 @@ export async function runQaSuite(params?: QaSuiteRunParams): Promise<QaSuiteResu
     enabledPluginIds,
     forwardHostHome: gatewayRuntimeOptions?.forwardHostHome,
     mutateConfig: gatewayConfigPatch
-      ? (cfg) => applyQaMergePatch(cfg, gatewayConfigPatch) as NexisClawConfig
+      ? (cfg) => applyQaMergePatch(cfg, gatewayConfigPatch) as FirstNexusConfig
       : undefined,
   });
   writeQaSuiteProgress(

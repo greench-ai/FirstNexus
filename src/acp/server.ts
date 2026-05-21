@@ -231,7 +231,7 @@ function parseArgs(args: string[]): AcpServerOptions {
 }
 
 function printHelp(): void {
-  console.log(`Usage: NexisClaw acp [options]
+  console.log(`Usage: FirstNexus acp [options]
 
 Gateway-backed ACP server for IDE integration.
 

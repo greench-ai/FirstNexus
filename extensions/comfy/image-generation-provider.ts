@@ -1,7 +1,7 @@
 import type {
   GeneratedImageAsset,
   ImageGenerationProvider,
-} from "NexisClaw/plugin-sdk/image-generation";
+} from "FirstNexus/plugin-sdk/image-generation";
 import {
   DEFAULT_COMFY_MODEL,
   _setComfyFetchGuardForTesting,

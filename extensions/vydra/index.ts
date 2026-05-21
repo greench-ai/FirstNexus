@@ -1,5 +1,5 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "NexisClaw/plugin-sdk/provider-auth-api-key";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "FirstNexus/plugin-sdk/provider-auth-api-key";
 import { buildVydraImageGenerationProvider } from "./image-generation-provider.js";
 import { applyVydraConfig, VYDRA_DEFAULT_IMAGE_MODEL_REF } from "./onboard.js";
 import { buildVydraSpeechProvider } from "./speech-provider.js";

@@ -2,17 +2,17 @@
  * Twitch setup wizard surface for CLI setup.
  */
 
-import { normalizeOptionalAccountId } from "NexisClaw/plugin-sdk/account-id";
-import { getChatChannelMeta, type ChannelPlugin } from "NexisClaw/plugin-sdk/core";
+import { normalizeOptionalAccountId } from "FirstNexus/plugin-sdk/account-id";
+import { getChatChannelMeta, type ChannelPlugin } from "FirstNexus/plugin-sdk/core";
 import {
   formatDocsLink,
   type ChannelSetupAdapter,
   type ChannelSetupDmPolicy,
   type ChannelSetupWizard,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type WizardPrompter,
   normalizeAccountId,
-} from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/setup";
 import {
   DEFAULT_ACCOUNT_ID,
   getAccountConfig,
@@ -34,7 +34,7 @@ function normalizeRequestedSetupAccountId(accountId: string): string {
   return normalized;
 }
 
-function resolveSetupAccountId(cfg: NexisClawConfig, requestedAccountId?: string): string {
+function resolveSetupAccountId(cfg: FirstNexusConfig, requestedAccountId?: string): string {
   const requested = requestedAccountId?.trim();
   if (requested) {
     return normalizeRequestedSetupAccountId(requested);
@@ -45,10 +45,10 @@ function resolveSetupAccountId(cfg: NexisClawConfig, requestedAccountId?: string
 }
 
 export function setTwitchAccount(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   account: Partial<TwitchAccountConfig>,
   accountId: string = resolveSetupAccountId(cfg),
-): NexisClawConfig {
+): FirstNexusConfig {
   const resolvedAccountId = accountId.trim()
     ? normalizeRequestedSetupAccountId(accountId)
     : resolveSetupAccountId(cfg);
@@ -212,14 +212,14 @@ export async function promptRefreshTokenSetup(
 }
 
 export async function configureWithEnvToken(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   prompter: WizardPrompter,
   account: TwitchAccountConfig | null,
   envToken: string,
   forceAllowFrom: boolean,
   dmPolicy: ChannelSetupDmPolicy,
   accountId: string = resolveSetupAccountId(cfg),
-): Promise<{ cfg: NexisClawConfig } | null> {
+): Promise<{ cfg: FirstNexusConfig } | null> {
   const resolvedAccountId = accountId.trim()
     ? normalizeRequestedSetupAccountId(accountId)
     : resolveSetupAccountId(cfg);
@@ -263,11 +263,11 @@ export async function configureWithEnvToken(
 }
 
 function setTwitchAccessControl(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   allowedRoles: TwitchRole[],
   requireMention: boolean,
   accountId?: string,
-): NexisClawConfig {
+): FirstNexusConfig {
   const resolvedAccountId = resolveSetupAccountId(cfg, accountId);
   const account = getAccountConfig(cfg, resolvedAccountId);
   if (!account) {
@@ -286,7 +286,7 @@ function setTwitchAccessControl(
 }
 
 function resolveTwitchGroupPolicy(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   accountId?: string,
 ): "open" | "allowlist" | "disabled" {
   const account = getAccountConfig(cfg, resolveSetupAccountId(cfg, accountId));
@@ -300,10 +300,10 @@ function resolveTwitchGroupPolicy(
 }
 
 function setTwitchGroupPolicy(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   policy: "open" | "allowlist" | "disabled",
   accountId?: string,
-): NexisClawConfig {
+): FirstNexusConfig {
   const allowedRoles: TwitchRole[] =
     policy === "open" ? ["all"] : policy === "allowlist" ? ["moderator", "vip"] : [];
   return setTwitchAccessControl(cfg, allowedRoles, true, accountId);

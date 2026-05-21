@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempHome } from "NexisClaw/plugin-sdk/test-env";
+import { withTempHome } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 
 describe("cli json stdout contract", () => {
@@ -46,7 +46,7 @@ describe("cli json stdout contract", () => {
         expect(stdout).not.toContain("Doctor changes");
         expect(stdout).not.toContain("Config invalid");
       },
-      { prefix: "NexisClaw-json-e2e-" },
+      { prefix: "FirstNexus-json-e2e-" },
     );
   });
 });

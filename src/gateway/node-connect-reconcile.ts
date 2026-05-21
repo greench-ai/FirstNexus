@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type {
   NodePairingPairedNode,
   NodePairingRequestInput,
@@ -134,7 +134,7 @@ function buildNodePairingRequestInput(params: {
 }
 
 export async function reconcileNodePairingOnConnect(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   connectParams: ConnectParams;
   pairedNode: NodePairingPairedNode | null;
   reportedClientIp?: string;

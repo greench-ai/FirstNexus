@@ -29,7 +29,7 @@ function isNodeCompileCacheRequested(env: NodeJS.ProcessEnv | undefined): boolea
   return env?.NODE_COMPILE_CACHE !== undefined && !isNodeCompileCacheDisabled(env);
 }
 
-export function shouldEnableNexisClawCompileCache(params: {
+export function shouldEnableFirstNexusCompileCache(params: {
   env?: NodeJS.ProcessEnv;
   installRoot: string;
 }): boolean {
@@ -62,7 +62,7 @@ function readPackageVersion(packageJsonPath: string): string {
   return "unknown";
 }
 
-export function resolveNexisClawCompileCacheDirectory(params: {
+export function resolveFirstNexusCompileCacheDirectory(params: {
   env?: NodeJS.ProcessEnv;
   installRoot: string;
 }): string {
@@ -82,26 +82,26 @@ export function resolveNexisClawCompileCacheDirectory(params: {
       : path.join(os.tmpdir(), "node-compile-cache");
   return path.join(
     baseDirectory,
-    "NexisClaw",
+    "FirstNexus",
     version,
     sanitizeCompileCachePathSegment(installMarker),
   );
 }
 
-export type NexisClawCompileCacheRespawnPlan = {
+export type FirstNexusCompileCacheRespawnPlan = {
   command: string;
   args: string[];
   env: NodeJS.ProcessEnv;
 };
 
-type NexisClawCompileCacheRespawnRuntime = {
+type FirstNexusCompileCacheRespawnRuntime = {
   spawn: typeof spawn;
   attachChildProcessBridge: typeof attachChildProcessBridge;
   exit: (code?: number) => never;
   writeError: (message: string) => void;
 };
 
-export function buildNexisClawCompileCacheRespawnPlan(params: {
+export function buildFirstNexusCompileCacheRespawnPlan(params: {
   currentFile: string;
   env?: NodeJS.ProcessEnv;
   execArgv?: string[];
@@ -109,7 +109,7 @@ export function buildNexisClawCompileCacheRespawnPlan(params: {
   installRoot: string;
   argv?: string[];
   compileCacheDir?: string;
-}): NexisClawCompileCacheRespawnPlan | undefined {
+}): FirstNexusCompileCacheRespawnPlan | undefined {
   const env = params.env ?? process.env;
   if (!isSourceCheckoutInstallRoot(params.installRoot)) {
     return undefined;
@@ -137,11 +137,11 @@ export function buildNexisClawCompileCacheRespawnPlan(params: {
   };
 }
 
-export function respawnWithoutNexisClawCompileCacheIfNeeded(params: {
+export function respawnWithoutFirstNexusCompileCacheIfNeeded(params: {
   currentFile: string;
   installRoot: string;
 }): boolean {
-  const plan = buildNexisClawCompileCacheRespawnPlan({
+  const plan = buildFirstNexusCompileCacheRespawnPlan({
     currentFile: params.currentFile,
     installRoot: params.installRoot,
     compileCacheDir: getCompileCacheDir?.(),
@@ -149,13 +149,13 @@ export function respawnWithoutNexisClawCompileCacheIfNeeded(params: {
   if (!plan) {
     return false;
   }
-  runNexisClawCompileCacheRespawnPlan(plan);
+  runFirstNexusCompileCacheRespawnPlan(plan);
   return true;
 }
 
-export function runNexisClawCompileCacheRespawnPlan(
-  plan: NexisClawCompileCacheRespawnPlan,
-  runtime: NexisClawCompileCacheRespawnRuntime = {
+export function runFirstNexusCompileCacheRespawnPlan(
+  plan: FirstNexusCompileCacheRespawnPlan,
+  runtime: FirstNexusCompileCacheRespawnRuntime = {
     spawn,
     attachChildProcessBridge,
     exit: process.exit.bind(process) as (code?: number) => never,
@@ -224,7 +224,7 @@ export function runNexisClawCompileCacheRespawnPlan(
   child.once("error", (error) => {
     clearSignalExitTimer();
     runtime.writeError(
-      `[NexisClaw] Failed to respawn CLI without compile cache: ${
+      `[FirstNexus] Failed to respawn CLI without compile cache: ${
         error instanceof Error ? (error.stack ?? error.message) : String(error)
       }\n`,
     );
@@ -234,15 +234,15 @@ export function runNexisClawCompileCacheRespawnPlan(
   return child;
 }
 
-export function enableNexisClawCompileCache(params: {
+export function enableFirstNexusCompileCache(params: {
   env?: NodeJS.ProcessEnv;
   installRoot: string;
 }): void {
-  if (!shouldEnableNexisClawCompileCache(params)) {
+  if (!shouldEnableFirstNexusCompileCache(params)) {
     return;
   }
   try {
-    enableCompileCache(resolveNexisClawCompileCacheDirectory(params));
+    enableCompileCache(resolveFirstNexusCompileCacheDirectory(params));
   } catch {
     // Best-effort only; never block startup.
   }

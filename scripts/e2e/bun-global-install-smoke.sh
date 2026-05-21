@@ -69,10 +69,10 @@ resolve_package_tgz() {
   node --import tsx scripts/write-package-dist-inventory.ts
 
   local pack_json_file
-  PACK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/NexisClaw-bun-pack.XXXXXX")"
+  PACK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/FirstNexus-bun-pack.XXXXXX")"
   pack_json_file="$PACK_DIR/pack.json"
 
-  echo "==> Pack NexisClaw tarball"
+  echo "==> Pack FirstNexus tarball"
   npm pack --ignore-scripts --json --pack-destination "$PACK_DIR" >"$pack_json_file"
   PACKAGE_TGZ="$(
     node -e '
@@ -86,7 +86,7 @@ process.stdout.write(require("node:path").resolve(process.argv[2], last.filename
 ' "$pack_json_file" "$PACK_DIR"
   )"
   if [ -z "$PACKAGE_TGZ" ] || [ ! -f "$PACKAGE_TGZ" ]; then
-    echo "missing packed NexisClaw tarball" >&2
+    echo "missing packed FirstNexus tarball" >&2
     exit 1
   fi
 }
@@ -102,9 +102,9 @@ main() {
   resolve_package_tgz
 
   local bun_path
-  local NexisClaw_bin
+  local FirstNexus_bin
   bun_path="$(command -v "$BUN_BIN")"
-  SMOKE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/NexisClaw-bun-global.XXXXXX")"
+  SMOKE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/FirstNexus-bun-global.XXXXXX")"
 
   export HOME="$SMOKE_DIR/home"
   export BUN_INSTALL="$HOME/.bun"
@@ -118,24 +118,24 @@ main() {
   echo "==> Bun version"
   "$bun_path" --version
 
-  echo "==> Bun global install packed NexisClaw"
+  echo "==> Bun global install packed FirstNexus"
   "$bun_path" install -g "$PACKAGE_TGZ" --no-progress
 
-  NexisClaw_bin="$BUN_INSTALL/bin/NexisClaw"
-  if [ ! -x "$NexisClaw_bin" ]; then
-    NexisClaw_bin="$(command -v NexisClaw || true)"
+  FirstNexus_bin="$BUN_INSTALL/bin/FirstNexus"
+  if [ ! -x "$FirstNexus_bin" ]; then
+    FirstNexus_bin="$(command -v FirstNexus || true)"
   fi
-  if [ -z "$NexisClaw_bin" ] || [ ! -x "$NexisClaw_bin" ]; then
-    echo "Bun global install did not create an executable NexisClaw binary" >&2
+  if [ -z "$FirstNexus_bin" ] || [ ! -x "$FirstNexus_bin" ]; then
+    echo "Bun global install did not create an executable FirstNexus binary" >&2
     exit 1
   fi
 
-  echo "==> NexisClaw version through Bun global install"
-  run_with_timeout "$COMMAND_TIMEOUT_MS" "$NexisClaw_bin" --version
+  echo "==> FirstNexus version through Bun global install"
+  run_with_timeout "$COMMAND_TIMEOUT_MS" "$FirstNexus_bin" --version
 
-  echo "==> NexisClaw image providers through Bun global install"
+  echo "==> FirstNexus image providers through Bun global install"
   local providers_json
-  providers_json="$(run_with_timeout "$COMMAND_TIMEOUT_MS" "$NexisClaw_bin" infer image providers --json)"
+  providers_json="$(run_with_timeout "$COMMAND_TIMEOUT_MS" "$FirstNexus_bin" infer image providers --json)"
   NEXISCLAW_IMAGE_PROVIDERS_JSON="$providers_json" node scripts/e2e/lib/bun-global-install/assertions.mjs assert-image-providers
 }
 

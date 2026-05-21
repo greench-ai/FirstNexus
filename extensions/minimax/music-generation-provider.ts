@@ -1,18 +1,18 @@
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
 import type {
   GeneratedMusicAsset,
   MusicGenerationProvider,
   MusicGenerationRequest,
-} from "NexisClaw/plugin-sdk/music-generation";
-import { isProviderApiKeyConfigured } from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+} from "FirstNexus/plugin-sdk/music-generation";
+import { isProviderApiKeyConfigured } from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   fetchWithTimeout,
   postJsonRequest,
   resolveProviderHttpRequestConfig,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 const DEFAULT_MINIMAX_MUSIC_BASE_URL = "https://api.minimax.io";
 const DEFAULT_MINIMAX_MUSIC_MODEL = "music-2.6";

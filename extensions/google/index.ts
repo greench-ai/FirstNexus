@@ -1,16 +1,16 @@
-import type { ImageGenerationProvider } from "NexisClaw/plugin-sdk/image-generation";
-import type { MediaUnderstandingProvider } from "NexisClaw/plugin-sdk/media-understanding";
-import type { MusicGenerationProvider } from "NexisClaw/plugin-sdk/music-generation";
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
+import type { ImageGenerationProvider } from "FirstNexus/plugin-sdk/image-generation";
+import type { MediaUnderstandingProvider } from "FirstNexus/plugin-sdk/media-understanding";
+import type { MusicGenerationProvider } from "FirstNexus/plugin-sdk/music-generation";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
 import type {
   RealtimeVoiceBridge,
   RealtimeVoiceBridgeCreateRequest,
   RealtimeVoiceProviderConfig,
   RealtimeVoiceProviderPlugin,
-} from "NexisClaw/plugin-sdk/realtime-voice";
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import type { VideoGenerationProvider } from "NexisClaw/plugin-sdk/video-generation";
+} from "FirstNexus/plugin-sdk/realtime-voice";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import type { VideoGenerationProvider } from "FirstNexus/plugin-sdk/video-generation";
 import { buildGoogleGeminiCliBackend } from "./cli-backend.js";
 import { registerGoogleGeminiCliProvider } from "./gemini-cli-provider.js";
 import {

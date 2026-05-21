@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   buildCommandsMessage,
   buildCommandsMessagePaginated,
@@ -9,13 +9,13 @@ import {
 
 const baseCfg = {
   commands: { useAccessGroups: true },
-} as unknown as NexisClawConfig;
+} as unknown as FirstNexusConfig;
 
 async function resolveAuthorization(params: {
   senderId: string;
   configuredAllowFrom?: string[];
   configuredGroupAllowFrom?: string[];
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
 }) {
   return resolveSenderCommandAuthorization({
     cfg: params.cfg ?? baseCfg,
@@ -37,7 +37,7 @@ async function resolveAuthorization(params: {
 
 describe("plugin-sdk/command-auth", () => {
   it("keeps deprecated command status builders available for compatibility", () => {
-    const cfg = { commands: { config: false, debug: false } } as unknown as NexisClawConfig;
+    const cfg = { commands: { config: false, debug: false } } as unknown as FirstNexusConfig;
 
     expect(buildHelpMessage(cfg)).toContain("/commands for full list");
     expect(buildCommandsMessage(cfg)).toContain("More: /tools for available capabilities");
@@ -110,7 +110,7 @@ describe("plugin-sdk/command-auth", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(result.effectiveGroupAllowFrom).toEqual(["accessGroup:admins", "group-admin"]);

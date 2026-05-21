@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { resolvePreferredNexisClawTmpDir } from "../infra/tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../infra/tmp-FirstNexus-dir.js";
 import { getImageMetadata } from "./image-ops.js";
 
 describe("image-ops temp dir", () => {
@@ -21,8 +21,8 @@ describe("image-ops temp dir", () => {
     vi.restoreAllMocks();
   });
 
-  it("creates sips temp dirs under the secured NexisClaw tmp root", async () => {
-    const secureRoot = await fs.realpath(resolvePreferredNexisClawTmpDir());
+  it("creates sips temp dirs under the secured FirstNexus tmp root", async () => {
+    const secureRoot = await fs.realpath(resolvePreferredFirstNexusTmpDir());
 
     await getImageMetadata(Buffer.from("image"));
 
@@ -33,7 +33,7 @@ describe("image-ops temp dir", () => {
     }
     const [prefix] = mkdtempCall;
     expect(typeof prefix).toBe("string");
-    const uuidPrefix = path.join(secureRoot, "NexisClaw-img-");
+    const uuidPrefix = path.join(secureRoot, "FirstNexus-img-");
     expect(prefix?.startsWith(uuidPrefix)).toBe(true);
     expect(prefix?.endsWith("-")).toBe(true);
     const uuid = prefix?.slice(uuidPrefix.length, -1) ?? "";

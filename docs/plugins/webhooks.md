@@ -7,7 +7,7 @@ title: "Webhooks plugin"
 ---
 
 The Webhooks plugin adds authenticated HTTP routes that bind external
-automation to NexisClaw TaskFlows.
+automation to FirstNexus TaskFlows.
 
 Use it when you want a trusted system such as Zapier, n8n, a CI job, or an
 internal service to create and drive managed TaskFlows without writing a custom
@@ -94,7 +94,7 @@ The plugin applies:
 Send `POST` requests with:
 
 - `Content-Type: application/json`
-- `Authorization: Bearer <secret>` or `x-NexisClaw-webhook-secret: <secret>`
+- `Authorization: Bearer <secret>` or `x-FirstNexus-webhook-secret: <secret>`
 
 Example:
 

@@ -83,7 +83,7 @@ function logPerformanceEvent(event: string, payload: Record<string, unknown>, wa
   if (typeof logger !== "function") {
     return;
   }
-  logger(`[NexisClaw] ${event}`, payload);
+  logger(`[FirstNexus] ${event}`, payload);
 }
 
 export function recordControlUiPerformanceEvent(

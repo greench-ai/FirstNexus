@@ -1,5 +1,5 @@
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { GatewayReloadMode } from "../config/types.gateway.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
 
 export type GatewayReloadSettings = {
   mode: GatewayReloadMode;
@@ -11,7 +11,7 @@ const DEFAULT_RELOAD_SETTINGS: GatewayReloadSettings = {
   debounceMs: 300,
 };
 
-export function resolveGatewayReloadSettings(cfg: NexisClawConfig): GatewayReloadSettings {
+export function resolveGatewayReloadSettings(cfg: FirstNexusConfig): GatewayReloadSettings {
   const rawMode = cfg.gateway?.reload?.mode;
   const mode =
     rawMode === "off" || rawMode === "restart" || rawMode === "hot" || rawMode === "hybrid"

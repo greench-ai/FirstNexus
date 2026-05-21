@@ -1,6 +1,6 @@
 import type { AnyMessageContent, MiscMessageGenerationOptions } from "baileys";
-import type { NormalizedLocation } from "NexisClaw/plugin-sdk/channel-inbound";
-import type { PollInput } from "NexisClaw/plugin-sdk/poll-runtime";
+import type { NormalizedLocation } from "FirstNexus/plugin-sdk/channel-inbound";
+import type { PollInput } from "FirstNexus/plugin-sdk/poll-runtime";
 import type { WhatsAppIdentity, WhatsAppReplyContext, WhatsAppSelfIdentity } from "../identity.js";
 import type { WhatsAppSendResult } from "./send-result.js";
 

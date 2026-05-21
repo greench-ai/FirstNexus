@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Installs an NexisClaw package candidate in Docker, performs Telegram
+# Installs an FirstNexus package candidate in Docker, performs Telegram
 # onboarding/doctor recovery, then runs the Telegram QA live harness.
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-npm-telegram-live-e2e" NEXISCLAW_NPM_TELEGRAM_LIVE_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-npm-telegram-live-e2e" NEXISCLAW_NPM_TELEGRAM_LIVE_E2E_IMAGE)"
 DOCKER_TARGET="${NEXISCLAW_NPM_TELEGRAM_DOCKER_TARGET:-build}"
-PACKAGE_SPEC="${NEXISCLAW_NPM_TELEGRAM_PACKAGE_SPEC:-NexisClaw@beta}"
+PACKAGE_SPEC="${NEXISCLAW_NPM_TELEGRAM_PACKAGE_SPEC:-FirstNexus@beta}"
 PACKAGE_TGZ="${NEXISCLAW_NPM_TELEGRAM_PACKAGE_TGZ:-${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}}"
 PACKAGE_LABEL="${NEXISCLAW_NPM_TELEGRAM_PACKAGE_LABEL:-}"
 OUTPUT_DIR="${NEXISCLAW_NPM_TELEGRAM_OUTPUT_DIR:-.artifacts/qa-e2e/npm-telegram-live}"
@@ -39,12 +39,12 @@ resolve_credential_role() {
   fi
 }
 
-validate_NexisClaw_package_spec() {
+validate_FirstNexus_package_spec() {
   local spec="$1"
-  if [[ "$spec" =~ ^NexisClaw@(alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$ ]]; then
+  if [[ "$spec" =~ ^FirstNexus@(alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$ ]]; then
     return 0
   fi
-  echo "NEXISCLAW_NPM_TELEGRAM_PACKAGE_SPEC must be NexisClaw@alpha, NexisClaw@beta, NexisClaw@latest, or an exact NexisClaw release version; got: $spec" >&2
+  echo "NEXISCLAW_NPM_TELEGRAM_PACKAGE_SPEC must be FirstNexus@alpha, FirstNexus@beta, FirstNexus@latest, or an exact FirstNexus release version; got: $spec" >&2
   exit 1
 }
 
@@ -78,7 +78,7 @@ if [ -n "$resolved_package_tgz" ]; then
   package_install_source="/package-under-test/$(basename "$resolved_package_tgz")"
   package_mount_args=(-v "$resolved_package_tgz:$package_install_source:ro")
 else
-  validate_NexisClaw_package_spec "$PACKAGE_SPEC"
+  validate_FirstNexus_package_spec "$PACKAGE_SPEC"
 fi
 if [ -z "$PACKAGE_LABEL" ]; then
   if [ -n "$resolved_package_tgz" ]; then
@@ -149,7 +149,7 @@ validate_credential_preflight
 docker_e2e_build_or_reuse "$IMAGE_NAME" npm-telegram-live "$ROOT_DIR/scripts/e2e/Dockerfile" "$ROOT_DIR" "$DOCKER_TARGET"
 
 mkdir -p "$ROOT_DIR/.artifacts/qa-e2e"
-run_log="$(mktemp "${TMPDIR:-/tmp}/NexisClaw-npm-telegram-live.XXXXXX")"
+run_log="$(mktemp "${TMPDIR:-/tmp}/FirstNexus-npm-telegram-live.XXXXXX")"
 npm_prefix_host="$(mktemp -d "$ROOT_DIR/.artifacts/qa-e2e/npm-telegram-live-prefix.XXXXXX")"
 trap 'rm -f "$run_log"; rm -rf "$npm_prefix_host"' EXIT
 
@@ -230,7 +230,7 @@ run_logged docker run --rm \
   -i "$IMAGE_NAME" bash -s <<'EOF'
 set -euo pipefail
 
-export HOME="$(mktemp -d "/tmp/NexisClaw-npm-telegram-install.XXXXXX")"
+export HOME="$(mktemp -d "/tmp/FirstNexus-npm-telegram-install.XXXXXX")"
 export NPM_CONFIG_PREFIX="/npm-global"
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
 
@@ -239,8 +239,8 @@ package_label="${NEXISCLAW_NPM_TELEGRAM_PACKAGE_LABEL:-$install_source}"
 echo "Installing ${package_label} from ${install_source}..."
 npm install -g "$install_source" --no-fund --no-audit
 
-command -v NexisClaw
-NexisClaw --version
+command -v FirstNexus
+FirstNexus --version
 EOF
 
 # Mount only QA harness source; the SUT itself, including bundled plugin runtime,
@@ -253,7 +253,7 @@ run_logged docker_e2e_run_with_harness \
   -i "$IMAGE_NAME" bash -s <<'EOF'
 set -euo pipefail
 
-export HOME="$(mktemp -d "/tmp/NexisClaw-npm-telegram-runtime.XXXXXX")"
+export HOME="$(mktemp -d "/tmp/FirstNexus-npm-telegram-runtime.XXXXXX")"
 export NPM_CONFIG_PREFIX="/npm-global"
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
 export NEXISCLAW_NPM_TELEGRAM_REPO_ROOT="/app"
@@ -262,10 +262,10 @@ dump_hotpath_logs() {
   local status="$1"
   echo "installed-package onboarding recovery hot path failed with exit code $status" >&2
   for file in \
-    /tmp/NexisClaw-npm-telegram-onboard.json \
-    /tmp/NexisClaw-npm-telegram-channel-add.log \
-    /tmp/NexisClaw-npm-telegram-doctor-fix.log \
-    /tmp/NexisClaw-npm-telegram-doctor-check.log; do
+    /tmp/FirstNexus-npm-telegram-onboard.json \
+    /tmp/FirstNexus-npm-telegram-channel-add.log \
+    /tmp/FirstNexus-npm-telegram-doctor-fix.log \
+    /tmp/FirstNexus-npm-telegram-doctor-check.log; do
     if [ -f "$file" ]; then
       echo "--- $file ---" >&2
       sed -n '1,220p' "$file" >&2 || true
@@ -274,27 +274,27 @@ dump_hotpath_logs() {
 }
 trap 'status=$?; dump_hotpath_logs "$status"; exit "$status"' ERR
 
-command -v NexisClaw
-NexisClaw --version
+command -v FirstNexus
+FirstNexus --version
 mkdir -p /app/node_modules
-NexisClaw_package_dir="/npm-global/lib/node_modules/NexisClaw"
-# The mounted QA harness imports NexisClaw/plugin-sdk and package dependencies;
+FirstNexus_package_dir="/npm-global/lib/node_modules/FirstNexus"
+# The mounted QA harness imports FirstNexus/plugin-sdk and package dependencies;
 # point those imports at the installed package without copying source plugins into the test image.
-rm -rf /app/node_modules/NexisClaw
-ln -sfnT "$NexisClaw_package_dir" /app/node_modules/NexisClaw
+rm -rf /app/node_modules/FirstNexus
+ln -sfnT "$FirstNexus_package_dir" /app/node_modules/FirstNexus
 rm -rf /app/dist
-ln -sfnT "$NexisClaw_package_dir/dist" /app/dist
-cp "$NexisClaw_package_dir/package.json" /app/package.json
+ln -sfnT "$FirstNexus_package_dir/dist" /app/dist
+cp "$FirstNexus_package_dir/package.json" /app/package.json
 node scripts/e2e/lib/npm-telegram-live/prepare-package.mjs \
   /app/package.json \
-  /app/node_modules/NexisClaw/package.json
-for deps_dir in "$NexisClaw_package_dir/node_modules" /npm-global/lib/node_modules; do
+  /app/node_modules/FirstNexus/package.json
+for deps_dir in "$FirstNexus_package_dir/node_modules" /npm-global/lib/node_modules; do
   [ -d "$deps_dir" ] || continue
   for dependency_dir in "$deps_dir"/*; do
     [ -e "$dependency_dir" ] || continue
     dependency_name="$(basename "$dependency_dir")"
     case "$dependency_name" in
-      .bin | NexisClaw)
+      .bin | FirstNexus)
         continue
         ;;
       @*)
@@ -317,7 +317,7 @@ done
 
 link_installed_package_dependency() {
   local name="$1"
-  local source="/npm-global/lib/node_modules/NexisClaw/node_modules/$name"
+  local source="/npm-global/lib/node_modules/FirstNexus/node_modules/$name"
   local target="/app/node_modules/$name"
   if [ ! -e "$source" ]; then
     echo "Installed package dependency is missing: $name" >&2
@@ -338,7 +338,7 @@ done
 
 if [ "${NEXISCLAW_NPM_TELEGRAM_SKIP_HOTPATH:-0}" != "1" ]; then
   echo "Running installed-package onboarding recovery hot path..."
-  OPENAI_API_KEY="${OPENAI_API_KEY:-sk-NexisClaw-npm-telegram-hotpath}" NexisClaw onboard --non-interactive --accept-risk \
+  OPENAI_API_KEY="${OPENAI_API_KEY:-sk-FirstNexus-npm-telegram-hotpath}" FirstNexus onboard --non-interactive --accept-risk \
     --mode local \
     --auth-choice openai-api-key \
     --secret-input-mode ref \
@@ -348,14 +348,14 @@ if [ "${NEXISCLAW_NPM_TELEGRAM_SKIP_HOTPATH:-0}" != "1" ]; then
     --skip-ui \
     --skip-skills \
     --skip-health \
-    --json >/tmp/NexisClaw-npm-telegram-onboard.json </dev/null
+    --json >/tmp/FirstNexus-npm-telegram-onboard.json </dev/null
 
-  NexisClaw channels add --channel telegram --token "123456:NexisClaw-npm-telegram-hotpath" >/tmp/NexisClaw-npm-telegram-channel-add.log 2>&1 </dev/null
-  NexisClaw doctor --fix --non-interactive >/tmp/NexisClaw-npm-telegram-doctor-fix.log 2>&1 </dev/null
-  NexisClaw doctor --non-interactive >/tmp/NexisClaw-npm-telegram-doctor-check.log 2>&1 </dev/null
+  FirstNexus channels add --channel telegram --token "123456:FirstNexus-npm-telegram-hotpath" >/tmp/FirstNexus-npm-telegram-channel-add.log 2>&1 </dev/null
+  FirstNexus doctor --fix --non-interactive >/tmp/FirstNexus-npm-telegram-doctor-fix.log 2>&1 </dev/null
+  FirstNexus doctor --non-interactive >/tmp/FirstNexus-npm-telegram-doctor-check.log 2>&1 </dev/null
 fi
 
-export NEXISCLAW_NPM_TELEGRAM_SUT_COMMAND="$(command -v NexisClaw)"
+export NEXISCLAW_NPM_TELEGRAM_SUT_COMMAND="$(command -v FirstNexus)"
 trap - ERR
 tsx scripts/e2e/npm-telegram-live-runner.ts
 EOF

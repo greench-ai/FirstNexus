@@ -1,27 +1,27 @@
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export {
   getRuntimeConfig,
   getRuntimeConfigSnapshot,
   getRuntimeConfigSourceSnapshot,
-} from "NexisClaw/plugin-sdk/runtime-config-snapshot";
-export { replaceConfigFile } from "NexisClaw/plugin-sdk/config-mutation";
+} from "FirstNexus/plugin-sdk/runtime-config-snapshot";
+export { replaceConfigFile } from "FirstNexus/plugin-sdk/config-mutation";
 export {
   type BrowserConfig,
   type BrowserProfileConfig,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
 export {
   normalizePluginsConfig,
   resolveEffectiveEnableState,
-} from "NexisClaw/plugin-sdk/plugin-config-runtime";
-export { resolveGatewayPort } from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/plugin-config-runtime";
+export { resolveGatewayPort } from "FirstNexus/plugin-sdk/core";
 export {
   CONFIG_DIR,
   escapeRegExp,
   resolveUserPath,
   shortenHomePath,
-} from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/text-utility-runtime";
 type PortRange = { start: number; end: number };
 
 const DEFAULT_BROWSER_CDP_PORT_RANGE_START = 18800;

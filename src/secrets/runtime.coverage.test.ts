@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import type { AuthProfileStore } from "../agents/auth-profiles.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import type {
   PluginOrigin,
   PluginWebFetchProviderEntry,
@@ -22,7 +22,7 @@ function createCoverageWebSearchProvider(params: {
   order: number;
 }): PluginWebSearchProviderEntry {
   const credentialPath = `plugins.entries.${params.pluginId}.config.webSearch.apiKey`;
-  const readConfiguredCredential = (config?: NexisClawConfig): unknown =>
+  const readConfiguredCredential = (config?: FirstNexusConfig): unknown =>
     (config?.plugins?.entries?.[params.pluginId]?.config as { webSearch?: { apiKey?: unknown } })
       ?.webSearch?.apiKey;
   return {
@@ -56,7 +56,7 @@ function createCoverageWebFetchProvider(params: {
   envVar: string;
 }): PluginWebFetchProviderEntry {
   const credentialPath = `plugins.entries.${params.pluginId}.config.webFetch.apiKey`;
-  const readConfiguredCredential = (config?: NexisClawConfig): unknown =>
+  const readConfiguredCredential = (config?: FirstNexusConfig): unknown =>
     (config?.plugins?.entries?.[params.pluginId]?.config as { webFetch?: { apiKey?: unknown } })
       ?.webFetch?.apiKey;
   return {
@@ -182,7 +182,7 @@ vi.mock("../plugins/web-provider-public-artifacts.explicit.js", () => ({
 
 type SecretRegistryEntry = {
   id: string;
-  configFile: "NexisClaw.json" | "auth-profiles.json";
+  configFile: "FirstNexus.json" | "auth-profiles.json";
   pathPattern: string;
   refPathPattern?: string;
   secretShape: "secret_input" | "sibling_ref";
@@ -193,7 +193,7 @@ type SecretRegistryEntry = {
 type SecretRefCredentialMatrix = {
   entries: Array<{
     id: string;
-    configFile: "NexisClaw.json" | "auth-profiles.json";
+    configFile: "FirstNexus.json" | "auth-profiles.json";
     path: string;
     refPath?: string;
     secretShape: SecretRegistryEntry["secretShape"];
@@ -446,19 +446,19 @@ function batchUsesRuntimeWebToolsOnly(batch: readonly SecretRegistryEntry[]): bo
   );
 }
 
-function collectNexisClawCoverageEntries(options: {
+function collectFirstNexusCoverageEntries(options: {
   includePluginEntries: boolean;
 }): SecretRegistryEntry[] {
   return COVERAGE_REGISTRY_ENTRIES.filter(
     (entry) =>
-      entry.configFile === "NexisClaw.json" &&
+      entry.configFile === "FirstNexus.json" &&
       entry.id.startsWith("plugins.entries.") === options.includePluginEntries &&
       !PLUGIN_OWNED_NEXISCLAW_COVERAGE_EXCLUSIONS.has(entry.id),
   );
 }
 
-function applyConfigForNexisClawTarget(
-  config: NexisClawConfig,
+function applyConfigForFirstNexusTarget(
+  config: FirstNexusConfig,
   entry: SecretRegistryEntry,
   envId: string,
   wildcardToken: string,
@@ -642,7 +642,7 @@ function applyAuthStoreTarget(
 }
 
 async function prepareConfigCoverageSnapshot(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   loadablePluginOrigins?: ReadonlyMap<string, PluginOrigin>;
   includeRuntimeWebTools?: boolean;
@@ -695,7 +695,7 @@ async function prepareConfigCoverageSnapshot(params: {
 }
 
 async function prepareAuthCoverageSnapshot(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   agentDirs: string[];
   loadAuthStore: (agentDir?: string) => AuthProfileStore;
@@ -738,13 +738,13 @@ async function prepareAuthCoverageSnapshot(params: {
   };
 }
 
-async function expectNexisClawCoverageEntriesResolved(
+async function expectFirstNexusCoverageEntriesResolved(
   label: string,
   entries: readonly SecretRegistryEntry[],
 ): Promise<void> {
   for (const batch of buildCoverageBatches(entries)) {
     logCoverageBatch(label, batch);
-    const config = {} as NexisClawConfig;
+    const config = {} as FirstNexusConfig;
     const env: Record<string, string> = {};
     for (const [index, entry] of batch.entries()) {
       const envId = `NEXISCLAW_SECRET_TARGET_${entry.id}`;
@@ -752,7 +752,7 @@ async function expectNexisClawCoverageEntriesResolved(
       const expectedValue = `resolved-${entry.id}`;
       const wildcardToken = resolveCoverageWildcardToken(index);
       env[runtimeEnvId] = expectedValue;
-      applyConfigForNexisClawTarget(config, entry, envId, wildcardToken);
+      applyConfigForFirstNexusTarget(config, entry, envId, wildcardToken);
     }
     const snapshot = await prepareConfigCoverageSnapshot({
       config,
@@ -782,22 +782,22 @@ describe("secrets runtime target coverage", () => {
   });
 
   it(
-    "handles every core and channel NexisClaw.json registry target when configured as active",
+    "handles every core and channel FirstNexus.json registry target when configured as active",
     async () => {
-      await expectNexisClawCoverageEntriesResolved(
-        "NexisClaw.json core",
-        collectNexisClawCoverageEntries({ includePluginEntries: false }),
+      await expectFirstNexusCoverageEntriesResolved(
+        "FirstNexus.json core",
+        collectFirstNexusCoverageEntries({ includePluginEntries: false }),
       );
     },
     RUNTIME_COVERAGE_TEST_TIMEOUT_MS,
   );
 
   it(
-    "handles every plugin NexisClaw.json registry target when configured as active",
+    "handles every plugin FirstNexus.json registry target when configured as active",
     async () => {
-      await expectNexisClawCoverageEntriesResolved(
-        "NexisClaw.json plugins",
-        collectNexisClawCoverageEntries({ includePluginEntries: true }),
+      await expectFirstNexusCoverageEntriesResolved(
+        "FirstNexus.json plugins",
+        collectFirstNexusCoverageEntries({ includePluginEntries: true }),
       );
     },
     RUNTIME_COVERAGE_TEST_TIMEOUT_MS,
@@ -820,9 +820,9 @@ describe("secrets runtime target coverage", () => {
         applyAuthStoreTarget(authStore, entry, envId, resolveCoverageWildcardToken(index));
       }
       const snapshot = await prepareAuthCoverageSnapshot({
-        config: {} as NexisClawConfig,
+        config: {} as FirstNexusConfig,
         env,
-        agentDirs: ["/tmp/NexisClaw-agent-main"],
+        agentDirs: ["/tmp/FirstNexus-agent-main"],
         loadAuthStore: () => authStore,
       });
       const resolvedStore = snapshot.authStores[0]?.store;

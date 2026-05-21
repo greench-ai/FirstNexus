@@ -49,7 +49,7 @@ let randomIntSpy: MockInstance<RandomIntSync>;
 let nextRandomInt = 0;
 
 beforeAll(() => {
-  fixtureRoot = fsSync.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-pairing-"));
+  fixtureRoot = fsSync.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-pairing-"));
 });
 
 afterAll(() => {

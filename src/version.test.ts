@@ -14,7 +14,7 @@ import {
   resolveVersionFromModuleUrl,
 } from "./version.js";
 
-const versionFixtureRoot = createSuiteTempRootTracker({ prefix: "NexisClaw-version-" });
+const versionFixtureRoot = createSuiteTempRootTracker({ prefix: "FirstNexus-version-" });
 
 beforeAll(async () => {
   await versionFixtureRoot.setup();
@@ -52,7 +52,7 @@ function expectVersionMetadataToBeMissing(moduleUrl: string) {
 describe("version resolution", () => {
   it("resolves package version from nested dist/plugin-sdk module URL", async () => {
     await withVersionFixtureDir(async (root) => {
-      await writeJsonFixture(root, "package.json", { name: "NexisClaw", version: "1.2.3" });
+      await writeJsonFixture(root, "package.json", { name: "FirstNexus", version: "1.2.3" });
       const moduleUrl = await ensureModuleFixture(root);
       expect(readVersionFromPackageJsonForModuleUrl(moduleUrl)).toBe("1.2.3");
       expect(resolveVersionFromModuleUrl(moduleUrl)).toBe("1.2.3");
@@ -61,7 +61,7 @@ describe("version resolution", () => {
 
   it("ignores unrelated nearby package.json files", async () => {
     await withVersionFixtureDir(async (root) => {
-      await writeJsonFixture(root, "package.json", { name: "NexisClaw", version: "2.3.4" });
+      await writeJsonFixture(root, "package.json", { name: "FirstNexus", version: "2.3.4" });
       await writeJsonFixture(root, "dist/package.json", {
         name: "other-package",
         version: "9.9.9",
@@ -88,7 +88,7 @@ describe("version resolution", () => {
     });
   });
 
-  it("ignores non-NexisClaw package and blank build-info versions", async () => {
+  it("ignores non-FirstNexus package and blank build-info versions", async () => {
     await withVersionFixtureDir(async (root) => {
       await writeJsonFixture(root, "package.json", { name: "other-package", version: "9.9.9" });
       await writeJsonFixture(root, "build-info.json", { version: "  " });
@@ -105,7 +105,7 @@ describe("version resolution", () => {
 
   it("resolves binary version with explicit precedence", async () => {
     await withVersionFixtureDir(async (root) => {
-      await writeJsonFixture(root, "package.json", { name: "NexisClaw", version: "2.3.4" });
+      await writeJsonFixture(root, "package.json", { name: "FirstNexus", version: "2.3.4" });
       const moduleUrl = await ensureModuleFixture(root);
       expect(
         resolveBinaryVersion({

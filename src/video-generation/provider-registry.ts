@@ -1,5 +1,5 @@
 import { normalizeProviderId } from "../agents/model-selection.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { isBlockedObjectKey } from "../infra/prototype-keys.js";
 import * as capabilityProviderRuntime from "../plugins/capability-provider-runtime.js";
 import type { VideoGenerationProviderPlugin } from "../plugins/types.js";
@@ -20,7 +20,7 @@ function isSafeVideoGenerationProviderId(id: string | undefined): id is string {
 }
 
 function resolvePluginVideoGenerationProviders(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): VideoGenerationProviderPlugin[] {
   return capabilityProviderRuntime.resolvePluginCapabilityProviders({
     key: "videoGenerationProviders",
@@ -28,7 +28,7 @@ function resolvePluginVideoGenerationProviders(
   });
 }
 
-function buildProviderMaps(cfg?: NexisClawConfig): {
+function buildProviderMaps(cfg?: FirstNexusConfig): {
   canonical: Map<string, VideoGenerationProviderPlugin>;
   aliases: Map<string, VideoGenerationProviderPlugin>;
 } {
@@ -60,14 +60,14 @@ function buildProviderMaps(cfg?: NexisClawConfig): {
 }
 
 export function listVideoGenerationProviders(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): VideoGenerationProviderPlugin[] {
   return [...buildProviderMaps(cfg).canonical.values()];
 }
 
 export function getVideoGenerationProvider(
   providerId: string | undefined,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): VideoGenerationProviderPlugin | undefined {
   const normalized = normalizeVideoGenerationProviderId(providerId);
   if (!normalized) {

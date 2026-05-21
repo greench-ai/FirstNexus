@@ -15,7 +15,7 @@ describe("Crestodian audit log", () => {
     }
   });
 
-  it("writes jsonl records under the NexisClaw audit dir", async () => {
+  it("writes jsonl records under the FirstNexus audit dir", async () => {
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "crestodian-audit-"));
     vi.stubEnv("NEXISCLAW_STATE_DIR", tempDir);
 

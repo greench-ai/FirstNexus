@@ -9,7 +9,7 @@ import { createSuiteLogPathTracker } from "./log-test-helpers.js";
 import { loggingState } from "./state.js";
 
 const defaultMaxFileBytes = 100 * 1024 * 1024;
-const logPathTracker = createSuiteLogPathTracker("NexisClaw-test-env-log-level-");
+const logPathTracker = createSuiteLogPathTracker("FirstNexus-test-env-log-level-");
 
 describe("NEXISCLAW_LOG_LEVEL", () => {
   let originalEnv: string | undefined;

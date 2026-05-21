@@ -1,10 +1,10 @@
 import {
   renderMessagePresentationFallbackText,
   type MessagePresentation,
-} from "NexisClaw/plugin-sdk/interactive-runtime";
-import { createReplyToFanout } from "NexisClaw/plugin-sdk/outbound-runtime";
-import { resolvePayloadMediaUrls } from "NexisClaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
+} from "FirstNexus/plugin-sdk/interactive-runtime";
+import { createReplyToFanout } from "FirstNexus/plugin-sdk/outbound-runtime";
+import { resolvePayloadMediaUrls } from "FirstNexus/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
 import { sendMessageMatrix, sendPollMatrix } from "./matrix/send.js";
 import type { MatrixExtraContentFields } from "./matrix/send/types.js";
 import {
@@ -13,7 +13,7 @@ import {
   type ChannelOutboundAdapter,
 } from "./runtime-api.js";
 
-const MATRIX_NEXISCLAW_PRESENTATION_KEY = "com.NexisClaw.presentation" as const;
+const MATRIX_NEXISCLAW_PRESENTATION_KEY = "com.FirstNexus.presentation" as const;
 const MATRIX_NEXISCLAW_PRESENTATION_TYPE = "message.presentation" as const;
 const MATRIX_EMPTY_PRESENTATION_FALLBACK_TEXT = "---";
 

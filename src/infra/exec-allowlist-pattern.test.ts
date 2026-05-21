@@ -25,20 +25,20 @@ describe("matchesExecAllowlistPattern", () => {
   });
 
   it("expands home-prefix patterns", () => {
-    const prevNexisClawHome = process.env.NEXISCLAW_HOME;
+    const prevFirstNexusHome = process.env.NEXISCLAW_HOME;
     const prevHome = process.env.HOME;
-    process.env.NEXISCLAW_HOME = "/srv/NexisClaw-home";
+    process.env.NEXISCLAW_HOME = "/srv/FirstNexus-home";
     process.env.HOME = "/home/other";
-    const openClawHome = path.join(path.resolve("/srv/NexisClaw-home"), "bin", "tool");
+    const openClawHome = path.join(path.resolve("/srv/FirstNexus-home"), "bin", "tool");
     const fallbackHome = path.join(path.resolve("/home/other"), "bin", "tool");
     try {
       expect(matchesExecAllowlistPattern("~/bin/tool", openClawHome)).toBe(true);
       expect(matchesExecAllowlistPattern("~/bin/tool", fallbackHome)).toBe(false);
     } finally {
-      if (prevNexisClawHome === undefined) {
+      if (prevFirstNexusHome === undefined) {
         delete process.env.NEXISCLAW_HOME;
       } else {
-        process.env.NEXISCLAW_HOME = prevNexisClawHome;
+        process.env.NEXISCLAW_HOME = prevFirstNexusHome;
       }
       if (prevHome === undefined) {
         delete process.env.HOME;

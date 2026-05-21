@@ -1,10 +1,10 @@
 import fs from "node:fs";
-import type { PinnedDispatcherPolicy } from "NexisClaw/plugin-sdk/ssrf-dispatcher";
+import type { PinnedDispatcherPolicy } from "FirstNexus/plugin-sdk/ssrf-dispatcher";
 import {
   ssrfPolicyFromDangerouslyAllowPrivateNetwork,
   type SsrFPolicy,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { MatrixClient } from "../sdk.js";
 import { resolveValidatedMatrixHomeserverUrl } from "./config.js";
 import {
@@ -83,7 +83,7 @@ export async function createMatrixClient(params: {
   }
 
   const cryptoDatabasePrefix = storagePaths
-    ? `NexisClaw-matrix-${storagePaths.accountKey}-${storagePaths.tokenHash}`
+    ? `FirstNexus-matrix-${storagePaths.accountKey}-${storagePaths.tokenHash}`
     : undefined;
 
   return new MatrixClient(homeserver, params.accessToken, {

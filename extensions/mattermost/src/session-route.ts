@@ -4,8 +4,8 @@ import {
   stripChannelTargetPrefix,
   stripTargetKindPrefix,
   type ChannelOutboundSessionRouteParams,
-} from "NexisClaw/plugin-sdk/core";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/core";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export function resolveMattermostOutboundSessionRoute(params: ChannelOutboundSessionRouteParams) {
   let trimmed = stripChannelTargetPrefix(params.target, "mattermost");

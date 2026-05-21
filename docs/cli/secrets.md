@@ -1,5 +1,5 @@
 ---
-summary: "CLI reference for `NexisClaw secrets` (reload, audit, configure, apply)"
+summary: "CLI reference for `FirstNexus secrets` (reload, audit, configure, apply)"
 read_when:
   - Re-resolving secret refs at runtime
   - Auditing plaintext residues and unresolved refs
@@ -7,9 +7,9 @@ read_when:
 title: "Secrets"
 ---
 
-# `NexisClaw secrets`
+# `FirstNexus secrets`
 
-Use `NexisClaw secrets` to manage SecretRefs and keep the active runtime snapshot healthy.
+Use `FirstNexus secrets` to manage SecretRefs and keep the active runtime snapshot healthy.
 
 Command roles:
 
@@ -21,12 +21,12 @@ Command roles:
 Recommended operator loop:
 
 ```bash
-NexisClaw secrets audit --check
-NexisClaw secrets configure
-NexisClaw secrets apply --from /tmp/NexisClaw-secrets-plan.json --dry-run
-NexisClaw secrets apply --from /tmp/NexisClaw-secrets-plan.json
-NexisClaw secrets audit --check
-NexisClaw secrets reload
+FirstNexus secrets audit --check
+FirstNexus secrets configure
+FirstNexus secrets apply --from /tmp/FirstNexus-secrets-plan.json --dry-run
+FirstNexus secrets apply --from /tmp/FirstNexus-secrets-plan.json
+FirstNexus secrets audit --check
+FirstNexus secrets reload
 ```
 
 If your plan includes `exec` SecretRefs/providers, pass `--allow-exec` on both dry-run and write apply commands.
@@ -47,9 +47,9 @@ Related:
 Re-resolve secret refs and atomically swap runtime snapshot.
 
 ```bash
-NexisClaw secrets reload
-NexisClaw secrets reload --json
-NexisClaw secrets reload --url ws://127.0.0.1:18789 --token <token>
+FirstNexus secrets reload
+FirstNexus secrets reload --json
+FirstNexus secrets reload --url ws://127.0.0.1:18789 --token <token>
 ```
 
 Notes:
@@ -67,11 +67,11 @@ Options:
 
 ## Audit
 
-Scan NexisClaw state for:
+Scan FirstNexus state for:
 
 - plaintext secret storage
 - unresolved refs
-- precedence drift (`auth-profiles.json` credentials shadowing `NexisClaw.json` refs)
+- precedence drift (`auth-profiles.json` credentials shadowing `FirstNexus.json` refs)
 - generated `agents/*/agent/models.json` residues (provider `apiKey` values and sensitive provider headers)
 - legacy residues (legacy auth store entries, OAuth reminders)
 
@@ -80,10 +80,10 @@ Header residue note:
 - Sensitive provider header detection is name-heuristic based (common auth/credential header names and fragments such as `authorization`, `x-api-key`, `token`, `secret`, `password`, and `credential`).
 
 ```bash
-NexisClaw secrets audit
-NexisClaw secrets audit --check
-NexisClaw secrets audit --json
-NexisClaw secrets audit --allow-exec
+FirstNexus secrets audit
+FirstNexus secrets audit --check
+FirstNexus secrets audit --json
+FirstNexus secrets audit --allow-exec
 ```
 
 Exit behavior:
@@ -107,13 +107,13 @@ Report shape highlights:
 Build provider and SecretRef changes interactively, run preflight, and optionally apply:
 
 ```bash
-NexisClaw secrets configure
-NexisClaw secrets configure --plan-out /tmp/NexisClaw-secrets-plan.json
-NexisClaw secrets configure --apply --yes
-NexisClaw secrets configure --providers-only
-NexisClaw secrets configure --skip-provider-setup
-NexisClaw secrets configure --agent ops
-NexisClaw secrets configure --json
+FirstNexus secrets configure
+FirstNexus secrets configure --plan-out /tmp/FirstNexus-secrets-plan.json
+FirstNexus secrets configure --apply --yes
+FirstNexus secrets configure --providers-only
+FirstNexus secrets configure --skip-provider-setup
+FirstNexus secrets configure --agent ops
+FirstNexus secrets configure --json
 ```
 
 Flow:
@@ -133,7 +133,7 @@ Notes:
 
 - Requires an interactive TTY.
 - You cannot combine `--providers-only` with `--skip-provider-setup`.
-- `configure` targets secret-bearing fields in `NexisClaw.json` plus `auth-profiles.json` for the selected agent scope.
+- `configure` targets secret-bearing fields in `FirstNexus.json` plus `auth-profiles.json` for the selected agent scope.
 - `configure` supports creating new `auth-profiles.json` mappings directly in the picker flow.
 - Canonical supported surface: [SecretRef Credential Surface](/reference/secretref-credential-surface).
 - It performs preflight resolution before apply.
@@ -148,18 +148,18 @@ Exec provider safety note:
 
 - Homebrew installs often expose symlinked binaries under `/opt/homebrew/bin/*`.
 - Set `allowSymlinkCommand: true` only when needed for trusted package-manager paths, and pair it with `trustedDirs` (for example `["/opt/homebrew"]`).
-- On Windows, if ACL verification is unavailable for a provider path, NexisClaw fails closed. For trusted paths only, set `allowInsecurePath: true` on that provider to bypass path security checks.
+- On Windows, if ACL verification is unavailable for a provider path, FirstNexus fails closed. For trusted paths only, set `allowInsecurePath: true` on that provider to bypass path security checks.
 
 ## Apply a saved plan
 
 Apply or preflight a plan generated previously:
 
 ```bash
-NexisClaw secrets apply --from /tmp/NexisClaw-secrets-plan.json
-NexisClaw secrets apply --from /tmp/NexisClaw-secrets-plan.json --allow-exec
-NexisClaw secrets apply --from /tmp/NexisClaw-secrets-plan.json --dry-run
-NexisClaw secrets apply --from /tmp/NexisClaw-secrets-plan.json --dry-run --allow-exec
-NexisClaw secrets apply --from /tmp/NexisClaw-secrets-plan.json --json
+FirstNexus secrets apply --from /tmp/FirstNexus-secrets-plan.json
+FirstNexus secrets apply --from /tmp/FirstNexus-secrets-plan.json --allow-exec
+FirstNexus secrets apply --from /tmp/FirstNexus-secrets-plan.json --dry-run
+FirstNexus secrets apply --from /tmp/FirstNexus-secrets-plan.json --dry-run --allow-exec
+FirstNexus secrets apply --from /tmp/FirstNexus-secrets-plan.json --json
 ```
 
 Exec behavior:
@@ -175,10 +175,10 @@ Plan contract details (allowed target paths, validation rules, and failure seman
 
 What `apply` may update:
 
-- `NexisClaw.json` (SecretRef targets + provider upserts/deletes)
+- `FirstNexus.json` (SecretRef targets + provider upserts/deletes)
 - `auth-profiles.json` (provider-target scrubbing)
 - legacy `auth.json` residues
-- `~/.NexisClaw/.env` known secret keys whose values were migrated
+- `~/.FirstNexus/.env` known secret keys whose values were migrated
 
 ## Why no rollback backups
 
@@ -189,9 +189,9 @@ Safety comes from strict preflight + atomic-ish apply with best-effort in-memory
 ## Example
 
 ```bash
-NexisClaw secrets audit --check
-NexisClaw secrets configure
-NexisClaw secrets audit --check
+FirstNexus secrets audit --check
+FirstNexus secrets configure
+FirstNexus secrets audit --check
 ```
 
 If `audit --check` still reports plaintext findings, update the remaining reported target paths and rerun audit.

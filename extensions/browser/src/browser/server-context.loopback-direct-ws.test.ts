@@ -51,16 +51,16 @@ describe("browser server-context loopback direct WebSocket profiles", () => {
     });
 
     global.fetch = withBrowserFetchPreconnect(fetchMock);
-    const state = makeState("NexisClaw");
+    const state = makeState("FirstNexus");
     state.resolved.ssrfPolicy = {};
-    state.resolved.profiles.NexisClaw = {
+    state.resolved.profiles.FirstNexus = {
       cdpUrl: "ws://127.0.0.1:18800/devtools/browser/SESSION?token=abc",
       color: "#FF4500",
     };
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const NexisClaw = ctx.forProfile("NexisClaw");
+    const FirstNexus = ctx.forProfile("FirstNexus");
 
-    const opened = await NexisClaw.openTab("about:blank");
+    const opened = await FirstNexus.openTab("about:blank");
     expect(opened.targetId).toBe("CREATED");
     expect(createTargetViaCdp).toHaveBeenCalledWith({
       cdpUrl: "ws://127.0.0.1:18800/devtools/browser/SESSION?token=abc",
@@ -96,17 +96,17 @@ describe("browser server-context loopback direct WebSocket profiles", () => {
     });
 
     global.fetch = withBrowserFetchPreconnect(fetchMock);
-    const state = makeState("NexisClaw");
+    const state = makeState("FirstNexus");
     state.resolved.ssrfPolicy = {};
-    state.resolved.profiles.NexisClaw = {
+    state.resolved.profiles.FirstNexus = {
       cdpUrl: "ws://127.0.0.1:18800/devtools/browser/SESSION?token=abc",
       color: "#FF4500",
     };
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const NexisClaw = ctx.forProfile("NexisClaw");
+    const FirstNexus = ctx.forProfile("FirstNexus");
 
-    await NexisClaw.focusTab("T1");
-    await NexisClaw.closeTab("T1");
+    await FirstNexus.focusTab("T1");
+    await FirstNexus.closeTab("T1");
 
     expectFetchCalledWithManualRedirect(
       fetchMock,
@@ -145,19 +145,19 @@ describe("browser server-context loopback direct WebSocket profiles", () => {
     });
 
     global.fetch = withBrowserFetchPreconnect(fetchMock);
-    const state = makeState("NexisClaw");
-    state.resolved.profiles.NexisClaw = {
+    const state = makeState("FirstNexus");
+    state.resolved.profiles.FirstNexus = {
       cdpUrl: "wss://127.0.0.1:18800/cdp?token=abc",
       color: "#FF4500",
     };
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const NexisClaw = ctx.forProfile("NexisClaw");
+    const FirstNexus = ctx.forProfile("FirstNexus");
 
-    const tabs = await NexisClaw.listTabs();
+    const tabs = await FirstNexus.listTabs();
     expect(tabs.map((tab) => tab.targetId)).toEqual(["T2"]);
 
-    await NexisClaw.focusTab("T2");
-    await NexisClaw.closeTab("T2");
+    await FirstNexus.focusTab("T2");
+    await FirstNexus.closeTab("T2");
   });
 
   it("blocks direct WebSocket tab operations when strict SSRF hostname allowlist rejects the cdpUrl", async () => {
@@ -166,21 +166,21 @@ describe("browser server-context loopback direct WebSocket profiles", () => {
     });
 
     global.fetch = withBrowserFetchPreconnect(fetchMock);
-    const state = makeState("NexisClaw");
+    const state = makeState("FirstNexus");
     state.resolved.ssrfPolicy = {
       dangerouslyAllowPrivateNetwork: false,
       hostnameAllowlist: ["browserless.example.com"],
     };
-    state.resolved.profiles.NexisClaw = {
+    state.resolved.profiles.FirstNexus = {
       cdpUrl: "ws://10.0.0.42:18800/devtools/browser/SESSION?token=abc",
       color: "#FF4500",
     };
     const ctx = createTestBrowserRouteContext({ getState: () => state });
-    const NexisClaw = ctx.forProfile("NexisClaw");
+    const FirstNexus = ctx.forProfile("FirstNexus");
 
-    await expect(NexisClaw.listTabs()).rejects.toBeInstanceOf(BrowserCdpEndpointBlockedError);
-    await expect(NexisClaw.focusTab("T1")).rejects.toBeInstanceOf(BrowserCdpEndpointBlockedError);
-    await expect(NexisClaw.closeTab("T1")).rejects.toBeInstanceOf(BrowserCdpEndpointBlockedError);
+    await expect(FirstNexus.listTabs()).rejects.toBeInstanceOf(BrowserCdpEndpointBlockedError);
+    await expect(FirstNexus.focusTab("T1")).rejects.toBeInstanceOf(BrowserCdpEndpointBlockedError);
+    await expect(FirstNexus.closeTab("T1")).rejects.toBeInstanceOf(BrowserCdpEndpointBlockedError);
     expect(fetchMock).not.toHaveBeenCalled();
   });
 });

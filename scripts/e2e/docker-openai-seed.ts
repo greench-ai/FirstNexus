@@ -3,10 +3,10 @@
 import {
   applyProviderConfigWithDefaultModelPreset,
   type ModelDefinitionConfig,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../../dist/plugin-sdk/provider-onboard.js";
 
-export type { NexisClawConfig };
+export type { FirstNexusConfig };
 
 const DOCKER_OPENAI_MODEL_REF = "openai/gpt-5.5";
 const DOCKER_OPENAI_BASE_URL =
@@ -28,9 +28,9 @@ const DOCKER_OPENAI_MODEL: ModelDefinitionConfig = {
 };
 
 export function applyDockerOpenAiProviderConfig(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   apiKey: string,
-): NexisClawConfig {
+): FirstNexusConfig {
   const seededConfig = applyProviderConfigWithDefaultModelPreset(config, {
     providerId: "openai",
     api: "openai-responses",

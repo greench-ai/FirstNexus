@@ -1,10 +1,10 @@
-import { ToolAuthorizationError } from "NexisClaw/plugin-sdk/channel-actions";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { ToolAuthorizationError } from "FirstNexus/plugin-sdk/channel-actions";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { resolveWhatsAppAccount } from "./accounts.js";
 import { resolveWhatsAppOutboundTarget } from "./resolve-outbound-target.js";
 
 export function resolveAuthorizedWhatsAppOutboundTarget(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   chatJid: string;
   accountId?: string;
   actionLabel: string;

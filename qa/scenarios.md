@@ -1,4 +1,4 @@
-# NexisClaw QA Scenarios
+# FirstNexus QA Scenarios
 
 Canonical scenario source now lives in:
 

@@ -3,13 +3,13 @@ import {
   buildChannelProgressDraftLineForEntry,
   resolveChannelPreviewStreamMode,
   resolveChannelStreamingBlockEnabled,
-} from "NexisClaw/plugin-sdk/channel-streaming";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-streaming";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   createChannelMessageReplyPipeline,
   logTypingFailure,
   resolveChannelMediaMaxBytes,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type MSTeamsReplyStyle,
   type RuntimeEnv,
 } from "../runtime-api.js";
@@ -36,7 +36,7 @@ import type { MSTeamsTurnContext } from "./sdk-types.js";
 export { pickInformativeStatusText } from "./reply-stream-controller.js";
 
 export function createMSTeamsReplyDispatcher(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   sessionKey: string;
   accountId?: string;

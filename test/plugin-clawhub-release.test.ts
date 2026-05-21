@@ -4,7 +4,7 @@ import { delimiter, join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   collectClawHubPublishablePluginPackages,
-  collectClawHubNexisClawOwnerErrors,
+  collectClawHubFirstNexusOwnerErrors,
   collectClawHubVersionGateErrors,
   collectPluginClawHubReleasePathsFromGitRange,
   collectPluginClawHubReleasePlan,
@@ -29,7 +29,7 @@ describe("resolveChangedClawHubPublishablePluginPackages", () => {
     {
       extensionId: "feishu",
       packageDir: "extensions/feishu",
-      packageName: "@NexisClaw/feishu",
+      packageName: "@FirstNexus/feishu",
       version: "2026.4.1",
       channel: "stable",
       publishTag: "latest",
@@ -37,7 +37,7 @@ describe("resolveChangedClawHubPublishablePluginPackages", () => {
     {
       extensionId: "zalo",
       packageDir: "extensions/zalo",
-      packageName: "@NexisClaw/zalo",
+      packageName: "@FirstNexus/zalo",
       version: "2026.4.1-beta.1",
       channel: "beta",
       publishTag: "beta",
@@ -61,7 +61,7 @@ describe("collectClawHubPublishablePluginPackages", () => {
     });
 
     expect(() => collectClawHubPublishablePluginPackages(repoDir)).toThrow(
-      "NexisClaw.compat.pluginApi is required for external code plugins published to ClawHub.",
+      "FirstNexus.compat.pluginApi is required for external code plugins published to ClawHub.",
     );
   });
 
@@ -83,9 +83,9 @@ describe("collectClawHubPublishablePluginPackages", () => {
       join(repoDir, "extensions", "broken-plugin", "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/broken-plugin",
+          name: "@FirstNexus/broken-plugin",
           version: "2026.4.1",
-          NexisClaw: {
+          FirstNexus: {
             extensions: ["./index.ts"],
             release: {
               publishToClawHub: true,
@@ -99,21 +99,21 @@ describe("collectClawHubPublishablePluginPackages", () => {
 
     expect(
       collectClawHubPublishablePluginPackages(repoDir, {
-        packageNames: ["@NexisClaw/demo-plugin"],
+        packageNames: ["@FirstNexus/demo-plugin"],
       }).map((plugin) => plugin.packageName),
-    ).toEqual(["@NexisClaw/demo-plugin"]);
+    ).toEqual(["@FirstNexus/demo-plugin"]);
   });
 });
 
-describe("NexisClaw dual-published plugin metadata", () => {
+describe("FirstNexus dual-published plugin metadata", () => {
   const dualPublishedPlugins = [
     {
       extensionId: "diagnostics-otel",
-      packageName: "@NexisClaw/diagnostics-otel",
+      packageName: "@FirstNexus/diagnostics-otel",
     },
     {
       extensionId: "diagnostics-prometheus",
-      packageName: "@NexisClaw/diagnostics-prometheus",
+      packageName: "@FirstNexus/diagnostics-prometheus",
     },
   ] as const;
 
@@ -133,7 +133,7 @@ describe("NexisClaw dual-published plugin metadata", () => {
       const packageJson = JSON.parse(
         readFileSync(`extensions/${plugin.extensionId}/package.json`, "utf8"),
       ) as {
-        NexisClaw?: {
+        FirstNexus?: {
           install?: {
             clawhubSpec?: string;
             defaultChoice?: string;
@@ -146,13 +146,13 @@ describe("NexisClaw dual-published plugin metadata", () => {
         };
       };
 
-      expect(packageJson.NexisClaw?.install).toEqual({
+      expect(packageJson.FirstNexus?.install).toEqual({
         clawhubSpec: `clawhub:${plugin.packageName}`,
         defaultChoice: "npm",
         minHostVersion: ">=2026.4.25",
         npmSpec: plugin.packageName,
       });
-      expect(packageJson.NexisClaw?.release).toEqual({
+      expect(packageJson.FirstNexus?.release).toEqual({
         publishToClawHub: true,
         publishToNpm: true,
       });
@@ -188,7 +188,7 @@ describe("collectClawHubVersionGateErrors", () => {
     });
 
     expect(errors).toEqual([
-      "@NexisClaw/demo-plugin@2026.4.1: changed publishable plugin still has the same version in package.json.",
+      "@FirstNexus/demo-plugin@2026.4.1: changed publishable plugin still has the same version in package.json.",
     ]);
   });
 
@@ -202,22 +202,22 @@ describe("collectClawHubVersionGateErrors", () => {
       join(repoDir, "extensions", "demo-plugin", "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/demo-plugin",
+          name: "@FirstNexus/demo-plugin",
           version: "2026.4.1",
           repository: {
             type: "git",
             url: NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL,
           },
-          NexisClaw: {
+          FirstNexus: {
             extensions: ["./index.ts"],
             compat: {
               pluginApi: ">=2026.4.1",
             },
             install: {
-              npmSpec: "@NexisClaw/demo-plugin",
+              npmSpec: "@FirstNexus/demo-plugin",
             },
             build: {
-              NexisClawVersion: "2026.4.1",
+              FirstNexusVersion: "2026.4.1",
             },
             release: {
               publishToClawHub: true,
@@ -318,7 +318,7 @@ describe("collectPluginClawHubReleasePlan", () => {
 
     const plan = await collectPluginClawHubReleasePlan({
       rootDir: repoDir,
-      selection: ["@NexisClaw/demo-plugin"],
+      selection: ["@FirstNexus/demo-plugin"],
       fetchImpl: async () => new Response("{}", { status: 200 }),
       registryBaseUrl: "https://clawhub.ai",
     });
@@ -330,7 +330,7 @@ describe("collectPluginClawHubReleasePlan", () => {
       channel: "stable",
       extensionId: "demo-plugin",
       packageDir: "extensions/demo-plugin",
-      packageName: "@NexisClaw/demo-plugin",
+      packageName: "@FirstNexus/demo-plugin",
       publishTag: "latest",
       version: "2026.4.1",
     });
@@ -344,9 +344,9 @@ describe("collectPluginClawHubReleasePlan", () => {
       join(repoDir, "extensions", "broken-plugin", "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/broken-plugin",
+          name: "@FirstNexus/broken-plugin",
           version: "2026.4.1",
-          NexisClaw: {
+          FirstNexus: {
             extensions: ["./index.ts"],
             release: {
               publishToClawHub: true,
@@ -360,27 +360,29 @@ describe("collectPluginClawHubReleasePlan", () => {
 
     const plan = await collectPluginClawHubReleasePlan({
       rootDir: repoDir,
-      selection: ["@NexisClaw/demo-plugin"],
+      selection: ["@FirstNexus/demo-plugin"],
       fetchImpl: async () => new Response("{}", { status: 404 }),
       registryBaseUrl: "https://clawhub.ai",
     });
 
-    expect(plan.candidates.map((plugin) => plugin.packageName)).toEqual(["@NexisClaw/demo-plugin"]);
+    expect(plan.candidates.map((plugin) => plugin.packageName)).toEqual([
+      "@FirstNexus/demo-plugin",
+    ]);
   });
 });
 
-describe("collectClawHubNexisClawOwnerErrors", () => {
-  it("requires NexisClaw-scoped release candidates to already belong to the NexisClaw publisher", async () => {
-    const errors = await collectClawHubNexisClawOwnerErrors({
+describe("collectClawHubFirstNexusOwnerErrors", () => {
+  it("requires FirstNexus-scoped release candidates to already belong to the FirstNexus publisher", async () => {
+    const errors = await collectClawHubFirstNexusOwnerErrors({
       plugins: [
-        { packageName: "@NexisClaw/demo-plugin" },
-        { packageName: "@NexisClaw/missing-plugin" },
+        { packageName: "@FirstNexus/demo-plugin" },
+        { packageName: "@FirstNexus/missing-plugin" },
         { packageName: "@other/safe-plugin" },
       ],
       registryBaseUrl: "https://clawhub.ai",
       fetchImpl: async (url) => {
         const pathname = new URL(url instanceof Request ? url.url : url).pathname;
-        if (pathname.includes("%40NexisClaw%2Fmissing-plugin")) {
+        if (pathname.includes("%40FirstNexus%2Fmissing-plugin")) {
           return new Response("not found", { status: 404 });
         }
         return new Response(
@@ -393,17 +395,17 @@ describe("collectClawHubNexisClawOwnerErrors", () => {
     });
 
     expect(errors).toEqual([
-      "@NexisClaw/demo-plugin: ClawHub package owner must be @NexisClaw; got @steipete.",
-      "@NexisClaw/missing-plugin: ClawHub package row must already exist under @NexisClaw before NexisClaw release publish.",
+      "@FirstNexus/demo-plugin: ClawHub package owner must be @FirstNexus; got @steipete.",
+      "@FirstNexus/missing-plugin: ClawHub package row must already exist under @FirstNexus before FirstNexus release publish.",
     ]);
   });
 
-  it("passes when NexisClaw-scoped release candidates belong to the NexisClaw publisher", async () => {
-    const errors = await collectClawHubNexisClawOwnerErrors({
-      plugins: [{ packageName: "@NexisClaw/demo-plugin" }],
+  it("passes when FirstNexus-scoped release candidates belong to the FirstNexus publisher", async () => {
+    const errors = await collectClawHubFirstNexusOwnerErrors({
+      plugins: [{ packageName: "@FirstNexus/demo-plugin" }],
       registryBaseUrl: "https://clawhub.ai",
       fetchImpl: async () =>
-        new Response(JSON.stringify({ owner: { handle: "NexisClaw" } }), {
+        new Response(JSON.stringify({ owner: { handle: "FirstNexus" } }), {
           status: 200,
           headers: { "Content-Type": "application/json" },
         }),
@@ -439,9 +441,9 @@ if [[ "\${1:-}" == "package" && "\${2:-}" == "pack" ]]; then
     esac
   done
   mkdir -p "$pack_destination"
-  pack_path="$pack_destination/NexisClaw-demo-plugin-2026.4.1.tgz"
+  pack_path="$pack_destination/FirstNexus-demo-plugin-2026.4.1.tgz"
   printf 'fake tgz\\n' > "$pack_path"
-  printf '{"path":"%s","name":"@NexisClaw/demo-plugin","version":"2026.4.1"}\\n' "$pack_path"
+  printf '{"path":"%s","name":"@FirstNexus/demo-plugin","version":"2026.4.1"}\\n' "$pack_path"
 fi
 exit 0
 `,
@@ -501,13 +503,13 @@ function createTempPluginRepo(
     includeClawHubContract?: boolean;
   } = {},
 ) {
-  const repoDir = makeTempRepoRoot(tempDirs, "NexisClaw-clawhub-release-");
+  const repoDir = makeTempRepoRoot(tempDirs, "FirstNexus-clawhub-release-");
   const extensionId = options.extensionId ?? "demo-plugin";
   const extensionIds = [extensionId, ...(options.extraExtensionIds ?? [])];
 
   writeFileSync(
     join(repoDir, "package.json"),
-    JSON.stringify({ name: "NexisClaw-test-root" }, null, 2),
+    JSON.stringify({ name: "FirstNexus-test-root" }, null, 2),
   );
   writeFileSync(join(repoDir, "pnpm-lock.yaml"), "lockfileVersion: '9.0'\n");
   for (const currentExtensionId of extensionIds) {
@@ -516,13 +518,13 @@ function createTempPluginRepo(
       join(repoDir, "extensions", currentExtensionId, "package.json"),
       JSON.stringify(
         {
-          name: `@NexisClaw/${currentExtensionId}`,
+          name: `@FirstNexus/${currentExtensionId}`,
           version: "2026.4.1",
           repository: {
             type: "git",
             url: NEXISCLAW_PLUGIN_NPM_REPOSITORY_URL,
           },
-          NexisClaw: {
+          FirstNexus: {
             extensions: ["./index.ts"],
             ...(options.includeClawHubContract === false
               ? {}
@@ -531,11 +533,11 @@ function createTempPluginRepo(
                     pluginApi: ">=2026.4.1",
                   },
                   build: {
-                    NexisClawVersion: "2026.4.1",
+                    FirstNexusVersion: "2026.4.1",
                   },
                 }),
             install: {
-              npmSpec: `@NexisClaw/${currentExtensionId}`,
+              npmSpec: `@FirstNexus/${currentExtensionId}`,
             },
             release: {
               publishToClawHub: options.publishToClawHub ?? true,

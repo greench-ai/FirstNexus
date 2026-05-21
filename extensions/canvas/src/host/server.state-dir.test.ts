@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { defaultRuntime } from "NexisClaw/plugin-sdk/runtime-env";
-import { withStateDirEnv } from "NexisClaw/plugin-sdk/test-env";
+import { defaultRuntime } from "FirstNexus/plugin-sdk/runtime-env";
+import { withStateDirEnv } from "FirstNexus/plugin-sdk/test-env";
 import { beforeAll, describe, expect, it } from "vitest";
 
 describe("canvas host state dir defaults", () => {
@@ -12,7 +12,7 @@ describe("canvas host state dir defaults", () => {
   });
 
   it("uses NEXISCLAW_STATE_DIR for the default canvas root", async () => {
-    await withStateDirEnv("NexisClaw-canvas-state-", async ({ stateDir }) => {
+    await withStateDirEnv("FirstNexus-canvas-state-", async ({ stateDir }) => {
       const handler = await createCanvasHostHandler({
         runtime: defaultRuntime,
         allowInTests: true,
@@ -24,7 +24,7 @@ describe("canvas host state dir defaults", () => {
         expect(actualRoot).toBe(expectedRoot);
         const indexPath = path.join(expectedRoot, "index.html");
         const indexContents = await fs.readFile(indexPath, "utf8");
-        expect(indexContents).toContain("NexisClaw Canvas");
+        expect(indexContents).toContain("FirstNexus Canvas");
       } finally {
         await handler.close();
       }

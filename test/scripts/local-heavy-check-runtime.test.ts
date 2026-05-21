@@ -40,10 +40,12 @@ describe("local-heavy-check-runtime", () => {
       NEXISCLAW_LOCAL_CHECK: "1",
       PATH: "/usr/bin",
     });
-    expect(resolveLocalHeavyCheckEnv({ NEXISCLAW_LOCAL_CHECK: "false", PATH: "/usr/bin" })).toEqual({
-      NEXISCLAW_LOCAL_CHECK: "1",
-      PATH: "/usr/bin",
-    });
+    expect(resolveLocalHeavyCheckEnv({ NEXISCLAW_LOCAL_CHECK: "false", PATH: "/usr/bin" })).toEqual(
+      {
+        NEXISCLAW_LOCAL_CHECK: "1",
+        PATH: "/usr/bin",
+      },
+    );
   });
 
   it("preserves local-check disablement in CI", () => {
@@ -291,7 +293,7 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("skips the heavy-check lock for explicit oxlint file targets", () => {
-    const cwd = createTempDir("NexisClaw-oxlint-lock-skip-");
+    const cwd = createTempDir("FirstNexus-oxlint-lock-skip-");
     const target = path.join(cwd, "sample.ts");
     fs.writeFileSync(target, "export const ok = true;\n", "utf8");
 
@@ -311,7 +313,7 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("keeps the heavy-check lock for directory targets and broad oxlint runs", () => {
-    const cwd = createTempDir("NexisClaw-oxlint-lock-keep-");
+    const cwd = createTempDir("FirstNexus-oxlint-lock-keep-");
     fs.mkdirSync(path.join(cwd, "src"), { recursive: true });
     fs.writeFileSync(path.join(cwd, "src", "sample.ts"), "export const ok = true;\n", "utf8");
 
@@ -322,7 +324,7 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("allows forcing the oxlint lock back on", () => {
-    const cwd = createTempDir("NexisClaw-oxlint-lock-force-");
+    const cwd = createTempDir("FirstNexus-oxlint-lock-force-");
     fs.writeFileSync(path.join(cwd, "sample.ts"), "export const ok = true;\n", "utf8");
 
     expect(
@@ -334,9 +336,9 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("reclaims stale local heavy-check locks from dead pids", () => {
-    const cwd = createTempDir("NexisClaw-local-heavy-check-");
+    const cwd = createTempDir("FirstNexus-local-heavy-check-");
     const commonDir = path.join(cwd, ".git");
-    const lockDir = path.join(commonDir, "NexisClaw-local-checks", "heavy-check.lock");
+    const lockDir = path.join(commonDir, "FirstNexus-local-checks", "heavy-check.lock");
     fs.mkdirSync(lockDir, { recursive: true });
     fs.writeFileSync(
       path.join(lockDir, "owner.json"),
@@ -363,9 +365,9 @@ describe("local-heavy-check-runtime", () => {
   });
 
   it("cleans up stale legacy test locks when acquiring the shared heavy-check lock", () => {
-    const cwd = createTempDir("NexisClaw-local-heavy-check-legacy-");
+    const cwd = createTempDir("FirstNexus-local-heavy-check-legacy-");
     const commonDir = path.join(cwd, ".git");
-    const locksDir = path.join(commonDir, "NexisClaw-local-checks");
+    const locksDir = path.join(commonDir, "FirstNexus-local-checks");
     const legacyLockDir = path.join(locksDir, "test.lock");
     const heavyCheckLockDir = path.join(locksDir, "heavy-check.lock");
     fs.mkdirSync(legacyLockDir, { recursive: true });

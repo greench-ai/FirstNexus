@@ -1,11 +1,11 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { createTestPluginApi } from "NexisClaw/plugin-sdk/plugin-test-api";
+import { createTestPluginApi } from "FirstNexus/plugin-sdk/plugin-test-api";
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig, NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusConfig, FirstNexusPluginApi } from "../runtime-api.js";
 import { registerSlackPluginHttpRoutes } from "./plugin-routes.js";
 import { registerSlackHttpHandler } from "./registry.js";
 
-function createApi(config: NexisClawConfig, registerHttpRoute = vi.fn()): NexisClawPluginApi {
+function createApi(config: FirstNexusConfig, registerHttpRoute = vi.fn()): FirstNexusPluginApi {
   return createTestPluginApi({
     id: "slack",
     config,
@@ -26,7 +26,7 @@ function registeredRouteAt(registerHttpRoute: ReturnType<typeof vi.fn>, index: n
 describe("registerSlackPluginHttpRoutes", () => {
   it("registers account webhook paths without resolving unresolved token refs", () => {
     const registerHttpRoute = vi.fn();
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         slack: {
           accounts: {

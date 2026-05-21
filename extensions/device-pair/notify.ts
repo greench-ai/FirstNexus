@@ -1,11 +1,11 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import type { NexisClawPluginService } from "NexisClaw/plugin-sdk/core";
-import { listDevicePairing } from "NexisClaw/plugin-sdk/device-bootstrap";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
-import { replaceFileAtomic } from "NexisClaw/plugin-sdk/security-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { FirstNexusPluginService } from "FirstNexus/plugin-sdk/core";
+import { listDevicePairing } from "FirstNexus/plugin-sdk/device-bootstrap";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
+import { replaceFileAtomic } from "FirstNexus/plugin-sdk/security-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 const NOTIFY_STATE_FILE = "device-pair-notify.json";
 const NOTIFY_POLL_INTERVAL_MS = 10_000;
@@ -284,7 +284,7 @@ function shouldNotifySubscriberForRequest(
 }
 
 async function notifySubscriber(params: {
-  api: NexisClawPluginApi;
+  api: FirstNexusPluginApi;
   subscriber: NotifySubscription;
   text: string;
 }): Promise<boolean> {
@@ -317,7 +317,7 @@ async function notifySubscriber(params: {
 }
 
 async function notifyPendingPairingRequests(params: {
-  api: NexisClawPluginApi;
+  api: FirstNexusPluginApi;
   statePath: string;
 }): Promise<void> {
   const state = await readNotifyState(params.statePath);
@@ -380,7 +380,7 @@ async function notifyPendingPairingRequests(params: {
 }
 
 export async function armPairNotifyOnce(params: {
-  api: NexisClawPluginApi;
+  api: FirstNexusPluginApi;
   ctx: {
     channel: string;
     senderId?: string;
@@ -414,7 +414,7 @@ export async function armPairNotifyOnce(params: {
 }
 
 export async function handleNotifyCommand(params: {
-  api: NexisClawPluginApi;
+  api: FirstNexusPluginApi;
   ctx: {
     channel: string;
     senderId?: string;
@@ -493,7 +493,7 @@ export async function handleNotifyCommand(params: {
   return { text: "Usage: /pair notify on|off|once|status" };
 }
 
-export function createPairingNotifierService(api: NexisClawPluginApi): NexisClawPluginService {
+export function createPairingNotifierService(api: FirstNexusPluginApi): FirstNexusPluginService {
   let notifyInterval: ReturnType<typeof setInterval> | null = null;
 
   return {
@@ -523,6 +523,6 @@ export function createPairingNotifierService(api: NexisClawPluginApi): NexisClaw
   };
 }
 
-export function registerPairingNotifierService(api: NexisClawPluginApi): void {
+export function registerPairingNotifierService(api: FirstNexusPluginApi): void {
   api.registerService(createPairingNotifierService(api));
 }

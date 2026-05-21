@@ -1,14 +1,14 @@
-import { coerceNativeSetting, normalizeAllowFromList } from "NexisClaw/plugin-sdk/channel-policy";
-import { readChannelAllowFromStore } from "NexisClaw/plugin-sdk/conversation-runtime";
+import { coerceNativeSetting, normalizeAllowFromList } from "FirstNexus/plugin-sdk/channel-policy";
+import { readChannelAllowFromStore } from "FirstNexus/plugin-sdk/conversation-runtime";
 import {
   resolveNativeCommandsEnabled,
   resolveNativeSkillsEnabled,
-} from "NexisClaw/plugin-sdk/native-command-config-runtime";
+} from "FirstNexus/plugin-sdk/native-command-config-runtime";
 import type { ResolvedSlackAccount } from "./accounts.js";
-import type { NexisClawConfig } from "./runtime-api.js";
+import type { FirstNexusConfig } from "./runtime-api.js";
 
 export async function collectSlackSecurityAuditFindings(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   account: ResolvedSlackAccount;
 }) {

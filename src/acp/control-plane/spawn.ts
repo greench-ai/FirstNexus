@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { callGateway } from "../../gateway/call.js";
 import { logVerbose } from "../../globals.js";
 import { getSessionBindingService } from "../../infra/outbound/session-binding-service.js";
@@ -15,7 +15,7 @@ export type AcpSpawnRuntimeCloseHandle = {
 };
 
 export async function cleanupFailedAcpSpawn(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   shouldDeleteSession: boolean;
   deleteTranscript: boolean;

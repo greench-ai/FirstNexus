@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, test, vi } from "vitest";
-import type { NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusPluginApi } from "../runtime-api.js";
 import { createToolFactoryHarness } from "./tool-factory-test-harness.js";
 
 const createFeishuClientMock = vi.fn((creds: { appId?: string } | undefined) => ({
@@ -36,7 +36,7 @@ describe("feishu_doc account selection", () => {
     vi.clearAllMocks();
   });
 
-  function createDocEnabledConfig(): NexisClawPluginApi["config"] {
+  function createDocEnabledConfig(): FirstNexusPluginApi["config"] {
     return {
       channels: {
         feishu: {
@@ -47,7 +47,7 @@ describe("feishu_doc account selection", () => {
           },
         },
       },
-    } as NexisClawPluginApi["config"];
+    } as FirstNexusPluginApi["config"];
   }
 
   test("uses agentAccountId context when params omit accountId", async () => {

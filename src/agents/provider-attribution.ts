@@ -1,4 +1,4 @@
-import { listNexisClawPluginManifestMetadata } from "../plugins/manifest-metadata-scan.js";
+import { listFirstNexusPluginManifestMetadata } from "../plugins/manifest-metadata-scan.js";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
@@ -121,8 +121,8 @@ function readCompatBoolean(
   return typeof value === "boolean" ? value : undefined;
 }
 
-const NEXISCLAW_ATTRIBUTION_PRODUCT = "NexisClaw";
-const NEXISCLAW_ATTRIBUTION_ORIGINATOR = "NexisClaw";
+const NEXISCLAW_ATTRIBUTION_PRODUCT = "FirstNexus";
+const NEXISCLAW_ATTRIBUTION_ORIGINATOR = "FirstNexus";
 const OPENROUTER_ATTRIBUTION_CATEGORIES =
   "cli-agent,cloud-agent,programming-app,creative-writing,writing-assistant,general-chat,personal-agent";
 
@@ -169,7 +169,7 @@ type ManifestProviderRequestCacheEntry = {
 let manifestProviderEndpointCache: ManifestProviderEndpointCacheEntry[] | null = null;
 let manifestProviderRequestCache: Map<string, ManifestProviderRequestCacheEntry> | null = null;
 
-function formatNexisClawUserAgent(version: string): string {
+function formatFirstNexusUserAgent(version: string): string {
   return `${NEXISCLAW_ATTRIBUTION_ORIGINATOR}/${version}`;
 }
 
@@ -318,7 +318,7 @@ function readManifestProviderRequests(
 
 function collectManifestProviderEndpoints(): ManifestProviderEndpointCacheEntry[] {
   const entries: ManifestProviderEndpointCacheEntry[] = [];
-  for (const { manifest } of listNexisClawPluginManifestMetadata()) {
+  for (const { manifest } of listFirstNexusPluginManifestMetadata()) {
     entries.push(...readManifestProviderEndpoints(manifest));
   }
   return entries;
@@ -326,7 +326,7 @@ function collectManifestProviderEndpoints(): ManifestProviderEndpointCacheEntry[
 
 function collectManifestProviderRequests(): Map<string, ManifestProviderRequestCacheEntry> {
   const entries = new Map<string, ManifestProviderRequestCacheEntry>();
-  for (const { manifest } of listNexisClawPluginManifestMetadata()) {
+  for (const { manifest } of listFirstNexusPluginManifestMetadata()) {
     for (const [provider, request] of readManifestProviderRequests(manifest)) {
       entries.set(provider, request);
     }
@@ -470,10 +470,10 @@ function buildOpenRouterAttributionPolicy(
     verification: "vendor-documented",
     hook: "request-headers",
     docsUrl: "https://openrouter.ai/docs/app-attribution",
-    reviewNote: "Documented app attribution headers. Verified in NexisClaw runtime wrapper.",
+    reviewNote: "Documented app attribution headers. Verified in FirstNexus runtime wrapper.",
     ...identity,
     headers: {
-      "HTTP-Referer": "https://NexisClaw.ai",
+      "HTTP-Referer": "https://FirstNexus.ai",
       "X-OpenRouter-Title": identity.product,
       "X-OpenRouter-Categories": OPENROUTER_ATTRIBUTION_CATEGORIES,
     },
@@ -495,7 +495,7 @@ function buildOpenAIAttributionPolicy(
     headers: {
       originator: NEXISCLAW_ATTRIBUTION_ORIGINATOR,
       version: identity.version,
-      "User-Agent": formatNexisClawUserAgent(identity.version),
+      "User-Agent": formatFirstNexusUserAgent(identity.version),
     },
   };
 }
@@ -515,7 +515,7 @@ function buildOpenAICodexAttributionPolicy(
     headers: {
       originator: NEXISCLAW_ATTRIBUTION_ORIGINATOR,
       version: identity.version,
-      "User-Agent": formatNexisClawUserAgent(identity.version),
+      "User-Agent": formatFirstNexusUserAgent(identity.version),
     },
   };
 }

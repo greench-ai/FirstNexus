@@ -1,4 +1,4 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/routing";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/routing";
 
 export const matrixSingleAccountKeysToMove = [
   "deviceId",

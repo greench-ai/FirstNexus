@@ -59,7 +59,7 @@ steps:
                   fs.mkdir(dir, { recursive: true }),
                 ),
               );
-              const configPath = path.join(tempRoot, "NexisClaw.json");
+              const configPath = path.join(tempRoot, "FirstNexus.json");
               await fs.writeFile(
                 configPath,
                 `${JSON.stringify(

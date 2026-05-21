@@ -14,12 +14,12 @@ describe("resolveEffectiveHomeDir", () => {
     {
       name: "prefers NEXISCLAW_HOME over HOME and USERPROFILE",
       env: {
-        NEXISCLAW_HOME: " /srv/NexisClaw-home ",
+        NEXISCLAW_HOME: " /srv/FirstNexus-home ",
         HOME: "/home/other",
         USERPROFILE: "C:/Users/other",
       } as NodeJS.ProcessEnv,
       homedir: () => "/fallback",
-      expected: "/srv/NexisClaw-home",
+      expected: "/srv/FirstNexus-home",
     },
     {
       name: "falls back to HOME",
@@ -115,7 +115,7 @@ describe("resolveOsHomeDir", () => {
     expect(
       resolveOsHomeDir(
         {
-          NEXISCLAW_HOME: "/srv/NexisClaw-home",
+          NEXISCLAW_HOME: "/srv/FirstNexus-home",
           HOME: "/home/alice",
           USERPROFILE: "C:/Users/alice",
         } as NodeJS.ProcessEnv,
@@ -131,15 +131,15 @@ describe("expandHomePrefix", () => {
       name: "expands ~/ using effective home",
       input: "~/x",
       opts: {
-        env: { NEXISCLAW_HOME: "/srv/NexisClaw-home" } as NodeJS.ProcessEnv,
+        env: { NEXISCLAW_HOME: "/srv/FirstNexus-home" } as NodeJS.ProcessEnv,
       },
-      expected: `${path.resolve("/srv/NexisClaw-home")}/x`,
+      expected: `${path.resolve("/srv/FirstNexus-home")}/x`,
     },
     {
       name: "expands exact ~ using explicit home",
       input: "~",
-      opts: { home: " /srv/NexisClaw-home " },
-      expected: "/srv/NexisClaw-home",
+      opts: { home: " /srv/FirstNexus-home " },
+      expected: "/srv/FirstNexus-home",
     },
     {
       name: "expands ~\\\\ using resolved env home",
@@ -180,9 +180,9 @@ describe("resolveHomeRelativePath", () => {
       name: "expands tilde paths using the resolved home directory",
       input: "~/docs",
       opts: {
-        env: { NEXISCLAW_HOME: "/srv/NexisClaw-home" } as NodeJS.ProcessEnv,
+        env: { NEXISCLAW_HOME: "/srv/FirstNexus-home" } as NodeJS.ProcessEnv,
       },
-      expected: path.resolve("/srv/NexisClaw-home/docs"),
+      expected: path.resolve("/srv/FirstNexus-home/docs"),
     },
     {
       name: "falls back to cwd when tilde paths have no home source",
@@ -205,7 +205,7 @@ describe("resolveOsHomeRelativePath", () => {
     expect(
       resolveOsHomeRelativePath("~/docs", {
         env: {
-          NEXISCLAW_HOME: "/srv/NexisClaw-home",
+          NEXISCLAW_HOME: "/srv/FirstNexus-home",
           HOME: "/home/alice",
         } as NodeJS.ProcessEnv,
       }),

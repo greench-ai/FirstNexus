@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { listSupportedMusicGenerationModes } from "../../music-generation/capabilities.js";
 import { listRuntimeMusicGenerationProviders } from "../../music-generation/runtime.js";
 import type { AuthProfileStore } from "../auth-profiles/types.js";
@@ -45,7 +45,7 @@ function summarizeMusicGenerationCapabilities(
 }
 
 export function createMusicGenerateListActionResult(
-  config?: NexisClawConfig,
+  config?: FirstNexusConfig,
   options?: { agentDir?: string; authStore?: AuthProfileStore },
 ): MusicGenerateActionResult {
   const providers = listRuntimeMusicGenerationProviders({ config });

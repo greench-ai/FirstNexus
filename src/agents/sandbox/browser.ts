@@ -54,15 +54,15 @@ import { appendWorkspaceMountArgs, SANDBOX_MOUNT_FORMAT_VERSION } from "./worksp
 const HOT_BROWSER_WINDOW_MS = 5 * 60 * 1000;
 const CDP_SOURCE_RANGE_ENV_KEY = "NEXISCLAW_BROWSER_CDP_SOURCE_RANGE";
 const CDP_AUTH_TOKEN_ENV_KEY = "NEXISCLAW_BROWSER_CDP_AUTH_TOKEN";
-const SANDBOX_BROWSER_IMAGE_CONTRACT_LABEL = "org.NexisClaw.sandbox-browser.contract";
+const SANDBOX_BROWSER_IMAGE_CONTRACT_LABEL = "org.FirstNexus.sandbox-browser.contract";
 
 function buildSandboxCdpAuthHeader(token: string): string {
-  return `Basic ${Buffer.from(`NexisClaw:${token}`).toString("base64")}`;
+  return `Basic ${Buffer.from(`FirstNexus:${token}`).toString("base64")}`;
 }
 
 function buildSandboxCdpUrl(params: { cdpPort: number; authToken: string }): string {
   const url = new URL(`http://127.0.0.1:${params.cdpPort}`);
-  url.username = "NexisClaw";
+  url.username = "FirstNexus";
   url.password = params.authToken;
   return url.toString().replace(/\/$/, "");
 }
@@ -273,7 +273,7 @@ export async function ensureSandboxBrowser(params: {
   if (hasContainer) {
     const registry = await readBrowserRegistry();
     const registryEntry = registry.entries.find((entry) => entry.containerName === containerName);
-    currentHash = await readDockerContainerLabel(containerName, "NexisClaw.configHash");
+    currentHash = await readDockerContainerLabel(containerName, "FirstNexus.configHash");
     hashMismatch = !currentHash || currentHash !== expectedHash;
     if (!currentHash) {
       currentHash = registryEntry?.configHash ?? null;
@@ -286,13 +286,13 @@ export async function ensureSandboxBrowser(params: {
       if (isHot) {
         const hint = (() => {
           if (params.cfg.scope === "session") {
-            return `NexisClaw sandbox recreate --browser --session ${params.scopeKey}`;
+            return `FirstNexus sandbox recreate --browser --session ${params.scopeKey}`;
           }
           if (params.cfg.scope === "agent") {
             const agentId = resolveSandboxAgentId(params.scopeKey) ?? "main";
-            return `NexisClaw sandbox recreate --browser --agent ${agentId}`;
+            return `FirstNexus sandbox recreate --browser --agent ${agentId}`;
           }
-          return "NexisClaw sandbox recreate --browser --all";
+          return "FirstNexus sandbox recreate --browser --all";
         })();
         defaultRuntime.log(
           `Sandbox browser config changed for ${containerName} (recently used). Recreate to apply: ${hint}`,
@@ -319,8 +319,8 @@ export async function ensureSandboxBrowser(params: {
       cfg: browserDockerCfg,
       scopeKey: params.scopeKey,
       labels: {
-        "NexisClaw.sandboxBrowser": "1",
-        "NexisClaw.browserConfigEpoch": SANDBOX_BROWSER_SECURITY_HASH_EPOCH,
+        "FirstNexus.sandboxBrowser": "1",
+        "FirstNexus.browserConfigEpoch": SANDBOX_BROWSER_SECURITY_HASH_EPOCH,
       },
       configHash: expectedHash,
       includeBinds: false,

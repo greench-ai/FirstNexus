@@ -12,21 +12,21 @@ function renderGatewayServiceStopHints(env: NodeJS.ProcessEnv = process.env): st
   switch (process.platform) {
     case "darwin":
       return [
-        `Tip: ${formatCliCommand("NexisClaw gateway stop")}`,
+        `Tip: ${formatCliCommand("FirstNexus gateway stop")}`,
         `Or: launchctl bootout gui/$UID/${resolveGatewayLaunchAgentLabel(profile)}`,
       ];
     case "linux":
       return [
-        `Tip: ${formatCliCommand("NexisClaw gateway stop")}`,
+        `Tip: ${formatCliCommand("FirstNexus gateway stop")}`,
         `Or: systemctl --user stop ${resolveGatewaySystemdServiceName(profile)}.service`,
       ];
     case "win32":
       return [
-        `Tip: ${formatCliCommand("NexisClaw gateway stop")}`,
+        `Tip: ${formatCliCommand("FirstNexus gateway stop")}`,
         `Or: schtasks /End /TN "${resolveGatewayWindowsTaskName(profile)}"`,
       ];
     default:
-      return [`Tip: ${formatCliCommand("NexisClaw gateway stop")}`];
+      return [`Tip: ${formatCliCommand("FirstNexus gateway stop")}`];
   }
 }
 

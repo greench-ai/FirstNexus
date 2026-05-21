@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   buildPluginRegistrySnapshotReport,
   enablePluginInConfig,
@@ -41,7 +41,7 @@ describe("plugins cli policy mutations", () => {
     });
   }
 
-  function requireFirstWrittenConfig(): NexisClawConfig {
+  function requireFirstWrittenConfig(): FirstNexusConfig {
     const call = writeConfigFile.mock.calls.at(0);
     if (!call) {
       throw new Error("expected writeConfigFile to be called");
@@ -54,8 +54,8 @@ describe("plugins cli policy mutations", () => {
   }
 
   function requirePluginEntries(
-    config: NexisClawConfig,
-  ): NonNullable<NonNullable<NexisClawConfig["plugins"]>["entries"]> {
+    config: FirstNexusConfig,
+  ): NonNullable<NonNullable<FirstNexusConfig["plugins"]>["entries"]> {
     if (!config.plugins?.entries) {
       throw new Error("expected plugin entries in config");
     }
@@ -63,14 +63,14 @@ describe("plugins cli policy mutations", () => {
   }
 
   it("refreshes the persisted plugin registry after enabling a plugin", async () => {
-    const sourceConfig = {} as NexisClawConfig;
+    const sourceConfig = {} as FirstNexusConfig;
     const enabledConfig = {
       plugins: {
         entries: {
           alpha: { enabled: true },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     loadConfig.mockReturnValue(sourceConfig);
     enablePluginInConfig.mockReturnValue({
       config: enabledConfig,
@@ -119,7 +119,7 @@ describe("plugins cli policy mutations", () => {
           alpha: { enabled: true },
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
     mockPluginRegistry(["alpha"]);
 
     await runPluginsCommand(["plugins", "disable", "alpha"]);
@@ -138,14 +138,14 @@ describe("plugins cli policy mutations", () => {
   it.each(compatibilityPluginIds)(
     "enables compatibility id $alias through canonical plugin $pluginId",
     async ({ alias, pluginId }) => {
-      const sourceConfig = {} as NexisClawConfig;
+      const sourceConfig = {} as FirstNexusConfig;
       const enabledConfig = {
         plugins: {
           entries: {
             [pluginId]: { enabled: true },
           },
         },
-      } as NexisClawConfig;
+      } as FirstNexusConfig;
       loadConfig.mockReturnValue(sourceConfig);
       enablePluginInConfig.mockReturnValue({
         config: enabledConfig,
@@ -171,7 +171,7 @@ describe("plugins cli policy mutations", () => {
             [pluginId]: { enabled: true },
           },
         },
-      } as NexisClawConfig);
+      } as FirstNexusConfig);
       mockPluginRegistry([pluginId]);
 
       await runPluginsCommand(["plugins", "disable", alias]);
@@ -193,7 +193,7 @@ describe("plugins cli policy mutations", () => {
       );
 
       expect(runtimeErrors).toContain(
-        "Plugin not found: missing-plugin. Run `NexisClaw plugins list` to see installed plugins, or `NexisClaw plugins search missing-plugin` to look for installable plugins.",
+        "Plugin not found: missing-plugin. Run `FirstNexus plugins list` to see installed plugins, or `FirstNexus plugins search missing-plugin` to look for installable plugins.",
       );
       expect(enablePluginInConfig).not.toHaveBeenCalled();
       expect(writeConfigFile).not.toHaveBeenCalled();
@@ -202,7 +202,7 @@ describe("plugins cli policy mutations", () => {
   );
 
   it("does not create a channel config when disabling a channel plugin by policy", async () => {
-    loadConfig.mockReturnValue({} as NexisClawConfig);
+    loadConfig.mockReturnValue({} as FirstNexusConfig);
     mockPluginRegistry(["twitch"]);
 
     await runPluginsCommand(["plugins", "disable", "twitch"]);

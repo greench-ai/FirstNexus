@@ -13,13 +13,13 @@ title: "TUI"
 1. Start the Gateway.
 
 ```bash
-NexisClaw gateway
+FirstNexus gateway
 ```
 
 2. Open the TUI.
 
 ```bash
-NexisClaw tui
+FirstNexus tui
 ```
 
 3. Type a message and press Enter.
@@ -27,7 +27,7 @@ NexisClaw tui
 Remote Gateway:
 
 ```bash
-NexisClaw tui --url ws://<host>:<port> --token <gateway-token>
+FirstNexus tui --url ws://<host>:<port> --token <gateway-token>
 ```
 
 Use `--password` if your Gateway uses password auth.
@@ -37,17 +37,17 @@ Use `--password` if your Gateway uses password auth.
 Run the TUI without a Gateway:
 
 ```bash
-NexisClaw chat
+FirstNexus chat
 # or
-NexisClaw tui --local
+FirstNexus tui --local
 ```
 
 Notes:
 
-- `NexisClaw chat` and `NexisClaw terminal` are aliases for `NexisClaw tui --local`.
+- `FirstNexus chat` and `FirstNexus terminal` are aliases for `FirstNexus tui --local`.
 - `--local` cannot be combined with `--url`, `--token`, or `--password`.
 - Local mode uses the embedded agent runtime directly. Most local tools work, but Gateway-only features are unavailable.
-- `NexisClaw` and `NexisClaw crestodian` also use this TUI shell, with Crestodian as the local setup and repair chat backend.
+- `FirstNexus` and `FirstNexus crestodian` also use this TUI shell, with Crestodian as the local setup and repair chat backend.
 
 ## What you see
 
@@ -76,7 +76,7 @@ Notes:
 - Turn delivery on:
   - `/deliver on`
   - or the Settings panel
-  - or start with `NexisClaw tui --deliver`
+  - or start with `FirstNexus tui --deliver`
 
 ## Pickers + overlays
 
@@ -146,8 +146,8 @@ Use local mode when the current config already validates and you want the
 embedded agent to inspect it on the same machine, compare it against the docs,
 and help repair drift without depending on a running Gateway.
 
-If `NexisClaw config validate` is already failing, start with `NexisClaw configure`
-or `NexisClaw doctor --fix` first. `NexisClaw chat` does not bypass the invalid-
+If `FirstNexus config validate` is already failing, start with `FirstNexus configure`
+or `FirstNexus doctor --fix` first. `FirstNexus chat` does not bypass the invalid-
 config guard.
 
 Typical loop:
@@ -155,7 +155,7 @@ Typical loop:
 1. Start local mode:
 
 ```bash
-NexisClaw chat
+FirstNexus chat
 ```
 
 2. Ask the agent what you want checked, for example:
@@ -167,20 +167,20 @@ Compare my gateway auth config with the docs and suggest the smallest fix.
 3. Use local shell commands for exact evidence and validation:
 
 ```text
-!NexisClaw config file
-!NexisClaw docs gateway auth token secretref
-!NexisClaw config validate
-!NexisClaw doctor
+!FirstNexus config file
+!FirstNexus docs gateway auth token secretref
+!FirstNexus config validate
+!FirstNexus doctor
 ```
 
-4. Apply narrow changes with `NexisClaw config set` or `NexisClaw configure`, then rerun `!NexisClaw config validate`.
-5. If Doctor recommends an automatic migration or repair, review it and run `!NexisClaw doctor --fix`.
+4. Apply narrow changes with `FirstNexus config set` or `FirstNexus configure`, then rerun `!FirstNexus config validate`.
+5. If Doctor recommends an automatic migration or repair, review it and run `!FirstNexus doctor --fix`.
 
 Tips:
 
-- Prefer `NexisClaw config set` or `NexisClaw configure` over hand-editing `NexisClaw.json`.
-- `NexisClaw docs "<query>"` searches the live docs index from the same machine.
-- `NexisClaw config validate --json` is useful when you want structured schema and SecretRef/resolvability errors.
+- Prefer `FirstNexus config set` or `FirstNexus configure` over hand-editing `FirstNexus.json`.
+- `FirstNexus docs "<query>"` searches the live docs index from the same machine.
+- `FirstNexus config validate --json` is useful when you want structured schema and SecretRef/resolvability errors.
 
 ## Tool output
 
@@ -191,7 +191,7 @@ Tips:
 ## Terminal colors
 
 - The TUI keeps assistant body text in your terminal's default foreground so dark and light terminals both stay readable.
-- If your terminal uses a light background and auto-detection is wrong, set `NEXISCLAW_THEME=light` before launching `NexisClaw tui`.
+- If your terminal uses a light background and auto-detection is wrong, set `NEXISCLAW_THEME=light` before launching `FirstNexus tui`.
 - To force the original dark palette instead, set `NEXISCLAW_THEME=dark`.
 
 ## History + streaming
@@ -227,19 +227,19 @@ When you set `--url`, the TUI does not fall back to config or environment creden
 No output after sending a message:
 
 - Run `/status` in the TUI to confirm the Gateway is connected and idle/busy.
-- Check the Gateway logs: `NexisClaw logs --follow`.
-- Confirm the agent can run: `NexisClaw status` and `NexisClaw models status`.
+- Check the Gateway logs: `FirstNexus logs --follow`.
+- Confirm the agent can run: `FirstNexus status` and `FirstNexus models status`.
 - If you expect messages in a chat channel, enable delivery (`/deliver on` or `--deliver`).
 
 ## Connection troubleshooting
 
 - `disconnected`: ensure the Gateway is running and your `--url/--token/--password` are correct.
-- No agents in picker: check `NexisClaw agents list` and your routing config.
+- No agents in picker: check `FirstNexus agents list` and your routing config.
 - Empty session picker: you might be in global scope or have no sessions yet.
 
 ## Related
 
 - [Control UI](/web/control-ui) — web-based control interface
-- [Config](/cli/config) — inspect, validate, and edit `NexisClaw.json`
+- [Config](/cli/config) — inspect, validate, and edit `FirstNexus.json`
 - [Doctor](/cli/doctor) — guided repair and migration checks
 - [CLI Reference](/cli) — full CLI command reference

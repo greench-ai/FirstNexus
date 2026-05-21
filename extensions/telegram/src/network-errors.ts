@@ -3,10 +3,10 @@ import {
   extractErrorCode,
   formatErrorMessage,
   readErrorName,
-} from "NexisClaw/plugin-sdk/error-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/error-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
-const TELEGRAM_NETWORK_ORIGIN = Symbol("NexisClaw.telegram.network-origin");
+const TELEGRAM_NETWORK_ORIGIN = Symbol("FirstNexus.telegram.network-origin");
 
 const RECOVERABLE_ERROR_CODES = new Set([
   "ECONNRESET",

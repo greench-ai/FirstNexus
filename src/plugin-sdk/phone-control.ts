@@ -3,8 +3,8 @@
 
 export { definePluginEntry } from "./plugin-entry.js";
 export type {
-  NexisClawPluginApi,
-  NexisClawPluginCommandDefinition,
-  NexisClawPluginService,
+  FirstNexusPluginApi,
+  FirstNexusPluginCommandDefinition,
+  FirstNexusPluginService,
   PluginCommandContext,
 } from "../plugins/types.js";

@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { inspectDiscordAccount } from "./account-inspect.js";
 
-function asConfig(value: unknown): NexisClawConfig {
-  return value as NexisClawConfig;
+function asConfig(value: unknown): FirstNexusConfig {
+  return value as FirstNexusConfig;
 }
 
 describe("inspectDiscordAccount", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   listOpenAIAuthProfileProvidersForAgentRuntime,
   modelSelectionShouldEnsureCodexPlugin,
@@ -13,7 +13,7 @@ describe("OpenAI Codex routing policy", () => {
     expect(
       modelSelectionShouldEnsureCodexPlugin({
         model: "openai/gpt-5.5",
-        config: {} as NexisClawConfig,
+        config: {} as FirstNexusConfig,
       }),
     ).toBe(true);
   });
@@ -28,7 +28,7 @@ describe("OpenAI Codex routing policy", () => {
           },
         },
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     expect(openAIProviderUsesCodexRuntimeByDefault({ provider: "openai", config })).toBe(false);
     expect(modelSelectionShouldEnsureCodexPlugin({ model: "openai/gpt-5.5", config })).toBe(false);

@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
-import { resolveNativeCommandSessionTargets } from "NexisClaw/plugin-sdk/command-auth-native";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { buildPairingReply } from "NexisClaw/plugin-sdk/conversation-runtime";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { getAgentScopedMediaLocalRoots } from "NexisClaw/plugin-sdk/media-runtime";
+import { resolveNativeCommandSessionTargets } from "FirstNexus/plugin-sdk/command-auth-native";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { buildPairingReply } from "FirstNexus/plugin-sdk/conversation-runtime";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { getAgentScopedMediaLocalRoots } from "FirstNexus/plugin-sdk/media-runtime";
 import {
   buildCommandTextFromArgs,
   findCommandByNativeName,
@@ -12,11 +12,11 @@ import {
   serializeCommandArgs,
   type ChatCommandDefinition,
   type NativeCommandSpec,
-} from "NexisClaw/plugin-sdk/native-command-registry";
-import { resolveChunkMode, resolveTextChunkLimit } from "NexisClaw/plugin-sdk/reply-chunking";
-import { createSubsystemLogger, logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { resolveOpenProviderRuntimeGroupPolicy } from "NexisClaw/plugin-sdk/runtime-group-policy";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/native-command-registry";
+import { resolveChunkMode, resolveTextChunkLimit } from "FirstNexus/plugin-sdk/reply-chunking";
+import { createSubsystemLogger, logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { resolveOpenProviderRuntimeGroupPolicy } from "FirstNexus/plugin-sdk/runtime-group-policy";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   resolveDiscordAccountAllowFrom,
   resolveDiscordAccountDmPolicy,
@@ -86,7 +86,7 @@ import type { ThreadBindingManager } from "./thread-bindings.js";
 const log = createSubsystemLogger("discord/native-command");
 export { __testing } from "./native-command.runtime.js";
 
-function resolveDiscordCommandOwnerAllowFrom(cfg: NexisClawConfig): string[] | undefined {
+function resolveDiscordCommandOwnerAllowFrom(cfg: FirstNexusConfig): string[] | undefined {
   const raw = cfg.commands?.ownerAllowFrom;
   if (!Array.isArray(raw) || raw.length === 0) {
     return undefined;
@@ -118,7 +118,7 @@ function resolveDiscordCommandOwnerAllowFrom(cfg: NexisClawConfig): string[] | u
 
 export function createDiscordNativeCommand(params: {
   command: NativeCommandSpec;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordConfig;
   accountId: string;
   sessionPrefix: string;
@@ -230,7 +230,7 @@ async function dispatchDiscordCommandInteraction(params: {
   prompt: string;
   command: ChatCommandDefinition;
   commandArgs?: DiscordCommandArgs;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordConfig;
   accountId: string;
   sessionPrefix: string;

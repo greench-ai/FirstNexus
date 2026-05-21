@@ -1,6 +1,6 @@
 import type { Command } from "commander";
 import { getRuntimeConfig } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { hasConfiguredSecretInput } from "../config/types.secrets.js";
 import { trimToUndefined } from "../gateway/credentials.js";
 import { resolveRequiredConfiguredSecretRefInputString } from "../gateway/resolve-configured-secret-input-string.js";
@@ -27,7 +27,7 @@ type QrCliOptions = {
 function renderQrAscii(data: string): Promise<string> {
   return renderQrTerminal(data);
 }
-function readDevicePairPublicUrlFromConfig(cfg: NexisClawConfig): string | undefined {
+function readDevicePairPublicUrlFromConfig(cfg: FirstNexusConfig): string | undefined {
   const value = cfg.plugins?.entries?.["device-pair"]?.config?.["publicUrl"];
   if (typeof value !== "string") {
     return undefined;
@@ -37,7 +37,7 @@ function readDevicePairPublicUrlFromConfig(cfg: NexisClawConfig): string | undef
 }
 
 function shouldResolveLocalGatewayPasswordSecret(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   env: NodeJS.ProcessEnv,
 ): boolean {
   if (trimToUndefined(env.NEXISCLAW_GATEWAY_PASSWORD)) {
@@ -58,7 +58,7 @@ function shouldResolveLocalGatewayPasswordSecret(
   return !envToken && !configTokenConfigured;
 }
 
-async function resolveLocalGatewayPasswordSecretIfNeeded(cfg: NexisClawConfig): Promise<void> {
+async function resolveLocalGatewayPasswordSecretIfNeeded(cfg: FirstNexusConfig): Promise<void> {
   const resolvedPassword = await resolveRequiredConfiguredSecretRefInputString({
     config: cfg,
     env: process.env,
@@ -95,7 +95,7 @@ export function registerQrCli(program: Command) {
     .description("Generate a mobile pairing QR code and setup code")
     .addHelpText(
       "after",
-      () => `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/qr", "docs.NexisClaw.ai/cli/qr")}\n`,
+      () => `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/qr", "docs.FirstNexus.ai/cli/qr")}\n`,
     )
     .option(
       "--remote",
@@ -226,7 +226,7 @@ export function registerQrCli(program: Command) {
 
         const lines: string[] = [
           theme.heading("Pairing QR"),
-          "Scan this with the NexisClaw mobile app (Onboarding -> Scan QR).",
+          "Scan this with the FirstNexus mobile app (Onboarding -> Scan QR).",
           "",
         ];
 
@@ -242,8 +242,8 @@ export function registerQrCli(program: Command) {
           `${theme.muted("Source:")} ${resolved.urlSource}`,
           "",
           "Approve after scan with:",
-          `  ${theme.command("NexisClaw devices list")}`,
-          `  ${theme.command("NexisClaw devices approve <requestId>")}`,
+          `  ${theme.command("FirstNexus devices list")}`,
+          `  ${theme.command("FirstNexus devices approve <requestId>")}`,
         );
 
         defaultRuntime.log(lines.join("\n"));

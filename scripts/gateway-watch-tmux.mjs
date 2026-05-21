@@ -13,7 +13,7 @@ const RUN_NODE_OUTPUT_LOG_ENV = "NEXISCLAW_RUN_NODE_OUTPUT_LOG";
 const RUN_NODE_FILTER_SYNC_IO_STDERR_ENV = "NEXISCLAW_RUN_NODE_FILTER_SYNC_IO_STDERR";
 const RAW_WATCH_SCRIPT = "scripts/watch-node.mjs";
 const TMUX_CWD_ENV_KEY = "NEXISCLAW_GATEWAY_WATCH_CWD";
-const TMUX_CWD_OPTION_KEY = "@NexisClaw.gateway_watch.cwd";
+const TMUX_CWD_OPTION_KEY = "@FirstNexus.gateway_watch.cwd";
 const TMUX_CHILD_ENV_KEYS = [
   "NODE_OPTIONS",
   "NEXISCLAW_CONFIG_PATH",
@@ -136,7 +136,7 @@ export const resolveGatewayWatchTmuxSessionName = ({ args = [], env = process.en
     (args.includes("--dev") ? "dev" : null);
   const port = env.NEXISCLAW_GATEWAY_PORT || readArgValue(args, "--port");
   const parts = [
-    "NexisClaw",
+    "FirstNexus",
     "gateway",
     "watch",
     sanitizeSessionPart(profile ?? DEFAULT_PROFILE_NAME),
@@ -209,7 +209,7 @@ const runTmux = (spawnSyncImpl, args, options = {}) =>
   });
 
 const log = (stderr, message) => {
-  stderr.write(`[NexisClaw] ${message}\n`);
+  stderr.write(`[FirstNexus] ${message}\n`);
 };
 
 const getTmuxErrorText = (result) =>

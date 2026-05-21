@@ -1,4 +1,4 @@
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
 import {
   createOwnMessageReaction,
   deleteOwnMessageReaction,

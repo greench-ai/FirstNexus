@@ -1,6 +1,6 @@
 // Public contract-safe web-search registration helpers for provider plugins.
 
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type {
   WebSearchCredentialResolutionSource,
   WebSearchProviderSetupContext,
@@ -59,7 +59,7 @@ export function createWebSearchProviderContractFields(
     ...createBaseWebSearchProviderContractFields(options),
     ...(selectionPluginId
       ? {
-          applySelectionConfig: (config: NexisClawConfig) =>
+          applySelectionConfig: (config: FirstNexusConfig) =>
             enablePluginInConfig(config, selectionPluginId).config,
         }
       : {}),

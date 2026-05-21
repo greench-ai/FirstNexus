@@ -52,8 +52,8 @@ jobs:
           github.event.issue.pull_request &&
           contains(github.event.issue.labels.*.name, 'mantis: telegram-visible-proof') &&
           (
-            contains(github.event.comment.body, '@NexisClaw-mantis') ||
-            contains(github.event.comment.body, '/NexisClaw-mantis')
+            contains(github.event.comment.body, '@FirstNexus-mantis') ||
+            contains(github.event.comment.body, '/FirstNexus-mantis')
           )
         )
       }}
@@ -280,7 +280,7 @@ jobs:
           install_dir="${RUNNER_TEMP}/crabbox"
           mkdir -p "$install_dir/src"
           git init "$install_dir/src"
-          git -C "$install_dir/src" remote add origin https://github.com/NexisClaw/crabbox.git
+          git -C "$install_dir/src" remote add origin https://github.com/FirstNexus/crabbox.git
           git -C "$install_dir/src" fetch --depth 1 origin "$CRABBOX_REF"
           git -C "$install_dir/src" checkout --detach FETCH_HEAD
           go build -C "$install_dir/src" -o "$install_dir/crabbox" ./cmd/crabbox
@@ -293,14 +293,14 @@ jobs:
         run: |
           set -euo pipefail
           test -f scripts/e2e/telegram-user-driver.py
-          cat >"${RUNNER_TEMP}/NexisClaw-telegram-user-crabbox-proof" <<'EOF'
+          cat >"${RUNNER_TEMP}/FirstNexus-telegram-user-crabbox-proof" <<'EOF'
           #!/usr/bin/env bash
           set -euo pipefail
           exec node --import tsx "${GITHUB_WORKSPACE}/scripts/e2e/telegram-user-crabbox-proof.ts" "$@"
           EOF
-          chmod 0755 "${RUNNER_TEMP}/NexisClaw-telegram-user-crabbox-proof"
-          sudo install -m 0755 "${RUNNER_TEMP}/NexisClaw-telegram-user-crabbox-proof" /usr/local/bin/NexisClaw-telegram-user-crabbox-proof
-          /usr/local/bin/NexisClaw-telegram-user-crabbox-proof --help >/dev/null
+          chmod 0755 "${RUNNER_TEMP}/FirstNexus-telegram-user-crabbox-proof"
+          sudo install -m 0755 "${RUNNER_TEMP}/FirstNexus-telegram-user-crabbox-proof" /usr/local/bin/FirstNexus-telegram-user-crabbox-proof
+          /usr/local/bin/FirstNexus-telegram-user-crabbox-proof --help >/dev/null
           media_tools="${RUNNER_TEMP}/mantis-media-tools"
           install -d "$media_tools"
           curl --fail --location --retry 3 --retry-delay 2 \
@@ -375,7 +375,7 @@ jobs:
           NEXISCLAW_TELEGRAM_USER_CRABBOX_BIN: /usr/local/bin/crabbox
           NEXISCLAW_TELEGRAM_USER_CRABBOX_PROVIDER: ${{ needs.resolve_request.outputs.crabbox_provider }}
           NEXISCLAW_TELEGRAM_USER_DRIVER_SCRIPT: ${{ github.workspace }}/scripts/e2e/telegram-user-driver.py
-          NEXISCLAW_TELEGRAM_USER_PROOF_CMD: /usr/local/bin/NexisClaw-telegram-user-crabbox-proof
+          NEXISCLAW_TELEGRAM_USER_PROOF_CMD: /usr/local/bin/FirstNexus-telegram-user-crabbox-proof
         with:
           openai-api-key: ${{ secrets.NEXISCLAW_MANTIS_AGENT_OPENAI_API_KEY || secrets.OPENAI_API_KEY }}
           prompt-file: .github/codex/prompts/mantis-telegram-desktop-proof.md

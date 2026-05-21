@@ -11,8 +11,8 @@ Adds memory embedding provider support.
 
 ## Distribution
 
-- Package: `@NexisClaw/voyage-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/voyage-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

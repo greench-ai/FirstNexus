@@ -190,10 +190,10 @@ export function resolveLatestVersion(versionOverride = ""): string {
     "npm",
     [
       "view",
-      "NexisClaw",
+      "FirstNexus",
       "version",
       "--userconfig",
-      mkdtempSync(path.join(tmpdir(), "NexisClaw-npm-")),
+      mkdtempSync(path.join(tmpdir(), "FirstNexus-npm-")),
     ],
     {
       quiet: true,

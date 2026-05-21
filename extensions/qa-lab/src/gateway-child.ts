@@ -6,11 +6,11 @@ import net from "node:net";
 import os from "node:os";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import type { ModelProviderConfig } from "NexisClaw/plugin-sdk/provider-model-shared";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import type { ModelProviderConfig } from "FirstNexus/plugin-sdk/provider-model-shared";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 import {
   createQaBundledPluginsDir,
   resolveQaBundledPluginSourceDir,
@@ -226,7 +226,9 @@ export function buildQaRuntimeEnv(params: {
     XDG_CONFIG_HOME: params.xdgConfigHome,
     XDG_DATA_HOME: params.xdgDataHome,
     XDG_CACHE_HOME: params.xdgCacheHome,
-    ...(params.bundledPluginsDir ? { NEXISCLAW_BUNDLED_PLUGINS_DIR: params.bundledPluginsDir } : {}),
+    ...(params.bundledPluginsDir
+      ? { NEXISCLAW_BUNDLED_PLUGINS_DIR: params.bundledPluginsDir }
+      : {}),
     ...(params.compatibilityHostVersion
       ? { NEXISCLAW_COMPATIBILITY_HOST_VERSION: params.compatibilityHostVersion }
       : {}),
@@ -496,10 +498,10 @@ export async function startQaGatewayChild(params: {
   controlUiEnabled?: boolean;
   enabledPluginIds?: string[];
   forwardHostHome?: boolean;
-  mutateConfig?: (cfg: NexisClawConfig) => NexisClawConfig;
+  mutateConfig?: (cfg: FirstNexusConfig) => FirstNexusConfig;
 }) {
   const tempRoot = await fs.mkdtemp(
-    path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-qa-suite-"),
+    path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-qa-suite-"),
   );
   const runtimeCwd = tempRoot;
   const distEntryPath = path.join(params.repoRoot, "dist", "index.js");
@@ -514,7 +516,7 @@ export async function startQaGatewayChild(params: {
   const xdgConfigHome = path.join(tempRoot, "xdg-config");
   const xdgDataHome = path.join(tempRoot, "xdg-data");
   const xdgCacheHome = path.join(tempRoot, "xdg-cache");
-  const configPath = path.join(tempRoot, "NexisClaw.json");
+  const configPath = path.join(tempRoot, "FirstNexus.json");
   const gatewayToken = `qa-suite-${randomUUID()}`;
   await seedQaAgentWorkspace({
     workspaceDir,
@@ -610,7 +612,7 @@ export async function startQaGatewayChild(params: {
   let baseUrl = "";
   let wsUrl = "";
   let child: ReturnType<typeof spawn> | null = null;
-  let cfg!: NexisClawConfig;
+  let cfg!: FirstNexusConfig;
   let rpcClient: Awaited<ReturnType<typeof startQaGatewayRpcClient>> | null = null;
   let stagedBundledPluginsRoot: string | null = null;
   let env: NodeJS.ProcessEnv | null = null;

@@ -4,15 +4,15 @@ import {
   normalizeAccountId,
   normalizeOptionalAccountId,
   resolveAccountWithDefaultFallback,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/account-core";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/account-core";
 import type {
   TelegramAccountConfig,
   TelegramActionConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
-import { formatSetExplicitDefaultInstruction } from "NexisClaw/plugin-sdk/routing";
-import { createSubsystemLogger, isTruthyEnvValue } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/config-contracts";
+import { formatSetExplicitDefaultInstruction } from "FirstNexus/plugin-sdk/routing";
+import { createSubsystemLogger, isTruthyEnvValue } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { mergeTelegramAccountConfig, resolveTelegramAccountConfig } from "./account-config.js";
 import {
   listTelegramAccountIds as listSelectedTelegramAccountIds,
@@ -66,7 +66,7 @@ export type TelegramMediaRuntimeOptions = {
   dangerouslyAllowPrivateNetwork?: boolean;
 };
 
-export function listTelegramAccountIds(cfg: NexisClawConfig): string[] {
+export function listTelegramAccountIds(cfg: FirstNexusConfig): string[] {
   const ids = listSelectedTelegramAccountIds(cfg);
   debugAccounts("listTelegramAccountIds", ids);
   return ids;
@@ -79,7 +79,7 @@ export function resetMissingDefaultWarnFlag(): void {
   emittedMissingDefaultWarn = false;
 }
 
-export function resolveDefaultTelegramAccountId(cfg: NexisClawConfig): string {
+export function resolveDefaultTelegramAccountId(cfg: FirstNexusConfig): string {
   const selection = resolveDefaultTelegramAccountSelection(cfg);
   if (selection.shouldWarnMissingDefault && !emittedMissingDefaultWarn) {
     emittedMissingDefaultWarn = true;
@@ -92,7 +92,7 @@ export function resolveDefaultTelegramAccountId(cfg: NexisClawConfig): string {
 }
 
 export function createTelegramActionGate(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): (key: keyof TelegramActionConfig, defaultValue?: boolean) => boolean {
   const accountId = normalizeAccountId(
@@ -105,7 +105,7 @@ export function createTelegramActionGate(params: {
 }
 
 export function resolveTelegramMediaRuntimeOptions(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   token: string;
   transport?: TelegramTransport;
@@ -142,7 +142,7 @@ export function resolveTelegramPollActionGateState(
 }
 
 export function resolveTelegramAccount(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): ResolvedTelegramAccount {
   const baseEnabled = params.cfg.channels?.telegram?.enabled !== false;
@@ -179,7 +179,7 @@ export function resolveTelegramAccount(params: {
   });
 }
 
-export function listEnabledTelegramAccounts(cfg: NexisClawConfig): ResolvedTelegramAccount[] {
+export function listEnabledTelegramAccounts(cfg: FirstNexusConfig): ResolvedTelegramAccount[] {
   const baseEnabled = cfg.channels?.telegram?.enabled !== false;
   if (!baseEnabled) {
     return [];

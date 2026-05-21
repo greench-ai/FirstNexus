@@ -55,7 +55,7 @@ function expectRuntimeArg(value: unknown) {
 const mockConfig = vi.hoisted(() => {
   const initial = {};
   const state = {
-    path: "/tmp/NexisClaw.json",
+    path: "/tmp/FirstNexus.json",
     exists: true,
     config: initial as TestConfig,
     hash: "mock-hash-0" as string | undefined,
@@ -81,7 +81,7 @@ const mockConfig = vi.hoisted(() => {
   };
   return {
     reset() {
-      state.path = "/tmp/NexisClaw.json";
+      state.path = "/tmp/FirstNexus.json";
       state.exists = true;
       state.config = {};
       state.hash = "mock-hash-0";
@@ -139,7 +139,7 @@ vi.mock("./overview.js", () => ({
       { id: "main", isDefault: true },
       { id: "work", isDefault: false, model: "openai/gpt-5.2" },
     ],
-    config: { path: "/tmp/NexisClaw.json", exists: true, valid: true, issues: [], hash: null },
+    config: { path: "/tmp/FirstNexus.json", exists: true, valid: true, issues: [], hash: null },
     tools: {
       codex: { command: "codex", found: false, error: "not found" },
       claude: { command: "claude", found: false, error: "not found" },
@@ -152,8 +152,8 @@ vi.mock("./overview.js", () => ({
       error: "offline",
     },
     references: {
-      docsUrl: "https://docs.NexisClaw.ai",
-      sourceUrl: "https://github.com/NexisClaw/NexisClaw",
+      docsUrl: "https://docs.FirstNexus.ai",
+      sourceUrl: "https://github.com/FirstNexus/FirstNexus",
     },
   })),
 }));
@@ -253,17 +253,17 @@ describe("parseCrestodianOperation", () => {
       kind: "plugin-search",
       query: "calendar sync",
     });
-    expect(parseCrestodianOperation("install npm plugin @NexisClaw/demo")).toEqual({
+    expect(parseCrestodianOperation("install npm plugin @FirstNexus/demo")).toEqual({
       kind: "plugin-install",
-      spec: "npm:@NexisClaw/demo",
+      spec: "npm:@FirstNexus/demo",
     });
-    expect(parseCrestodianOperation("plugin install clawhub:NexisClaw-demo")).toEqual({
+    expect(parseCrestodianOperation("plugin install clawhub:FirstNexus-demo")).toEqual({
       kind: "plugin-install",
-      spec: "clawhub:NexisClaw-demo",
+      spec: "clawhub:FirstNexus-demo",
     });
-    expect(parseCrestodianOperation("plugin uninstall NexisClaw-demo")).toEqual({
+    expect(parseCrestodianOperation("plugin uninstall FirstNexus-demo")).toEqual({
       kind: "plugin-uninstall",
-      pluginId: "NexisClaw-demo",
+      pluginId: "FirstNexus-demo",
     });
   });
 
@@ -308,7 +308,7 @@ describe("parseCrestodianOperation", () => {
   });
 
   it("validates missing config without exiting the process", async () => {
-    mockConfig.missing("/tmp/NexisClaw.json");
+    mockConfig.missing("/tmp/FirstNexus.json");
     const { runtime, lines } = createCrestodianTestRuntime();
 
     const result = await executeCrestodianOperation({ kind: "config-validate" }, runtime);
@@ -440,18 +440,18 @@ describe("parseCrestodianOperation", () => {
     });
 
     const plan = await executeCrestodianOperation(
-      { kind: "plugin-install", spec: "clawhub:NexisClaw-demo" },
+      { kind: "plugin-install", spec: "clawhub:FirstNexus-demo" },
       runtime,
       { deps: { runPluginInstall } },
     );
     expectRecordFields(plan as unknown as Record<string, unknown>, {
       applied: false,
-      message: "Plan: install plugin clawhub:NexisClaw-demo. Say yes to apply.",
+      message: "Plan: install plugin clawhub:FirstNexus-demo. Say yes to apply.",
     });
     expect(runPluginInstall).not.toHaveBeenCalled();
 
     const result = await executeCrestodianOperation(
-      { kind: "plugin-install", spec: "clawhub:NexisClaw-demo" },
+      { kind: "plugin-install", spec: "clawhub:FirstNexus-demo" },
       runtime,
       {
         approved: true,
@@ -462,7 +462,7 @@ describe("parseCrestodianOperation", () => {
     expect(result.applied).toBe(true);
 
     const installCall = requireFirstMockCall(runPluginInstall, "runPluginInstall");
-    expect(installCall[0]).toBe("clawhub:NexisClaw-demo");
+    expect(installCall[0]).toBe("clawhub:FirstNexus-demo");
     expectRuntimeArg(installCall[1]);
     expect(lines.join("\n")).toContain("[crestodian] done: plugin.install");
     const auditPath = path.join(tempDir, "audit", "crestodian.jsonl");
@@ -471,9 +471,9 @@ describe("parseCrestodianOperation", () => {
       audit,
       {
         operation: "plugin.install",
-        summary: "Installed plugin clawhub:NexisClaw-demo",
+        summary: "Installed plugin clawhub:FirstNexus-demo",
       },
-      { rescue: true, spec: "clawhub:NexisClaw-demo" },
+      { rescue: true, spec: "clawhub:FirstNexus-demo" },
     );
   });
 
@@ -486,18 +486,18 @@ describe("parseCrestodianOperation", () => {
     });
 
     const plan = await executeCrestodianOperation(
-      { kind: "plugin-uninstall", pluginId: "NexisClaw-demo" },
+      { kind: "plugin-uninstall", pluginId: "FirstNexus-demo" },
       runtime,
       { deps: { runPluginUninstall } },
     );
     expectRecordFields(plan as unknown as Record<string, unknown>, {
       applied: false,
-      message: "Plan: uninstall plugin NexisClaw-demo. Say yes to apply.",
+      message: "Plan: uninstall plugin FirstNexus-demo. Say yes to apply.",
     });
     expect(runPluginUninstall).not.toHaveBeenCalled();
 
     const result = await executeCrestodianOperation(
-      { kind: "plugin-uninstall", pluginId: "NexisClaw-demo" },
+      { kind: "plugin-uninstall", pluginId: "FirstNexus-demo" },
       runtime,
       {
         approved: true,
@@ -508,7 +508,7 @@ describe("parseCrestodianOperation", () => {
     expect(result.applied).toBe(true);
 
     const uninstallCall = requireFirstMockCall(runPluginUninstall, "runPluginUninstall");
-    expect(uninstallCall[0]).toBe("NexisClaw-demo");
+    expect(uninstallCall[0]).toBe("FirstNexus-demo");
     expectRuntimeArg(uninstallCall[1]);
     expect(lines.join("\n")).toContain("[crestodian] done: plugin.uninstall");
     const auditPath = path.join(tempDir, "audit", "crestodian.jsonl");
@@ -517,9 +517,9 @@ describe("parseCrestodianOperation", () => {
       audit,
       {
         operation: "plugin.uninstall",
-        summary: "Uninstalled plugin NexisClaw-demo",
+        summary: "Uninstalled plugin FirstNexus-demo",
       },
-      { rescue: true, pluginId: "NexisClaw-demo" },
+      { rescue: true, pluginId: "FirstNexus-demo" },
     );
   });
 

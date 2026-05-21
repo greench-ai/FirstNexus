@@ -4,15 +4,15 @@ import {
   ensureApiKeyFromEnvOrPrompt,
   hasConfiguredSecretInput,
   normalizeOptionalSecretInput,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type SecretInput,
   type SecretInputMode,
-} from "NexisClaw/plugin-sdk/provider-auth";
+} from "FirstNexus/plugin-sdk/provider-auth";
 import type {
   ModelDefinitionConfig,
   ModelProviderConfig,
-} from "NexisClaw/plugin-sdk/provider-model-shared";
-import { withAgentModelAliases } from "NexisClaw/plugin-sdk/provider-onboard";
+} from "FirstNexus/plugin-sdk/provider-model-shared";
+import { withAgentModelAliases } from "FirstNexus/plugin-sdk/provider-onboard";
 import {
   applyProviderDefaultModel,
   configureOpenAICompatibleSelfHostedProviderNonInteractive,
@@ -21,8 +21,8 @@ import {
   type ProviderCatalogContext,
   type ProviderPrepareDynamicModelContext,
   type ProviderRuntimeModel,
-} from "NexisClaw/plugin-sdk/provider-setup";
-import { WizardCancelledError, type WizardPrompter } from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/provider-setup";
+import { WizardCancelledError, type WizardPrompter } from "FirstNexus/plugin-sdk/setup";
 import {
   LMSTUDIO_DEFAULT_API_KEY_ENV_VAR,
   LMSTUDIO_DEFAULT_INFERENCE_BASE_URL,
@@ -84,7 +84,7 @@ function resolveLmstudioSetupDefaultInferenceBaseUrl(env: NodeJS.ProcessEnv = pr
     : LMSTUDIO_DEFAULT_INFERENCE_BASE_URL;
 }
 
-function stripLmstudioStoredAuthConfig(cfg: NexisClawConfig): NexisClawConfig {
+function stripLmstudioStoredAuthConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   const { profiles: _profiles, order: _order, ...restAuth } = cfg.auth ?? {};
   const nextProfiles = Object.fromEntries(
     Object.entries(cfg.auth?.profiles ?? {}).filter(
@@ -323,7 +323,7 @@ function isLmstudioDiscoveryConfigResolutionError(error: unknown): boolean {
 
 /** Preserves existing allowlist metadata and appends discovered LM Studio model refs. */
 function mergeDiscoveredLmstudioAllowlistEntries(params: {
-  existing?: NonNullable<NonNullable<NexisClawConfig["agents"]>["defaults"]>["models"];
+  existing?: NonNullable<NonNullable<FirstNexusConfig["agents"]>["defaults"]>["models"];
   discoveredModels: ModelDefinitionConfig[];
 }) {
   return withAgentModelAliases(
@@ -381,7 +381,7 @@ async function discoverLmstudioSetupModels(params: {
 
 /** Interactive LM Studio setup with connectivity and model-availability checks. */
 export async function promptAndConfigureLmstudioInteractive(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   agentDir?: string;
   prompter?: WizardPrompter;
   secretInputMode?: SecretInputMode;
@@ -564,7 +564,7 @@ export async function promptAndConfigureLmstudioInteractive(params: {
 /** Non-interactive setup path backed by the shared self-hosted helper. */
 export async function configureLmstudioNonInteractive(
   ctx: ProviderAuthMethodNonInteractiveContext,
-): Promise<NexisClawConfig | null> {
+): Promise<FirstNexusConfig | null> {
   const customBaseUrl = normalizeOptionalSecretInput(ctx.opts.customBaseUrl);
   const baseUrl = resolveLmstudioInferenceBase(
     customBaseUrl || resolveLmstudioSetupDefaultInferenceBaseUrl(),

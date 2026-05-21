@@ -2,10 +2,10 @@ import {
   getRuntimeConfigSnapshot,
   getRuntimeConfigSourceSnapshot,
   selectApplicableRuntimeConfig,
-} from "NexisClaw/plugin-sdk/runtime-config-snapshot";
-import type { NexisClawConfig } from "./runtime-api.js";
+} from "FirstNexus/plugin-sdk/runtime-config-snapshot";
+import type { FirstNexusConfig } from "./runtime-api.js";
 
-export function selectDiscordRuntimeConfig(inputConfig: NexisClawConfig): NexisClawConfig {
+export function selectDiscordRuntimeConfig(inputConfig: FirstNexusConfig): FirstNexusConfig {
   return (
     selectApplicableRuntimeConfig({
       inputConfig,

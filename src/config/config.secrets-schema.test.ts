@@ -27,14 +27,14 @@ describe("config secret refs schema", () => {
           default: { source: "env" },
           filemain: {
             source: "file",
-            path: "~/.NexisClaw/secrets.json",
+            path: "~/.FirstNexus/secrets.json",
             mode: "json",
             timeoutMs: 10_000,
             allowInsecurePath: true,
           },
           vault: {
             source: "exec",
-            command: "/usr/local/bin/NexisClaw-secret-resolver",
+            command: "/usr/local/bin/FirstNexus-secret-resolver",
             args: ["resolve"],
             allowSymlinkCommand: true,
           },
@@ -218,7 +218,7 @@ describe("config secret refs schema", () => {
         providers: {
           rawfile: {
             source: "file",
-            path: "~/.NexisClaw/token.txt",
+            path: "~/.FirstNexus/token.txt",
             mode: "singleValue",
           },
         },

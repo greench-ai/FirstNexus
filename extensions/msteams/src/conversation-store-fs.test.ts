@@ -13,7 +13,7 @@ describe("msteams conversation store (fs-only)", () => {
   });
 
   it("filters and prunes expired entries while preserving legacy entries without lastSeenAt", async () => {
-    const stateDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "NexisClaw-msteams-store-"));
+    const stateDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "FirstNexus-msteams-store-"));
 
     const env: NodeJS.ProcessEnv = {
       ...process.env,

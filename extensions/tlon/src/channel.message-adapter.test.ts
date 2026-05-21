@@ -1,6 +1,6 @@
-import { verifyChannelMessageAdapterCapabilityProofs } from "NexisClaw/plugin-sdk/channel-message";
+import { verifyChannelMessageAdapterCapabilityProofs } from "FirstNexus/plugin-sdk/channel-message";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../runtime-api.js";
+import type { FirstNexusConfig } from "../runtime-api.js";
 
 const mocks = vi.hoisted(() => ({
   sendText: vi.fn(),
@@ -24,7 +24,7 @@ const cfg = {
       code: "lidlut-tabwed-pillex-ridrup",
     },
   },
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 describe("tlon channel message adapter", () => {
   beforeEach(() => {

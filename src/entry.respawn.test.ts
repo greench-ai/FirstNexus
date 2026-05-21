@@ -31,7 +31,7 @@ describe("buildCliRespawnPlan", () => {
   it("returns null when respawn policy skips the argv", () => {
     expect(
       buildCliRespawnPlan({
-        argv: ["node", "NexisClaw", "--help"],
+        argv: ["node", "FirstNexus", "--help"],
         env: {},
         execArgv: [],
         autoNodeExtraCaCerts: "/etc/ssl/certs/ca-certificates.crt",
@@ -41,7 +41,7 @@ describe("buildCliRespawnPlan", () => {
 
   it("adds NODE_EXTRA_CA_CERTS and warning suppression in one respawn", () => {
     const plan = buildCliRespawnPlan({
-      argv: ["node", "NexisClaw", "status"],
+      argv: ["node", "FirstNexus", "status"],
       env: {},
       execArgv: [],
       autoNodeExtraCaCerts: "/etc/ssl/certs/ca-certificates.crt",
@@ -59,14 +59,14 @@ describe("buildCliRespawnPlan", () => {
     "preserves NODE_EXTRA_CA_CERTS respawn for interactive %s",
     (command) => {
       const plan = buildCliRespawnPlan({
-        argv: ["node", "NexisClaw", command],
+        argv: ["node", "FirstNexus", command],
         env: {},
         execArgv: [],
         autoNodeExtraCaCerts: "/etc/ssl/certs/ca-certificates.crt",
       });
 
       const respawnPlan = expectCliRespawnPlan(plan);
-      expect(respawnPlan.argv).toEqual(["NexisClaw", command]);
+      expect(respawnPlan.argv).toEqual(["FirstNexus", command]);
       expect(respawnPlan.env.NODE_EXTRA_CA_CERTS).toBe("/etc/ssl/certs/ca-certificates.crt");
       expect(respawnPlan.env[NEXISCLAW_NODE_EXTRA_CA_CERTS_READY]).toBe("1");
       expect(respawnPlan.env[NEXISCLAW_NODE_OPTIONS_READY]).toBeUndefined();
@@ -76,7 +76,7 @@ describe("buildCliRespawnPlan", () => {
   it("does not respawn interactive commands for warning suppression only", () => {
     expect(
       buildCliRespawnPlan({
-        argv: ["node", "NexisClaw", "tui"],
+        argv: ["node", "FirstNexus", "tui"],
         env: { [NEXISCLAW_NODE_EXTRA_CA_CERTS_READY]: "1" },
         execArgv: [],
         autoNodeExtraCaCerts: undefined,
@@ -86,7 +86,7 @@ describe("buildCliRespawnPlan", () => {
 
   it("does not overwrite an existing NODE_EXTRA_CA_CERTS value", () => {
     const plan = buildCliRespawnPlan({
-      argv: ["node", "NexisClaw", "status"],
+      argv: ["node", "FirstNexus", "status"],
       env: { NODE_EXTRA_CA_CERTS: "/custom/ca.pem" },
       execArgv: [],
       autoNodeExtraCaCerts: "/etc/ssl/certs/ca-certificates.crt",
@@ -99,7 +99,7 @@ describe("buildCliRespawnPlan", () => {
   it("returns null when both respawn guards are already satisfied", () => {
     expect(
       buildCliRespawnPlan({
-        argv: ["node", "NexisClaw", "status"],
+        argv: ["node", "FirstNexus", "status"],
         env: {
           [NEXISCLAW_NODE_EXTRA_CA_CERTS_READY]: "1",
           [NEXISCLAW_NODE_OPTIONS_READY]: "1",
@@ -115,7 +115,7 @@ describe("buildCliRespawnPlan", () => {
       buildCliRespawnPlan({
         argv: [
           "node",
-          "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\NexisClaw\\NexisClaw.mjs",
+          "C:\\Users\\alice\\AppData\\Roaming\\npm\\node_modules\\FirstNexus\\FirstNexus.mjs",
           "onboard",
         ],
         env: {},
@@ -128,7 +128,7 @@ describe("buildCliRespawnPlan", () => {
 
   it("respawns Volta shims through node so the shim is not called directly", () => {
     const plan = buildCliRespawnPlan({
-      argv: ["/home/alice/.volta/bin/volta-shim", "/usr/local/bin/NexisClaw", "status"],
+      argv: ["/home/alice/.volta/bin/volta-shim", "/usr/local/bin/FirstNexus", "status"],
       env: { PATH: "/home/alice/.volta/bin:/usr/bin:/bin" },
       execArgv: [],
       execPath: "/home/alice/.volta/bin/volta-shim",
@@ -140,7 +140,7 @@ describe("buildCliRespawnPlan", () => {
     expect(respawnPlan.command).toBe("node");
     expect(respawnPlan.argv).toEqual([
       EXPERIMENTAL_WARNING_FLAG,
-      "/usr/local/bin/NexisClaw",
+      "/usr/local/bin/FirstNexus",
       "status",
     ]);
   });
@@ -174,7 +174,7 @@ describe("runCliRespawnPlan", () => {
     runCliRespawnPlan(
       {
         command: "/usr/bin/node",
-        argv: ["/repo/NexisClaw/dist/entry.js", "status"],
+        argv: ["/repo/FirstNexus/dist/entry.js", "status"],
         env: { NEXISCLAW_NODE_OPTIONS_READY: "1" },
       },
       {
@@ -187,7 +187,7 @@ describe("runCliRespawnPlan", () => {
 
     expect(spawn).toHaveBeenCalledWith(
       "/usr/bin/node",
-      ["/repo/NexisClaw/dist/entry.js", "status"],
+      ["/repo/FirstNexus/dist/entry.js", "status"],
       {
         stdio: "inherit",
         env: { NEXISCLAW_NODE_OPTIONS_READY: "1" },
@@ -219,7 +219,7 @@ describe("runCliRespawnPlan", () => {
       runCliRespawnPlan(
         {
           command: "/usr/bin/node",
-          argv: ["/repo/NexisClaw/dist/entry.js", "tui"],
+          argv: ["/repo/FirstNexus/dist/entry.js", "tui"],
           env: {},
         },
         {

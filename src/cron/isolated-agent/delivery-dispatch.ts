@@ -12,7 +12,7 @@ import {
   resolveAgentMainSessionKey,
   resolveMainSessionKey,
 } from "../../config/sessions/main-session.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { TtsAutoMode } from "../../config/types.tts.js";
 import { sleepWithAbort } from "../../infra/backoff.js";
 import { formatErrorMessage } from "../../infra/errors.js";
@@ -102,8 +102,8 @@ export function resolveCronDeliveryBestEffort(job: CronJob): boolean {
 export type SuccessfulDeliveryTarget = Extract<DeliveryTargetResolution, { ok: true }>;
 
 type DispatchCronDeliveryParams = {
-  cfg: NexisClawConfig;
-  cfgWithAgentDefaults: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  cfgWithAgentDefaults: FirstNexusConfig;
   deps: CliDeps;
   job: CronJob;
   agentId: string;
@@ -310,7 +310,7 @@ function getCompletedDirectCronDelivery(
 }
 
 async function maybeApplyTtsToCronPayloads(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   payloads: ReplyPayload[];
   delivery: SuccessfulDeliveryTarget;
   agentId: string;
@@ -373,7 +373,7 @@ function shouldQueueCronAwareness(params: {
 }
 
 function resolveCronAwarenessMainSessionKey(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
 }): string {
   return params.cfg.session?.scope === "global"
@@ -382,7 +382,7 @@ function resolveCronAwarenessMainSessionKey(params: {
 }
 
 async function queueCronAwarenessSystemEvent(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   jobId: string;
   agentId: string;
   deliveryIdempotencyKey: string;
@@ -500,7 +500,7 @@ export async function dispatchCronDelivery(
   let directCronSessionDeleted = false;
   const formatDeliveryTargetError = (error: string) =>
     params.unverifiedMessagingToolDelivery === true
-      ? `${error}; the agent used the message tool, but NexisClaw could not verify that message matched the cron delivery target`
+      ? `${error}; the agent used the message tool, but FirstNexus could not verify that message matched the cron delivery target`
       : error;
   const failDeliveryTarget = (error: string) =>
     params.withRunSession({
@@ -679,7 +679,7 @@ export async function dispatchCronDelivery(
           // Keep all attempts out of the write-ahead delivery queue so a
           // late-successful first send cannot leave behind a failed queue
           // entry that replays on the next restart.
-          // See: https://github.com/NexisClaw/NexisClaw/issues/40545
+          // See: https://github.com/FirstNexus/FirstNexus/issues/40545
           skipQueue: true,
         });
         if (

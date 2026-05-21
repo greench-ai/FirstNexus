@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import type { ThreadBindingManager } from "./thread-bindings.js";
 
-type DiscordConfig = NonNullable<NexisClawConfig["channels"]>["discord"];
+type DiscordConfig = NonNullable<FirstNexusConfig["channels"]>["discord"];
 
 export type DiscordCommandArgContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordConfig;
   accountId: string;
   sessionPrefix: string;

@@ -1,4 +1,4 @@
-import { withFetchPreconnect } from "NexisClaw/plugin-sdk/test-env";
+import { withFetchPreconnect } from "FirstNexus/plugin-sdk/test-env";
 import { afterEach, describe, expect, it, vi, type Mock } from "vitest";
 import { probeTelegram, resetTelegramProbeFetcherCacheForTests } from "./probe.js";
 

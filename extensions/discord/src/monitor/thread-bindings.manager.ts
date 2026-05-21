@@ -1,14 +1,14 @@
 import {
   registerSessionBindingAdapter,
   unregisterSessionBindingAdapter,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { normalizeAccountId, resolveAgentIdFromSessionKey } from "NexisClaw/plugin-sdk/routing";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { normalizeAccountId, resolveAgentIdFromSessionKey } from "FirstNexus/plugin-sdk/routing";
 import {
   getRuntimeConfigSnapshot,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/runtime-config-snapshot";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/runtime-config-snapshot";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { createDiscordRestClient } from "../client.js";
 import { getChannel } from "../internal/discord.js";
 import {
@@ -99,7 +99,7 @@ function isDirectConversationBindingId(value?: string | null): boolean {
 export function createThreadBindingManager(params: {
   accountId?: string;
   token?: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   persist?: boolean;
   enableSweeper?: boolean;
   idleTimeoutMs?: number;

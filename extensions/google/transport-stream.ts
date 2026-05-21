@@ -7,7 +7,7 @@ import {
   type SimpleStreamOptions,
   type ThinkingLevel,
 } from "@earendil-works/pi-ai";
-import { createProviderHttpError } from "NexisClaw/plugin-sdk/provider-http";
+import { createProviderHttpError } from "FirstNexus/plugin-sdk/provider-http";
 import {
   buildGuardedModelFetch,
   coerceTransportToolCallArguments,
@@ -20,8 +20,8 @@ import {
   stripSystemPromptCacheBoundary,
   transformTransportMessages,
   type WritableTransportStream,
-} from "NexisClaw/plugin-sdk/provider-transport-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-transport-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { parseGeminiAuth } from "./gemini-auth.js";
 import { normalizeGoogleApiBaseUrl } from "./provider-policy.js";
 import {

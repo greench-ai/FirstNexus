@@ -1,4 +1,4 @@
-import { resolveSendableOutboundReplyParts } from "NexisClaw/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "FirstNexus/plugin-sdk/reply-payload";
 import { logVerbose } from "../../globals.js";
 import { copyReplyPayloadMetadata } from "../reply-payload.js";
 import { SILENT_REPLY_TOKEN } from "../tokens.js";

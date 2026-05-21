@@ -1,10 +1,10 @@
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/agent-harness-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/agent-harness-runtime";
 import type {
   PluginConversationBindingResolvedEvent,
   PluginHookInboundClaimContext,
   PluginHookInboundClaimEvent,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-payload";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-payload";
 import { resolveCodexAppServerAuthProfileIdForAgent } from "./app-server/auth-bridge.js";
 import { CODEX_CONTROL_METHODS } from "./app-server/capabilities.js";
 import {
@@ -75,7 +75,7 @@ type CodexConversationGlobalState = {
   queues: Map<string, Promise<void>>;
 };
 
-const CODEX_CONVERSATION_GLOBAL_STATE = Symbol.for("NexisClaw.codex.conversationBinding");
+const CODEX_CONVERSATION_GLOBAL_STATE = Symbol.for("FirstNexus.codex.conversationBinding");
 
 function getGlobalState(): CodexConversationGlobalState {
   const globalState = globalThis as typeof globalThis & {
@@ -286,7 +286,7 @@ async function createThread(params: {
         ? { serviceTier: params.serviceTier ?? runtime.serviceTier }
         : {}),
       developerInstructions:
-        "This Codex thread is bound to an NexisClaw conversation. Answer normally; NexisClaw will deliver your final response back to the conversation.",
+        "This Codex thread is bound to an FirstNexus conversation. Answer normally; FirstNexus will deliver your final response back to the conversation.",
       experimentalRawEvents: true,
       persistExtendedHistory: true,
     },
@@ -348,7 +348,7 @@ async function runBoundTurn(params: {
           contentItems: [
             {
               type: "inputText",
-              text: "NexisClaw native Codex conversation binding does not expose dynamic NexisClaw tools yet.",
+              text: "FirstNexus native Codex conversation binding does not expose dynamic FirstNexus tools yet.",
             },
           ],
           success: false,
@@ -361,7 +361,7 @@ async function runBoundTurn(params: {
         return {
           decision: "decline",
           reason:
-            "NexisClaw native Codex conversation binding cannot route interactive approvals yet; use the Codex harness or explicit /acp spawn codex for that workflow.",
+            "FirstNexus native Codex conversation binding cannot route interactive approvals yet; use the Codex harness or explicit /acp spawn codex for that workflow.",
         };
       }
       if (request.method === "item/permissions/requestApproval") {
@@ -371,7 +371,7 @@ async function runBoundTurn(params: {
         return {
           decision: "decline",
           reason:
-            "NexisClaw native Codex conversation binding cannot route interactive approvals yet; use the Codex harness or explicit /acp spawn codex for that workflow.",
+            "FirstNexus native Codex conversation binding cannot route interactive approvals yet; use the Codex harness or explicit /acp spawn codex for that workflow.",
         };
       }
       return undefined;

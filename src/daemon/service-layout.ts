@@ -78,13 +78,13 @@ async function isSourceCheckoutRoot(candidate: string): Promise<boolean> {
   );
 }
 
-async function resolveNexisClawPackageRoot(entrypoint: string): Promise<string | undefined> {
+async function resolveFirstNexusPackageRoot(entrypoint: string): Promise<string | undefined> {
   let current = path.dirname(path.resolve(entrypoint));
   for (let depth = 0; depth < 8; depth += 1) {
     const packageJson = path.join(current, "package.json");
     if (await pathExists(packageJson)) {
       const name = await readPackageName(current);
-      if (name === "NexisClaw") {
+      if (name === "FirstNexus") {
         return current;
       }
     }
@@ -109,7 +109,9 @@ export async function summarizeGatewayServiceLayout(
     tryRealpath(sourcePath),
     tryRealpath(entrypoint),
   ]);
-  const packageRoot = entrypointReal ? await resolveNexisClawPackageRoot(entrypointReal) : undefined;
+  const packageRoot = entrypointReal
+    ? await resolveFirstNexusPackageRoot(entrypointReal)
+    : undefined;
   const packageRootReal = await tryRealpath(packageRoot);
   const packageVersion = packageRoot
     ? ((await readPackageVersion(packageRoot)) ?? undefined)

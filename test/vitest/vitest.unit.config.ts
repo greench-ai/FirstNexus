@@ -124,7 +124,7 @@ export function createUnitVitestConfigWithOptions(
       ...(isolate ? { runner: undefined } : { runner: nonIsolatedRunnerPath }),
       setupFiles: [
         ...new Set(
-          [...(sharedTest.setupFiles ?? []), "test/setup-NexisClaw-runtime.ts"].map(
+          [...(sharedTest.setupFiles ?? []), "test/setup-FirstNexus-runtime.ts"].map(
             resolveRepoRootPath,
           ),
         ),

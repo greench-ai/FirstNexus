@@ -1,23 +1,23 @@
 ---
-summary: "Run NexisClaw in a rootless Podman container"
+summary: "Run FirstNexus in a rootless Podman container"
 read_when:
   - You want a containerized gateway with Podman instead of Docker
 title: "Podman"
 ---
 
-Run the NexisClaw Gateway in a rootless Podman container, managed by your current non-root user.
+Run the FirstNexus Gateway in a rootless Podman container, managed by your current non-root user.
 
 The intended model is:
 
 - Podman runs the gateway container.
-- Your host `NexisClaw` CLI is the control plane.
-- Persistent state lives on the host under `~/.NexisClaw` by default.
-- Day-to-day management uses `NexisClaw --container <name> ...` instead of `sudo -u NexisClaw`, `podman exec`, or a separate service user.
+- Your host `FirstNexus` CLI is the control plane.
+- Persistent state lives on the host under `~/.FirstNexus` by default.
+- Day-to-day management uses `FirstNexus --container <name> ...` instead of `sudo -u FirstNexus`, `podman exec`, or a separate service user.
 
 ## Prerequisites
 
 - **Podman** in rootless mode
-- **NexisClaw CLI** installed on the host
+- **FirstNexus CLI** installed on the host
 - **Optional:** `systemd --user` if you want Quadlet-managed auto-start
 - **Optional:** `sudo` only if you want `loginctl enable-linger "$(whoami)"` for boot persistence on a headless host
 
@@ -29,24 +29,24 @@ The intended model is:
   </Step>
 
   <Step title="Start the Gateway container">
-    Start the container with `./scripts/run-NexisClaw-podman.sh launch`.
+    Start the container with `./scripts/run-FirstNexus-podman.sh launch`.
   </Step>
 
   <Step title="Run onboarding inside the container">
-    Run `./scripts/run-NexisClaw-podman.sh launch setup`, then open `http://127.0.0.1:18789/`.
+    Run `./scripts/run-FirstNexus-podman.sh launch setup`, then open `http://127.0.0.1:18789/`.
   </Step>
 
   <Step title="Manage the running container from the host CLI">
-    Set `NEXISCLAW_CONTAINER=NexisClaw`, then use normal `NexisClaw` commands from the host.
+    Set `NEXISCLAW_CONTAINER=FirstNexus`, then use normal `FirstNexus` commands from the host.
   </Step>
 </Steps>
 
 Setup details:
 
-- `./scripts/podman/setup.sh` builds `NexisClaw:local` in your rootless Podman store by default, or uses `NEXISCLAW_IMAGE` / `NEXISCLAW_PODMAN_IMAGE` if you set one.
-- It creates `~/.NexisClaw/NexisClaw.json` with `gateway.mode: "local"` if missing.
-- It creates `~/.NexisClaw/.env` with `NEXISCLAW_GATEWAY_TOKEN` if missing.
-- For manual launches, the helper reads only a small allowlist of Podman-related keys from `~/.NexisClaw/.env` and passes explicit runtime env vars to the container; it does not hand the full env file to Podman.
+- `./scripts/podman/setup.sh` builds `FirstNexus:local` in your rootless Podman store by default, or uses `NEXISCLAW_IMAGE` / `NEXISCLAW_PODMAN_IMAGE` if you set one.
+- It creates `~/.FirstNexus/FirstNexus.json` with `gateway.mode: "local"` if missing.
+- It creates `~/.FirstNexus/.env` with `NEXISCLAW_GATEWAY_TOKEN` if missing.
+- For manual launches, the helper reads only a small allowlist of Podman-related keys from `~/.FirstNexus/.env` and passes explicit runtime env vars to the container; it does not hand the full env file to Podman.
 
 Quadlet-managed setup:
 
@@ -60,7 +60,7 @@ You can also set `NEXISCLAW_PODMAN_QUADLET=1`.
 
 Optional build/setup env vars:
 
-- `NEXISCLAW_IMAGE` or `NEXISCLAW_PODMAN_IMAGE` -- use an existing/pulled image instead of building `NexisClaw:local`
+- `NEXISCLAW_IMAGE` or `NEXISCLAW_PODMAN_IMAGE` -- use an existing/pulled image instead of building `FirstNexus:local`
 - `NEXISCLAW_DOCKER_APT_PACKAGES` -- install extra apt packages during image build
 - `NEXISCLAW_EXTENSIONS` -- pre-install plugin dependencies at build time
 - `NEXISCLAW_INSTALL_BROWSER` -- pre-install Chromium and Xvfb for browser automation (set to `1` to enable)
@@ -68,32 +68,32 @@ Optional build/setup env vars:
 Container start:
 
 ```bash
-./scripts/run-NexisClaw-podman.sh launch
+./scripts/run-FirstNexus-podman.sh launch
 ```
 
-The script starts the container as your current uid/gid with `--userns=keep-id` and bind-mounts your NexisClaw state into the container.
+The script starts the container as your current uid/gid with `--userns=keep-id` and bind-mounts your FirstNexus state into the container.
 
 Onboarding:
 
 ```bash
-./scripts/run-NexisClaw-podman.sh launch setup
+./scripts/run-FirstNexus-podman.sh launch setup
 ```
 
-Then open `http://127.0.0.1:18789/` and use the token from `~/.NexisClaw/.env`.
+Then open `http://127.0.0.1:18789/` and use the token from `~/.FirstNexus/.env`.
 
 Host CLI default:
 
 ```bash
-export NEXISCLAW_CONTAINER=NexisClaw
+export NEXISCLAW_CONTAINER=FirstNexus
 ```
 
 Then commands such as these will run inside that container automatically:
 
 ```bash
-NexisClaw dashboard --no-open
-NexisClaw gateway status --deep   # includes extra service scan
-NexisClaw doctor
-NexisClaw channels login
+FirstNexus dashboard --no-open
+FirstNexus gateway status --deep   # includes extra service scan
+FirstNexus doctor
+FirstNexus channels login
 ```
 
 On macOS, Podman machine may make the browser appear non-local to the gateway.
@@ -109,7 +109,7 @@ For HTTPS or remote browser access, follow the main Tailscale docs.
 Podman-specific note:
 
 - Keep the Podman publish host at `127.0.0.1`.
-- Prefer host-managed `tailscale serve` over `NexisClaw gateway --tailscale serve`.
+- Prefer host-managed `tailscale serve` over `FirstNexus gateway --tailscale serve`.
 - On macOS, if local browser device-auth context is unreliable, use Tailscale access instead of ad hoc local tunnel workarounds.
 
 See:
@@ -122,21 +122,21 @@ See:
 If you ran `./scripts/podman/setup.sh --quadlet`, setup installs a Quadlet file at:
 
 ```bash
-~/.config/containers/systemd/NexisClaw.container
+~/.config/containers/systemd/FirstNexus.container
 ```
 
 Useful commands:
 
-- **Start:** `systemctl --user start NexisClaw.service`
-- **Stop:** `systemctl --user stop NexisClaw.service`
-- **Status:** `systemctl --user status NexisClaw.service`
-- **Logs:** `journalctl --user -u NexisClaw.service -f`
+- **Start:** `systemctl --user start FirstNexus.service`
+- **Stop:** `systemctl --user stop FirstNexus.service`
+- **Status:** `systemctl --user status FirstNexus.service`
+- **Logs:** `journalctl --user -u FirstNexus.service -f`
 
 After editing the Quadlet file:
 
 ```bash
 systemctl --user daemon-reload
-systemctl --user restart NexisClaw.service
+systemctl --user restart FirstNexus.service
 ```
 
 For boot persistence on SSH/headless hosts, enable lingering for your current user:
@@ -147,24 +147,24 @@ sudo loginctl enable-linger "$(whoami)"
 
 ## Config, env, and storage
 
-- **Config dir:** `~/.NexisClaw`
-- **Workspace dir:** `~/.NexisClaw/workspace`
-- **Token file:** `~/.NexisClaw/.env`
-- **Launch helper:** `./scripts/run-NexisClaw-podman.sh`
+- **Config dir:** `~/.FirstNexus`
+- **Workspace dir:** `~/.FirstNexus/workspace`
+- **Token file:** `~/.FirstNexus/.env`
+- **Launch helper:** `./scripts/run-FirstNexus-podman.sh`
 
 The launch script and Quadlet bind-mount host state into the container:
 
-- `NEXISCLAW_CONFIG_DIR` -> `/home/node/.NexisClaw`
-- `NEXISCLAW_WORKSPACE_DIR` -> `/home/node/.NexisClaw/workspace`
+- `NEXISCLAW_CONFIG_DIR` -> `/home/node/.FirstNexus`
+- `NEXISCLAW_WORKSPACE_DIR` -> `/home/node/.FirstNexus/workspace`
 
 By default those are host directories, not anonymous container state, so
-`NexisClaw.json`, per-agent `auth-profiles.json`, channel/provider state,
+`FirstNexus.json`, per-agent `auth-profiles.json`, channel/provider state,
 sessions, and workspace survive container replacement.
 The Podman setup also seeds `gateway.controlUi.allowedOrigins` for `127.0.0.1` and `localhost` on the published gateway port so the local dashboard works with the container's non-loopback bind.
 
 Useful env vars for the manual launcher:
 
-- `NEXISCLAW_PODMAN_CONTAINER` -- container name (`NexisClaw` by default)
+- `NEXISCLAW_PODMAN_CONTAINER` -- container name (`FirstNexus` by default)
 - `NEXISCLAW_PODMAN_IMAGE` / `NEXISCLAW_IMAGE` -- image to run
 - `NEXISCLAW_PODMAN_GATEWAY_HOST_PORT` -- host port mapped to container `18789`
 - `NEXISCLAW_PODMAN_BRIDGE_HOST_PORT` -- host port mapped to container `18790`
@@ -172,34 +172,34 @@ Useful env vars for the manual launcher:
 - `NEXISCLAW_GATEWAY_BIND` -- gateway bind mode inside the container; default is `lan`
 - `NEXISCLAW_PODMAN_USERNS` -- `keep-id` (default), `auto`, or `host`
 
-The manual launcher reads `~/.NexisClaw/.env` before finalizing container/image defaults, so you can persist these there.
+The manual launcher reads `~/.FirstNexus/.env` before finalizing container/image defaults, so you can persist these there.
 
-If you use a non-default `NEXISCLAW_CONFIG_DIR` or `NEXISCLAW_WORKSPACE_DIR`, set the same variables for both `./scripts/podman/setup.sh` and later `./scripts/run-NexisClaw-podman.sh launch` commands. The repo-local launcher does not persist custom path overrides across shells.
+If you use a non-default `NEXISCLAW_CONFIG_DIR` or `NEXISCLAW_WORKSPACE_DIR`, set the same variables for both `./scripts/podman/setup.sh` and later `./scripts/run-FirstNexus-podman.sh launch` commands. The repo-local launcher does not persist custom path overrides across shells.
 
 Quadlet note:
 
 - The generated Quadlet service intentionally keeps a fixed, hardened default shape: `127.0.0.1` published ports, `--bind lan` inside the container, and `keep-id` user namespace.
 - It pins `NEXISCLAW_NO_RESPAWN=1`, `Restart=on-failure`, and `TimeoutStartSec=300`.
 - It publishes both `127.0.0.1:18789:18789` (gateway) and `127.0.0.1:18790:18790` (bridge).
-- It reads `~/.NexisClaw/.env` as a runtime `EnvironmentFile` for values such as `NEXISCLAW_GATEWAY_TOKEN`, but it does not consume the manual launcher's Podman-specific override allowlist.
-- If you need custom publish ports, publish host, or other container-run flags, use the manual launcher or edit `~/.config/containers/systemd/NexisClaw.container` directly, then reload and restart the service.
+- It reads `~/.FirstNexus/.env` as a runtime `EnvironmentFile` for values such as `NEXISCLAW_GATEWAY_TOKEN`, but it does not consume the manual launcher's Podman-specific override allowlist.
+- If you need custom publish ports, publish host, or other container-run flags, use the manual launcher or edit `~/.config/containers/systemd/FirstNexus.container` directly, then reload and restart the service.
 
 ## Useful commands
 
-- **Container logs:** `podman logs -f NexisClaw`
-- **Stop container:** `podman stop NexisClaw`
-- **Remove container:** `podman rm -f NexisClaw`
-- **Open dashboard URL from host CLI:** `NexisClaw dashboard --no-open`
-- **Health/status via host CLI:** `NexisClaw gateway status --deep` (RPC probe + extra
+- **Container logs:** `podman logs -f FirstNexus`
+- **Stop container:** `podman stop FirstNexus`
+- **Remove container:** `podman rm -f FirstNexus`
+- **Open dashboard URL from host CLI:** `FirstNexus dashboard --no-open`
+- **Health/status via host CLI:** `FirstNexus gateway status --deep` (RPC probe + extra
   service scan)
 
 ## Troubleshooting
 
 - **Permission denied (EACCES) on config or workspace:** The container runs with `--userns=keep-id` and `--user <your uid>:<your gid>` by default. Ensure the host config/workspace paths are owned by your current user.
-- **Gateway start blocked (missing `gateway.mode=local`):** Ensure `~/.NexisClaw/NexisClaw.json` exists and sets `gateway.mode="local"`. `scripts/podman/setup.sh` creates this if missing.
-- **Container CLI commands hit the wrong target:** Use `NexisClaw --container <name> ...` explicitly, or export `NEXISCLAW_CONTAINER=<name>` in your shell.
-- **`NexisClaw update` fails with `--container`:** Expected. Rebuild/pull the image, then restart the container or the Quadlet service.
-- **Quadlet service does not start:** Run `systemctl --user daemon-reload`, then `systemctl --user start NexisClaw.service`. On headless systems you may also need `sudo loginctl enable-linger "$(whoami)"`.
+- **Gateway start blocked (missing `gateway.mode=local`):** Ensure `~/.FirstNexus/FirstNexus.json` exists and sets `gateway.mode="local"`. `scripts/podman/setup.sh` creates this if missing.
+- **Container CLI commands hit the wrong target:** Use `FirstNexus --container <name> ...` explicitly, or export `NEXISCLAW_CONTAINER=<name>` in your shell.
+- **`FirstNexus update` fails with `--container`:** Expected. Rebuild/pull the image, then restart the container or the Quadlet service.
+- **Quadlet service does not start:** Run `systemctl --user daemon-reload`, then `systemctl --user start FirstNexus.service`. On headless systems you may also need `sudo loginctl enable-linger "$(whoami)"`.
 - **SELinux blocks bind mounts:** Leave the default mount behavior alone; the launcher auto-adds `:Z` on Linux when SELinux is enforcing or permissive.
 
 ## Related

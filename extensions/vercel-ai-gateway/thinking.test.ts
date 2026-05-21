@@ -1,7 +1,7 @@
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 

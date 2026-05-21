@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../../config/config.js";
+import type { FirstNexusConfig } from "../../../config/config.js";
 import { installGatewayDaemonNonInteractive } from "./daemon-install.js";
 
 const buildGatewayInstallPlan = vi.hoisted(() => vi.fn());
@@ -47,7 +47,7 @@ describe("installGatewayDaemonNonInteractive", () => {
       warnings: [],
     });
     buildGatewayInstallPlan.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {},
     });
@@ -68,7 +68,7 @@ describe("installGatewayDaemonNonInteractive", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       opts: { installDaemon: true },
       runtime,
       port: 18789,
@@ -90,7 +90,7 @@ describe("installGatewayDaemonNonInteractive", () => {
     const runtime = { log: vi.fn(), error: vi.fn(), exit: vi.fn() };
 
     await installGatewayDaemonNonInteractive({
-      nextConfig: {} as NexisClawConfig,
+      nextConfig: {} as FirstNexusConfig,
       opts: { installDaemon: true },
       runtime,
       port: 18789,
@@ -118,7 +118,7 @@ describe("installGatewayDaemonNonInteractive", () => {
 
     try {
       const result = await installGatewayDaemonNonInteractive({
-        nextConfig: {} as NexisClawConfig,
+        nextConfig: {} as FirstNexusConfig,
         opts: { installDaemon: true },
         runtime,
         port: 18789,
@@ -130,7 +130,7 @@ describe("installGatewayDaemonNonInteractive", () => {
       });
       expect(runtime.log.mock.calls).toEqual([
         [
-          "Systemd user services are unavailable; skipping service install. Use a direct shell run (`NexisClaw gateway run`) or rerun without --install-daemon on this session.",
+          "Systemd user services are unavailable; skipping service install. Use a direct shell run (`FirstNexus gateway run`) or rerun without --install-daemon on this session.",
         ],
       ]);
       expect(buildGatewayInstallPlan).not.toHaveBeenCalled();

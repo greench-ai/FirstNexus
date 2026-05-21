@@ -3,12 +3,12 @@ import { randomUUID } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { performance } from "node:perf_hooks";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isDiagnosticFlagEnabled } from "./diagnostic-flags.js";
 import { isTruthyEnvValue } from "./env.js";
 import { appendRegularFileSync } from "./regular-file.js";
 
-const NEXISCLAW_DIAGNOSTICS_TIMELINE_SCHEMA_VERSION = "NexisClaw.diagnostics.v1";
+const NEXISCLAW_DIAGNOSTICS_TIMELINE_SCHEMA_VERSION = "FirstNexus.diagnostics.v1";
 
 type DiagnosticsTimelineEventType =
   | "span.start"
@@ -52,12 +52,12 @@ type DiagnosticsTimelineSpanOptions = {
   phase?: string;
   parentSpanId?: string;
   attributes?: DiagnosticsTimelineAttributes;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
 };
 
 type DiagnosticsTimelineOptions = {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
 };
 

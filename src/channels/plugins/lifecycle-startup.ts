@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { listChannelPlugins } from "./registry.js";
 
 type ChannelStartupLogger = {
@@ -7,7 +7,7 @@ type ChannelStartupLogger = {
 };
 
 export async function runChannelPluginStartupMaintenance(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   log: ChannelStartupLogger;
   trigger?: string;

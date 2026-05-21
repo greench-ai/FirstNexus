@@ -157,7 +157,7 @@ vi.mock("ws", () => ({
   },
 }));
 
-vi.mock("NexisClaw/plugin-sdk/proxy-capture", () => ({
+vi.mock("FirstNexus/plugin-sdk/proxy-capture", () => ({
   captureHttpExchange: captureHttpExchangeSpy,
   captureWsEvent: captureWsEventSpy,
   resolveEffectiveDebugProxyUrl: (configuredProxyUrl?: string) =>
@@ -165,7 +165,7 @@ vi.mock("NexisClaw/plugin-sdk/proxy-capture", () => ({
   resolveDebugProxySettings: resolveDebugProxySettingsMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: vi.fn(async (params: { url: string; init?: RequestInit }) => {
     const source = (await globalFetchMock(params.url, params.init)) as Response;
     const body = await source.text();

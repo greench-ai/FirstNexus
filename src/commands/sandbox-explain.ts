@@ -9,7 +9,7 @@ import {
   resolveMainSessionKey,
   resolveStorePath,
 } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   buildAgentMainSessionKey,
   normalizeAgentId,
@@ -32,10 +32,10 @@ type SandboxExplainOptions = {
   json: boolean;
 };
 
-const SANDBOX_DOCS_URL = "https://docs.NexisClaw.ai/sandbox";
+const SANDBOX_DOCS_URL = "https://docs.FirstNexus.ai/sandbox";
 
 function normalizeExplainSessionKey(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   session?: string;
 }): string {
@@ -59,7 +59,7 @@ function normalizeExplainSessionKey(params: {
 }
 
 function inferProviderFromSessionKey(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
 }): string | undefined {
   const parsed = parseAgentSessionKey(params.sessionKey);
@@ -89,7 +89,7 @@ function inferProviderFromSessionKey(params: {
 }
 
 function resolveActiveChannel(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   sessionKey: string;
 }): string | undefined {
@@ -339,7 +339,7 @@ export async function sandboxExplainCommand(
     lines.push(`  - ${key}`);
   }
   lines.push("");
-  lines.push(`${key("Docs:")} ${formatDocsLink("/sandbox", "docs.NexisClaw.ai/sandbox")}`);
+  lines.push(`${key("Docs:")} ${formatDocsLink("/sandbox", "docs.FirstNexus.ai/sandbox")}`);
 
   runtime.log(`${lines.join("\n")}\n`);
 }

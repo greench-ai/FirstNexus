@@ -1,7 +1,7 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
 export function buildEmbeddedMessageActionDiscoveryInput(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   channel: string;
   currentChannelId?: string | null;
   currentThreadTs?: string | null;

@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { tempWorkspaceSync, resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/sandbox";
+import { tempWorkspaceSync, resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/sandbox";
 
 type TranscodeOutcome =
   | { ok: true; buffer: Buffer }
@@ -53,7 +53,7 @@ export async function transcodeAudioBuffer(params: {
   }
 
   const tmp = tempWorkspaceSync({
-    rootDir: resolvePreferredNexisClawTmpDir(),
+    rootDir: resolvePreferredFirstNexusTmpDir(),
     prefix: "tts-transcode-",
   });
   const inPath = tmp.write(`in.${source}`, params.audioBuffer);

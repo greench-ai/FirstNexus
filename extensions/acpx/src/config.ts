@@ -2,8 +2,8 @@ import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { formatPluginConfigIssue } from "NexisClaw/plugin-sdk/extension-shared";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { formatPluginConfigIssue } from "FirstNexus/plugin-sdk/extension-shared";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { AcpxPluginConfigSchema, DEFAULT_ACPX_TIMEOUT_SECONDS } from "./config-schema.js";
 import type {
   AcpxPluginConfig,
@@ -15,13 +15,13 @@ import type {
 } from "./config-schema.js";
 export { type ResolvedAcpxPluginConfig } from "./config-schema.js";
 
-const ACPX_PLUGIN_TOOLS_MCP_SERVER_NAME = "NexisClaw-plugin-tools";
-const ACPX_NEXISCLAW_TOOLS_MCP_SERVER_NAME = "NexisClaw-tools";
+const ACPX_PLUGIN_TOOLS_MCP_SERVER_NAME = "FirstNexus-plugin-tools";
+const ACPX_NEXISCLAW_TOOLS_MCP_SERVER_NAME = "FirstNexus-tools";
 const requireFromHere = createRequire(import.meta.url);
 
 function isAcpxPluginRoot(dir: string): boolean {
   return (
-    fs.existsSync(path.join(dir, "NexisClaw.plugin.json")) &&
+    fs.existsSync(path.join(dir, "FirstNexus.plugin.json")) &&
     fs.existsSync(path.join(dir, "package.json"))
   );
 }
@@ -59,7 +59,7 @@ function resolveRepoAcpxPluginRoot(currentRoot: string): string | null {
   return isAcpxPluginRoot(workspaceRoot) ? workspaceRoot : null;
 }
 
-function resolveAcpxPluginRootFromNexisClawLayout(moduleUrl: string): string | null {
+function resolveAcpxPluginRootFromFirstNexusLayout(moduleUrl: string): string | null {
   let cursor = path.dirname(fileURLToPath(moduleUrl));
   for (let i = 0; i < 5; i += 1) {
     const candidates = [
@@ -88,8 +88,8 @@ export function resolveAcpxPluginRoot(moduleUrl: string = import.meta.url): stri
     resolveWorkspaceAcpxPluginRoot(resolvedRoot) ??
     resolveRepoAcpxPluginRoot(resolvedRoot) ??
     // Shared dist/dist-runtime chunks can load this module outside the plugin tree.
-    // Scan common NexisClaw layouts before falling back to the nearest path guess.
-    resolveAcpxPluginRootFromNexisClawLayout(moduleUrl) ??
+    // Scan common FirstNexus layouts before falling back to the nearest path guess.
+    resolveAcpxPluginRootFromFirstNexusLayout(moduleUrl) ??
     resolvedRoot
   );
 }
@@ -117,7 +117,7 @@ function parseAcpxPluginConfig(value: unknown): ParseResult {
   };
 }
 
-function resolveNexisClawRoot(currentRoot: string): string {
+function resolveFirstNexusRoot(currentRoot: string): string {
   if (
     path.basename(currentRoot) === "acpx" &&
     path.basename(path.dirname(currentRoot)) === "extensions"
@@ -148,7 +148,7 @@ function shellQuoteCommandArg(arg: string): string {
 
 function resolvePluginToolsMcpServerConfig(moduleUrl: string = import.meta.url): McpServerConfig {
   const pluginRoot = resolveAcpxPluginRoot(moduleUrl);
-  const openClawRoot = resolveNexisClawRoot(pluginRoot);
+  const openClawRoot = resolveFirstNexusRoot(pluginRoot);
   const distEntry = path.join(openClawRoot, "dist", "mcp", "plugin-tools-serve.js");
   if (fs.existsSync(distEntry)) {
     return {
@@ -163,17 +163,19 @@ function resolvePluginToolsMcpServerConfig(moduleUrl: string = import.meta.url):
   };
 }
 
-function resolveNexisClawToolsMcpServerConfig(moduleUrl: string = import.meta.url): McpServerConfig {
+function resolveFirstNexusToolsMcpServerConfig(
+  moduleUrl: string = import.meta.url,
+): McpServerConfig {
   const pluginRoot = resolveAcpxPluginRoot(moduleUrl);
-  const openClawRoot = resolveNexisClawRoot(pluginRoot);
-  const distEntry = path.join(openClawRoot, "dist", "mcp", "NexisClaw-tools-serve.js");
+  const openClawRoot = resolveFirstNexusRoot(pluginRoot);
+  const distEntry = path.join(openClawRoot, "dist", "mcp", "FirstNexus-tools-serve.js");
   if (fs.existsSync(distEntry)) {
     return {
       command: process.execPath,
       args: [distEntry],
     };
   }
-  const sourceEntry = path.join(openClawRoot, "src", "mcp", "NexisClaw-tools-serve.ts");
+  const sourceEntry = path.join(openClawRoot, "src", "mcp", "FirstNexus-tools-serve.ts");
   return {
     command: process.execPath,
     args: ["--import", resolveTsxImportSpecifier(), sourceEntry],
@@ -203,7 +205,7 @@ function resolveConfiguredMcpServers(params: {
     );
   }
   if (params.openClawToolsMcpBridge) {
-    resolved[ACPX_NEXISCLAW_TOOLS_MCP_SERVER_NAME] = resolveNexisClawToolsMcpServerConfig(
+    resolved[ACPX_NEXISCLAW_TOOLS_MCP_SERVER_NAME] = resolveFirstNexusToolsMcpServerConfig(
       params.moduleUrl,
     );
   }

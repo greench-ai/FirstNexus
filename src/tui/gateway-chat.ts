@@ -122,7 +122,7 @@ export class GatewayChatClient implements TuiBackend {
       password: connection.password,
       preauthHandshakeTimeoutMs: connection.preauthHandshakeTimeoutMs,
       clientName: GATEWAY_CLIENT_NAMES.TUI,
-      clientDisplayName: "NexisClaw-tui",
+      clientDisplayName: "FirstNexus-tui",
       clientVersion: VERSION,
       platform: process.platform,
       mode: GATEWAY_CLIENT_MODES.UI,

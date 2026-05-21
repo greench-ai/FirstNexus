@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
-import { replaceConfigFile, type NexisClawConfig } from "../config/config.js";
+import { replaceConfigFile, type FirstNexusConfig } from "../config/config.js";
 import { resolveGatewayPort, resolveIsNixMode } from "../config/paths.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import {
@@ -96,7 +96,7 @@ function resolveGatewayServiceWrapperPath(
 }
 
 async function buildExpectedGatewayServicePlan(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   command: GatewayServiceCommandConfig;
   serviceInstallEnv: NodeJS.ProcessEnv;
   port: number;
@@ -116,7 +116,7 @@ async function buildExpectedGatewayServicePlan(params: {
 }
 
 async function buildGatewayServiceAuditInputs(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   command: GatewayServiceCommandConfig;
   serviceInstallEnv: NodeJS.ProcessEnv;
 }) {
@@ -167,7 +167,7 @@ function resolveSystemdScopeFromServicePath(sourcePath: string | undefined): Sys
 
 function resolveSystemdUnitNameFromServicePath(sourcePath: string | undefined): string {
   const base = sourcePath ? path.posix.basename(sourcePath.replaceAll("\\", "/")) : "";
-  return base.endsWith(".service") ? base : "NexisClaw-gateway.service";
+  return base.endsWith(".service") ? base : "FirstNexus-gateway.service";
 }
 
 function shouldDeferUpdateModeSystemdServiceRepair(params: {
@@ -350,7 +350,7 @@ async function cleanupLegacyLinuxUserServices(
 }
 
 export async function maybeRepairGatewayServiceConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   mode: "local" | "remote",
   runtime: RuntimeEnv,
   prompter: DoctorPrompter,
@@ -384,7 +384,7 @@ export async function maybeRepairGatewayServiceConfig(
   const sourceCheckoutWarning = serviceLayout?.entrypointSourceCheckout
     ? [
         `Gateway service entrypoint resolves to a source checkout: ${serviceLayout.packageRootReal ?? serviceLayout.packageRoot ?? serviceLayout.entrypointReal ?? serviceLayout.entrypoint}.`,
-        "Run `NexisClaw doctor --fix` from the intended package install, or reinstall the gateway service with `NexisClaw gateway install --force`.",
+        "Run `FirstNexus doctor --fix` from the intended package install, or reinstall the gateway service with `FirstNexus gateway install --force`.",
       ].join("\n")
     : null;
 
@@ -526,7 +526,7 @@ export async function maybeRepairGatewayServiceConfig(
 
   if (serviceRewriteBlocked) {
     note(
-      "Gateway service is running; leaving supervisor metadata unchanged. Stop the service first or use `NexisClaw gateway install --force` when you want to replace the active launcher.",
+      "Gateway service is running; leaving supervisor metadata unchanged. Stop the service first or use `FirstNexus gateway install --force` when you want to replace the active launcher.",
       "Gateway service config",
     );
     return;
@@ -540,7 +540,7 @@ export async function maybeRepairGatewayServiceConfig(
     })
   ) {
     note(
-      "Update-mode doctor detected gateway service drift but left the live systemd unit unchanged. Review the service file and run `NexisClaw gateway install --force` when you want NexisClaw to replace operator-owned systemd directives.",
+      "Update-mode doctor detected gateway service drift but left the live systemd unit unchanged. Review the service file and run `FirstNexus gateway install --force` when you want FirstNexus to replace operator-owned systemd directives.",
       "Gateway service config",
     );
     return;
@@ -567,7 +567,7 @@ export async function maybeRepairGatewayServiceConfig(
   if (!repair) {
     if (!emittedSourceCheckoutWarning) {
       note(
-        "Run `NexisClaw gateway install --force` when you want to replace the gateway service definition.",
+        "Run `FirstNexus gateway install --force` when you want to replace the gateway service definition.",
         "Gateway service config",
       );
     }
@@ -586,7 +586,7 @@ export async function maybeRepairGatewayServiceConfig(
     !configuredGatewayToken &&
     gatewayTokenForRepair
   ) {
-    const nextCfg: NexisClawConfig = {
+    const nextCfg: FirstNexusConfig = {
       ...cfg,
       gateway: {
         ...cfg.gateway,
@@ -697,7 +697,7 @@ export async function maybeScanExtraGatewayServices(
         note(failed.map((line) => `- ${line}`).join("\n"), "Legacy gateway cleanup skipped");
       }
       if (removed.length > 0) {
-        runtime.log("Legacy gateway services removed. Installing NexisClaw gateway next.");
+        runtime.log("Legacy gateway services removed. Installing FirstNexus gateway next.");
       }
     }
   }

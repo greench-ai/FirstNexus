@@ -1,6 +1,9 @@
-import type { ChannelRuntimeSurface } from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig, SlackSlashCommandConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+import type { ChannelRuntimeSurface } from "FirstNexus/plugin-sdk/channel-contract";
+import type {
+  FirstNexusConfig,
+  SlackSlashCommandConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import type { SlackMessageEvent } from "../types.js";
 
 export type MonitorSlackOpts = {
@@ -8,7 +11,7 @@ export type MonitorSlackOpts = {
   appToken?: string;
   accountId?: string;
   mode?: "socket" | "http";
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   runtime?: RuntimeEnv;
   channelRuntime?: ChannelRuntimeSurface;
   abortSignal?: AbortSignal;

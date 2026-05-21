@@ -2,11 +2,11 @@ import { type ChildProcess, type ChildProcessWithoutNullStreams, spawn } from "n
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { prepareOomScoreAdjustedSpawn } from "NexisClaw/plugin-sdk/process-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { prepareOomScoreAdjustedSpawn } from "FirstNexus/plugin-sdk/process-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { SsrFPolicy } from "../infra/net/ssrf.js";
 import { ensurePortAvailable } from "../infra/ports.js";
-import { resolvePreferredNexisClawTmpDir } from "../infra/tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../infra/tmp-FirstNexus-dir.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { CONFIG_DIR } from "../utils.js";
 import { hasChromeProxyControlArg, omitChromeProxyEnv } from "./browser-proxy-mode.js";
@@ -43,7 +43,7 @@ import {
   resolveBrowserExecutableForPlatform,
 } from "./chrome.executables.js";
 import {
-  decorateNexisClawProfile,
+  decorateFirstNexusProfile,
   ensureProfileCleanExit,
   isProfileDecorated,
 } from "./chrome.profile-decoration.js";
@@ -86,7 +86,7 @@ export {
   resolveBrowserExecutableForPlatform,
 } from "./chrome.executables.js";
 export {
-  decorateNexisClawProfile,
+  decorateFirstNexusProfile,
   ensureProfileCleanExit,
   isProfileDecorated,
 } from "./chrome.profile-decoration.js";
@@ -202,7 +202,7 @@ function chromeLaunchHints(params: {
   }
   if (CHROME_SINGLETON_IN_USE_PATTERN.test(params.stderrOutput)) {
     hints.push(
-      `The Chromium profile "${params.profile.name}" is locked. Stop the existing browser or remove stale Singleton* lock files under ~/.NexisClaw/browser/${params.profile.name}/user-data.`,
+      `The Chromium profile "${params.profile.name}" is locked. Stop the existing browser or remove stale Singleton* lock files under ~/.FirstNexus/browser/${params.profile.name}/user-data.`,
     );
   }
   return hints.length > 0 ? `\nHint: ${hints.join("\nHint: ")}` : "";
@@ -229,7 +229,7 @@ function resolveBrowserExecutable(
   );
 }
 
-export function resolveNexisClawUserDataDir(profileName = DEFAULT_NEXISCLAW_BROWSER_PROFILE_NAME) {
+export function resolveFirstNexusUserDataDir(profileName = DEFAULT_NEXISCLAW_BROWSER_PROFILE_NAME) {
   return path.join(CONFIG_DIR, "browser", profileName, "user-data");
 }
 
@@ -237,7 +237,7 @@ function cdpUrlForPort(cdpPort: number) {
   return `http://127.0.0.1:${cdpPort}`;
 }
 
-export function buildNexisClawChromeLaunchArgs(params: {
+export function buildFirstNexusChromeLaunchArgs(params: {
   resolved: ResolvedBrowserConfig;
   profile: ResolvedBrowserProfile;
   userDataDir: string;
@@ -397,7 +397,7 @@ export async function isChromeCdpReady(
   return diagnostic.ok;
 }
 
-export async function launchNexisClawChrome(
+export async function launchFirstNexusChrome(
   resolved: ResolvedBrowserConfig,
   profile: ResolvedBrowserProfile,
   launchOptions: ManagedBrowserHeadlessOptions = {},
@@ -423,7 +423,7 @@ export async function launchNexisClawChrome(
     );
   }
 
-  const userDataDir = resolveNexisClawUserDataDir(profile.name);
+  const userDataDir = resolveFirstNexusUserDataDir(profile.name);
   fs.mkdirSync(userDataDir, { recursive: true });
   await ensureOutputDirectory(DEFAULT_DOWNLOAD_DIR);
 
@@ -436,7 +436,7 @@ export async function launchNexisClawChrome(
 
   // First launch to create preference files if missing, then decorate and relaunch.
   const spawnOnce = () => {
-    const args = buildNexisClawChromeLaunchArgs({
+    const args = buildFirstNexusChromeLaunchArgs({
       resolved,
       profile,
       userDataDir,
@@ -448,7 +448,7 @@ export async function launchNexisClawChrome(
       HOME: os.homedir(),
     };
     if (process.platform === "linux") {
-      const chromiumStateDir = path.join(resolvePreferredNexisClawTmpDir(), ".chromium");
+      const chromiumStateDir = path.join(resolvePreferredFirstNexusTmpDir(), ".chromium");
       env.XDG_CONFIG_HOME ??= chromiumStateDir;
       env.XDG_CACHE_HOME ??= chromiumStateDir;
     }
@@ -498,21 +498,21 @@ export async function launchNexisClawChrome(
 
   if (needsDecorate) {
     try {
-      decorateNexisClawProfile(userDataDir, {
+      decorateFirstNexusProfile(userDataDir, {
         name: profile.name,
         color: profile.color,
         downloadDir: DEFAULT_DOWNLOAD_DIR,
       });
-      log.info(`🦞 NexisClaw browser profile decorated (${profile.color})`);
+      log.info(`🦞 FirstNexus browser profile decorated (${profile.color})`);
     } catch (err) {
-      log.warn(`NexisClaw browser profile decoration failed: ${String(err)}`);
+      log.warn(`FirstNexus browser profile decoration failed: ${String(err)}`);
     }
   }
 
   try {
     ensureProfileCleanExit(userDataDir);
   } catch (err) {
-    log.warn(`NexisClaw browser clean-exit prefs failed: ${String(err)}`);
+    log.warn(`FirstNexus browser clean-exit prefs failed: ${String(err)}`);
   }
 
   const launchOnceAndWait = async (allowSingletonRecovery: boolean): Promise<RunningChrome> => {
@@ -570,7 +570,7 @@ export async function launchNexisClawChrome(
 
       const pid = proc.pid ?? -1;
       log.info(
-        `🦞 NexisClaw browser started (${exe.kind}) profile "${profile.name}" on 127.0.0.1:${profile.cdpPort} (pid ${pid})`,
+        `🦞 FirstNexus browser started (${exe.kind}) profile "${profile.name}" on 127.0.0.1:${profile.cdpPort} (pid ${pid})`,
       );
 
       return {
@@ -594,7 +594,7 @@ export async function launchNexisClawChrome(
   return await launchOnceAndWait(true);
 }
 
-export async function stopNexisClawChrome(
+export async function stopFirstNexusChrome(
   running: RunningChrome,
   timeoutMs = CHROME_STOP_TIMEOUT_MS,
 ) {

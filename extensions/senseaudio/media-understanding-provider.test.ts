@@ -2,12 +2,12 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { runFfmpeg } from "NexisClaw/plugin-sdk/media-runtime";
+import { runFfmpeg } from "FirstNexus/plugin-sdk/media-runtime";
 import {
   createAuthCaptureJsonFetch,
   createRequestCaptureJsonFetch,
   installPinnedHostnameTestHooks,
-} from "NexisClaw/plugin-sdk/test-env";
+} from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { transcribeSenseAudioAudio } from "./media-understanding-provider.js";
 
@@ -110,7 +110,7 @@ describe("transcribeSenseAudioAudio", () => {
       return;
     }
 
-    const tempDir = mkdtempSync(path.join(os.tmpdir(), "NexisClaw-senseaudio-live-"));
+    const tempDir = mkdtempSync(path.join(os.tmpdir(), "FirstNexus-senseaudio-live-"));
     try {
       const aiffPath = path.join(tempDir, "speech.aiff");
       const mp3Path = path.join(tempDir, "speech.mp3");

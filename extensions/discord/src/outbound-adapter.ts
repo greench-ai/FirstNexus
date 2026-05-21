@@ -1,14 +1,14 @@
 import {
   type ChannelOutboundAdapter,
   createAttachedChannelResultAdapter,
-} from "NexisClaw/plugin-sdk/channel-send-result";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { OutboundIdentity } from "NexisClaw/plugin-sdk/outbound-runtime";
-import { resolveOutboundSendDep } from "NexisClaw/plugin-sdk/outbound-send-deps";
+} from "FirstNexus/plugin-sdk/channel-send-result";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { OutboundIdentity } from "FirstNexus/plugin-sdk/outbound-runtime";
+import { resolveOutboundSendDep } from "FirstNexus/plugin-sdk/outbound-send-deps";
 import {
   normalizeOptionalString,
   normalizeOptionalStringifiedId,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { chunkDiscordTextWithMode } from "./chunk.js";
 import { withDiscordDeliveryRetry } from "./delivery-retry.js";
 import { isLikelyDiscordVideoMedia } from "./media-detection.js";
@@ -61,7 +61,7 @@ function resolveDiscordWebhookIdentity(params: {
 }
 
 async function maybeSendDiscordWebhookText(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   text: string;
   threadId?: string | number | null;
   accountId?: string | null;

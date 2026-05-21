@@ -130,7 +130,7 @@ function resolvePostinstallTildePath(input, homeDir) {
   return input;
 }
 
-function resolvePostinstallNexisClawHomeDir(env, getHomedir = homedir) {
+function resolvePostinstallFirstNexusHomeDir(env, getHomedir = homedir) {
   const osHome = resolvePostinstallOsHomeDir(env, getHomedir);
   const override = env?.NEXISCLAW_HOME?.trim();
   return override ? pathResolve(resolvePostinstallTildePath(override, osHome)) : osHome;
@@ -281,7 +281,7 @@ function pruneEmptyDistDirectories(params = {}) {
 }
 
 function isLegacyInstalledPluginDependencyDirName(name) {
-  return name === "node_modules" || /^\.NexisClaw-install-stage(?:-[^/]+)?$/iu.test(name);
+  return name === "node_modules" || /^\.FirstNexus-install-stage(?:-[^/]+)?$/iu.test(name);
 }
 
 function pruneLegacyInstalledPluginDependencyDirs(params) {
@@ -345,7 +345,7 @@ const pathDelimiter = process.platform === "win32" ? ";" : ":";
 export function collectLegacyPluginRuntimeDepsStateRoots(params = {}) {
   const env = params.env ?? process.env;
   const getHomedir = params.homedir ?? homedir;
-  const openClawHome = resolvePostinstallNexisClawHomeDir(env, getHomedir);
+  const openClawHome = resolvePostinstallFirstNexusHomeDir(env, getHomedir);
   const stateRoots = [];
   const addStateRoot = (root) => {
     if (root) {
@@ -361,7 +361,7 @@ export function collectLegacyPluginRuntimeDepsStateRoots(params = {}) {
   if (configPath) {
     addStateRoot(dirname(resolvePostinstallUserPath(configPath, openClawHome)));
   }
-  addStateRoot(join(openClawHome, ".NexisClaw"));
+  addStateRoot(join(openClawHome, ".FirstNexus"));
   addStateRoot(join(openClawHome, ".clawdbot"));
 
   for (const entry of splitPostinstallPathList(env?.STATE_DIRECTORY)) {
@@ -584,7 +584,7 @@ export function applyBaileysEncryptedStreamFinishHotfix(params = {}) {
     ((unsafeTargetPath) =>
       join(
         dirname(unsafeTargetPath),
-        `.${basename(unsafeTargetPath)}.NexisClaw-hotfix-${randomUUID()}`,
+        `.${basename(unsafeTargetPath)}.FirstNexus-hotfix-${randomUUID()}`,
       ));
   const writeFile =
     params.writeFileSync ?? ((filePath, value) => writeFileSync(filePath, value, "utf8"));
@@ -838,7 +838,7 @@ function isCompileCachePrunePermissionDenied(error) {
   return error?.code === "EACCES" || error?.code === "EPERM";
 }
 
-export function pruneNexisClawCompileCache(params = {}) {
+export function pruneFirstNexusCompileCache(params = {}) {
   const env = params.env ?? process.env;
   const pathExists = params.existsSync ?? existsSync;
   const readDir = params.readdirSync ?? readdirSync;
@@ -869,14 +869,14 @@ export function pruneNexisClawCompileCache(params = {}) {
           if (isCompileCachePrunePermissionDenied(error)) {
             continue;
           }
-          log.warn?.(`[postinstall] could not prune NexisClaw compile cache: ${String(error)}`);
+          log.warn?.(`[postinstall] could not prune FirstNexus compile cache: ${String(error)}`);
         }
       }
     } catch (error) {
       if (isCompileCachePrunePermissionDenied(error)) {
         continue;
       }
-      log.warn?.(`[postinstall] could not prune NexisClaw compile cache: ${String(error)}`);
+      log.warn?.(`[postinstall] could not prune FirstNexus compile cache: ${String(error)}`);
     }
   }
 }
@@ -890,7 +890,7 @@ export function runBundledPluginPostinstall(params = {}) {
   if (env?.[DISABLE_POSTINSTALL_ENV]?.trim()) {
     return;
   }
-  pruneNexisClawCompileCache({
+  pruneFirstNexusCompileCache({
     env,
     existsSync: pathExists,
     rmSync: params.rmSync,

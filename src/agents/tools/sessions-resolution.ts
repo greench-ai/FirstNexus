@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { callGateway } from "../../gateway/call.js";
 import {
   GATEWAY_CLIENT_IDS,
@@ -33,7 +33,7 @@ let sessionsResolutionDeps: {
   callGateway: GatewayCaller;
 } = defaultSessionsResolutionDeps;
 
-export function resolveMainSessionAlias(cfg: NexisClawConfig) {
+export function resolveMainSessionAlias(cfg: FirstNexusConfig) {
   const mainKey = normalizeMainKey(cfg.session?.mainKey);
   const scope = cfg.session?.scope ?? "per-sender";
   const alias = scope === "global" ? "global" : mainKey;

@@ -1,1 +1,1 @@
-export { extractToolPayload as extractQaToolPayload } from "NexisClaw/plugin-sdk/tool-payload";
+export { extractToolPayload as extractQaToolPayload } from "FirstNexus/plugin-sdk/tool-payload";

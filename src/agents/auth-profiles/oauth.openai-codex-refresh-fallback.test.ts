@@ -133,7 +133,7 @@ describe("resolveApiKeyForProfile openai-codex refresh fallback", () => {
   let caseIndex = 0;
 
   beforeAll(async () => {
-    tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-codex-refresh-fallback-"));
+    tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-codex-refresh-fallback-"));
     ({ resolveApiKeyForProfile } = await import("./oauth.js"));
   });
 

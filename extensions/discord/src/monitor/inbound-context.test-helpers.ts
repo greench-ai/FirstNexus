@@ -1,4 +1,4 @@
-import { finalizeInboundContext } from "NexisClaw/plugin-sdk/reply-dispatch-runtime";
+import { finalizeInboundContext } from "FirstNexus/plugin-sdk/reply-dispatch-runtime";
 import { buildDiscordInboundAccessContext } from "./inbound-context.js";
 
 export function buildFinalizedDiscordDirectInboundContext() {

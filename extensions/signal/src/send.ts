@@ -3,20 +3,20 @@ import {
   type MessageReceipt,
   type MessageReceiptPartKind,
   type MessageReceiptSourceResult,
-} from "NexisClaw/plugin-sdk/channel-message";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import { kindFromMime } from "NexisClaw/plugin-sdk/media-runtime";
-import { resolveOutboundAttachmentFromUrl } from "NexisClaw/plugin-sdk/media-runtime";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-message";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import { kindFromMime } from "FirstNexus/plugin-sdk/media-runtime";
+import { resolveOutboundAttachmentFromUrl } from "FirstNexus/plugin-sdk/media-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveSignalAccount } from "./accounts.js";
 import { signalRpcRequest } from "./client-adapter.js";
 import { markdownToSignalText, type SignalTextStyleRange } from "./format.js";
 import { resolveSignalRpcContext } from "./rpc-context.js";
 
 export type SignalSendOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   baseUrl?: string;
   account?: string;
   accountId?: string;

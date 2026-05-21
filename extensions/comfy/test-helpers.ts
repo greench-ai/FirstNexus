@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import * as providerAuth from "NexisClaw/plugin-sdk/provider-auth-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import * as providerAuth from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import { expect, vi } from "vitest";
 
 type FetchGuardMock = ReturnType<typeof vi.fn>;
@@ -19,24 +19,24 @@ type ComfyCloudJobResponseOptions = {
   redirectLocation: string;
 };
 
-export function buildComfyConfig(config: Record<string, unknown>): NexisClawConfig {
+export function buildComfyConfig(config: Record<string, unknown>): FirstNexusConfig {
   return {
     plugins: {
       entries: {
         comfy: { config },
       },
     },
-  } as unknown as NexisClawConfig;
+  } as unknown as FirstNexusConfig;
 }
 
-export function buildLegacyComfyConfig(config: Record<string, unknown>): NexisClawConfig {
+export function buildLegacyComfyConfig(config: Record<string, unknown>): FirstNexusConfig {
   return {
     models: {
       providers: {
         comfy: config,
       },
     },
-  } as unknown as NexisClawConfig;
+  } as unknown as FirstNexusConfig;
 }
 
 export function parseComfyJsonBody(

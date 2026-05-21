@@ -22,7 +22,7 @@ import { createModelsProviderData } from "./model-picker.test-utils.js";
 
 const buildModelsProviderDataMock = vi.hoisted(() => vi.fn());
 
-vi.mock("NexisClaw/plugin-sdk/models-provider-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/models-provider-runtime", () => ({
   buildModelsProviderData: buildModelsProviderDataMock,
 }));
 

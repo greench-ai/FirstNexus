@@ -78,7 +78,7 @@ function collectTopLevelPublicSurfaceEntries(pluginDir) {
 
 function isManifestlessBundledRuntimeSupportPackage(params) {
   const packageName = typeof params.packageJson?.name === "string" ? params.packageJson.name : "";
-  if (packageName !== `@NexisClaw/${params.dirName}`) {
+  if (packageName !== `@FirstNexus/${params.dirName}`) {
     return false;
   }
   return params.topLevelPublicSurfaceEntries.length > 0;
@@ -254,7 +254,7 @@ export function copyBundledPluginMetadata(params = {}) {
     }
 
     const pluginDir = path.join(extensionsRoot, dirent.name);
-    const manifestPath = path.join(pluginDir, "NexisClaw.plugin.json");
+    const manifestPath = path.join(pluginDir, "FirstNexus.plugin.json");
     const distPluginDir = path.join(distExtensionsRoot, dirent.name);
     const packageJsonPath = path.join(pluginDir, "package.json");
     const packageJson = fs.existsSync(packageJsonPath)
@@ -280,7 +280,7 @@ export function copyBundledPluginMetadata(params = {}) {
 
     sourcePluginDirs.add(dirent.name);
 
-    const distManifestPath = path.join(distPluginDir, "NexisClaw.plugin.json");
+    const distManifestPath = path.join(distPluginDir, "FirstNexus.plugin.json");
     const distPackageJsonPath = path.join(distPluginDir, "package.json");
     if (!fs.existsSync(manifestPath) && !isManifestlessSupportPackage) {
       removePathIfExists(distPluginDir);
@@ -313,12 +313,12 @@ export function copyBundledPluginMetadata(params = {}) {
       removeFileIfExists(distPackageJsonPath);
       continue;
     }
-    if (packageJson.NexisClaw && "extensions" in packageJson.NexisClaw) {
-      packageJson.NexisClaw = {
-        ...packageJson.NexisClaw,
-        extensions: rewritePackageExtensions(packageJson.NexisClaw.extensions),
-        ...(typeof packageJson.NexisClaw.setupEntry === "string"
-          ? { setupEntry: rewritePackageEntry(packageJson.NexisClaw.setupEntry) }
+    if (packageJson.FirstNexus && "extensions" in packageJson.FirstNexus) {
+      packageJson.FirstNexus = {
+        ...packageJson.FirstNexus,
+        extensions: rewritePackageExtensions(packageJson.FirstNexus.extensions),
+        ...(typeof packageJson.FirstNexus.setupEntry === "string"
+          ? { setupEntry: rewritePackageEntry(packageJson.FirstNexus.setupEntry) }
           : {}),
       };
     }

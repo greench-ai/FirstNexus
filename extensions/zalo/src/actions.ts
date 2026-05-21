@@ -1,11 +1,11 @@
-import { jsonResult, readStringParam } from "NexisClaw/plugin-sdk/channel-actions";
+import { jsonResult, readStringParam } from "FirstNexus/plugin-sdk/channel-actions";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeNamedExport } from "NexisClaw/plugin-sdk/lazy-runtime";
-import { extractToolSend } from "NexisClaw/plugin-sdk/tool-send";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { createLazyRuntimeNamedExport } from "FirstNexus/plugin-sdk/lazy-runtime";
+import { extractToolSend } from "FirstNexus/plugin-sdk/tool-send";
 import { listEnabledZaloAccounts, resolveZaloAccount } from "./accounts.js";
 
 const loadZaloActionsRuntime = createLazyRuntimeNamedExport(
@@ -15,7 +15,7 @@ const loadZaloActionsRuntime = createLazyRuntimeNamedExport(
 
 const providerId = "zalo";
 
-function listEnabledAccounts(cfg: NexisClawConfig, accountId?: string | null) {
+function listEnabledAccounts(cfg: FirstNexusConfig, accountId?: string | null) {
   return (
     accountId ? [resolveZaloAccount({ cfg, accountId })] : listEnabledZaloAccounts(cfg)
   ).filter((account) => account.enabled && account.tokenSource !== "none");

@@ -1,7 +1,7 @@
 import os from "node:os";
 import path from "node:path";
-import { safeParseJsonWithSchema } from "NexisClaw/plugin-sdk/extension-shared";
-import { privateFileStore } from "NexisClaw/plugin-sdk/security-runtime";
+import { safeParseJsonWithSchema } from "FirstNexus/plugin-sdk/extension-shared";
+import { privateFileStore } from "FirstNexus/plugin-sdk/security-runtime";
 import { z } from "zod";
 import { getNostrRuntime } from "./runtime.js";
 

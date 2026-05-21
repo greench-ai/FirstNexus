@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   resolveGatewayConnectionAuth,
   resolveGatewayConnectionAuthFromConfig,
@@ -10,14 +10,14 @@ type ResolvedAuth = { token?: string; password?: string };
 
 type ConnectionAuthCase = {
   name: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   options?: Partial<Omit<GatewayConnectionAuthOptions, "config" | "env">>;
   expected: ResolvedAuth;
 };
 
-function cfg(input: Partial<NexisClawConfig>): NexisClawConfig {
-  return input as NexisClawConfig;
+function cfg(input: Partial<FirstNexusConfig>): FirstNexusConfig {
+  return input as FirstNexusConfig;
 }
 
 function createRemoteModeConfig() {

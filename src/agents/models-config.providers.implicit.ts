@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.js";
@@ -40,7 +40,7 @@ const PLUGIN_DISCOVERY_ORDERS = ["simple", "profile", "paired", "late"] as const
 
 type ImplicitProviderParams = {
   agentDir: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
   explicitProviders?: Record<string, ProviderConfig> | null;
@@ -72,7 +72,7 @@ function resolveLiveProviderCatalogTimeoutMs(env: NodeJS.ProcessEnv): number | n
 }
 
 function resolveProviderDiscoveryFilter(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env: NodeJS.ProcessEnv;
   resolveOwners?: (provider: string) => readonly string[] | undefined;
@@ -129,7 +129,7 @@ function resolveProviderDiscoveryFilter(params: {
 
 function resolveProviderPluginScopeFromProviderIds(params: {
   providerIds: readonly string[];
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env: NodeJS.ProcessEnv;
   resolveOwners?: (provider: string) => readonly string[] | undefined;
@@ -225,7 +225,7 @@ function appendNormalizedPluginMetadataOwners(
 }
 
 export function resolveProviderDiscoveryFilterForTest(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env: NodeJS.ProcessEnv;
   resolveOwners?: (provider: string) => readonly string[] | undefined;
@@ -394,7 +394,7 @@ async function resolvePluginImplicitProviders(
   return Object.keys(discovered).length > 0 ? discovered : undefined;
 }
 
-function buildPluginCatalogConfig(ctx: ImplicitProviderContext): NexisClawConfig {
+function buildPluginCatalogConfig(ctx: ImplicitProviderContext): FirstNexusConfig {
   if (!ctx.explicitProviders || Object.keys(ctx.explicitProviders).length === 0) {
     return ctx.config ?? {};
   }
@@ -450,7 +450,7 @@ async function runProviderCatalogWithTimeout(
 
 export async function resolveImplicitProviders(
   params: ImplicitProviderParams,
-): Promise<NonNullable<NexisClawConfig["models"]>["providers"]> {
+): Promise<NonNullable<FirstNexusConfig["models"]>["providers"]> {
   const providers: Record<string, ProviderConfig> = {};
   const env = params.env ?? process.env;
   let authStore: ReturnType<typeof ensureAuthProfileStore> | undefined;

@@ -25,7 +25,7 @@ function assert(condition: unknown, message: string): asserts condition {
 }
 
 async function withStateDir<T>(name: string, fn: (stateDir: string) => Promise<T>): Promise<T> {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), `NexisClaw-${name}-`));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), `FirstNexus-${name}-`));
   const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
   try {
     process.env.NEXISCLAW_STATE_DIR = root;

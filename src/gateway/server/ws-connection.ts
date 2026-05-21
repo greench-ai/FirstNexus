@@ -231,15 +231,15 @@ export function attachGatewayWsConnectionHandler(params: AttachGatewayWsConnecti
     const { remoteAddr, remotePort, localAddr, localPort, endpoint } = resolveSocketAddress(socket);
     const preauthBudgetKey = (
       socket as WebSocket & {
-        __NexisClawPreauthBudgetClaimed?: boolean;
-        __NexisClawPreauthBudgetKey?: string;
+        __FirstNexusPreauthBudgetClaimed?: boolean;
+        __FirstNexusPreauthBudgetKey?: string;
       }
-    ).__NexisClawPreauthBudgetKey;
+    ).__FirstNexusPreauthBudgetKey;
     (
       socket as WebSocket & {
-        __NexisClawPreauthBudgetClaimed?: boolean;
+        __FirstNexusPreauthBudgetClaimed?: boolean;
       }
-    ).__NexisClawPreauthBudgetClaimed = true;
+    ).__FirstNexusPreauthBudgetClaimed = true;
     const headerValue = (value: string | string[] | undefined) =>
       Array.isArray(value) ? value[0] : value;
     const requestHost = headerValue(upgradeReq.headers.host);

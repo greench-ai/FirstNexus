@@ -1,11 +1,11 @@
 import { rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { definePluginEntry, type NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
+import { definePluginEntry, type FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 type DevicePairApiModule = typeof import("./api.js");
 type NotifyModule = typeof import("./notify.js");
@@ -214,7 +214,7 @@ function isLoopbackHost(host: string): boolean {
 }
 
 function resolveScheme(
-  cfg: NexisClawPluginApi["config"],
+  cfg: FirstNexusPluginApi["config"],
   opts?: { forceSecure?: boolean },
 ): "ws" | "wss" {
   if (opts?.forceSecure) {
@@ -349,7 +349,7 @@ async function resolveTailnetHost(): Promise<string | null> {
   );
 }
 
-function resolveAuthLabel(cfg: NexisClawPluginApi["config"]): ResolveAuthLabelResult {
+function resolveAuthLabel(cfg: FirstNexusPluginApi["config"]): ResolveAuthLabelResult {
   const mode = cfg.gateway?.auth?.mode;
   const token =
     pickFirstDefined([process.env.NEXISCLAW_GATEWAY_TOKEN, cfg.gateway?.auth?.token]) ?? undefined;
@@ -393,7 +393,7 @@ function resolveRequiredAuthLabel(
     : { error: "Gateway auth is set to password, but no password is configured." };
 }
 
-async function resolveGatewayUrl(api: NexisClawPluginApi): Promise<ResolveUrlResult> {
+async function resolveGatewayUrl(api: FirstNexusPluginApi): Promise<ResolveUrlResult> {
   const { resolveGatewayBindUrl, resolveGatewayPort } = await loadDevicePairApiModule();
   const cfg = api.config;
   const pluginCfg = (api.pluginConfig ?? {}) as DevicePairPluginConfig;
@@ -446,7 +446,7 @@ async function resolveGatewayUrl(api: NexisClawPluginApi): Promise<ResolveUrlRes
   };
 }
 
-async function resolveMobilePairingGatewayUrl(api: NexisClawPluginApi): Promise<ResolveUrlResult> {
+async function resolveMobilePairingGatewayUrl(api: FirstNexusPluginApi): Promise<ResolveUrlResult> {
   const result = await resolveGatewayUrl(api);
   if (!result.url) {
     return result;
@@ -610,7 +610,7 @@ async function issueSetupPayload(url: string): Promise<SetupPayload> {
 }
 
 async function sendQrPngToSupportedChannel(params: {
-  api: NexisClawPluginApi;
+  api: FirstNexusPluginApi;
   ctx: QrCommandContext;
   target: string;
   caption: string;
@@ -644,8 +644,8 @@ async function sendQrPngToSupportedChannel(params: {
 export default definePluginEntry({
   id: "device-pair",
   name: "Device Pair",
-  description: "QR/bootstrap pairing helpers for NexisClaw devices",
-  register(api: NexisClawPluginApi) {
+  description: "QR/bootstrap pairing helpers for FirstNexus devices",
+  register(api: FirstNexusPluginApi) {
     let notifierService: ReturnType<NotifyModule["createPairingNotifierService"]> | undefined;
     api.registerService({
       id: "device-pair-notifier",
@@ -781,11 +781,11 @@ export default definePluginEntry({
           if (target && canSendQrPngToChannel(channel)) {
             let qrFilePath: string | undefined;
             try {
-              const { resolvePreferredNexisClawTmpDir, writeQrPngTempFile } =
+              const { resolvePreferredFirstNexusTmpDir, writeQrPngTempFile } =
                 await loadDevicePairApiModule();
               qrFilePath = (
                 await writeQrPngTempFile(setupCode, {
-                  tmpRoot: resolvePreferredNexisClawTmpDir(),
+                  tmpRoot: resolvePreferredFirstNexusTmpDir(),
                   dirPrefix: "device-pair-qr-",
                   fileName: "pair-qr.png",
                 })
@@ -794,7 +794,7 @@ export default definePluginEntry({
                 api,
                 ctx,
                 target,
-                caption: ["Scan this QR code with the NexisClaw iOS app:", "", ...infoLines].join(
+                caption: ["Scan this QR code with the FirstNexus iOS app:", "", ...infoLines].join(
                   "\n",
                 ),
                 qrFilePath,
@@ -845,7 +845,7 @@ export default definePluginEntry({
             }
             return {
               text: [
-                "Scan this QR code with the NexisClaw iOS app:",
+                "Scan this QR code with the FirstNexus iOS app:",
                 "",
                 formatQrInfoMarkdown({
                   payload,

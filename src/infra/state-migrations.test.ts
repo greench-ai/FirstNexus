@@ -2,7 +2,7 @@ import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { resolveChannelAllowFromPath } from "../pairing/pairing-store.js";
 import { createTrackedTempDirs } from "../test-utils/tracked-temp-dirs.js";
 import { detectLegacyStateMigrations, runLegacyStateMigrations } from "./state-migrations.js";
@@ -16,7 +16,7 @@ vi.mock("../channels/plugins/bundled.js", () => {
     }
   }
 
-  function resolveChatAppAccountId(cfg: NexisClawConfig): string {
+  function resolveChatAppAccountId(cfg: FirstNexusConfig): string {
     const channel = (cfg.channels as Record<string, { defaultAccount?: string }> | undefined)
       ?.chatapp;
     return channel?.defaultAccount ?? "default";
@@ -58,7 +58,7 @@ vi.mock("../channels/plugins/bundled.js", () => {
               ];
         });
       },
-      ({ cfg, env }: { cfg: NexisClawConfig; env: NodeJS.ProcessEnv }) => {
+      ({ cfg, env }: { cfg: FirstNexusConfig; env: NodeJS.ProcessEnv }) => {
         const root = env.NEXISCLAW_STATE_DIR;
         if (!root) {
           return [];
@@ -91,9 +91,9 @@ async function expectMissingPath(targetPath: string): Promise<void> {
   expect(statError?.path).toBe(targetPath);
   expect(statError?.syscall).toBe("stat");
 }
-const createTempDir = () => tempDirs.make("NexisClaw-state-migrations-test-");
+const createTempDir = () => tempDirs.make("FirstNexus-state-migrations-test-");
 
-function createConfig(): NexisClawConfig {
+function createConfig(): FirstNexusConfig {
   return {
     agents: {
       list: [{ id: "worker-1", default: true }],
@@ -110,7 +110,7 @@ function createConfig(): NexisClawConfig {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function createEnv(stateDir: string): NodeJS.ProcessEnv {
@@ -122,7 +122,7 @@ function createEnv(stateDir: string): NodeJS.ProcessEnv {
 
 async function createLegacyStateFixture(params?: { includePreKey?: boolean }) {
   const root = await createTempDir();
-  const stateDir = path.join(root, ".NexisClaw");
+  const stateDir = path.join(root, ".FirstNexus");
   const env = createEnv(stateDir);
   const cfg = createConfig();
 

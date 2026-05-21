@@ -1,4 +1,4 @@
-name: NexisClaw-codeql-plugin-trust-boundary-critical-security
+name: FirstNexus-codeql-plugin-trust-boundary-critical-security
 
 disable-default-queries: true
 

@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ToolLoopDetectionConfig } from "../config/types.tools.js";
 import { resolveAgentConfig } from "./agent-scope.js";
 
 export function resolveToolLoopDetectionConfig(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentId?: string;
 }): ToolLoopDetectionConfig | undefined {
   const global = params.cfg?.tools?.loopDetection;

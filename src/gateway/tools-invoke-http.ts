@@ -68,11 +68,11 @@ export async function handleToolsInvokeHttpRequest(
 
   // Resolve message channel/account hints (optional headers) for policy inheritance.
   const messageChannel = normalizeMessageChannel(
-    getHeader(req, "x-NexisClaw-message-channel") ?? "",
+    getHeader(req, "x-FirstNexus-message-channel") ?? "",
   );
-  const accountId = normalizeOptionalString(getHeader(req, "x-NexisClaw-account-id"));
-  const agentTo = normalizeOptionalString(getHeader(req, "x-NexisClaw-message-to"));
-  const agentThreadId = normalizeOptionalString(getHeader(req, "x-NexisClaw-thread-id"));
+  const accountId = normalizeOptionalString(getHeader(req, "x-FirstNexus-account-id"));
+  const agentTo = normalizeOptionalString(getHeader(req, "x-FirstNexus-message-to"));
+  const agentThreadId = normalizeOptionalString(getHeader(req, "x-FirstNexus-thread-id"));
   // Owner semantics intentionally follow the same shared-secret HTTP contract
   // on this direct tool surface; SECURITY.md documents this as designed-as-is.
   // Computed before resolveGatewayScopedTools so the message tool is created

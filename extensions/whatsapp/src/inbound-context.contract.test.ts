@@ -1,4 +1,4 @@
-import { expectChannelInboundContextContract } from "NexisClaw/plugin-sdk/channel-contract-testing";
+import { expectChannelInboundContextContract } from "FirstNexus/plugin-sdk/channel-contract-testing";
 import { describe, it } from "vitest";
 
 describe("WhatsApp inbound context contract", () => {

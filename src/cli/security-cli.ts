@@ -40,19 +40,22 @@ export function registerSecurityCli(program: Command) {
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
-          ["NexisClaw security audit", "Run a local security audit."],
+          ["FirstNexus security audit", "Run a local security audit."],
           [
-            "NexisClaw security audit --deep",
+            "FirstNexus security audit --deep",
             "Include best-effort live Gateway probes and plugin-owned security audit collectors.",
           ],
-          ["NexisClaw security audit --deep --token <token>", "Use explicit token for deep probe."],
           [
-            "NexisClaw security audit --deep --password <password>",
+            "FirstNexus security audit --deep --token <token>",
+            "Use explicit token for deep probe.",
+          ],
+          [
+            "FirstNexus security audit --deep --password <password>",
             "Use explicit password for deep probe.",
           ],
-          ["NexisClaw security audit --fix", "Apply safe remediations and file-permission fixes."],
-          ["NexisClaw security audit --json", "Output machine-readable JSON."],
-        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/security", "docs.NexisClaw.ai/cli/security")}\n`,
+          ["FirstNexus security audit --fix", "Apply safe remediations and file-permission fixes."],
+          ["FirstNexus security audit --json", "Output machine-readable JSON."],
+        ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/security", "docs.FirstNexus.ai/cli/security")}\n`,
     );
 
   security
@@ -102,15 +105,15 @@ export function registerSecurityCli(program: Command) {
       const muted = (text: string) => (rich ? theme.muted(text) : text);
 
       const lines: string[] = [];
-      lines.push(heading("NexisClaw security audit"));
+      lines.push(heading("FirstNexus security audit"));
       lines.push(muted(`Summary: ${formatSummary(report.summary)}`));
-      lines.push(muted(`Run deeper: ${formatCliCommand("NexisClaw security audit --deep")}`));
+      lines.push(muted(`Run deeper: ${formatCliCommand("FirstNexus security audit --deep")}`));
       for (const diagnostic of secretDiagnostics) {
         lines.push(muted(`[secrets] ${diagnostic}`));
       }
 
       if (opts.fix) {
-        lines.push(muted(`Fix: ${formatCliCommand("NexisClaw security audit --fix")}`));
+        lines.push(muted(`Fix: ${formatCliCommand("FirstNexus security audit --fix")}`));
         if (!fixResult) {
           lines.push(muted("Fixes: failed to apply (unexpected error)"));
         } else if (

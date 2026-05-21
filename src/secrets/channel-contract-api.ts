@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { openRootFileSync } from "../infra/boundary-file-read.js";
 import { shouldRejectHardlinkedPluginFiles } from "../plugins/hardlink-policy.js";
 import type { PluginManifestRecord } from "../plugins/manifest-registry.js";
@@ -24,7 +24,7 @@ type UnsupportedSecretRefConfigCandidate = {
 
 type BundledChannelContractApi = {
   collectRuntimeConfigAssignments?: (params: {
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     defaults: SecretDefaults | undefined;
     context: ResolverContext;
   }) => void;
@@ -89,8 +89,8 @@ function orderedContractApiExtensions(): readonly string[] {
 
 function resolvePluginContractApiPath(rootDir: string): string | null {
   // Compiled npm-published plugins place their public artifacts under <rootDir>/dist/
-  // (per package.json `NexisClaw.runtimeExtensions`), while flat-layout plugins keep
-  // them at <rootDir>/. Search both, preferring dist/ when running from built NexisClaw
+  // (per package.json `FirstNexus.runtimeExtensions`), while flat-layout plugins keep
+  // them at <rootDir>/. Search both, preferring dist/ when running from built FirstNexus
   // artifacts and rootDir/ when running from source.
   const searchDirs = RUNNING_FROM_BUILT_ARTIFACT
     ? [path.join(rootDir, "dist"), rootDir]
@@ -167,7 +167,7 @@ function recordOwnsChannel(record: PluginManifestRecord, channelId: string): boo
 
 function listChannelSecretContractRecords(params: {
   channelId: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   loadablePluginOrigins?: ReadonlyMap<string, PluginOrigin>;
 }): PluginManifestRecord[] {
@@ -200,7 +200,7 @@ function listChannelSecretContractRecords(params: {
 
 export function loadChannelSecretContractApi(params: {
   channelId: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   loadablePluginOrigins?: ReadonlyMap<string, PluginOrigin>;
 }): BundledChannelSecretContractApi | undefined {

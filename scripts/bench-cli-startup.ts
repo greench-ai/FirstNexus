@@ -69,7 +69,7 @@ type CliOptions = {
 const DEFAULT_RUNS = 5;
 const DEFAULT_WARMUP = 1;
 const DEFAULT_TIMEOUT_MS = 30_000;
-const DEFAULT_ENTRY = "NexisClaw.mjs";
+const DEFAULT_ENTRY = "FirstNexus.mjs";
 const MAX_RSS_MARKER = "__NEXISCLAW_MAX_RSS_KB__=";
 
 const COMMAND_CASES: readonly CommandCase[] = [
@@ -515,9 +515,9 @@ async function runSample(params: {
   heapProfDir?: string;
   rssHookPath: string;
 }): Promise<Sample> {
-  const runRoot = mkdtempSync(path.join(os.tmpdir(), "NexisClaw-cli-bench-home-"));
-  const stateDir = path.join(runRoot, ".NexisClaw");
-  const configPath = path.join(stateDir, "NexisClaw.json");
+  const runRoot = mkdtempSync(path.join(os.tmpdir(), "FirstNexus-cli-bench-home-"));
+  const stateDir = path.join(runRoot, ".FirstNexus");
+  const configPath = path.join(stateDir, "FirstNexus.json");
   const nodeArgs = [
     "--import",
     params.rssHookPath,
@@ -766,7 +766,7 @@ function parseOptions(): CliOptions {
 }
 
 function printUsage(): void {
-  console.log(`NexisClaw CLI benchmark
+  console.log(`FirstNexus CLI benchmark
 
 Usage:
   pnpm tsx scripts/bench-cli-startup.ts [options]
@@ -775,7 +775,7 @@ Options:
   --preset <startup|real|response|all>
                                Command preset to run (default: startup)
   --case <id>                  Specific case id to run; repeatable
-  --entry <path>               Primary entry file (default: NexisClaw.mjs)
+  --entry <path>               Primary entry file (default: FirstNexus.mjs)
   --entry-secondary <path>     Secondary entry file for avg delta comparison
   --runs <n>                   Measured runs per case (default: ${DEFAULT_RUNS})
   --warmup <n>                 Warmup runs per case (default: ${DEFAULT_WARMUP})
@@ -798,7 +798,7 @@ async function main(): Promise<void> {
   }
 
   const options = parseOptions();
-  const tmpDir = mkdtempSync(path.join(os.tmpdir(), "NexisClaw-cli-bench-"));
+  const tmpDir = mkdtempSync(path.join(os.tmpdir(), "FirstNexus-cli-bench-"));
   const rssHookPath = buildRssHook(tmpDir);
   try {
     const primary = await buildSuiteResult({

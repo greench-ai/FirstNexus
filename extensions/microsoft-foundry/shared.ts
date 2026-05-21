@@ -1,15 +1,15 @@
-import type { AuthConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { AuthConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   applyAuthProfileConfig,
   buildApiKeyCredential,
   type ProviderAuthResult,
   type SecretInput,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import type { ModelApi, ModelProviderConfig } from "NexisClaw/plugin-sdk/provider-model-shared";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import type { ModelApi, ModelProviderConfig } from "FirstNexus/plugin-sdk/provider-model-shared";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export const PROVIDER_ID = "microsoft-foundry";
 export const DEFAULT_API = "openai-completions";

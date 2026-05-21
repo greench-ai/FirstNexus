@@ -76,9 +76,9 @@ async function main() {
     process.exit(1);
   }
 
-  const baseDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-zai-fallback-"));
+  const baseDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-zai-fallback-"));
   const stateDir = path.join(baseDir, "state");
-  const configPath = path.join(baseDir, "NexisClaw.json");
+  const configPath = path.join(baseDir, "FirstNexus.json");
   await fs.mkdir(stateDir, { recursive: true });
 
   const config = {
@@ -126,7 +126,7 @@ async function main() {
     "Then use the read tool to display the file contents. Reply with just the file contents.";
   const run1 = await runCommand(
     "run1",
-    ["NexisClaw", "agent", "--local", "--session-id", sessionId, "--message", toolPrompt],
+    ["FirstNexus", "agent", "--local", "--session-id", sessionId, "--message", toolPrompt],
     envValidAnthropic,
   );
   if (run1.code !== 0) {
@@ -144,7 +144,7 @@ async function main() {
     "What is the content of zai-fallback-tool.txt? Reply with just the contents.";
   const run2 = await runCommand(
     "run2",
-    ["NexisClaw", "agent", "--local", "--session-id", sessionId, "--message", followupPrompt],
+    ["FirstNexus", "agent", "--local", "--session-id", sessionId, "--message", followupPrompt],
     envInvalidAnthropic,
   );
 

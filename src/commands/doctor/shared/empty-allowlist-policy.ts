@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import { getDoctorChannelCapabilities } from "../channel-capabilities.js";
 import type { DoctorAccountRecord, DoctorAllowFromList } from "../types.js";
 import { hasAllowFromEntries } from "./allowlist.js";
@@ -7,7 +7,7 @@ import { shouldSkipChannelDoctorDefaultEmptyGroupAllowlistWarning } from "./chan
 type CollectEmptyAllowlistPolicyWarningsParams = {
   account: DoctorAccountRecord;
   channelName?: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   doctorFixCommand: string;
   parent?: DoctorAccountRecord;
   prefix: string;

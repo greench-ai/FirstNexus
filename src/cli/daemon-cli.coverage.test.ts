@@ -80,7 +80,7 @@ vi.mock("../gateway/probe-auth.js", () => ({
 vi.mock("../daemon/program-args.js", () => ({
   NEXISCLAW_WRAPPER_ENV_KEY: "NEXISCLAW_WRAPPER",
   resolveGatewayProgramArguments: (opts: unknown) => resolveGatewayProgramArguments(opts),
-  resolveNexisClawWrapperPath: async (value: string | undefined) => value?.trim() || undefined,
+  resolveFirstNexusWrapperPath: async (value: string | undefined) => value?.trim() || undefined,
 }));
 
 vi.mock("../daemon/service.js", async () => {
@@ -178,7 +178,7 @@ describe("daemon-cli coverage", () => {
 
   beforeEach(() => {
     daemonProgram = createDaemonProgram();
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-daemon-cli-"));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-daemon-cli-"));
     envSnapshot = captureEnv([
       "NEXISCLAW_STATE_DIR",
       "NEXISCLAW_CONFIG_PATH",
@@ -186,7 +186,7 @@ describe("daemon-cli coverage", () => {
       "NEXISCLAW_PROFILE",
     ]);
     process.env.NEXISCLAW_STATE_DIR = tmpDir;
-    process.env.NEXISCLAW_CONFIG_PATH = path.join(tmpDir, "NexisClaw.json");
+    process.env.NEXISCLAW_CONFIG_PATH = path.join(tmpDir, "FirstNexus.json");
     delete process.env.NEXISCLAW_GATEWAY_PORT;
     delete process.env.NEXISCLAW_PROFILE;
     serviceReadCommand.mockResolvedValue(null);
@@ -223,11 +223,11 @@ describe("daemon-cli coverage", () => {
       programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
       environment: {
         NEXISCLAW_PROFILE: "dev",
-        NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-daemon-state",
-        NEXISCLAW_CONFIG_PATH: "/tmp/NexisClaw-daemon-state/NexisClaw.json",
+        NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-daemon-state",
+        NEXISCLAW_CONFIG_PATH: "/tmp/FirstNexus-daemon-state/FirstNexus.json",
         NEXISCLAW_GATEWAY_PORT: "19001",
       },
-      sourcePath: "/tmp/ai.NexisClaw.gateway.plist",
+      sourcePath: "/tmp/ai.FirstNexus.gateway.plist",
     });
 
     await runDaemonCommand(["daemon", "status", "--json"]);
@@ -295,12 +295,12 @@ describe("daemon-cli coverage", () => {
     serviceReadCommand.mockResolvedValueOnce({
       programArguments: ["/bin/node", "cli", "gateway", "--port", "18789"],
       environment: {
-        NEXISCLAW_WRAPPER: "/usr/local/bin/NexisClaw-doppler",
+        NEXISCLAW_WRAPPER: "/usr/local/bin/FirstNexus-doppler",
         PATH: "/custom/go/bin:/usr/bin",
         GOPATH: "/Users/test/.local/gopath",
         GOBIN: "/Users/test/.local/gopath/bin",
       },
-      sourcePath: "/tmp/ai.NexisClaw.gateway.plist",
+      sourcePath: "/tmp/ai.FirstNexus.gateway.plist",
     });
 
     await runDaemonCommand(["daemon", "install", "--force", "--json"]);
@@ -311,12 +311,12 @@ describe("daemon-cli coverage", () => {
     );
     expect(installPlanParams.existingEnvironment).toEqual({
       PATH: "/custom/go/bin:/usr/bin",
-      NEXISCLAW_WRAPPER: "/usr/local/bin/NexisClaw-doppler",
+      NEXISCLAW_WRAPPER: "/usr/local/bin/FirstNexus-doppler",
       GOPATH: "/Users/test/.local/gopath",
       GOBIN: "/Users/test/.local/gopath/bin",
     });
     expect((installPlanParams.env as NodeJS.ProcessEnv).NEXISCLAW_WRAPPER).toBe(
-      "/usr/local/bin/NexisClaw-doppler",
+      "/usr/local/bin/FirstNexus-doppler",
     );
   });
 
@@ -328,12 +328,12 @@ describe("daemon-cli coverage", () => {
       "daemon",
       "install",
       "--wrapper",
-      "/usr/local/bin/NexisClaw-doppler",
+      "/usr/local/bin/FirstNexus-doppler",
       "--json",
     ]);
 
     expect(requireMockCallArg(buildGatewayInstallPlan, "buildGatewayInstallPlan").wrapperPath).toBe(
-      "/usr/local/bin/NexisClaw-doppler",
+      "/usr/local/bin/FirstNexus-doppler",
     );
   });
 

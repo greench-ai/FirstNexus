@@ -181,13 +181,13 @@ describe("gateway bonjour advertiser", () => {
       gatewayPort: 18789,
       sshPort: 2222,
       tailnetDns: "host.tailnet.ts.net",
-      cliPath: "/opt/homebrew/bin/NexisClaw",
+      cliPath: "/opt/homebrew/bin/FirstNexus",
       minimal: false,
     });
 
     expect(createService).toHaveBeenCalledTimes(1);
     const [gatewayCall] = createService.mock.calls as Array<[Record<string, unknown>]>;
-    expect(gatewayCall?.[0]?.type).toBe("NexisClaw-gw");
+    expect(gatewayCall?.[0]?.type).toBe("FirstNexus-gw");
     const gatewayType = asString(gatewayCall?.[0]?.type, "");
     expect(gatewayType.length).toBeLessThanOrEqual(15);
     expect(gatewayCall?.[0]?.port).toBe(18789);
@@ -200,7 +200,7 @@ describe("gateway bonjour advertiser", () => {
       "host.tailnet.ts.net",
     );
     expect((gatewayCall?.[0]?.txt as Record<string, string>)?.cliPath).toBe(
-      "/opt/homebrew/bin/NexisClaw",
+      "/opt/homebrew/bin/FirstNexus",
     );
     expect((gatewayCall?.[0]?.txt as Record<string, string>)?.transport).toBe("gateway");
 
@@ -224,7 +224,7 @@ describe("gateway bonjour advertiser", () => {
     const started = await startAdvertiser({
       gatewayPort: 18789,
       sshPort: 2222,
-      cliPath: "/opt/homebrew/bin/NexisClaw",
+      cliPath: "/opt/homebrew/bin/FirstNexus",
       tailnetDns: "host.tailnet.ts.net",
       minimal: true,
     });
@@ -266,7 +266,7 @@ describe("gateway bonjour advertiser", () => {
   it("auto-disables Bonjour on Fly Machines without Docker sentinel files", async () => {
     enableAdvertiserUnitMode();
     process.env.FLY_MACHINE_ID = "3d8d5459a03038";
-    process.env.FLY_APP_NAME = "NexisClaw-clawcks-test";
+    process.env.FLY_APP_NAME = "FirstNexus-clawcks-test";
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
     vi.spyOn(fs, "readFileSync").mockReturnValue("10:cpuset:/\n9:perf_event:/\n8:memory:/\n0::/\n");
 
@@ -465,7 +465,7 @@ describe("gateway bonjour advertiser", () => {
     expect(
       handler?.(
         new Error(
-          "Can't probe for a service which is announced already. Received announcing for service NexisClaw Gateway._NexisClaw._tcp.local.",
+          "Can't probe for a service which is announced already. Received announcing for service FirstNexus Gateway._FirstNexus._tcp.local.",
         ),
       ),
     ).toBe(true);
@@ -576,7 +576,7 @@ describe("gateway bonjour advertiser", () => {
       });
 
       console.log(
-        "[test._NexisClaw-gw._tcp.local.] failed probing with reason: Error: Can't probe for a service which is announced already. Received announcing for service test._NexisClaw-gw._tcp.local.. Trying again in 2 seconds!",
+        "[test._FirstNexus-gw._tcp.local.] failed probing with reason: Error: Can't probe for a service which is announced already. Received announcing for service test._FirstNexus-gw._tcp.local.. Trying again in 2 seconds!",
       );
       console.log("ordinary console line");
 
@@ -787,12 +787,12 @@ describe("gateway bonjour advertiser", () => {
     });
 
     await vi.advanceTimersByTimeAsync(10_000);
-    listenerMap.get("name-change")?.("test-host (NexisClaw) (2)");
+    listenerMap.get("name-change")?.("test-host (FirstNexus) (2)");
 
     await vi.advanceTimersByTimeAsync(15_000);
 
     expect(createService).toHaveBeenCalledTimes(1);
-    expectWarnContaining('name conflict resolved; newName="test-host (NexisClaw) (2)"');
+    expectWarnContaining('name conflict resolved; newName="test-host (FirstNexus) (2)"');
 
     await vi.advanceTimersByTimeAsync(20_000);
 
@@ -894,7 +894,7 @@ describe("gateway bonjour advertiser", () => {
     });
 
     const [gatewayCall] = createService.mock.calls as Array<[ServiceCall]>;
-    expect(gatewayCall?.[0]?.name).toBe("Mac (NexisClaw)");
+    expect(gatewayCall?.[0]?.name).toBe("Mac (FirstNexus)");
     expect(gatewayCall?.[0]?.domain).toBe("local");
     expect(gatewayCall?.[0]?.hostname).toBe("Mac");
     expect((gatewayCall?.[0]?.txt as Record<string, string>)?.lanHost).toBe("Mac.local");
@@ -902,7 +902,7 @@ describe("gateway bonjour advertiser", () => {
     await started.stop();
   });
 
-  it("falls back to NexisClaw when system hostname is invalid for DNS", async () => {
+  it("falls back to FirstNexus when system hostname is invalid for DNS", async () => {
     // Allow advertiser to run in unit tests.
     delete process.env.VITEST;
     process.env.NODE_ENV = "development";
@@ -919,8 +919,8 @@ describe("gateway bonjour advertiser", () => {
     });
 
     const [gatewayCall] = createService.mock.calls as Array<[ServiceCall]>;
-    expect(gatewayCall?.[0]?.hostname).toBe("NexisClaw");
-    expect((gatewayCall?.[0]?.txt as Record<string, string>)?.lanHost).toBe("NexisClaw.local");
+    expect(gatewayCall?.[0]?.hostname).toBe("FirstNexus");
+    expect((gatewayCall?.[0]?.txt as Record<string, string>)?.lanHost).toBe("FirstNexus.local");
 
     await started.stop();
   });
@@ -942,7 +942,7 @@ describe("gateway bonjour advertiser", () => {
     const serviceName = gatewayCall?.[0]?.name as string;
     const hostname = gatewayCall?.[0]?.hostname as string;
 
-    expectDnsLabelByteLength(`${reportedHostname} (NexisClaw)`, 64);
+    expectDnsLabelByteLength(`${reportedHostname} (FirstNexus)`, 64);
     expect(hostname).toBe(reportedHostname);
     expectDnsLabelWithinLimit(serviceName);
 
@@ -976,7 +976,7 @@ describe("gateway bonjour advertiser", () => {
   });
 
   it("truncates multi-byte hostname within DNS label byte limit", async () => {
-    // 21 CJK characters = 63 bytes in UTF-8, adding " (NexisClaw)" pushes over
+    // 21 CJK characters = 63 bytes in UTF-8, adding " (FirstNexus)" pushes over
     const cjkHostname = "你".repeat(21);
     enableAdvertiserUnitMode(cjkHostname);
 

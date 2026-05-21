@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   resolveBundledPluginCompatibleLoadValues,
   type PluginActivationBundledCompatMode,
@@ -34,7 +34,7 @@ export function listBundledManifestContractPluginIds(params: {
 }
 
 export function resolveEnabledBundledManifestContractPlugins(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   onlyPluginIds?: readonly string[];
@@ -45,7 +45,7 @@ export function resolveEnabledBundledManifestContractPlugins(params: {
     return [];
   }
   let manifestRecords: readonly PluginManifestRecord[] | undefined;
-  const loadManifestRecords = (config?: NexisClawConfig) => {
+  const loadManifestRecords = (config?: FirstNexusConfig) => {
     manifestRecords ??= loadManifestContractSnapshot({
       config,
       workspaceDir: params.workspaceDir,

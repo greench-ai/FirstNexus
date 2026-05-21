@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { BUNDLED_PLUGIN_TEST_GLOB, bundledPluginFile } from "NexisClaw/plugin-sdk/test-fixtures";
+import { BUNDLED_PLUGIN_TEST_GLOB, bundledPluginFile } from "FirstNexus/plugin-sdk/test-fixtures";
 import { describe, expect, it } from "vitest";
 import { cleanupTempDirs, makeTempDir } from "./helpers/temp-dir.js";
 import { normalizeConfigPath, normalizeConfigPaths } from "./helpers/vitest-config-paths.js";
@@ -122,15 +122,15 @@ function expectThreadedNonIsolatedRunner(config: {
 describe("resolveVitestIsolation", () => {
   it("aliases private QA plugin SDK subpaths for source tests only", () => {
     for (const subpath of PRIVATE_PLUGIN_SDK_SUBPATHS) {
-      expect(findAlias(sharedVitestConfig.resolve.alias, `NexisClaw/plugin-sdk/${subpath}`)).toEqual(
-        {
-          find: `NexisClaw/plugin-sdk/${subpath}`,
-          replacement: path.join(process.cwd(), "src", "plugin-sdk", `${subpath}.ts`),
-        },
-      );
+      expect(
+        findAlias(sharedVitestConfig.resolve.alias, `FirstNexus/plugin-sdk/${subpath}`),
+      ).toEqual({
+        find: `FirstNexus/plugin-sdk/${subpath}`,
+        replacement: path.join(process.cwd(), "src", "plugin-sdk", `${subpath}.ts`),
+      });
       expect(() =>
-        findAlias(sharedVitestConfig.resolve.alias, `@NexisClaw/plugin-sdk/${subpath}`),
-      ).toThrow(`missing alias @NexisClaw/plugin-sdk/${subpath}`);
+        findAlias(sharedVitestConfig.resolve.alias, `@FirstNexus/plugin-sdk/${subpath}`),
+      ).toThrow(`missing alias @FirstNexus/plugin-sdk/${subpath}`);
     }
   });
 
@@ -162,7 +162,7 @@ describe("createScopedVitestConfig", () => {
     expect(normalizeConfigPath(testConfig.runner)).toBe("test/non-isolated-runner.ts");
     expect(normalizeConfigPaths(testConfig.setupFiles)).toEqual([
       "test/setup.ts",
-      "test/setup-NexisClaw-runtime.ts",
+      "test/setup-FirstNexus-runtime.ts",
     ]);
   });
 
@@ -224,7 +224,7 @@ describe("createScopedVitestConfig", () => {
   });
 
   it("loads scoped include overrides from NEXISCLAW_VITEST_INCLUDE_FILE", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-vitest-scoped-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-vitest-scoped-"));
     try {
       const includeFile = path.join(tempDir, "include.json");
       fs.writeFileSync(includeFile, JSON.stringify(["src/utils/utils-misc.test.ts"]), "utf8");
@@ -251,7 +251,7 @@ describe("createScopedVitestConfig", () => {
     expect(normalizeConfigPaths(requireTestConfig(config).setupFiles)).toEqual([
       "test/setup.ts",
       "test/setup.extensions.ts",
-      "test/setup-NexisClaw-runtime.ts",
+      "test/setup-FirstNexus-runtime.ts",
     ]);
   });
 
@@ -356,7 +356,7 @@ describe("scoped vitest configs", () => {
     expectThreadedNonIsolatedRunner(defaultUiConfig);
   });
 
-  it("keeps the process lane off the NexisClaw runtime setup", () => {
+  it("keeps the process lane off the FirstNexus runtime setup", () => {
     expect(normalizeConfigPaths(requireTestConfig(defaultProcessConfig).setupFiles)).toEqual([
       "test/setup.ts",
     ]);
@@ -365,7 +365,7 @@ describe("scoped vitest configs", () => {
     ]);
     expect(normalizeConfigPaths(requireTestConfig(defaultPluginSdkConfig).setupFiles)).toEqual([
       "test/setup.ts",
-      "test/setup-NexisClaw-runtime.ts",
+      "test/setup-FirstNexus-runtime.ts",
     ]);
   });
 
@@ -383,7 +383,7 @@ describe("scoped vitest configs", () => {
     );
   });
 
-  it("keeps selected plugin-sdk and commands light lanes off the NexisClaw runtime setup", () => {
+  it("keeps selected plugin-sdk and commands light lanes off the FirstNexus runtime setup", () => {
     expect(normalizeConfigPaths(requireTestConfig(defaultPluginSdkLightConfig).setupFiles)).toEqual(
       ["test/setup.ts"],
     );
@@ -392,7 +392,7 @@ describe("scoped vitest configs", () => {
     ]);
   });
 
-  it("keeps the ui lane off both the NexisClaw runtime setup and unit-fast excludes", () => {
+  it("keeps the ui lane off both the FirstNexus runtime setup and unit-fast excludes", () => {
     const testConfig = requireTestConfig(defaultUiConfig);
     expect(normalizeConfigPaths(testConfig.setupFiles)).toEqual([
       "test/setup.ts",
@@ -411,7 +411,7 @@ describe("scoped vitest configs", () => {
 
   it("loads channel include overrides from NEXISCLAW_VITEST_INCLUDE_FILE", () => {
     const tempDirs: string[] = [];
-    const tempDir = makeTempDir(tempDirs, "NexisClaw-vitest-channels-");
+    const tempDir = makeTempDir(tempDirs, "FirstNexus-vitest-channels-");
     try {
       const includeFile = path.join(tempDir, "include.json");
       fs.writeFileSync(
@@ -611,12 +611,12 @@ describe("scoped vitest configs", () => {
     expect(normalizeConfigPaths(extensionsTestConfig.setupFiles)).toEqual([
       "test/setup.ts",
       "test/setup.extensions.ts",
-      "test/setup-NexisClaw-runtime.ts",
+      "test/setup-FirstNexus-runtime.ts",
     ]);
     expect(normalizeConfigPaths(telegramTestConfig.setupFiles)).toEqual([
       "test/setup.ts",
       "test/setup.extensions.ts",
-      "test/setup-NexisClaw-runtime.ts",
+      "test/setup-FirstNexus-runtime.ts",
     ]);
   });
 

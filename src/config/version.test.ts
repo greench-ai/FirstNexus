@@ -1,35 +1,35 @@
 import { describe, expect, it } from "vitest";
 import {
-  compareNexisClawVersions,
-  isSameNexisClawStableFamily,
-  parseNexisClawVersion,
+  compareFirstNexusVersions,
+  isSameFirstNexusStableFamily,
+  parseFirstNexusVersion,
   shouldWarnOnTouchedVersion,
 } from "./version.js";
 
-describe("parseNexisClawVersion", () => {
+describe("parseFirstNexusVersion", () => {
   it("parses stable, correction, and beta forms", () => {
-    expect(parseNexisClawVersion("2026.3.23")).toEqual({
+    expect(parseFirstNexusVersion("2026.3.23")).toEqual({
       major: 2026,
       minor: 3,
       patch: 23,
       revision: null,
       prerelease: null,
     });
-    expect(parseNexisClawVersion("2026.3.23-1")).toEqual({
+    expect(parseFirstNexusVersion("2026.3.23-1")).toEqual({
       major: 2026,
       minor: 3,
       patch: 23,
       revision: 1,
       prerelease: null,
     });
-    expect(parseNexisClawVersion("2026.3.23-beta.1")).toEqual({
+    expect(parseFirstNexusVersion("2026.3.23-beta.1")).toEqual({
       major: 2026,
       minor: 3,
       patch: 23,
       revision: null,
       prerelease: ["beta", "1"],
     });
-    expect(parseNexisClawVersion("v2026.3.23.beta.2")).toEqual({
+    expect(parseFirstNexusVersion("v2026.3.23.beta.2")).toEqual({
       major: 2026,
       minor: 3,
       patch: 23,
@@ -39,31 +39,31 @@ describe("parseNexisClawVersion", () => {
   });
 
   it("rejects invalid versions", () => {
-    expect(parseNexisClawVersion("2026.3")).toBeNull();
-    expect(parseNexisClawVersion("latest")).toBeNull();
+    expect(parseFirstNexusVersion("2026.3")).toBeNull();
+    expect(parseFirstNexusVersion("latest")).toBeNull();
   });
 });
 
-describe("compareNexisClawVersions", () => {
+describe("compareFirstNexusVersions", () => {
   it("treats correction publishes as newer than the base stable release", () => {
-    expect(compareNexisClawVersions("2026.3.23", "2026.3.23-1")).toBe(-1);
-    expect(compareNexisClawVersions("2026.3.23-1", "2026.3.23")).toBe(1);
-    expect(compareNexisClawVersions("2026.3.23-2", "2026.3.23-1")).toBe(1);
+    expect(compareFirstNexusVersions("2026.3.23", "2026.3.23-1")).toBe(-1);
+    expect(compareFirstNexusVersions("2026.3.23-1", "2026.3.23")).toBe(1);
+    expect(compareFirstNexusVersions("2026.3.23-2", "2026.3.23-1")).toBe(1);
   });
 
   it("treats stable as newer than beta and compares beta identifiers", () => {
-    expect(compareNexisClawVersions("2026.3.23", "2026.3.23-beta.1")).toBe(1);
-    expect(compareNexisClawVersions("2026.3.23-beta.2", "2026.3.23-beta.1")).toBe(1);
-    expect(compareNexisClawVersions("2026.3.23.beta.1", "2026.3.23-beta.2")).toBe(-1);
+    expect(compareFirstNexusVersions("2026.3.23", "2026.3.23-beta.1")).toBe(1);
+    expect(compareFirstNexusVersions("2026.3.23-beta.2", "2026.3.23-beta.1")).toBe(1);
+    expect(compareFirstNexusVersions("2026.3.23.beta.1", "2026.3.23-beta.2")).toBe(-1);
   });
 });
 
-describe("isSameNexisClawStableFamily", () => {
+describe("isSameFirstNexusStableFamily", () => {
   it("treats same-base stable and correction versions as one family", () => {
-    expect(isSameNexisClawStableFamily("2026.3.23", "2026.3.23-1")).toBe(true);
-    expect(isSameNexisClawStableFamily("2026.3.23-1", "2026.3.23-2")).toBe(true);
-    expect(isSameNexisClawStableFamily("2026.3.23", "2026.3.24")).toBe(false);
-    expect(isSameNexisClawStableFamily("2026.3.23-beta.1", "2026.3.23")).toBe(false);
+    expect(isSameFirstNexusStableFamily("2026.3.23", "2026.3.23-1")).toBe(true);
+    expect(isSameFirstNexusStableFamily("2026.3.23-1", "2026.3.23-2")).toBe(true);
+    expect(isSameFirstNexusStableFamily("2026.3.23", "2026.3.24")).toBe(false);
+    expect(isSameFirstNexusStableFamily("2026.3.23-beta.1", "2026.3.23")).toBe(false);
   });
 });
 

@@ -1,15 +1,15 @@
 ---
-summary: "How NexisClaw installs plugin packages and resolves plugin dependencies"
+summary: "How FirstNexus installs plugin packages and resolves plugin dependencies"
 read_when:
   - You are debugging plugin package installs
   - You are changing plugin startup, doctor, or package-manager install behavior
-  - You are maintaining packaged NexisClaw installs or bundled plugin manifests
+  - You are maintaining packaged FirstNexus installs or bundled plugin manifests
 title: "Plugin dependency resolution"
 sidebarTitle: "Dependencies"
 ---
 
-NexisClaw keeps plugin dependency work at install/update time. Runtime loading
-does not run package managers, repair dependency trees, or mutate the NexisClaw
+FirstNexus keeps plugin dependency work at install/update time. Runtime loading
+does not run package managers, repair dependency trees, or mutate the FirstNexus
 package directory.
 
 ## Responsibility split
@@ -18,11 +18,11 @@ Plugin packages own their dependency graph:
 
 - runtime dependencies live in the plugin package `dependencies` or
   `optionalDependencies`
-- SDK/core imports are peer or supplied NexisClaw imports
+- SDK/core imports are peer or supplied FirstNexus imports
 - local development plugins bring their own already-installed dependencies
-- npm and git plugins are installed into NexisClaw-owned package roots
+- npm and git plugins are installed into FirstNexus-owned package roots
 
-NexisClaw owns only the plugin lifecycle:
+FirstNexus owns only the plugin lifecycle:
 
 - discover the plugin source
 - install or update the package when explicitly requested
@@ -32,37 +32,37 @@ NexisClaw owns only the plugin lifecycle:
 
 ## Install roots
 
-NexisClaw uses stable per-source roots:
+FirstNexus uses stable per-source roots:
 
-- npm packages install under `~/.NexisClaw/npm`
-- git packages clone under `~/.NexisClaw/git`
+- npm packages install under `~/.FirstNexus/npm`
+- git packages clone under `~/.FirstNexus/git`
 - local/path/archive installs are copied or referenced without dependency repair
 
 npm installs run in the npm root with:
 
 ```bash
-cd ~/.NexisClaw/npm
+cd ~/.FirstNexus/npm
 npm install --omit=dev --omit=peer --legacy-peer-deps --ignore-scripts --no-audit --no-fund
 ```
 
-`NexisClaw plugins install npm-pack:<path.tgz>` uses that same managed npm root
-for a local npm-pack tarball. NexisClaw reads the tarball's npm metadata, adds it
+`FirstNexus plugins install npm-pack:<path.tgz>` uses that same managed npm root
+for a local npm-pack tarball. FirstNexus reads the tarball's npm metadata, adds it
 to the managed root as a copied `file:` dependency, runs the normal npm install,
 and then verifies the installed lockfile metadata before trusting the plugin.
 This is intended for package-acceptance and release-candidate proof where a
 local pack artifact should behave like the registry artifact it simulates.
 
-npm may hoist transitive dependencies to `~/.NexisClaw/npm/node_modules` beside
-the plugin package. NexisClaw scans the managed npm root before trusting the
+npm may hoist transitive dependencies to `~/.FirstNexus/npm/node_modules` beside
+the plugin package. FirstNexus scans the managed npm root before trusting the
 install and uses npm to remove npm-managed packages during uninstall, so hoisted
 runtime dependencies stay inside the managed cleanup boundary.
 
-Plugins that import `NexisClaw/plugin-sdk/*` declare `NexisClaw` as a peer
-dependency. NexisClaw does not let npm install a separate registry copy of the
+Plugins that import `FirstNexus/plugin-sdk/*` declare `FirstNexus` as a peer
+dependency. FirstNexus does not let npm install a separate registry copy of the
 host package into the managed root, because stale host packages can affect npm
 peer resolution during later plugin installs. Managed npm installs skip npm peer
-resolution/materialization for the shared root and NexisClaw reasserts
-plugin-local `node_modules/NexisClaw` links for installed packages that declare
+resolution/materialization for the shared root and FirstNexus reasserts
+plugin-local `node_modules/FirstNexus` links for installed packages that declare
 the host peer after install, update, or uninstall.
 
 git installs clone or refresh the repository, then run:
@@ -77,7 +77,7 @@ Node package.
 
 ## Local plugins
 
-Local plugins are treated as developer-controlled directories. NexisClaw does not
+Local plugins are treated as developer-controlled directories. FirstNexus does not
 run `npm install`, `pnpm install`, or dependency repair for them. If a local
 plugin has dependencies, install them in that plugin before loading it.
 
@@ -94,19 +94,19 @@ If a dependency is missing at runtime, the plugin fails to load and the error
 should point the operator to an explicit fix:
 
 ```bash
-NexisClaw plugins update <id>
-NexisClaw plugins install <source>
-NexisClaw doctor --fix
+FirstNexus plugins update <id>
+FirstNexus plugins install <source>
+FirstNexus doctor --fix
 ```
 
-`doctor --fix` can clean legacy NexisClaw-generated dependency state and recover
+`doctor --fix` can clean legacy FirstNexus-generated dependency state and recover
 downloadable plugins that are missing from the local install records when config
 references them. Doctor does not repair dependencies for an already-installed
 local plugin.
 
 ## Bundled plugins
 
-Lightweight and core-critical bundled plugins are shipped as part of NexisClaw.
+Lightweight and core-critical bundled plugins are shipped as part of FirstNexus.
 They should either have no heavy runtime dependency tree or be moved out to a
 downloadable package on ClawHub/npm.
 
@@ -117,7 +117,7 @@ Bundled plugin manifests must not request dependency staging. Large or optional
 plugin functionality should be packaged as a normal plugin and installed through
 the same npm/git/ClawHub path as third-party plugins.
 
-In source checkouts, NexisClaw treats the repository as a pnpm monorepo. After
+In source checkouts, FirstNexus treats the repository as a pnpm monorepo. After
 `pnpm install`, bundled plugins load from `extensions/<id>` so package-local
 workspace dependencies are available and edits are picked up directly. Source
 checkout development is pnpm-only; plain `npm install` at the repository root is
@@ -125,17 +125,17 @@ not a supported way to prepare bundled plugin dependencies.
 
 | Install shape                    | Bundled plugin location               | Dependency owner                                                     |
 | -------------------------------- | ------------------------------------- | -------------------------------------------------------------------- |
-| `npm install -g NexisClaw`        | Built runtime tree inside the package | NexisClaw package and explicit plugin install/update/doctor flows     |
+| `npm install -g FirstNexus`      | Built runtime tree inside the package | FirstNexus package and explicit plugin install/update/doctor flows   |
 | Git checkout plus `pnpm install` | `extensions/<id>` workspace packages  | The pnpm workspace, including each plugin package's own dependencies |
-| `NexisClaw plugins install ...`   | Managed npm/git/ClawHub plugin root   | The plugin install/update flow                                       |
+| `FirstNexus plugins install ...` | Managed npm/git/ClawHub plugin root   | The plugin install/update flow                                       |
 
 ## Legacy cleanup
 
-Older NexisClaw versions generated bundled-plugin dependency roots at startup or
+Older FirstNexus versions generated bundled-plugin dependency roots at startup or
 during doctor repair. Current doctor cleanup removes those stale directories and
 symlinks when `--fix` is used, including old `plugin-runtime-deps` roots, global
 Node-prefix package symlinks that point at pruned `plugin-runtime-deps` targets,
-`.NexisClaw-runtime-deps*` manifests, generated plugin `node_modules`, install
+`.FirstNexus-runtime-deps*` manifests, generated plugin `node_modules`, install
 stage directories, and package-local pnpm stores. Packaged postinstall also
 removes those global symlinks before pruning the legacy target roots so upgrades
 do not leave dangling ESM package imports.

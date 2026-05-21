@@ -18,7 +18,7 @@ import {
   resolveSupportedThinkingLevel,
 } from "../auto-reply/thinking.js";
 import type { SessionEntry } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeExecTarget } from "../infra/exec-approvals.js";
 import {
   isAcpSessionKey,
@@ -87,7 +87,7 @@ function normalizeSubagentControlScope(raw: string): "children" | "none" | undef
 }
 
 export async function applySessionsPatchToStore(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   store: Record<string, SessionEntry>;
   storeKey: string;
   patch: SessionsPatchParams;

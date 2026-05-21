@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
   normalizeCacheKey,
@@ -6,8 +6,8 @@ import {
   readCache,
   resolveCacheTtlMs,
   writeCache,
-} from "NexisClaw/plugin-sdk/provider-web-search";
-import { wrapExternalContent, wrapWebContent } from "NexisClaw/plugin-sdk/security-runtime";
+} from "FirstNexus/plugin-sdk/provider-web-search";
+import { wrapExternalContent, wrapWebContent } from "FirstNexus/plugin-sdk/security-runtime";
 import {
   DEFAULT_TAVILY_BASE_URL,
   resolveTavilyApiKey,
@@ -27,7 +27,7 @@ const EXTRACT_CACHE = new Map<
 const DEFAULT_SEARCH_COUNT = 5;
 
 export type TavilySearchParams = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   query: string;
   searchDepth?: string;
   topic?: string;
@@ -40,7 +40,7 @@ export type TavilySearchParams = {
 };
 
 export type TavilyExtractParams = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   urls: string[];
   query?: string;
   extractDepth?: string;
@@ -80,7 +80,7 @@ async function postTavilyJson(params: {
       apiKey: params.apiKey,
       body: params.body,
       errorLabel: params.errorLabel,
-      extraHeaders: { "X-Client-Source": "NexisClaw" },
+      extraHeaders: { "X-Client-Source": "FirstNexus" },
     },
     async (response) => (await response.json()) as Record<string, unknown>,
   );

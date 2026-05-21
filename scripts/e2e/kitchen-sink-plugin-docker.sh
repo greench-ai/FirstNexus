@@ -3,30 +3,30 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-kitchen-sink-plugin-e2e" NEXISCLAW_KITCHEN_SINK_PLUGIN_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-kitchen-sink-plugin-e2e" NEXISCLAW_KITCHEN_SINK_PLUGIN_E2E_IMAGE)"
 
 docker_e2e_build_or_reuse "$IMAGE_NAME" kitchen-sink-plugin
 NEXISCLAW_TEST_STATE_SCRIPT_B64="$(docker_e2e_test_state_shell_b64 kitchen-sink-plugin empty)"
-KITCHEN_SINK_NPM_SPEC="${NEXISCLAW_KITCHEN_SINK_NPM_SPEC:-npm:@NexisClaw/kitchen-sink@latest}"
-KITCHEN_SINK_NPM_MISSING_SPEC="${NEXISCLAW_KITCHEN_SINK_NPM_MISSING_SPEC:-npm:@NexisClaw/kitchen-sink@beta}"
+KITCHEN_SINK_NPM_SPEC="${NEXISCLAW_KITCHEN_SINK_NPM_SPEC:-npm:@FirstNexus/kitchen-sink@latest}"
+KITCHEN_SINK_NPM_MISSING_SPEC="${NEXISCLAW_KITCHEN_SINK_NPM_MISSING_SPEC:-npm:@FirstNexus/kitchen-sink@beta}"
 
 DEFAULT_KITCHEN_SINK_SCENARIOS="$(
   cat <<SCENARIOS
-npm-latest-full|${KITCHEN_SINK_NPM_SPEC}|NexisClaw-kitchen-sink-fixture|npm|success|full
-npm-latest-conformance|${KITCHEN_SINK_NPM_SPEC}|NexisClaw-kitchen-sink-fixture|npm|success|conformance|conformance
-npm-latest-adversarial|${KITCHEN_SINK_NPM_SPEC}|NexisClaw-kitchen-sink-fixture|npm|success|adversarial|adversarial
-npm-beta|${KITCHEN_SINK_NPM_MISSING_SPEC}|NexisClaw-kitchen-sink-fixture|npm|failure|none
-clawhub-latest|clawhub:@NexisClaw/kitchen-sink@latest|NexisClaw-kitchen-sink-fixture|clawhub|success|basic
-clawhub-beta|clawhub:@NexisClaw/kitchen-sink@beta|NexisClaw-kitchen-sink-fixture|clawhub|failure|none
-npm-to-clawhub|clawhub:@NexisClaw/kitchen-sink@latest|NexisClaw-kitchen-sink-fixture|clawhub|success|basic||${KITCHEN_SINK_NPM_SPEC}
+npm-latest-full|${KITCHEN_SINK_NPM_SPEC}|FirstNexus-kitchen-sink-fixture|npm|success|full
+npm-latest-conformance|${KITCHEN_SINK_NPM_SPEC}|FirstNexus-kitchen-sink-fixture|npm|success|conformance|conformance
+npm-latest-adversarial|${KITCHEN_SINK_NPM_SPEC}|FirstNexus-kitchen-sink-fixture|npm|success|adversarial|adversarial
+npm-beta|${KITCHEN_SINK_NPM_MISSING_SPEC}|FirstNexus-kitchen-sink-fixture|npm|failure|none
+clawhub-latest|clawhub:@FirstNexus/kitchen-sink@latest|FirstNexus-kitchen-sink-fixture|clawhub|success|basic
+clawhub-beta|clawhub:@FirstNexus/kitchen-sink@beta|FirstNexus-kitchen-sink-fixture|clawhub|failure|none
+npm-to-clawhub|clawhub:@FirstNexus/kitchen-sink@latest|FirstNexus-kitchen-sink-fixture|clawhub|success|basic||${KITCHEN_SINK_NPM_SPEC}
 SCENARIOS
 )"
 KITCHEN_SINK_SCENARIOS="${NEXISCLAW_KITCHEN_SINK_PLUGIN_SCENARIOS:-$DEFAULT_KITCHEN_SINK_SCENARIOS}"
 MAX_MEMORY_MIB="${NEXISCLAW_KITCHEN_SINK_MAX_MEMORY_MIB:-2048}"
 MAX_CPU_PERCENT="${NEXISCLAW_KITCHEN_SINK_MAX_CPU_PERCENT:-1200}"
-CONTAINER_NAME="NexisClaw-kitchen-sink-plugin-e2e-$$"
-RUN_LOG="$(mktemp "${TMPDIR:-/tmp}/NexisClaw-kitchen-sink-plugin.XXXXXX")"
-STATS_LOG="$(mktemp "${TMPDIR:-/tmp}/NexisClaw-kitchen-sink-plugin-stats.XXXXXX")"
+CONTAINER_NAME="FirstNexus-kitchen-sink-plugin-e2e-$$"
+RUN_LOG="$(mktemp "${TMPDIR:-/tmp}/FirstNexus-kitchen-sink-plugin.XXXXXX")"
+STATS_LOG="$(mktemp "${TMPDIR:-/tmp}/FirstNexus-kitchen-sink-plugin-stats.XXXXXX")"
 
 cleanup() {
   docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true

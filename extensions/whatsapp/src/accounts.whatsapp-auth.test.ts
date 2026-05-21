@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { captureEnv } from "NexisClaw/plugin-sdk/test-env";
+import { captureEnv } from "FirstNexus/plugin-sdk/test-env";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { hasAnyWhatsAppAuth, listWhatsAppAuthDirs } from "./accounts.js";
 
@@ -16,7 +16,7 @@ describe("hasAnyWhatsAppAuth", () => {
 
   beforeEach(() => {
     envSnapshot = captureEnv(["NEXISCLAW_OAUTH_DIR"]);
-    tempOauthDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-oauth-"));
+    tempOauthDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-oauth-"));
     process.env.NEXISCLAW_OAUTH_DIR = tempOauthDir;
   });
 
@@ -43,7 +43,7 @@ describe("hasAnyWhatsAppAuth", () => {
   });
 
   it("includes authDir overrides", () => {
-    const customDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-wa-auth-"));
+    const customDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-wa-auth-"));
     try {
       writeCreds(customDir);
       const cfg = {

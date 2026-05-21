@@ -17,7 +17,7 @@ function writeFile(filePath: string, content: string): void {
 
 describe("run-opengrep.sh", () => {
   it("validates the rulepack when only OpenGrep rulepack files changed", () => {
-    const repo = createTempDir("NexisClaw-run-opengrep-");
+    const repo = createTempDir("FirstNexus-run-opengrep-");
     git(repo, "init", "-q");
     git(repo, "config", "user.email", "test@example.com");
     git(repo, "config", "user.name", "Test User");

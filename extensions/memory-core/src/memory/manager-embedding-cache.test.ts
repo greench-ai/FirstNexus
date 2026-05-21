@@ -1,7 +1,7 @@
 import {
   ensureMemoryIndexSchema,
   requireNodeSqlite,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-storage";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-storage";
 import { describe, expect, it, vi } from "vitest";
 import {
   collectMemoryCachedEmbeddings,

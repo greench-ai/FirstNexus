@@ -67,8 +67,8 @@ export type ApnsPushResult = {
 type ApnsPushAlertResult = ApnsPushResult;
 type ApnsPushWakeResult = ApnsPushResult;
 
-const EXEC_APPROVAL_GENERIC_ALERT_BODY = "Open NexisClaw to review this request.";
-const EXEC_APPROVAL_NOTIFICATION_CATEGORY = "NexisClaw.exec-approval";
+const EXEC_APPROVAL_GENERIC_ALERT_BODY = "Open FirstNexus to review this request.";
+const EXEC_APPROVAL_NOTIFICATION_CATEGORY = "FirstNexus.exec-approval";
 
 type ApnsPushType = "alert" | "background";
 
@@ -878,7 +878,7 @@ function createAlertPayload(params: { nodeId: string; title: string; body: strin
       },
       sound: "default",
     },
-    NexisClaw: toPushMetadata({
+    FirstNexus: toPushMetadata({
       kind: "push.test",
       nodeId: params.nodeId,
     }),
@@ -890,7 +890,7 @@ function createBackgroundPayload(params: { nodeId: string; wakeReason?: string }
     aps: {
       "content-available": 1,
     },
-    NexisClaw: toPushMetadata({
+    FirstNexus: toPushMetadata({
       kind: "node.wake",
       reason: params.wakeReason ?? "node.invoke",
       nodeId: params.nodeId,
@@ -913,7 +913,7 @@ function createExecApprovalAlertPayload(params: { nodeId: string; approvalId: st
       category: EXEC_APPROVAL_NOTIFICATION_CATEGORY,
       "content-available": 1,
     },
-    NexisClaw: {
+    FirstNexus: {
       kind: "exec.approval.requested",
       approvalId: params.approvalId,
       ts: Date.now(),
@@ -926,7 +926,7 @@ function createExecApprovalResolvedPayload(params: { nodeId: string; approvalId:
     aps: {
       "content-available": 1,
     },
-    NexisClaw: {
+    FirstNexus: {
       kind: "exec.approval.resolved",
       approvalId: params.approvalId,
       ts: Date.now(),

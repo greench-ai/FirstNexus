@@ -1,9 +1,9 @@
 import {
   getRequiredHookHandler,
   registerHookHandlersForTest,
-} from "NexisClaw/plugin-sdk/channel-test-helpers";
+} from "FirstNexus/plugin-sdk/channel-test-helpers";
 import { beforeEach, describe, expect, it } from "vitest";
-import type { ClawdbotConfig, NexisClawPluginApi } from "../runtime-api.js";
+import type { ClawdbotConfig, FirstNexusPluginApi } from "../runtime-api.js";
 import { registerFeishuSubagentHooks } from "../subagent-hooks-api.js";
 import {
   createFeishuThreadBindingManager,
@@ -16,7 +16,7 @@ const baseConfig: ClawdbotConfig = {
 };
 
 function registerHandlersForTest(config: Record<string, unknown> = baseConfig) {
-  return registerHookHandlersForTest<NexisClawPluginApi>({
+  return registerHookHandlersForTest<FirstNexusPluginApi>({
     config,
     register: registerFeishuSubagentHooks,
   });

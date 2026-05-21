@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 
 const execFileMock = vi.hoisted(() => vi.fn());
@@ -49,7 +49,7 @@ describe("qa multipass runtime", () => {
   });
 
   it("rejects repo-local symlink output directories that escape the repo root", () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-multipass-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-multipass-"));
     const repoRoot = path.join(tempRoot, "repo");
     const outsideRoot = path.join(tempRoot, "outside");
     const symlinkPath = path.join(repoRoot, "artifacts-link");
@@ -85,7 +85,7 @@ describe("qa multipass runtime", () => {
     expect(plan.outputDir).toBe(outputDir);
     expect(plan.scenarioIds).toStrictEqual([]);
     expect(plan.qaCommand).not.toContain("--scenario");
-    expect(plan.guestOutputDir).toBe("/workspace/NexisClaw-host/.artifacts/qa-e2e/multipass-test");
+    expect(plan.guestOutputDir).toBe("/workspace/FirstNexus-host/.artifacts/qa-e2e/multipass-test");
     expect(plan.reportPath).toBe(path.join(outputDir, "qa-suite-report.md"));
     expect(plan.summaryPath).toBe(path.join(outputDir, "qa-suite-summary.json"));
   });
@@ -102,11 +102,11 @@ describe("qa multipass runtime", () => {
     expect(script).toContain("pnpm install --frozen-lockfile");
     expect(script).toContain("pnpm build");
     expect(script).toContain(`corepack prepare '${readRootPackageManager()}' --activate`);
-    expect(script).toContain("'pnpm' 'NexisClaw' 'qa' 'suite' '--transport' 'qa-channel'");
+    expect(script).toContain("'pnpm' 'FirstNexus' 'qa' 'suite' '--transport' 'qa-channel'");
     expect(script).toContain("'--provider-mode' 'live-frontier'");
     expect(script).toContain("'--scenario' 'channel-chat-baseline'");
     expect(script).toContain("'--scenario' 'thread-follow-up'");
-    expect(script).toContain("/workspace/NexisClaw-host/.artifacts/qa-e2e/multipass-test");
+    expect(script).toContain("/workspace/FirstNexus-host/.artifacts/qa-e2e/multipass-test");
   });
 
   it("carries live suite flags and forwarded auth env into the guest command", () => {
@@ -131,7 +131,7 @@ describe("qa multipass runtime", () => {
     expect(plan.qaCommand).toContain("--fast");
     expect(plan.forwardedEnv.OPENAI_API_KEY).toBe("test-openai-key");
     expect(script).toContain("OPENAI_API_KEY='test-openai-key'");
-    expect(script).toContain("'pnpm' 'NexisClaw' 'qa' 'suite' '--transport' 'qa-channel'");
+    expect(script).toContain("'pnpm' 'FirstNexus' 'qa' 'suite' '--transport' 'qa-channel'");
     expect(script).toContain("'--provider-mode' 'live-frontier'");
   });
 
@@ -178,7 +178,7 @@ describe("qa multipass runtime", () => {
   });
 
   it("skips stale CODEX_HOME values that do not exist on the host", () => {
-    vi.stubEnv("CODEX_HOME", "/tmp/does-not-exist-NexisClaw-codex-home");
+    vi.stubEnv("CODEX_HOME", "/tmp/does-not-exist-FirstNexus-codex-home");
     const plan = createQaMultipassPlan({
       repoRoot: process.cwd(),
       outputDir: path.join(process.cwd(), ".artifacts", "qa-e2e", "multipass-live-test"),
@@ -191,7 +191,7 @@ describe("qa multipass runtime", () => {
   });
 
   it("falls back to os.homedir() when HOME is unset for CODEX_HOME discovery", () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-multipass-home-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-multipass-home-"));
     const fakeHome = path.join(tempRoot, "home");
     const fakeCodexHome = path.join(fakeHome, ".codex");
     fs.mkdirSync(fakeCodexHome, { recursive: true });
@@ -208,7 +208,7 @@ describe("qa multipass runtime", () => {
 
       expect(plan.forwardedEnv.CODEX_HOME).toBe(fakeCodexHome);
       expect(plan.hostCodexHomePath).toBe(fakeCodexHome);
-      expect(plan.guestCodexHomePath).toBe("/workspace/NexisClaw-codex-home");
+      expect(plan.guestCodexHomePath).toBe("/workspace/FirstNexus-codex-home");
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -231,7 +231,7 @@ describe("qa multipass runtime", () => {
       scenarioIds: ["channel-chat-baseline"],
     }).vmName;
     const expectedTransferDir = path.join(
-      resolvePreferredNexisClawTmpDir(),
+      resolvePreferredFirstNexusTmpDir(),
       `${expectedVmName}-qa-suite-`,
     );
 
@@ -244,7 +244,7 @@ describe("qa multipass runtime", () => {
     ).rejects.toThrow("Multipass is not installed on this host.");
 
     const tempEntries = fs
-      .readdirSync(resolvePreferredNexisClawTmpDir())
+      .readdirSync(resolvePreferredFirstNexusTmpDir())
       .filter((entry) => entry.startsWith(path.basename(expectedTransferDir)));
     expect(tempEntries).toStrictEqual([]);
     fs.rmSync(outputDir, { recursive: true, force: true });

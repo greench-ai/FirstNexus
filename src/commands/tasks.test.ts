@@ -11,8 +11,8 @@ import {
   resetTaskRegistryDeliveryRuntimeForTests,
   resetTaskRegistryForTests,
 } from "../tasks/task-registry.js";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
-import type { NexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
+import type { FirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 import { tasksAuditCommand, tasksMaintenanceCommand } from "./tasks.js";
 
 function createRuntime(): RuntimeEnv {
@@ -33,10 +33,10 @@ const zeroTaskAuditCounts = {
 };
 
 async function withTaskCommandStateDir(
-  run: (state: NexisClawTestState) => Promise<void>,
+  run: (state: FirstNexusTestState) => Promise<void>,
 ): Promise<void> {
-  await withNexisClawTestState(
-    { layout: "state-only", prefix: "NexisClaw-tasks-command-" },
+  await withFirstNexusTestState(
+    { layout: "state-only", prefix: "FirstNexus-tasks-command-" },
     async (state) => {
       resetTaskRegistryDeliveryRuntimeForTests();
       resetTaskRegistryForTests({ persist: false });

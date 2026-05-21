@@ -51,7 +51,7 @@ export type ReplyPayload = {
 export type ReplyPayloadMetadata = {
   assistantMessageIndex?: number;
   /**
-   * Internal NexisClaw notices generated after a runtime/provider failure are
+   * Internal FirstNexus notices generated after a runtime/provider failure are
    * not assistant source replies. Dispatch may deliver them even when normal
    * assistant source replies are message-tool-only; sendPolicy deny still wins.
    */

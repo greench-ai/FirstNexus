@@ -132,7 +132,7 @@ describe("auth profile store cache", () => {
   }
 
   it("recomputes runtime-only external auth overlays even while the base store is cached", async () => {
-    await withAgentDirEnv("NexisClaw-auth-store-cache-", (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-cache-", (agentDir) => {
       writeAuthStore(agentDir, "sk-test");
       mocks.resolveExternalCliAuthProfiles
         .mockReturnValueOnce([createRuntimeOnlyOverlay("access-1")])
@@ -152,7 +152,7 @@ describe("auth profile store cache", () => {
   });
 
   it("refreshes the cached auth store after auth-profiles.json changes", async () => {
-    await withAgentDirEnv("NexisClaw-auth-store-refresh-", async (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-refresh-", async (agentDir) => {
       const authPath = writeAuthStore(agentDir, "sk-test-1");
 
       ensureAuthProfileStore(agentDir);
@@ -171,7 +171,7 @@ describe("auth profile store cache", () => {
 
   it("isolates cached auth stores without structuredClone", async () => {
     const structuredCloneSpy = vi.spyOn(globalThis, "structuredClone");
-    await withAgentDirEnv("NexisClaw-auth-store-isolated-", (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-isolated-", (agentDir) => {
       writeAuthStore(agentDir, "sk-test");
 
       const first = ensureAuthProfileStore(agentDir);
@@ -198,7 +198,7 @@ describe("auth profile store cache", () => {
   it("keeps runtime-only external auth out of persisted auth-profiles.json files", async () => {
     mocks.resolveExternalCliAuthProfiles.mockReturnValue([createRuntimeOnlyOverlay("access-1")]);
 
-    await withAgentDirEnv("NexisClaw-auth-store-missing-", (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-missing-", (agentDir) => {
       const store = ensureAuthProfileStore(agentDir);
 
       expect((store.profiles["openai-codex:default"] as OAuthCredential | undefined)?.access).toBe(
@@ -209,7 +209,7 @@ describe("auth profile store cache", () => {
   });
 
   it("persists fresher external CLI oauth over a stale local managed profile", async () => {
-    await withAgentDirEnv("NexisClaw-auth-store-external-cli-persist-", (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-external-cli-persist-", (agentDir) => {
       const profileId = "anthropic:claude-cli";
       writeOAuthStore(agentDir, profileId, {
         type: "oauth",
@@ -244,7 +244,7 @@ describe("auth profile store cache", () => {
   });
 
   it("preserves concurrent auth-store updates while persisting external CLI oauth", async () => {
-    await withAgentDirEnv("NexisClaw-auth-store-external-cli-concurrent-", (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-external-cli-concurrent-", (agentDir) => {
       const profileId = "anthropic:claude-cli";
       const authPath = writeOAuthStore(agentDir, profileId, {
         type: "oauth",
@@ -300,7 +300,7 @@ describe("auth profile store cache", () => {
   });
 
   it("returns the reloaded store when the synced CLI profile changed concurrently", async () => {
-    await withAgentDirEnv("NexisClaw-auth-store-external-cli-profile-race-", (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-external-cli-profile-race-", (agentDir) => {
       const profileId = "anthropic:claude-cli";
       const authPath = writeOAuthStore(agentDir, profileId, {
         type: "oauth",
@@ -345,7 +345,7 @@ describe("auth profile store cache", () => {
   });
 
   it("does not reclaim an existing auth-store lock while syncing external CLI oauth", async () => {
-    await withAgentDirEnv("NexisClaw-auth-store-external-cli-live-lock-", (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-external-cli-live-lock-", (agentDir) => {
       const profileId = "anthropic:claude-cli";
       const authPath = writeOAuthStore(agentDir, profileId, {
         type: "oauth",
@@ -388,7 +388,7 @@ describe("auth profile store cache", () => {
   });
 
   it("does not cache stale auth after external CLI sync lock contention", async () => {
-    await withAgentDirEnv("NexisClaw-auth-store-external-cli-locked-cache-", (agentDir) => {
+    await withAgentDirEnv("FirstNexus-auth-store-external-cli-locked-cache-", (agentDir) => {
       const profileId = "anthropic:claude-cli";
       const authPath = writeOAuthStore(agentDir, profileId, {
         type: "oauth",

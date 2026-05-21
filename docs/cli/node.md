@@ -1,12 +1,12 @@
 ---
-summary: "CLI reference for `NexisClaw node` (headless node host)"
+summary: "CLI reference for `FirstNexus node` (headless node host)"
 read_when:
   - Running the headless node host
   - Pairing a non-macOS node for system.run
 title: "Node"
 ---
 
-# `NexisClaw node`
+# `FirstNexus node`
 
 Run a **headless node host** that connects to the Gateway WebSocket and exposes
 `system.run` / `system.which` on this machine.
@@ -51,7 +51,7 @@ Disable it on the node if needed:
 ## Run (foreground)
 
 ```bash
-NexisClaw node run --host <gateway-host> --port 18789
+FirstNexus node run --host <gateway-host> --port 18789
 ```
 
 Options:
@@ -65,7 +65,7 @@ Options:
 
 ## Gateway auth for node host
 
-`NexisClaw node run` and `NexisClaw node install` resolve gateway auth from config/env (no `--token`/`--password` flags on node commands):
+`FirstNexus node run` and `FirstNexus node install` resolve gateway auth from config/env (no `--token`/`--password` flags on node commands):
 
 - `NEXISCLAW_GATEWAY_TOKEN` / `NEXISCLAW_GATEWAY_PASSWORD` are checked first.
 - Then local config fallback: `gateway.auth.token` / `gateway.auth.password`.
@@ -77,8 +77,8 @@ Options:
 For a node connecting to a non-loopback `ws://` Gateway on a trusted private
 network, set `NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS=1`. Without it, node startup
 fails closed and asks you to use `wss://`, an SSH tunnel, or Tailscale.
-This is a process-environment opt-in, not an `NexisClaw.json` config key.
-`NexisClaw node install` persists it into the supervised node service when it is
+This is a process-environment opt-in, not an `FirstNexus.json` config key.
+`FirstNexus node install` persists it into the supervised node service when it is
 present in the install command environment.
 
 ## Service (background)
@@ -86,7 +86,7 @@ present in the install command environment.
 Install a headless node host as a user service.
 
 ```bash
-NexisClaw node install --host <gateway-host> --port 18789
+FirstNexus node install --host <gateway-host> --port 18789
 ```
 
 Options:
@@ -103,14 +103,14 @@ Options:
 Manage the service:
 
 ```bash
-NexisClaw node status
-NexisClaw node start
-NexisClaw node stop
-NexisClaw node restart
-NexisClaw node uninstall
+FirstNexus node status
+FirstNexus node start
+FirstNexus node stop
+FirstNexus node restart
+FirstNexus node uninstall
 ```
 
-Use `NexisClaw node run` for a foreground node host (no service).
+Use `FirstNexus node run` for a foreground node host (no service).
 
 Service commands accept `--json` for machine-readable output.
 
@@ -126,8 +126,8 @@ The first connection creates a pending device pairing request (`role: node`) on 
 Approve it via:
 
 ```bash
-NexisClaw devices list
-NexisClaw devices approve <requestId>
+FirstNexus devices list
+FirstNexus devices approve <requestId>
 ```
 
 On tightly controlled node networks, the Gateway operator can explicitly opt in
@@ -151,20 +151,20 @@ scope, metadata, or public-key upgrades still require manual approval.
 
 If the node retries pairing with changed auth details (role/scopes/public key),
 the previous pending request is superseded and a new `requestId` is created.
-Run `NexisClaw devices list` again before approval.
+Run `FirstNexus devices list` again before approval.
 
 The node host stores its node id, token, display name, and gateway connection info in
-`~/.NexisClaw/node.json`.
+`~/.FirstNexus/node.json`.
 
 ## Exec approvals
 
 `system.run` is gated by local exec approvals:
 
-- `~/.NexisClaw/exec-approvals.json`
+- `~/.FirstNexus/exec-approvals.json`
 - [Exec approvals](/tools/exec-approvals)
-- `NexisClaw approvals --node <id|name|ip>` (edit from the Gateway)
+- `FirstNexus approvals --node <id|name|ip>` (edit from the Gateway)
 
-For approved async node exec, NexisClaw prepares a canonical `systemRunPlan`
+For approved async node exec, FirstNexus prepares a canonical `systemRunPlan`
 before prompting. The later approved `system.run` forward reuses that stored
 plan, so edits to command/cwd/session fields after the approval request was
 created are rejected instead of changing what the node executes.

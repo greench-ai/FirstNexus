@@ -5,7 +5,7 @@ import {
   type MessageReceipt,
   type MessageReceiptPartKind,
   type MessageReceiptSourceResult,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 
 export type WhatsAppSendKind = "media" | "poll" | "reaction" | "text";
 

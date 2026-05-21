@@ -1,1 +1,1 @@
-export { expectChannelInboundContextContract } from "NexisClaw/plugin-sdk/channel-contract-testing";
+export { expectChannelInboundContextContract } from "FirstNexus/plugin-sdk/channel-contract-testing";

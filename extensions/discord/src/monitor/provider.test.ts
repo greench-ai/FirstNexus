@@ -1,6 +1,6 @@
 import { EventEmitter } from "node:events";
-import type { ChannelRuntimeSurface } from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { ChannelRuntimeSurface } from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { RateLimitError } from "../internal/discord.js";
 import {
@@ -39,7 +39,7 @@ const {
 
 let monitorDiscordProvider: typeof import("./provider.js").monitorDiscordProvider;
 let providerTesting: typeof import("./provider.js").__testing;
-let runtimeEnvModule: typeof import("NexisClaw/plugin-sdk/runtime-env");
+let runtimeEnvModule: typeof import("FirstNexus/plugin-sdk/runtime-env");
 
 function createAcpRuntimeError(code: string, message: string): Error & { code: string } {
   return Object.assign(new Error(message), { code });
@@ -87,7 +87,7 @@ function createRateLimitError(
   return new RateLimitErrorCtor(response, body, fallbackRequest);
 }
 
-function createConfigWithDiscordAccount(overrides: Record<string, unknown> = {}): NexisClawConfig {
+function createConfigWithDiscordAccount(overrides: Record<string, unknown> = {}): FirstNexusConfig {
   return {
     channels: {
       discord: {
@@ -99,7 +99,7 @@ function createConfigWithDiscordAccount(overrides: Record<string, unknown> = {})
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 type MockCallReader = { mock: { calls: unknown[][] } };
@@ -144,7 +144,7 @@ vi.mock("../voice/manager.runtime.js", () => {
 });
 describe("monitorDiscordProvider", () => {
   type ReconcileHealthProbeParams = {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId: string;
     sessionKey: string;
     binding: unknown;
@@ -152,7 +152,7 @@ describe("monitorDiscordProvider", () => {
   };
 
   type ReconcileStartupParams = {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     healthProbe?: (
       params: ReconcileHealthProbeParams,
     ) => Promise<{ status: string; reason?: string }>;
@@ -209,9 +209,9 @@ describe("monitorDiscordProvider", () => {
   };
 
   beforeAll(async () => {
-    vi.doMock("NexisClaw/plugin-sdk/plugin-runtime", async () => {
-      const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/plugin-runtime")>(
-        "NexisClaw/plugin-sdk/plugin-runtime",
+    vi.doMock("FirstNexus/plugin-sdk/plugin-runtime", async () => {
+      const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/plugin-runtime")>(
+        "FirstNexus/plugin-sdk/plugin-runtime",
       );
       return {
         ...actual,
@@ -242,7 +242,7 @@ describe("monitorDiscordProvider", () => {
     vi.doMock("../token.js", () => ({
       normalizeDiscordToken: (value?: string) => value,
     }));
-    runtimeEnvModule = await import("NexisClaw/plugin-sdk/runtime-env");
+    runtimeEnvModule = await import("FirstNexus/plugin-sdk/runtime-env");
     vi.spyOn(runtimeEnvModule, "logVerbose").mockImplementation(() => undefined);
     ({ monitorDiscordProvider, __testing: providerTesting } = await import("./provider.js"));
   });
@@ -776,7 +776,7 @@ describe("monitorDiscordProvider", () => {
     expect(drained[0]?.message).toContain("4014");
   });
 
-  it("passes NexisClaw event queue defaults to the Discord client", async () => {
+  it("passes FirstNexus event queue defaults to the Discord client", async () => {
     await monitorDiscordProvider({
       config: baseConfig(),
       runtime: baseRuntime(),

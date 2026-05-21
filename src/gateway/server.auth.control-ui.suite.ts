@@ -152,7 +152,7 @@ export function registerControlUiAndPairingSuite(): void {
   };
 
   const startControlUiServerWithOperatorIdentity = async (
-    identityPrefix = "NexisClaw-device-scope-",
+    identityPrefix = "FirstNexus-device-scope-",
   ) => {
     const { server, port, prevToken } = await startControlUiServer("secret");
     const { identityPath, identity, client } = await createOperatorIdentityFixture(identityPrefix);
@@ -301,7 +301,9 @@ export function registerControlUiAndPairingSuite(): void {
     const { publicKeyRawBase64UrlFromPem } = await import("../infra/device-identity.js");
     const { rejectDevicePairing, requestDevicePairing } =
       await import("../infra/device-pairing.js");
-    const { identity } = await createOperatorIdentityFixture("NexisClaw-control-ui-trusted-proxy-");
+    const { identity } = await createOperatorIdentityFixture(
+      "FirstNexus-control-ui-trusted-proxy-",
+    );
     const pendingRequest = await requestDevicePairing({
       deviceId: identity.deviceId,
       publicKey: publicKeyRawBase64UrlFromPem(identity.publicKeyPem),
@@ -421,7 +423,7 @@ export function registerControlUiAndPairingSuite(): void {
     await withControlUiGatewayServer(async ({ port }) => {
       const ws = await openWs(port, {
         ...TRUSTED_PROXY_CONTROL_UI_HEADERS,
-        "x-NexisClaw-scopes": "operator.read",
+        "x-FirstNexus-scopes": "operator.read",
       });
       try {
         const challengeNonce = await readConnectChallengeNonce(ws);
@@ -527,7 +529,9 @@ export function registerControlUiAndPairingSuite(): void {
         const challenge = await challengePromise;
         const nonce = (challenge.payload as { nonce?: unknown } | undefined)?.nonce;
         expect(typeof nonce).toBe("string");
-        const { identityPath } = await createOperatorIdentityFixture("NexisClaw-controlui-device-");
+        const { identityPath } = await createOperatorIdentityFixture(
+          "FirstNexus-controlui-device-",
+        );
         const scopes = [
           "operator.admin",
           "operator.read",
@@ -859,7 +863,7 @@ export function registerControlUiAndPairingSuite(): void {
     const { getPairedDevice, listDevicePairing } = await import("../infra/device-pairing.js");
     const { server, port, prevToken } = await startControlUiServer("secret");
     const { identity, identityPath } = await seedApprovedOperatorReadPairing({
-      identityPrefix: "NexisClaw-device-token-scope-",
+      identityPrefix: "FirstNexus-device-token-scope-",
       clientId: CONTROL_UI_CLIENT.id,
       clientMode: CONTROL_UI_CLIENT.mode,
       displayName: "loopback-control-ui-upgrade",
@@ -895,7 +899,7 @@ export function registerControlUiAndPairingSuite(): void {
 
   test("does not expose approved access when a paired device id reconnects with a different key", async () => {
     const { identity, identityPath } = await seedApprovedOperatorReadPairing({
-      identityPrefix: "NexisClaw-device-key-mismatch-",
+      identityPrefix: "FirstNexus-device-key-mismatch-",
       clientId: TEST_OPERATOR_CLIENT.id,
       clientMode: TEST_OPERATOR_CLIENT.mode,
       displayName: "remote-key-mismatch",
@@ -989,10 +993,10 @@ export function registerControlUiAndPairingSuite(): void {
     const { server, port, prevToken } = await startControlUiServer("secret");
 
     const { identityPath, identity } = await createOperatorIdentityFixture(
-      "NexisClaw-bootstrap-node-",
+      "FirstNexus-bootstrap-node-",
     );
     const client = {
-      id: "NexisClaw-ios",
+      id: "FirstNexus-ios",
       version: "2026.3.30",
       platform: "iOS 26.3.1",
       mode: "node",
@@ -1156,11 +1160,11 @@ export function registerControlUiAndPairingSuite(): void {
     const { server, port, prevToken } = await startControlUiServer("secret");
 
     const { identityPath, client } = await createOperatorIdentityFixture(
-      "NexisClaw-bootstrap-reconcile-fail-",
+      "FirstNexus-bootstrap-reconcile-fail-",
     );
     const nodeClient = {
       ...client,
-      id: "NexisClaw-android",
+      id: "FirstNexus-android",
       mode: "node",
     };
 
@@ -1214,10 +1218,10 @@ export function registerControlUiAndPairingSuite(): void {
     const { server, port, prevToken } = await startControlUiServer("secret");
 
     const { identityPath, identity } = await createOperatorIdentityFixture(
-      "NexisClaw-bootstrap-role-upgrade-",
+      "FirstNexus-bootstrap-role-upgrade-",
     );
     const client = {
-      id: "NexisClaw-ios",
+      id: "FirstNexus-ios",
       version: "2026.3.30",
       platform: "iOS 26.3.1",
       mode: "node",
@@ -1304,7 +1308,7 @@ export function registerControlUiAndPairingSuite(): void {
     const { server, port, prevToken } = await startControlUiServer("secret");
 
     const { identityPath, identity, client } = await createOperatorIdentityFixture(
-      "NexisClaw-bootstrap-operator-",
+      "FirstNexus-bootstrap-operator-",
     );
 
     try {
@@ -1346,8 +1350,9 @@ export function registerControlUiAndPairingSuite(): void {
   test("auto-approves local-direct node pairing, then queues operator scope approval", async () => {
     const { getPairedDevice, listDevicePairing } = await import("../infra/device-pairing.js");
     const { server, port, prevToken } = await startControlUiServer("secret");
-    const { identityPath, identity, client } =
-      await createOperatorIdentityFixture("NexisClaw-device-scope-");
+    const { identityPath, identity, client } = await createOperatorIdentityFixture(
+      "FirstNexus-device-scope-",
+    );
     const connectWithNonce = async (role: "operator" | "node", scopes: string[]) => {
       const socket = new WebSocket(`ws://127.0.0.1:${port}`, {
         headers: { host: "gateway.example" },
@@ -1405,7 +1410,7 @@ export function registerControlUiAndPairingSuite(): void {
   test("allows operator.read connect when device is paired with operator.admin", async () => {
     const { listDevicePairing } = await import("../infra/device-pairing.js");
     const { identityPath, identity } = await seedApprovedOperatorReadPairing({
-      identityPrefix: "NexisClaw-device-admin-superset-",
+      identityPrefix: "FirstNexus-device-admin-superset-",
       clientId: TEST_OPERATOR_CLIENT.id,
       clientMode: TEST_OPERATOR_CLIENT.mode,
       displayName: "operator-admin-superset",
@@ -1443,7 +1448,7 @@ export function registerControlUiAndPairingSuite(): void {
     const { approveDevicePairing, getPairedDevice, listDevicePairing, requestDevicePairing } =
       await import("../infra/device-pairing.js");
     const { identityPath, identity } = await createOperatorIdentityFixture(
-      "NexisClaw-device-legacy-meta-",
+      "FirstNexus-device-legacy-meta-",
     );
     const deviceId = identity.deviceId;
     const publicKey = publicKeyRawBase64UrlFromPem(identity.publicKeyPem);
@@ -1498,7 +1503,7 @@ export function registerControlUiAndPairingSuite(): void {
   test("requires approval for local scope upgrades even when paired metadata is legacy-shaped", async () => {
     const { getPairedDevice, listDevicePairing } = await import("../infra/device-pairing.js");
     const { identity, identityPath } = await seedApprovedOperatorReadPairing({
-      identityPrefix: "NexisClaw-device-legacy-",
+      identityPrefix: "FirstNexus-device-legacy-",
       clientId: TEST_OPERATOR_CLIENT.id,
       clientMode: TEST_OPERATOR_CLIENT.mode,
       displayName: "legacy-upgrade-test",
@@ -1658,7 +1663,7 @@ export function registerControlUiAndPairingSuite(): void {
     const wsDockerCli = await openWs(port, { host: "172.17.0.2:18789" });
     try {
       const { identity, identityPath } =
-        await createOperatorIdentityFixture("NexisClaw-cli-docker-");
+        await createOperatorIdentityFixture("FirstNexus-cli-docker-");
       const nonce = await readConnectChallengeNonce(wsDockerCli);
       const dockerCli = await connectReq(wsDockerCli, {
         token: "secret",

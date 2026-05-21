@@ -1,5 +1,5 @@
 ---
-summary: "Adds Z.AI model provider support to NexisClaw."
+summary: "Adds Z.AI model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the zai plugin
 title: "Z.AI plugin"
@@ -7,12 +7,12 @@ title: "Z.AI plugin"
 
 # Z.AI plugin
 
-Adds Z.AI model provider support to NexisClaw.
+Adds Z.AI model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/zai-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/zai-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

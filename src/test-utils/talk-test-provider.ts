@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export const TALK_TEST_PROVIDER_ID = "acme-speech";
 export const TALK_TEST_PROVIDER_LABEL = "Acme Speech";
@@ -10,7 +10,7 @@ export const TALK_TEST_PROVIDER_API_KEY_PATH_SEGMENTS = [
   "apiKey",
 ] as const;
 
-export function buildTalkTestProviderConfig(apiKey: unknown): NexisClawConfig {
+export function buildTalkTestProviderConfig(apiKey: unknown): FirstNexusConfig {
   return {
     talk: {
       providers: {
@@ -19,9 +19,9 @@ export function buildTalkTestProviderConfig(apiKey: unknown): NexisClawConfig {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
-export function readTalkTestProviderApiKey(config: NexisClawConfig): unknown {
+export function readTalkTestProviderApiKey(config: FirstNexusConfig): unknown {
   return config.talk?.providers?.[TALK_TEST_PROVIDER_ID]?.apiKey;
 }

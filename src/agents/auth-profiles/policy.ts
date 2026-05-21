@@ -1,8 +1,8 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { coerceSecretRef, resolveSecretInputRef } from "../../config/types.secrets.js";
 import type { AuthProfileCredential, AuthProfileStore } from "./types.js";
 
-type SecretDefaults = NonNullable<NexisClawConfig["secrets"]>["defaults"];
+type SecretDefaults = NonNullable<FirstNexusConfig["secrets"]>["defaults"];
 
 type OAuthSecretRefPolicyViolation = {
   profileId: string;
@@ -97,7 +97,7 @@ function collectOAuthModeSecretRefViolations(params: {
 
 function collectOAuthSecretRefPolicyViolations(params: {
   store: AuthProfileStore;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   profileIds?: Iterable<string>;
 }): OAuthSecretRefPolicyViolation[] {
   const defaults = params.cfg?.secrets?.defaults;
@@ -126,7 +126,7 @@ function collectOAuthSecretRefPolicyViolations(params: {
 
 export function assertNoOAuthSecretRefPolicyViolations(params: {
   store: AuthProfileStore;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   profileIds?: Iterable<string>;
   context?: string;
 }): void {

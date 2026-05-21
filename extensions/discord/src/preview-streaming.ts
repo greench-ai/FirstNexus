@@ -1,7 +1,7 @@
 import {
   resolveChannelPreviewStreamMode,
   type StreamingMode,
-} from "NexisClaw/plugin-sdk/channel-streaming";
+} from "FirstNexus/plugin-sdk/channel-streaming";
 
 type DiscordPreviewStreamMode = StreamingMode;
 

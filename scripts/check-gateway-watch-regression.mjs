@@ -379,8 +379,8 @@ async function allocateLoopbackPort() {
 function buildTimedWatchCommand(pidFilePath, timeFilePath, isolatedHomeDir, port) {
   const shellSource = [
     'echo "$$" > "$NEXISCLAW_WATCH_PID_FILE"',
-    'mkdir -p "$NEXISCLAW_HOME/.NexisClaw"',
-    `printf '%s\n' '{"gateway":{"controlUi":{"enabled":false}},"plugins":{"enabled":false}}' > "$NEXISCLAW_HOME/.NexisClaw/NexisClaw.json"`,
+    'mkdir -p "$NEXISCLAW_HOME/.FirstNexus"',
+    `printf '%s\n' '{"gateway":{"controlUi":{"enabled":false}},"plugins":{"enabled":false}}' > "$NEXISCLAW_HOME/.FirstNexus/FirstNexus.json"`,
     `exec node scripts/watch-node.mjs gateway --force --allow-unconfigured --port ${String(port)} --token watch-regression-token`,
   ].join("\n");
   const env = {
@@ -437,7 +437,7 @@ function parseTimingFile(timeFilePath) {
 async function runTimedWatch(options, outputDir) {
   const pidFilePath = path.join(outputDir, "watch.pid");
   const timeFilePath = path.join(outputDir, "watch.time.log");
-  const isolatedHomeDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-gateway-watch-"));
+  const isolatedHomeDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-gateway-watch-"));
   fs.writeFileSync(path.join(outputDir, "watch.home.txt"), `${isolatedHomeDir}\n`, "utf8");
   const stdoutPath = path.join(outputDir, "watch.stdout.log");
   const stderrPath = path.join(outputDir, "watch.stderr.log");

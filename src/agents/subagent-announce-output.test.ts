@@ -70,7 +70,7 @@ describe("readSubagentOutput", () => {
         {
           role: "system",
           content: [{ type: "text", text: "Compaction" }],
-          __NexisClaw: { kind: "compaction" },
+          __FirstNexus: { kind: "compaction" },
         },
         {
           role: "assistant",

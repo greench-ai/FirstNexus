@@ -12,7 +12,7 @@ Use these when a task is clearly tied to a script; otherwise prefer the CLI.
 ## Conventions
 
 - Scripts are **optional** unless referenced in docs or release checklists.
-- Prefer CLI surfaces when they exist (example: auth monitoring uses `NexisClaw models status --check`).
+- Prefer CLI surfaces when they exist (example: auth monitoring uses `FirstNexus models status --check`).
 - Assume scripts are host-specific; read them before running on a new machine.
 
 ## Auth monitoring scripts
@@ -42,8 +42,8 @@ Repo resolution order:
 Examples:
 
 - `scripts/gh-read pr view 123`
-- `scripts/gh-read run list -R NexisClaw/NexisClaw`
-- `scripts/gh-read api repos/NexisClaw/NexisClaw/pulls/123`
+- `scripts/gh-read run list -R FirstNexus/FirstNexus`
+- `scripts/gh-read api repos/FirstNexus/FirstNexus/pulls/123`
 
 ## When adding scripts
 

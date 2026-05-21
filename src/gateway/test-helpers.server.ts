@@ -128,7 +128,7 @@ async function persistTestSessionConfig(): Promise<void> {
     configPaths.add(process.env.NEXISCLAW_CONFIG_PATH);
   }
   if (process.env.NEXISCLAW_STATE_DIR) {
-    configPaths.add(path.join(process.env.NEXISCLAW_STATE_DIR, "NexisClaw.json"));
+    configPaths.add(path.join(process.env.NEXISCLAW_STATE_DIR, "FirstNexus.json"));
   }
   const parsedConfigs = new Map<string, Record<string, unknown>>();
   let preservedTemplateStore: string | undefined;
@@ -224,10 +224,10 @@ export async function writeSessionStore(params: {
 
 async function setupGatewayTestHome() {
   gatewayEnvSnapshot = captureEnv([...GATEWAY_TEST_ENV_KEYS]);
-  tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-gateway-home-"));
+  tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-gateway-home-"));
   process.env.HOME = tempHome;
   process.env.USERPROFILE = tempHome;
-  process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".NexisClaw");
+  process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".FirstNexus");
   delete process.env.NEXISCLAW_CONFIG_PATH;
   delete process.env.NEXISCLAW_AGENT_DIR;
   delete process.env.PI_CODING_AGENT_DIR;
@@ -243,8 +243,8 @@ function applyGatewaySkipEnv() {
   process.env.NEXISCLAW_TEST_MINIMAL_GATEWAY = "1";
   process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS = "1";
   process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = tempHome
-    ? path.join(tempHome, "NexisClaw-test-no-bundled-extensions")
-    : "NexisClaw-test-no-bundled-extensions";
+    ? path.join(tempHome, "FirstNexus-test-no-bundled-extensions")
+    : "FirstNexus-test-no-bundled-extensions";
 }
 
 async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
@@ -269,7 +269,7 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
     await fs.mkdir(stateDir, { recursive: true });
   }
   if (options.uniqueConfigRoot) {
-    const suiteRoot = path.join(tempHome, ".NexisClaw-test-suite");
+    const suiteRoot = path.join(tempHome, ".FirstNexus-test-suite");
     await fs.mkdir(suiteRoot, { recursive: true });
     tempConfigRoot = path.join(suiteRoot, `case-${suiteConfigRootSeq++}`);
     await fs.rm(tempConfigRoot, {
@@ -280,7 +280,7 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
     });
     await fs.mkdir(tempConfigRoot, { recursive: true });
   } else {
-    tempConfigRoot = path.join(tempHome, ".NexisClaw-test");
+    tempConfigRoot = path.join(tempHome, ".FirstNexus-test");
     await fs.rm(tempConfigRoot, {
       recursive: true,
       force: true,
@@ -290,7 +290,7 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
     await fs.mkdir(tempConfigRoot, { recursive: true });
   }
   setTestConfigRoot(tempConfigRoot);
-  tempControlUiRoot = path.join(tempHome, ".NexisClaw-test-control-ui");
+  tempControlUiRoot = path.join(tempHome, ".FirstNexus-test-control-ui");
   await fs.rm(tempControlUiRoot, {
     recursive: true,
     force: true,
@@ -300,7 +300,7 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
   await fs.mkdir(tempControlUiRoot, { recursive: true });
   await fs.writeFile(
     path.join(tempControlUiRoot, "index.html"),
-    "<!doctype html><title>NexisClaw-test-control-ui</title>\n",
+    "<!doctype html><title>FirstNexus-test-control-ui</title>\n",
     "utf-8",
   );
   setTestConfigRoot(tempConfigRoot);
@@ -510,8 +510,8 @@ type GatewayTestMessage = {
   [key: string]: unknown;
 };
 
-const CONNECT_CHALLENGE_NONCE_KEY = "__NexisClawTestConnectChallengeNonce";
-const CONNECT_CHALLENGE_TRACKED_KEY = "__NexisClawTestConnectChallengeTracked";
+const CONNECT_CHALLENGE_NONCE_KEY = "__FirstNexusTestConnectChallengeNonce";
+const CONNECT_CHALLENGE_TRACKED_KEY = "__FirstNexusTestConnectChallengeTracked";
 type TrackedWs = WebSocket & Record<string, unknown>;
 
 export function getTrackedConnectChallengeNonce(ws: WebSocket): string | undefined {

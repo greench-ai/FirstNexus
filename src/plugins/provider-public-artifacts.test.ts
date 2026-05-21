@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ModelProviderConfig } from "../config/types.models.js";
 import { resolveBundledProviderPolicySurface } from "./provider-public-artifacts.js";
@@ -44,11 +44,11 @@ describe("provider public artifacts", () => {
   });
 
   it("resolves multi-provider policy artifacts by manifest-owned provider id", async () => {
-    const bundledPluginsDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-provider-policy-"));
+    const bundledPluginsDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-provider-policy-"));
     const pluginDir = path.join(bundledPluginsDir, "openai");
     fs.mkdirSync(pluginDir, { recursive: true });
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "openai",
         configSchema: { type: "object" },
@@ -119,13 +119,13 @@ describe("provider public artifacts", () => {
 
   it("does not cache manifest-owned provider policy aliases across bundled metadata changes", async () => {
     const bundledPluginsDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), "NexisClaw-provider-policy-refresh-"),
+      path.join(os.tmpdir(), "FirstNexus-provider-policy-refresh-"),
     );
     const writePlugin = (pluginId: string, providers: string[], version: number) => {
       const pluginDir = path.join(bundledPluginsDir, pluginId);
       fs.mkdirSync(pluginDir, { recursive: true });
       fs.writeFileSync(
-        path.join(pluginDir, "NexisClaw.plugin.json"),
+        path.join(pluginDir, "FirstNexus.plugin.json"),
         JSON.stringify({
           id: pluginId,
           name: `${pluginId} ${version}`,
@@ -218,7 +218,7 @@ describe("provider public artifacts", () => {
             cliBackends: [],
             hooks: [],
             origin: "bundled",
-            manifestPath: "/tmp/owner/NexisClaw.plugin.json",
+            manifestPath: "/tmp/owner/FirstNexus.plugin.json",
             providers: ["alias"],
             rootDir: "/tmp/owner",
             skills: [],

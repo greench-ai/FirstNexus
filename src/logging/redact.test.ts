@@ -16,9 +16,9 @@ const originalConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
 let tempDirs: string[] = [];
 
 function writeConfig(source: string): void {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-redact-config-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-redact-config-"));
   tempDirs.push(dir);
-  const configPath = path.join(dir, "NexisClaw.json");
+  const configPath = path.join(dir, "FirstNexus.json");
   fs.writeFileSync(configPath, source);
   process.env.NEXISCLAW_CONFIG_PATH = configPath;
 }

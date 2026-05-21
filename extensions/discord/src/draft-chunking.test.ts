@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { resolveDiscordDraftStreamingChunking } from "./draft-chunking.js";
 import { EMPTY_DISCORD_TEST_CONFIG } from "./test-support/config.js";
@@ -24,7 +24,7 @@ describe("resolveDiscordDraftStreamingChunking", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(resolveDiscordDraftStreamingChunking(cfg)).toEqual({
       minChars: 500,
@@ -53,7 +53,7 @@ describe("resolveDiscordDraftStreamingChunking", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(resolveDiscordDraftStreamingChunking(cfg, "ops")).toEqual({
       minChars: 25,

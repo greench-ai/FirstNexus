@@ -85,7 +85,7 @@ export { handleBrowserGatewayRequest } from "./src/gateway/browser-request.js";
 export { browserHandlers } from "./src/gateway/browser-request.js";
 export {
   definePluginEntry,
-  type NexisClawPluginApi,
-  type NexisClawPluginToolContext,
-  type NexisClawPluginToolFactory,
-} from "NexisClaw/plugin-sdk/plugin-entry";
+  type FirstNexusPluginApi,
+  type FirstNexusPluginToolContext,
+  type FirstNexusPluginToolFactory,
+} from "FirstNexus/plugin-sdk/plugin-entry";

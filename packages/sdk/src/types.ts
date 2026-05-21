@@ -12,7 +12,7 @@ export type GatewayEvent = {
   stateVersion?: unknown;
 };
 
-export type NexisClawTransport = {
+export type FirstNexusTransport = {
   request<T = unknown>(
     method: string,
     params?: unknown,
@@ -22,7 +22,7 @@ export type NexisClawTransport = {
   close?(): Promise<void> | void;
 };
 
-export type ConnectableNexisClawTransport = NexisClawTransport & {
+export type ConnectableFirstNexusTransport = FirstNexusTransport & {
   connect(): Promise<void>;
 };
 
@@ -217,7 +217,7 @@ export type RunResult = {
   raw?: unknown;
 };
 
-export type NexisClawEventType =
+export type FirstNexusEventType =
   | "run.created"
   | "run.queued"
   | "run.started"
@@ -247,11 +247,11 @@ export type NexisClawEventType =
   | "git.pr"
   | "raw";
 
-export type NexisClawEvent<TData = unknown> = {
+export type FirstNexusEvent<TData = unknown> = {
   version: 1;
   id: string;
   ts: number;
-  type: NexisClawEventType;
+  type: FirstNexusEventType;
   runId?: string;
   sessionId?: string;
   sessionKey?: string;

@@ -40,8 +40,8 @@ describe("Nix integration (U3, U5, U9)", () => {
   });
 
   describe("U5: CONFIG_PATH and STATE_DIR env var overrides", () => {
-    it("STATE_DIR defaults to ~/.NexisClaw when env not set", () => {
-      expect(resolveStateDir(envWith({ NEXISCLAW_STATE_DIR: undefined }))).toMatch(/\.NexisClaw$/);
+    it("STATE_DIR defaults to ~/.FirstNexus when env not set", () => {
+      expect(resolveStateDir(envWith({ NEXISCLAW_STATE_DIR: undefined }))).toMatch(/\.FirstNexus$/);
     });
 
     it("STATE_DIR respects NEXISCLAW_STATE_DIR override", () => {
@@ -54,10 +54,10 @@ describe("Nix integration (U3, U5, U9)", () => {
       const customHome = path.join(path.sep, "custom", "home");
       expect(
         resolveStateDir(envWith({ NEXISCLAW_HOME: customHome, NEXISCLAW_STATE_DIR: undefined })),
-      ).toBe(path.join(path.resolve(customHome), ".NexisClaw"));
+      ).toBe(path.join(path.resolve(customHome), ".FirstNexus"));
     });
 
-    it("CONFIG_PATH defaults to NEXISCLAW_HOME/.NexisClaw/NexisClaw.json", () => {
+    it("CONFIG_PATH defaults to NEXISCLAW_HOME/.FirstNexus/FirstNexus.json", () => {
       const customHome = path.join(path.sep, "custom", "home");
       expect(
         resolveConfigPathCandidate(
@@ -67,33 +67,33 @@ describe("Nix integration (U3, U5, U9)", () => {
             NEXISCLAW_STATE_DIR: undefined,
           }),
         ),
-      ).toBe(path.join(path.resolve(customHome), ".NexisClaw", "NexisClaw.json"));
+      ).toBe(path.join(path.resolve(customHome), ".FirstNexus", "FirstNexus.json"));
     });
 
-    it("CONFIG_PATH defaults to ~/.NexisClaw/NexisClaw.json when env not set", () => {
+    it("CONFIG_PATH defaults to ~/.FirstNexus/FirstNexus.json when env not set", () => {
       expect(
         resolveConfigPathCandidate(
           envWith({ NEXISCLAW_CONFIG_PATH: undefined, NEXISCLAW_STATE_DIR: undefined }),
         ),
-      ).toMatch(/\.NexisClaw[\\/]NexisClaw\.json$/);
+      ).toMatch(/\.FirstNexus[\\/]FirstNexus\.json$/);
     });
 
     it("CONFIG_PATH respects NEXISCLAW_CONFIG_PATH override", () => {
       expect(
         resolveConfigPathCandidate(
-          envWith({ NEXISCLAW_CONFIG_PATH: "/nix/store/abc/NexisClaw.json" }),
+          envWith({ NEXISCLAW_CONFIG_PATH: "/nix/store/abc/FirstNexus.json" }),
         ),
-      ).toBe(path.resolve("/nix/store/abc/NexisClaw.json"));
+      ).toBe(path.resolve("/nix/store/abc/FirstNexus.json"));
     });
 
     it("CONFIG_PATH expands ~ in NEXISCLAW_CONFIG_PATH override", async () => {
       await withTempHome(async (home) => {
         expect(
           resolveConfigPathCandidate(
-            envWith({ NEXISCLAW_HOME: home, NEXISCLAW_CONFIG_PATH: "~/.NexisClaw/custom.json" }),
+            envWith({ NEXISCLAW_HOME: home, NEXISCLAW_CONFIG_PATH: "~/.FirstNexus/custom.json" }),
             () => home,
           ),
-        ).toBe(path.join(home, ".NexisClaw", "custom.json"));
+        ).toBe(path.join(home, ".FirstNexus", "custom.json"));
       });
     });
 
@@ -101,9 +101,9 @@ describe("Nix integration (U3, U5, U9)", () => {
       expect(
         resolveConfigPathCandidate(
           envWith({ NEXISCLAW_STATE_DIR: "/custom/state", NEXISCLAW_TEST_FAST: "1" }),
-          () => path.join(path.sep, "tmp", "NexisClaw-config-home"),
+          () => path.join(path.sep, "tmp", "FirstNexus-config-home"),
         ),
-      ).toBe(path.join(path.resolve("/custom/state"), "NexisClaw.json"));
+      ).toBe(path.join(path.resolve("/custom/state"), "FirstNexus.json"));
     });
   });
 

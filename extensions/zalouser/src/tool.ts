@@ -1,6 +1,6 @@
-import { stringEnum } from "NexisClaw/plugin-sdk/channel-actions";
-import type { AnyAgentTool, NexisClawPluginToolContext } from "NexisClaw/plugin-sdk/core";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { stringEnum } from "FirstNexus/plugin-sdk/channel-actions";
+import type { AnyAgentTool, FirstNexusPluginToolContext } from "FirstNexus/plugin-sdk/core";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import { Type } from "typebox";
 import { sendImageZalouser, sendLinkZalouser, sendMessageZalouser } from "./send.js";
 import { parseZalouserOutboundTarget } from "./session-route.js";
@@ -41,7 +41,7 @@ type ToolParams = {
   url?: string;
 };
 
-type ZalouserToolContext = Pick<NexisClawPluginToolContext, "deliveryContext">;
+type ZalouserToolContext = Pick<FirstNexusPluginToolContext, "deliveryContext">;
 
 function json(payload: unknown): AgentToolResult {
   return {

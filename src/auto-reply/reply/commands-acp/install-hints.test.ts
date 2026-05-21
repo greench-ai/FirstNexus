@@ -1,10 +1,10 @@
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../../config/config.js";
+import type { FirstNexusConfig } from "../../../config/config.js";
 import { resolveAcpInstallCommandHint } from "./install-hints.js";
 
-function withAcpConfig(acp: NexisClawConfig["acp"]): NexisClawConfig {
-  return { acp } as NexisClawConfig;
+function withAcpConfig(acp: FirstNexusConfig["acp"]): FirstNexusConfig {
+  return { acp } as FirstNexusConfig;
 }
 
 afterEach(() => {
@@ -14,23 +14,23 @@ afterEach(() => {
 describe("ACP install hints", () => {
   it("prefers explicit runtime install command", () => {
     const cfg = withAcpConfig({
-      runtime: { installCommand: "pnpm NexisClaw plugins install acpx" },
+      runtime: { installCommand: "pnpm FirstNexus plugins install acpx" },
     });
-    expect(resolveAcpInstallCommandHint(cfg)).toBe("pnpm NexisClaw plugins install acpx");
+    expect(resolveAcpInstallCommandHint(cfg)).toBe("pnpm FirstNexus plugins install acpx");
   });
 
   it("uses local acpx extension path when present", () => {
     const repoRoot = process.cwd();
     const cfg = withAcpConfig({ backend: "acpx" });
     const hint = resolveAcpInstallCommandHint(cfg);
-    expect(hint).toBe(`NexisClaw plugins install ${path.join(repoRoot, "extensions", "acpx")}`);
+    expect(hint).toBe(`FirstNexus plugins install ${path.join(repoRoot, "extensions", "acpx")}`);
   });
 
   it("falls back to scoped install hint for acpx when local extension is absent", () => {
     vi.spyOn(process, "cwd").mockReturnValue(path.join(process.cwd(), "missing-workspace"));
 
     const cfg = withAcpConfig({ backend: "acpx" });
-    expect(resolveAcpInstallCommandHint(cfg)).toBe("NexisClaw plugins install acpx");
+    expect(resolveAcpInstallCommandHint(cfg)).toBe("FirstNexus plugins install acpx");
   });
 
   it("returns generic plugin hint for non-acpx backend", () => {

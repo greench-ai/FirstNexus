@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   resolveExternalCliAuthScopeFromConfig,
   type ExternalCliAuthScope,
@@ -8,23 +8,23 @@ export type ExternalCliAuthDiscovery =
   | {
       mode: "none";
       allowKeychainPrompt?: false;
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
     }
   | {
       mode: "existing";
       allowKeychainPrompt?: boolean;
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
     }
   | {
       mode: "scoped";
       allowKeychainPrompt?: boolean;
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
       providerIds?: Iterable<string>;
       profileIds?: Iterable<string>;
     };
 
 type ProviderAuthDiscoveryParams = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   provider: string;
   profileId?: string;
   preferredProfile?: string;
@@ -32,12 +32,12 @@ type ProviderAuthDiscoveryParams = {
 };
 
 type ConfigStatusDiscoveryParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   allowKeychainPrompt?: false;
 };
 
 type ProviderSetDiscoveryParams = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   providers: Iterable<string>;
   allowKeychainPrompt?: false;
 };
@@ -49,7 +49,7 @@ function normalizeStringList(values: Iterable<string | undefined>): string[] {
 }
 
 export function externalCliDiscoveryNone(params?: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 }): ExternalCliAuthDiscovery {
   return {
     mode: "none",
@@ -59,7 +59,7 @@ export function externalCliDiscoveryNone(params?: {
 }
 
 export function externalCliDiscoveryExisting(params?: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   allowKeychainPrompt?: boolean;
 }): ExternalCliAuthDiscovery {
   return {
@@ -72,7 +72,7 @@ export function externalCliDiscoveryExisting(params?: {
 }
 
 export function externalCliDiscoveryScoped(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   providerIds?: Iterable<string>;
   profileIds?: Iterable<string>;
   allowKeychainPrompt?: boolean;
@@ -126,7 +126,7 @@ export function externalCliDiscoveryForProviders(
 }
 
 function externalCliDiscoveryFromScope(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   scope: ExternalCliAuthScope | undefined;
   allowKeychainPrompt: false;
 }): ExternalCliAuthDiscovery {

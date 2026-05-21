@@ -1,18 +1,18 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   readConfigFileSnapshotForWrite,
   replaceConfigFile,
-} from "NexisClaw/plugin-sdk/config-mutation";
+} from "FirstNexus/plugin-sdk/config-mutation";
 import {
   loadCronStore,
   resolveCronStorePath,
   saveCronStore,
-} from "NexisClaw/plugin-sdk/cron-store-runtime";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/cron-store-runtime";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   normalizeTelegramChatId,
   normalizeTelegramLookupTarget,
@@ -103,7 +103,7 @@ function rewriteTargetIfMatch(params: {
 }
 
 function replaceTelegramDefaultToTargets(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   matchKey: string;
   resolvedTarget: string;
 }): boolean {
@@ -142,7 +142,7 @@ function replaceTelegramDefaultToTargets(params: {
 }
 
 export async function maybePersistResolvedTelegramTarget(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   rawTarget: string;
   resolvedChatId: string;
   verbose?: boolean;

@@ -33,15 +33,15 @@ const {
   sanitizeConfiguredModelProviderRequestMock: vi.fn((request) => request),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-auth-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-auth-runtime", () => ({
   resolveApiKeyForProvider: resolveApiKeyForProviderMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-auth", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-auth", () => ({
   isProviderApiKeyConfigured: isProviderApiKeyConfiguredMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-http", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-http", () => ({
   assertOkOrThrowHttpError: assertOkOrThrowHttpErrorMock,
   createProviderOperationDeadline: createProviderOperationDeadlineMock,
   postJsonRequest: postJsonRequestMock,
@@ -51,7 +51,7 @@ vi.mock("NexisClaw/plugin-sdk/provider-http", () => ({
   sanitizeConfiguredModelProviderRequest: sanitizeConfiguredModelProviderRequestMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/string-coerce-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/string-coerce-runtime", () => ({
   normalizeOptionalString: (v: unknown) => (typeof v === "string" ? v.trim() : undefined),
   normalizeOptionalLowercaseString: (v: unknown) =>
     typeof v === "string" ? v.trim().toLowerCase() : undefined,
@@ -111,10 +111,10 @@ describe("xai image generation provider", () => {
     if (!isConfigured) {
       throw new Error("expected XAI image provider config predicate");
     }
-    expect(isConfigured({ agentDir: "/tmp/NexisClaw-xai-test" })).toBe(true);
+    expect(isConfigured({ agentDir: "/tmp/FirstNexus-xai-test" })).toBe(true);
     expect(isProviderApiKeyConfiguredMock).toHaveBeenCalledWith({
       provider: "xai",
-      agentDir: "/tmp/NexisClaw-xai-test",
+      agentDir: "/tmp/FirstNexus-xai-test",
     });
   });
 

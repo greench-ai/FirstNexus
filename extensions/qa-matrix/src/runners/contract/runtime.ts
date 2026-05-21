@@ -2,9 +2,9 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { loadQaRuntimeModule } from "NexisClaw/plugin-sdk/qa-runner-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { loadQaRuntimeModule } from "FirstNexus/plugin-sdk/qa-runner-runtime";
 import type { QaReportCheck } from "../../report.js";
 import { renderQaMarkdownReport } from "../../report.js";
 import { type QaProviderModeInput } from "../../run-config.js";
@@ -513,7 +513,7 @@ async function startMatrixQaLiveLaneGateway(params: {
     requiredPluginIds: readonly string[];
     createGatewayConfig: (params: {
       baseUrl: string;
-    }) => Pick<NexisClawConfig, "channels" | "messages">;
+    }) => Pick<FirstNexusConfig, "channels" | "messages">;
   };
   transportBaseUrl: string;
   providerMode: "mock-openai" | "live-frontier";
@@ -521,7 +521,7 @@ async function startMatrixQaLiveLaneGateway(params: {
   alternateModel: string;
   fastMode?: boolean;
   controlUiEnabled?: boolean;
-  mutateConfig?: (cfg: NexisClawConfig) => NexisClawConfig;
+  mutateConfig?: (cfg: FirstNexusConfig) => FirstNexusConfig;
 }): Promise<MatrixQaLiveLaneGatewayHarness> {
   return (await loadQaRuntimeModule().startQaLiveLaneGateway(
     params,
@@ -555,7 +555,7 @@ export async function runMatrixQaLive(params: {
   const scenarios = findMatrixQaScenarios(params.scenarioIds, params.profile);
   const runSuffix = randomUUID().slice(0, 8);
   const topology = buildMatrixQaTopologyForScenarios({
-    defaultRoomName: `NexisClaw Matrix QA ${runSuffix}`,
+    defaultRoomName: `FirstNexus Matrix QA ${runSuffix}`,
     scenarios,
   });
   const observedEvents: MatrixQaObservedEvent[] = [];
@@ -588,7 +588,7 @@ export async function runMatrixQaLive(params: {
             driverLocalpart: `qa-driver-${runSuffix}`,
             observerLocalpart: `qa-observer-${runSuffix}`,
             registrationToken: harness.registrationToken,
-            roomName: `NexisClaw Matrix QA ${runSuffix}`,
+            roomName: `FirstNexus Matrix QA ${runSuffix}`,
             sutLocalpart: `qa-sut-${runSuffix}`,
             topology,
           }),

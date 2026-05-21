@@ -184,7 +184,7 @@ jobs:
           install_dir="${RUNNER_TEMP}/crabbox"
           mkdir -p "$install_dir" "$HOME/.local/bin"
           git init "$install_dir/src"
-          git -C "$install_dir/src" remote add origin https://github.com/NexisClaw/crabbox.git
+          git -C "$install_dir/src" remote add origin https://github.com/FirstNexus/crabbox.git
           git -C "$install_dir/src" fetch --depth 1 origin "$CRABBOX_REF"
           git -C "$install_dir/src" checkout --detach FETCH_HEAD
           go build -C "$install_dir/src" -o "$HOME/.local/bin/crabbox" ./cmd/crabbox
@@ -262,7 +262,7 @@ jobs:
           fi
 
           set +e
-          pnpm NexisClaw qa mantis slack-desktop-smoke \
+          pnpm FirstNexus qa mantis slack-desktop-smoke \
             --repo-root "$candidate_repo" \
             --output-dir "$output_rel" \
             --provider "$CRABBOX_PROVIDER" \
@@ -319,7 +319,7 @@ jobs:
               schemaVersion: 1,
               id: "slack-desktop-smoke",
               title: "Mantis Slack Desktop Smoke QA",
-              summary: "Mantis ran Slack QA inside a Crabbox Linux VNC desktop, started an NexisClaw Slack gateway in that VM, opened Slack Web in the visible browser, and captured screenshot/video evidence.",
+              summary: "Mantis ran Slack QA inside a Crabbox Linux VNC desktop, started an FirstNexus Slack gateway in that VM, opened Slack Web in the visible browser, and captured screenshot/video evidence.",
               scenario: $scenario,
               comparison: {
                 candidate: { sha: $candidate_sha, expected: "Slack QA and VM gateway setup pass", status: $status, fixed: ($status == "pass") },

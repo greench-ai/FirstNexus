@@ -1,13 +1,13 @@
 ---
 summary: "File logs, console output, CLI tailing, and the Control UI Logs tab"
 read_when:
-  - You need a beginner-friendly overview of NexisClaw logging
+  - You need a beginner-friendly overview of FirstNexus logging
   - You want to configure log levels, formats, or redaction
   - You are troubleshooting and need to find logs quickly
 title: "Logging"
 ---
 
-NexisClaw has two main log surfaces:
+FirstNexus has two main log surfaces:
 
 - **File logs** (JSON lines) written by the Gateway.
 - **Console output** shown in terminals and the Gateway Debug UI.
@@ -19,21 +19,21 @@ logs live, how to read them, and how to configure log levels and formats.
 
 By default, the Gateway writes a rolling log file under:
 
-`/tmp/NexisClaw/NexisClaw-YYYY-MM-DD.log`
+`/tmp/FirstNexus/FirstNexus-YYYY-MM-DD.log`
 
 The date uses the gateway host's local timezone.
 
 Each file rotates when it reaches `logging.maxFileBytes` (default: 100 MB).
-NexisClaw keeps up to five numbered archives beside the active file, such as
-`NexisClaw-YYYY-MM-DD.1.log`, and keeps writing to a fresh active log instead of
+FirstNexus keeps up to five numbered archives beside the active file, such as
+`FirstNexus-YYYY-MM-DD.1.log`, and keeps writing to a fresh active log instead of
 suppressing diagnostics.
 
-You can override this in `~/.NexisClaw/NexisClaw.json`:
+You can override this in `~/.FirstNexus/FirstNexus.json`:
 
 ```json
 {
   "logging": {
-    "file": "/path/to/NexisClaw.log"
+    "file": "/path/to/FirstNexus.log"
   }
 }
 ```
@@ -45,7 +45,7 @@ You can override this in `~/.NexisClaw/NexisClaw.json`:
 Use the CLI to tail the gateway log file via RPC:
 
 ```bash
-NexisClaw logs --follow
+FirstNexus logs --follow
 ```
 
 Useful current options:
@@ -74,14 +74,14 @@ In JSON mode, the CLI emits `type`-tagged objects:
 - `raw`: unparsed log line
 
 If the implicit local loopback Gateway asks for pairing, closes during connect,
-or times out before `logs.tail` answers, `NexisClaw logs` falls back to the
+or times out before `logs.tail` answers, `FirstNexus logs` falls back to the
 configured Gateway file log automatically. Explicit `--url` targets do not use
 this fallback.
 
 If the Gateway is unreachable, the CLI prints a short hint to run:
 
 ```bash
-NexisClaw doctor
+FirstNexus doctor
 ```
 
 ### Control UI (web)
@@ -94,7 +94,7 @@ See [Control UI](/web/control-ui) for how to open it.
 To filter channel activity (WhatsApp/Telegram/etc), use:
 
 ```bash
-NexisClaw channels logs --channel whatsapp
+FirstNexus channels logs --channel whatsapp
 ```
 
 ## Log formats
@@ -113,7 +113,7 @@ available:
 - `session_id`: active session id/key when the log call carries session context.
 - `channel`: active channel when the log call carries channel context.
 
-NexisClaw preserves the original structured log arguments alongside these fields
+FirstNexus preserves the original structured log arguments alongside these fields
 so existing parsers that read numbered tslog argument keys keep working.
 
 Talk, realtime voice, and managed-room activity emits bounded lifecycle log
@@ -133,7 +133,7 @@ Console formatting is controlled by `logging.consoleStyle`.
 
 ### Gateway WebSocket logs
 
-`NexisClaw gateway` also has WebSocket protocol logging for RPC traffic:
+`FirstNexus gateway` also has WebSocket protocol logging for RPC traffic:
 
 - normal mode: only interesting results (errors, parse errors, slow calls)
 - `--verbose`: all request/response traffic
@@ -143,20 +143,20 @@ Console formatting is controlled by `logging.consoleStyle`.
 Examples:
 
 ```bash
-NexisClaw gateway
-NexisClaw gateway --verbose --ws-log compact
-NexisClaw gateway --verbose --ws-log full
+FirstNexus gateway
+FirstNexus gateway --verbose --ws-log compact
+FirstNexus gateway --verbose --ws-log full
 ```
 
 ## Configuring logging
 
-All logging configuration lives under `logging` in `~/.NexisClaw/NexisClaw.json`.
+All logging configuration lives under `logging` in `~/.FirstNexus/FirstNexus.json`.
 
 ```json
 {
   "logging": {
     "level": "info",
-    "file": "/tmp/NexisClaw/NexisClaw-YYYY-MM-DD.log",
+    "file": "/tmp/FirstNexus/FirstNexus-YYYY-MM-DD.log",
     "consoleLevel": "info",
     "consoleStyle": "pretty",
     "redactSensitive": "tools",
@@ -170,7 +170,7 @@ All logging configuration lives under `logging` in `~/.NexisClaw/NexisClaw.json`
 - `logging.level`: **file logs** (JSONL) level.
 - `logging.consoleLevel`: **console** verbosity level.
 
-You can override both via the **`NEXISCLAW_LOG_LEVEL`** environment variable (e.g. `NEXISCLAW_LOG_LEVEL=debug`). The env var takes precedence over the config file, so you can raise verbosity for a single run without editing `NexisClaw.json`. You can also pass the global CLI option **`--log-level <level>`** (for example, `NexisClaw --log-level debug gateway run`), which overrides the environment variable for that command.
+You can override both via the **`NEXISCLAW_LOG_LEVEL`** environment variable (e.g. `NEXISCLAW_LOG_LEVEL=debug`). The env var takes precedence over the config file, so you can raise verbosity for a single run without editing `FirstNexus.json`. You can also pass the global CLI option **`--log-level <level>`** (for example, `FirstNexus --log-level debug gateway run`), which overrides the environment variable for that command.
 
 `--verbose` only affects console output and WS log verbosity; it does not change
 file log levels.
@@ -181,8 +181,8 @@ When debugging provider calls, use targeted environment flags instead of raising
 all logs to `debug`:
 
 ```bash
-NEXISCLAW_DEBUG_MODEL_TRANSPORT=1 NexisClaw gateway
-NEXISCLAW_DEBUG_MODEL_PAYLOAD=tools NEXISCLAW_DEBUG_SSE=events NexisClaw gateway
+NEXISCLAW_DEBUG_MODEL_TRANSPORT=1 FirstNexus gateway
+NEXISCLAW_DEBUG_MODEL_PAYLOAD=tools NEXISCLAW_DEBUG_SSE=events FirstNexus gateway
 ```
 
 Available flags:
@@ -204,14 +204,14 @@ Available flags:
   including when native provider tools are hidden because code mode owns the
   tool surface.
 
-These flags log through normal NexisClaw logging, so `NexisClaw logs --follow`
+These flags log through normal FirstNexus logging, so `FirstNexus logs --follow`
 and the Control UI Logs tab show them. Without the flags, the same diagnostics
 remain available at `debug` level.
 
 ### Trace correlation
 
 File logs are JSONL. When a log call carries a valid diagnostic trace context,
-NexisClaw writes the trace fields as top-level JSON keys (`traceId`, `spanId`,
+FirstNexus writes the trace fields as top-level JSON keys (`traceId`, `spanId`,
 `parentSpanId`, `traceFlags`) so external log processors can correlate the line
 with OTEL spans and provider `traceparent` propagation.
 
@@ -248,7 +248,7 @@ OTEL model-call spans/metrics when diagnostics export is enabled.
 
 ### Redaction
 
-NexisClaw can redact sensitive tokens before they hit console output, file logs,
+FirstNexus can redact sensitive tokens before they hit console output, file logs,
 OTLP log records, persisted session transcript text, or Control UI tool
 event payloads (tool start args, partial/final result payloads, derived
 exec output, and patch summaries):
@@ -266,7 +266,7 @@ names such as card number, CVC/CVV, shared payment token, and payment credential
 when they appear as JSON fields, URL parameters, CLI flags, or assignments.
 
 `logging.redactSensitive: "off"` only disables this general log/transcript
-policy. NexisClaw still redacts safety-boundary payloads that can be shown to UI
+policy. FirstNexus still redacts safety-boundary payloads that can be shown to UI
 clients, support bundles, diagnostics observers, approval prompts, or agent
 tools. Examples include Control UI tool-call events, `sessions_history` output,
 diagnostics support exports, provider error observations, exec approval command
@@ -305,7 +305,7 @@ For OTLP export to a collector, see [OpenTelemetry export](/gateway/opentelemetr
 
 ## Troubleshooting tips
 
-- **Gateway not reachable?** Run `NexisClaw doctor` first.
+- **Gateway not reachable?** Run `FirstNexus doctor` first.
 - **Logs empty?** Check that the Gateway is running and writing to the file path
   in `logging.file`.
 - **Need more detail?** Set `logging.level` to `debug` or `trace` and retry.

@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
-export type BuildMentionRegexes = (cfg: NexisClawConfig | undefined, agentId?: string) => RegExp[];
+export type BuildMentionRegexes = (cfg: FirstNexusConfig | undefined, agentId?: string) => RegExp[];
 
 export type MatchesMentionPatterns = (text: string, mentionRegexes: RegExp[]) => boolean;
 

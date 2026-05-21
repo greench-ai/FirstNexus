@@ -6,8 +6,11 @@ import {
   type AcpRuntimeCapabilities,
   type AcpRuntimeDoctorReport,
   type AcpRuntimeStatus,
-} from "NexisClaw/plugin-sdk/acp-runtime-backend";
-import type { NexisClawPluginService, NexisClawPluginServiceContext } from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/acp-runtime-backend";
+import type {
+  FirstNexusPluginService,
+  FirstNexusPluginServiceContext,
+} from "FirstNexus/plugin-sdk/core";
 
 const ACPX_BACKEND_ID = "acpx";
 const ENABLE_STARTUP_PROBE_ENV = "NEXISCLAW_ACPX_RUNTIME_STARTUP_PROBE";
@@ -25,10 +28,10 @@ type AcpxRuntimeLike = AcpRuntime & {
 };
 
 type DeferredServiceState = {
-  ctx: NexisClawPluginServiceContext | null;
+  ctx: FirstNexusPluginServiceContext | null;
   params: CreateAcpxRuntimeServiceParams;
   realRuntime: AcpxRuntimeLike | null;
-  realService: NexisClawPluginService | null;
+  realService: FirstNexusPluginService | null;
   startPromise: Promise<AcpxRuntimeLike> | null;
 };
 
@@ -54,7 +57,7 @@ async function startRealService(state: DeferredServiceState): Promise<AcpxRuntim
     const { createAcpxRuntimeService } = await loadServiceModule();
     const service = createAcpxRuntimeService(state.params);
     state.realService = service;
-    await service.start(state.ctx as NexisClawPluginServiceContext);
+    await service.start(state.ctx as FirstNexusPluginServiceContext);
     const backend = getAcpRuntimeBackend(ACPX_BACKEND_ID);
     if (!backend?.runtime) {
       throw new Error("ACPX runtime service did not register an ACP backend");
@@ -111,7 +114,7 @@ function createDeferredRuntime(state: DeferredServiceState): AcpxRuntimeLike {
 
 export function createAcpxRuntimeService(
   params: CreateAcpxRuntimeServiceParams = {},
-): NexisClawPluginService {
+): FirstNexusPluginService {
   const state: DeferredServiceState = {
     ctx: null,
     params,

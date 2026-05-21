@@ -2,14 +2,14 @@ import {
   channelIngressRoutes,
   resolveStableChannelMessageIngress,
   type StableChannelIngressIdentityParams,
-} from "NexisClaw/plugin-sdk/channel-ingress-runtime";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-ingress-runtime";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   DEFAULT_ACCOUNT_ID,
   createChannelPairingController,
   isDangerousNameMatchingEnabled,
   resolveDefaultGroupPolicy,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../../runtime-api.js";
 import { normalizeMSTeamsConversationId } from "../inbound.js";
 import { resolveMSTeamsRouteConfig } from "../policy.js";
@@ -39,7 +39,7 @@ function normalizeIngressValue(value?: string | null): string | null {
 }
 
 export async function resolveMSTeamsSenderAccess(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   activity: MSTeamsTurnContext["activity"];
   hasControlCommand?: boolean;
 }) {

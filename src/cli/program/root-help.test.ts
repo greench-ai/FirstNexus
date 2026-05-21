@@ -61,11 +61,11 @@ describe("root help", () => {
     const config = {
       agents: {
         defaults: {
-          workspace: "/tmp/NexisClaw-root-help-workspace",
+          workspace: "/tmp/FirstNexus-root-help-workspace",
         },
       },
     };
-    const env = { NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-root-help-state" } as NodeJS.ProcessEnv;
+    const env = { NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-root-help-state" } as NodeJS.ProcessEnv;
 
     await renderRootHelpText({ config, env, pluginSdkResolution: "src" });
 

@@ -31,7 +31,7 @@ export function writeTempPlugin(params: {
   const file = path.join(pluginDir, params.filename ?? `${params.id}.mjs`);
   fs.writeFileSync(file, params.body, "utf-8");
   fs.writeFileSync(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id: params.id,

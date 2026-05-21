@@ -1,4 +1,4 @@
-import { jsonResponse, requestBodyText, requestUrl } from "NexisClaw/plugin-sdk/test-env";
+import { jsonResponse, requestBodyText, requestUrl } from "FirstNexus/plugin-sdk/test-env";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildOllamaModelDefinition,

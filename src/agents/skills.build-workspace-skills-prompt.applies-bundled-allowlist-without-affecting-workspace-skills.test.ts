@@ -9,7 +9,7 @@ import { buildWorkspaceSkillsPrompt } from "./skills/workspace.js";
 describe("buildWorkspaceSkillsPrompt", () => {
   it("applies bundled allowlist without affecting workspace skills", async () => {
     const env = captureEnv(["HOME", "USERPROFILE", "NEXISCLAW_HOME", "NEXISCLAW_STATE_DIR"]);
-    const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-"));
+    const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-"));
     try {
       process.env.HOME = workspaceDir;
       process.env.USERPROFILE = workspaceDir;

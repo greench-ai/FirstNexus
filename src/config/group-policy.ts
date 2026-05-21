@@ -6,7 +6,7 @@ import {
   normalizeOptionalString,
 } from "../shared/string-coerce.js";
 import { normalizeMessageChannel } from "../utils/message-channel-core.js";
-import type { NexisClawConfig } from "./types.NexisClaw.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 import {
   parseToolsBySenderTypedKey,
   type GroupToolPolicyBySenderConfig,
@@ -325,7 +325,7 @@ export function resolveToolsBySender(
 }
 
 function resolveChannelGroups(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   channel: GroupPolicyChannel,
   accountId?: string | null,
 ): ChannelGroups | undefined {
@@ -346,7 +346,7 @@ function resolveChannelGroups(
 type ChannelGroupPolicyMode = "open" | "allowlist" | "disabled";
 
 function resolveChannelGroupPolicyMode(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   channel: GroupPolicyChannel,
   accountId?: string | null,
 ): ChannelGroupPolicyMode | undefined {
@@ -368,7 +368,7 @@ function resolveChannelGroupPolicyMode(
 }
 
 export function resolveChannelGroupPolicy(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channel: GroupPolicyChannel;
   groupId?: string | null;
   accountId?: string | null;
@@ -404,7 +404,7 @@ export function resolveChannelGroupPolicy(params: {
 }
 
 export function resolveChannelGroupRequireMention(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channel: GroupPolicyChannel;
   groupId?: string | null;
   accountId?: string | null;
@@ -439,7 +439,7 @@ export function resolveChannelGroupRequireMention(params: {
 
 export function resolveChannelGroupToolsPolicy(
   params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     channel: GroupPolicyChannel;
     groupId?: string | null;
     groupIdCandidates?: Array<string | null | undefined>;

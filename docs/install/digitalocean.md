@@ -1,12 +1,12 @@
 ---
-summary: "Host NexisClaw on a DigitalOcean Droplet"
+summary: "Host FirstNexus on a DigitalOcean Droplet"
 read_when:
-  - Setting up NexisClaw on DigitalOcean
-  - Looking for a simple paid VPS for NexisClaw
+  - Setting up FirstNexus on DigitalOcean
+  - Looking for a simple paid VPS for FirstNexus
 title: "DigitalOcean"
 ---
 
-Run a persistent NexisClaw Gateway on a DigitalOcean Droplet (~$6/month for the 1 GB Basic plan).
+Run a persistent FirstNexus Gateway on a DigitalOcean Droplet (~$6/month for the 1 GB Basic plan).
 
 DigitalOcean is the simplest paid VPS path. If you prefer cheaper or free options:
 
@@ -48,25 +48,25 @@ DigitalOcean is the simplest paid VPS path. If you prefer cheaper or free option
     curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
     apt install -y nodejs
 
-    # Install NexisClaw
-    curl -fsSL https://NexisClaw.ai/install.sh | bash
+    # Install FirstNexus
+    curl -fsSL https://FirstNexus.ai/install.sh | bash
 
-    # Create the non-root user that will own NexisClaw state and services.
-    adduser NexisClaw
-    usermod -aG sudo NexisClaw
-    loginctl enable-linger NexisClaw
+    # Create the non-root user that will own FirstNexus state and services.
+    adduser FirstNexus
+    usermod -aG sudo FirstNexus
+    loginctl enable-linger FirstNexus
 
-    su - NexisClaw
-    NexisClaw --version
+    su - FirstNexus
+    FirstNexus --version
     ```
 
-    Use the root shell only for system bootstrap. Run NexisClaw commands as the non-root `NexisClaw` user so state lives under `/home/NexisClaw/.NexisClaw/` and the Gateway installs as that user's systemd service.
+    Use the root shell only for system bootstrap. Run FirstNexus commands as the non-root `FirstNexus` user so state lives under `/home/FirstNexus/.FirstNexus/` and the Gateway installs as that user's systemd service.
 
   </Step>
 
   <Step title="Run onboarding">
     ```bash
-    NexisClaw onboard --install-daemon
+    FirstNexus onboard --install-daemon
     ```
 
     The wizard walks you through model auth, channel setup, gateway token generation, and daemon installation (systemd).
@@ -85,9 +85,9 @@ DigitalOcean is the simplest paid VPS path. If you prefer cheaper or free option
 
   <Step title="Verify the gateway">
     ```bash
-    NexisClaw status
-    systemctl --user status NexisClaw-gateway.service
-    journalctl --user -u NexisClaw-gateway.service -f
+    FirstNexus status
+    systemctl --user status FirstNexus-gateway.service
+    journalctl --user -u FirstNexus-gateway.service -f
     ```
   </Step>
 
@@ -108,8 +108,8 @@ DigitalOcean is the simplest paid VPS path. If you prefer cheaper or free option
     ```bash
     curl -fsSL https://tailscale.com/install.sh | sudo sh
     sudo tailscale up
-    NexisClaw config set gateway.tailscale.mode serve
-    NexisClaw gateway restart
+    FirstNexus config set gateway.tailscale.mode serve
+    FirstNexus gateway restart
     ```
 
     Then open `https://<magicdns>/` from any device on your tailnet.
@@ -119,8 +119,8 @@ DigitalOcean is the simplest paid VPS path. If you prefer cheaper or free option
     **Option C: Tailnet bind (no Serve)**
 
     ```bash
-    NexisClaw config set gateway.bind tailnet
-    NexisClaw gateway restart
+    FirstNexus config set gateway.bind tailnet
+    FirstNexus gateway restart
     ```
 
     Then open `http://<tailscale-ip>:18789` (token required).
@@ -130,18 +130,18 @@ DigitalOcean is the simplest paid VPS path. If you prefer cheaper or free option
 
 ## Persistence and backups
 
-NexisClaw state lives under:
+FirstNexus state lives under:
 
-- `~/.NexisClaw/` — `NexisClaw.json`, per-agent `auth-profiles.json`, channel/provider state, and session data.
-- `~/.NexisClaw/workspace/` — the agent workspace (SOUL.md, memory, artifacts).
+- `~/.FirstNexus/` — `FirstNexus.json`, per-agent `auth-profiles.json`, channel/provider state, and session data.
+- `~/.FirstNexus/workspace/` — the agent workspace (SOUL.md, memory, artifacts).
 
 These survive Droplet reboots. To take a portable snapshot:
 
 ```bash
-NexisClaw backup create
+FirstNexus backup create
 ```
 
-DigitalOcean snapshots back the whole Droplet up; `NexisClaw backup create` is portable across hosts.
+DigitalOcean snapshots back the whole Droplet up; `FirstNexus backup create` is portable across hosts.
 
 ## 1 GB RAM tips
 
@@ -154,7 +154,7 @@ The $6 Droplet only has 1 GB RAM. To keep things smooth:
 
 ## Troubleshooting
 
-**Gateway will not start** -- Run `NexisClaw doctor --non-interactive` and check logs with `journalctl --user -u NexisClaw-gateway.service -n 50`.
+**Gateway will not start** -- Run `FirstNexus doctor --non-interactive` and check logs with `journalctl --user -u FirstNexus-gateway.service -n 50`.
 
 **Port already in use** -- Run `lsof -i :18789` to find the process, then stop it.
 
@@ -164,7 +164,7 @@ The $6 Droplet only has 1 GB RAM. To keep things smooth:
 
 - [Channels](/channels) -- connect Telegram, WhatsApp, Discord, and more
 - [Gateway configuration](/gateway/configuration) -- all config options
-- [Updating](/install/updating) -- keep NexisClaw up to date
+- [Updating](/install/updating) -- keep FirstNexus up to date
 
 ## Related
 

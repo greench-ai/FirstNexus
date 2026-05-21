@@ -1,10 +1,10 @@
 ---
-summary: "CLI reference for `NexisClaw commitments` (inspect and dismiss inferred follow-ups)"
+summary: "CLI reference for `FirstNexus commitments` (inspect and dismiss inferred follow-ups)"
 read_when:
   - You want to inspect inferred follow-up commitments
   - You want to dismiss pending check-ins
   - You are auditing what heartbeat may deliver
-title: "`NexisClaw commitments`"
+title: "`FirstNexus commitments`"
 ---
 
 List and manage inferred follow-up commitments.
@@ -13,14 +13,14 @@ Commitments are opt-in, short-lived follow-up memories created from
 conversation context. See [Inferred commitments](/concepts/commitments) for the
 conceptual guide.
 
-With no subcommand, `NexisClaw commitments` lists pending commitments.
+With no subcommand, `FirstNexus commitments` lists pending commitments.
 
 ## Usage
 
 ```bash
-NexisClaw commitments [--all] [--agent <id>] [--status <status>] [--json]
-NexisClaw commitments list [--all] [--agent <id>] [--status <status>] [--json]
-NexisClaw commitments dismiss <id...> [--json]
+FirstNexus commitments [--all] [--agent <id>] [--status <status>] [--json]
+FirstNexus commitments list [--all] [--agent <id>] [--status <status>] [--json]
+FirstNexus commitments dismiss <id...> [--json]
 ```
 
 ## Options
@@ -36,37 +36,37 @@ NexisClaw commitments dismiss <id...> [--json]
 List pending commitments:
 
 ```bash
-NexisClaw commitments
+FirstNexus commitments
 ```
 
 List every stored commitment:
 
 ```bash
-NexisClaw commitments --all
+FirstNexus commitments --all
 ```
 
 Filter to one agent:
 
 ```bash
-NexisClaw commitments --agent main
+FirstNexus commitments --agent main
 ```
 
 Find snoozed commitments:
 
 ```bash
-NexisClaw commitments --status snoozed
+FirstNexus commitments --status snoozed
 ```
 
 Dismiss one or more commitments:
 
 ```bash
-NexisClaw commitments dismiss cm_abc123 cm_def456
+FirstNexus commitments dismiss cm_abc123 cm_def456
 ```
 
 Export as JSON:
 
 ```bash
-NexisClaw commitments --all --json
+FirstNexus commitments --all --json
 ```
 
 ## Output

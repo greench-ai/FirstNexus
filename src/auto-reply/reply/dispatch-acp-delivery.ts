@@ -1,5 +1,5 @@
-import { hasOutboundReplyContent } from "NexisClaw/plugin-sdk/reply-payload";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import { hasOutboundReplyContent } from "FirstNexus/plugin-sdk/reply-payload";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { TtsAutoMode } from "../../config/types.tts.js";
 import { logVerbose } from "../../globals.js";
 import { formatErrorMessage } from "../../infra/errors.js";
@@ -87,7 +87,7 @@ async function shouldTreatDeliveredTextAsVisible(params: {
 
 async function maybeApplyAcpTts(params: {
   payload: ReplyPayload;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   channel?: string;
   accountId?: string;
@@ -173,7 +173,7 @@ export type AcpDispatchDeliveryCoordinator = {
 };
 
 export function createAcpDispatchDeliveryCoordinator(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   ctx: FinalizedMsgContext;
   dispatcher: ReplyDispatcher;

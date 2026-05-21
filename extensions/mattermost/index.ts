@@ -1,11 +1,11 @@
 import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
-} from "NexisClaw/plugin-sdk/channel-entry-contract";
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/channel-entry-contract";
+} from "FirstNexus/plugin-sdk/channel-entry-contract";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/channel-entry-contract";
 
-function registerSlashCommandRoute(api: NexisClawPluginApi): void {
-  const register = loadBundledEntryExportSync<(api: NexisClawPluginApi) => void>(import.meta.url, {
+function registerSlashCommandRoute(api: FirstNexusPluginApi): void {
+  const register = loadBundledEntryExportSync<(api: FirstNexusPluginApi) => void>(import.meta.url, {
     specifier: "./slash-route-api.js",
     exportName: "registerSlashCommandRoute",
   });

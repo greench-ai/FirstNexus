@@ -14,7 +14,7 @@ import { resolveProviderCatalogPluginIdsForFilter } from "./models/list.provider
 const tempDirs: string[] = [];
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-command-cold-imports", tempDirs);
+  return makeTrackedTempDir("FirstNexus-command-cold-imports", tempDirs);
 }
 
 afterEach(() => {

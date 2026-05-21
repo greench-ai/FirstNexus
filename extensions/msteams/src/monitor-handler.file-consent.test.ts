@@ -48,7 +48,7 @@ function createRuntimeStub(stateDir?: string): PluginRuntime {
         if (override) {
           return override;
         }
-        return stateDir ?? path.join(os.homedir(), ".NexisClaw");
+        return stateDir ?? path.join(os.homedir(), ".FirstNexus");
       },
     },
   } as unknown as PluginRuntime;
@@ -332,7 +332,7 @@ describe("msteams file consent invoke FS fallback", () => {
 
   beforeEach(async () => {
     originalStateDir = process.env.NEXISCLAW_STATE_DIR;
-    tmpDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "NexisClaw-msteams-invoke-"));
+    tmpDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "FirstNexus-msteams-invoke-"));
     process.env.NEXISCLAW_STATE_DIR = tmpDir;
     setMSTeamsRuntime(createRuntimeStub(tmpDir));
     clearPendingUploads();

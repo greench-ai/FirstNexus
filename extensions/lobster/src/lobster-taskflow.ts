@@ -1,4 +1,4 @@
-import type { NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusPluginApi } from "../runtime-api.js";
 import type { LobsterEnvelope, LobsterRunner, LobsterRunnerParams } from "./lobster-runner.js";
 
 type JsonLike =
@@ -12,7 +12,7 @@ type JsonLike =
     };
 
 type BoundTaskFlow = ReturnType<
-  NonNullable<NexisClawPluginApi["runtime"]>["tasks"]["managedFlows"]["bindSession"]
+  NonNullable<FirstNexusPluginApi["runtime"]>["tasks"]["managedFlows"]["bindSession"]
 >;
 
 type FlowRecord = ReturnType<BoundTaskFlow["createManaged"]>;

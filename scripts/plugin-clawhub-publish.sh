@@ -35,7 +35,7 @@ repo_root="$(cd "${script_dir}/.." && pwd)"
 package_name="$(node -e 'const pkg = require(require("node:path").resolve(process.argv[1], "package.json")); console.log(pkg.name)' "${package_dir}")"
 package_version="$(node -e 'const pkg = require(require("node:path").resolve(process.argv[1], "package.json")); console.log(pkg.version)' "${package_dir}")"
 publish_tag="${PACKAGE_TAG:-latest}"
-source_repo="${SOURCE_REPO:-${GITHUB_REPOSITORY:-NexisClaw/NexisClaw}}"
+source_repo="${SOURCE_REPO:-${GITHUB_REPOSITORY:-FirstNexus/FirstNexus}}"
 source_commit="${SOURCE_COMMIT:-$(git rev-parse HEAD)}"
 source_ref="${SOURCE_REF:-$(git symbolic-ref -q HEAD || true)}"
 clawhub_workdir="${CLAWDHUB_WORKDIR:-${CLAWHUB_WORKDIR:-$(pwd)}}"
@@ -45,7 +45,7 @@ if [[ "${package_source}" != /* && "${package_source}" != ./* ]]; then
   package_source="./${package_source}"
 fi
 
-pack_dir="$(mktemp -d "${RUNNER_TEMP:-/tmp}/NexisClaw-clawhub-pack.XXXXXX")"
+pack_dir="$(mktemp -d "${RUNNER_TEMP:-/tmp}/FirstNexus-clawhub-pack.XXXXXX")"
 cleanup() {
   rm -rf "${pack_dir}"
 }

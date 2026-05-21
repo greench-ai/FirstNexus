@@ -1,12 +1,12 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { createLazyImportLoader, type LazyPromiseLoader } from "../shared/lazy-promise.js";
 import { MODEL_CONTEXT_TOKEN_CACHE } from "./context-cache.js";
 
-const CONTEXT_WINDOW_RUNTIME_STATE_KEY = Symbol.for("NexisClaw.contextWindowRuntimeState");
+const CONTEXT_WINDOW_RUNTIME_STATE_KEY = Symbol.for("FirstNexus.contextWindowRuntimeState");
 
 type ContextWindowRuntimeState = {
   loadPromise: Promise<void> | null;
-  configuredConfig: NexisClawConfig | undefined;
+  configuredConfig: FirstNexusConfig | undefined;
   configLoadFailures: number;
   nextConfigLoadAttemptAtMs: number;
   modelsConfigRuntimeLoader: LazyPromiseLoader<typeof import("./models-config.runtime.js")>;

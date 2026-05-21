@@ -3,4 +3,4 @@ export {
   deriveCopilotApiBaseUrlFromToken,
   resolveCopilotApiToken,
   type CachedCopilotToken,
-} from "NexisClaw/plugin-sdk/provider-auth";
+} from "FirstNexus/plugin-sdk/provider-auth";

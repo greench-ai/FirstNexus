@@ -1,8 +1,8 @@
 import type { MarkdownTableMode } from "./types.base.js";
-import type { NexisClawConfig } from "./types.NexisClaw.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 
 export type ResolveMarkdownTableModeParams = {
-  cfg?: Partial<NexisClawConfig>;
+  cfg?: Partial<FirstNexusConfig>;
   channel?: string | null;
   accountId?: string | null;
 };

@@ -221,7 +221,7 @@ export function resolveAcpClientSpawnInvocation(
     platform: runtime.platform,
     env: runtime.env,
     execPath: runtime.execPath,
-    packageName: "NexisClaw",
+    packageName: "FirstNexus",
   });
   const resolved = materializeWindowsSpawnProgram(program, params.serverArgs);
   return {

@@ -1,12 +1,12 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { createTestPluginApi } from "NexisClaw/plugin-sdk/plugin-test-api";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { createTestPluginApi } from "FirstNexus/plugin-sdk/plugin-test-api";
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import * as providerAuth from "NexisClaw/plugin-sdk/provider-auth-runtime";
-import * as providerHttp from "NexisClaw/plugin-sdk/provider-http";
-import type { ProviderPlugin } from "NexisClaw/plugin-sdk/provider-model-shared";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import * as providerAuth from "FirstNexus/plugin-sdk/provider-auth-runtime";
+import * as providerHttp from "FirstNexus/plugin-sdk/provider-http";
+import type { ProviderPlugin } from "FirstNexus/plugin-sdk/provider-model-shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildOpenAIImageGenerationProvider } from "./image-generation-provider.js";
 import plugin from "./index.js";
@@ -22,9 +22,9 @@ const runtimeMocks = vi.hoisted(() => ({
   refreshOpenAICodexToken: vi.fn(),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/runtime-env")>(
-    "NexisClaw/plugin-sdk/runtime-env",
+vi.mock("FirstNexus/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/runtime-env")>(
+    "FirstNexus/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -303,7 +303,7 @@ describe("openai plugin", () => {
               },
             },
           },
-        } satisfies NexisClawConfig,
+        } satisfies FirstNexusConfig,
       }),
     ).rejects.toThrow("Blocked hostname or private/internal/special-use IP address");
 

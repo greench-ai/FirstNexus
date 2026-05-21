@@ -1,5 +1,5 @@
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   collectPluginConfigContractMatches,
   resolvePluginConfigContractsById,
@@ -25,7 +25,7 @@ import { isRecord } from "./shared.js";
  * non-loadable plugins from blocking startup or preflight validation.
  */
 export function collectPluginConfigAssignments(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   defaults: SecretDefaults | undefined;
   context: ResolverContext;
   loadablePluginOrigins?: ReadonlyMap<string, PluginOrigin>;

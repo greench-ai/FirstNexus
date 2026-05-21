@@ -1,5 +1,5 @@
 import { runChannelPluginStartupMaintenance } from "../channels/plugins/lifecycle-startup.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 type DoctorStartupMaintenanceRuntime = {
   error: (message: string) => void;
@@ -9,7 +9,7 @@ type DoctorStartupMaintenanceRuntime = {
 type ChannelPluginStartupMaintenanceRunner = typeof runChannelPluginStartupMaintenance;
 
 export async function maybeRunDoctorStartupChannelMaintenance(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   runChannelPluginStartupMaintenance?: ChannelPluginStartupMaintenanceRunner;
   runtime: DoctorStartupMaintenanceRuntime;

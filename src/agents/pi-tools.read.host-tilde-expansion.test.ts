@@ -100,7 +100,7 @@ describe("host tool tilde expansion (non-workspace mode)", () => {
   });
 
   it("edit readFile expands ~ to the OS home directory", async () => {
-    const dir = await createTempDir("NexisClaw-tilde-test-edit-");
+    const dir = await createTempDir("FirstNexus-tilde-test-edit-");
     const testFile = path.join(dir, "test.txt");
     await fs.writeFile(testFile, "hello", "utf8");
 
@@ -111,7 +111,7 @@ describe("host tool tilde expansion (non-workspace mode)", () => {
   });
 
   it("edit access expands ~ to the OS home directory", async () => {
-    const dir = await createTempDir("NexisClaw-tilde-test-edit-");
+    const dir = await createTempDir("FirstNexus-tilde-test-edit-");
     const testFile = path.join(dir, "test.txt");
     await fs.writeFile(testFile, "hello", "utf8");
 
@@ -121,7 +121,7 @@ describe("host tool tilde expansion (non-workspace mode)", () => {
   });
 
   it("write writeFile expands ~ to the OS home directory", async () => {
-    const dir = await createTempDir("NexisClaw-tilde-test-write-");
+    const dir = await createTempDir("FirstNexus-tilde-test-write-");
     const testFile = path.join(dir, "tilde-write-test.txt");
 
     createHostWorkspaceWriteTool(dir, { workspaceOnly: false });
@@ -131,7 +131,7 @@ describe("host tool tilde expansion (non-workspace mode)", () => {
   });
 
   it("write mkdir expands ~ to the OS home directory", async () => {
-    const dir = await createTempDir("NexisClaw-tilde-test-mkdir-");
+    const dir = await createTempDir("FirstNexus-tilde-test-mkdir-");
     const newDir = path.join(dir, "subdir");
 
     createHostWorkspaceWriteTool(dir, { workspaceOnly: false });
@@ -141,55 +141,55 @@ describe("host tool tilde expansion (non-workspace mode)", () => {
   });
 
   it("ignores NEXISCLAW_HOME for write operations", async () => {
-    const NexisClawHome = await createTempDir("NexisClaw-home-override-", os.tmpdir());
-    const dir = await createTempDir("NexisClaw-tilde-test-write-");
+    const FirstNexusHome = await createTempDir("FirstNexus-home-override-", os.tmpdir());
+    const dir = await createTempDir("FirstNexus-tilde-test-write-");
     const testFile = path.join(dir, "os-home-write.txt");
-    vi.stubEnv("NEXISCLAW_HOME", NexisClawHome);
+    vi.stubEnv("NEXISCLAW_HOME", FirstNexusHome);
 
-    createHostWorkspaceWriteTool(NexisClawHome, { workspaceOnly: false });
+    createHostWorkspaceWriteTool(FirstNexusHome, { workspaceOnly: false });
     await readWriteOps().writeFile(toTildePath(testFile), "written via os home");
 
     expect(await fs.readFile(testFile, "utf8")).toBe("written via os home");
-    await expectMissingPath(fs.access(path.join(NexisClawHome, path.basename(testFile))));
+    await expectMissingPath(fs.access(path.join(FirstNexusHome, path.basename(testFile))));
   });
 
   it("ignores NEXISCLAW_HOME for mkdir operations", async () => {
-    const NexisClawHome = await createTempDir("NexisClaw-home-override-", os.tmpdir());
-    const dir = await createTempDir("NexisClaw-tilde-test-mkdir-");
+    const FirstNexusHome = await createTempDir("FirstNexus-home-override-", os.tmpdir());
+    const dir = await createTempDir("FirstNexus-tilde-test-mkdir-");
     const newDir = path.join(dir, "os-home-subdir");
-    vi.stubEnv("NEXISCLAW_HOME", NexisClawHome);
+    vi.stubEnv("NEXISCLAW_HOME", FirstNexusHome);
 
-    createHostWorkspaceWriteTool(NexisClawHome, { workspaceOnly: false });
+    createHostWorkspaceWriteTool(FirstNexusHome, { workspaceOnly: false });
     await readWriteOps().mkdir(toTildePath(newDir));
 
     expect((await fs.stat(newDir)).isDirectory()).toBe(true);
-    await expectMissingPath(fs.access(path.join(NexisClawHome, path.basename(newDir))));
+    await expectMissingPath(fs.access(path.join(FirstNexusHome, path.basename(newDir))));
   });
 
   it("ignores NEXISCLAW_HOME for readFile operations", async () => {
-    const NexisClawHome = await createTempDir("NexisClaw-home-override-", os.tmpdir());
-    const dir = await createTempDir("NexisClaw-tilde-test-edit-");
+    const FirstNexusHome = await createTempDir("FirstNexus-home-override-", os.tmpdir());
+    const dir = await createTempDir("FirstNexus-tilde-test-edit-");
     const testFile = path.join(dir, "os-home-read.txt");
     await fs.writeFile(testFile, "OS home content", "utf8");
-    vi.stubEnv("NEXISCLAW_HOME", NexisClawHome);
+    vi.stubEnv("NEXISCLAW_HOME", FirstNexusHome);
 
-    createHostWorkspaceEditTool(NexisClawHome, { workspaceOnly: false });
+    createHostWorkspaceEditTool(FirstNexusHome, { workspaceOnly: false });
     const content = await readEditOps().readFile(toTildePath(testFile));
 
     expect(content.toString("utf8")).toBe("OS home content");
-    await expectMissingPath(fs.access(path.join(NexisClawHome, path.basename(testFile))));
+    await expectMissingPath(fs.access(path.join(FirstNexusHome, path.basename(testFile))));
   });
 
   it("ignores NEXISCLAW_HOME for access operations", async () => {
-    const NexisClawHome = await createTempDir("NexisClaw-home-override-", os.tmpdir());
-    const dir = await createTempDir("NexisClaw-tilde-test-edit-");
+    const FirstNexusHome = await createTempDir("FirstNexus-home-override-", os.tmpdir());
+    const dir = await createTempDir("FirstNexus-tilde-test-edit-");
     const testFile = path.join(dir, "os-home-access.txt");
     await fs.writeFile(testFile, "exists", "utf8");
-    vi.stubEnv("NEXISCLAW_HOME", NexisClawHome);
+    vi.stubEnv("NEXISCLAW_HOME", FirstNexusHome);
 
-    createHostWorkspaceEditTool(NexisClawHome, { workspaceOnly: false });
+    createHostWorkspaceEditTool(FirstNexusHome, { workspaceOnly: false });
 
     await expect(readEditOps().access(toTildePath(testFile))).resolves.toBeUndefined();
-    await expectMissingPath(fs.access(path.join(NexisClawHome, path.basename(testFile))));
+    await expectMissingPath(fs.access(path.join(FirstNexusHome, path.basename(testFile))));
   });
 });

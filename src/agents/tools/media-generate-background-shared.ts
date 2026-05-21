@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { completionRequiresMessageToolDelivery } from "../../auto-reply/reply/completion-delivery-policy.js";
 import { SILENT_REPLY_TOKEN } from "../../auto-reply/tokens.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { clearAgentRunContext, registerAgentRunContext } from "../../infra/agent-events.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
@@ -54,7 +54,7 @@ type FailMediaGenerationTaskRunParams = {
 };
 
 type WakeMediaGenerationTaskCompletionParams = {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   handle: MediaGenerationTaskHandle | null;
   status: "ok" | "error";
   statusLabel: string;
@@ -246,7 +246,7 @@ function buildMediaGenerationReplyInstruction(params: {
 }
 
 async function wakeMediaGenerationTaskCompletion(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   handle: MediaGenerationTaskHandle | null;
   status: "ok" | "error";
   statusLabel: string;

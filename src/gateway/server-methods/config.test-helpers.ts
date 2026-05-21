@@ -1,5 +1,5 @@
 import { vi, type Mock } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { GatewayRequestHandlerOptions } from "./types.js";
 
 type UnknownMock = Mock<(...args: unknown[]) => unknown>;
@@ -25,10 +25,10 @@ function createGatewayLog(): GatewayLogMocks {
   };
 }
 
-export function createConfigWriteSnapshot(config: NexisClawConfig) {
+export function createConfigWriteSnapshot(config: FirstNexusConfig) {
   return {
     snapshot: {
-      path: "/tmp/NexisClaw.json",
+      path: "/tmp/FirstNexus.json",
       exists: true,
       raw: JSON.stringify(config, null, 2),
       parsed: config,

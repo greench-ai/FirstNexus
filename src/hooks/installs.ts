@@ -1,9 +1,12 @@
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { HookInstallRecord } from "../config/types.hooks.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
 
 export type HookInstallUpdate = HookInstallRecord & { hookId: string };
 
-export function recordHookInstall(cfg: NexisClawConfig, update: HookInstallUpdate): NexisClawConfig {
+export function recordHookInstall(
+  cfg: FirstNexusConfig,
+  update: HookInstallUpdate,
+): FirstNexusConfig {
   const { hookId, ...record } = update;
   const installs = {
     ...cfg.hooks?.internal?.installs,

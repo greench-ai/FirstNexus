@@ -1,11 +1,11 @@
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { ErrorCodes, errorShape } from "NexisClaw/plugin-sdk/gateway-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { ErrorCodes, errorShape } from "FirstNexus/plugin-sdk/gateway-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { Type } from "typebox";
 import {
   definePluginEntry,
   type GatewayRequestHandlerOptions,
-  type NexisClawPluginApi,
+  type FirstNexusPluginApi,
 } from "./api.js";
 import { createVoiceCallRuntime, type VoiceCallRuntime } from "./runtime-entry.js";
 import { registerVoiceCallCli } from "./src/cli.js";
@@ -94,12 +94,12 @@ const voiceCallConfigSchema = {
     "realtime.instructions": { label: "Realtime Instructions", advanced: true },
     "realtime.toolPolicy": {
       label: "Realtime Tool Policy",
-      help: "Controls the shared NexisClaw_agent_consult tool.",
+      help: "Controls the shared FirstNexus_agent_consult tool.",
       advanced: true,
     },
     "realtime.consultPolicy": {
       label: "Realtime Consult Policy",
-      help: "Guides when the realtime voice model should call NexisClaw_agent_consult.",
+      help: "Guides when the realtime voice model should call FirstNexus_agent_consult.",
       advanced: true,
     },
     "realtime.fastContext.enabled": {
@@ -182,9 +182,9 @@ const VoiceCallToolSchema = Type.Union([
     to: Type.Optional(Type.String({ description: "Call target" })),
     message: Type.String({ description: "Intro message" }),
     mode: Type.Optional(Type.Union([Type.Literal("notify"), Type.Literal("conversation")])),
-    sessionKey: Type.Optional(Type.String({ description: "NexisClaw session key for the call" })),
+    sessionKey: Type.Optional(Type.String({ description: "FirstNexus session key for the call" })),
     requesterSessionKey: Type.Optional(
-      Type.String({ description: "NexisClaw session key that initiated the call" }),
+      Type.String({ description: "FirstNexus session key that initiated the call" }),
     ),
     dtmfSequence: Type.Optional(Type.String({ description: "DTMF digits to play before connect" })),
   }),
@@ -216,9 +216,9 @@ const VoiceCallToolSchema = Type.Union([
     to: Type.Optional(Type.String({ description: "Call target" })),
     sid: Type.Optional(Type.String({ description: "Call SID" })),
     message: Type.Optional(Type.String({ description: "Optional intro message" })),
-    sessionKey: Type.Optional(Type.String({ description: "NexisClaw session key for the call" })),
+    sessionKey: Type.Optional(Type.String({ description: "FirstNexus session key for the call" })),
     requesterSessionKey: Type.Optional(
-      Type.String({ description: "NexisClaw session key that initiated the call" }),
+      Type.String({ description: "FirstNexus session key that initiated the call" }),
     ),
     dtmfSequence: Type.Optional(Type.String({ description: "DTMF digits to play before connect" })),
   }),
@@ -234,9 +234,9 @@ function isCliOnlyProcess(): boolean {
   return process.env.NEXISCLAW_CLI === "1" && !process.argv.slice(2).includes("gateway");
 }
 
-const VOICE_CALL_RUNTIME_KEY = Symbol.for("NexisClaw.voice-call.runtime");
-const VOICE_CALL_RUNTIME_PROMISE_KEY = Symbol.for("NexisClaw.voice-call.runtimePromise");
-const VOICE_CALL_RUNTIME_STOP_PROMISE_KEY = Symbol.for("NexisClaw.voice-call.runtimeStopPromise");
+const VOICE_CALL_RUNTIME_KEY = Symbol.for("FirstNexus.voice-call.runtime");
+const VOICE_CALL_RUNTIME_PROMISE_KEY = Symbol.for("FirstNexus.voice-call.runtimePromise");
+const VOICE_CALL_RUNTIME_STOP_PROMISE_KEY = Symbol.for("FirstNexus.voice-call.runtimeStopPromise");
 
 type VoiceCallRuntimeGlobalState = typeof globalThis & {
   [VOICE_CALL_RUNTIME_KEY]?: VoiceCallRuntime | null;
@@ -257,7 +257,7 @@ export default definePluginEntry({
   name: "Voice Call",
   description: "Voice-call plugin with Telnyx/Twilio/Plivo providers",
   configSchema: voiceCallConfigSchema,
-  register(api: NexisClawPluginApi) {
+  register(api: FirstNexusPluginApi) {
     const config = resolveVoiceCallConfig(voiceCallConfigSchema.parse(api.pluginConfig));
     const validation = validateProviderConfig(config);
 
@@ -265,7 +265,7 @@ export default definePluginEntry({
       for (const warning of formatVoiceCallLegacyConfigWarnings({
         value: api.pluginConfig,
         configPathPrefix: "plugins.entries.voice-call.config",
-        doctorFixCommand: "NexisClaw doctor --fix",
+        doctorFixCommand: "FirstNexus doctor --fix",
       })) {
         api.logger.warn(warning);
       }

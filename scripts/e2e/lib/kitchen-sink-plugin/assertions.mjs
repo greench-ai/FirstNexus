@@ -24,7 +24,7 @@ function expectFailure() {
 }
 
 function scanLogs() {
-  const roots = ["/tmp", path.join(process.env.HOME, ".NexisClaw")];
+  const roots = ["/tmp", path.join(process.env.HOME, ".FirstNexus")];
   const files = [];
   const visit = (entry) => {
     if (!fs.existsSync(entry)) {
@@ -37,7 +37,7 @@ function scanLogs() {
       }
       return;
     }
-    if (/\.(?:log|jsonl)$/u.test(entry) || /NexisClaw-kitchen-sink-/u.test(path.basename(entry))) {
+    if (/\.(?:log|jsonl)$/u.test(entry) || /FirstNexus-kitchen-sink-/u.test(path.basename(entry))) {
       if (entry.includes("/.npm/_logs/")) {
         return;
       }
@@ -77,7 +77,7 @@ function scanLogs() {
 }
 
 function readConfig() {
-  const configPath = path.join(process.env.HOME, ".NexisClaw", "NexisClaw.json");
+  const configPath = path.join(process.env.HOME, ".FirstNexus", "FirstNexus.json");
   return {
     configPath,
     exists: fs.existsSync(configPath),
@@ -195,17 +195,19 @@ function assertRealPathInside(parentPath, childPath, label) {
 }
 
 function assertClawHubExternalInstallContract(installPath) {
-  const NexisClawPeerPath = path.join(installPath, "node_modules", "NexisClaw");
-  if (!fs.existsSync(NexisClawPeerPath)) {
-    throw new Error(`missing kitchen-sink NexisClaw peer symlink: ${NexisClawPeerPath}`);
+  const FirstNexusPeerPath = path.join(installPath, "node_modules", "FirstNexus");
+  if (!fs.existsSync(FirstNexusPeerPath)) {
+    throw new Error(`missing kitchen-sink FirstNexus peer symlink: ${FirstNexusPeerPath}`);
   }
-  if (!fs.lstatSync(NexisClawPeerPath).isSymbolicLink()) {
-    throw new Error(`kitchen-sink NexisClaw peer is not a symlink: ${NexisClawPeerPath}`);
+  if (!fs.lstatSync(FirstNexusPeerPath).isSymbolicLink()) {
+    throw new Error(`kitchen-sink FirstNexus peer is not a symlink: ${FirstNexusPeerPath}`);
   }
   const hostRoot = fs.realpathSync(process.cwd());
-  const linkedHostRoot = fs.realpathSync(NexisClawPeerPath);
+  const linkedHostRoot = fs.realpathSync(FirstNexusPeerPath);
   if (linkedHostRoot !== hostRoot) {
-    throw new Error(`expected kitchen-sink NexisClaw peer ${linkedHostRoot} to target ${hostRoot}`);
+    throw new Error(
+      `expected kitchen-sink FirstNexus peer ${linkedHostRoot} to target ${hostRoot}`,
+    );
   }
 
   const dependencyPackagePath = path.join(installPath, "node_modules", "is-number", "package.json");
@@ -253,7 +255,7 @@ function assertCutoverPreinstalled() {
     throw new Error(`invalid kitchen-sink cutover preinstall spec: ${preinstallSpec}`);
   }
 
-  const indexPath = path.join(process.env.HOME, ".NexisClaw", "plugins", "installs.json");
+  const indexPath = path.join(process.env.HOME, ".FirstNexus", "plugins", "installs.json");
   const index = readJson(indexPath);
   const record = (index.installRecords ?? index.records ?? {})[pluginId];
   if (!record) {
@@ -377,7 +379,7 @@ function assertInstalled() {
   }
   assertExpectedDiagnostics(surfaceMode, errorMessages);
 
-  const indexPath = path.join(process.env.HOME, ".NexisClaw", "plugins", "installs.json");
+  const indexPath = path.join(process.env.HOME, ".FirstNexus", "plugins", "installs.json");
   const index = readJson(indexPath);
   const record = (index.installRecords ?? index.records ?? {})[pluginId];
   if (!record) {
@@ -434,7 +436,7 @@ function assertRemoved() {
     throw new Error(`kitchen-sink plugin still listed after uninstall: ${pluginId}`);
   }
 
-  const indexPath = path.join(process.env.HOME, ".NexisClaw", "plugins", "installs.json");
+  const indexPath = path.join(process.env.HOME, ".FirstNexus", "plugins", "installs.json");
   const index = fs.existsSync(indexPath) ? readJson(indexPath) : {};
   const records = index.installRecords ?? index.records ?? {};
   if (records[pluginId]) {

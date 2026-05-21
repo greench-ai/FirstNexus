@@ -1,7 +1,7 @@
 import {
   createWebSearchProviderContractFields,
   type WebSearchProviderPlugin,
-} from "NexisClaw/plugin-sdk/provider-web-search-contract";
+} from "FirstNexus/plugin-sdk/provider-web-search-contract";
 
 export function createOllamaWebSearchProvider(): WebSearchProviderPlugin {
   return {
@@ -13,7 +13,7 @@ export function createOllamaWebSearchProvider(): WebSearchProviderPlugin {
     envVars: [],
     placeholder: "(run ollama signin)",
     signupUrl: "https://ollama.com/",
-    docsUrl: "https://docs.NexisClaw.ai/tools/web",
+    docsUrl: "https://docs.FirstNexus.ai/tools/web",
     autoDetectOrder: 110,
     credentialPath: "",
     ...createWebSearchProviderContractFields({

@@ -1,6 +1,6 @@
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import type { PinnedDispatcherPolicy } from "NexisClaw/plugin-sdk/ssrf-dispatcher";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import type { PinnedDispatcherPolicy } from "FirstNexus/plugin-sdk/ssrf-dispatcher";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { SsrFPolicy } from "../runtime-api.js";
 import type { BaseProbeResult } from "../runtime-api.js";
 import { isBunRuntime } from "./client/runtime.js";

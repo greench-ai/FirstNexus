@@ -7,16 +7,16 @@ describe("buildPlatformRuntimeLogHints", () => {
       buildPlatformRuntimeLogHints({
         platform: "darwin",
         env: {
-          NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-state",
+          NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-state",
           NEXISCLAW_LOG_PREFIX: "gateway",
         },
-        systemdServiceName: "NexisClaw-gateway",
-        windowsTaskName: "NexisClaw Gateway",
+        systemdServiceName: "FirstNexus-gateway",
+        windowsTaskName: "FirstNexus Gateway",
       }),
     ).toEqual([
-      "Launchd stdout (if installed): /tmp/NexisClaw-state/logs/gateway.log",
+      "Launchd stdout (if installed): /tmp/FirstNexus-state/logs/gateway.log",
       "Launchd stderr (if installed): suppressed",
-      "Restart attempts: /tmp/NexisClaw-state/logs/gateway-restart.log",
+      "Restart attempts: /tmp/FirstNexus-state/logs/gateway-restart.log",
     ]);
   });
 
@@ -25,27 +25,27 @@ describe("buildPlatformRuntimeLogHints", () => {
       buildPlatformRuntimeLogHints({
         platform: "linux",
         env: {
-          NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-state",
+          NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-state",
         },
-        systemdServiceName: "NexisClaw-gateway",
-        windowsTaskName: "NexisClaw Gateway",
+        systemdServiceName: "FirstNexus-gateway",
+        windowsTaskName: "FirstNexus Gateway",
       }),
     ).toEqual([
-      "Logs: journalctl --user -u NexisClaw-gateway.service -n 200 --no-pager",
-      "Restart attempts: /tmp/NexisClaw-state/logs/gateway-restart.log",
+      "Logs: journalctl --user -u FirstNexus-gateway.service -n 200 --no-pager",
+      "Restart attempts: /tmp/FirstNexus-state/logs/gateway-restart.log",
     ]);
     expect(
       buildPlatformRuntimeLogHints({
         platform: "win32",
         env: {
-          NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-state",
+          NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-state",
         },
-        systemdServiceName: "NexisClaw-gateway",
-        windowsTaskName: "NexisClaw Gateway",
+        systemdServiceName: "FirstNexus-gateway",
+        windowsTaskName: "FirstNexus Gateway",
       }),
     ).toEqual([
-      'Logs: schtasks /Query /TN "NexisClaw Gateway" /V /FO LIST',
-      "Restart attempts: /tmp/NexisClaw-state/logs/gateway-restart.log",
+      'Logs: schtasks /Query /TN "FirstNexus Gateway" /V /FO LIST',
+      "Restart attempts: /tmp/FirstNexus-state/logs/gateway-restart.log",
     ]);
   });
 });
@@ -55,30 +55,30 @@ describe("buildPlatformServiceStartHints", () => {
     expect(
       buildPlatformServiceStartHints({
         platform: "darwin",
-        installCommand: "NexisClaw gateway install",
-        startCommand: "NexisClaw gateway",
-        launchAgentPlistPath: "~/Library/LaunchAgents/com.NexisClaw.gateway.plist",
-        systemdServiceName: "NexisClaw-gateway",
-        windowsTaskName: "NexisClaw Gateway",
+        installCommand: "FirstNexus gateway install",
+        startCommand: "FirstNexus gateway",
+        launchAgentPlistPath: "~/Library/LaunchAgents/com.FirstNexus.gateway.plist",
+        systemdServiceName: "FirstNexus-gateway",
+        windowsTaskName: "FirstNexus Gateway",
       }),
     ).toEqual([
-      "NexisClaw gateway install",
-      "NexisClaw gateway",
-      "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.NexisClaw.gateway.plist",
+      "FirstNexus gateway install",
+      "FirstNexus gateway",
+      "launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.FirstNexus.gateway.plist",
     ]);
     expect(
       buildPlatformServiceStartHints({
         platform: "linux",
-        installCommand: "NexisClaw gateway install",
-        startCommand: "NexisClaw gateway",
-        launchAgentPlistPath: "~/Library/LaunchAgents/com.NexisClaw.gateway.plist",
-        systemdServiceName: "NexisClaw-gateway",
-        windowsTaskName: "NexisClaw Gateway",
+        installCommand: "FirstNexus gateway install",
+        startCommand: "FirstNexus gateway",
+        launchAgentPlistPath: "~/Library/LaunchAgents/com.FirstNexus.gateway.plist",
+        systemdServiceName: "FirstNexus-gateway",
+        windowsTaskName: "FirstNexus Gateway",
       }),
     ).toEqual([
-      "NexisClaw gateway install",
-      "NexisClaw gateway",
-      "systemctl --user start NexisClaw-gateway.service",
+      "FirstNexus gateway install",
+      "FirstNexus gateway",
+      "systemctl --user start FirstNexus-gateway.service",
     ]);
   });
 });

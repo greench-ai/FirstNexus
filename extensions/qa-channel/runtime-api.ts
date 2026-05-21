@@ -12,7 +12,7 @@ export {
   defineChannelPluginEntry,
   getChatChannelMeta,
   jsonResult,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type PluginRuntime,
   readStringParam,
   type RuntimeEnv,

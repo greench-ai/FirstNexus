@@ -13,13 +13,13 @@ Debugging helpers for streaming output, especially when a provider mixes reasoni
 
 Use `/debug` in chat to set **runtime-only** config overrides (memory, not disk).
 `/debug` is disabled by default; enable with `commands.debug: true`.
-This is handy when you need to toggle obscure settings without editing `NexisClaw.json`.
+This is handy when you need to toggle obscure settings without editing `FirstNexus.json`.
 
 Examples:
 
 ```
 /debug show
-/debug set messages.responsePrefix="[NexisClaw]"
+/debug set messages.responsePrefix="[FirstNexus]"
 /debug unset messages.responsePrefix
 /debug reset
 ```
@@ -53,7 +53,7 @@ to stderr, so JSON command output remains parseable.
 Example:
 
 ```bash
-NEXISCLAW_PLUGIN_LIFECYCLE_TRACE=1 NexisClaw plugins install tokenjuice --force
+NEXISCLAW_PLUGIN_LIFECYCLE_TRACE=1 FirstNexus plugins install tokenjuice --force
 ```
 
 Example output:
@@ -66,7 +66,7 @@ Example output:
 
 Use this for plugin lifecycle investigation before reaching for a CPU profiler.
 If the command is running from a source checkout, prefer measuring the built
-runtime with `node dist/entry.js ...` after `pnpm build`; `pnpm NexisClaw ...`
+runtime with `node dist/entry.js ...` after `pnpm build`; `pnpm FirstNexus ...`
 also measures source-runner overhead.
 
 ## CLI startup and command profiling
@@ -83,7 +83,7 @@ For one-off profiling through the normal source runner, set
 `NEXISCLAW_RUN_NODE_CPU_PROF_DIR`:
 
 ```bash
-NEXISCLAW_RUN_NODE_CPU_PROF_DIR=.artifacts/cli-cpu pnpm NexisClaw status
+NEXISCLAW_RUN_NODE_CPU_PROF_DIR=.artifacts/cli-cpu pnpm FirstNexus status
 ```
 
 The source runner adds Node CPU profile flags and writes a `.cpuprofile` for the
@@ -93,7 +93,7 @@ For startup stalls that look like synchronous filesystem or module-loader work,
 add Node's sync I/O trace flag through the source runner:
 
 ```bash
-NEXISCLAW_TRACE_SYNC_IO=1 pnpm NexisClaw gateway --force
+NEXISCLAW_TRACE_SYNC_IO=1 pnpm FirstNexus gateway --force
 ```
 
 `pnpm gateway:watch` leaves this flag disabled by default for the watched
@@ -109,13 +109,13 @@ pnpm gateway:watch
 ```
 
 By default, this starts or restarts a tmux session named
-`NexisClaw-gateway-watch-main` (or a profile/port-specific variant such as
-`NexisClaw-gateway-watch-dev-19001`) and auto-attaches from interactive terminals.
+`FirstNexus-gateway-watch-main` (or a profile/port-specific variant such as
+`FirstNexus-gateway-watch-dev-19001`) and auto-attaches from interactive terminals.
 Non-interactive shells, CI, and agent exec calls stay detached and print attach
 instructions instead. Attach manually when needed:
 
 ```bash
-tmux attach -t NexisClaw-gateway-watch-main
+tmux attach -t FirstNexus-gateway-watch-main
 ```
 
 The tmux pane runs the raw watcher:
@@ -169,14 +169,14 @@ The tmux wrapper carries common non-secret runtime selectors such as
 provider credentials in your normal profile/config, or use raw foreground mode
 for one-off ephemeral secrets.
 If the watched Gateway exits during startup, the watcher runs
-`NexisClaw doctor --fix --non-interactive` once and restarts the Gateway child.
+`FirstNexus doctor --fix --non-interactive` once and restarts the Gateway child.
 Use `NEXISCLAW_GATEWAY_WATCH_AUTO_DOCTOR=0` when you want the original startup
 failure without the dev-only repair pass.
 The managed tmux pane also defaults to colored Gateway logs for readability;
 set `FORCE_COLOR=0` when starting `pnpm gateway:watch` to disable ANSI output.
 
 The watcher restarts on build-relevant files under `src/`, extension source files,
-extension `package.json` and `NexisClaw.plugin.json` metadata, `tsconfig.json`,
+extension `package.json` and `FirstNexus.plugin.json` metadata, `tsconfig.json`,
 `package.json`, and `tsdown.config.ts`. Extension metadata changes restart the
 gateway without forcing a `tsdown` rebuild; source and config changes still
 rebuild `dist` first.
@@ -191,7 +191,7 @@ are replaced instead of piling up.
 Use the dev profile to isolate state and spin up a safe, disposable setup for
 debugging. There are **two** `--dev` flags:
 
-- **Global `--dev` (profile):** isolates state under `~/.NexisClaw-dev` and
+- **Global `--dev` (profile):** isolates state under `~/.FirstNexus-dev` and
   defaults the gateway port to `19001` (derived ports shift with it).
 - **`gateway --dev`: tells the Gateway to auto-create a default config +
   workspace** when missing (and skip BOOTSTRAP.md).
@@ -200,17 +200,17 @@ Recommended flow (dev profile + dev bootstrap):
 
 ```bash
 pnpm gateway:dev
-NEXISCLAW_PROFILE=dev NexisClaw tui
+NEXISCLAW_PROFILE=dev FirstNexus tui
 ```
 
-If you don't have a global install yet, run the CLI via `pnpm NexisClaw ...`.
+If you don't have a global install yet, run the CLI via `pnpm FirstNexus ...`.
 
 What this does:
 
 1. **Profile isolation** (global `--dev`)
    - `NEXISCLAW_PROFILE=dev`
-   - `NEXISCLAW_STATE_DIR=~/.NexisClaw-dev`
-   - `NEXISCLAW_CONFIG_PATH=~/.NexisClaw-dev/NexisClaw.json`
+   - `NEXISCLAW_STATE_DIR=~/.FirstNexus-dev`
+   - `NEXISCLAW_CONFIG_PATH=~/.FirstNexus-dev/FirstNexus.json`
    - `NEXISCLAW_GATEWAY_PORT=19001` (browser/canvas shift accordingly)
 
 2. **Dev bootstrap** (`gateway --dev`)
@@ -232,7 +232,7 @@ pnpm gateway:dev:reset
 `--dev` is a **global** profile flag and gets eaten by some runners. If you need to spell it out, use the env var form:
 
 ```bash
-NEXISCLAW_PROFILE=dev NexisClaw gateway --dev --reset
+NEXISCLAW_PROFILE=dev FirstNexus gateway --dev --reset
 ```
 
 </Note>
@@ -244,14 +244,14 @@ NEXISCLAW_PROFILE=dev NexisClaw gateway --dev --reset
 If a non-dev gateway is already running (launchd or systemd), stop it first:
 
 ```bash
-NexisClaw gateway stop
+FirstNexus gateway stop
 ```
 
 </Tip>
 
-## Raw stream logging (NexisClaw)
+## Raw stream logging (FirstNexus)
 
-NexisClaw can log the **raw assistant stream** before any filtering/formatting.
+FirstNexus can log the **raw assistant stream** before any filtering/formatting.
 This is the best way to see whether reasoning is arriving as plain text deltas
 (or as separate thinking blocks).
 
@@ -264,19 +264,19 @@ pnpm gateway:watch --raw-stream
 Optional path override:
 
 ```bash
-pnpm gateway:watch --raw-stream --raw-stream-path ~/.NexisClaw/logs/raw-stream.jsonl
+pnpm gateway:watch --raw-stream --raw-stream-path ~/.FirstNexus/logs/raw-stream.jsonl
 ```
 
 Equivalent env vars:
 
 ```bash
 NEXISCLAW_RAW_STREAM=1
-NEXISCLAW_RAW_STREAM_PATH=~/.NexisClaw/logs/raw-stream.jsonl
+NEXISCLAW_RAW_STREAM_PATH=~/.FirstNexus/logs/raw-stream.jsonl
 ```
 
 Default file:
 
-`~/.NexisClaw/logs/raw-stream.jsonl`
+`~/.FirstNexus/logs/raw-stream.jsonl`
 
 ## Raw chunk logging (pi-mono)
 
@@ -336,7 +336,7 @@ You can now set breakpoints in your TypeScript source files (`src/` directory) a
 - If using the **"Rebuild and Debug Gateway"** option - each time the debugger is launched it will completely delete the `/dist` folder and run a full `pnpm build` with source maps enabled before starting the Gateway
 - If using the **"Debug Gateway"** option - debug sessions can be started and stopped at any time without affecting the `/dist` folder, but you must use a separate terminal process to both enable debugging and manage the build cycle
 - Modify the `launch.json` settings for `args` to debug other sections of the project
-- If you need to use the built NexisClaw CLI for other tasks (i.e. `dashboard --no-open` if your debug session spawns a new auth token), you can execute it in another terminal as `node ./NexisClaw.mjs` or create a shell alias like `alias NexisClaw-build="node $(pwd)/NexisClaw.mjs"`
+- If you need to use the built FirstNexus CLI for other tasks (i.e. `dashboard --no-open` if your debug session spawns a new auth token), you can execute it in another terminal as `node ./FirstNexus.mjs` or create a shell alias like `alias FirstNexus-build="node $(pwd)/FirstNexus.mjs"`
 
 ## Related
 

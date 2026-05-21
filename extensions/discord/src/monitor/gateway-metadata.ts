@@ -1,8 +1,8 @@
 import type { APIGatewayBotInfo } from "discord-api-types/v10";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { captureHttpExchange } from "NexisClaw/plugin-sdk/proxy-capture";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { captureHttpExchange } from "FirstNexus/plugin-sdk/proxy-capture";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { Type } from "typebox";
 import { Check, Errors } from "typebox/value";
 import { isDiscordRateLimitResponseBody, summarizeDiscordResponseBody } from "../error-body.js";

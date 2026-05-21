@@ -39,5 +39,5 @@ export function resolveGatewayStateDir(env: Record<string, string | undefined>):
   }
   const home = resolveHomeDir(env);
   const suffix = resolveGatewayProfileSuffix(env.NEXISCLAW_PROFILE);
-  return path.join(home, `.NexisClaw${suffix}`);
+  return path.join(home, `.FirstNexus${suffix}`);
 }

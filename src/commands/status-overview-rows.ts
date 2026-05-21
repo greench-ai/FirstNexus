@@ -205,7 +205,7 @@ export function buildStatusAllOverviewRows(params: {
       { Item: "Config", Value: params.configPath },
     ],
     middleRows: [
-      { Item: "Security", Value: `Run: ${formatCliCommand("NexisClaw security audit --deep")}` },
+      { Item: "Security", Value: `Run: ${formatCliCommand("FirstNexus security audit --deep")}` },
     ],
     agentsValue: buildStatusAllAgentsValue({
       agentStatus: params.agentStatus,

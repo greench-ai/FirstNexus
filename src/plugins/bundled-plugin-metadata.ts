@@ -15,7 +15,7 @@ import {
 import {
   getPackageManifestMetadata,
   loadPluginManifest,
-  type NexisClawPackageManifest,
+  type FirstNexusPackageManifest,
   type PackageManifest,
   type PluginManifest,
 } from "./manifest.js";
@@ -46,7 +46,7 @@ export type BundledPluginMetadata = {
   packageName?: string;
   packageVersion?: string;
   packageDescription?: string;
-  packageManifest?: NexisClawPackageManifest;
+  packageManifest?: FirstNexusPackageManifest;
   manifest: PluginManifest;
 };
 

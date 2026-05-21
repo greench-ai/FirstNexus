@@ -7,7 +7,7 @@ export function createPluginSdkLightVitestConfig(env?: Record<string, string | u
     dir: "src",
     env,
     exclude: getUnitFastTestFiles(),
-    includeNexisClawRuntimeSetup: false,
+    includeFirstNexusRuntimeSetup: false,
     name: "plugin-sdk-light",
     passWithNoTests: true,
   });

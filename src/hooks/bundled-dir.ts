@@ -20,7 +20,7 @@ export function resolveBundledHooksDir(): string | undefined {
   }
 
   // npm: resolve `<packageRoot>/dist/hooks/bundled` relative to this module (compiled hooks).
-  // This path works when installed via npm: node_modules/NexisClaw/dist/hooks/bundled-dir.js
+  // This path works when installed via npm: node_modules/FirstNexus/dist/hooks/bundled-dir.js
   try {
     const moduleDir = path.dirname(fileURLToPath(import.meta.url));
     const distBundled = path.join(moduleDir, "bundled");

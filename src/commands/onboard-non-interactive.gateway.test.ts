@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { MigrationApplyResult, MigrationPlan } from "../plugins/types.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { makeTempWorkspace } from "../test-helpers/workspace.js";
@@ -10,7 +10,7 @@ import { createThrowingRuntime } from "./onboard-non-interactive.test-helpers.js
 import type { installGatewayDaemonNonInteractive } from "./onboard-non-interactive/local/daemon-install.js";
 
 const ensureWorkspaceAndSessionsMock = vi.fn(async (..._args: unknown[]) => {});
-const testConfigStore = new Map<string, NexisClawConfig>();
+const testConfigStore = new Map<string, FirstNexusConfig>();
 type InstallGatewayDaemonResult = Awaited<ReturnType<typeof installGatewayDaemonNonInteractive>>;
 const installGatewayDaemonNonInteractiveMock = vi.hoisted(() =>
   vi.fn(async (): Promise<InstallGatewayDaemonResult> => ({ installed: true })),
@@ -59,11 +59,11 @@ function resolveTestConfigPath() {
   if (!stateDir) {
     throw new Error("NEXISCLAW_STATE_DIR must be set before config IO in this test");
   }
-  return path.join(stateDir, "NexisClaw.json");
+  return path.join(stateDir, "FirstNexus.json");
 }
 
 // oxlint-disable-next-line typescript/no-unnecessary-type-parameters -- Test helper lets assertions ascribe stored config shape.
-function readTestConfig<T = NexisClawConfig>(): T {
+function readTestConfig<T = FirstNexusConfig>(): T {
   return (testConfigStore.get(resolveTestConfigPath()) ?? {}) as T;
 }
 
@@ -98,10 +98,10 @@ vi.mock("../config/io.js", () => ({
 }));
 
 vi.mock("../config/config.js", () => ({
-  replaceConfigFile: async ({ nextConfig }: { nextConfig: NexisClawConfig }) => {
+  replaceConfigFile: async ({ nextConfig }: { nextConfig: FirstNexusConfig }) => {
     testConfigStore.set(resolveTestConfigPath(), nextConfig);
   },
-  resolveGatewayPort: (cfg: NexisClawConfig) => cfg.gateway?.port ?? 18789,
+  resolveGatewayPort: (cfg: FirstNexusConfig) => cfg.gateway?.port ?? 18789,
 }));
 
 vi.mock("./onboard-helpers.js", () => {
@@ -113,7 +113,7 @@ vi.mock("./onboard-helpers.js", () => {
     return trimmed === "undefined" || trimmed === "null" ? "" : trimmed;
   };
   return {
-    DEFAULT_WORKSPACE: "/tmp/NexisClaw-workspace",
+    DEFAULT_WORKSPACE: "/tmp/FirstNexus-workspace",
     applyWizardMetadata: (cfg: unknown) => cfg,
     ensureWorkspaceAndSessions: ensureWorkspaceAndSessionsMock,
     normalizeGatewayTokenInput,
@@ -232,7 +232,7 @@ type EnsureWorkspaceOptions = {
 };
 
 type MigrationPlanCall = {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   includeSecrets?: boolean;
   overwrite?: boolean;
   source?: string;
@@ -249,7 +249,7 @@ type GatewayHealthCall = {
 };
 
 type HealthCommandCall = GatewayHealthCall & {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 };
 
 async function expectLocalJsonSetupFailure(stateDir: string, runtimeWithCapture: RuntimeEnv) {
@@ -258,7 +258,7 @@ async function expectLocalJsonSetupFailure(stateDir: string, runtimeWithCapture:
       {
         nonInteractive: true,
         mode: "local",
-        workspace: path.join(stateDir, "NexisClaw"),
+        workspace: path.join(stateDir, "FirstNexus"),
         authChoice: "skip",
         skipSkills: true,
         skipHealth: false,
@@ -275,7 +275,7 @@ function createLocalDaemonSetupOptions(stateDir: string) {
   return {
     nonInteractive: true,
     mode: "local" as const,
-    workspace: path.join(stateDir, "NexisClaw"),
+    workspace: path.join(stateDir, "FirstNexus"),
     authChoice: "skip" as const,
     skipSkills: true,
     skipHealth: false,
@@ -359,7 +359,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
     delete process.env.NEXISCLAW_GATEWAY_TOKEN;
     delete process.env.NEXISCLAW_GATEWAY_PASSWORD;
 
-    tempHome = await makeTempWorkspace("NexisClaw-onboard-");
+    tempHome = await makeTempWorkspace("FirstNexus-onboard-");
     process.env.HOME = tempHome;
 
     await loadGatewayOnboardModules();
@@ -389,7 +389,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
   it("writes gateway token auth into config", async () => {
     await withStateDir("state-noninteractive-", async (stateDir) => {
       const token = "tok_test_123";
-      const workspace = path.join(stateDir, "NexisClaw");
+      const workspace = path.join(stateDir, "FirstNexus");
 
       await runNonInteractiveSetup(
         {
@@ -424,7 +424,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
   it("persists skipBootstrap and skips workspace bootstrap creation", async () => {
     ensureWorkspaceAndSessionsMock.mockClear();
     await withStateDir("state-skip-bootstrap-", async (stateDir) => {
-      const workspace = path.join(stateDir, "NexisClaw");
+      const workspace = path.join(stateDir, "FirstNexus");
 
       await runNonInteractiveSetup(
         {
@@ -459,7 +459,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
   it("applies non-interactive migration imports instead of ignoring import flags", async () => {
     await withStateDir("state-noninteractive-import-", async (stateDir) => {
       const source = path.join(stateDir, "hermes-home");
-      const workspace = path.join(stateDir, "NexisClaw");
+      const workspace = path.join(stateDir, "FirstNexus");
       const planned: MigrationPlan = {
         providerId: "hermes",
         source,
@@ -570,7 +570,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
           {
             nonInteractive: true,
             mode: "local",
-            workspace: path.join(stateDir, "NexisClaw"),
+            workspace: path.join(stateDir, "FirstNexus"),
             authChoice: "skip",
             skipSkills: true,
             skipHealth: false,
@@ -722,7 +722,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
       expect(parsed.installDaemon).toBe(true);
       expect(parsed.detail).toContain("1006 abnormal closure");
       expect(parsed.gateway?.wsUrl).toContain("ws://127.0.0.1:");
-      expect(parsed.hints).toContain("Run `NexisClaw gateway status --deep` for more detail.");
+      expect(parsed.hints).toContain("Run `FirstNexus gateway status --deep` for more detail.");
       expect(parsed.diagnostics?.service?.label).toBe("LaunchAgent");
       expect(parsed.diagnostics?.service?.loaded).toBe(true);
       expect(parsed.diagnostics?.service?.runtimeStatus).toBe("running");
@@ -756,7 +756,7 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
       expect(parsed.ok).toBe(false);
       expect(parsed.phase).toBe("gateway-health");
       expect(parsed.classification).toBe("service-stopped");
-      expect(parsed.hints).toContain("Fix: run `NexisClaw gateway restart`.");
+      expect(parsed.hints).toContain("Fix: run `FirstNexus gateway restart`.");
     });
   }, 60_000);
 
@@ -767,10 +767,10 @@ describe("onboard (non-interactive): gateway and remote auth", () => {
     }
     await withStateDir("state-lan-", async (stateDir) => {
       process.env.NEXISCLAW_STATE_DIR = stateDir;
-      process.env.NEXISCLAW_CONFIG_PATH = path.join(stateDir, "NexisClaw.json");
+      process.env.NEXISCLAW_CONFIG_PATH = path.join(stateDir, "FirstNexus.json");
 
       const port = getPseudoPort(40_000);
-      const workspace = path.join(stateDir, "NexisClaw");
+      const workspace = path.join(stateDir, "FirstNexus");
 
       await runNonInteractiveSetup(
         {

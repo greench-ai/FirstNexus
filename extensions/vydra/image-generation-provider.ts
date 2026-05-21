@@ -1,6 +1,6 @@
-import type { ImageGenerationProvider } from "NexisClaw/plugin-sdk/image-generation";
-import { isProviderApiKeyConfigured } from "NexisClaw/plugin-sdk/provider-auth";
-import { assertOkOrThrowHttpError, postJsonRequest } from "NexisClaw/plugin-sdk/provider-http";
+import type { ImageGenerationProvider } from "FirstNexus/plugin-sdk/image-generation";
+import { isProviderApiKeyConfigured } from "FirstNexus/plugin-sdk/provider-auth";
+import { assertOkOrThrowHttpError, postJsonRequest } from "FirstNexus/plugin-sdk/provider-http";
 import {
   DEFAULT_VYDRA_IMAGE_MODEL,
   downloadVydraAsset,

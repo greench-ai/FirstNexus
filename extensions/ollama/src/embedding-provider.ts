@@ -1,21 +1,21 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/provider-auth";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/provider-auth";
 import {
   isKnownEnvApiKeyMarker,
   isNonSecretApiKeyMarker,
   normalizeOptionalSecretInput,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveEnvApiKey } from "NexisClaw/plugin-sdk/provider-auth-runtime";
-import { normalizeProviderId } from "NexisClaw/plugin-sdk/provider-model-shared";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveEnvApiKey } from "FirstNexus/plugin-sdk/provider-auth-runtime";
+import { normalizeProviderId } from "FirstNexus/plugin-sdk/provider-model-shared";
 import {
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
-} from "NexisClaw/plugin-sdk/secret-input";
+} from "FirstNexus/plugin-sdk/secret-input";
 import {
   fetchWithSsrFGuard,
   formatErrorMessage,
   ssrfPolicyFromHttpBaseUrlAllowedHostname,
   type SsrFPolicy,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { OLLAMA_CLOUD_BASE_URL } from "./defaults.js";
 import { normalizeOllamaWireModelId } from "./model-id.js";
 import { readProviderBaseUrl } from "./provider-base-url.js";
@@ -30,7 +30,7 @@ export type OllamaEmbeddingProvider = {
 };
 
 type OllamaEmbeddingOptions = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   agentDir?: string;
   provider?: string;
   remote?: {

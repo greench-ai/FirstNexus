@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { getTailnetHostname } from "../infra/tailscale.js";
 import type { MemoryProviderStatus } from "../memory-host-sdk/engine-storage.js";
 import { getActiveMemorySearchManager } from "../plugins/memory-runtime.js";
@@ -13,7 +13,7 @@ type StatusMemoryManager = {
 };
 
 export async function getMemorySearchManager(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   purpose: "status";
 }): Promise<{ manager: StatusMemoryManager | null }> {

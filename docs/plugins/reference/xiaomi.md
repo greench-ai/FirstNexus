@@ -1,5 +1,5 @@
 ---
-summary: "Adds Xiaomi model provider support to NexisClaw."
+summary: "Adds Xiaomi model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the xiaomi plugin
 title: "Xiaomi plugin"
@@ -7,12 +7,12 @@ title: "Xiaomi plugin"
 
 # Xiaomi plugin
 
-Adds Xiaomi model provider support to NexisClaw.
+Adds Xiaomi model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/xiaomi-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/xiaomi-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

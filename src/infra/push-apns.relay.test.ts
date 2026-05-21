@@ -195,7 +195,7 @@ describe("push-apns.relay", () => {
         verifyDeviceSignature(
           relayGatewayIdentity.publicKey,
           [
-            "NexisClaw-relay-send-v1",
+            "FirstNexus-relay-send-v1",
             sent?.gatewayDeviceId,
             String(sent?.signedAtMs),
             sent?.bodyJson,

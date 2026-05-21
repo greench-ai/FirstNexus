@@ -5,7 +5,7 @@ import {
   runHarnessContextEngineMaintenance,
   type CompactEmbeddedPiSessionParams,
   type EmbeddedPiCompactResult,
-} from "NexisClaw/plugin-sdk/agent-harness-runtime";
+} from "FirstNexus/plugin-sdk/agent-harness-runtime";
 import {
   createCodexAppServerClientFactoryTestHooks,
   defaultCodexAppServerClientFactory,

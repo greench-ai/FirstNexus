@@ -305,7 +305,7 @@ const VITEST_CONFIG_BY_KIND = {
 const BROAD_CHANGED_FALLBACK_PATTERNS = [
   /^package\.json$/u,
   /^pnpm-lock\.yaml$/u,
-  /^test\/setup(?:\.shared|\.extensions|-NexisClaw-runtime)?\.ts$/u,
+  /^test\/setup(?:\.shared|\.extensions|-FirstNexus-runtime)?\.ts$/u,
   /^vitest(?:\..+)?\.(?:config\.ts|paths\.mjs)$/u,
   /^test\/vitest\/vitest\.(?:config|shared\.config|scoped-config|performance-config)\.ts$/u,
   /^test\/helpers\//u,
@@ -329,7 +329,7 @@ const TOOLING_SOURCE_TEST_TARGETS = new Map([
     ["test/scripts/check-deadcode-unused-files.test.ts"],
   ],
   ["scripts/lib/live-docker-stage.sh", ["test/scripts/live-docker-stage.test.ts"]],
-  ["scripts/lib/NexisClaw-test-state.mjs", ["test/scripts/NexisClaw-test-state.test.ts"]],
+  ["scripts/lib/FirstNexus-test-state.mjs", ["test/scripts/FirstNexus-test-state.test.ts"]],
   ["scripts/lib/vitest-local-scheduling.mjs", ["test/scripts/vitest-local-scheduling.test.ts"]],
   [
     "scripts/mantis/build-telegram-evidence.mjs",
@@ -388,7 +388,7 @@ const TOOLING_TEST_TARGETS = new Map([
     ["test/scripts/check-deadcode-unused-files.test.ts"],
   ],
   ["test/scripts/live-docker-stage.test.ts", ["test/scripts/live-docker-stage.test.ts"]],
-  ["test/scripts/NexisClaw-test-state.test.ts", ["test/scripts/NexisClaw-test-state.test.ts"]],
+  ["test/scripts/FirstNexus-test-state.test.ts", ["test/scripts/FirstNexus-test-state.test.ts"]],
   [
     "test/scripts/mantis-publish-pr-evidence.test.ts",
     ["test/scripts/mantis-publish-pr-evidence.test.ts"],
@@ -425,7 +425,7 @@ const GROUP_VISIBLE_REPLY_PROMPT_TEST_TARGETS = [
 ];
 const SOURCE_TEST_TARGETS = new Map([
   ...PRECISE_SOURCE_TEST_TARGETS,
-  ["src/test-utils/NexisClaw-test-state.ts", ["src/test-utils/NexisClaw-test-state.test.ts"]],
+  ["src/test-utils/FirstNexus-test-state.ts", ["src/test-utils/FirstNexus-test-state.test.ts"]],
   [
     "src/plugin-sdk/test-helpers/directory-ids.ts",
     [
@@ -1481,7 +1481,10 @@ export function buildFullSuiteVitestRunPlans(args, cwd = process.cwd()) {
       },
     ];
   }
-  const parallelShardCount = Number.parseInt(process.env.NEXISCLAW_TEST_PROJECTS_PARALLEL ?? "", 10);
+  const parallelShardCount = Number.parseInt(
+    process.env.NEXISCLAW_TEST_PROJECTS_PARALLEL ?? "",
+    10,
+  );
   const expandToProjectConfigs =
     process.env.NEXISCLAW_TEST_PROJECTS_LEAF_SHARDS === "1" ||
     (Number.isFinite(parallelShardCount) && parallelShardCount > 1) ||
@@ -1644,7 +1647,7 @@ export function createVitestRunSpecs(args, params = {}) {
     const includeFilePath = plan.includePatterns
       ? path.join(
           params.tempDir ?? os.tmpdir(),
-          `NexisClaw-vitest-include-${process.pid}-${Date.now()}-${index}.json`,
+          `FirstNexus-vitest-include-${process.pid}-${Date.now()}-${index}.json`,
         )
       : null;
     return {

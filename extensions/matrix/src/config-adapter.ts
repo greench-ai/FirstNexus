@@ -1,8 +1,8 @@
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/account-id";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/account-id";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
 import {
   listMatrixAccountIds,
   resolveDefaultMatrixAccountId,

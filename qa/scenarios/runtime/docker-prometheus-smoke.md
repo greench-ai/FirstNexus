@@ -118,16 +118,16 @@ steps:
         value:
           expr: "String(authenticatedScrape.text ?? '')"
       - assert:
-          expr: "prometheusText.includes('# TYPE NexisClaw_run_completed_total counter')"
+          expr: "prometheusText.includes('# TYPE FirstNexus_run_completed_total counter')"
           message: "missing run completion counter"
       - assert:
-          expr: "prometheusText.includes('# TYPE NexisClaw_run_duration_seconds histogram')"
+          expr: "prometheusText.includes('# TYPE FirstNexus_run_duration_seconds histogram')"
           message: "missing run duration histogram"
       - assert:
-          expr: "prometheusText.includes('# TYPE NexisClaw_model_call_total counter')"
+          expr: "prometheusText.includes('# TYPE FirstNexus_model_call_total counter')"
           message: "missing model call counter"
       - assert:
-          expr: "prometheusText.includes('# TYPE NexisClaw_harness_run_total counter')"
+          expr: "prometheusText.includes('# TYPE FirstNexus_harness_run_total counter')"
           message: "missing harness run counter"
       - assert:
           expr: "!prometheusText.includes(config.secretNeedle)"
@@ -148,9 +148,9 @@ steps:
           expr: "!/\\/tmp\\/|\\/private\\/tmp\\/|\\/app\\//.test(prometheusText)"
           message: "prometheus output leaked a local file path"
       - assert:
-          expr: "!prometheusText.includes('NexisClaw.content.')"
+          expr: "!prometheusText.includes('FirstNexus.content.')"
           message: "prometheus output leaked content attributes"
       - assert:
-          expr: "!/NexisClaw_prometheus_series_dropped_total(?:\\{[^}]*\\})?\\s+(?!0(?:\\.0+)?(?:\\s|$))/.test(prometheusText)"
+          expr: "!/FirstNexus_prometheus_series_dropped_total(?:\\{[^}]*\\})?\\s+(?!0(?:\\.0+)?(?:\\s|$))/.test(prometheusText)"
           message: "prometheus dropped series during the smoke"
 ```

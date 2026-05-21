@@ -1,1 +1,1 @@
-export { writeSkill } from "NexisClaw/plugin-sdk/test-fixtures";
+export { writeSkill } from "FirstNexus/plugin-sdk/test-fixtures";

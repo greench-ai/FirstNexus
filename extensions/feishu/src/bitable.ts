@@ -1,7 +1,7 @@
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import { Type, type TSchema } from "typebox";
-import type { NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusPluginApi } from "../runtime-api.js";
 import { listEnabledFeishuAccounts } from "./accounts.js";
 import { createFeishuToolClient } from "./tool-account.js";
 
@@ -570,7 +570,7 @@ const UpdateRecordSchema = Type.Object({
 
 // ============ Tool Registration ============
 
-export function registerFeishuBitableTools(api: NexisClawPluginApi) {
+export function registerFeishuBitableTools(api: FirstNexusPluginApi) {
   if (!api.config) {
     return;
   }

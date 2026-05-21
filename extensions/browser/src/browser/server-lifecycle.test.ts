@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { stopNexisClawChromeMock } = vi.hoisted(() => ({
-  stopNexisClawChromeMock: vi.fn(async () => {}),
+const { stopFirstNexusChromeMock } = vi.hoisted(() => ({
+  stopFirstNexusChromeMock: vi.fn(async () => {}),
 }));
 
 const { createBrowserRouteContextMock, listKnownProfileNamesMock } = vi.hoisted(() => ({
@@ -10,7 +10,7 @@ const { createBrowserRouteContextMock, listKnownProfileNamesMock } = vi.hoisted(
 }));
 
 vi.mock("./chrome.js", () => ({
-  stopNexisClawChrome: stopNexisClawChromeMock,
+  stopFirstNexusChrome: stopFirstNexusChromeMock,
 }));
 
 vi.mock("./server-context.js", () => ({
@@ -24,7 +24,7 @@ const { ensureExtensionRelayForProfiles, stopKnownBrowserProfiles } =
 beforeEach(() => {
   createBrowserRouteContextMock.mockClear();
   listKnownProfileNamesMock.mockClear();
-  stopNexisClawChromeMock.mockClear();
+  stopFirstNexusChromeMock.mockClear();
 });
 
 describe("ensureExtensionRelayForProfiles", () => {
@@ -40,9 +40,9 @@ describe("ensureExtensionRelayForProfiles", () => {
 
 describe("stopKnownBrowserProfiles", () => {
   it("stops all known profiles and ignores per-profile failures", async () => {
-    listKnownProfileNamesMock.mockReturnValue(["NexisClaw", "user"]);
+    listKnownProfileNamesMock.mockReturnValue(["FirstNexus", "user"]);
     const stopMap: Record<string, ReturnType<typeof vi.fn>> = {
-      NexisClaw: vi.fn(async () => {}),
+      FirstNexus: vi.fn(async () => {}),
       user: vi.fn(async () => {
         throw new Error("profile stop failed");
       }),
@@ -60,7 +60,7 @@ describe("stopKnownBrowserProfiles", () => {
       onWarn,
     });
 
-    expect(stopMap.NexisClaw).toHaveBeenCalledTimes(1);
+    expect(stopMap.FirstNexus).toHaveBeenCalledTimes(1);
     expect(stopMap.user).toHaveBeenCalledTimes(1);
     expect(onWarn).not.toHaveBeenCalled();
   });
@@ -75,7 +75,7 @@ describe("stopKnownBrowserProfiles", () => {
     const localRuntime = {
       profile: {
         name: "deleted-local",
-        driver: "NexisClaw",
+        driver: "FirstNexus",
       },
       running: {
         pid: 42,
@@ -94,7 +94,7 @@ describe("stopKnownBrowserProfiles", () => {
       onWarn: vi.fn(),
     });
 
-    expect(stopNexisClawChromeMock).toHaveBeenCalledWith(launchedBrowser);
+    expect(stopFirstNexusChromeMock).toHaveBeenCalledWith(launchedBrowser);
     expect(localRuntime.running).toBeNull();
   });
 
@@ -112,6 +112,6 @@ describe("stopKnownBrowserProfiles", () => {
       onWarn,
     });
 
-    expect(onWarn).toHaveBeenCalledWith("NexisClaw browser stop failed: Error: oops");
+    expect(onWarn).toHaveBeenCalledWith("FirstNexus browser stop failed: Error: oops");
   });
 });

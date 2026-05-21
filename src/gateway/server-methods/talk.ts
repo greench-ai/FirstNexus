@@ -6,7 +6,7 @@ import {
   resolveActiveTalkProviderConfig,
 } from "../../config/talk.js";
 import type { TalkConfigResponse, TalkProviderConfig } from "../../config/types.gateway.js";
-import type { NexisClawConfig, TtsConfig, TtsProviderConfigMap } from "../../config/types.js";
+import type { FirstNexusConfig, TtsConfig, TtsProviderConfigMap } from "../../config/types.js";
 import { listRealtimeTranscriptionProviders } from "../../realtime-transcription/provider-registry.js";
 import {
   normalizeLowercaseStringOrEmpty,
@@ -105,9 +105,9 @@ function resolveTalkVoiceId(
 }
 
 function buildTalkTtsConfig(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
 ):
-  | { cfg: NexisClawConfig; provider: string; providerConfig: TalkProviderConfig }
+  | { cfg: FirstNexusConfig; provider: string; providerConfig: TalkProviderConfig }
   | { error: string; reason: TalkSpeakReason } {
   const resolved = resolveActiveTalkProviderConfig(config.talk);
   const provider = canonicalizeSpeechProviderId(resolved?.provider, config);
@@ -158,7 +158,7 @@ function buildTalkTtsConfig(
   };
 }
 
-function buildTalkCatalog(config: NexisClawConfig) {
+function buildTalkCatalog(config: FirstNexusConfig) {
   const ttsConfig = resolveTtsConfig(config);
   const talkResolved = resolveActiveTalkProviderConfig(config.talk);
   const activeSpeechProvider = canonicalizeSpeechProviderId(talkResolved?.provider, config);
@@ -302,7 +302,7 @@ function resolveTalkSpeed(params: TalkSpeakParams): number | undefined {
 function buildTalkSpeakOverrides(
   provider: string,
   providerConfig: TalkProviderConfig,
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   params: TalkSpeakParams,
 ): TtsDirectiveOverrides {
   const speechProvider = getSpeechProvider(provider, config);
@@ -366,8 +366,8 @@ function inferMimeType(
 
 function resolveTalkResponseFromConfig(params: {
   includeSecrets: boolean;
-  sourceConfig: NexisClawConfig;
-  runtimeConfig: NexisClawConfig;
+  sourceConfig: FirstNexusConfig;
+  runtimeConfig: FirstNexusConfig;
 }): TalkConfigResponse | undefined {
   const normalizedTalk = normalizeTalkSection(params.sourceConfig.talk);
   if (!normalizedTalk) {

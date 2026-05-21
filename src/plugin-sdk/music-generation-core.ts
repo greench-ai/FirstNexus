@@ -6,7 +6,7 @@
 
 export type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 export type { FallbackAttempt } from "../agents/model-fallback.types.js";
-export type { NexisClawConfig } from "../config/types.NexisClaw.js";
+export type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 export type { MusicGenerationProviderPlugin } from "../plugins/types.js";
 export type {
   GeneratedMusicAsset,

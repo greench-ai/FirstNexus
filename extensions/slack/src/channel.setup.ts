@@ -1,8 +1,8 @@
-import { formatAllowFromLowercase } from "NexisClaw/plugin-sdk/allow-from";
+import { formatAllowFromLowercase } from "FirstNexus/plugin-sdk/allow-from";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
 import { type ResolvedSlackAccount } from "./accounts.js";
 import {
   listSlackAccountIds,

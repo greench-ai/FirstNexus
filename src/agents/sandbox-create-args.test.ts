@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { NEXISCLAW_CLI_ENV_VALUE } from "../infra/NexisClaw-exec-env.js";
+import { NEXISCLAW_CLI_ENV_VALUE } from "../infra/FirstNexus-exec-env.js";
 import { buildSandboxCreateArgs } from "./sandbox/docker.js";
 import type { SandboxDockerConfig } from "./sandbox/types.js";
 
@@ -9,8 +9,8 @@ describe("buildSandboxCreateArgs", () => {
     binds?: string[],
   ): SandboxDockerConfig {
     return {
-      image: "NexisClaw-sandbox:bookworm-slim",
-      containerPrefix: "NexisClaw-sbx-",
+      image: "FirstNexus-sandbox:bookworm-slim",
+      containerPrefix: "FirstNexus-sbx-",
       workdir: "/workspace",
       readOnlyRoot: false,
       tmpfs: [],
@@ -60,8 +60,8 @@ describe("buildSandboxCreateArgs", () => {
 
   it("includes hardening and resource flags", () => {
     const cfg: SandboxDockerConfig = {
-      image: "NexisClaw-sandbox:bookworm-slim",
-      containerPrefix: "NexisClaw-sbx-",
+      image: "FirstNexus-sandbox:bookworm-slim",
+      containerPrefix: "FirstNexus-sbx-",
       workdir: "/workspace",
       readOnlyRoot: true,
       tmpfs: ["/tmp"],
@@ -79,26 +79,26 @@ describe("buildSandboxCreateArgs", () => {
         core: "0",
       },
       seccompProfile: "/tmp/seccomp.json",
-      apparmorProfile: "NexisClaw-sandbox",
+      apparmorProfile: "FirstNexus-sandbox",
       dns: ["1.1.1.1"],
       extraHosts: ["internal.service:10.0.0.5"],
     };
 
     const args = buildSandboxCreateArgs({
-      name: "NexisClaw-sbx-test",
+      name: "FirstNexus-sbx-test",
       cfg,
       scopeKey: "main",
       createdAtMs: 1700000000000,
-      labels: { "NexisClaw.sandboxBrowser": "1" },
+      labels: { "FirstNexus.sandboxBrowser": "1" },
     });
 
     expect(args[0]).toBe("create");
-    expectFlagValues(args, "--name", ["NexisClaw-sbx-test"]);
+    expectFlagValues(args, "--name", ["FirstNexus-sbx-test"]);
     expectFlagValues(args, "--label", [
-      "NexisClaw.sandbox=1",
-      "NexisClaw.sessionKey=main",
-      "NexisClaw.createdAtMs=1700000000000",
-      "NexisClaw.sandboxBrowser=1",
+      "FirstNexus.sandbox=1",
+      "FirstNexus.sessionKey=main",
+      "FirstNexus.createdAtMs=1700000000000",
+      "FirstNexus.sandboxBrowser=1",
     ]);
     expect(args).toContain("--read-only");
     expectFlagValues(args, "--tmpfs", ["/tmp"]);
@@ -108,7 +108,7 @@ describe("buildSandboxCreateArgs", () => {
     expectFlagValues(args, "--security-opt", [
       "no-new-privileges",
       "seccomp=/tmp/seccomp.json",
-      "apparmor=NexisClaw-sandbox",
+      "apparmor=FirstNexus-sandbox",
     ]);
     expectFlagValues(args, "--dns", ["1.1.1.1"]);
     expectFlagValues(args, "--add-host", ["internal.service:10.0.0.5"]);
@@ -120,7 +120,7 @@ describe("buildSandboxCreateArgs", () => {
     expectFlagValues(args, "--ulimit", ["nofile=1024:2048", "nproc=128", "core=0"]);
   });
 
-  it("preserves the NexisClaw exec marker when strict env sanitization is enabled", () => {
+  it("preserves the FirstNexus exec marker when strict env sanitization is enabled", () => {
     const cfg = createSandboxConfig({
       env: {
         NODE_ENV: "test",
@@ -128,7 +128,7 @@ describe("buildSandboxCreateArgs", () => {
     });
 
     const args = buildSandboxCreateArgs({
-      name: "NexisClaw-sbx-marker",
+      name: "FirstNexus-sbx-marker",
       cfg,
       scopeKey: "main",
       createdAtMs: 1700000000000,
@@ -146,7 +146,7 @@ describe("buildSandboxCreateArgs", () => {
     });
 
     const args = buildSandboxCreateArgs({
-      name: "NexisClaw-sbx-gpu",
+      name: "FirstNexus-sbx-gpu",
       cfg,
       scopeKey: "main",
       createdAtMs: 1700000000000,
@@ -157,8 +157,8 @@ describe("buildSandboxCreateArgs", () => {
 
   it("emits -v flags for safe custom binds", () => {
     const cfg: SandboxDockerConfig = {
-      image: "NexisClaw-sandbox:bookworm-slim",
-      containerPrefix: "NexisClaw-sbx-",
+      image: "FirstNexus-sandbox:bookworm-slim",
+      containerPrefix: "FirstNexus-sbx-",
       workdir: "/workspace",
       readOnlyRoot: false,
       tmpfs: [],
@@ -168,7 +168,7 @@ describe("buildSandboxCreateArgs", () => {
     };
 
     const args = buildSandboxCreateArgs({
-      name: "NexisClaw-sbx-binds",
+      name: "FirstNexus-sbx-binds",
       cfg,
       scopeKey: "main",
       createdAtMs: 1700000000000,
@@ -191,37 +191,37 @@ describe("buildSandboxCreateArgs", () => {
   it.each([
     {
       name: "dangerous Docker socket bind mounts",
-      containerName: "NexisClaw-sbx-dangerous",
+      containerName: "FirstNexus-sbx-dangerous",
       cfg: createSandboxConfig({}, ["/var/run/docker.sock:/var/run/docker.sock"]),
       expected: /blocked path/,
     },
     {
       name: "dangerous parent bind mounts",
-      containerName: "NexisClaw-sbx-dangerous-parent",
+      containerName: "FirstNexus-sbx-dangerous-parent",
       cfg: createSandboxConfig({}, ["/run:/run"]),
       expected: /blocked path/,
     },
     {
       name: "network host mode",
-      containerName: "NexisClaw-sbx-host",
+      containerName: "FirstNexus-sbx-host",
       cfg: createSandboxConfig({ network: "host" }),
       expected: /network mode "host" is blocked/,
     },
     {
       name: "network container namespace join",
-      containerName: "NexisClaw-sbx-container-network",
+      containerName: "FirstNexus-sbx-container-network",
       cfg: createSandboxConfig({ network: "container:peer" }),
       expected: /network mode "container:peer" is blocked by default/,
     },
     {
       name: "seccomp unconfined",
-      containerName: "NexisClaw-sbx-seccomp",
+      containerName: "FirstNexus-sbx-seccomp",
       cfg: createSandboxConfig({ seccompProfile: "unconfined" }),
       expected: /seccomp profile "unconfined" is blocked/,
     },
     {
       name: "apparmor unconfined",
-      containerName: "NexisClaw-sbx-apparmor",
+      containerName: "FirstNexus-sbx-apparmor",
       cfg: createSandboxConfig({ apparmorProfile: "unconfined" }),
       expected: /apparmor profile "unconfined" is blocked/,
     },
@@ -231,8 +231,8 @@ describe("buildSandboxCreateArgs", () => {
 
   it("omits -v flags when binds is empty or undefined", () => {
     const cfg: SandboxDockerConfig = {
-      image: "NexisClaw-sandbox:bookworm-slim",
-      containerPrefix: "NexisClaw-sbx-",
+      image: "FirstNexus-sandbox:bookworm-slim",
+      containerPrefix: "FirstNexus-sbx-",
       workdir: "/workspace",
       readOnlyRoot: false,
       tmpfs: [],
@@ -242,7 +242,7 @@ describe("buildSandboxCreateArgs", () => {
     };
 
     const args = buildSandboxCreateArgs({
-      name: "NexisClaw-sbx-no-binds",
+      name: "FirstNexus-sbx-no-binds",
       cfg,
       scopeKey: "main",
       createdAtMs: 1700000000000,
@@ -265,7 +265,7 @@ describe("buildSandboxCreateArgs", () => {
     const cfg = createSandboxConfig({}, ["/opt/external:/data:rw"]);
     expect(() =>
       buildSandboxCreateArgs({
-        name: "NexisClaw-sbx-outside-roots",
+        name: "FirstNexus-sbx-outside-roots",
         cfg,
         scopeKey: "main",
         createdAtMs: 1700000000000,
@@ -277,7 +277,7 @@ describe("buildSandboxCreateArgs", () => {
   it("allows bind sources outside runtime allowlist with explicit override", () => {
     const cfg = createSandboxConfig({}, ["/opt/external:/data:rw"]);
     const args = buildSandboxCreateArgs({
-      name: "NexisClaw-sbx-outside-roots-override",
+      name: "FirstNexus-sbx-outside-roots-override",
       cfg,
       scopeKey: "main",
       createdAtMs: 1700000000000,
@@ -289,13 +289,13 @@ describe("buildSandboxCreateArgs", () => {
 
   it("blocks reserved /workspace target bind mounts by default", () => {
     const cfg = createSandboxConfig({}, ["/tmp/override:/workspace:rw"]);
-    expectBuildToThrow("NexisClaw-sbx-reserved-target", cfg, /reserved container path/);
+    expectBuildToThrow("FirstNexus-sbx-reserved-target", cfg, /reserved container path/);
   });
 
   it("allows reserved /workspace target bind mounts with explicit dangerous override", () => {
     const cfg = createSandboxConfig({}, ["/tmp/override:/workspace:rw"]);
     const args = buildSandboxCreateArgs({
-      name: "NexisClaw-sbx-reserved-target-override",
+      name: "FirstNexus-sbx-reserved-target-override",
       cfg,
       scopeKey: "main",
       createdAtMs: 1700000000000,
@@ -310,7 +310,7 @@ describe("buildSandboxCreateArgs", () => {
       dangerouslyAllowContainerNamespaceJoin: true,
     });
     const args = buildSandboxCreateArgs({
-      name: "NexisClaw-sbx-container-network-override",
+      name: "FirstNexus-sbx-container-network-override",
       cfg,
       scopeKey: "main",
       createdAtMs: 1700000000000,

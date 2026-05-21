@@ -18,7 +18,7 @@ function makeRepoRoot(prefix: string): string {
   return makeTrackedTempDir(prefix, tempDirs);
 }
 
-function createNexisClawRoot(params: {
+function createFirstNexusRoot(params: {
   prefix: string;
   hasExtensions?: boolean;
   hasSrc?: boolean;
@@ -52,7 +52,7 @@ function createNexisClawRoot(params: {
   }
   fs.writeFileSync(
     path.join(repoRoot, "package.json"),
-    `${JSON.stringify({ name: "NexisClaw" }, null, 2)}\n`,
+    `${JSON.stringify({ name: "FirstNexus" }, null, 2)}\n`,
     "utf8",
   );
   return repoRoot;
@@ -63,11 +63,11 @@ function seedBundledPluginTree(rootDir: string, relativeDir: string, pluginId = 
   fs.mkdirSync(pluginDir, { recursive: true });
   fs.writeFileSync(
     path.join(pluginDir, "package.json"),
-    `${JSON.stringify({ name: `@NexisClaw/${pluginId}` }, null, 2)}\n`,
+    `${JSON.stringify({ name: `@FirstNexus/${pluginId}` }, null, 2)}\n`,
     "utf8",
   );
   fs.writeFileSync(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     `${JSON.stringify({ id: pluginId }, null, 2)}\n`,
     "utf8",
   );
@@ -119,7 +119,7 @@ function expectResolvedBundledDirFromRoot(params: {
   expectResolvedBundledDir({
     cwd: params.cwd ?? params.repoRoot,
     expectedDir: path.join(params.repoRoot, params.expectedRelativeDir),
-    argv1: params.argv1 ?? path.join(params.repoRoot, "NexisClaw.mjs"),
+    argv1: params.argv1 ?? path.join(params.repoRoot, "FirstNexus.mjs"),
     ...(params.bundledDirOverride ? { bundledDirOverride: params.bundledDirOverride } : {}),
     ...(params.vitest !== undefined ? { vitest: params.vitest } : {}),
     ...(params.execArgv ? { execArgv: params.execArgv } : {}),
@@ -187,7 +187,7 @@ describe("resolveBundledPluginsDir", () => {
     [
       "prefers the runtime bundled plugin tree from the package root",
       {
-        prefix: "NexisClaw-bundled-dir-runtime-",
+        prefix: "FirstNexus-bundled-dir-runtime-",
         hasDistRuntimeExtensions: true,
         hasDistExtensions: true,
       },
@@ -198,7 +198,7 @@ describe("resolveBundledPluginsDir", () => {
     [
       "falls back to built dist/extensions in installed package roots",
       {
-        prefix: "NexisClaw-bundled-dir-dist-",
+        prefix: "FirstNexus-bundled-dir-dist-",
         hasDistExtensions: true,
       },
       {
@@ -208,7 +208,7 @@ describe("resolveBundledPluginsDir", () => {
     [
       "prefers built dist/extensions in a pnpm git checkout outside vitest",
       {
-        prefix: "NexisClaw-bundled-dir-git-built-",
+        prefix: "FirstNexus-bundled-dir-git-built-",
         hasExtensions: true,
         hasSrc: true,
         hasDistRuntimeExtensions: true,
@@ -223,7 +223,7 @@ describe("resolveBundledPluginsDir", () => {
     [
       "does not prefer source extensions from VITEST alone",
       {
-        prefix: "NexisClaw-bundled-dir-vitest-",
+        prefix: "FirstNexus-bundled-dir-vitest-",
         hasExtensions: true,
         hasDistRuntimeExtensions: true,
         hasDistExtensions: true,
@@ -236,7 +236,7 @@ describe("resolveBundledPluginsDir", () => {
     [
       "prefers built dist/extensions during tsx-driven pnpm source execution",
       {
-        prefix: "NexisClaw-bundled-dir-tsx-built-",
+        prefix: "FirstNexus-bundled-dir-tsx-built-",
         hasExtensions: true,
         hasSrc: true,
         hasDistRuntimeExtensions: true,
@@ -252,7 +252,7 @@ describe("resolveBundledPluginsDir", () => {
     [
       "uses source extensions in a pnpm git checkout when built trees are missing",
       {
-        prefix: "NexisClaw-bundled-dir-git-",
+        prefix: "FirstNexus-bundled-dir-git-",
         hasExtensions: true,
         hasSrc: true,
         hasGitCheckout: true,
@@ -263,7 +263,7 @@ describe("resolveBundledPluginsDir", () => {
       },
     ],
   ] as const)("%s", (_name, layout, expectation) => {
-    const repoRoot = createNexisClawRoot(layout);
+    const repoRoot = createFirstNexusRoot(layout);
     if (expectation.expectedRelativeDir === path.join("dist-runtime", "extensions")) {
       seedBundledPluginTree(repoRoot, path.join("dist", "extensions"));
       seedBundledPluginTree(repoRoot, path.join("dist-runtime", "extensions"));
@@ -281,8 +281,8 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("falls back to source extensions when dist trees exist but do not contain real plugin manifests", () => {
-    const repoRoot = createNexisClawRoot({
-      prefix: "NexisClaw-bundled-dir-incomplete-built-",
+    const repoRoot = createFirstNexusRoot({
+      prefix: "FirstNexus-bundled-dir-incomplete-built-",
       hasExtensions: true,
       hasSrc: true,
       hasDistRuntimeExtensions: true,
@@ -303,8 +303,8 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("keeps built bundled plugins for git-looking trees without pnpm workspace metadata", () => {
-    const repoRoot = createNexisClawRoot({
-      prefix: "NexisClaw-bundled-dir-git-no-pnpm-",
+    const repoRoot = createFirstNexusRoot({
+      prefix: "FirstNexus-bundled-dir-git-no-pnpm-",
       hasExtensions: true,
       hasSrc: true,
       hasDistRuntimeExtensions: true,
@@ -322,8 +322,8 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("reports missing pnpm workspace deps for source checkouts", () => {
-    const repoRoot = createNexisClawRoot({
-      prefix: "NexisClaw-bundled-dir-source-deps-",
+    const repoRoot = createFirstNexusRoot({
+      prefix: "FirstNexus-bundled-dir-source-deps-",
       hasExtensions: true,
       hasSrc: true,
       hasGitCheckout: true,
@@ -331,12 +331,12 @@ describe("resolveBundledPluginsDir", () => {
     });
     seedBundledPluginTree(repoRoot, "extensions", "twitch");
     vi.spyOn(process, "cwd").mockReturnValue(repoRoot);
-    process.argv[1] = path.join(repoRoot, "NexisClaw.mjs");
+    process.argv[1] = path.join(repoRoot, "FirstNexus.mjs");
 
     expect(resolveSourceCheckoutDependencyDiagnostic()).toEqual({
       source: repoRoot,
       message:
-        "NexisClaw source checkout detected without pnpm workspace dependencies; run `pnpm install` from the repo root so bundled plugins can load package-local dependencies.",
+        "FirstNexus source checkout detected without pnpm workspace dependencies; run `pnpm install` from the repo root so bundled plugins can load package-local dependencies.",
     });
 
     process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS = "1";
@@ -348,8 +348,8 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("returns a stable empty bundled plugin directory when bundled plugins are disabled", () => {
-    const repoRoot = createNexisClawRoot({
-      prefix: "NexisClaw-bundled-dir-disabled-",
+    const repoRoot = createFirstNexusRoot({
+      prefix: "FirstNexus-bundled-dir-disabled-",
       hasExtensions: true,
       hasSrc: true,
       hasGitCheckout: true,
@@ -366,8 +366,8 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("separates tilde override cache entries by NEXISCLAW_HOME", () => {
-    const homeA = makeRepoRoot("NexisClaw-bundled-dir-home-a-");
-    const homeB = makeRepoRoot("NexisClaw-bundled-dir-home-b-");
+    const homeA = makeRepoRoot("FirstNexus-bundled-dir-home-a-");
+    const homeB = makeRepoRoot("FirstNexus-bundled-dir-home-b-");
     seedBundledPluginTree(homeA, "bundled", "memory-core");
     seedBundledPluginTree(homeB, "bundled", "discord");
     const envBase = {
@@ -384,14 +384,14 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("ignores an existing override under an argv1-derived fake package root", () => {
-    const installedRoot = createNexisClawRoot({
-      prefix: "NexisClaw-bundled-dir-argv-override-reject-",
+    const installedRoot = createFirstNexusRoot({
+      prefix: "FirstNexus-bundled-dir-argv-override-reject-",
       hasDistExtensions: true,
     });
     seedBundledPluginTree(installedRoot, path.join("dist", "extensions"));
 
     vi.spyOn(process, "cwd").mockReturnValue(installedRoot);
-    process.argv[1] = path.join(installedRoot, "NexisClaw.mjs");
+    process.argv[1] = path.join(installedRoot, "FirstNexus.mjs");
     process.execArgv.length = 0;
     delete process.env.VITEST;
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = path.join(installedRoot, "dist", "extensions");
@@ -405,7 +405,7 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("does not let VITEST relax existing override trust checks", () => {
-    const overrideRoot = makeRepoRoot("NexisClaw-bundled-dir-vitest-override-reject-");
+    const overrideRoot = makeRepoRoot("FirstNexus-bundled-dir-vitest-override-reject-");
     seedBundledPluginTree(overrideRoot, "extensions", "memory-core");
 
     vi.spyOn(process, "cwd").mockReturnValue(overrideRoot);
@@ -424,8 +424,8 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("does not let VITEST add cwd to bundled plugin resolution candidates", () => {
-    const cwdRepoRoot = createNexisClawRoot({
-      prefix: "NexisClaw-bundled-dir-vitest-cwd-",
+    const cwdRepoRoot = createFirstNexusRoot({
+      prefix: "FirstNexus-bundled-dir-vitest-cwd-",
       hasExtensions: true,
       hasSrc: true,
       hasGitCheckout: true,
@@ -447,12 +447,12 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("falls back from a missing override instead of returning an untrusted future path", () => {
-    vi.spyOn(process, "cwd").mockReturnValue(makeRepoRoot("NexisClaw-bundled-dir-missing-cwd-"));
+    vi.spyOn(process, "cwd").mockReturnValue(makeRepoRoot("FirstNexus-bundled-dir-missing-cwd-"));
     process.argv[1] = "/usr/bin/env";
     process.execArgv.length = 0;
     delete process.env.VITEST;
     const missingOverride = path.join(
-      makeRepoRoot("NexisClaw-bundled-dir-missing-override-"),
+      makeRepoRoot("FirstNexus-bundled-dir-missing-override-"),
       "extensions",
     );
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = missingOverride;
@@ -464,16 +464,16 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("falls back to argv root when an existing rejected override is unrelated", () => {
-    const installedRoot = createNexisClawRoot({
-      prefix: "NexisClaw-bundled-dir-rejected-override-argv-",
+    const installedRoot = createFirstNexusRoot({
+      prefix: "FirstNexus-bundled-dir-rejected-override-argv-",
       hasDistExtensions: true,
     });
     seedBundledPluginTree(installedRoot, path.join("dist", "extensions"));
-    const overrideRoot = makeRepoRoot("NexisClaw-bundled-dir-rejected-override-");
+    const overrideRoot = makeRepoRoot("FirstNexus-bundled-dir-rejected-override-");
     seedBundledPluginTree(overrideRoot, "extensions", "memory-core");
 
-    vi.spyOn(process, "cwd").mockReturnValue(makeRepoRoot("NexisClaw-bundled-dir-rejected-cwd-"));
-    process.argv[1] = path.join(installedRoot, "NexisClaw.mjs");
+    vi.spyOn(process, "cwd").mockReturnValue(makeRepoRoot("FirstNexus-bundled-dir-rejected-cwd-"));
+    process.argv[1] = path.join(installedRoot, "FirstNexus.mjs");
     process.execArgv.length = 0;
     delete process.env.VITEST;
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = path.join(overrideRoot, "extensions");
@@ -487,8 +487,8 @@ describe("resolveBundledPluginsDir", () => {
   });
 
   it("does not resolve bundled plugins from cwd when argv1 is not a package root", () => {
-    const cwdRepoRoot = createNexisClawRoot({
-      prefix: "NexisClaw-bundled-dir-untrusted-cwd-",
+    const cwdRepoRoot = createFirstNexusRoot({
+      prefix: "FirstNexus-bundled-dir-untrusted-cwd-",
       hasExtensions: true,
       hasSrc: true,
       hasGitCheckout: true,
@@ -517,13 +517,13 @@ describe("resolveBundledPluginsDir", () => {
     {
       name: "prefers the running CLI package root over an unrelated cwd checkout",
       createScenario: () => {
-        const installedRoot = createNexisClawRoot({
-          prefix: "NexisClaw-bundled-dir-installed-",
+        const installedRoot = createFirstNexusRoot({
+          prefix: "FirstNexus-bundled-dir-installed-",
           hasDistExtensions: true,
         });
         seedBundledPluginTree(installedRoot, path.join("dist", "extensions"));
-        const cwdRepoRoot = createNexisClawRoot({
-          prefix: "NexisClaw-bundled-dir-cwd-",
+        const cwdRepoRoot = createFirstNexusRoot({
+          prefix: "FirstNexus-bundled-dir-cwd-",
           hasExtensions: true,
           hasSrc: true,
           hasGitCheckout: true,
@@ -531,21 +531,21 @@ describe("resolveBundledPluginsDir", () => {
         return {
           installedRoot,
           cwd: cwdRepoRoot,
-          argv1: path.join(installedRoot, "NexisClaw.mjs"),
+          argv1: path.join(installedRoot, "FirstNexus.mjs"),
         };
       },
     },
     {
       name: "falls back to the running installed package when the override path is stale",
       createScenario: () => {
-        const installedRoot = createNexisClawRoot({
-          prefix: "NexisClaw-bundled-dir-override-",
+        const installedRoot = createFirstNexusRoot({
+          prefix: "FirstNexus-bundled-dir-override-",
           hasDistExtensions: true,
         });
         seedBundledPluginTree(installedRoot, path.join("dist", "extensions"));
         return {
           installedRoot,
-          argv1: path.join(installedRoot, "NexisClaw.mjs"),
+          argv1: path.join(installedRoot, "FirstNexus.mjs"),
           bundledDirOverride: path.join(installedRoot, "missing-extensions"),
         };
       },

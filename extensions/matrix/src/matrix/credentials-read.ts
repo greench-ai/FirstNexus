@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   requiresExplicitMatrixDefaultAccount,
   resolveMatrixDefaultOrOnlyAccountId,
@@ -45,7 +45,7 @@ function resolveStateDir(env: NodeJS.ProcessEnv): string {
       return path.resolve(override);
     }
     const homeDir = env.NEXISCLAW_HOME?.trim() || env.HOME?.trim() || os.homedir();
-    return path.join(homeDir, ".NexisClaw");
+    return path.join(homeDir, ".FirstNexus");
   }
 }
 
@@ -55,7 +55,7 @@ function resolveLegacyMatrixCredentialsPath(env: NodeJS.ProcessEnv): string {
 
 function shouldReadLegacyCredentialsForAccount(accountId?: string | null): boolean {
   const normalizedAccountId = normalizeAccountId(accountId);
-  const cfg = getMatrixRuntime().config.current() as NexisClawConfig;
+  const cfg = getMatrixRuntime().config.current() as FirstNexusConfig;
   if (!cfg.channels?.matrix || typeof cfg.channels.matrix !== "object") {
     return normalizedAccountId === DEFAULT_ACCOUNT_ID;
   }

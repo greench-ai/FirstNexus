@@ -1,6 +1,6 @@
 import { getModel, type Api, type Model } from "@earendil-works/pi-ai";
+import type { ProviderRuntimeModel } from "FirstNexus/plugin-sdk/plugin-entry";
 import OpenAI from "openai";
-import type { ProviderRuntimeModel } from "NexisClaw/plugin-sdk/plugin-entry";
 import { describe, expect, it } from "vitest";
 import { buildOpenAIProvider } from "./openai-provider.js";
 

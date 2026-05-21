@@ -54,7 +54,7 @@ describe("runIMessageCatchup", () => {
   let tempDir: string;
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-imsg-catchup-bridge-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-imsg-catchup-bridge-"));
     vi.stubEnv("NEXISCLAW_STATE_DIR", tempDir);
   });
 

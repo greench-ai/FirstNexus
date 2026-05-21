@@ -10,11 +10,11 @@ import { formatHelpExamples } from "../help-format.js";
 export function registerBackupCommand(program: Command) {
   const backup = program
     .command("backup")
-    .description("Create and verify local backup archives for NexisClaw state")
+    .description("Create and verify local backup archives for FirstNexus state")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/backup", "docs.NexisClaw.ai/cli/backup")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/backup", "docs.FirstNexus.ai/cli/backup")}\n`,
     );
 
   backup
@@ -30,24 +30,24 @@ export function registerBackupCommand(program: Command) {
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
-          ["NexisClaw backup create", "Create a timestamped backup in the current directory."],
+          ["FirstNexus backup create", "Create a timestamped backup in the current directory."],
           [
-            "NexisClaw backup create --output ~/Backups",
+            "FirstNexus backup create --output ~/Backups",
             "Write the archive into an existing backup directory.",
           ],
           [
-            "NexisClaw backup create --dry-run --json",
+            "FirstNexus backup create --dry-run --json",
             "Preview the archive plan without writing any files.",
           ],
           [
-            "NexisClaw backup create --verify",
+            "FirstNexus backup create --verify",
             "Create the archive and immediately validate its manifest and payload layout.",
           ],
           [
-            "NexisClaw backup create --no-include-workspace",
+            "FirstNexus backup create --no-include-workspace",
             "Back up state/config without agent workspace files.",
           ],
-          ["NexisClaw backup create --only-config", "Back up only the active JSON config file."],
+          ["FirstNexus backup create --only-config", "Back up only the active JSON config file."],
         ])}`,
     )
     .action(async (opts) => {
@@ -72,11 +72,11 @@ export function registerBackupCommand(program: Command) {
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
           [
-            "NexisClaw backup verify ./2026-03-09T00-00-00.000Z-NexisClaw-backup.tar.gz",
+            "FirstNexus backup verify ./2026-03-09T00-00-00.000Z-FirstNexus-backup.tar.gz",
             "Check that the archive structure and manifest are intact.",
           ],
           [
-            "NexisClaw backup verify ~/Backups/latest.tar.gz --json",
+            "FirstNexus backup verify ~/Backups/latest.tar.gz --json",
             "Emit machine-readable verification output.",
           ],
         ])}`,

@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
-export function makeModelFallbackCfg(overrides: Partial<NexisClawConfig> = {}): NexisClawConfig {
+export function makeModelFallbackCfg(overrides: Partial<FirstNexusConfig> = {}): FirstNexusConfig {
   return {
     agents: {
       defaults: {
@@ -11,5 +11,5 @@ export function makeModelFallbackCfg(overrides: Partial<NexisClawConfig> = {}): 
       },
     },
     ...overrides,
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }

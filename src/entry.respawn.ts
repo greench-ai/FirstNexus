@@ -197,7 +197,7 @@ export function runCliRespawnPlan(
   child.once("error", (error) => {
     clearSignalTimers();
     runtime.writeError(
-      "[NexisClaw] Failed to respawn CLI:",
+      "[FirstNexus] Failed to respawn CLI:",
       error instanceof Error ? (error.stack ?? error.message) : error,
     );
     runtime.exit(1);

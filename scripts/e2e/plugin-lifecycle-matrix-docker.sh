@@ -6,7 +6,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-plugin-lifecycle-matrix-e2e" NEXISCLAW_PLUGIN_LIFECYCLE_MATRIX_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-plugin-lifecycle-matrix-e2e" NEXISCLAW_PLUGIN_LIFECYCLE_MATRIX_E2E_IMAGE)"
 SKIP_BUILD="${NEXISCLAW_PLUGIN_LIFECYCLE_MATRIX_E2E_SKIP_BUILD:-0}"
 PACKAGE_TGZ="$(docker_e2e_prepare_package_tgz plugin-lifecycle-matrix "${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}")"
 docker_e2e_package_mount_args "$PACKAGE_TGZ"

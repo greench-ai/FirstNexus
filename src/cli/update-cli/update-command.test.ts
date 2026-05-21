@@ -21,18 +21,18 @@ import {
 
 describe("resolveGatewayInstallEntrypointCandidates", () => {
   it("prefers index.js before legacy entry.js", () => {
-    expect(resolveGatewayInstallEntrypointCandidates("/tmp/NexisClaw-root")).toEqual([
-      path.join("/tmp/NexisClaw-root", "dist", "index.js"),
-      path.join("/tmp/NexisClaw-root", "dist", "index.mjs"),
-      path.join("/tmp/NexisClaw-root", "dist", "entry.js"),
-      path.join("/tmp/NexisClaw-root", "dist", "entry.mjs"),
+    expect(resolveGatewayInstallEntrypointCandidates("/tmp/FirstNexus-root")).toEqual([
+      path.join("/tmp/FirstNexus-root", "dist", "index.js"),
+      path.join("/tmp/FirstNexus-root", "dist", "index.mjs"),
+      path.join("/tmp/FirstNexus-root", "dist", "entry.js"),
+      path.join("/tmp/FirstNexus-root", "dist", "entry.mjs"),
     ]);
   });
 });
 
 describe("resolveGatewayInstallEntrypoint", () => {
   it("prefers dist/index.js over dist/entry.js when both exist", async () => {
-    const root = "/tmp/NexisClaw-root";
+    const root = "/tmp/FirstNexus-root";
     const indexPath = path.join(root, "dist", "index.js");
     const entryPath = path.join(root, "dist", "entry.js");
 
@@ -45,7 +45,7 @@ describe("resolveGatewayInstallEntrypoint", () => {
   });
 
   it("falls back to dist/entry.js when index.js is missing", async () => {
-    const root = "/tmp/NexisClaw-root";
+    const root = "/tmp/FirstNexus-root";
     const entryPath = path.join(root, "dist", "entry.js");
 
     await expect(
@@ -118,25 +118,25 @@ describe("resolveUpdatedGatewayRestartPort", () => {
 describe("resolvePostInstallDoctorEnv", () => {
   it("uses the managed service profile paths for post-install doctor", () => {
     const env = resolvePostInstallDoctorEnv({
-      invocationCwd: "/srv/NexisClaw",
+      invocationCwd: "/srv/FirstNexus",
       baseEnv: {
         PATH: "/bin",
         NEXISCLAW_STATE_DIR: "/wrong/state",
-        NEXISCLAW_CONFIG_PATH: "/wrong/NexisClaw.json",
+        NEXISCLAW_CONFIG_PATH: "/wrong/FirstNexus.json",
         NEXISCLAW_PROFILE: "wrong",
       },
       serviceEnv: {
         NEXISCLAW_STATE_DIR: "daemon-state",
-        NEXISCLAW_CONFIG_PATH: "daemon-state/NexisClaw.json",
+        NEXISCLAW_CONFIG_PATH: "daemon-state/FirstNexus.json",
         NEXISCLAW_PROFILE: "work",
       },
     });
 
     expect(env.PATH).toBe("/bin");
     expect(env.NODE_DISABLE_COMPILE_CACHE).toBe("1");
-    expect(env.NEXISCLAW_STATE_DIR).toBe(path.join("/srv/NexisClaw", "daemon-state"));
+    expect(env.NEXISCLAW_STATE_DIR).toBe(path.join("/srv/FirstNexus", "daemon-state"));
     expect(env.NEXISCLAW_CONFIG_PATH).toBe(
-      path.join("/srv/NexisClaw", "daemon-state", "NexisClaw.json"),
+      path.join("/srv/FirstNexus", "daemon-state", "FirstNexus.json"),
     );
     expect(env.NEXISCLAW_PROFILE).toBe("work");
   });
@@ -159,20 +159,20 @@ describe("resolvePostInstallDoctorEnv", () => {
 
 describe("collectMissingPluginInstallPayloads", () => {
   it("reports tracked npm install records whose package payload is absent", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-update-plugin-payload-"));
-    const presentDir = path.join(tmpDir, "state", "npm", "node_modules", "@NexisClaw", "present");
-    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@NexisClaw", "missing");
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-update-plugin-payload-"));
+    const presentDir = path.join(tmpDir, "state", "npm", "node_modules", "@FirstNexus", "present");
+    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@FirstNexus", "missing");
     const noPackageJsonDir = path.join(
       tmpDir,
       "state",
       "npm",
       "node_modules",
-      "@NexisClaw",
+      "@FirstNexus",
       "no-package-json",
     );
     try {
       await fs.mkdir(presentDir, { recursive: true });
-      await fs.writeFile(path.join(presentDir, "package.json"), '{"name":"@NexisClaw/present"}\n');
+      await fs.writeFile(path.join(presentDir, "package.json"), '{"name":"@FirstNexus/present"}\n');
       await fs.mkdir(noPackageJsonDir, { recursive: true });
 
       await expect(
@@ -181,22 +181,22 @@ describe("collectMissingPluginInstallPayloads", () => {
           records: {
             present: {
               source: "npm",
-              spec: "@NexisClaw/present@beta",
+              spec: "@FirstNexus/present@beta",
               installPath: presentDir,
             },
             missing: {
               source: "npm",
-              spec: "@NexisClaw/missing@beta",
+              spec: "@FirstNexus/missing@beta",
               installPath: missingDir,
             },
             "no-package-json": {
               source: "npm",
-              spec: "@NexisClaw/no-package-json@beta",
+              spec: "@FirstNexus/no-package-json@beta",
               installPath: noPackageJsonDir,
             },
             "missing-install-path": {
               source: "npm",
-              spec: "@NexisClaw/missing-install-path@beta",
+              spec: "@FirstNexus/missing-install-path@beta",
             },
             local: {
               source: "path",
@@ -227,8 +227,8 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("skips disabled tracked records when requested", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-update-plugin-payload-"));
-    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@NexisClaw", "missing");
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-update-plugin-payload-"));
+    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@FirstNexus", "missing");
     try {
       await expect(
         collectMissingPluginInstallPayloads({
@@ -246,7 +246,7 @@ describe("collectMissingPluginInstallPayloads", () => {
           records: {
             missing: {
               source: "npm",
-              spec: "@NexisClaw/missing@beta",
+              spec: "@FirstNexus/missing@beta",
               installPath: missingDir,
             },
           },
@@ -258,8 +258,8 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("keeps disabled trusted official npm records eligible for payload repair when requested", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-update-plugin-payload-"));
-    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@NexisClaw", "codex");
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-update-plugin-payload-"));
+    const missingDir = path.join(tmpDir, "state", "npm", "node_modules", "@FirstNexus", "codex");
     try {
       await expect(
         collectMissingPluginInstallPayloads({
@@ -278,9 +278,9 @@ describe("collectMissingPluginInstallPayloads", () => {
           records: {
             codex: {
               source: "npm",
-              spec: "@NexisClaw/codex@2026.5.3",
-              resolvedName: "@NexisClaw/codex",
-              resolvedSpec: "@NexisClaw/codex@2026.5.3",
+              spec: "@FirstNexus/codex@2026.5.3",
+              resolvedName: "@FirstNexus/codex",
+              resolvedSpec: "@FirstNexus/codex@2026.5.3",
               installPath: missingDir,
             },
           },
@@ -298,7 +298,7 @@ describe("collectMissingPluginInstallPayloads", () => {
   });
 
   it("keeps disabled trusted official ClawHub records eligible for payload repair when requested", async () => {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-update-plugin-payload-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-update-plugin-payload-"));
     const missingDir = path.join(tmpDir, "state", "clawhub", "diagnostics-otel");
     try {
       await expect(
@@ -318,7 +318,7 @@ describe("collectMissingPluginInstallPayloads", () => {
           records: {
             "diagnostics-otel": {
               source: "clawhub",
-              spec: "clawhub:@NexisClaw/diagnostics-otel@2026.5.3",
+              spec: "clawhub:@FirstNexus/diagnostics-otel@2026.5.3",
               installPath: missingDir,
             },
           },
@@ -551,7 +551,7 @@ describe("resolvePostCoreUpdateChildStdio", () => {
   it('returns "pipe" on Windows so the child never inherits the parent console handles', () => {
     // On Windows, stdio:"inherit" passes the parent's console HANDLE to the child process.
     // PowerShell/CMD will not return the prompt until every holder of those handles exits,
-    // causing the terminal to hang after `NexisClaw update` completes (#78445).
+    // causing the terminal to hang after `FirstNexus update` completes (#78445).
     expect(resolvePostCoreUpdateChildStdio("win32")).toBe("pipe");
   });
 
@@ -569,7 +569,7 @@ describe("updatePluginsAfterCoreUpdate (invalid config end-to-end)", () => {
     // config is sufficient to prove the gate fires end-to-end. We pass
     // `json: true` to suppress logging side-effects without mocking.
     const result = await updatePluginsAfterCoreUpdate({
-      root: "/tmp/NexisClaw-test",
+      root: "/tmp/FirstNexus-test",
       channel: "stable",
       configSnapshot: {
         valid: false,
@@ -590,8 +590,8 @@ describe("updatePluginsAfterCoreUpdate (invalid config end-to-end)", () => {
         message:
           "Plugin post-update convergence skipped because the config is invalid; refusing to restart the gateway with an unverified plugin set.",
         guidance: [
-          "Run `NexisClaw doctor` to inspect the config validation errors.",
-          "Once the config parses, rerun `NexisClaw update`.",
+          "Run `FirstNexus doctor` to inspect the config validation errors.",
+          "Once the config parses, rerun `FirstNexus update`.",
         ],
       },
     ]);
@@ -609,8 +609,8 @@ describe("buildInvalidConfigPostCoreUpdateResult", () => {
   it("surfaces actionable repair guidance in both the structural warnings and the message string", () => {
     const built = buildInvalidConfigPostCoreUpdateResult();
     expect(built.guidance).toStrictEqual([
-      "Run `NexisClaw doctor` to inspect the config validation errors.",
-      "Once the config parses, rerun `NexisClaw update`.",
+      "Run `FirstNexus doctor` to inspect the config validation errors.",
+      "Once the config parses, rerun `FirstNexus update`.",
     ]);
     expect(built.result.warnings).toStrictEqual([
       {

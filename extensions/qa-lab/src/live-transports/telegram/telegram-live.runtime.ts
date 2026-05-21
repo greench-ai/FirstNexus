@@ -3,10 +3,10 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 import { z } from "zod";
 import { startQaGatewayChild } from "../../gateway-child.js";
 import { DEFAULT_QA_LIVE_PROVIDER_MODE } from "../../providers/index.js";
@@ -299,13 +299,13 @@ const TELEGRAM_QA_SCENARIOS: TelegramQaScenarioDefinition[] = [
     id: "telegram-status-command",
     title: "Telegram status command reply",
     rationale: "Recent Telegram group regressions broke /status while normal chat still worked.",
-    regressionRefs: ["NexisClaw/NexisClaw#74698"],
+    regressionRefs: ["FirstNexus/FirstNexus#74698"],
     timeoutMs: 45_000,
     buildRun: (sutUsername) =>
       telegramQaStepRun({
         expectReply: true,
         input: `/status@${sutUsername}`,
-        expectedTextIncludes: ["NexisClaw", "Model:", "Session:", "Activation:"],
+        expectedTextIncludes: ["FirstNexus", "Model:", "Session:", "Activation:"],
       }),
   },
   {
@@ -326,7 +326,7 @@ const TELEGRAM_QA_SCENARIOS: TelegramQaScenarioDefinition[] = [
           driverGroupAuthorization: "allow",
           expectReply: true,
           input: `/status@${sutUsername}`,
-          expectedTextIncludes: ["NexisClaw", "Session:"],
+          expectedTextIncludes: ["FirstNexus", "Session:"],
         },
         {
           expectReply: true,
@@ -350,7 +350,7 @@ const TELEGRAM_QA_SCENARIOS: TelegramQaScenarioDefinition[] = [
     buildRun: () =>
       telegramQaStepRun({
         expectReply: false,
-        input: "/status@NexisClawQaOtherBot",
+        input: "/status@FirstNexusQaOtherBot",
       }),
   },
   {
@@ -414,7 +414,7 @@ const TELEGRAM_QA_SCENARIOS: TelegramQaScenarioDefinition[] = [
     title: "Telegram streamed final stays one message",
     defaultProviderModes: ["mock-openai"],
     rationale: "Regression guard for duplicate final replies from Telegram streaming paths.",
-    regressionRefs: ["NexisClaw/NexisClaw#39905"],
+    regressionRefs: ["FirstNexus/FirstNexus#39905"],
     timeoutMs: 45_000,
     buildRun: (sutUsername) =>
       telegramQaStepRun({
@@ -433,7 +433,7 @@ const TELEGRAM_QA_SCENARIOS: TelegramQaScenarioDefinition[] = [
     title: "Telegram long final reuses the preview message",
     defaultProviderModes: ["mock-openai"],
     rationale: "Regression guard for long streamed finals leaving stale preview messages behind.",
-    regressionRefs: ["NexisClaw/NexisClaw#39905"],
+    regressionRefs: ["FirstNexus/FirstNexus#39905"],
     timeoutMs: 60_000,
     buildRun: (sutUsername) =>
       telegramQaStepRun({
@@ -452,7 +452,7 @@ const TELEGRAM_QA_SCENARIOS: TelegramQaScenarioDefinition[] = [
     title: "Telegram three-chunk final keeps only final chunks",
     defaultEnabled: false,
     rationale: "Opt-in stress probe for Telegram long final chunk accounting.",
-    regressionRefs: ["NexisClaw/NexisClaw#39905"],
+    regressionRefs: ["FirstNexus/FirstNexus#39905"],
     timeoutMs: 60_000,
     buildRun: (sutUsername) =>
       telegramQaStepRun({
@@ -692,14 +692,14 @@ function normalizeTelegramObservedMessage(update: TelegramUpdate): TelegramObser
 }
 
 function buildTelegramQaConfig(
-  baseCfg: NexisClawConfig,
+  baseCfg: FirstNexusConfig,
   params: {
     groupId: string;
     sutToken: string;
     driverBotId: number;
     sutAccountId: string;
   },
-): NexisClawConfig {
+): FirstNexusConfig {
   const pluginAllow = [...new Set([...(baseCfg.plugins?.allow ?? []), "telegram"])];
   const pluginEntries = {
     ...baseCfg.plugins?.entries,
@@ -1524,16 +1524,16 @@ function canaryFailureMessage(params: {
   ].join("\n");
 }
 
-async function runInstalledNexisClawTelegramOnboardingPreflight(params: {
+async function runInstalledFirstNexusTelegramOnboardingPreflight(params: {
   openClawCommand: string;
   providerMode: ReturnType<typeof normalizeQaProviderMode>;
   sutToken: string;
 }) {
   const tempRoot = await fs.mkdtemp(
-    path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-npm-telegram-"),
+    path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-npm-telegram-"),
   );
   const homeDir = path.join(tempRoot, "home");
-  const stateDir = path.join(homeDir, ".NexisClaw");
+  const stateDir = path.join(homeDir, ".FirstNexus");
   await fs.mkdir(stateDir, { recursive: true });
   const tokenPath = path.join(tempRoot, "sut-token.txt");
   await fs.writeFile(tokenPath, params.sutToken, { encoding: "utf8", mode: 0o600 });
@@ -1541,12 +1541,12 @@ async function runInstalledNexisClawTelegramOnboardingPreflight(params: {
     ...process.env,
     HOME: homeDir,
     NEXISCLAW_HOME: stateDir,
-    NEXISCLAW_CONFIG_PATH: path.join(stateDir, "NexisClaw.json"),
+    NEXISCLAW_CONFIG_PATH: path.join(stateDir, "FirstNexus.json"),
     NEXISCLAW_STATE_DIR: stateDir,
     NEXISCLAW_GATEWAY_TOKEN: "npm-telegram-live-onboard",
     ...(params.providerMode === "live-frontier"
       ? {}
-      : { OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? "sk-NexisClaw-npm-telegram-preflight" }),
+      : { OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? "sk-FirstNexus-npm-telegram-preflight" }),
   };
   try {
     await execFileAsync(
@@ -1587,7 +1587,7 @@ async function runInstalledNexisClawTelegramOnboardingPreflight(params: {
 export async function runTelegramQaLive(params: {
   repoRoot?: string;
   outputDir?: string;
-  sutNexisClawCommand?: string;
+  sutFirstNexusCommand?: string;
   preflightInstalledOnboarding?: boolean;
   providerMode?: QaProviderModeInput;
   primaryModel?: string;
@@ -1648,10 +1648,10 @@ export async function runTelegramQaLive(params: {
   let preservedGatewayDebugArtifacts = false;
   let canaryFailure: string | null = null;
   try {
-    if (params.sutNexisClawCommand && params.preflightInstalledOnboarding === true) {
+    if (params.sutFirstNexusCommand && params.preflightInstalledOnboarding === true) {
       writeTelegramQaProgress(progressEnabled, "installed package onboarding preflight start");
-      await runInstalledNexisClawTelegramOnboardingPreflight({
-        openClawCommand: params.sutNexisClawCommand,
+      await runInstalledFirstNexusTelegramOnboardingPreflight({
+        openClawCommand: params.sutFirstNexusCommand,
         providerMode,
         sutToken: runtimeEnv.sutToken,
       });
@@ -1676,9 +1676,9 @@ export async function runTelegramQaLive(params: {
 
     const gatewayHarness = await startQaLiveLaneGateway({
       repoRoot,
-      command: params.sutNexisClawCommand
+      command: params.sutFirstNexusCommand
         ? {
-            executablePath: params.sutNexisClawCommand,
+            executablePath: params.sutFirstNexusCommand,
             usePackagedPlugins: true,
           }
         : undefined,

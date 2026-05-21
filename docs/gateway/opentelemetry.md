@@ -1,13 +1,13 @@
 ---
-summary: "Export NexisClaw diagnostics to any OpenTelemetry collector via the diagnostics-otel plugin (OTLP/HTTP)"
+summary: "Export FirstNexus diagnostics to any OpenTelemetry collector via the diagnostics-otel plugin (OTLP/HTTP)"
 title: "OpenTelemetry export"
 read_when:
-  - You want to send NexisClaw model usage, message flow, or session metrics to an OpenTelemetry collector
+  - You want to send FirstNexus model usage, message flow, or session metrics to an OpenTelemetry collector
   - You are wiring traces, metrics, or logs into Grafana, Datadog, Honeycomb, New Relic, Tempo, or another OTLP backend
   - You need the exact metric names, span names, or attribute shapes to build dashboards or alerts
 ---
 
-NexisClaw exports diagnostics through the official `diagnostics-otel` plugin
+FirstNexus exports diagnostics through the official `diagnostics-otel` plugin
 using **OTLP/HTTP (protobuf)**. Any collector or backend that accepts OTLP/HTTP
 works without code changes. For local file logs and how to read them, see
 [Logging](/logging).
@@ -19,7 +19,7 @@ works without code changes. For local file logs and how to read them, see
   and exec.
 - **`diagnostics-otel` plugin** subscribes to those events and exports them as
   OpenTelemetry **metrics**, **traces**, and **logs** over OTLP/HTTP.
-- **Provider calls** receive a W3C `traceparent` header from NexisClaw's
+- **Provider calls** receive a W3C `traceparent` header from FirstNexus's
   trusted model-call span context when the provider transport accepts custom
   headers. Plugin-emitted trace context is not propagated.
 - Exporters only attach when both the diagnostics surface and the plugin are
@@ -30,7 +30,7 @@ works without code changes. For local file logs and how to read them, see
 For packaged installs, install the plugin first:
 
 ```bash
-NexisClaw plugins install clawhub:@NexisClaw/diagnostics-otel
+FirstNexus plugins install clawhub:@FirstNexus/diagnostics-otel
 ```
 
 ```json5
@@ -47,7 +47,7 @@ NexisClaw plugins install clawhub:@NexisClaw/diagnostics-otel
       enabled: true,
       endpoint: "http://otel-collector:4318",
       protocol: "http/protobuf",
-      serviceName: "NexisClaw-gateway",
+      serviceName: "FirstNexus-gateway",
       traces: true,
       metrics: true,
       logs: true,
@@ -61,7 +61,7 @@ NexisClaw plugins install clawhub:@NexisClaw/diagnostics-otel
 You can also enable the plugin from the CLI:
 
 ```bash
-NexisClaw plugins enable diagnostics-otel
+FirstNexus plugins enable diagnostics-otel
 ```
 
 <Note>
@@ -92,7 +92,7 @@ when `diagnostics.otel.enabled` is true.
       metricsEndpoint: "http://otel-collector:4318/v1/metrics",
       logsEndpoint: "http://otel-collector:4318/v1/logs",
       protocol: "http/protobuf", // grpc is ignored
-      serviceName: "NexisClaw-gateway",
+      serviceName: "FirstNexus-gateway",
       headers: { "x-collector-token": "..." },
       traces: true,
       metrics: true,
@@ -121,7 +121,7 @@ when `diagnostics.otel.enabled` is true.
 | `OTEL_SERVICE_NAME`                                                                                               | Override `diagnostics.otel.serviceName`.                                                                                                                                                                                                   |
 | `OTEL_EXPORTER_OTLP_PROTOCOL`                                                                                     | Override the wire protocol (only `http/protobuf` is honored today).                                                                                                                                                                        |
 | `OTEL_SEMCONV_STABILITY_OPT_IN`                                                                                   | Set to `gen_ai_latest_experimental` to emit the latest experimental GenAI span attribute (`gen_ai.provider.name`) instead of the legacy `gen_ai.system`. GenAI metrics always use bounded, low-cardinality semantic attributes regardless. |
-| `NEXISCLAW_OTEL_PRELOADED`                                                                                         | Set to `1` when another preload or host process already registered the global OpenTelemetry SDK. The plugin then skips its own NodeSDK lifecycle but still wires diagnostic listeners and honors `traces`/`metrics`/`logs`.                |
+| `NEXISCLAW_OTEL_PRELOADED`                                                                                        | Set to `1` when another preload or host process already registered the global OpenTelemetry SDK. The plugin then skips its own NodeSDK lifecycle but still wires diagnostic listeners and honors `traces`/`metrics`/`logs`.                |
 
 ## Privacy and content capture
 
@@ -134,7 +134,7 @@ provider, and event type. They do not include transcripts, audio payloads,
 session ids, turn ids, call ids, room ids, or handoff tokens.
 
 Outbound model requests may include a W3C `traceparent` header. That header is
-generated only from NexisClaw-owned diagnostic trace context for the active model
+generated only from FirstNexus-owned diagnostic trace context for the active model
 call. Existing caller-supplied `traceparent` headers are replaced, so plugins or
 custom provider options cannot spoof cross-service trace ancestry.
 
@@ -149,7 +149,7 @@ text. Each subkey is opt-in independently:
 - `systemPrompt` - assembled system/developer prompt.
 
 When any subkey is enabled, model and tool spans get bounded, redacted
-`NexisClaw.content.*` attributes for that class only.
+`FirstNexus.content.*` attributes for that class only.
 
 ## Sampling and flushing
 
@@ -172,57 +172,57 @@ When any subkey is enabled, model and tool spans get bounded, redacted
 
 ### Model usage
 
-- `NexisClaw.tokens` (counter, attrs: `NexisClaw.token`, `NexisClaw.channel`, `NexisClaw.provider`, `NexisClaw.model`, `NexisClaw.agent`)
-- `NexisClaw.cost.usd` (counter, attrs: `NexisClaw.channel`, `NexisClaw.provider`, `NexisClaw.model`)
-- `NexisClaw.run.duration_ms` (histogram, attrs: `NexisClaw.channel`, `NexisClaw.provider`, `NexisClaw.model`)
-- `NexisClaw.context.tokens` (histogram, attrs: `NexisClaw.context`, `NexisClaw.channel`, `NexisClaw.provider`, `NexisClaw.model`)
+- `FirstNexus.tokens` (counter, attrs: `FirstNexus.token`, `FirstNexus.channel`, `FirstNexus.provider`, `FirstNexus.model`, `FirstNexus.agent`)
+- `FirstNexus.cost.usd` (counter, attrs: `FirstNexus.channel`, `FirstNexus.provider`, `FirstNexus.model`)
+- `FirstNexus.run.duration_ms` (histogram, attrs: `FirstNexus.channel`, `FirstNexus.provider`, `FirstNexus.model`)
+- `FirstNexus.context.tokens` (histogram, attrs: `FirstNexus.context`, `FirstNexus.channel`, `FirstNexus.provider`, `FirstNexus.model`)
 - `gen_ai.client.token.usage` (histogram, GenAI semantic-conventions metric, attrs: `gen_ai.token.type` = `input`/`output`, `gen_ai.provider.name`, `gen_ai.operation.name`, `gen_ai.request.model`)
 - `gen_ai.client.operation.duration` (histogram, seconds, GenAI semantic-conventions metric, attrs: `gen_ai.provider.name`, `gen_ai.operation.name`, `gen_ai.request.model`, optional `error.type`)
-- `NexisClaw.model_call.duration_ms` (histogram, attrs: `NexisClaw.provider`, `NexisClaw.model`, `NexisClaw.api`, `NexisClaw.transport`, plus `NexisClaw.errorCategory` and `NexisClaw.failureKind` on classified errors)
-- `NexisClaw.model_call.request_bytes` (histogram, UTF-8 byte size of the final model request payload; no raw payload content)
-- `NexisClaw.model_call.response_bytes` (histogram, UTF-8 byte size of streamed model response events; no raw response content)
-- `NexisClaw.model_call.time_to_first_byte_ms` (histogram, elapsed time before the first streamed response event)
+- `FirstNexus.model_call.duration_ms` (histogram, attrs: `FirstNexus.provider`, `FirstNexus.model`, `FirstNexus.api`, `FirstNexus.transport`, plus `FirstNexus.errorCategory` and `FirstNexus.failureKind` on classified errors)
+- `FirstNexus.model_call.request_bytes` (histogram, UTF-8 byte size of the final model request payload; no raw payload content)
+- `FirstNexus.model_call.response_bytes` (histogram, UTF-8 byte size of streamed model response events; no raw response content)
+- `FirstNexus.model_call.time_to_first_byte_ms` (histogram, elapsed time before the first streamed response event)
 
 ### Message flow
 
-- `NexisClaw.webhook.received` (counter, attrs: `NexisClaw.channel`, `NexisClaw.webhook`)
-- `NexisClaw.webhook.error` (counter, attrs: `NexisClaw.channel`, `NexisClaw.webhook`)
-- `NexisClaw.webhook.duration_ms` (histogram, attrs: `NexisClaw.channel`, `NexisClaw.webhook`)
-- `NexisClaw.message.queued` (counter, attrs: `NexisClaw.channel`, `NexisClaw.source`)
-- `NexisClaw.message.processed` (counter, attrs: `NexisClaw.channel`, `NexisClaw.outcome`)
-- `NexisClaw.message.duration_ms` (histogram, attrs: `NexisClaw.channel`, `NexisClaw.outcome`)
-- `NexisClaw.message.delivery.started` (counter, attrs: `NexisClaw.channel`, `NexisClaw.delivery.kind`)
-- `NexisClaw.message.delivery.duration_ms` (histogram, attrs: `NexisClaw.channel`, `NexisClaw.delivery.kind`, `NexisClaw.outcome`, `NexisClaw.errorCategory`)
+- `FirstNexus.webhook.received` (counter, attrs: `FirstNexus.channel`, `FirstNexus.webhook`)
+- `FirstNexus.webhook.error` (counter, attrs: `FirstNexus.channel`, `FirstNexus.webhook`)
+- `FirstNexus.webhook.duration_ms` (histogram, attrs: `FirstNexus.channel`, `FirstNexus.webhook`)
+- `FirstNexus.message.queued` (counter, attrs: `FirstNexus.channel`, `FirstNexus.source`)
+- `FirstNexus.message.processed` (counter, attrs: `FirstNexus.channel`, `FirstNexus.outcome`)
+- `FirstNexus.message.duration_ms` (histogram, attrs: `FirstNexus.channel`, `FirstNexus.outcome`)
+- `FirstNexus.message.delivery.started` (counter, attrs: `FirstNexus.channel`, `FirstNexus.delivery.kind`)
+- `FirstNexus.message.delivery.duration_ms` (histogram, attrs: `FirstNexus.channel`, `FirstNexus.delivery.kind`, `FirstNexus.outcome`, `FirstNexus.errorCategory`)
 
 ### Talk
 
-- `NexisClaw.talk.event` (counter, attrs: `NexisClaw.talk.event_type`, `NexisClaw.talk.mode`, `NexisClaw.talk.transport`, `NexisClaw.talk.brain`, `NexisClaw.talk.provider`)
-- `NexisClaw.talk.event.duration_ms` (histogram, attrs: same as `NexisClaw.talk.event`; emitted when a Talk event reports duration)
-- `NexisClaw.talk.audio.bytes` (histogram, attrs: same as `NexisClaw.talk.event`; emitted for Talk audio frame events that report byte length)
+- `FirstNexus.talk.event` (counter, attrs: `FirstNexus.talk.event_type`, `FirstNexus.talk.mode`, `FirstNexus.talk.transport`, `FirstNexus.talk.brain`, `FirstNexus.talk.provider`)
+- `FirstNexus.talk.event.duration_ms` (histogram, attrs: same as `FirstNexus.talk.event`; emitted when a Talk event reports duration)
+- `FirstNexus.talk.audio.bytes` (histogram, attrs: same as `FirstNexus.talk.event`; emitted for Talk audio frame events that report byte length)
 
 ### Queues and sessions
 
-- `NexisClaw.queue.lane.enqueue` (counter, attrs: `NexisClaw.lane`)
-- `NexisClaw.queue.lane.dequeue` (counter, attrs: `NexisClaw.lane`)
-- `NexisClaw.queue.depth` (histogram, attrs: `NexisClaw.lane` or `NexisClaw.channel=heartbeat`)
-- `NexisClaw.queue.wait_ms` (histogram, attrs: `NexisClaw.lane`)
-- `NexisClaw.session.state` (counter, attrs: `NexisClaw.state`, `NexisClaw.reason`)
-- `NexisClaw.session.stuck` (counter, attrs: `NexisClaw.state`; emitted only for stale session bookkeeping with no active work)
-- `NexisClaw.session.stuck_age_ms` (histogram, attrs: `NexisClaw.state`; emitted only for stale session bookkeeping with no active work)
-- `NexisClaw.session.recovery.requested` (counter, attrs: `NexisClaw.state`, `NexisClaw.action`, `NexisClaw.active_work_kind`, `NexisClaw.reason`)
-- `NexisClaw.session.recovery.completed` (counter, attrs: `NexisClaw.state`, `NexisClaw.action`, `NexisClaw.status`, `NexisClaw.active_work_kind`, `NexisClaw.reason`)
-- `NexisClaw.session.recovery.age_ms` (histogram, attrs: same as the matching recovery counter)
-- `NexisClaw.run.attempt` (counter, attrs: `NexisClaw.attempt`)
+- `FirstNexus.queue.lane.enqueue` (counter, attrs: `FirstNexus.lane`)
+- `FirstNexus.queue.lane.dequeue` (counter, attrs: `FirstNexus.lane`)
+- `FirstNexus.queue.depth` (histogram, attrs: `FirstNexus.lane` or `FirstNexus.channel=heartbeat`)
+- `FirstNexus.queue.wait_ms` (histogram, attrs: `FirstNexus.lane`)
+- `FirstNexus.session.state` (counter, attrs: `FirstNexus.state`, `FirstNexus.reason`)
+- `FirstNexus.session.stuck` (counter, attrs: `FirstNexus.state`; emitted only for stale session bookkeeping with no active work)
+- `FirstNexus.session.stuck_age_ms` (histogram, attrs: `FirstNexus.state`; emitted only for stale session bookkeeping with no active work)
+- `FirstNexus.session.recovery.requested` (counter, attrs: `FirstNexus.state`, `FirstNexus.action`, `FirstNexus.active_work_kind`, `FirstNexus.reason`)
+- `FirstNexus.session.recovery.completed` (counter, attrs: `FirstNexus.state`, `FirstNexus.action`, `FirstNexus.status`, `FirstNexus.active_work_kind`, `FirstNexus.reason`)
+- `FirstNexus.session.recovery.age_ms` (histogram, attrs: same as the matching recovery counter)
+- `FirstNexus.run.attempt` (counter, attrs: `FirstNexus.attempt`)
 
 ### Session liveness telemetry
 
 `diagnostics.stuckSessionWarnMs` is the no-progress age threshold for session
 liveness diagnostics. A `processing` session does not age toward this threshold
-while NexisClaw observes reply, tool, status, block, or ACP runtime progress.
+while FirstNexus observes reply, tool, status, block, or ACP runtime progress.
 Typing keepalives are not counted as progress, so a silent model or harness can
 still be detected.
 
-NexisClaw classifies sessions by the work it can still observe:
+FirstNexus classifies sessions by the work it can still observe:
 
 - `session.long_running`: active embedded work, model calls, or tool calls are
   still making progress.
@@ -240,8 +240,8 @@ Recovery emits structured `session.recovery.requested` and
 only after a mutating recovery outcome (`aborted` or `released`) and only if the
 same processing generation is still current.
 
-Only `session.stuck` emits the `NexisClaw.session.stuck` counter, the
-`NexisClaw.session.stuck_age_ms` histogram, and the `NexisClaw.session.stuck`
+Only `session.stuck` emits the `FirstNexus.session.stuck` counter, the
+`FirstNexus.session.stuck_age_ms` histogram, and the `FirstNexus.session.stuck`
 span. Repeated `session.stuck` diagnostics back off while the session remains
 unchanged, so dashboards should alert on sustained increases rather than every
 heartbeat tick. For the config knob and defaults, see
@@ -249,62 +249,62 @@ heartbeat tick. For the config knob and defaults, see
 
 ### Harness lifecycle
 
-- `NexisClaw.harness.duration_ms` (histogram, attrs: `NexisClaw.harness.id`, `NexisClaw.harness.plugin`, `NexisClaw.outcome`, `NexisClaw.harness.phase` on errors)
+- `FirstNexus.harness.duration_ms` (histogram, attrs: `FirstNexus.harness.id`, `FirstNexus.harness.plugin`, `FirstNexus.outcome`, `FirstNexus.harness.phase` on errors)
 
 ### Exec
 
-- `NexisClaw.exec.duration_ms` (histogram, attrs: `NexisClaw.exec.target`, `NexisClaw.exec.mode`, `NexisClaw.outcome`, `NexisClaw.failureKind`)
+- `FirstNexus.exec.duration_ms` (histogram, attrs: `FirstNexus.exec.target`, `FirstNexus.exec.mode`, `FirstNexus.outcome`, `FirstNexus.failureKind`)
 
 ### Diagnostics internals (memory and tool loop)
 
-- `NexisClaw.memory.heap_used_bytes` (histogram, attrs: `NexisClaw.memory.kind`)
-- `NexisClaw.memory.rss_bytes` (histogram)
-- `NexisClaw.memory.pressure` (counter, attrs: `NexisClaw.memory.level`)
-- `NexisClaw.tool.loop.iterations` (counter, attrs: `NexisClaw.toolName`, `NexisClaw.outcome`)
-- `NexisClaw.tool.loop.duration_ms` (histogram, attrs: `NexisClaw.toolName`, `NexisClaw.outcome`)
+- `FirstNexus.memory.heap_used_bytes` (histogram, attrs: `FirstNexus.memory.kind`)
+- `FirstNexus.memory.rss_bytes` (histogram)
+- `FirstNexus.memory.pressure` (counter, attrs: `FirstNexus.memory.level`)
+- `FirstNexus.tool.loop.iterations` (counter, attrs: `FirstNexus.toolName`, `FirstNexus.outcome`)
+- `FirstNexus.tool.loop.duration_ms` (histogram, attrs: `FirstNexus.toolName`, `FirstNexus.outcome`)
 
 ## Exported spans
 
-- `NexisClaw.model.usage`
-  - `NexisClaw.channel`, `NexisClaw.provider`, `NexisClaw.model`
-  - `NexisClaw.tokens.*` (input/output/cache_read/cache_write/total)
+- `FirstNexus.model.usage`
+  - `FirstNexus.channel`, `FirstNexus.provider`, `FirstNexus.model`
+  - `FirstNexus.tokens.*` (input/output/cache_read/cache_write/total)
   - `gen_ai.system` by default, or `gen_ai.provider.name` when the latest GenAI semantic conventions are opted in
   - `gen_ai.request.model`, `gen_ai.operation.name`, `gen_ai.usage.*`
-- `NexisClaw.run`
-  - `NexisClaw.outcome`, `NexisClaw.channel`, `NexisClaw.provider`, `NexisClaw.model`, `NexisClaw.errorCategory`
-- `NexisClaw.model.call`
+- `FirstNexus.run`
+  - `FirstNexus.outcome`, `FirstNexus.channel`, `FirstNexus.provider`, `FirstNexus.model`, `FirstNexus.errorCategory`
+- `FirstNexus.model.call`
   - `gen_ai.system` by default, or `gen_ai.provider.name` when the latest GenAI semantic conventions are opted in
-  - `gen_ai.request.model`, `gen_ai.operation.name`, `NexisClaw.provider`, `NexisClaw.model`, `NexisClaw.api`, `NexisClaw.transport`
-  - `NexisClaw.errorCategory` and optional `NexisClaw.failureKind` on errors
-  - `NexisClaw.model_call.request_bytes`, `NexisClaw.model_call.response_bytes`, `NexisClaw.model_call.time_to_first_byte_ms`
-  - `NexisClaw.provider.request_id_hash` (bounded SHA-based hash of the upstream provider request id; raw ids are not exported)
-- `NexisClaw.harness.run`
-  - `NexisClaw.harness.id`, `NexisClaw.harness.plugin`, `NexisClaw.outcome`, `NexisClaw.provider`, `NexisClaw.model`, `NexisClaw.channel`
-  - On completion: `NexisClaw.harness.result_classification`, `NexisClaw.harness.yield_detected`, `NexisClaw.harness.items.started`, `NexisClaw.harness.items.completed`, `NexisClaw.harness.items.active`
-  - On error: `NexisClaw.harness.phase`, `NexisClaw.errorCategory`, optional `NexisClaw.harness.cleanup_failed`
-- `NexisClaw.tool.execution`
-  - `gen_ai.tool.name`, `NexisClaw.toolName`, `NexisClaw.errorCategory`, `NexisClaw.tool.params.*`
-- `NexisClaw.exec`
-  - `NexisClaw.exec.target`, `NexisClaw.exec.mode`, `NexisClaw.outcome`, `NexisClaw.failureKind`, `NexisClaw.exec.command_length`, `NexisClaw.exec.exit_code`, `NexisClaw.exec.timed_out`
-- `NexisClaw.webhook.processed`
-  - `NexisClaw.channel`, `NexisClaw.webhook`
-- `NexisClaw.webhook.error`
-  - `NexisClaw.channel`, `NexisClaw.webhook`, `NexisClaw.error`
-- `NexisClaw.message.processed`
-  - `NexisClaw.channel`, `NexisClaw.outcome`, `NexisClaw.reason`
-- `NexisClaw.message.delivery`
-  - `NexisClaw.channel`, `NexisClaw.delivery.kind`, `NexisClaw.outcome`, `NexisClaw.errorCategory`, `NexisClaw.delivery.result_count`
-- `NexisClaw.session.stuck`
-  - `NexisClaw.state`, `NexisClaw.ageMs`, `NexisClaw.queueDepth`
-- `NexisClaw.context.assembled`
-  - `NexisClaw.prompt.size`, `NexisClaw.history.size`, `NexisClaw.context.tokens`, `NexisClaw.errorCategory` (no prompt, history, response, or session-key content)
-- `NexisClaw.tool.loop`
-  - `NexisClaw.toolName`, `NexisClaw.outcome`, `NexisClaw.iterations`, `NexisClaw.errorCategory` (no loop messages, params, or tool output)
-- `NexisClaw.memory.pressure`
-  - `NexisClaw.memory.level`, `NexisClaw.memory.heap_used_bytes`, `NexisClaw.memory.rss_bytes`
+  - `gen_ai.request.model`, `gen_ai.operation.name`, `FirstNexus.provider`, `FirstNexus.model`, `FirstNexus.api`, `FirstNexus.transport`
+  - `FirstNexus.errorCategory` and optional `FirstNexus.failureKind` on errors
+  - `FirstNexus.model_call.request_bytes`, `FirstNexus.model_call.response_bytes`, `FirstNexus.model_call.time_to_first_byte_ms`
+  - `FirstNexus.provider.request_id_hash` (bounded SHA-based hash of the upstream provider request id; raw ids are not exported)
+- `FirstNexus.harness.run`
+  - `FirstNexus.harness.id`, `FirstNexus.harness.plugin`, `FirstNexus.outcome`, `FirstNexus.provider`, `FirstNexus.model`, `FirstNexus.channel`
+  - On completion: `FirstNexus.harness.result_classification`, `FirstNexus.harness.yield_detected`, `FirstNexus.harness.items.started`, `FirstNexus.harness.items.completed`, `FirstNexus.harness.items.active`
+  - On error: `FirstNexus.harness.phase`, `FirstNexus.errorCategory`, optional `FirstNexus.harness.cleanup_failed`
+- `FirstNexus.tool.execution`
+  - `gen_ai.tool.name`, `FirstNexus.toolName`, `FirstNexus.errorCategory`, `FirstNexus.tool.params.*`
+- `FirstNexus.exec`
+  - `FirstNexus.exec.target`, `FirstNexus.exec.mode`, `FirstNexus.outcome`, `FirstNexus.failureKind`, `FirstNexus.exec.command_length`, `FirstNexus.exec.exit_code`, `FirstNexus.exec.timed_out`
+- `FirstNexus.webhook.processed`
+  - `FirstNexus.channel`, `FirstNexus.webhook`
+- `FirstNexus.webhook.error`
+  - `FirstNexus.channel`, `FirstNexus.webhook`, `FirstNexus.error`
+- `FirstNexus.message.processed`
+  - `FirstNexus.channel`, `FirstNexus.outcome`, `FirstNexus.reason`
+- `FirstNexus.message.delivery`
+  - `FirstNexus.channel`, `FirstNexus.delivery.kind`, `FirstNexus.outcome`, `FirstNexus.errorCategory`, `FirstNexus.delivery.result_count`
+- `FirstNexus.session.stuck`
+  - `FirstNexus.state`, `FirstNexus.ageMs`, `FirstNexus.queueDepth`
+- `FirstNexus.context.assembled`
+  - `FirstNexus.prompt.size`, `FirstNexus.history.size`, `FirstNexus.context.tokens`, `FirstNexus.errorCategory` (no prompt, history, response, or session-key content)
+- `FirstNexus.tool.loop`
+  - `FirstNexus.toolName`, `FirstNexus.outcome`, `FirstNexus.iterations`, `FirstNexus.errorCategory` (no loop messages, params, or tool output)
+- `FirstNexus.memory.pressure`
+  - `FirstNexus.memory.level`, `FirstNexus.memory.heap_used_bytes`, `FirstNexus.memory.rss_bytes`
 
 When content capture is explicitly enabled, model and tool spans can also
-include bounded, redacted `NexisClaw.content.*` attributes for the specific
+include bounded, redacted `FirstNexus.content.*` attributes for the specific
 content classes you opted into.
 
 ## Diagnostic event catalog
@@ -372,7 +372,7 @@ flags. Flags are case-insensitive and support wildcards (e.g. `telegram.*` or
 Or as a one-off env override:
 
 ```bash
-NEXISCLAW_DIAGNOSTICS=telegram.http,telegram.payload NexisClaw gateway
+NEXISCLAW_DIAGNOSTICS=telegram.http,telegram.payload FirstNexus gateway
 ```
 
 Flag output goes to the standard log file (`logging.file`) and is still
@@ -388,7 +388,7 @@ redacted by `logging.redactSensitive`. Full guide:
 ```
 
 You can also leave `diagnostics-otel` out of `plugins.allow`, or run
-`NexisClaw plugins disable diagnostics-otel`.
+`FirstNexus plugins disable diagnostics-otel`.
 
 ## Related
 

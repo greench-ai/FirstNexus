@@ -1,8 +1,8 @@
 import {
   definePluginEntry,
-  type NexisClawPluginApi,
+  type FirstNexusPluginApi,
   type ProviderAuthMethodNonInteractiveContext,
-} from "NexisClaw/plugin-sdk/plugin-entry";
+} from "FirstNexus/plugin-sdk/plugin-entry";
 import {
   SGLANG_DEFAULT_API_KEY_ENV_VAR,
   SGLANG_DEFAULT_BASE_URL,
@@ -14,14 +14,14 @@ import {
 const PROVIDER_ID = "sglang";
 
 async function loadProviderSetup() {
-  return await import("NexisClaw/plugin-sdk/provider-setup");
+  return await import("FirstNexus/plugin-sdk/provider-setup");
 }
 
 export default definePluginEntry({
   id: "sglang",
   name: "SGLang Provider",
   description: "Bundled SGLang provider plugin",
-  register(api: NexisClawPluginApi) {
+  register(api: FirstNexusPluginApi) {
     api.registerProvider({
       id: PROVIDER_ID,
       label: "SGLang",

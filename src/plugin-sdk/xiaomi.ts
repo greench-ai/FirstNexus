@@ -1,10 +1,10 @@
 // Manual facade. Keep loader boundary explicit.
-import type { ModelProviderConfig, NexisClawConfig } from "../config/types.js";
+import type { ModelProviderConfig, FirstNexusConfig } from "../config/types.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
 
 type FacadeModule = {
-  applyXiaomiConfig: (cfg: NexisClawConfig) => NexisClawConfig;
-  applyXiaomiProviderConfig: (cfg: NexisClawConfig) => NexisClawConfig;
+  applyXiaomiConfig: (cfg: FirstNexusConfig) => FirstNexusConfig;
+  applyXiaomiProviderConfig: (cfg: FirstNexusConfig) => FirstNexusConfig;
   buildXiaomiProvider: () => ModelProviderConfig;
   XIAOMI_DEFAULT_MODEL_ID: string;
   XIAOMI_DEFAULT_MODEL_REF: string;

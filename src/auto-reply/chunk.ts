@@ -3,7 +3,7 @@
 // the chunk so messages are only split when they truly exceed the limit.
 
 import type { ChannelId } from "../channels/plugins/types.core.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { findFenceSpanAt, isSafeFenceBreak, parseFenceSpans } from "../markdown/fences.js";
 import { resolveChannelStreamingChunkMode } from "../plugin-sdk/channel-streaming.js";
 import { resolveAccountEntry } from "../routing/account-lookup.js";
@@ -54,7 +54,7 @@ function resolveChunkLimitForProvider(
 }
 
 export function resolveTextChunkLimit(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
   provider?: TextChunkProvider,
   accountId?: string | null,
   opts?: { fallbackLimit?: number },
@@ -98,7 +98,7 @@ function resolveChunkModeForProvider(
 }
 
 export function resolveChunkMode(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
   provider?: TextChunkProvider,
   accountId?: string | null,
 ): ChunkMode {

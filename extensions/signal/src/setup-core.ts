@@ -14,15 +14,15 @@ import {
   type ChannelSetupAdapter,
   type ChannelSetupWizard,
   type ChannelSetupWizardTextInput,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type WizardPrompter,
-} from "NexisClaw/plugin-sdk/setup-runtime";
-import { formatCliCommand, formatDocsLink } from "NexisClaw/plugin-sdk/setup-tools";
+} from "FirstNexus/plugin-sdk/setup-runtime";
+import { formatCliCommand, formatDocsLink } from "FirstNexus/plugin-sdk/setup-tools";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { normalizeE164 } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { normalizeE164 } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { resolveDefaultSignalAccountId, resolveSignalAccount } from "./accounts.js";
 
 const channel = "signal" as const;
@@ -89,10 +89,10 @@ function buildSignalSetupPatch(input: {
 }
 
 async function promptSignalAllowFrom(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   prompter: WizardPrompter;
   accountId?: string;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   return promptParsedAllowFromForAccount({
     cfg: params.cfg,
     accountId: params.accountId,
@@ -127,7 +127,7 @@ export const signalDmPolicy = {
   channel,
   policyKey: "channels.signal.dmPolicy",
   allowFromKey: "channels.signal.allowFrom",
-  resolveConfigKeys: (cfg: NexisClawConfig, accountId?: string) =>
+  resolveConfigKeys: (cfg: FirstNexusConfig, accountId?: string) =>
     (accountId ?? resolveDefaultSignalAccountId(cfg)) !== DEFAULT_ACCOUNT_ID
       ? {
           policyKey: `channels.signal.accounts.${accountId ?? resolveDefaultSignalAccountId(cfg)}.dmPolicy`,
@@ -137,11 +137,11 @@ export const signalDmPolicy = {
           policyKey: "channels.signal.dmPolicy",
           allowFromKey: "channels.signal.allowFrom",
         },
-  getCurrent: (cfg: NexisClawConfig, accountId?: string) =>
+  getCurrent: (cfg: FirstNexusConfig, accountId?: string) =>
     resolveSignalAccount({ cfg, accountId: accountId ?? resolveDefaultSignalAccountId(cfg) }).config
       .dmPolicy ?? "pairing",
   setPolicy: (
-    cfg: NexisClawConfig,
+    cfg: FirstNexusConfig,
     policy: "pairing" | "allowlist" | "open" | "disabled",
     accountId?: string,
   ) =>
@@ -167,7 +167,7 @@ export const signalDmPolicy = {
 };
 
 function resolveSignalCliPath(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   credentialValues: Record<string, unknown>;
 }) {
@@ -211,9 +211,9 @@ export const signalNumberTextInput: ChannelSetupWizardTextInput = {
 export const signalCompletionNote = {
   title: "Signal next steps",
   lines: [
-    'Link device with: signal-cli link -n "NexisClaw"',
+    'Link device with: signal-cli link -n "FirstNexus"',
     "Scan QR in Signal -> Linked Devices",
-    `Then run: ${formatCliCommand("NexisClaw gateway call channels.status --params '{\"probe\":true}'")}`,
+    `Then run: ${formatCliCommand("FirstNexus gateway call channels.status --params '{\"probe\":true}'")}`,
     `Docs: ${formatDocsLink("/signal", "signal")}`,
   ],
 };
@@ -262,6 +262,6 @@ export function createSignalSetupWizardProxy(loadWizard: () => Promise<ChannelSe
     ],
     completionNote: signalCompletionNote,
     dmPolicy: signalDmPolicy,
-    disable: (cfg: NexisClawConfig) => setSetupChannelEnabled(cfg, channel, false),
+    disable: (cfg: FirstNexusConfig) => setSetupChannelEnabled(cfg, channel, false),
   });
 }

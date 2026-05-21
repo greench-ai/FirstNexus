@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveExternalCliAuthScopeFromConfig } from "./auth-profiles/external-cli-scope.js";
 
 describe("external CLI auth scope", () => {
@@ -69,7 +69,7 @@ describe("external CLI auth scope", () => {
           },
         ],
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     const scope = resolveExternalCliAuthScopeFromConfig(cfg);
 

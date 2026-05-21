@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { QueuedMessage } from "../gateway/message-queue.js";
 import type { GatewayAccount } from "../gateway/types.js";
@@ -45,8 +45,8 @@ describe("trySlashCommand", () => {
   });
 
   it("honors commands.allowFrom for pre-dispatch bot-streaming in open DM configs", async () => {
-    const writes: NexisClawConfig[] = [];
-    const config: NexisClawConfig = {
+    const writes: FirstNexusConfig[] = [];
+    const config: FirstNexusConfig = {
       commands: {
         allowFrom: {
           qqbot: ["TRUSTED_OPENID"],

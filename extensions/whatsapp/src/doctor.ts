@@ -1,13 +1,13 @@
 import type {
   ChannelDoctorAdapter,
   ChannelDoctorConfigMutation,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 }): ChannelDoctorConfigMutation {
   const legacyAckReaction = cfg.messages?.ackReaction?.trim();
   if (!legacyAckReaction || cfg.channels?.whatsapp === undefined) {

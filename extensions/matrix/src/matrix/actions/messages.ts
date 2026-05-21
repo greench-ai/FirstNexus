@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { fetchMatrixPollMessageSummary, resolveMatrixPollRootEventId } from "../poll-summary.js";
 import { isPollEventType } from "../poll-types.js";
 import { editMessageMatrix, sendMessageMatrix } from "../send.js";

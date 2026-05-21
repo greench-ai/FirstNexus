@@ -132,12 +132,12 @@ describe("doctor open-policy allowFrom repair", () => {
   it("formats open-policy wildcard warnings", () => {
     const warnings = collectOpenPolicyAllowFromWarnings({
       changes: ['- channels.signal.allowFrom: set to ["*"] (required by dmPolicy="open")'],
-      doctorFixCommand: "NexisClaw doctor --fix",
+      doctorFixCommand: "FirstNexus doctor --fix",
     });
 
     expect(warnings).toEqual([
       '- channels.signal.allowFrom: set to ["*"] (required by dmPolicy="open")',
-      '- Run "NexisClaw doctor --fix" to add missing allowFrom wildcards.',
+      '- Run "FirstNexus doctor --fix" to add missing allowFrom wildcards.',
     ]);
   });
 });

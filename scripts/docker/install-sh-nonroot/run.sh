@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://NexisClaw.bot/install.sh}"
-DEFAULT_PACKAGE="NexisClaw"
+INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://FirstNexus.bot/install.sh}"
+DEFAULT_PACKAGE="FirstNexus"
 PACKAGE_NAME="${NEXISCLAW_INSTALL_PACKAGE:-$DEFAULT_PACKAGE}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 

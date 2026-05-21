@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
-  compareNexisClawReleaseVersions,
+  compareFirstNexusReleaseVersions,
   formatPrereleaseResolutionError,
   isExactSemverVersion,
-  isNexisClawStableCorrectionVersion,
+  isFirstNexusStableCorrectionVersion,
   isPrereleaseSemverVersion,
   isPrereleaseResolutionAllowed,
   parseRegistryNpmSpec,
@@ -20,22 +20,22 @@ function parseSpecOrThrow(spec: string) {
 
 describe("npm registry spec validation", () => {
   it.each([
-    "@NexisClaw/voice-call",
-    "@NexisClaw/voice-call@1.2.3",
-    "@NexisClaw/voice-call@1.2.3-beta.4",
-    "@NexisClaw/voice-call@latest",
-    "@NexisClaw/voice-call@beta",
+    "@FirstNexus/voice-call",
+    "@FirstNexus/voice-call@1.2.3",
+    "@FirstNexus/voice-call@1.2.3-beta.4",
+    "@FirstNexus/voice-call@latest",
+    "@FirstNexus/voice-call@beta",
   ])("accepts %s", (spec) => {
     expect(validateRegistryNpmSpec(spec)).toBeNull();
   });
 
   it.each([
     {
-      spec: "@NexisClaw/voice-call@^1.2.3",
+      spec: "@FirstNexus/voice-call@^1.2.3",
       expected: "exact version or dist-tag",
     },
     {
-      spec: "@NexisClaw/voice-call@~1.2.3",
+      spec: "@FirstNexus/voice-call@~1.2.3",
       expected: "exact version or dist-tag",
     },
     {
@@ -43,15 +43,15 @@ describe("npm registry spec validation", () => {
       expected: "URLs are not allowed",
     },
     {
-      spec: "git+ssh://github.com/NexisClaw/NexisClaw",
+      spec: "git+ssh://github.com/FirstNexus/FirstNexus",
       expected: "URLs are not allowed",
     },
     {
-      spec: "@NexisClaw/voice-call@",
+      spec: "@FirstNexus/voice-call@",
       expected: "missing version/tag after @",
     },
     {
-      spec: "@NexisClaw/voice-call@../beta",
+      spec: "@FirstNexus/voice-call@../beta",
       expected: "invalid version/tag",
     },
   ])("rejects %s", ({ spec, expected }) => {
@@ -62,39 +62,39 @@ describe("npm registry spec validation", () => {
 describe("npm registry spec parsing helpers", () => {
   it.each([
     {
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       expected: {
-        name: "@NexisClaw/voice-call",
-        raw: "@NexisClaw/voice-call",
+        name: "@FirstNexus/voice-call",
+        raw: "@FirstNexus/voice-call",
         selectorKind: "none",
         selectorIsPrerelease: false,
       },
     },
     {
-      spec: "@NexisClaw/voice-call@beta",
+      spec: "@FirstNexus/voice-call@beta",
       expected: {
-        name: "@NexisClaw/voice-call",
-        raw: "@NexisClaw/voice-call@beta",
+        name: "@FirstNexus/voice-call",
+        raw: "@FirstNexus/voice-call@beta",
         selector: "beta",
         selectorKind: "tag",
         selectorIsPrerelease: false,
       },
     },
     {
-      spec: "@NexisClaw/voice-call@2026.5.3-1",
+      spec: "@FirstNexus/voice-call@2026.5.3-1",
       expected: {
-        name: "@NexisClaw/voice-call",
-        raw: "@NexisClaw/voice-call@2026.5.3-1",
+        name: "@FirstNexus/voice-call",
+        raw: "@FirstNexus/voice-call@2026.5.3-1",
         selector: "2026.5.3-1",
         selectorKind: "exact-version",
         selectorIsPrerelease: false,
       },
     },
     {
-      spec: "@NexisClaw/voice-call@1.2.3-beta.1",
+      spec: "@FirstNexus/voice-call@1.2.3-beta.1",
       expected: {
-        name: "@NexisClaw/voice-call",
-        raw: "@NexisClaw/voice-call@1.2.3-beta.1",
+        name: "@FirstNexus/voice-call",
+        raw: "@FirstNexus/voice-call@1.2.3-beta.1",
         selector: "1.2.3-beta.1",
         selectorKind: "exact-version",
         selectorIsPrerelease: true,
@@ -128,8 +128,8 @@ describe("npm registry spec parsing helpers", () => {
     { value: "2026.5.3-beta.1", expected: false },
     { value: "1.2.3-1", expected: false },
     { value: "2026.2.30-1", expected: false },
-  ])("detects NexisClaw stable correction versions for %s", ({ value, expected }) => {
-    expect(isNexisClawStableCorrectionVersion(value)).toBe(expected);
+  ])("detects FirstNexus stable correction versions for %s", ({ value, expected }) => {
+    expect(isFirstNexusStableCorrectionVersion(value)).toBe(expected);
   });
 
   it.each([
@@ -138,45 +138,45 @@ describe("npm registry spec parsing helpers", () => {
     { left: "2026.5.3", right: "2026.5.3-beta.3", expected: 1 },
     { left: "2026.5.3-beta.3", right: "2026.5.3-alpha.9", expected: 1 },
     { left: "1.2.3-1", right: "1.2.3", expected: null },
-  ])("compares NexisClaw release versions for %s and %s", ({ left, right, expected }) => {
-    expect(compareNexisClawReleaseVersions(left, right)).toBe(expected);
+  ])("compares FirstNexus release versions for %s and %s", ({ left, right, expected }) => {
+    expect(compareFirstNexusReleaseVersions(left, right)).toBe(expected);
   });
 });
 
 describe("npm prerelease resolution policy", () => {
   it.each([
     {
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       resolvedVersion: "1.2.3-beta.1",
       expected: false,
     },
     {
-      spec: "@NexisClaw/voice-call@latest",
+      spec: "@FirstNexus/voice-call@latest",
       resolvedVersion: "1.2.3-rc.1",
       expected: false,
     },
     {
-      spec: "@NexisClaw/voice-call@latest",
+      spec: "@FirstNexus/voice-call@latest",
       resolvedVersion: "2026.5.3-1",
       expected: true,
     },
     {
-      spec: "@NexisClaw/voice-call@beta",
+      spec: "@FirstNexus/voice-call@beta",
       resolvedVersion: "1.2.3-beta.4",
       expected: true,
     },
     {
-      spec: "@NexisClaw/voice-call@1.2.3-beta.1",
+      spec: "@FirstNexus/voice-call@1.2.3-beta.1",
       resolvedVersion: "1.2.3-beta.1",
       expected: true,
     },
     {
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       resolvedVersion: "1.2.3",
       expected: true,
     },
     {
-      spec: "@NexisClaw/voice-call@latest",
+      spec: "@FirstNexus/voice-call@latest",
       resolvedVersion: undefined,
       expected: true,
     },
@@ -191,12 +191,12 @@ describe("npm prerelease resolution policy", () => {
 
   it.each([
     {
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       resolvedVersion: "1.2.3-beta.1",
-      expected: `Use "@NexisClaw/voice-call@beta"`,
+      expected: `Use "@FirstNexus/voice-call@beta"`,
     },
     {
-      spec: "@NexisClaw/voice-call@beta",
+      spec: "@FirstNexus/voice-call@beta",
       resolvedVersion: "1.2.3-rc.1",
       expected: "Use an explicit prerelease tag or exact prerelease version",
     },

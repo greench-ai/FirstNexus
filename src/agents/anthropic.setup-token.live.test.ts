@@ -18,7 +18,7 @@ import {
 import { isLiveTestEnabled } from "./live-test-helpers.js";
 import { getApiKeyForModel, requireApiKey } from "./model-auth.js";
 import { normalizeProviderId, parseModelRef } from "./model-selection.js";
-import { ensureNexisClawModelsJson } from "./models-config.js";
+import { ensureFirstNexusModelsJson } from "./models-config.js";
 import { discoverAuthStorage, discoverModels } from "./pi-model-discovery.js";
 
 const LIVE = isLiveTestEnabled();
@@ -75,7 +75,7 @@ async function resolveTokenSource(): Promise<TokenSource> {
     if (error) {
       throw new Error(`Invalid setup-token: ${error}`);
     }
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-setup-token-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-setup-token-"));
     const profileId = `anthropic:setup-token-live-${randomUUID()}`;
     const store = ensureAuthProfileStore(tempDir, {
       allowKeychainPrompt: false,
@@ -185,7 +185,7 @@ describeLive("live anthropic setup-token", () => {
       const tokenSource = await resolveTokenSource();
       try {
         const cfg = getRuntimeConfig();
-        await ensureNexisClawModelsJson(cfg, tokenSource.agentDir);
+        await ensureFirstNexusModelsJson(cfg, tokenSource.agentDir);
 
         const authStorage = discoverAuthStorage(tokenSource.agentDir);
         const modelRegistry = discoverModels(authStorage, tokenSource.agentDir);

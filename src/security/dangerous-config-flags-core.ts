@@ -1,5 +1,5 @@
 import { DANGEROUS_SANDBOX_DOCKER_BOOLEAN_KEYS } from "../agents/sandbox/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isRecord } from "../utils.js";
 import { collectCoreInsecureOrDangerousFlags } from "./core-dangerous-config-flags.js";
 
@@ -58,7 +58,7 @@ function collectExactPluginConfigContractMatches({
 }
 
 export function collectEnabledInsecureOrDangerousFlagsFromContracts(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   inputs: DangerousConfigFlagContractInputs = {},
 ): string[] {
   const enabledFlags = collectCoreInsecureOrDangerousFlags(cfg);

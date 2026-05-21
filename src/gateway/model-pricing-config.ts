@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
-export function isGatewayModelPricingEnabled(config: NexisClawConfig): boolean {
+export function isGatewayModelPricingEnabled(config: FirstNexusConfig): boolean {
   return config.models?.pricing?.enabled !== false;
 }

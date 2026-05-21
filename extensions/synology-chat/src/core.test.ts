@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   createPluginSetupWizardConfigure,
   createTestWizardPrompter,
   runSetupWizardConfigure,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import type { WizardPrompter } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import type { WizardPrompter } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { listAccountIds, resolveAccount } from "./accounts.js";
 import { SynologyChatChannelConfigSchema } from "./config-schema.js";
@@ -24,7 +24,7 @@ const synologyChatSetupPlugin = {
   config: {
     listAccountIds,
     defaultAccountId: () => "default",
-    resolveAllowFrom: ({ cfg, accountId }: { cfg: NexisClawConfig; accountId?: string }) =>
+    resolveAllowFrom: ({ cfg, accountId }: { cfg: FirstNexusConfig; accountId?: string }) =>
       resolveAccount(cfg, accountId).allowedUserIds,
   },
 };
@@ -131,7 +131,7 @@ describe("synology-chat core", () => {
 
     const result = await runSetupWizardConfigure({
       configure: synologyChatConfigure,
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       prompter,
       options: {},
     });
@@ -151,7 +151,7 @@ describe("synology-chat core", () => {
 
     const result = await runSetupWizardConfigure({
       configure: synologyChatConfigure,
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       prompter,
       options: {},
       forceAllowFrom: true,
@@ -206,7 +206,7 @@ describe("synology-chat account resolution", () => {
     expect(account.dangerouslyAllowInheritedWebhookPath).toBe(false);
     expect(account.dmPolicy).toBe("allowlist");
     expect(account.rateLimitPerMinute).toBe(30);
-    expect(account.botName).toBe("NexisClaw");
+    expect(account.botName).toBe("FirstNexus");
   });
 
   it("uses env var fallbacks", () => {

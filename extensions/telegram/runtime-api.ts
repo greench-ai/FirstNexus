@@ -1,13 +1,13 @@
-export type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
-export type { ChannelMessageActionAdapter } from "NexisClaw/plugin-sdk/channel-contract";
+export type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
+export type { ChannelMessageActionAdapter } from "FirstNexus/plugin-sdk/channel-contract";
 export type { TelegramApiOverride } from "./src/send.js";
 export type {
-  NexisClawPluginService,
-  NexisClawPluginServiceContext,
+  FirstNexusPluginService,
+  FirstNexusPluginServiceContext,
   PluginLogger,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import type { NexisClawConfig as RuntimeNexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-export type { PluginRuntime } from "NexisClaw/plugin-sdk/runtime-store";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import type { FirstNexusConfig as RuntimeFirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+export type { PluginRuntime } from "FirstNexus/plugin-sdk/runtime-store";
 export type {
   AcpRuntime,
   AcpRuntimeCapabilities,
@@ -19,23 +19,23 @@ export type {
   AcpRuntimeTurnInput,
   AcpRuntimeErrorCode,
   AcpSessionUpdateTag,
-} from "NexisClaw/plugin-sdk/acp-runtime";
-export { AcpRuntimeError } from "NexisClaw/plugin-sdk/acp-runtime";
+} from "FirstNexus/plugin-sdk/acp-runtime";
+export { AcpRuntimeError } from "FirstNexus/plugin-sdk/acp-runtime";
 
 export {
   emptyPluginConfigSchema,
   formatPairingApproveHint,
   getChatChannelMeta,
-} from "NexisClaw/plugin-sdk/channel-plugin-common";
-export { clearAccountEntryFields } from "NexisClaw/plugin-sdk/channel-core";
+} from "FirstNexus/plugin-sdk/channel-plugin-common";
+export { clearAccountEntryFields } from "FirstNexus/plugin-sdk/channel-core";
 export { buildChannelConfigSchema, TelegramConfigSchema } from "./config-api.js";
-export { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
+export { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
 export {
   PAIRING_APPROVED_MESSAGE,
   buildTokenChannelStatusSummary,
   projectCredentialSnapshotFields,
   resolveConfiguredFromCredentialStatuses,
-} from "NexisClaw/plugin-sdk/channel-status";
+} from "FirstNexus/plugin-sdk/channel-status";
 export {
   jsonResult,
   readNumberParam,
@@ -44,7 +44,7 @@ export {
   readStringOrNumberParam,
   readStringParam,
   resolvePollMaxSelections,
-} from "NexisClaw/plugin-sdk/channel-actions";
+} from "FirstNexus/plugin-sdk/channel-actions";
 export type { TelegramProbe } from "./src/probe.js";
 export { auditTelegramGroupMembership, collectTelegramUnmentionedGroupIds } from "./src/audit.js";
 export { resolveTelegramRuntimeGroupPolicy } from "./src/group-access.js";
@@ -85,10 +85,10 @@ export {
 } from "./src/thread-bindings.js";
 export { resolveTelegramToken } from "./src/token.js";
 export { setTelegramRuntime } from "./src/runtime.js";
-export type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-export type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+export type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+export type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 export type TelegramAccountConfig = NonNullable<
-  NonNullable<RuntimeNexisClawConfig["channels"]>["telegram"]
+  NonNullable<RuntimeFirstNexusConfig["channels"]>["telegram"]
 >;
 export type TelegramActionConfig = NonNullable<TelegramAccountConfig["actions"]>;
 export type TelegramNetworkConfig = NonNullable<TelegramAccountConfig["network"]>;

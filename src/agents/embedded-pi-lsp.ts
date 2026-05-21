@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { BundleLspServerConfig } from "../plugins/bundle-lsp.js";
 import { loadEnabledBundleLspConfig } from "../plugins/bundle-lsp.js";
 
@@ -9,7 +9,7 @@ type EmbeddedPiLspConfig = {
 
 export function loadEmbeddedPiLspConfig(params: {
   workspaceDir: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
 }): EmbeddedPiLspConfig {
   const bundleLsp = loadEnabledBundleLspConfig({
     workspaceDir: params.workspaceDir,

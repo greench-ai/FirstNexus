@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   createTestWizardPrompter,
   runSetupWizardPrepare,
   runSetupWizardFinalize,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import type { WizardPrompter } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import type { WizardPrompter } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it, vi } from "vitest";
 import { createSlackSetupWizardBase } from "./setup-core.js";
 import { buildSlackSetupLines } from "./setup-shared.js";
@@ -27,7 +27,7 @@ const baseCfg = {
       appToken: "xapp-test",
     },
   },
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 function requireFirstStringArg(mock: ReturnType<typeof vi.fn>, label: string): string {
   const [call] = mock.mock.calls;
@@ -100,7 +100,7 @@ describe("slackSetupWizard.prepare", () => {
 
     await runSetupWizardPrepare({
       prepare: slackSetupWizard.prepare,
-      cfg: { channels: { slack: {} } } as NexisClawConfig,
+      cfg: { channels: { slack: {} } } as FirstNexusConfig,
       prompter: createTestWizardPrompter({
         plain,
         note,
@@ -112,12 +112,12 @@ describe("slackSetupWizard.prepare", () => {
     const manifest = requireFirstStringArg(plain, "Slack manifest plain text");
     expect(JSON.parse(manifest)).toEqual({
       display_information: {
-        name: "NexisClaw",
-        description: "NexisClaw connector for NexisClaw",
+        name: "FirstNexus",
+        description: "FirstNexus connector for FirstNexus",
       },
       features: {
         bot_user: {
-          display_name: "NexisClaw",
+          display_name: "FirstNexus",
           always_online: true,
         },
         app_home: {
@@ -127,8 +127,8 @@ describe("slackSetupWizard.prepare", () => {
         },
         slash_commands: [
           {
-            command: "/NexisClaw",
-            description: "Send a message to NexisClaw",
+            command: "/FirstNexus",
+            description: "Send a message to FirstNexus",
             should_escape: false,
           },
         ],
@@ -217,7 +217,7 @@ describe("slackSetupWizard.dmPolicy", () => {
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         "alerts",
       ),
     ).toBe("allowlist");
@@ -244,7 +244,7 @@ describe("slackSetupWizard.dmPolicy", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       "open",
       "alerts",
     );
@@ -276,7 +276,7 @@ describe("slackSetupWizard.status", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(configured).toBe(false);

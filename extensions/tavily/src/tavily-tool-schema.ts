@@ -1,1 +1,1 @@
-export { optionalStringEnum } from "NexisClaw/plugin-sdk/channel-actions";
+export { optionalStringEnum } from "FirstNexus/plugin-sdk/channel-actions";

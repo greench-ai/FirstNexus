@@ -1,11 +1,11 @@
 import {
   buildChannelOutboundSessionRoute,
   type ChannelOutboundSessionRouteParams,
-} from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/core";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 function stripZalouserTargetPrefix(raw: string): string {
   return raw

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { resolveHomeRelativePath, resolveRequiredHomeDir } from "../infra/home-dir.js";
-import type { NexisClawConfig } from "./types.js";
+import type { FirstNexusConfig } from "./types.js";
 
 /**
  * Nix mode detection: When NEXISCLAW_NIX_MODE=1, the gateway is running under Nix.
@@ -19,8 +19,8 @@ export const isNixMode = resolveIsNixMode();
 
 // Support the remaining legacy pre-rebrand state dir.
 const LEGACY_STATE_DIRNAMES = [".clawdbot"] as const;
-const NEW_STATE_DIRNAME = ".NexisClaw";
-const CONFIG_FILENAME = "NexisClaw.json";
+const NEW_STATE_DIRNAME = ".FirstNexus";
+const CONFIG_FILENAME = "FirstNexus.json";
 const LEGACY_CONFIG_FILENAMES = ["clawdbot.json"] as const;
 
 function resolveDefaultHomeDir(): string {
@@ -55,7 +55,7 @@ export function resolveNewStateDir(homedir: () => string = resolveDefaultHomeDir
 /**
  * State directory for mutable data (sessions, logs, caches).
  * Can be overridden via NEXISCLAW_STATE_DIR.
- * Default: ~/.NexisClaw
+ * Default: ~/.FirstNexus
  */
 export function resolveStateDir(
   env: NodeJS.ProcessEnv = process.env,
@@ -106,7 +106,7 @@ function resolveUserPath(
  *
  * Returns an empty array when the var is unset or contains no usable entries,
  * preserving the historical behavior where `$include` is confined to the
- * directory containing `NexisClaw.json`.
+ * directory containing `FirstNexus.json`.
  */
 export function resolveIncludeRoots(
   env: NodeJS.ProcessEnv = process.env,
@@ -141,7 +141,7 @@ export const STATE_DIR = resolveStateDir();
 /**
  * Config file path (JSON or JSON5).
  * Can be overridden via NEXISCLAW_CONFIG_PATH.
- * Default: ~/.NexisClaw/NexisClaw.json (or $NEXISCLAW_STATE_DIR/NexisClaw.json)
+ * Default: ~/.FirstNexus/FirstNexus.json (or $NEXISCLAW_STATE_DIR/FirstNexus.json)
  */
 export function resolveCanonicalConfigPath(
   env: NodeJS.ProcessEnv = process.env,
@@ -236,9 +236,9 @@ export function resolveDefaultConfigCandidates(
   }
 
   const candidates: string[] = [];
-  const NexisClawStateDir = env.NEXISCLAW_STATE_DIR?.trim();
-  if (NexisClawStateDir) {
-    const resolved = resolveUserPath(NexisClawStateDir, env, effectiveHomedir);
+  const FirstNexusStateDir = env.NEXISCLAW_STATE_DIR?.trim();
+  if (FirstNexusStateDir) {
+    const resolved = resolveUserPath(FirstNexusStateDir, env, effectiveHomedir);
     candidates.push(path.join(resolved, CONFIG_FILENAME));
     candidates.push(...LEGACY_CONFIG_FILENAMES.map((name) => path.join(resolved, name)));
   }
@@ -255,12 +255,12 @@ export const DEFAULT_GATEWAY_PORT = 19500;
 
 /**
  * Gateway lock directory (ephemeral).
- * Default: os.tmpdir()/NexisClaw-<uid> (uid suffix when available).
+ * Default: os.tmpdir()/FirstNexus-<uid> (uid suffix when available).
  */
 export function resolveGatewayLockDir(tmpdir: () => string = os.tmpdir): string {
   const base = tmpdir();
   const uid = typeof process.getuid === "function" ? process.getuid() : undefined;
-  const suffix = uid != null ? `NexisClaw-${uid}` : "NexisClaw";
+  const suffix = uid != null ? `FirstNexus-${uid}` : "FirstNexus";
   return path.join(base, suffix);
 }
 
@@ -323,7 +323,7 @@ function parseGatewayPortEnvValue(raw: string | undefined): number | null {
 }
 
 export function resolveGatewayPort(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): number {
   const envRaw = env.NEXISCLAW_GATEWAY_PORT?.trim();

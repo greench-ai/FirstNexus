@@ -1,8 +1,8 @@
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
 import {
   listZalouserAccountIds,
   resolveDefaultZalouserAccountId,

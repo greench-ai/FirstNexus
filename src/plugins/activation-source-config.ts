@@ -2,12 +2,12 @@ import {
   getRuntimeConfigSnapshot,
   getRuntimeConfigSourceSnapshot,
 } from "../config/runtime-snapshot.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export function resolvePluginActivationSourceConfig(params: {
-  config?: NexisClawConfig;
-  activationSourceConfig?: NexisClawConfig;
-}): NexisClawConfig {
+  config?: FirstNexusConfig;
+  activationSourceConfig?: FirstNexusConfig;
+}): FirstNexusConfig {
   if (params.activationSourceConfig !== undefined) {
     return params.activationSourceConfig;
   }

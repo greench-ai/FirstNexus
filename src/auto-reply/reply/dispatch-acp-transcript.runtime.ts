@@ -7,10 +7,10 @@ import {
   resolveStorePath,
 } from "../../config/sessions.js";
 import type { SessionAcpMeta } from "../../config/sessions/types.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
 export async function persistAcpDispatchTranscript(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   promptText: string;
   finalText: string;

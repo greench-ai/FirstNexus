@@ -17,7 +17,7 @@ export function createExtensionFeishuVitestConfig(
     {
       dir: "extensions",
       env,
-      includeNexisClawRuntimeSetup: false,
+      includeFirstNexusRuntimeSetup: false,
       name: "extension-feishu",
       passWithNoTests: true,
       setupFiles: ["test/setup.extensions.ts"],

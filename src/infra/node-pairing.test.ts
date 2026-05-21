@@ -32,7 +32,7 @@ async function setupPairedNode(baseDir: string): Promise<string> {
   return paired!.token;
 }
 
-const tempDirs = createSuiteTempRootTracker({ prefix: "NexisClaw-node-pairing-" });
+const tempDirs = createSuiteTempRootTracker({ prefix: "FirstNexus-node-pairing-" });
 
 async function withNodePairingDir<T>(run: (baseDir: string) => Promise<T>): Promise<T> {
   return await run(await tempDirs.make("case"));

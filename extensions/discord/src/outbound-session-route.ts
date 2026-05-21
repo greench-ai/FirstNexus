@@ -1,10 +1,10 @@
-import { buildThreadAwareOutboundSessionRoute } from "NexisClaw/plugin-sdk/channel-core";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { buildOutboundBaseSessionKey, type RoutePeer } from "NexisClaw/plugin-sdk/routing";
+import { buildThreadAwareOutboundSessionRoute } from "FirstNexus/plugin-sdk/channel-core";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { buildOutboundBaseSessionKey, type RoutePeer } from "FirstNexus/plugin-sdk/routing";
 import { parseDiscordTarget } from "./target-parsing.js";
 
 export type ResolveDiscordOutboundSessionRouteParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   accountId?: string | null;
   target: string;

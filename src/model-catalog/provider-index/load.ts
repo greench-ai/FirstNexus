@@ -1,9 +1,9 @@
-import { normalizeNexisClawProviderIndex } from "./normalize.js";
-import { NEXISCLAW_PROVIDER_INDEX } from "./NexisClaw-provider-index.js";
-import type { NexisClawProviderIndex } from "./types.js";
+import { NEXISCLAW_PROVIDER_INDEX } from "./FirstNexus-provider-index.js";
+import { normalizeFirstNexusProviderIndex } from "./normalize.js";
+import type { FirstNexusProviderIndex } from "./types.js";
 
-export function loadNexisClawProviderIndex(
+export function loadFirstNexusProviderIndex(
   source: unknown = NEXISCLAW_PROVIDER_INDEX,
-): NexisClawProviderIndex {
-  return normalizeNexisClawProviderIndex(source) ?? { version: 1, providers: {} };
+): FirstNexusProviderIndex {
+  return normalizeFirstNexusProviderIndex(source) ?? { version: 1, providers: {} };
 }

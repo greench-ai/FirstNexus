@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { RegisteredMemorySearchManager } from "../plugins/memory-state.js";
 
 type ActiveMemorySearchPurpose = "default" | "status";
@@ -15,7 +15,7 @@ async function loadMemoryHostSearchRuntime(): Promise<MemoryHostSearchRuntimeMod
 }
 
 export async function getActiveMemorySearchManager(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   purpose?: ActiveMemorySearchPurpose;
 }): Promise<ActiveMemorySearchManagerResult> {
@@ -23,7 +23,7 @@ export async function getActiveMemorySearchManager(params: {
   return await runtime.getActiveMemorySearchManager(params);
 }
 
-export async function closeActiveMemorySearchManagers(cfg?: NexisClawConfig): Promise<void> {
+export async function closeActiveMemorySearchManagers(cfg?: FirstNexusConfig): Promise<void> {
   const runtime = await loadMemoryHostSearchRuntime();
   await runtime.closeActiveMemorySearchManagers(cfg);
 }

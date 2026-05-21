@@ -1,12 +1,12 @@
 import {
   parseAgentSessionKey,
   type MemoryCitationsMode,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/memory-core-host-runtime-core";
-import type { MemorySearchResult } from "NexisClaw/plugin-sdk/memory-core-host-runtime-files";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/memory-core-host-runtime-core";
+import type { MemorySearchResult } from "FirstNexus/plugin-sdk/memory-core-host-runtime-files";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
-export function resolveMemoryCitationsMode(cfg: NexisClawConfig): MemoryCitationsMode {
+export function resolveMemoryCitationsMode(cfg: FirstNexusConfig): MemoryCitationsMode {
   const mode = cfg.memory?.citations;
   if (mode === "on" || mode === "off" || mode === "auto") {
     return mode;

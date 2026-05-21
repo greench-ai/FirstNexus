@@ -1,1 +1,1 @@
-export type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
+export type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";

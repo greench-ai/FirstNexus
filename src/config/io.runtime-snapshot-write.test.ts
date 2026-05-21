@@ -5,9 +5,9 @@ import {
   setRuntimeConfigSnapshotRefreshHandler,
   setRuntimeConfigSnapshot,
 } from "./io.js";
-import type { NexisClawConfig } from "./types.js";
+import type { FirstNexusConfig } from "./types.js";
 
-function createSourceConfig(): NexisClawConfig {
+function createSourceConfig(): FirstNexusConfig {
   return {
     models: {
       providers: {
@@ -21,7 +21,7 @@ function createSourceConfig(): NexisClawConfig {
   };
 }
 
-function createRuntimeConfig(): NexisClawConfig {
+function createRuntimeConfig(): FirstNexusConfig {
   return {
     models: {
       providers: {
@@ -50,7 +50,7 @@ describe("runtime config snapshot writes", () => {
   });
 
   it("skips source projection for non-runtime-derived configs", () => {
-    const sourceConfig: NexisClawConfig = {
+    const sourceConfig: FirstNexusConfig = {
       ...createSourceConfig(),
       gateway: {
         auth: {
@@ -58,7 +58,7 @@ describe("runtime config snapshot writes", () => {
         },
       },
     };
-    const runtimeConfig: NexisClawConfig = {
+    const runtimeConfig: FirstNexusConfig = {
       ...createRuntimeConfig(),
       gateway: {
         auth: {
@@ -66,7 +66,7 @@ describe("runtime config snapshot writes", () => {
         },
       },
     };
-    const independentConfig: NexisClawConfig = {
+    const independentConfig: FirstNexusConfig = {
       models: {
         providers: {
           openai: {

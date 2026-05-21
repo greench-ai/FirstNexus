@@ -26,7 +26,7 @@ describe("uninstallCommand", () => {
 
     expect(
       cleanupCommandLogMessages(runtime).some((message) =>
-        message.includes("NexisClaw backup create"),
+        message.includes("FirstNexus backup create"),
       ),
     ).toBe(true);
   });
@@ -41,7 +41,7 @@ describe("uninstallCommand", () => {
 
     expect(
       cleanupCommandLogMessages(runtime).some((message) =>
-        message.includes("NexisClaw backup create"),
+        message.includes("FirstNexus backup create"),
       ),
     ).toBe(false);
   });

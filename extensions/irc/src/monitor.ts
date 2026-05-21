@@ -1,5 +1,5 @@
-import { resolveLoggerBackedRuntime } from "NexisClaw/plugin-sdk/extension-shared";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { resolveLoggerBackedRuntime } from "FirstNexus/plugin-sdk/extension-shared";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveIrcAccount } from "./accounts.js";
 import { connectIrcClient, type IrcClient } from "./client.js";
 import { buildIrcConnectOptions } from "./connect-options.js";

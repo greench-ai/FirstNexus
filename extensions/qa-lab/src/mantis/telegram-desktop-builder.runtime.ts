@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { pathExists } from "NexisClaw/plugin-sdk/security-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { pathExists } from "FirstNexus/plugin-sdk/security-runtime";
 import { ensureRepoBoundDirectory, resolveRepoRelativeOutputDir } from "../cli-paths.js";
 import {
   acquireQaCredentialLease,
@@ -384,7 +384,7 @@ if ! command -v ffmpeg >/dev/null 2>&1; then
   sudo apt-get update -y >>"$out/apt.log" 2>&1 || true
   sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg >>"$out/apt.log" 2>&1 || true
 fi
-telegram_root="$HOME/.local/share/NexisClaw-mantis/telegram-desktop-bin"
+telegram_root="$HOME/.local/share/FirstNexus-mantis/telegram-desktop-bin"
 telegram_bin="$telegram_root/Telegram/Telegram"
 if [ ! -x "$telegram_bin" ]; then
   mkdir -p "$telegram_root"
@@ -462,7 +462,7 @@ process.stdout.write(JSON.stringify({ ok: body.ok, id: body.result?.id, username
 if (!body.ok || !body.result?.id) process.exit(1);
 MANTIS_TELEGRAM_GETME
 node --input-type=module -e 'import fs from "node:fs"; const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); process.stdout.write(String(value.id || ""));' "$out/telegram-driver-getme.json")"
-    export NEXISCLAW_HOME="$HOME/.NexisClaw-mantis/telegram-NexisClaw"
+    export NEXISCLAW_HOME="$HOME/.FirstNexus-mantis/telegram-FirstNexus"
     mkdir -p "$NEXISCLAW_HOME"
     cat >"$out/telegram.patch.json5" <<MANTIS_TELEGRAM_PATCH
 {
@@ -487,8 +487,8 @@ node --input-type=module -e 'import fs from "node:fs"; const value = JSON.parse(
   },
 }
 MANTIS_TELEGRAM_PATCH
-    pnpm NexisClaw config patch --file "$out/telegram.patch.json5" --dry-run
-    pnpm NexisClaw config patch --file "$out/telegram.patch.json5"
+    pnpm FirstNexus config patch --file "$out/telegram.patch.json5" --dry-run
+    pnpm FirstNexus config patch --file "$out/telegram.patch.json5"
     node --input-type=module >"$out/telegram-ready-message.json" 2>"$out/telegram-ready-message.err" <<'MANTIS_TELEGRAM_READY'
 const token = process.env.NEXISCLAW_MANTIS_TELEGRAM_DRIVER_BOT_TOKEN;
 const chatId = process.env.NEXISCLAW_MANTIS_TELEGRAM_GROUP_ID;
@@ -502,12 +502,12 @@ const body = await response.json();
 process.stdout.write(JSON.stringify({ ok: body.ok, message_id: body.result?.message_id }));
 if (!body.ok) process.exit(1);
 MANTIS_TELEGRAM_READY
-    nohup pnpm NexisClaw gateway run --dev --allow-unconfigured --port 38974 --cli-backend-logs </dev/null >"$out/NexisClaw-gateway.log" 2>&1 &
+    nohup pnpm FirstNexus gateway run --dev --allow-unconfigured --port 38974 --cli-backend-logs </dev/null >"$out/FirstNexus-gateway.log" 2>&1 &
     gateway_pid="$!"
-    echo "$gateway_pid" >"$out/NexisClaw-gateway.pid"
+    echo "$gateway_pid" >"$out/FirstNexus-gateway.pid"
     sleep 12
     if ! kill -0 "$gateway_pid" >/dev/null 2>&1; then
-      echo "NexisClaw gateway exited during startup." >&2
+      echo "FirstNexus gateway exited during startup." >&2
       wait "$gateway_pid" || true
       exit 1
     fi
@@ -527,8 +527,8 @@ cat >"$out/remote-metadata.json" <<MANTIS_REMOTE_METADATA
   "telegramProfileDir": "$telegram_profile_dir",
   "telegramProfileRestored": $telegram_profile_restored,
   "gatewaySetup": $setup_gateway,
-  "gatewayAlive": $(if [ "$setup_gateway" = "1" ] && [ -f "$out/NexisClaw-gateway.pid" ] && kill -0 "$(cat "$out/NexisClaw-gateway.pid")" >/dev/null 2>&1; then echo true; else echo false; fi),
-  "gatewayPid": "$(if [ -f "$out/NexisClaw-gateway.pid" ]; then cat "$out/NexisClaw-gateway.pid"; fi)",
+  "gatewayAlive": $(if [ "$setup_gateway" = "1" ] && [ -f "$out/FirstNexus-gateway.pid" ] && kill -0 "$(cat "$out/FirstNexus-gateway.pid")" >/dev/null 2>&1; then echo true; else echo false; fi),
+  "gatewayPid": "$(if [ -f "$out/FirstNexus-gateway.pid" ]; then cat "$out/FirstNexus-gateway.pid"; fi)",
   "gatewayPort": 38974,
   "qaExitCode": $qa_status,
   "credentialSource": "$credential_source",
@@ -586,7 +586,7 @@ function renderReport(summary: MantisTelegramDesktopBuilderSummary) {
     "- Remote metadata: `remote-metadata.json`",
     "- Remote command log: `telegram-desktop-builder-command.log`",
     "- Telegram Desktop log: `telegram-desktop.log`",
-    "- NexisClaw gateway log: `NexisClaw-gateway.log`",
+    "- FirstNexus gateway log: `FirstNexus-gateway.log`",
     summary.error ? `- Error: ${summary.error}` : undefined,
     "",
   ].filter((line) => line !== undefined);
@@ -670,7 +670,7 @@ export async function runMantisTelegramDesktopBuilder(
   const explicitLeaseId = trimToValue(opts.leaseId) ?? trimToValue(env[CRABBOX_LEASE_ID_ENV]);
   const keepLease = opts.keepLease ?? (gatewaySetup || isTruthyOptIn(env[CRABBOX_KEEP_ENV]));
   const createdLease = explicitLeaseId === undefined;
-  const remoteOutputDir = `/tmp/NexisClaw-mantis-telegram-desktop-${startedAt
+  const remoteOutputDir = `/tmp/FirstNexus-mantis-telegram-desktop-${startedAt
     .toISOString()
     .replace(/[^0-9A-Za-z]/gu, "-")}`;
   let credentialLease: TelegramGatewayCredentialLease | undefined;
@@ -784,7 +784,7 @@ export async function runMantisTelegramDesktopBuilder(
       throw remoteRunError;
     }
     if (gatewaySetup && !gatewaySetupCompleted) {
-      throw new Error("Telegram desktop builder did not report a live NexisClaw gateway.");
+      throw new Error("Telegram desktop builder did not report a live FirstNexus gateway.");
     }
     summary = {
       artifacts: {

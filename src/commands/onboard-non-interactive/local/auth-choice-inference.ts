@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import { resolveManifestProviderOnboardAuthFlags } from "../../../plugins/provider-auth-choices.js";
 import { normalizeOptionalString } from "../../../shared/string-coerce.js";
 import { CORE_ONBOARD_AUTH_FLAGS } from "../../onboard-core-auth-flags.js";
@@ -23,7 +23,7 @@ function hasStringValue(value: unknown): boolean {
 export function inferAuthChoiceFromFlags(
   opts: OnboardOptions,
   params?: {
-    config?: NexisClawConfig;
+    config?: FirstNexusConfig;
     workspaceDir?: string;
     env?: NodeJS.ProcessEnv;
   },

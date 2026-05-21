@@ -1,12 +1,12 @@
-import { adaptScopedAccountAccessor } from "NexisClaw/plugin-sdk/channel-config-helpers";
+import { adaptScopedAccountAccessor } from "FirstNexus/plugin-sdk/channel-config-helpers";
 import {
   createPluginSetupWizardConfigure,
   createTestWizardPrompter,
   runSetupWizardConfigure,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import type { WizardPrompter } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import type { WizardPrompter } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../runtime-api.js";
+import type { FirstNexusConfig } from "../runtime-api.js";
 import { listZaloAccountIds, resolveDefaultZaloAccountId, resolveZaloAccount } from "./accounts.js";
 import { zaloDmPolicy } from "./setup-core.js";
 import { zaloSetupAdapter, zaloSetupWizard } from "./setup-surface.js";
@@ -54,7 +54,7 @@ describe("zalo setup wizard", () => {
 
     const result = await runSetupWizardConfigure({
       configure: zaloConfigure,
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       prompter,
       options: { secretInputMode: "plaintext" as const },
     });
@@ -84,14 +84,14 @@ describe("zalo setup wizard", () => {
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         "work",
       ),
     ).toBe("allowlist");
   });
 
   it("reports account-scoped config keys for named accounts", () => {
-    expect(zaloDmPolicy.resolveConfigKeys?.({} as NexisClawConfig, "work")).toEqual({
+    expect(zaloDmPolicy.resolveConfigKeys?.({} as FirstNexusConfig, "work")).toEqual({
       policyKey: "channels.zalo.accounts.work.dmPolicy",
       allowFromKey: "channels.zalo.accounts.work.allowFrom",
     });
@@ -112,7 +112,7 @@ describe("zalo setup wizard", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(zaloDmPolicy.getCurrent(cfg)).toBe("allowlist");
     expect(zaloDmPolicy.resolveConfigKeys?.(cfg)).toEqual({
@@ -148,7 +148,7 @@ describe("zalo setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       "open",
       "work",
     );
@@ -185,7 +185,7 @@ describe("zalo setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(configured).toBe(false);

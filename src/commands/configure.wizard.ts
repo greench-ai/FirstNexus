@@ -8,7 +8,7 @@ import { commitConfigWithPendingPluginInstalls } from "../cli/plugins-install-re
 import { readConfigFileSnapshot, resolveGatewayPort } from "../config/config.js";
 import { logConfigUpdated } from "../config/logging.js";
 import { ConfigMutationConflictError } from "../config/mutate.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { ensureControlUiAssetsBuilt } from "../infra/control-ui-assets.js";
 import { resolvePluginContributionOwners } from "../plugins/plugin-registry.js";
 import type { RuntimeEnv } from "../runtime.js";
@@ -95,7 +95,7 @@ function mergeWizardConfigOntoLatest(current: unknown, base: unknown, next: unkn
 }
 
 async function resolveGatewaySecretInputForWizard(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   value: unknown;
   path: string;
 }): Promise<string | undefined> {
@@ -112,7 +112,7 @@ async function resolveGatewaySecretInputForWizard(params: {
 }
 
 async function runGatewayHealthCheck(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   runtime: RuntimeEnv;
   port: number;
 }): Promise<void> {
@@ -152,8 +152,8 @@ async function runGatewayHealthCheck(params: {
     note(
       [
         "Docs:",
-        "https://docs.NexisClaw.ai/gateway/health",
-        "https://docs.NexisClaw.ai/gateway/troubleshooting",
+        "https://docs.FirstNexus.ai/gateway/health",
+        "https://docs.FirstNexus.ai/gateway/troubleshooting",
       ].join("\n"),
       "Health check help",
     );
@@ -193,7 +193,7 @@ async function promptChannelMode(runtime: RuntimeEnv): Promise<ChannelsWizardMod
         {
           value: "remove",
           label: "Remove channel config",
-          hint: "Delete channel tokens/settings from NexisClaw.json",
+          hint: "Delete channel tokens/settings from FirstNexus.json",
         },
       ],
       initialValue: "configure",
@@ -203,11 +203,11 @@ async function promptChannelMode(runtime: RuntimeEnv): Promise<ChannelsWizardMod
 }
 
 async function promptWebToolsConfig(
-  nextConfig: NexisClawConfig,
+  nextConfig: FirstNexusConfig,
   runtime: RuntimeEnv,
   prompter: ReturnType<typeof createClackPrompter>,
-): Promise<NexisClawConfig> {
-  type WebSearchConfig = NonNullable<NonNullable<NexisClawConfig["tools"]>["web"]>["search"];
+): Promise<FirstNexusConfig> {
+  type WebSearchConfig = NonNullable<NonNullable<FirstNexusConfig["tools"]>["web"]>["search"];
   const existingSearch = nextConfig.tools?.web?.search;
   const existingFetch = nextConfig.tools?.web?.fetch;
   const { isCodexNativeWebSearchRelevant } = await import("../agents/codex-native-web-search.js");
@@ -222,7 +222,7 @@ async function promptWebToolsConfig(
     [
       "Web search lets your agent look things up online using the `web_search` tool.",
       "Choose a managed provider now, and Codex-capable models can also use native Codex web search.",
-      "Docs: https://docs.NexisClaw.ai/tools/web",
+      "Docs: https://docs.FirstNexus.ai/tools/web",
     ].join("\n"),
     "Web search",
   );
@@ -320,7 +320,7 @@ async function promptWebToolsConfig(
           [
             "No web search providers are currently available under this plugin policy.",
             "Enable plugins or remove deny rules, then rerun configure.",
-            "Docs: https://docs.NexisClaw.ai/tools/web",
+            "Docs: https://docs.FirstNexus.ai/tools/web",
           ].join("\n"),
           "Web search",
         );
@@ -375,12 +375,12 @@ export async function runConfigureWizard(
   runtime: RuntimeEnv = defaultRuntime,
 ) {
   try {
-    intro(opts.command === "update" ? "NexisClaw update wizard" : "NexisClaw configure");
+    intro(opts.command === "update" ? "FirstNexus update wizard" : "FirstNexus configure");
     const prompter = createClackPrompter();
 
     const snapshot = await readConfigFileSnapshot();
     let currentBaseHash = snapshot.hash;
-    const baseConfig: NexisClawConfig = snapshot.valid
+    const baseConfig: FirstNexusConfig = snapshot.valid
       ? (snapshot.sourceConfig ?? snapshot.config)
       : {};
 
@@ -392,14 +392,14 @@ export async function runConfigureWizard(
           [
             ...snapshot.issues.map((iss) => `- ${iss.path}: ${iss.message}`),
             "",
-            "Docs: https://docs.NexisClaw.ai/gateway/configuration",
+            "Docs: https://docs.FirstNexus.ai/gateway/configuration",
           ].join("\n"),
           "Config issues",
         );
       }
       if (!snapshot.valid) {
         outro(
-          `Config invalid. Run \`${formatCliCommand("NexisClaw doctor")}\` to repair it, then re-run configure.`,
+          `Config invalid. Run \`${formatCliCommand("FirstNexus doctor")}\` to repair it, then re-run configure.`,
         );
         runtime.exit(1);
         return;
@@ -542,7 +542,7 @@ export async function runConfigureWizard(
               diskConfig,
               mergeBaseConfig,
               nextConfig,
-            ) as NexisClawConfig;
+            ) as FirstNexusConfig;
             continue;
           }
           throw err;
@@ -823,7 +823,7 @@ export async function runConfigureWizard(
         `Web UI: ${links.httpUrl}`,
         `Gateway WS: ${links.wsUrl}`,
         gatewayStatusLine,
-        "Docs: https://docs.NexisClaw.ai/web/control-ui",
+        "Docs: https://docs.FirstNexus.ai/web/control-ui",
       ].join("\n"),
       "Control UI",
     );

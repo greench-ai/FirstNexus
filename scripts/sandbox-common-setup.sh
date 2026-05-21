@@ -4,8 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-build.sh"
 
-BASE_IMAGE="${BASE_IMAGE:-NexisClaw-sandbox:bookworm-slim}"
-TARGET_IMAGE="${TARGET_IMAGE:-NexisClaw-sandbox-common:bookworm-slim}"
+BASE_IMAGE="${BASE_IMAGE:-FirstNexus-sandbox:bookworm-slim}"
+TARGET_IMAGE="${TARGET_IMAGE:-FirstNexus-sandbox-common:bookworm-slim}"
 PACKAGES="${PACKAGES:-curl wget jq coreutils grep nodejs npm python3 git ca-certificates golang-go rustc cargo unzip pkg-config libasound2-dev build-essential file}"
 INSTALL_PNPM="${INSTALL_PNPM:-1}"
 INSTALL_BUN="${INSTALL_BUN:-1}"
@@ -42,5 +42,5 @@ cat <<NOTE
 Built ${TARGET_IMAGE}.
 To use it, set agents.defaults.sandbox.docker.image to "${TARGET_IMAGE}" and restart.
 If you want a clean re-create, remove old sandbox containers:
-  docker rm -f \$(docker ps -aq --filter label=NexisClaw.sandbox=1)
+  docker rm -f \$(docker ps -aq --filter label=FirstNexus.sandbox=1)
 NOTE

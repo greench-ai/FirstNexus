@@ -9,8 +9,11 @@ import { resolveGatewayInstallToken } from "../../commands/gateway-install-token
 import { resolveFutureConfigActionBlock } from "../../config/future-version-guard.js";
 import { readConfigFileSnapshotForWrite } from "../../config/io.js";
 import { resolveGatewayPort } from "../../config/paths.js";
-import type { NexisClawConfig } from "../../config/types.js";
-import { NEXISCLAW_WRAPPER_ENV_KEY, resolveNexisClawWrapperPath } from "../../daemon/program-args.js";
+import type { FirstNexusConfig } from "../../config/types.js";
+import {
+  NEXISCLAW_WRAPPER_ENV_KEY,
+  resolveFirstNexusWrapperPath,
+} from "../../daemon/program-args.js";
 import { readEmbeddedGatewayToken } from "../../daemon/service-audit.js";
 import { resolveGatewayService } from "../../daemon/service.js";
 import type { GatewayServiceCommandConfig } from "../../daemon/service.js";
@@ -111,7 +114,7 @@ export async function runDaemonInstall(opts: DaemonInstallOptions) {
   let wrapperPath: string | undefined;
   if (opts.wrapper !== undefined) {
     try {
-      wrapperPath = await resolveNexisClawWrapperPath(opts.wrapper);
+      wrapperPath = await resolveFirstNexusWrapperPath(opts.wrapper);
       if (!wrapperPath) {
         fail("Invalid --wrapper");
         return;
@@ -144,7 +147,7 @@ export async function runDaemonInstall(opts: DaemonInstallOptions) {
   });
   if (!wrapperPath) {
     try {
-      wrapperPath = await resolveNexisClawWrapperPath(installEnv[NEXISCLAW_WRAPPER_ENV_KEY]);
+      wrapperPath = await resolveFirstNexusWrapperPath(installEnv[NEXISCLAW_WRAPPER_ENV_KEY]);
     } catch (err) {
       fail(`Invalid ${NEXISCLAW_WRAPPER_ENV_KEY}: ${String(err)}`);
       return;
@@ -179,7 +182,7 @@ export async function runDaemonInstall(opts: DaemonInstallOptions) {
         if (!json) {
           defaultRuntime.log(`Gateway service already ${service.loadedText}.`);
           defaultRuntime.log(
-            `Reinstall with: ${formatCliCommand("NexisClaw gateway install --force")}`,
+            `Reinstall with: ${formatCliCommand("FirstNexus gateway install --force")}`,
           );
         }
         return;
@@ -254,7 +257,7 @@ async function getGatewayServiceAutoRefreshMessage(params: {
   wrapperPath?: string;
   existingEnvironment?: Record<string, string | undefined>;
   existingEnvironmentValueSources?: GatewayServiceCommandConfig["environmentValueSources"];
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
 }): Promise<string | undefined> {
   try {
     const currentCommand = params.currentCommand;

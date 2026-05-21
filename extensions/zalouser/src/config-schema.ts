@@ -5,7 +5,7 @@ import {
   GroupPolicySchema,
   MarkdownConfigSchema,
   ToolPolicySchema,
-} from "NexisClaw/plugin-sdk/channel-config-schema";
+} from "FirstNexus/plugin-sdk/channel-config-schema";
 import { z } from "zod";
 
 const groupConfigSchema = z.object({

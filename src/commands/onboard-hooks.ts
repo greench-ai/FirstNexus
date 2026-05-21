@@ -1,21 +1,21 @@
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { buildWorkspaceHookStatus } from "../hooks/hooks-status.js";
 import type { RuntimeEnv } from "../runtime.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
 
 export async function setupInternalHooks(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   _runtime: RuntimeEnv,
   prompter: WizardPrompter,
-): Promise<NexisClawConfig> {
+): Promise<FirstNexusConfig> {
   await prompter.note(
     [
       "Hooks let you automate actions when agent commands are issued.",
       "Example: Save session context to memory when you issue /new or /reset.",
       "",
-      "Learn more: https://docs.NexisClaw.ai/automation/hooks",
+      "Learn more: https://docs.FirstNexus.ai/automation/hooks",
     ].join("\n"),
     "Hooks",
   );
@@ -58,7 +58,7 @@ export async function setupInternalHooks(
     entries[name] = { enabled: true };
   }
 
-  const next: NexisClawConfig = {
+  const next: FirstNexusConfig = {
     ...cfg,
     hooks: {
       ...cfg.hooks,
@@ -74,9 +74,9 @@ export async function setupInternalHooks(
       `Enabled ${selected.length} hook${selected.length > 1 ? "s" : ""}: ${selected.join(", ")}`,
       "",
       "You can manage hooks later with:",
-      `  ${formatCliCommand("NexisClaw hooks list")}`,
-      `  ${formatCliCommand("NexisClaw hooks enable <name>")}`,
-      `  ${formatCliCommand("NexisClaw hooks disable <name>")}`,
+      `  ${formatCliCommand("FirstNexus hooks list")}`,
+      `  ${formatCliCommand("FirstNexus hooks enable <name>")}`,
+      `  ${formatCliCommand("FirstNexus hooks disable <name>")}`,
     ].join("\n"),
     "Hooks Configured",
   );

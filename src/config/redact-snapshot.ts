@@ -12,7 +12,7 @@ import {
 } from "./redact-snapshot.raw.js";
 import { isSecretRefShape, redactSecretRefId } from "./redact-snapshot.secret-ref.js";
 import { isSensitiveConfigPath } from "./sensitive-paths.js";
-import type { ConfigFileSnapshot } from "./types.NexisClaw.js";
+import type { ConfigFileSnapshot } from "./types.FirstNexus.js";
 
 const log = createSubsystemLogger("config/redaction");
 const ENV_VAR_PLACEHOLDER_PATTERN = /^\$\{[^}]*\}$/;

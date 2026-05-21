@@ -7,7 +7,7 @@ read_when:
 title: "DuckDuckGo search"
 ---
 
-NexisClaw supports DuckDuckGo as a **key-free** `web_search` provider. No API
+FirstNexus supports DuckDuckGo as a **key-free** `web_search` provider. No API
 key or account is required.
 
 <Warning>
@@ -23,7 +23,7 @@ No API key needed - just set DuckDuckGo as your provider:
 <Steps>
   <Step title="Configure">
     ```bash
-    NexisClaw configure --section web
+    FirstNexus configure --section web
     # Select "duckduckgo" as the provider
     ```
   </Step>

@@ -382,7 +382,7 @@ describe("agent event handler", () => {
         "Visible before.",
         "",
         "<<<BEGIN_NEXISCLAW_INTERNAL_CONTEXT>>>",
-        "NexisClaw runtime context (internal):",
+        "FirstNexus runtime context (internal):",
         "[Internal task completion event]",
         "secret child result",
         "<<<END_NEXISCLAW_INTERNAL_CONTEXT>>>",
@@ -1134,7 +1134,7 @@ describe("agent event handler", () => {
         name: "tool_search_code",
         toolCallId: "tool-search-node-1",
         args: {
-          code: 'return await NexisClaw.tools.call("NexisClaw:core:exec", { command: "echo hi" });',
+          code: 'return await FirstNexus.tools.call("FirstNexus:core:exec", { command: "echo hi" });',
         },
       },
     });
@@ -1148,7 +1148,7 @@ describe("agent event handler", () => {
       phase: "start",
       name: "exec",
       bridgeToolName: "tool_search_code",
-      bridgeTargetToolName: "NexisClaw:core:exec",
+      bridgeTargetToolName: "FirstNexus:core:exec",
       bridgeVerb: "call",
       args: { command: "echo hi" },
     });

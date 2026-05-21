@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { resolveConfigPath } from "../config/paths.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { resolveGatewayAuthTokenSourceConflict } from "../gateway/auth-token-source-conflict.js";
 
 export function shouldSkipStatusScanMissingConfigFastPath(
@@ -21,16 +21,16 @@ export function resolveStatusScanColdStart(params?: {
 
 export async function loadStatusScanCommandConfig(params: {
   commandName: string;
-  readBestEffortConfig: () => Promise<NexisClawConfig>;
+  readBestEffortConfig: () => Promise<FirstNexusConfig>;
   resolveConfig: (
-    sourceConfig: NexisClawConfig,
-  ) => Promise<{ resolvedConfig: NexisClawConfig; diagnostics: string[] }>;
+    sourceConfig: FirstNexusConfig,
+  ) => Promise<{ resolvedConfig: FirstNexusConfig; diagnostics: string[] }>;
   env?: NodeJS.ProcessEnv;
   allowMissingConfigFastPath?: boolean;
 }): Promise<{
   coldStart: boolean;
-  sourceConfig: NexisClawConfig;
-  resolvedConfig: NexisClawConfig;
+  sourceConfig: FirstNexusConfig;
+  resolvedConfig: FirstNexusConfig;
   secretDiagnostics: string[];
 }> {
   const env = params.env ?? process.env;

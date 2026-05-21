@@ -21,7 +21,7 @@ function writeJsonl(filePath: string, rows: unknown[]) {
 describe("diagnostic session context", () => {
   beforeEach(() => {
     previousStateDir = process.env.NEXISCLAW_STATE_DIR;
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-diagnostic-session-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-diagnostic-session-"));
     process.env.NEXISCLAW_STATE_DIR = tempDir;
   });
 

@@ -7,12 +7,13 @@ const ESCAPED_INTERNAL_RUNTIME_CONTEXT_END = "[[NEXISCLAW_INTERNAL_CONTEXT_END]]
 export const NEXISCLAW_RUNTIME_CONTEXT_NOTICE =
   "This context is runtime-generated, not user-authored. Keep internal details private.";
 export const NEXISCLAW_NEXT_TURN_RUNTIME_CONTEXT_HEADER =
-  "NexisClaw runtime context for the immediately preceding user message.";
-export const NEXISCLAW_RUNTIME_EVENT_HEADER = "NexisClaw runtime event.";
-export const NEXISCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE = "NexisClaw.runtime-context";
+  "FirstNexus runtime context for the immediately preceding user message.";
+export const NEXISCLAW_RUNTIME_EVENT_HEADER = "FirstNexus runtime event.";
+export const NEXISCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE = "FirstNexus.runtime-context";
 
 const LEGACY_INTERNAL_CONTEXT_HEADER =
-  ["NexisClaw runtime context (internal):", NEXISCLAW_RUNTIME_CONTEXT_NOTICE, ""].join("\n") + "\n";
+  ["FirstNexus runtime context (internal):", NEXISCLAW_RUNTIME_CONTEXT_NOTICE, ""].join("\n") +
+  "\n";
 
 const LEGACY_INTERNAL_EVENT_MARKER = "[Internal task completion event]";
 const LEGACY_INTERNAL_EVENT_SEPARATOR = "\n\n---\n\n";
@@ -221,7 +222,7 @@ export function hasInternalRuntimeContext(text: string): boolean {
   );
 }
 
-function isNexisClawRuntimeContextCustomMessage(message: unknown): boolean {
+function isFirstNexusRuntimeContextCustomMessage(message: unknown): boolean {
   if (!message || typeof message !== "object") {
     return false;
   }
@@ -232,10 +233,10 @@ function isNexisClawRuntimeContextCustomMessage(message: unknown): boolean {
 }
 
 export function stripRuntimeContextCustomMessages<T>(messages: T[]): T[] {
-  if (!messages.some(isNexisClawRuntimeContextCustomMessage)) {
+  if (!messages.some(isFirstNexusRuntimeContextCustomMessage)) {
     return messages;
   }
-  return messages.filter((message) => !isNexisClawRuntimeContextCustomMessage(message));
+  return messages.filter((message) => !isFirstNexusRuntimeContextCustomMessage(message));
 }
 
 function isUserMessage(message: unknown): boolean {
@@ -246,14 +247,14 @@ function isUserMessage(message: unknown): boolean {
 
 /** Removes stale runtime-context custom messages while preserving current-turn context. */
 export function stripHistoricalRuntimeContextCustomMessages<T>(messages: T[]): T[] {
-  if (!messages.some(isNexisClawRuntimeContextCustomMessage)) {
+  if (!messages.some(isFirstNexusRuntimeContextCustomMessage)) {
     return messages;
   }
   const lastUserIndex = messages.findLastIndex(isUserMessage);
   if (lastUserIndex === -1) {
-    return messages.filter((message) => !isNexisClawRuntimeContextCustomMessage(message));
+    return messages.filter((message) => !isFirstNexusRuntimeContextCustomMessage(message));
   }
   return messages.filter(
-    (message, index) => !isNexisClawRuntimeContextCustomMessage(message) || index > lastUserIndex,
+    (message, index) => !isFirstNexusRuntimeContextCustomMessage(message) || index > lastUserIndex,
   );
 }

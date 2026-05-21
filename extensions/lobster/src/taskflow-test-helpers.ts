@@ -1,8 +1,8 @@
 import { vi } from "vitest";
-import type { NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusPluginApi } from "../runtime-api.js";
 
 type BoundTaskFlow = ReturnType<
-  NonNullable<NexisClawPluginApi["runtime"]>["tasks"]["managedFlows"]["bindSession"]
+  NonNullable<FirstNexusPluginApi["runtime"]>["tasks"]["managedFlows"]["bindSession"]
 >;
 
 export function createFakeTaskFlow(overrides?: Partial<BoundTaskFlow>): BoundTaskFlow {

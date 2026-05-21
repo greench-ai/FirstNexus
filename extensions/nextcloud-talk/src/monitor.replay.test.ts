@@ -1,4 +1,4 @@
-import { createMockIncomingRequest } from "NexisClaw/plugin-sdk/test-env";
+import { createMockIncomingRequest } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it, vi } from "vitest";
 import {
   NextcloudTalkRetryableWebhookError,

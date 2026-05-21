@@ -20,7 +20,8 @@ import { callGateway } from "../src/gateway/call.js";
 import { extractPayloadText } from "../src/gateway/test-helpers.agent-results.js";
 import { getFreePortBlockWithPermissionFallback } from "../src/test-utils/ports.js";
 
-const TRANSPORT = process.env.NEXISCLAW_PROMPT_TRANSPORT?.trim() === "direct" ? "direct" : "gateway";
+const TRANSPORT =
+  process.env.NEXISCLAW_PROMPT_TRANSPORT?.trim() === "direct" ? "direct" : "gateway";
 const GATEWAY_PROMPT_MODE =
   process.env.NEXISCLAW_PROMPT_MODE?.trim() === "override" ? "override" : "extra";
 const PROMPT_TEXT = process.env.NEXISCLAW_PROMPT_TEXT?.trim() ?? "";
@@ -365,7 +366,7 @@ async function getFreePort(): Promise<number> {
 }
 
 async function runDirectPrompt(prompt: string): Promise<PromptResult> {
-  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-direct-prompt-probe-"));
+  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-direct-prompt-probe-"));
   const proxyPort = ENABLE_CAPTURE ? await getFreePort() : undefined;
   const proxy =
     ENABLE_CAPTURE && proxyPort
@@ -425,7 +426,7 @@ async function startGatewayProcess(params: {
   const logFile = await fs.open(params.logPath, "a");
   const child = spawn(
     NODE_BIN,
-    ["NexisClaw.mjs", "gateway", "--port", String(params.port), "--bind", "loopback", "--force"],
+    ["FirstNexus.mjs", "gateway", "--port", String(params.port), "--bind", "loopback", "--force"],
     {
       cwd: process.cwd(),
       env: {
@@ -490,11 +491,11 @@ async function readLogTail(logPath: string): Promise<string> {
 
 async function runGatewayPrompt(prompt: string): Promise<PromptResult> {
   const tokenSource = resolveSetupTokenSource();
-  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-gateway-prompt-probe-"));
+  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-gateway-prompt-probe-"));
   const stateDir = path.join(tmpDir, "state");
   const agentDir = path.join(stateDir, "agents", "main", "agent");
   const bundledPluginsDir = path.join(tmpDir, "bundled-plugins-empty");
-  const configPath = path.join(tmpDir, "NexisClaw.json");
+  const configPath = path.join(tmpDir, "FirstNexus.json");
   const logPath = path.join(tmpDir, "gateway.log");
   const gatewayToken = `gw-${randomUUID()}`;
   const port = await getFreePort();

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveAgentConfig } from "./agent-scope.js";
 
 function trimNonEmpty(value: unknown): string | undefined {
@@ -10,7 +10,7 @@ function trimNonEmpty(value: unknown): string | undefined {
 }
 
 export function resolveSystemPromptOverride(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   agentId?: string;
 }): string | undefined {
   const config = params.config;

@@ -1,9 +1,9 @@
 import {
   createMessageReceiptFromOutboundResults,
   verifyChannelMessageAdapterCapabilityProofs,
-} from "NexisClaw/plugin-sdk/channel-message";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { createPluginSetupWizardStatus } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/channel-message";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { createPluginSetupWizardStatus } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it, vi } from "vitest";
 import { signalPlugin } from "./channel.js";
 import * as clientModule from "./client-adapter.js";
@@ -202,7 +202,7 @@ describe("probeSignal", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       accountOverrides: {},
     });
 
@@ -240,7 +240,7 @@ describe("signal outbound", () => {
       proofs: {
         text: async () => {
           const result = await signalPlugin.message?.send?.text?.({
-            cfg: {} as NexisClawConfig,
+            cfg: {} as FirstNexusConfig,
             to: "signal:+15555550123",
             text: "hello",
             deps,
@@ -256,7 +256,7 @@ describe("signal outbound", () => {
         },
         media: async () => {
           const result = await signalPlugin.message?.send?.media?.({
-            cfg: {} as NexisClawConfig,
+            cfg: {} as FirstNexusConfig,
             to: "signal:+15555550123",
             text: "image",
             mediaUrl: "https://example.com/image.png",
@@ -397,7 +397,7 @@ describe("signal setup parsing", () => {
   });
 
   it("uses configured defaultAccount for omitted DM policy account context", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         signal: {
           defaultAccount: "work",
@@ -427,7 +427,7 @@ describe("signal setup parsing", () => {
   });
 
   it('writes open policy state to the named account and stores inherited allowFrom with "*"', () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         signal: {
           allowFrom: ["+15555550123"],

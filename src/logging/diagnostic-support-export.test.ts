@@ -37,7 +37,7 @@ describe("diagnostic support export", () => {
   let tempDir: string;
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-support-export-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-support-export-"));
     resetDiagnosticEventsForTest();
     resetDiagnosticStabilityRecorderForTest();
     resetDiagnosticStabilityBundleForTest();
@@ -63,7 +63,7 @@ describe("diagnostic support export", () => {
     const webhookBody = "raw webhook body with message contents";
     const credentialUrl =
       "wss://support-user:support-password@gateway.example/ws?token=short-token&ok=1";
-    const configPath = path.join(tempDir, "NexisClaw.json");
+    const configPath = path.join(tempDir, "FirstNexus.json");
     fs.writeFileSync(
       configPath,
       JSON.stringify(
@@ -122,7 +122,7 @@ describe("diagnostic support export", () => {
     expect(bundle.status).toBe("written");
 
     const logTail: LogTailPayload = {
-      file: path.join(tempDir, "logs", "NexisClaw.log"),
+      file: path.join(tempDir, "logs", "FirstNexus.log"),
       cursor: 200,
       size: 200,
       truncated: false,
@@ -195,7 +195,7 @@ describe("diagnostic support export", () => {
         service: {
           loaded: true,
           command: {
-            programArguments: ["NexisClaw", "gateway", "run", "--token", fakeToken],
+            programArguments: ["FirstNexus", "gateway", "run", "--token", fakeToken],
             environment: {
               HOME: tempDir,
               NEXISCLAW_GATEWAY_TOKEN: fakeToken,
@@ -241,7 +241,7 @@ describe("diagnostic support export", () => {
       "config/shape.json",
       "diagnostics.json",
       "health/gateway-health.json",
-      "logs/NexisClaw-sanitized.jsonl",
+      "logs/FirstNexus-sanitized.jsonl",
       "manifest.json",
       "stability/latest.json",
       "status/gateway-status.json",
@@ -275,7 +275,7 @@ describe("diagnostic support export", () => {
     expect(combined).toContain("gateway-health.json");
     expect(combined).toContain("Attach this zip to the bug report");
 
-    const sanitizedLogs = entries["logs/NexisClaw-sanitized.jsonl"];
+    const sanitizedLogs = entries["logs/FirstNexus-sanitized.jsonl"];
     expect(sanitizedLogs).toContain('"subsystem":"gateway"');
     expect(sanitizedLogs).toContain('"component":"gateway/server"');
     expect(sanitizedLogs).toContain('"channel":"telegram"');
@@ -313,7 +313,7 @@ describe("diagnostic support export", () => {
       };
     };
     expect(status.data?.service?.command?.programArguments).toEqual([
-      "NexisClaw",
+      "FirstNexus",
       "gateway",
       "run",
       "--token",
@@ -434,7 +434,7 @@ describe("diagnostic support export", () => {
       stabilityBundle: bundlePath,
       now: new Date("2026-04-22T12:00:01.000Z"),
       readLogTail: async () => ({
-        file: path.join(tempDir, "logs", "NexisClaw.log"),
+        file: path.join(tempDir, "logs", "FirstNexus.log"),
         cursor: 0,
         size: 0,
         truncated: false,
@@ -581,7 +581,7 @@ describe("diagnostic support export", () => {
 
   it("redacts Windows USERPROFILE paths when HOME is unset", () => {
     const userProfile = "C:\\Users\\support-user";
-    const stateDir = `${userProfile}\\AppData\\Roaming\\NexisClaw`;
+    const stateDir = `${userProfile}\\AppData\\Roaming\\FirstNexus`;
     const redaction = {
       env: {
         USERPROFILE: userProfile,
@@ -609,11 +609,11 @@ describe("diagnostic support export", () => {
           command: {
             programArguments: [
               "node",
-              `${userProfile}\\NexisClaw\\dist\\index.js`,
+              `${userProfile}\\FirstNexus\\dist\\index.js`,
               "--config",
-              `${stateDir}\\NexisClaw.json`,
+              `${stateDir}\\FirstNexus.json`,
             ],
-            sourcePath: "c:\\users\\support-user\\AppData\\Local\\NexisClaw\\gateway-service.json",
+            sourcePath: "c:\\users\\support-user\\AppData\\Local\\FirstNexus\\gateway-service.json",
           },
         },
       },
@@ -621,9 +621,9 @@ describe("diagnostic support export", () => {
     );
     const serialized = JSON.stringify(status);
     expect(serialized).not.toContain("support-user");
-    expect(serialized).toContain("~\\\\NexisClaw\\\\dist\\\\index.js");
-    expect(serialized).toContain("$NEXISCLAW_STATE_DIR\\\\NexisClaw.json");
-    expect(serialized).toContain("~\\\\AppData\\\\Local\\\\NexisClaw\\\\gateway-service.json");
+    expect(serialized).toContain("~\\\\FirstNexus\\\\dist\\\\index.js");
+    expect(serialized).toContain("$NEXISCLAW_STATE_DIR\\\\FirstNexus.json");
+    expect(serialized).toContain("~\\\\AppData\\\\Local\\\\FirstNexus\\\\gateway-service.json");
   });
 
   it("keeps writing when status and health snapshots fail", async () => {
@@ -640,7 +640,7 @@ describe("diagnostic support export", () => {
       outputPath,
       now: new Date("2026-04-22T12:00:01.000Z"),
       readLogTail: async () => ({
-        file: path.join(tempDir, "logs", "NexisClaw.log"),
+        file: path.join(tempDir, "logs", "FirstNexus.log"),
         cursor: 0,
         size: 0,
         truncated: false,
@@ -681,12 +681,12 @@ describe("diagnostic support export", () => {
       outputPath,
       now: new Date("2026-04-22T12:00:02.000Z"),
       readLogTail: async () => {
-        throw new Error(`log tail failed at ${tempDir}/NexisClaw.log with token ${fakeToken}`);
+        throw new Error(`log tail failed at ${tempDir}/FirstNexus.log with token ${fakeToken}`);
       },
     });
 
     const entries = await readZipTextEntries(outputPath);
-    expect(Object.keys(entries).toSorted()).toContain("logs/NexisClaw-sanitized.jsonl");
+    expect(Object.keys(entries).toSorted()).toContain("logs/FirstNexus-sanitized.jsonl");
 
     const combined = Object.values(entries).join("\n");
     expect(combined).not.toContain(fakeToken);
@@ -697,7 +697,7 @@ describe("diagnostic support export", () => {
 
   it("keeps writing when config stat fails", async () => {
     const fakeToken = "sk-test-config-stat-secret-token-1234567890";
-    const configPath = path.join(tempDir, "NexisClaw.json");
+    const configPath = path.join(tempDir, "FirstNexus.json");
     const outputPath = path.join(tempDir, "support-failed-config-stat.zip");
     fs.writeFileSync(configPath, "{}\n", "utf8");
 
@@ -721,7 +721,7 @@ describe("diagnostic support export", () => {
         outputPath,
         now: new Date("2026-04-22T12:00:03.000Z"),
         readLogTail: async () => ({
-          file: path.join(tempDir, "logs", "NexisClaw.log"),
+          file: path.join(tempDir, "logs", "FirstNexus.log"),
           cursor: 0,
           size: 0,
           truncated: false,

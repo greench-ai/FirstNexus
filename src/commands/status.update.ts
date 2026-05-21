@@ -1,5 +1,5 @@
 import { formatCliCommand } from "../cli/command-format.js";
-import { resolveNexisClawPackageRoot } from "../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRoot } from "../infra/FirstNexus-root.js";
 import { normalizeUpdateChannel, resolveRegistryUpdateChannel } from "../infra/update-channels.js";
 import {
   checkUpdateStatus,
@@ -15,7 +15,7 @@ export async function getUpdateCheckResult(params: {
   updateConfigChannel?: string | null;
 }): Promise<UpdateCheckResult> {
   const configChannel = normalizeUpdateChannel(params.updateConfigChannel);
-  const root = await resolveNexisClawPackageRoot({
+  const root = await resolveFirstNexusPackageRoot({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],
     cwd: process.cwd(),
@@ -73,7 +73,7 @@ export function formatUpdateAvailableHint(update: UpdateCheckResult): string | n
     details.push(`npm ${availability.latestVersion}`);
   }
   const suffix = details.length > 0 ? ` (${details.join(" · ")})` : "";
-  return `Update available${suffix}. Run: ${formatCliCommand("NexisClaw update")}`;
+  return `Update available${suffix}. Run: ${formatCliCommand("FirstNexus update")}`;
 }
 
 export function formatUpdateOneLiner(update: UpdateCheckResult): string {

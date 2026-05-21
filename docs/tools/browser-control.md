@@ -1,14 +1,14 @@
 ---
-summary: "NexisClaw browser control API, CLI reference, and scripting actions"
+summary: "FirstNexus browser control API, CLI reference, and scripting actions"
 read_when:
   - Scripting or debugging the agent browser via the local control API
-  - Looking for the `NexisClaw browser` CLI reference
+  - Looking for the `FirstNexus browser` CLI reference
   - Adding custom browser automation with snapshots and refs
 title: "Browser control API"
 ---
 
 For setup, configuration, and troubleshooting, see [Browser](/tools/browser).
-This page is the reference for the local control HTTP API, the `NexisClaw browser`
+This page is the reference for the local control HTTP API, the `FirstNexus browser`
 CLI, and scripting patterns (snapshots, refs, waits, debug flows).
 
 ## Control API (optional)
@@ -32,12 +32,12 @@ For local integrations only, the Gateway exposes a small loopback HTTP API:
 All endpoints accept `?profile=<name>`. `POST /start?headless=true` requests a
 one-shot headless launch for local managed profiles without changing persisted
 browser config; attach-only, remote CDP, and existing-session profiles reject
-that override because NexisClaw does not launch those browser processes.
+that override because FirstNexus does not launch those browser processes.
 
 If shared-secret gateway auth is configured, browser HTTP routes require auth too:
 
 - `Authorization: Bearer <gateway token>`
-- `x-NexisClaw-password: <gateway password>` or HTTP Basic auth with that password
+- `x-FirstNexus-password: <gateway password>` or HTTP Basic auth with that password
 
 Notes:
 
@@ -80,7 +80,7 @@ What still works without Playwright:
   `--depth`, `--efficient`) when a per-tab CDP WebSocket is available. This is
   a fallback for inspection and ref discovery; Playwright remains the primary
   action engine.
-- Page screenshots for the managed `NexisClaw` browser when a per-tab CDP
+- Page screenshots for the managed `FirstNexus` browser when a per-tab CDP
   WebSocket is available
 - Page screenshots for `existing-session` / Chrome MCP profiles
 - `existing-session` ref-based screenshots (`--ref`) from snapshot output
@@ -98,7 +98,7 @@ not supported for element screenshots`.
 
 If you see `Playwright is not available in this gateway build`, the packaged
 Gateway is missing the core browser runtime dependency. Reinstall or update
-NexisClaw, then restart the gateway. For Docker, also install the Chromium
+FirstNexus, then restart the gateway. For Docker, also install the Chromium
 browser binaries as shown below.
 
 #### Docker Playwright install
@@ -113,13 +113,13 @@ NEXISCLAW_INSTALL_BROWSER=1 ./scripts/docker/setup.sh
 For an existing image, install through the bundled CLI instead:
 
 ```bash
-docker compose run --rm NexisClaw-cli \
+docker compose run --rm FirstNexus-cli \
   node /app/node_modules/playwright-core/cli.js install chromium
 ```
 
 To persist browser downloads, set `PLAYWRIGHT_BROWSERS_PATH` (for example,
 `/home/node/.cache/ms-playwright`) and make sure `/home/node` is persisted via
-`NEXISCLAW_HOME_VOLUME` or a bind mount. NexisClaw auto-detects the persisted
+`NEXISCLAW_HOME_VOLUME` or a bind mount. FirstNexus auto-detects the persisted
 Chromium on Linux. See [Docker](/install/docker).
 
 ## How it works (internal)
@@ -135,18 +135,18 @@ All commands accept `--browser-profile <name>` to target a specific profile, and
 <Accordion title="Basics: status, tabs, open/focus/close">
 
 ```bash
-NexisClaw browser status
-NexisClaw browser start
-NexisClaw browser start --headless # one-shot local managed headless launch
-NexisClaw browser stop            # also clears emulation on attach-only/remote CDP
-NexisClaw browser tabs
-NexisClaw browser tab             # shortcut for current tab
-NexisClaw browser tab new
-NexisClaw browser tab select 2
-NexisClaw browser tab close 2
-NexisClaw browser open https://example.com
-NexisClaw browser focus abcd1234
-NexisClaw browser close abcd1234
+FirstNexus browser status
+FirstNexus browser start
+FirstNexus browser start --headless # one-shot local managed headless launch
+FirstNexus browser stop            # also clears emulation on attach-only/remote CDP
+FirstNexus browser tabs
+FirstNexus browser tab             # shortcut for current tab
+FirstNexus browser tab new
+FirstNexus browser tab select 2
+FirstNexus browser tab close 2
+FirstNexus browser open https://example.com
+FirstNexus browser focus abcd1234
+FirstNexus browser close abcd1234
 ```
 
 </Accordion>
@@ -154,23 +154,23 @@ NexisClaw browser close abcd1234
 <Accordion title="Inspection: screenshot, snapshot, console, errors, requests">
 
 ```bash
-NexisClaw browser screenshot
-NexisClaw browser screenshot --full-page
-NexisClaw browser screenshot --ref 12        # or --ref e12
-NexisClaw browser screenshot --labels
-NexisClaw browser snapshot
-NexisClaw browser snapshot --format aria --limit 200
-NexisClaw browser snapshot --interactive --compact --depth 6
-NexisClaw browser snapshot --efficient
-NexisClaw browser snapshot --labels
-NexisClaw browser snapshot --urls
-NexisClaw browser snapshot --selector "#main" --interactive
-NexisClaw browser snapshot --frame "iframe#main" --interactive
-NexisClaw browser console --level error
-NexisClaw browser errors --clear
-NexisClaw browser requests --filter api --clear
-NexisClaw browser pdf
-NexisClaw browser responsebody "**/api" --max-chars 5000
+FirstNexus browser screenshot
+FirstNexus browser screenshot --full-page
+FirstNexus browser screenshot --ref 12        # or --ref e12
+FirstNexus browser screenshot --labels
+FirstNexus browser snapshot
+FirstNexus browser snapshot --format aria --limit 200
+FirstNexus browser snapshot --interactive --compact --depth 6
+FirstNexus browser snapshot --efficient
+FirstNexus browser snapshot --labels
+FirstNexus browser snapshot --urls
+FirstNexus browser snapshot --selector "#main" --interactive
+FirstNexus browser snapshot --frame "iframe#main" --interactive
+FirstNexus browser console --level error
+FirstNexus browser errors --clear
+FirstNexus browser requests --filter api --clear
+FirstNexus browser pdf
+FirstNexus browser responsebody "**/api" --max-chars 5000
 ```
 
 </Accordion>
@@ -178,27 +178,27 @@ NexisClaw browser responsebody "**/api" --max-chars 5000
 <Accordion title="Actions: navigate, click, type, drag, wait, evaluate">
 
 ```bash
-NexisClaw browser navigate https://example.com
-NexisClaw browser resize 1280 720
-NexisClaw browser click 12 --double           # or e12 for role refs
-NexisClaw browser click-coords 120 340        # viewport coordinates
-NexisClaw browser type 23 "hello" --submit
-NexisClaw browser press Enter
-NexisClaw browser hover 44
-NexisClaw browser scrollintoview e12
-NexisClaw browser drag 10 11
-NexisClaw browser select 9 OptionA OptionB
-NexisClaw browser download e12 report.pdf
-NexisClaw browser waitfordownload report.pdf
-NexisClaw browser upload /tmp/NexisClaw/uploads/file.pdf
-NexisClaw browser fill --fields '[{"ref":"1","type":"text","value":"Ada"}]'
-NexisClaw browser dialog --accept
-NexisClaw browser wait --text "Done"
-NexisClaw browser wait "#main" --url "**/dash" --load networkidle --fn "window.ready===true"
-NexisClaw browser evaluate --fn '(el) => el.textContent' --ref 7
-NexisClaw browser highlight e12
-NexisClaw browser trace start
-NexisClaw browser trace stop
+FirstNexus browser navigate https://example.com
+FirstNexus browser resize 1280 720
+FirstNexus browser click 12 --double           # or e12 for role refs
+FirstNexus browser click-coords 120 340        # viewport coordinates
+FirstNexus browser type 23 "hello" --submit
+FirstNexus browser press Enter
+FirstNexus browser hover 44
+FirstNexus browser scrollintoview e12
+FirstNexus browser drag 10 11
+FirstNexus browser select 9 OptionA OptionB
+FirstNexus browser download e12 report.pdf
+FirstNexus browser waitfordownload report.pdf
+FirstNexus browser upload /tmp/FirstNexus/uploads/file.pdf
+FirstNexus browser fill --fields '[{"ref":"1","type":"text","value":"Ada"}]'
+FirstNexus browser dialog --accept
+FirstNexus browser wait --text "Done"
+FirstNexus browser wait "#main" --url "**/dash" --load networkidle --fn "window.ready===true"
+FirstNexus browser evaluate --fn '(el) => el.textContent' --ref 7
+FirstNexus browser highlight e12
+FirstNexus browser trace start
+FirstNexus browser trace stop
 ```
 
 </Accordion>
@@ -206,20 +206,20 @@ NexisClaw browser trace stop
 <Accordion title="State: cookies, storage, offline, headers, geo, device">
 
 ```bash
-NexisClaw browser cookies
-NexisClaw browser cookies set session abc123 --url "https://example.com"
-NexisClaw browser cookies clear
-NexisClaw browser storage local get
-NexisClaw browser storage local set theme dark
-NexisClaw browser storage session clear
-NexisClaw browser set offline on
-NexisClaw browser set headers --headers-json '{"X-Debug":"1"}'
-NexisClaw browser set credentials user pass            # --clear to remove
-NexisClaw browser set geo 37.7749 -122.4194 --origin "https://example.com"
-NexisClaw browser set media dark
-NexisClaw browser set timezone America/New_York
-NexisClaw browser set locale en-US
-NexisClaw browser set device "iPhone 14"
+FirstNexus browser cookies
+FirstNexus browser cookies set session abc123 --url "https://example.com"
+FirstNexus browser cookies clear
+FirstNexus browser storage local get
+FirstNexus browser storage local set theme dark
+FirstNexus browser storage session clear
+FirstNexus browser set offline on
+FirstNexus browser set headers --headers-json '{"X-Debug":"1"}'
+FirstNexus browser set credentials user pass            # --clear to remove
+FirstNexus browser set geo 37.7749 -122.4194 --origin "https://example.com"
+FirstNexus browser set media dark
+FirstNexus browser set timezone America/New_York
+FirstNexus browser set locale en-US
+FirstNexus browser set device "iPhone 14"
 ```
 
 </Accordion>
@@ -230,10 +230,10 @@ Notes:
 
 - `upload` and `dialog` are **arming** calls; run them before the click/press that triggers the chooser/dialog.
 - `click`/`type`/etc require a `ref` from `snapshot` (numeric `12`, role ref `e12`, or actionable ARIA ref `ax12`). CSS selectors are intentionally not supported for actions. Use `click-coords` when the visible viewport position is the only reliable target.
-- Download, trace, and upload paths are constrained to NexisClaw temp roots: `/tmp/NexisClaw{,/downloads,/uploads}` (fallback: `${os.tmpdir()}/NexisClaw/...`).
+- Download, trace, and upload paths are constrained to FirstNexus temp roots: `/tmp/FirstNexus{,/downloads,/uploads}` (fallback: `${os.tmpdir()}/FirstNexus/...`).
 - `upload` can also set file inputs directly via `--input-ref` or `--element`.
 
-Stable tab ids and labels survive Chromium raw-target replacement when NexisClaw
+Stable tab ids and labels survive Chromium raw-target replacement when FirstNexus
 can prove the replacement tab, such as same URL or a single old tab becoming a
 single new tab after form submission. Raw target ids are still volatile; prefer
 `suggestedTargetId` from `tabs` in scripts.
@@ -241,7 +241,7 @@ single new tab after form submission. Raw target ids are still volatile; prefer
 Snapshot flags at a glance:
 
 - `--format ai` (default with Playwright): AI snapshot with numeric refs (`aria-ref="<n>"`).
-- `--format aria`: accessibility tree with `axN` refs. When Playwright is available, NexisClaw binds refs with backend DOM ids to the live page so follow-up actions can use them; otherwise treat the output as inspection-only.
+- `--format aria`: accessibility tree with `axN` refs. When Playwright is available, FirstNexus binds refs with backend DOM ids to the live page so follow-up actions can use them; otherwise treat the output as inspection-only.
 - `--efficient` (or `--mode efficient`): compact role snapshot preset. Set `browser.snapshotDefaults.mode: "efficient"` to make this the default (see [Gateway configuration](/gateway/configuration-reference#browser)).
 - `--interactive`, `--compact`, `--depth`, `--selector` force a role snapshot with `ref=e12` refs. `--frame "<iframe>"` scopes role snapshots to an iframe.
 - `--labels` adds a viewport-only screenshot with overlayed ref labels (prints `MEDIA:<path>`).
@@ -249,24 +249,24 @@ Snapshot flags at a glance:
 
 ## Snapshots and refs
 
-NexisClaw supports two "snapshot" styles:
+FirstNexus supports two "snapshot" styles:
 
-- **AI snapshot (numeric refs)**: `NexisClaw browser snapshot` (default; `--format ai`)
+- **AI snapshot (numeric refs)**: `FirstNexus browser snapshot` (default; `--format ai`)
   - Output: a text snapshot that includes numeric refs.
-  - Actions: `NexisClaw browser click 12`, `NexisClaw browser type 23 "hello"`.
+  - Actions: `FirstNexus browser click 12`, `FirstNexus browser type 23 "hello"`.
   - Internally, the ref is resolved via Playwright's `aria-ref`.
 
-- **Role snapshot (role refs like `e12`)**: `NexisClaw browser snapshot --interactive` (or `--compact`, `--depth`, `--selector`, `--frame`)
+- **Role snapshot (role refs like `e12`)**: `FirstNexus browser snapshot --interactive` (or `--compact`, `--depth`, `--selector`, `--frame`)
   - Output: a role-based list/tree with `[ref=e12]` (and optional `[nth=1]`).
-  - Actions: `NexisClaw browser click e12`, `NexisClaw browser highlight e12`.
+  - Actions: `FirstNexus browser click e12`, `FirstNexus browser highlight e12`.
   - Internally, the ref is resolved via `getByRole(...)` (plus `nth()` for duplicates).
   - Add `--labels` to include a viewport screenshot with overlayed `e12` labels.
   - Add `--urls` when link text is ambiguous and the agent needs concrete
     navigation targets.
 
-- **ARIA snapshot (ARIA refs like `ax12`)**: `NexisClaw browser snapshot --format aria`
+- **ARIA snapshot (ARIA refs like `ax12`)**: `FirstNexus browser snapshot --format aria`
   - Output: the accessibility tree as structured nodes.
-  - Actions: `NexisClaw browser click ax12` works when the snapshot path can bind
+  - Actions: `FirstNexus browser click ax12` works when the snapshot path can bind
     the ref through Playwright and Chrome backend DOM ids.
 - If Playwright is unavailable, ARIA snapshots can still be useful for
   inspection, but refs may not be actionable. Re-snapshot with `--format ai`
@@ -291,18 +291,18 @@ Ref behavior:
 You can wait on more than just time/text:
 
 - Wait for URL (globs supported by Playwright):
-  - `NexisClaw browser wait --url "**/dash"`
+  - `FirstNexus browser wait --url "**/dash"`
 - Wait for load state:
-  - `NexisClaw browser wait --load networkidle`
+  - `FirstNexus browser wait --load networkidle`
 - Wait for a JS predicate:
-  - `NexisClaw browser wait --fn "window.ready===true"`
+  - `FirstNexus browser wait --fn "window.ready===true"`
 - Wait for a selector to become visible:
-  - `NexisClaw browser wait "#main"`
+  - `FirstNexus browser wait "#main"`
 
 These can be combined:
 
 ```bash
-NexisClaw browser wait "#main" \
+FirstNexus browser wait "#main" \
   --url "**/dash" \
   --load networkidle \
   --fn "window.ready===true" \
@@ -313,16 +313,16 @@ NexisClaw browser wait "#main" \
 
 When an action fails (e.g. "not visible", "strict mode violation", "covered"):
 
-1. `NexisClaw browser snapshot --interactive`
+1. `FirstNexus browser snapshot --interactive`
 2. Use `click <ref>` / `type <ref>` (prefer role refs in interactive mode)
-3. If it still fails: `NexisClaw browser highlight <ref>` to see what Playwright is targeting
+3. If it still fails: `FirstNexus browser highlight <ref>` to see what Playwright is targeting
 4. If the page behaves oddly:
-   - `NexisClaw browser errors --clear`
-   - `NexisClaw browser requests --filter api --clear`
+   - `FirstNexus browser errors --clear`
+   - `FirstNexus browser requests --filter api --clear`
 5. For deep debugging: record a trace:
-   - `NexisClaw browser trace start`
+   - `FirstNexus browser trace start`
    - reproduce the issue
-   - `NexisClaw browser trace stop` (prints `TRACE:<path>`)
+   - `FirstNexus browser trace stop` (prints `TRACE:<path>`)
 
 ## JSON output
 
@@ -331,10 +331,10 @@ When an action fails (e.g. "not visible", "strict mode violation", "covered"):
 Examples:
 
 ```bash
-NexisClaw browser status --json
-NexisClaw browser snapshot --interactive --json
-NexisClaw browser requests --filter api --json
-NexisClaw browser cookies --json
+FirstNexus browser status --json
+FirstNexus browser snapshot --interactive --json
+FirstNexus browser requests --filter api --json
+FirstNexus browser cookies --json
 ```
 
 Role snapshots in JSON include `refs` plus a small `stats` block (lines/chars/refs/interactive) so tools can reason about payload size and density.
@@ -357,8 +357,8 @@ These are useful for "make the site behave like X" workflows:
 
 ## Security and privacy
 
-- The NexisClaw browser profile may contain logged-in sessions; treat it as sensitive.
-- `browser act kind=evaluate` / `NexisClaw browser evaluate` and `wait --fn`
+- The FirstNexus browser profile may contain logged-in sessions; treat it as sensitive.
+- `browser act kind=evaluate` / `FirstNexus browser evaluate` and `wait --fn`
   execute arbitrary JavaScript in the page context. Prompt injection can steer
   this. Disable it with `browser.evaluateEnabled=false` if you do not need it.
 - For logins and anti-bot notes (X/Twitter, etc.), see [Browser login + X/Twitter posting](/tools/browser-login).

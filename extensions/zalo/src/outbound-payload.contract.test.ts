@@ -2,11 +2,11 @@ import {
   installChannelOutboundPayloadContractSuite,
   primeChannelOutboundSendMock,
   type OutboundPayloadHarnessParams,
-} from "NexisClaw/plugin-sdk/channel-contract-testing";
+} from "FirstNexus/plugin-sdk/channel-contract-testing";
 import {
   createMessageReceiptFromOutboundResults,
   verifyChannelMessageAdapterCapabilityProofs,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import { describe, expect, it, vi } from "vitest";
 import { zaloMessageAdapter, zaloPlugin } from "./channel.js";
 

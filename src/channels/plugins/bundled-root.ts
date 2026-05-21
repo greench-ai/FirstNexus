@@ -1,10 +1,10 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveNexisClawPackageRootSync } from "../../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRootSync } from "../../infra/FirstNexus-root.js";
 import { resolveBundledPluginsDir } from "../../plugins/bundled-dir.js";
 
 const NEXISCLAW_PACKAGE_ROOT =
-  resolveNexisClawPackageRootSync({
+  resolveFirstNexusPackageRootSync({
     argv1: process.argv[1],
     cwd: process.cwd(),
     moduleUrl: import.meta.url.startsWith("file:") ? import.meta.url : undefined,

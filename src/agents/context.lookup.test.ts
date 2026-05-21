@@ -13,7 +13,7 @@ const contextTestState = vi.hoisted(() => {
   const state = {
     loadConfigImpl: () => ({}) as unknown,
     discoveredModels: [] as DiscoveredModel[],
-    ensureNexisClawModelsJson: vi.fn(async () => {}),
+    ensureFirstNexusModelsJson: vi.fn(async () => {}),
     discoverAuthStorage: vi.fn(() => ({})),
     discoverModels: vi.fn(
       (_authStorage: unknown, _agentDir: string, _options?: { normalizeModels?: boolean }) => ({
@@ -29,7 +29,7 @@ vi.mock("../config/config.js", () => ({
 }));
 
 vi.mock("./models-config.runtime.js", () => ({
-  ensureNexisClawModelsJson: contextTestState.ensureNexisClawModelsJson,
+  ensureFirstNexusModelsJson: contextTestState.ensureFirstNexusModelsJson,
 }));
 
 vi.mock("./pi-model-discovery-runtime.js", () => ({
@@ -43,8 +43,8 @@ function mockContextDeps(params: {
 }) {
   contextTestState.loadConfigImpl = params.getRuntimeConfig;
   contextTestState.discoveredModels = params.discoveredModels ?? [];
-  contextTestState.ensureNexisClawModelsJson.mockClear();
-  return { ensureNexisClawModelsJson: contextTestState.ensureNexisClawModelsJson };
+  contextTestState.ensureFirstNexusModelsJson.mockClear();
+  return { ensureFirstNexusModelsJson: contextTestState.ensureFirstNexusModelsJson };
 }
 
 function mockContextModuleDeps(loadConfigImpl: () => unknown) {
@@ -111,7 +111,7 @@ describe("lookupContextTokens", () => {
   beforeEach(() => {
     contextTestState.loadConfigImpl = () => ({});
     contextTestState.discoveredModels = [];
-    contextTestState.ensureNexisClawModelsJson.mockClear();
+    contextTestState.ensureFirstNexusModelsJson.mockClear();
     contextTestState.discoverAuthStorage.mockClear();
     contextTestState.discoverModels.mockClear();
     contextModule.resetContextWindowCacheForTest();
@@ -201,37 +201,41 @@ describe("lookupContextTokens", () => {
     expect(secondLoadConfigMock).not.toHaveBeenCalled();
   });
 
-  it("only warms eagerly for real NexisClaw startup commands that need model metadata", async () => {
+  it("only warms eagerly for real FirstNexus startup commands that need model metadata", async () => {
     const { shouldEagerWarmContextWindowCache } = await importContextModule();
 
-    expect(shouldEagerWarmContextWindowCache(["node", "NexisClaw", "chat"])).toBe(true);
-    expect(shouldEagerWarmContextWindowCache(["node", "NexisClaw", "chat", "--help"])).toBe(false);
+    expect(shouldEagerWarmContextWindowCache(["node", "FirstNexus", "chat"])).toBe(true);
+    expect(shouldEagerWarmContextWindowCache(["node", "FirstNexus", "chat", "--help"])).toBe(false);
     expect(
-      shouldEagerWarmContextWindowCache(["node", "NexisClaw", "matrix", "encryption", "help"]),
+      shouldEagerWarmContextWindowCache(["node", "FirstNexus", "matrix", "encryption", "help"]),
     ).toBe(false);
-    expect(shouldEagerWarmContextWindowCache(["node", "NexisClaw", "help", "matrix"])).toBe(false);
+    expect(shouldEagerWarmContextWindowCache(["node", "FirstNexus", "help", "matrix"])).toBe(false);
     expect(
-      shouldEagerWarmContextWindowCache(["node", "NexisClaw", "browser", "status", "--help"]),
+      shouldEagerWarmContextWindowCache(["node", "FirstNexus", "browser", "status", "--help"]),
     ).toBe(false);
     expect(
       shouldEagerWarmContextWindowCache([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "--profile",
         "--",
         "config",
         "validate",
       ]),
     ).toBe(false);
-    expect(shouldEagerWarmContextWindowCache(["node", "NexisClaw", "logs", "--limit", "5"])).toBe(
+    expect(shouldEagerWarmContextWindowCache(["node", "FirstNexus", "logs", "--limit", "5"])).toBe(
       false,
     );
     expect(
-      shouldEagerWarmContextWindowCache(["node", "NexisClaw", "memory", "search", "--json"]),
+      shouldEagerWarmContextWindowCache(["node", "FirstNexus", "memory", "search", "--json"]),
     ).toBe(false);
-    expect(shouldEagerWarmContextWindowCache(["node", "NexisClaw", "message", "read"])).toBe(false);
-    expect(shouldEagerWarmContextWindowCache(["node", "NexisClaw", "status", "--json"])).toBe(false);
-    expect(shouldEagerWarmContextWindowCache(["node", "NexisClaw", "sessions", "--json"])).toBe(
+    expect(shouldEagerWarmContextWindowCache(["node", "FirstNexus", "message", "read"])).toBe(
+      false,
+    );
+    expect(shouldEagerWarmContextWindowCache(["node", "FirstNexus", "status", "--json"])).toBe(
+      false,
+    );
+    expect(shouldEagerWarmContextWindowCache(["node", "FirstNexus", "sessions", "--json"])).toBe(
       false,
     );
     expect(
@@ -307,7 +311,9 @@ describe("lookupContextTokens", () => {
     expect(discoverCall[0]).toEqual({});
     expect(typeof discoverAgentDir).toBe("string");
     expect(
-      path.normalize(discoverAgentDir).endsWith(path.join(".NexisClaw", "agents", "main", "agent")),
+      path
+        .normalize(discoverAgentDir)
+        .endsWith(path.join(".FirstNexus", "agents", "main", "agent")),
     ).toBe(true);
     expect(discoverCall[2]).toEqual({ normalizeModels: false });
     expect(lookupContextTokens("anthropic/claude-opus-4.7-20260219")).toBe(1_048_576);

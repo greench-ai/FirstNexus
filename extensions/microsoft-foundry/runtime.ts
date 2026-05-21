@@ -1,7 +1,7 @@
-import type { ProviderPrepareRuntimeAuthContext } from "NexisClaw/plugin-sdk/core";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { ensureAuthProfileStore } from "NexisClaw/plugin-sdk/provider-auth";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { ProviderPrepareRuntimeAuthContext } from "FirstNexus/plugin-sdk/core";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { ensureAuthProfileStore } from "FirstNexus/plugin-sdk/provider-auth";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { getAccessTokenResultAsync } from "./cli.js";
 import {
   type CachedTokenEntry,

@@ -3,7 +3,7 @@ import { i18n } from "../../i18n/index.ts";
 import { getSafeLocalStorage, getSafeSessionStorage } from "../../local-storage.ts";
 import { createStorageMock } from "../../test-helpers/storage.ts";
 import "../app.ts";
-import type { NexisClawApp } from "../app.ts";
+import type { FirstNexusApp } from "../app.ts";
 
 class MockWebSocket {
   static CONNECTING = 0;
@@ -42,12 +42,12 @@ function createMatchMediaMock(width: number) {
   });
 }
 
-const mountedApps = new Set<NexisClawApp>();
+const mountedApps = new Set<FirstNexusApp>();
 
 function collectMountedApps() {
-  return new Set<NexisClawApp>([
+  return new Set<FirstNexusApp>([
     ...mountedApps,
-    ...document.querySelectorAll<NexisClawApp>("nexisclaw-app"),
+    ...document.querySelectorAll<FirstNexusApp>("firstnexus-app"),
   ]);
 }
 
@@ -69,13 +69,13 @@ function nextFrame() {
   });
 }
 
-async function waitForAppUpdates(apps: Iterable<NexisClawApp>) {
+async function waitForAppUpdates(apps: Iterable<FirstNexusApp>) {
   for (const app of apps) {
     await app.updateComplete;
   }
 }
 
-async function drainAppWork(apps: Iterable<NexisClawApp>) {
+async function drainAppWork(apps: Iterable<FirstNexusApp>) {
   const snapshot = [...apps];
   await nextMicrotask();
   await waitForAppUpdates(snapshot);
@@ -102,7 +102,7 @@ async function cleanupMountedApps() {
 
 export function mountApp(pathname: string) {
   window.history.replaceState({}, "", pathname);
-  const app = document.createElement("nexisclaw-app") as NexisClawApp;
+  const app = document.createElement("firstnexus-app") as FirstNexusApp;
   mountedApps.add(app);
   document.body.append(app);
   app.connected = true;

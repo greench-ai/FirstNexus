@@ -1,12 +1,13 @@
 import * as dns from "node:dns";
 import process from "node:process";
-import type { TelegramNetworkConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { isTruthyEnvValue, isWSL2Sync } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { TelegramNetworkConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { isTruthyEnvValue, isWSL2Sync } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export const TELEGRAM_DISABLE_AUTO_SELECT_FAMILY_ENV =
   "NEXISCLAW_TELEGRAM_DISABLE_AUTO_SELECT_FAMILY";
-export const TELEGRAM_ENABLE_AUTO_SELECT_FAMILY_ENV = "NEXISCLAW_TELEGRAM_ENABLE_AUTO_SELECT_FAMILY";
+export const TELEGRAM_ENABLE_AUTO_SELECT_FAMILY_ENV =
+  "NEXISCLAW_TELEGRAM_ENABLE_AUTO_SELECT_FAMILY";
 export const TELEGRAM_DNS_RESULT_ORDER_ENV = "NEXISCLAW_TELEGRAM_DNS_RESULT_ORDER";
 
 export type TelegramAutoSelectFamilyDecision = {

@@ -1,7 +1,7 @@
-import { readStringOrNumberParam, readStringParam } from "NexisClaw/plugin-sdk/channel-actions";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { readStringOrNumberParam, readStringParam } from "FirstNexus/plugin-sdk/channel-actions";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
-export { resolveReactionMessageId } from "NexisClaw/plugin-sdk/channel-actions";
+export { resolveReactionMessageId } from "FirstNexus/plugin-sdk/channel-actions";
 export { handleWhatsAppAction } from "./action-runtime.js";
 export { isWhatsAppGroupJid, normalizeWhatsAppTarget } from "./normalize.js";
-export { readStringOrNumberParam, readStringParam, type NexisClawConfig };
+export { readStringOrNumberParam, readStringParam, type FirstNexusConfig };

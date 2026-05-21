@@ -10,7 +10,7 @@ coverage:
   secondary:
     - channels.discord-config
     - agents.create
-objective: Verify Crestodian can bootstrap a fresh NexisClaw config, set the default model, create an agent, configure Discord through a SecretRef, validate config, and leave an audit trail.
+objective: Verify Crestodian can bootstrap a fresh FirstNexus config, set the default model, create an agent, configure Discord through a SecretRef, validate config, and leave an audit trail.
 successCriteria:
   - Crestodian reports missing config in an empty state dir.
   - Crestodian setup writes a workspace and default model.
@@ -46,7 +46,7 @@ steps:
           expr: "path.join(env.gateway.tempRoot, setupSpec.stateDirName)"
       - set: configPath
         value:
-          expr: "path.join(stateDir, 'NexisClaw.json')"
+          expr: "path.join(stateDir, 'FirstNexus.json')"
       - set: defaultWorkspace
         value:
           expr: "path.join(env.gateway.tempRoot, setupSpec.defaultWorkspaceName)"

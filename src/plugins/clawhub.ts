@@ -185,9 +185,9 @@ function isTrustedSourceLinkedOfficialPackage(pkg: NonNullable<ClawHubPackageDet
     pkg.channel === "official" &&
     pkg.isOfficial &&
     pkg.verification?.tier === "source-linked" &&
-    (sourceRepo === "NexisClaw/NexisClaw" ||
-      sourceRepo === "github.com/NexisClaw/NexisClaw" ||
-      sourceRepo === "https://github.com/NexisClaw/NexisClaw")
+    (sourceRepo === "FirstNexus/FirstNexus" ||
+      sourceRepo === "github.com/FirstNexus/FirstNexus" ||
+      sourceRepo === "https://github.com/FirstNexus/FirstNexus")
   );
 }
 
@@ -971,7 +971,7 @@ function validateClawHubPluginPackage(params: {
   }
   if (pkg.family === "skill") {
     return buildClawHubInstallFailure(
-      `"${pkg.name}" is a skill. Use "NexisClaw skills install ${pkg.name}" instead.`,
+      `"${pkg.name}" is a skill. Use "FirstNexus skills install ${pkg.name}" instead.`,
       CLAWHUB_INSTALL_ERROR_CODE.SKILL_PACKAGE,
     );
   }
@@ -995,7 +995,7 @@ function validateClawHubPluginPackage(params: {
     !satisfiesPluginApiRange(runtimeVersion, compatibility.pluginApiRange)
   ) {
     return buildClawHubInstallFailure(
-      `Plugin "${pkg.name}" requires plugin API ${compatibility.pluginApiRange}, but this NexisClaw runtime exposes ${runtimeVersion}.`,
+      `Plugin "${pkg.name}" requires plugin API ${compatibility.pluginApiRange}, but this FirstNexus runtime exposes ${runtimeVersion}.`,
       CLAWHUB_INSTALL_ERROR_CODE.INCOMPATIBLE_PLUGIN_API,
     );
   }
@@ -1005,7 +1005,7 @@ function validateClawHubPluginPackage(params: {
     !satisfiesGatewayMinimum(runtimeVersion, compatibility.minGatewayVersion)
   ) {
     return buildClawHubInstallFailure(
-      `Plugin "${pkg.name}" requires NexisClaw >=${compatibility.minGatewayVersion}, but this host is ${runtimeVersion}.`,
+      `Plugin "${pkg.name}" requires FirstNexus >=${compatibility.minGatewayVersion}, but this host is ${runtimeVersion}.`,
       CLAWHUB_INSTALL_ERROR_CODE.INCOMPATIBLE_GATEWAY,
     );
   }

@@ -1,1 +1,1 @@
-export { saveMediaBuffer } from "NexisClaw/plugin-sdk/media-store";
+export { saveMediaBuffer } from "FirstNexus/plugin-sdk/media-store";

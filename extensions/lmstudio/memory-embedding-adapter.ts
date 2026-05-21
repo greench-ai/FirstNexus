@@ -1,7 +1,7 @@
 import {
   sanitizeEmbeddingCacheHeaders,
   type MemoryEmbeddingProviderAdapter,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-embeddings";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-embeddings";
 import {
   createLmstudioEmbeddingProvider,
   DEFAULT_LMSTUDIO_EMBEDDING_MODEL,

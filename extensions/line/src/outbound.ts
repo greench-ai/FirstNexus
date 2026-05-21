@@ -2,13 +2,13 @@ import {
   defineChannelMessageAdapter,
   type ChannelMessageSendResult,
   type MessageReceiptPartKind,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import {
   createAttachedChannelResultAdapter,
   createEmptyChannelResult,
-} from "NexisClaw/plugin-sdk/channel-send-result";
-import { createLazyRuntimeModule } from "NexisClaw/plugin-sdk/lazy-runtime";
-import { resolveOutboundMediaUrls } from "NexisClaw/plugin-sdk/reply-payload";
+} from "FirstNexus/plugin-sdk/channel-send-result";
+import { createLazyRuntimeModule } from "FirstNexus/plugin-sdk/lazy-runtime";
+import { resolveOutboundMediaUrls } from "FirstNexus/plugin-sdk/reply-payload";
 import { type ChannelPlugin, type ResolvedLineAccount } from "./channel-api.js";
 import { resolveLineOutboundMedia, type LineOutboundMediaResolved } from "./outbound-media.js";
 import { buildLineQuickReplyFallbackText } from "./quick-reply-fallback.js";

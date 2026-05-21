@@ -1,10 +1,10 @@
 import { ButtonStyle } from "discord-api-types/v10";
-import { resolveApprovalOverGateway } from "NexisClaw/plugin-sdk/approval-gateway-runtime";
-import type { ExecApprovalDecision } from "NexisClaw/plugin-sdk/approval-runtime";
+import { resolveApprovalOverGateway } from "FirstNexus/plugin-sdk/approval-gateway-runtime";
+import type { ExecApprovalDecision } from "FirstNexus/plugin-sdk/approval-runtime";
 import type {
   DiscordExecApprovalConfig,
-  NexisClawConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
+  FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
 import { Button, type ButtonInteraction, type ComponentData } from "../internal/discord.js";
 export { buildExecApprovalCustomId } from "../approval-handler.runtime.js";
 import { getDiscordExecApprovalApprovers } from "../exec-approvals.js";
@@ -128,7 +128,7 @@ export function createExecApprovalButton(ctx: ExecApprovalButtonContext): Button
 }
 
 export function createDiscordExecApprovalButtonContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   config: DiscordExecApprovalConfig;
   gatewayUrl?: string;

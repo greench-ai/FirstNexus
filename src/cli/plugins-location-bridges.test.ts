@@ -61,8 +61,8 @@ function makeRegistry(pluginId: string): PluginManifestRegistry {
         activation: {},
         startup: {},
         packageInstall: {
-          clawhubSpec: `clawhub:@NexisClaw/${pluginId}`,
-          npmSpec: `@NexisClaw/${pluginId}`,
+          clawhubSpec: `clawhub:@FirstNexus/${pluginId}`,
+          npmSpec: `@FirstNexus/${pluginId}`,
           defaultChoice: "clawhub",
         },
       },
@@ -81,7 +81,7 @@ describe("listPersistedBundledPluginLocationBridges", () => {
     readPersistedInstalledPluginIndexMock.mockResolvedValue(
       makeIndex({
         pluginId: "diagnostics-otel",
-        manifestPath: "/app/dist/extensions/diagnostics-otel/NexisClaw.plugin.json",
+        manifestPath: "/app/dist/extensions/diagnostics-otel/FirstNexus.plugin.json",
         manifestHash: "hash",
         source: "/app/dist/extensions/diagnostics-otel/index.js",
         rootDir: "/app/dist/extensions/diagnostics-otel",
@@ -92,13 +92,13 @@ describe("listPersistedBundledPluginLocationBridges", () => {
         packageInstall: {
           defaultChoice: "clawhub",
           clawhub: {
-            spec: "clawhub:@NexisClaw/diagnostics-otel",
-            packageName: "@NexisClaw/diagnostics-otel",
+            spec: "clawhub:@FirstNexus/diagnostics-otel",
+            packageName: "@FirstNexus/diagnostics-otel",
             exactVersion: false,
           },
           npm: {
-            spec: "@NexisClaw/diagnostics-otel",
-            packageName: "@NexisClaw/diagnostics-otel",
+            spec: "@FirstNexus/diagnostics-otel",
+            packageName: "@FirstNexus/diagnostics-otel",
             selectorKind: "none",
             exactVersion: false,
             pinState: "floating-without-integrity",
@@ -116,8 +116,8 @@ describe("listPersistedBundledPluginLocationBridges", () => {
         bundledPluginId: "diagnostics-otel",
         pluginId: "diagnostics-otel",
         preferredSource: "npm",
-        npmSpec: "@NexisClaw/diagnostics-otel",
-        clawhubSpec: "clawhub:@NexisClaw/diagnostics-otel",
+        npmSpec: "@FirstNexus/diagnostics-otel",
+        clawhubSpec: "clawhub:@FirstNexus/diagnostics-otel",
         channelIds: ["diagnostics-otel"],
       },
     ]);
@@ -127,7 +127,7 @@ describe("listPersistedBundledPluginLocationBridges", () => {
     readPersistedInstalledPluginIndexMock.mockResolvedValue(
       makeIndex({
         pluginId: "diagnostics-otel",
-        manifestPath: "/app/dist/extensions/diagnostics-otel/NexisClaw.plugin.json",
+        manifestPath: "/app/dist/extensions/diagnostics-otel/FirstNexus.plugin.json",
         manifestHash: "hash",
         source: "/app/dist/extensions/diagnostics-otel/index.js",
         rootDir: "/app/dist/extensions/diagnostics-otel",
@@ -138,8 +138,8 @@ describe("listPersistedBundledPluginLocationBridges", () => {
         packageInstall: {
           defaultChoice: "clawhub",
           clawhub: {
-            spec: "clawhub:@NexisClaw/diagnostics-otel",
-            packageName: "@NexisClaw/diagnostics-otel",
+            spec: "clawhub:@FirstNexus/diagnostics-otel",
+            packageName: "@FirstNexus/diagnostics-otel",
             exactVersion: false,
           },
           warnings: [],
@@ -155,8 +155,8 @@ describe("listPersistedBundledPluginLocationBridges", () => {
         bundledPluginId: "diagnostics-otel",
         pluginId: "diagnostics-otel",
         preferredSource: "npm",
-        npmSpec: "@NexisClaw/diagnostics-otel",
-        clawhubSpec: "clawhub:@NexisClaw/diagnostics-otel",
+        npmSpec: "@FirstNexus/diagnostics-otel",
+        clawhubSpec: "clawhub:@FirstNexus/diagnostics-otel",
         channelIds: ["diagnostics-otel"],
       },
     ]);
@@ -166,7 +166,7 @@ describe("listPersistedBundledPluginLocationBridges", () => {
     readPersistedInstalledPluginIndexMock.mockResolvedValue(
       makeIndex({
         pluginId: "local-only",
-        manifestPath: "/app/dist/extensions/local-only/NexisClaw.plugin.json",
+        manifestPath: "/app/dist/extensions/local-only/FirstNexus.plugin.json",
         manifestHash: "hash",
         source: "/app/dist/extensions/local-only/index.js",
         rootDir: "/app/dist/extensions/local-only",

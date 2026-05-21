@@ -1,4 +1,4 @@
-import type { AccessGroupsConfig, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { AccessGroupsConfig, FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
 import { handleSignalDirectMessageAccess, resolveSignalAccessState } from "./access-policy.js";
 
@@ -37,7 +37,7 @@ async function resolveGroupAccess(params: {
 
 function accessGroupsConfig(
   accessGroups: AccessGroupsConfig | undefined,
-): Pick<NexisClawConfig, "accessGroups"> | undefined {
+): Pick<FirstNexusConfig, "accessGroups"> | undefined {
   return accessGroups ? { accessGroups } : undefined;
 }
 

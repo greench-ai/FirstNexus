@@ -1,4 +1,4 @@
-import { escapeRegExp } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import { escapeRegExp } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { QA_PROVIDER_SECRET_ENV_VARS } from "./providers/env.js";
 
 const QA_GATEWAY_DEBUG_SECRET_ENV_VARS = Object.freeze([

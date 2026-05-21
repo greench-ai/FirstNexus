@@ -164,8 +164,8 @@ describe("skills.detail handler", () => {
         createdAt: 1700000000,
       },
       owner: {
-        handle: "NexisClaw",
-        displayName: "NexisClaw",
+        handle: "FirstNexus",
+        displayName: "FirstNexus",
       },
     };
     fetchClawHubSkillDetailMock.mockResolvedValue(detail);

@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveDefaultSlackAccountId, resolveSlackAccount } from "./accounts.js";
 
 const SLACK_BUTTON_MAX_ITEMS = 5;
@@ -163,7 +163,7 @@ function resolveInteractiveRepliesFromCapabilities(capabilities: unknown): boole
 }
 
 export function isSlackInteractiveRepliesEnabled(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): boolean {
   const account = resolveSlackAccount({

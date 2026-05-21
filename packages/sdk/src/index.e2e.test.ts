@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { WebSocketServer, type RawData, type WebSocket } from "ws";
 import { installGatewayTestHooks, startServer } from "../../../src/gateway/test-helpers.js";
 import { emitAgentEvent, registerAgentRunContext } from "../../../src/infra/agent-events.js";
-import { GatewayClientTransport, NexisClaw } from "./index.js";
+import { GatewayClientTransport, FirstNexus } from "./index.js";
 
 type JsonObject = Record<string, unknown>;
 type FakeGatewayRequest = {
@@ -360,7 +360,7 @@ async function createFakeGateway(port = 0): Promise<FakeGateway> {
   };
 }
 
-describe("NexisClaw SDK websocket e2e", () => {
+describe("FirstNexus SDK websocket e2e", () => {
   afterEach(async () => {
     await Promise.all(
       servers.splice(0).map(
@@ -382,7 +382,7 @@ describe("NexisClaw SDK websocket e2e", () => {
       deviceIdentity: null,
       requestTimeoutMs: 2_000,
     });
-    const oc = new NexisClaw({ transport });
+    const oc = new FirstNexus({ transport });
     try {
       const agent = await oc.agents.get("main");
       const run = await agent.run({
@@ -431,7 +431,7 @@ describe("NexisClaw SDK websocket e2e", () => {
       deviceIdentity: null,
       requestTimeoutMs: 2_000,
     });
-    const oc = new NexisClaw({ transport });
+    const oc = new FirstNexus({ transport });
 
     try {
       const agents = expectJsonObject(await oc.agents.list());
@@ -563,7 +563,7 @@ describe("NexisClaw SDK websocket e2e", () => {
   });
 });
 
-describe("NexisClaw SDK real Gateway e2e", () => {
+describe("FirstNexus SDK real Gateway e2e", () => {
   installGatewayTestHooks({ scope: "test" });
 
   it("streams real Gateway agent events", async () => {
@@ -575,7 +575,7 @@ describe("NexisClaw SDK real Gateway e2e", () => {
       deviceIdentity: null,
       requestTimeoutMs: 2_000,
     });
-    const oc = new NexisClaw({ transport });
+    const oc = new FirstNexus({ transport });
     const runId = "sdk-real-gateway-run";
 
     try {
@@ -659,9 +659,9 @@ function expectArrayProperty(value: unknown, property: string): void {
   expect(Array.isArray(record[property])).toBe(true);
 }
 
-liveGatewayDescribe("NexisClaw SDK live Gateway e2e", () => {
+liveGatewayDescribe("FirstNexus SDK live Gateway e2e", () => {
   it("connects to a configured Gateway, streams a real run, and waits for completion", async () => {
-    const oc = new NexisClaw({
+    const oc = new FirstNexus({
       url: liveGatewayUrl,
       token: liveGatewayToken,
       requestTimeoutMs: 20_000,

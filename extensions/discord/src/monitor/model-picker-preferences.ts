@@ -1,11 +1,14 @@
 import os from "node:os";
 import path from "node:path";
-import { normalizeAccountId as normalizeSharedAccountId } from "NexisClaw/plugin-sdk/account-id";
-import { withFileLock } from "NexisClaw/plugin-sdk/file-lock";
-import { readJsonFileWithFallback, writeJsonFileAtomically } from "NexisClaw/plugin-sdk/json-store";
-import { normalizeProviderId } from "NexisClaw/plugin-sdk/provider-model-shared";
-import { resolveStateDir } from "NexisClaw/plugin-sdk/state-paths";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeAccountId as normalizeSharedAccountId } from "FirstNexus/plugin-sdk/account-id";
+import { withFileLock } from "FirstNexus/plugin-sdk/file-lock";
+import {
+  readJsonFileWithFallback,
+  writeJsonFileAtomically,
+} from "FirstNexus/plugin-sdk/json-store";
+import { normalizeProviderId } from "FirstNexus/plugin-sdk/provider-model-shared";
+import { resolveStateDir } from "FirstNexus/plugin-sdk/state-paths";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 const MODEL_PICKER_PREFERENCES_LOCK_OPTIONS = {
   retries: {

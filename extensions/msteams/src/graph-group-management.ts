@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../runtime-api.js";
+import type { FirstNexusConfig } from "../runtime-api.js";
 import { resolveConversationPath, resolveGraphConversationId } from "./graph-messages.js";
 import {
   deleteGraphRequest,
@@ -14,7 +14,7 @@ import {
 // ---------------------------------------------------------------------------
 
 type AddParticipantMSTeamsParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   to: string;
   userId: string;
   role?: string;
@@ -67,7 +67,7 @@ export async function addParticipantMSTeams(
 // ---------------------------------------------------------------------------
 
 type RemoveParticipantMSTeamsParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   to: string;
   userId: string;
 };
@@ -137,7 +137,7 @@ export async function removeParticipantMSTeams(
 // ---------------------------------------------------------------------------
 
 type RenameGroupMSTeamsParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   to: string;
   name: string;
 };

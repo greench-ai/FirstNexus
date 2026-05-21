@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createBundledBrowserPluginFixture } from "../../test/helpers/browser-bundled-plugin-fixture.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { clearPluginLoaderCache } from "../plugins/loader.js";
 import { resetPluginRuntimeStateForTest } from "../plugins/runtime.js";
 import { loadGatewayStartupPlugins } from "./server-plugin-bootstrap.js";
@@ -41,7 +41,7 @@ describe("loadGatewayStartupPlugins browser plugin integration", () => {
         plugins: {
           allow: ["browser"],
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       workspaceDir: process.cwd(),
       log: createTestLog(),
       coreGatewayHandlers: {},

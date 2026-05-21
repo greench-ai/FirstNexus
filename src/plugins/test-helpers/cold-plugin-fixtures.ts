@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
 type ColdPluginFixture = {
   authChoiceId: string;
@@ -36,10 +36,10 @@ export function createColdPluginFixture(options: ColdPluginFixtureOptions): Cold
     path.join(options.rootDir, "package.json"),
     JSON.stringify(
       {
-        name: options.packageName ?? "@example/NexisClaw-cold-control-plane",
+        name: options.packageName ?? "@example/FirstNexus-cold-control-plane",
         version: options.packageVersion ?? "1.0.0",
         ...options.packageJson,
-        NexisClaw: { extensions: ["./index.cjs"] },
+        FirstNexus: { extensions: ["./index.cjs"] },
       },
       null,
       2,
@@ -47,7 +47,7 @@ export function createColdPluginFixture(options: ColdPluginFixtureOptions): Cold
     "utf8",
   );
   fs.writeFileSync(
-    path.join(options.rootDir, "NexisClaw.plugin.json"),
+    path.join(options.rootDir, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id: pluginId,
@@ -97,7 +97,7 @@ export function createColdPluginFixture(options: ColdPluginFixtureOptions): Cold
   };
 }
 
-export function createColdPluginConfig(pluginDir: string, pluginId: string): NexisClawConfig {
+export function createColdPluginConfig(pluginDir: string, pluginId: string): FirstNexusConfig {
   return {
     plugins: {
       load: { paths: [pluginDir] },

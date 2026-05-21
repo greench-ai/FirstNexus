@@ -1,5 +1,5 @@
-import type { CommandArgs } from "NexisClaw/plugin-sdk/command-auth-native";
-import { finalizeInboundContext } from "NexisClaw/plugin-sdk/reply-dispatch-runtime";
+import type { CommandArgs } from "FirstNexus/plugin-sdk/command-auth-native";
+import { finalizeInboundContext } from "FirstNexus/plugin-sdk/reply-dispatch-runtime";
 import { resolveDiscordConversationIdentity } from "../conversation-identity.js";
 import { type DiscordChannelConfigResolved, type DiscordGuildEntryResolved } from "./allow-list.js";
 import { buildDiscordInboundAccessContext } from "./inbound-context.js";

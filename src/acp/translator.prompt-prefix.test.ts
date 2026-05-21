@@ -45,7 +45,7 @@ describe("acp prompt cwd prefix", () => {
     sessionStore.createSession({
       sessionId: TEST_SESSION_ID,
       sessionKey: TEST_SESSION_KEY,
-      cwd: options.cwd ?? path.join(os.homedir(), "NexisClaw-test"),
+      cwd: options.cwd ?? path.join(os.homedir(), "FirstNexus-test"),
     });
 
     const requestSpy = createStopAfterSendSpy();
@@ -65,7 +65,7 @@ describe("acp prompt cwd prefix", () => {
 
   async function runPromptWithCwd(cwd: string) {
     const pinnedHome = os.homedir();
-    const previousNexisClawHome = process.env.NEXISCLAW_HOME;
+    const previousFirstNexusHome = process.env.NEXISCLAW_HOME;
     const previousHome = process.env.HOME;
     delete process.env.NEXISCLAW_HOME;
     process.env.HOME = pinnedHome;
@@ -73,10 +73,10 @@ describe("acp prompt cwd prefix", () => {
     try {
       return await runPromptAndCaptureRequest({ cwd, prefixCwd: true });
     } finally {
-      if (previousNexisClawHome === undefined) {
+      if (previousFirstNexusHome === undefined) {
         delete process.env.NEXISCLAW_HOME;
       } else {
-        process.env.NEXISCLAW_HOME = previousNexisClawHome;
+        process.env.NEXISCLAW_HOME = previousFirstNexusHome;
       }
       if (previousHome === undefined) {
         delete process.env.HOME;
@@ -87,16 +87,16 @@ describe("acp prompt cwd prefix", () => {
   }
 
   it("redacts home directory in prompt prefix", async () => {
-    const requestSpy = await runPromptWithCwd(path.join(os.homedir(), "NexisClaw-test"));
+    const requestSpy = await runPromptWithCwd(path.join(os.homedir(), "FirstNexus-test"));
     const payload = chatSendPayload(requestSpy);
     expect(typeof payload.message).toBe("string");
-    expect(payload.message).toMatch(/\[Working directory: ~[\\/]NexisClaw-test\]/);
+    expect(payload.message).toMatch(/\[Working directory: ~[\\/]FirstNexus-test\]/);
   });
 
   it("keeps backslash separators when cwd uses them", async () => {
-    const requestSpy = await runPromptWithCwd(`${os.homedir()}\\NexisClaw-test`);
+    const requestSpy = await runPromptWithCwd(`${os.homedir()}\\FirstNexus-test`);
     const payload = chatSendPayload(requestSpy);
-    expect(payload.message).toContain("[Working directory: ~\\NexisClaw-test]");
+    expect(payload.message).toContain("[Working directory: ~\\FirstNexus-test]");
   });
 
   it("injects system provenance metadata when enabled", async () => {
@@ -106,7 +106,7 @@ describe("acp prompt cwd prefix", () => {
       kind: "external_user",
       originSessionId: TEST_SESSION_ID,
       sourceChannel: "acp",
-      sourceTool: "NexisClaw_acp",
+      sourceTool: "FirstNexus_acp",
     });
     expect(payload.systemProvenanceReceipt).toBeUndefined();
   });
@@ -118,12 +118,12 @@ describe("acp prompt cwd prefix", () => {
       kind: "external_user",
       originSessionId: TEST_SESSION_ID,
       sourceChannel: "acp",
-      sourceTool: "NexisClaw_acp",
+      sourceTool: "FirstNexus_acp",
     });
     expect(typeof payload.systemProvenanceReceipt).toBe("string");
     const receipt = payload.systemProvenanceReceipt as string;
     expect(receipt).toContain("[Source Receipt]");
-    expect(receipt).toContain("bridge=NexisClaw-acp");
+    expect(receipt).toContain("bridge=FirstNexus-acp");
     expect(receipt).toContain(`originSessionId=${TEST_SESSION_ID}`);
     expect(receipt).toContain(`targetSession=${TEST_SESSION_KEY}`);
   });
@@ -142,7 +142,7 @@ describe("acp prompt cwd prefix", () => {
     sessionStore.createSession({
       sessionId: TEST_SESSION_ID,
       sessionKey: TEST_SESSION_KEY,
-      cwd: path.join(os.homedir(), "NexisClaw-test"),
+      cwd: path.join(os.homedir(), "FirstNexus-test"),
     });
     const agent = new AcpGatewayAgent(
       createAcpConnection(),
@@ -160,7 +160,7 @@ describe("acp prompt cwd prefix", () => {
       kind: "external_user",
       originSessionId: TEST_SESSION_ID,
       sourceChannel: "acp",
-      sourceTool: "NexisClaw_acp",
+      sourceTool: "FirstNexus_acp",
     });
     expect(firstPayload.systemProvenanceReceipt).toContain("[Source Receipt]");
 

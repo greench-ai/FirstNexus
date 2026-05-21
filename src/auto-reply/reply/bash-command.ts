@@ -3,7 +3,7 @@ import { getFinishedSession, getSession } from "../../agents/bash-process-regist
 import { createExecTool } from "../../agents/bash-tools.js";
 import { resolveSandboxRuntimeStatus } from "../../agents/sandbox.js";
 import { isCommandFlagEnabled } from "../../config/commands.flags.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { logVerbose } from "../../globals.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import {
@@ -40,7 +40,7 @@ type ActiveBashJob =
 
 let activeJob: ActiveBashJob | null = null;
 
-function resolveForegroundMs(cfg: NexisClawConfig): number {
+function resolveForegroundMs(cfg: FirstNexusConfig): number {
   const raw = cfg.commands?.bashForegroundMs;
   if (typeof raw !== "number" || Number.isNaN(raw)) {
     return DEFAULT_FOREGROUND_MS;
@@ -104,7 +104,7 @@ function parseBashRequest(raw: string): BashRequest | null {
 
 function resolveRawCommandBody(params: {
   ctx: MsgContext;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   isGroup: boolean;
 }) {
@@ -183,7 +183,7 @@ function buildUsageReply(): ReplyPayload {
 
 export async function handleBashChatCommand(params: {
   ctx: MsgContext;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   sessionKey: string;
   isGroup: boolean;
@@ -197,7 +197,7 @@ export async function handleBashChatCommand(params: {
     return buildDisabledCommandReply({
       label: "bash",
       configKey: "bash",
-      docsUrl: "https://docs.NexisClaw.ai/tools/slash-commands#config",
+      docsUrl: "https://docs.FirstNexus.ai/tools/slash-commands#config",
     });
   }
 

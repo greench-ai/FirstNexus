@@ -83,11 +83,11 @@ providerHttpMocks.pollProviderOperationJsonMock.mockImplementation(
   },
 );
 
-vi.mock("NexisClaw/plugin-sdk/provider-auth-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-auth-runtime", () => ({
   resolveApiKeyForProvider: providerHttpMocks.resolveApiKeyForProviderMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-http", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-http", () => ({
   assertOkOrThrowHttpError: providerHttpMocks.assertOkOrThrowHttpErrorMock,
   assertOkOrThrowProviderError: providerHttpMocks.assertOkOrThrowProviderErrorMock,
   createProviderOperationDeadline: ({

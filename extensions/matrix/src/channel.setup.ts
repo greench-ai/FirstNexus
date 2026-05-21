@@ -1,5 +1,5 @@
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
-import type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
+import type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
 import { matrixConfigAdapter } from "./config-adapter.js";
 import { MatrixChannelConfigSchema } from "./config-schema.js";
 import { resolveMatrixAccount, type ResolvedMatrixAccount } from "./matrix/accounts.js";

@@ -9,7 +9,7 @@ coverage:
     - tools.web-search
   secondary:
     - models.openai
-objective: Verify a live OpenAI GPT model can use OpenAI native web_search when NexisClaw web search is enabled in auto mode.
+objective: Verify a live OpenAI GPT model can use OpenAI native web_search when FirstNexus web search is enabled in auto mode.
 successCriteria:
   - A live-frontier run fails fast unless the selected primary provider is openai.
   - The selected primary model is GPT-5.5, not a mini or pro variant.
@@ -32,7 +32,7 @@ codeRefs:
   - extensions/qa-lab/src/suite.ts
 execution:
   kind: flow
-  summary: Run with `NEXISCLAW_LIVE_OPENAI_KEY="${OPENAI_API_KEY}" pnpm NexisClaw qa suite --provider-mode live-frontier --model openai/gpt-5.5 --alt-model openai/gpt-5.5 --fast --thinking medium --scenario openai-native-web-search-live`.
+  summary: Run with `NEXISCLAW_LIVE_OPENAI_KEY="${OPENAI_API_KEY}" pnpm FirstNexus qa suite --provider-mode live-frontier --model openai/gpt-5.5 --alt-model openai/gpt-5.5 --fast --thinking medium --scenario openai-native-web-search-live`.
   config:
     requiredProvider: openai
     requiredModel: gpt-5.5

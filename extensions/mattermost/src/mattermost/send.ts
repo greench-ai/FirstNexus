@@ -2,15 +2,15 @@ import {
   createMessageReceiptFromOutboundResults,
   type MessageReceipt,
   type MessageReceiptPartKind,
-} from "NexisClaw/plugin-sdk/channel-message";
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import { isPrivateNetworkOptInEnabled } from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/channel-message";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import { isPrivateNetworkOptInEnabled } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { convertMarkdownTables } from "NexisClaw/plugin-sdk/text-chunking";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { convertMarkdownTables } from "FirstNexus/plugin-sdk/text-chunking";
 import { getMattermostRuntime } from "../runtime.js";
 import { resolveMattermostAccount } from "./accounts.js";
 import {
@@ -32,11 +32,11 @@ import {
   setInteractionSecret,
   type MattermostInteractiveButtonInput,
 } from "./interactions.js";
-import { loadOutboundMediaFromUrl, type NexisClawConfig } from "./runtime-api.js";
+import { loadOutboundMediaFromUrl, type FirstNexusConfig } from "./runtime-api.js";
 import { isMattermostId, resolveMattermostOpaqueTarget } from "./target-resolution.js";
 
 export type MattermostSendOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   botToken?: string;
   baseUrl?: string;
   accountId?: string;
@@ -345,7 +345,7 @@ async function resolveTargetChannelId(params: ResolveTargetChannelIdParams): Pro
 }
 
 type MattermostSendContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   token: string;
   baseUrl: string;

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import type { OnboardOptions } from "../../onboard-types.js";
 import { applyNonInteractiveGatewayConfig } from "./gateway-config.js";
 
@@ -33,18 +33,18 @@ const SAMPLE_SECRET_REF = {
   id: "NEXISCLAW_GATEWAY_TOKEN_REF",
 };
 
-function createTokenConfig(token: unknown): NexisClawConfig {
+function createTokenConfig(token: unknown): FirstNexusConfig {
   return {
     gateway: { auth: { mode: "token", token } },
-  } as unknown as NexisClawConfig;
+  } as unknown as FirstNexusConfig;
 }
 
 function applyGatewayConfig({
-  nextConfig = {} as NexisClawConfig,
+  nextConfig = {} as FirstNexusConfig,
   opts = baseOpts,
   runtime = createRuntime(),
 }: {
-  nextConfig?: NexisClawConfig;
+  nextConfig?: FirstNexusConfig;
   opts?: OnboardOptions;
   runtime?: ReturnType<typeof createRuntime>;
 } = {}) {
@@ -207,7 +207,7 @@ describe("applyNonInteractiveGatewayConfig token resolution chain", () => {
 
     expect(result).toBeNull();
     expect(runtime.error).toHaveBeenCalledWith(
-      'Environment variable "MISSING_GATEWAY_TOKEN_ENV" is missing or empty. Export it first, then rerun NexisClaw onboard --non-interactive.',
+      'Environment variable "MISSING_GATEWAY_TOKEN_ENV" is missing or empty. Export it first, then rerun FirstNexus onboard --non-interactive.',
     );
     expect(runtime.exit).toHaveBeenCalledWith(1);
     expect(randomToken).not.toHaveBeenCalled();

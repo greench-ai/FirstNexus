@@ -1,4 +1,4 @@
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import { isPreflightAborted, loadPluralKitRuntime } from "./message-handler.preflight-runtime.js";
 import type { DiscordMessageEvent } from "./message-handler.preflight.types.js";
 
@@ -6,7 +6,7 @@ export async function resolveDiscordPreflightPluralKitInfo(params: {
   message: DiscordMessageEvent["message"];
   config?: NonNullable<
     NonNullable<
-      import("NexisClaw/plugin-sdk/config-contracts").NexisClawConfig["channels"]
+      import("FirstNexus/plugin-sdk/config-contracts").FirstNexusConfig["channels"]
     >["discord"]
   >["pluralkit"];
   abortSignal?: AbortSignal;

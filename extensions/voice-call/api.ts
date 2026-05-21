@@ -4,7 +4,7 @@ export {
   type GatewayRequestHandlerOptions,
   isBlockedHostnameOrIp,
   isRequestBodyLimitError,
-  type NexisClawPluginApi,
+  type FirstNexusPluginApi,
   readRequestBodyWithLimit,
   requestBodyErrorToText,
   type SessionEntry,

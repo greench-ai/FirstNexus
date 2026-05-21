@@ -1,6 +1,6 @@
 import { isCliProvider } from "../agents/model-selection.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
@@ -8,7 +8,7 @@ import {
 import { sanitizeTerminalText } from "../terminal/safe-text.js";
 
 const AGENT_RUNTIME_LABELS: Readonly<Record<string, string>> = {
-  pi: "NexisClaw Pi Default",
+  pi: "FirstNexus Pi Default",
   codex: "OpenAI Codex",
   "codex-cli": "OpenAI Codex",
   "claude-cli": "Claude CLI",
@@ -16,7 +16,7 @@ const AGENT_RUNTIME_LABELS: Readonly<Record<string, string>> = {
 };
 
 export function resolveAgentRuntimeLabel(args: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   sessionEntry?: Pick<
     SessionEntry,
     "acp" | "agentRuntimeOverride" | "agentHarnessId" | "modelProvider" | "providerOverride"

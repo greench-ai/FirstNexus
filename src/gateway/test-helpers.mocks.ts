@@ -320,7 +320,7 @@ vi.mock("../plugins/loader.js", async () => {
     await vi.importActual<typeof import("../plugins/loader.js")>("../plugins/loader.js");
   return {
     ...actual,
-    loadNexisClawPlugins: () => getTestPluginRegistry(),
+    loadFirstNexusPlugins: () => getTestPluginRegistry(),
   };
 });
 vi.mock("../plugins/runtime/runtime-web-channel-plugin.js", () => ({

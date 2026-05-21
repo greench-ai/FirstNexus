@@ -1,8 +1,8 @@
 import crypto from "node:crypto";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { isLoopbackHost } from "NexisClaw/plugin-sdk/gateway-runtime";
-import { safeEqualSecret } from "NexisClaw/plugin-sdk/security-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { isLoopbackHost } from "FirstNexus/plugin-sdk/gateway-runtime";
+import { safeEqualSecret } from "FirstNexus/plugin-sdk/security-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { getHeader } from "./http-headers.js";
 import type { WebhookContext } from "./types.js";
 

@@ -12,7 +12,7 @@ const FOCUSABLE_SELECTOR = [
   "[tabindex]:not([tabindex='-1'])",
 ].join(",");
 
-export class NexisClawModalDialog extends LitElement {
+export class FirstNexusModalDialog extends LitElement {
   @property() label = "";
   @property() description = "";
 
@@ -97,8 +97,8 @@ export class NexisClawModalDialog extends LitElement {
   }
 
   override render() {
-    const labelId = this.label ? "nexisclaw-modal-dialog-label" : "";
-    const descriptionId = this.description ? "nexisclaw-modal-dialog-description" : "";
+    const labelId = this.label ? "firstnexus-modal-dialog-label" : "";
+    const descriptionId = this.description ? "firstnexus-modal-dialog-description" : "";
     return html`
       <dialog
         role="dialog"
@@ -268,12 +268,12 @@ export class NexisClawModalDialog extends LitElement {
   }
 }
 
-if (!customElements.get("nexisclaw-modal-dialog")) {
-  customElements.define("nexisclaw-modal-dialog", NexisClawModalDialog);
+if (!customElements.get("firstnexus-modal-dialog")) {
+  customElements.define("firstnexus-modal-dialog", FirstNexusModalDialog);
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "nexisclaw-modal-dialog": NexisClawModalDialog;
+    "firstnexus-modal-dialog": FirstNexusModalDialog;
   }
 }

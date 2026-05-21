@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { ChannelPlugin } from "../channels/plugins/types.plugin.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 
 const {
   collectChannelSecurityFindingsMock,
@@ -15,13 +15,13 @@ const {
       title: "Telegram setup fallback audited",
     },
   ]),
-  collectEnabledInsecureOrDangerousFlagsMock: vi.fn((_config: NexisClawConfig): string[] => []),
+  collectEnabledInsecureOrDangerousFlagsMock: vi.fn((_config: FirstNexusConfig): string[] => []),
   listReadOnlyChannelPluginsForConfigMock: vi.fn(),
   hasConfiguredChannelsForReadOnlyScopeMock: vi.fn(),
 }));
 
 vi.mock("./dangerous-config-flags.js", () => ({
-  collectEnabledInsecureOrDangerousFlags: (config: NexisClawConfig) =>
+  collectEnabledInsecureOrDangerousFlags: (config: FirstNexusConfig) =>
     collectEnabledInsecureOrDangerousFlagsMock(config),
 }));
 
@@ -95,7 +95,7 @@ describe("security audit channel read-only setup fallback", () => {
     const cfg = {
       session: { dmScope: "main" },
       channels: { telegram: { enabled: true } },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     hasConfiguredChannelsForReadOnlyScopeMock.mockReturnValue(true);
     listReadOnlyChannelPluginsForConfigMock.mockReturnValue([plugin]);
@@ -111,7 +111,7 @@ describe("security audit channel read-only setup fallback", () => {
     const readOnlyPluginCalls = listReadOnlyChannelPluginsForConfigMock.mock
       .calls as unknown as Array<
       [
-        NexisClawConfig,
+        FirstNexusConfig,
         {
           includePersistedAuthState?: boolean;
           includeSetupFallbackPlugins?: boolean;
@@ -126,8 +126,8 @@ describe("security audit channel read-only setup fallback", () => {
     const collectCalls = collectChannelSecurityFindingsMock.mock.calls as unknown as Array<
       [
         {
-          cfg?: NexisClawConfig;
-          sourceConfig?: NexisClawConfig;
+          cfg?: FirstNexusConfig;
+          sourceConfig?: FirstNexusConfig;
           plugins?: ChannelPlugin[];
         },
       ]

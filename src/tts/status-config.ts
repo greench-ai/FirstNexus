@@ -1,5 +1,5 @@
 import path from "node:path";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import type { TtsAutoMode, TtsConfig, TtsProvider } from "../config/types.tts.js";
 import { tryReadJsonSync } from "../infra/json-files.js";
 import {
@@ -212,7 +212,7 @@ function resolveStatusProviderDetails(raw: TtsConfig, provider: TtsProvider) {
 }
 
 export function resolveStatusTtsSnapshot(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionAuto?: string;
   agentId?: string;
   channelId?: string;

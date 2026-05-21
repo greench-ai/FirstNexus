@@ -4,9 +4,9 @@ import {
   createSandboxBrowserConfig,
   createSandboxPruneConfig,
   createSandboxSshConfig,
-} from "NexisClaw/plugin-sdk/test-fixtures";
+} from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import type { SandboxConfig } from "./types.js";
 
 const sshMocks = vi.hoisted(() => ({
@@ -31,7 +31,7 @@ vi.mock("./ssh.js", async () => {
 
 const { createSshSandboxBackend, sshSandboxBackendManager } = await import("./ssh-backend.js");
 
-function createConfig(): NexisClawConfig {
+function createConfig(): FirstNexusConfig {
   return {
     agents: {
       defaults: {
@@ -43,7 +43,7 @@ function createConfig(): NexisClawConfig {
           ssh: {
             target: "peter@example.com:2222",
             command: "ssh",
-            workspaceRoot: "/remote/NexisClaw",
+            workspaceRoot: "/remote/FirstNexus",
             strictHostKeyChecking: true,
             updateHostKeys: true,
           },
@@ -56,8 +56,8 @@ function createConfig(): NexisClawConfig {
 function createSession() {
   return {
     command: "ssh",
-    configPath: path.join(os.tmpdir(), "NexisClaw-test-ssh-config"),
-    host: "NexisClaw-sandbox",
+    configPath: path.join(os.tmpdir(), "FirstNexus-test-ssh-config"),
+    host: "FirstNexus-sandbox",
   };
 }
 
@@ -74,7 +74,7 @@ function createBackendSandboxConfig(params?: { binds?: string[]; target?: string
     backend: "ssh",
     scope: "session",
     workspaceAccess: "rw" as const,
-    workspaceRoot: "~/.NexisClaw/sandboxes",
+    workspaceRoot: "~/.FirstNexus/sandboxes",
     docker: {
       image: "img",
       containerPrefix: "prefix-",
@@ -88,7 +88,7 @@ function createBackendSandboxConfig(params?: { binds?: string[]; target?: string
     },
     ssh: {
       ...createSandboxSshConfig(
-        "/remote/NexisClaw",
+        "/remote/FirstNexus",
         params?.target ? { target: params.target } : {},
       ),
     },
@@ -160,9 +160,9 @@ describe("ssh sandbox backend", () => {
   it("describes runtimes via the configured ssh target", async () => {
     const result = await sshSandboxBackendManager.describeRuntime({
       entry: {
-        containerName: "NexisClaw-ssh-worker-abcd1234",
+        containerName: "FirstNexus-ssh-worker-abcd1234",
         backendId: "ssh",
-        runtimeLabel: "NexisClaw-ssh-worker-abcd1234",
+        runtimeLabel: "FirstNexus-ssh-worker-abcd1234",
         sessionKey: "agent:worker",
         createdAtMs: 1,
         lastUsedAtMs: 1,
@@ -182,20 +182,20 @@ describe("ssh sandbox backend", () => {
       "ssh session settings",
     );
     expect(sessionSettings.target).toBe("peter@example.com:2222");
-    expect(sessionSettings.workspaceRoot).toBe("/remote/NexisClaw");
+    expect(sessionSettings.workspaceRoot).toBe("/remote/FirstNexus");
     const commandParams = requireRecord(
       sshMocks.runSshSandboxCommand.mock.calls.at(0)?.[0],
       "ssh run command params",
     );
-    expect(commandParams.remoteCommand).toContain("/remote/NexisClaw/NexisClaw-ssh-agent-worker");
+    expect(commandParams.remoteCommand).toContain("/remote/FirstNexus/FirstNexus-ssh-agent-worker");
   });
 
   it("removes runtimes by deleting the remote scope root", async () => {
     await sshSandboxBackendManager.removeRuntime({
       entry: {
-        containerName: "NexisClaw-ssh-worker-abcd1234",
+        containerName: "FirstNexus-ssh-worker-abcd1234",
         backendId: "ssh",
-        runtimeLabel: "NexisClaw-ssh-worker-abcd1234",
+        runtimeLabel: "FirstNexus-ssh-worker-abcd1234",
         sessionKey: "agent:worker",
         createdAtMs: 1,
         lastUsedAtMs: 1,
@@ -241,10 +241,10 @@ describe("ssh sandbox backend", () => {
         backend: "ssh",
         scope: "session",
         workspaceAccess: "rw",
-        workspaceRoot: "~/.NexisClaw/sandboxes",
+        workspaceRoot: "~/.FirstNexus/sandboxes",
         docker: {
-          image: "NexisClaw-sandbox:bookworm-slim",
-          containerPrefix: "NexisClaw-sbx-",
+          image: "FirstNexus-sandbox:bookworm-slim",
+          containerPrefix: "FirstNexus-sbx-",
           workdir: "/workspace",
           readOnlyRoot: true,
           tmpfs: ["/tmp"],
@@ -255,14 +255,14 @@ describe("ssh sandbox backend", () => {
         ssh: {
           target: "peter@example.com:2222",
           command: "ssh",
-          workspaceRoot: "/remote/NexisClaw",
+          workspaceRoot: "/remote/FirstNexus",
           strictHostKeyChecking: true,
           updateHostKeys: true,
         },
         browser: {
           enabled: false,
-          image: "NexisClaw-browser",
-          containerPrefix: "NexisClaw-browser-",
+          image: "FirstNexus-browser",
+          containerPrefix: "FirstNexus-browser-",
           network: "bridge",
           cdpPort: 9222,
           vncPort: 5900,
@@ -291,7 +291,7 @@ describe("ssh sandbox backend", () => {
       "-T",
       createSession().host,
     ]);
-    expect(execSpec.argv.at(-1)).toContain("/remote/NexisClaw/NexisClaw-ssh-agent-worker");
+    expect(execSpec.argv.at(-1)).toContain("/remote/FirstNexus/FirstNexus-ssh-agent-worker");
     expect(sshMocks.uploadDirectoryToSshTarget).toHaveBeenCalledTimes(2);
     const workspaceUploadParams = requireRecord(
       sshMocks.uploadDirectoryToSshTarget.mock.calls.at(0)?.[0],

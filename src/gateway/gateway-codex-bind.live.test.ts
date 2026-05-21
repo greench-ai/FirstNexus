@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { isLiveTestEnabled } from "../agents/live-test-helpers.js";
 import type { ChannelOutboundContext } from "../channels/plugins/types.public.js";
 import { clearConfigCache, clearRuntimeConfigSnapshot } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { getSessionBindingService } from "../infra/outbound/session-binding-service.js";
 import { resolveBundledPluginWorkspaceSourcePath } from "../plugins/bundled-plugin-metadata.js";
@@ -292,10 +292,10 @@ async function writePluginBindingApproval(params: {
   channel: string;
   accountId: string;
 }): Promise<void> {
-  const NexisClawDir = path.join(params.homeDir, ".NexisClaw");
-  await fs.mkdir(NexisClawDir, { recursive: true });
+  const FirstNexusDir = path.join(params.homeDir, ".FirstNexus");
+  await fs.mkdir(FirstNexusDir, { recursive: true });
   await fs.writeFile(
-    path.join(NexisClawDir, "plugin-binding-approvals.json"),
+    path.join(FirstNexusDir, "plugin-binding-approvals.json"),
     `${JSON.stringify(
       {
         version: 1,
@@ -323,7 +323,7 @@ async function writeGatewayConfig(params: {
   token: string;
   workspace: string;
 }): Promise<void> {
-  const cfg: NexisClawConfig = {
+  const cfg: FirstNexusConfig = {
     gateway: {
       mode: "local",
       port: params.port,
@@ -373,11 +373,11 @@ describeLive("gateway live (native Codex conversation binding)", () => {
         skipGmail: process.env.NEXISCLAW_SKIP_GMAIL_WATCHER,
         stateDir: process.env.NEXISCLAW_STATE_DIR,
       };
-      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-live-codex-bind-"));
+      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-live-codex-bind-"));
       const tempHome = path.join(tempRoot, "home");
       const stateDir = path.join(tempRoot, "state");
       const workspace = path.join(tempRoot, "workspace");
-      const configPath = path.join(tempRoot, "NexisClaw.json");
+      const configPath = path.join(tempRoot, "FirstNexus.json");
       const token = `test-${randomUUID()}`;
       const port = await getFreeGatewayPort();
       const sessionKey = "main";

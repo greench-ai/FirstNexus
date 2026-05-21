@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { registerPlatformAdapter, type PlatformAdapter } from "../adapter/index.js";
 import type { InteractionEvent } from "../types.js";
@@ -27,7 +27,7 @@ const account: GatewayAccount = {
 
 const runtime = {} as GatewayPluginRuntime;
 
-function makeRestrictedCfg(approvers: string[]): NexisClawConfig {
+function makeRestrictedCfg(approvers: string[]): FirstNexusConfig {
   return {
     channels: {
       qqbot: {
@@ -39,10 +39,10 @@ function makeRestrictedCfg(approvers: string[]): NexisClawConfig {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
-function makeUnrestrictedCfg(): NexisClawConfig {
+function makeUnrestrictedCfg(): FirstNexusConfig {
   return {
     channels: {
       qqbot: {
@@ -50,7 +50,7 @@ function makeUnrestrictedCfg(): NexisClawConfig {
         clientSecret: "secret",
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function makeApprovalEvent(overrides: Partial<InteractionEvent> = {}): InteractionEvent {

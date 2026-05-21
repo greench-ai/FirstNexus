@@ -122,7 +122,7 @@ describe("qa suite runtime agent process helpers", () => {
       {
         env: {
           NEXISCLAW_STATE_DIR: "/tmp/isolated-state",
-          NEXISCLAW_CONFIG_PATH: "/tmp/isolated-state/NexisClaw.json",
+          NEXISCLAW_CONFIG_PATH: "/tmp/isolated-state/FirstNexus.json",
         },
       },
     );
@@ -143,7 +143,7 @@ describe("qa suite runtime agent process helpers", () => {
     const spawnEnv = (spawnCall?.[2] as { env?: Record<string, string> } | undefined)?.env;
     expect(spawnEnv?.PATH).toBe("/usr/bin");
     expect(spawnEnv?.NEXISCLAW_STATE_DIR).toBe("/tmp/isolated-state");
-    expect(spawnEnv?.NEXISCLAW_CONFIG_PATH).toBe("/tmp/isolated-state/NexisClaw.json");
+    expect(spawnEnv?.NEXISCLAW_CONFIG_PATH).toBe("/tmp/isolated-state/FirstNexus.json");
   });
 
   it("parses json qa cli output when requested", async () => {
@@ -280,7 +280,7 @@ describe("qa suite runtime agent process helpers", () => {
       name: "Memory Dreaming Promotion",
       payload: {
         kind: "systemEvent",
-        text: "__NexisClaw_memory_core_short_term_promotion_dream__",
+        text: "__FirstNexus_memory_core_short_term_promotion_dream__",
       },
     };
     const current = {
@@ -288,7 +288,7 @@ describe("qa suite runtime agent process helpers", () => {
       name: "Memory Dreaming Promotion",
       payload: {
         kind: "agentTurn",
-        message: "__NexisClaw_memory_core_short_term_promotion_dream__",
+        message: "__FirstNexus_memory_core_short_term_promotion_dream__",
         lightContext: true,
       },
       sessionTarget: "isolated",

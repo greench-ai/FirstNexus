@@ -1,7 +1,7 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export type CancelAcpSessionAdmin = (params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   reason: string;
 }) => Promise<void>;
@@ -16,7 +16,7 @@ export type KillSubagentRunAdminResult = {
 };
 
 export type KillSubagentRunAdmin = (params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
 }) => Promise<KillSubagentRunAdminResult>;
 

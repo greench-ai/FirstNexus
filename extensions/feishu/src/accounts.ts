@@ -1,12 +1,12 @@
 import {
   DEFAULT_ACCOUNT_ID,
-  type NexisClawConfig as ClawdbotConfig,
+  type FirstNexusConfig as ClawdbotConfig,
   createAccountListHelpers,
   normalizeAccountId,
   normalizeOptionalAccountId,
   resolveMergedAccountConfig,
-} from "NexisClaw/plugin-sdk/account-resolution";
-import { coerceSecretRef } from "NexisClaw/plugin-sdk/provider-auth";
+} from "FirstNexus/plugin-sdk/account-resolution";
+import { coerceSecretRef } from "FirstNexus/plugin-sdk/provider-auth";
 import { normalizeString } from "./comment-shared.js";
 import type {
   FeishuConfig,

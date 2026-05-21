@@ -295,7 +295,7 @@ describe("probeGateway", () => {
   it("loads probe identity and cached device auth from the provided env", async () => {
     const env = {
       ...process.env,
-      NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-probe-service-state",
+      NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-probe-service-state",
     } as NodeJS.ProcessEnv;
 
     await probeGateway({
@@ -306,7 +306,7 @@ describe("probeGateway", () => {
     });
 
     expect(deviceIdentityState.identityPaths).toEqual([
-      "/tmp/NexisClaw-probe-service-state/identity/device.json",
+      "/tmp/FirstNexus-probe-service-state/identity/device.json",
     ]);
     expect(deviceIdentityState.tokenParams).toEqual([
       {

@@ -10,9 +10,9 @@ export function resolveDefaultAgentWorkspaceDir(
   const home = resolveRequiredHomeDir(env, homedir);
   const profile = env.NEXISCLAW_PROFILE?.trim();
   if (profile && normalizeOptionalLowercaseString(profile) !== "default") {
-    return path.join(home, ".NexisClaw", `workspace-${profile}`);
+    return path.join(home, ".FirstNexus", `workspace-${profile}`);
   }
-  return path.join(home, ".NexisClaw", "workspace");
+  return path.join(home, ".FirstNexus", "workspace");
 }
 
 export const DEFAULT_AGENT_WORKSPACE_DIR = resolveDefaultAgentWorkspaceDir();

@@ -1,24 +1,24 @@
-import { resolveChannelConfigWrites } from "NexisClaw/plugin-sdk/channel-config-writes";
-import { createChannelPairingController } from "NexisClaw/plugin-sdk/channel-pairing";
+import { resolveChannelConfigWrites } from "FirstNexus/plugin-sdk/channel-config-writes";
+import { createChannelPairingController } from "FirstNexus/plugin-sdk/channel-pairing";
 import {
   ensureConfiguredBindingRouteReady,
   resolveConfiguredBindingRoute,
   resolveRuntimeConversationBindingRoute,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { resolveAgentOutboundIdentity } from "NexisClaw/plugin-sdk/outbound-runtime";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { resolveAgentOutboundIdentity } from "FirstNexus/plugin-sdk/outbound-runtime";
 import {
   buildPendingHistoryContextFromMap,
   clearHistoryEntriesIfEnabled,
   DEFAULT_GROUP_HISTORY_LIMIT,
   recordPendingHistoryEntryIfEnabled,
   type HistoryEntry,
-} from "NexisClaw/plugin-sdk/reply-history";
+} from "FirstNexus/plugin-sdk/reply-history";
 import {
   resolveDefaultGroupPolicy,
   resolveOpenProviderRuntimeGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveFeishuRuntimeAccount } from "./accounts.js";
 import {
   checkBotMentioned,

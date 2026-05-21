@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import { validateConfigObjectWithPlugins } from "../../../config/validation.js";
 import { sanitizeForLog } from "../../../terminal/ansi.js";
 import { asObjectRecord } from "./object.js";
@@ -10,7 +10,7 @@ type InvalidPluginConfigHit = {
 
 const PLUGIN_CONFIG_ISSUE_RE = /^plugins\.entries\.([^.]+)\.config(?:\.|$)/;
 
-function scanInvalidPluginConfig(cfg: NexisClawConfig): InvalidPluginConfigHit[] {
+function scanInvalidPluginConfig(cfg: FirstNexusConfig): InvalidPluginConfigHit[] {
   const validation = validateConfigObjectWithPlugins(cfg);
   if (validation.ok) {
     return [];
@@ -35,8 +35,8 @@ function scanInvalidPluginConfig(cfg: NexisClawConfig): InvalidPluginConfigHit[]
   return hits;
 }
 
-export function maybeRepairInvalidPluginConfig(cfg: NexisClawConfig): {
-  config: NexisClawConfig;
+export function maybeRepairInvalidPluginConfig(cfg: FirstNexusConfig): {
+  config: FirstNexusConfig;
   changes: string[];
 } {
   const hits = scanInvalidPluginConfig(cfg);

@@ -1,14 +1,14 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
 export async function finalizeDoctorConfigFlow(params: {
-  cfg: NexisClawConfig;
-  candidate: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  candidate: FirstNexusConfig;
   pendingChanges: boolean;
   shouldRepair: boolean;
   fixHints: string[];
   confirm: (p: { message: string; initialValue: boolean }) => Promise<boolean>;
   note: (message: string, title?: string) => void;
-}): Promise<{ cfg: NexisClawConfig; shouldWriteConfig: boolean }> {
+}): Promise<{ cfg: FirstNexusConfig; shouldWriteConfig: boolean }> {
   if (!params.shouldRepair && params.pendingChanges) {
     const shouldApply = await params.confirm({
       message: "Apply recommended config repairs now?",

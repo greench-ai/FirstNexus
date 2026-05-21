@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { createConfigRuntimeEnv } from "../config/env-vars.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.js";
 import { unsetEnv, withTempEnv } from "./models-config.e2e-harness.js";
 import {
-  planNexisClawModelsJsonWithDeps,
+  planFirstNexusModelsJsonWithDeps,
   resolveProvidersForModelsJsonWithDeps,
 } from "./models-config.plan.js";
 import type { ProviderConfig } from "./models-config.providers.secrets.js";
@@ -31,14 +31,14 @@ function createImplicitOpenRouterProvider(): ProviderConfig {
 }
 
 async function resolveProvidersForConfigEnvTest(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   onResolveImplicitProviders: (env: NodeJS.ProcessEnv) => void;
 }) {
   const env = createConfigRuntimeEnv(params.cfg);
   return await resolveProvidersForModelsJsonWithDeps(
     {
       cfg: params.cfg,
-      agentDir: "/tmp/NexisClaw-models-config-env-vars-test",
+      agentDir: "/tmp/FirstNexus-models-config-env-vars-test",
       env,
     },
     {
@@ -52,7 +52,7 @@ async function resolveProvidersForConfigEnvTest(params: {
   );
 }
 
-function createConfigEnvVarsConfig(): NexisClawConfig {
+function createConfigEnvVarsConfig(): FirstNexusConfig {
   return {
     models: { providers: {} },
     env: {
@@ -64,7 +64,7 @@ function createConfigEnvVarsConfig(): NexisClawConfig {
   };
 }
 
-async function resolveProvidersAndCaptureDiscoveryEnv(cfg: NexisClawConfig) {
+async function resolveProvidersAndCaptureDiscoveryEnv(cfg: FirstNexusConfig) {
   let discoveryEnv: NodeJS.ProcessEnv | undefined;
   const providers = await resolveProvidersForConfigEnvTest({
     cfg,
@@ -89,7 +89,7 @@ describe("models-config", () => {
     await resolveProvidersForModelsJsonWithDeps(
       {
         cfg: { models: { providers: {} } },
-        agentDir: "/tmp/NexisClaw-models-config-env-vars-test",
+        agentDir: "/tmp/FirstNexus-models-config-env-vars-test",
         env: {},
         pluginMetadataSnapshot,
       },
@@ -110,9 +110,9 @@ describe("models-config", () => {
     await resolveProvidersForModelsJsonWithDeps(
       {
         cfg: { models: { providers: {} } },
-        agentDir: "/tmp/NexisClaw-models-config-env-vars-test",
+        agentDir: "/tmp/FirstNexus-models-config-env-vars-test",
         env: {},
-        workspaceDir: "/tmp/NexisClaw-workspace",
+        workspaceDir: "/tmp/FirstNexus-workspace",
       },
       {
         resolveImplicitProviders: async ({ workspaceDir }) => {
@@ -122,7 +122,7 @@ describe("models-config", () => {
       },
     );
 
-    expect(observedWorkspaceDir).toBe("/tmp/NexisClaw-workspace");
+    expect(observedWorkspaceDir).toBe("/tmp/FirstNexus-workspace");
   });
 
   it("threads startup provider discovery scope into implicit provider discovery", async () => {
@@ -133,7 +133,7 @@ describe("models-config", () => {
     await resolveProvidersForModelsJsonWithDeps(
       {
         cfg: { models: { providers: {} } },
-        agentDir: "/tmp/NexisClaw-models-config-env-vars-test",
+        agentDir: "/tmp/FirstNexus-models-config-env-vars-test",
         env: {},
         providerDiscoveryProviderIds: ["openai"],
         providerDiscoveryEntriesOnly: true,
@@ -168,10 +168,10 @@ describe("models-config", () => {
       | Pick<PluginMetadataSnapshot, "index" | "manifestRegistry" | "owners">
       | undefined;
 
-    await planNexisClawModelsJsonWithDeps(
+    await planFirstNexusModelsJsonWithDeps(
       {
         cfg: { models: { providers: {} } },
-        agentDir: "/tmp/NexisClaw-models-config-env-vars-test",
+        agentDir: "/tmp/FirstNexus-models-config-env-vars-test",
         env: {},
         existingRaw: "",
         existingParsed: null,
@@ -189,10 +189,10 @@ describe("models-config", () => {
   });
 
   it("normalizes retired Gemini ids preserved from existing models.json rows", async () => {
-    const plan = await planNexisClawModelsJsonWithDeps(
+    const plan = await planFirstNexusModelsJsonWithDeps(
       {
         cfg: { models: { mode: "merge", providers: {} } },
-        agentDir: "/tmp/NexisClaw-models-config-env-vars-test",
+        agentDir: "/tmp/FirstNexus-models-config-env-vars-test",
         env: {},
         existingRaw: "",
         existingParsed: {

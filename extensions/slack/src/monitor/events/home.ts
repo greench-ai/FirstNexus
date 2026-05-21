@@ -1,27 +1,27 @@
 import type { SlackEventMiddlewareArgs } from "@slack/bolt";
 import type { HomeView } from "@slack/types";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { danger } from "NexisClaw/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { danger } from "FirstNexus/plugin-sdk/runtime-env";
 import type { SlackMonitorContext } from "../context.js";
 import type { SlackAppHomeOpenedEvent } from "../types.js";
 
 export function buildSlackHomeView(): HomeView {
   return {
     type: "home",
-    callback_id: "NexisClaw:home",
+    callback_id: "FirstNexus:home",
     blocks: [
       {
         type: "header",
         text: {
           type: "plain_text",
-          text: "NexisClaw",
+          text: "FirstNexus",
         },
       },
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "Send a DM, mention NexisClaw in a channel, or use `/NexisClaw` to start a session.",
+          text: "Send a DM, mention FirstNexus in a channel, or use `/FirstNexus` to start a session.",
         },
       },
       {

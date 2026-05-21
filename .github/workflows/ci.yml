@@ -25,7 +25,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.event_name == 'workflow_dispatch' && format('{0}-manual-v1-{1}', github.workflow, github.run_id) || (github.event_name == 'pull_request' && format('{0}-v7-{1}', github.workflow, github.event.pull_request.number) || (github.repository == 'NexisClaw/NexisClaw' && format('{0}-v7-{1}', github.workflow, github.ref) || format('{0}-v7-{1}-{2}', github.workflow, github.ref, github.sha))) }}
+  group: ${{ github.event_name == 'workflow_dispatch' && format('{0}-manual-v1-{1}', github.workflow, github.run_id) || (github.event_name == 'pull_request' && format('{0}-v7-{1}', github.workflow, github.event.pull_request.number) || (github.repository == 'FirstNexus/FirstNexus' && format('{0}-v7-{1}', github.workflow, github.ref) || format('{0}-v7-{1}-{2}', github.workflow, github.ref, github.sha))) }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
@@ -170,7 +170,7 @@ jobs:
 
           const createMatrix = (include) => ({ include });
           const outputPath = process.env.GITHUB_OUTPUT;
-          const isCanonicalRepository = process.env.NEXISCLAW_CI_REPOSITORY === "NexisClaw/NexisClaw";
+          const isCanonicalRepository = process.env.NEXISCLAW_CI_REPOSITORY === "FirstNexus/FirstNexus";
           const docsOnly = parseBoolean(process.env.NEXISCLAW_CI_DOCS_ONLY);
           const docsChanged = parseBoolean(process.env.NEXISCLAW_CI_DOCS_CHANGED);
           const runNode = parseBoolean(process.env.NEXISCLAW_CI_RUN_NODE) && !docsOnly;
@@ -452,7 +452,7 @@ jobs:
       contents: read
     needs: [preflight]
     if: needs.preflight.outputs.run_build_artifacts == 'true'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-16vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-16vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
     timeout-minutes: 20
     outputs:
       channels-result: ${{ steps.built_artifact_checks.outputs['channels-result'] }}
@@ -560,10 +560,10 @@ jobs:
           retention-days: 1
 
       - name: Smoke test CLI launcher help
-        run: node NexisClaw.mjs --help
+        run: node FirstNexus.mjs --help
 
       - name: Smoke test CLI launcher status json
-        run: node NexisClaw.mjs status --json --timeout 1
+        run: node FirstNexus.mjs status --json --timeout 1
 
       - name: Smoke test built bundled plugin singleton
         run: pnpm test:build:singleton
@@ -655,7 +655,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: needs.preflight.outputs.run_checks_fast_core == 'true'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -750,7 +750,7 @@ jobs:
     name: ${{ matrix.checkName }}
     needs: [preflight]
     if: needs.preflight.outputs.run_plugin_contracts_shards == 'true'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -856,7 +856,7 @@ jobs:
     name: ${{ matrix.checkName }}
     needs: [preflight]
     if: needs.preflight.outputs.run_checks_fast == 'true'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -1059,7 +1059,7 @@ jobs:
     name: checks-node-compat-node22
     needs: [preflight]
     if: needs.preflight.outputs.run_build_artifacts == 'true' && github.event_name == 'workflow_dispatch'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
     timeout-minutes: 60
     steps:
       - name: Checkout
@@ -1126,8 +1126,8 @@ jobs:
         run: |
           pnpm build
           pnpm ui:build
-          node NexisClaw.mjs --help
-          node NexisClaw.mjs status --json --timeout 1
+          node FirstNexus.mjs --help
+          node FirstNexus.mjs status --json --timeout 1
           pnpm test:build:singleton
 
   checks-node-core-test-nondist-shard:
@@ -1136,7 +1136,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: needs.preflight.outputs.run_checks_node_core_nondist == 'true'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && (matrix.runner || 'ubuntu-24.04') || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && (matrix.runner || 'ubuntu-24.04') || 'ubuntu-24.04' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -1304,7 +1304,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: ${{ !cancelled() && always() && needs.preflight.outputs.run_check == 'true' }}
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && matrix.runner || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && matrix.runner || 'ubuntu-24.04' }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -1465,7 +1465,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: ${{ !cancelled() && always() && needs.preflight.outputs.run_check_additional == 'true' }}
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-8vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-8vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -1747,7 +1747,7 @@ jobs:
       - name: Checkout ClawHub docs source
         uses: actions/checkout@v6
         with:
-          repository: NexisClaw/clawhub
+          repository: FirstNexus/clawhub
           path: clawhub-source
           fetch-depth: 1
           persist-credentials: false
@@ -1794,7 +1794,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: needs.preflight.outputs.run_checks_windows == 'true'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-16vcpu-windows-2025' || 'windows-2025' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-16vcpu-windows-2025' || 'windows-2025' }}
     timeout-minutes: 60
     env:
       NODE_OPTIONS: --max-old-space-size=8192
@@ -1907,7 +1907,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: ${{ !cancelled() && always() && needs.preflight.outputs.run_macos_node == 'true' }}
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-6vcpu-macos-latest' || 'macos-latest' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-6vcpu-macos-latest' || 'macos-latest' }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -1951,7 +1951,7 @@ jobs:
     name: "macos-swift"
     needs: [preflight]
     if: needs.preflight.outputs.run_macos_swift == 'true'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-12vcpu-macos-latest' || 'macos-latest' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-12vcpu-macos-latest' || 'macos-latest' }}
     timeout-minutes: 20
     steps:
       - name: Checkout
@@ -1986,7 +1986,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: apps/macos/.build
-          key: ${{ runner.os }}-swift-build-v2-${{ steps.swift-toolchain.outputs.key }}-${{ hashFiles('apps/macos/Package.swift', 'apps/macos/Package.resolved', 'apps/macos/Sources/**', 'apps/macos/Tests/**', 'apps/shared/NexisClawKit/Package.swift', 'apps/shared/NexisClawKit/Sources/**', 'apps/swabble/Package.swift', 'apps/swabble/Sources/**') }}
+          key: ${{ runner.os }}-swift-build-v2-${{ steps.swift-toolchain.outputs.key }}-${{ hashFiles('apps/macos/Package.swift', 'apps/macos/Package.resolved', 'apps/macos/Sources/**', 'apps/macos/Tests/**', 'apps/shared/FirstNexusKit/Package.swift', 'apps/shared/FirstNexusKit/Sources/**', 'apps/swabble/Package.swift', 'apps/swabble/Sources/**') }}
           restore-keys: |
             ${{ runner.os }}-swift-build-v2-${{ steps.swift-toolchain.outputs.key }}-
 
@@ -1996,12 +1996,12 @@ jobs:
           set -euo pipefail
           # Exact source-hash cache hits already match these inputs; checkout
           # mtimes are the only reason SwiftPM rebuilds cached products.
-          find apps/macos/Sources apps/macos/Tests apps/shared/NexisClawKit/Sources apps/swabble/Sources apps/macos/.build/checkouts \
+          find apps/macos/Sources apps/macos/Tests apps/shared/FirstNexusKit/Sources apps/swabble/Sources apps/macos/.build/checkouts \
             -type f -exec touch -t 200001010000 {} +
           touch -t 200001010000 \
             apps/macos/Package.swift \
             apps/macos/Package.resolved \
-            apps/shared/NexisClawKit/Package.swift \
+            apps/shared/FirstNexusKit/Package.swift \
             apps/swabble/Package.swift
 
       - name: Show toolchain
@@ -2013,7 +2013,7 @@ jobs:
       - name: Swift lint
         run: |
           swiftlint lint --config config/swiftlint.yml
-          swiftformat --lint apps/macos/Sources --config config/swiftformat --exclude '**/NexisClawProtocol,**/HostEnvSecurityPolicy.generated.swift'
+          swiftformat --lint apps/macos/Sources --config config/swiftformat --exclude '**/FirstNexusProtocol,**/HostEnvSecurityPolicy.generated.swift'
 
       - name: Swift build (release)
         run: |
@@ -2022,7 +2022,7 @@ jobs:
             # The macOS lane validates the desktop app build; the CLI product is
             # intentionally left to its own narrower surfaces instead of making
             # this lane rebuild the whole package graph.
-            if swift build --package-path apps/macos --product NexisClaw --configuration release; then
+            if swift build --package-path apps/macos --product FirstNexus --configuration release; then
               exit 0
             fi
             echo "swift build failed (attempt $attempt/3). Retrying…"
@@ -2048,7 +2048,7 @@ jobs:
     name: ${{ matrix.check_name }}
     needs: [preflight]
     if: needs.preflight.outputs.run_android_job == 'true'
-    runs-on: ${{ github.repository == 'NexisClaw/NexisClaw' && 'blacksmith-8vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
+    runs-on: ${{ github.repository == 'FirstNexus/FirstNexus' && 'blacksmith-8vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
     timeout-minutes: 20
     strategy:
       fail-fast: false

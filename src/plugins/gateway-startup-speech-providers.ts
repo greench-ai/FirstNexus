@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { resolveEffectiveTtsConfig } from "../tts/tts-config.js";
 
@@ -140,7 +140,7 @@ function addConfiguredTtsProviderIds(target: Set<string>, value: unknown): void 
   }
 }
 
-export function collectConfiguredSpeechProviderIds(config: NexisClawConfig): ReadonlySet<string> {
+export function collectConfiguredSpeechProviderIds(config: FirstNexusConfig): ReadonlySet<string> {
   const configured = new Set<string>();
   addConfiguredTtsProviderIds(configured, resolveEffectiveTtsConfig(config));
 

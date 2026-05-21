@@ -1,14 +1,14 @@
-import { resolveHumanDelayConfig } from "NexisClaw/plugin-sdk/agent-runtime";
+import { resolveHumanDelayConfig } from "FirstNexus/plugin-sdk/agent-runtime";
 import {
   formatInboundEnvelope,
   resolveEnvelopeFormatOptions,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { runInboundReplyTurn } from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
-import { logError } from "NexisClaw/plugin-sdk/logging-core";
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import { getAgentScopedMediaLocalRoots } from "NexisClaw/plugin-sdk/media-runtime";
-import { createNonExitingRuntime, logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { runInboundReplyTurn } from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
+import { logError } from "FirstNexus/plugin-sdk/logging-core";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import { getAgentScopedMediaLocalRoots } from "FirstNexus/plugin-sdk/media-runtime";
+import { createNonExitingRuntime, logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import { resolveDiscordMaxLinesPerMessage } from "../accounts.js";
 import { createDiscordRestClient } from "../client.js";
 import { resolveDiscordConversationIdentity } from "../conversation-identity.js";

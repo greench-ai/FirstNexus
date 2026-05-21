@@ -1,20 +1,20 @@
 import { validateRegistryNpmSpec } from "../../infra/npm-registry-spec.js";
 import { parseFrontmatterBlock } from "../../markdown/frontmatter.js";
 import {
-  applyNexisClawManifestInstallCommonFields,
+  applyFirstNexusManifestInstallCommonFields,
   getFrontmatterString,
   normalizeStringList,
-  parseNexisClawManifestInstallBase,
+  parseFirstNexusManifestInstallBase,
   parseFrontmatterBool,
-  resolveNexisClawManifestBlock,
-  resolveNexisClawManifestInstall,
-  resolveNexisClawManifestOs,
-  resolveNexisClawManifestRequires,
+  resolveFirstNexusManifestBlock,
+  resolveFirstNexusManifestInstall,
+  resolveFirstNexusManifestOs,
+  resolveFirstNexusManifestRequires,
 } from "../../shared/frontmatter.js";
 import { readStringValue } from "../../shared/string-coerce.js";
 import type { Skill } from "./skill-contract.js";
 import type {
-  NexisClawSkillMetadata,
+  FirstNexusSkillMetadata,
   ParsedSkillFrontmatter,
   SkillEntry,
   SkillInstallSpec,
@@ -110,12 +110,18 @@ function normalizeSafeDownloadUrl(raw: unknown): string | undefined {
 }
 
 function parseInstallSpec(input: unknown): SkillInstallSpec | undefined {
-  const parsed = parseNexisClawManifestInstallBase(input, ["brew", "node", "go", "uv", "download"]);
+  const parsed = parseFirstNexusManifestInstallBase(input, [
+    "brew",
+    "node",
+    "go",
+    "uv",
+    "download",
+  ]);
   if (!parsed) {
     return undefined;
   }
   const { raw } = parsed;
-  const spec = applyNexisClawManifestInstallCommonFields<SkillInstallSpec>(
+  const spec = applyFirstNexusManifestInstallCommonFields<SkillInstallSpec>(
     {
       kind: parsed.kind as SkillInstallSpec["kind"],
     },
@@ -184,16 +190,16 @@ function parseInstallSpec(input: unknown): SkillInstallSpec | undefined {
   return spec;
 }
 
-export function resolveNexisClawMetadata(
+export function resolveFirstNexusMetadata(
   frontmatter: ParsedSkillFrontmatter,
-): NexisClawSkillMetadata | undefined {
-  const metadataObj = resolveNexisClawManifestBlock({ frontmatter });
+): FirstNexusSkillMetadata | undefined {
+  const metadataObj = resolveFirstNexusManifestBlock({ frontmatter });
   if (!metadataObj) {
     return undefined;
   }
-  const requires = resolveNexisClawManifestRequires(metadataObj);
-  const install = resolveNexisClawManifestInstall(metadataObj, parseInstallSpec);
-  const osRaw = resolveNexisClawManifestOs(metadataObj);
+  const requires = resolveFirstNexusManifestRequires(metadataObj);
+  const install = resolveFirstNexusManifestInstall(metadataObj, parseInstallSpec);
+  const osRaw = resolveFirstNexusManifestOs(metadataObj);
   return {
     always: typeof metadataObj.always === "boolean" ? metadataObj.always : undefined,
     emoji: readStringValue(metadataObj.emoji),

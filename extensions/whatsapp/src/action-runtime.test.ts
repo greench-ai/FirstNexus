@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/routing";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/routing";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { handleWhatsAppAction, whatsAppActionRuntime } from "./action-runtime.js";
 
@@ -8,13 +8,15 @@ const sendReactionWhatsApp = vi.fn(async () => undefined);
 
 const enabledConfig = {
   channels: { whatsapp: { actions: { reactions: true } } },
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 describe("handleWhatsAppAction", () => {
-  function reactionConfig(reactionLevel: "minimal" | "extensive" | "off" | "ack"): NexisClawConfig {
+  function reactionConfig(
+    reactionLevel: "minimal" | "extensive" | "off" | "ack",
+  ): FirstNexusConfig {
     return {
       channels: { whatsapp: { actions: { reactions: true }, reactionLevel } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
   }
 
   function expectLastReactionSend(expected: {
@@ -189,7 +191,7 @@ describe("handleWhatsAppAction", () => {
   it("respects reaction gating", async () => {
     const cfg = {
       channels: { whatsapp: { actions: { reactions: false } } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     await expect(
       handleWhatsAppAction(
         {
@@ -212,7 +214,7 @@ describe("handleWhatsAppAction", () => {
           messageId: "msg1",
           emoji: "✅",
         },
-        {} as NexisClawConfig,
+        {} as FirstNexusConfig,
       ),
     ).rejects.toThrow(/WhatsApp reactions are disabled/);
   });
@@ -220,7 +222,7 @@ describe("handleWhatsAppAction", () => {
   it("prefers the action gate error when both actions.reactions and reactionLevel disable reactions", async () => {
     const cfg = {
       channels: { whatsapp: { actions: { reactions: false }, reactionLevel: "ack" } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     await expect(
       handleWhatsAppAction(
@@ -269,7 +271,7 @@ describe("handleWhatsAppAction", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     try {
       await handleWhatsAppAction(
@@ -300,7 +302,7 @@ describe("handleWhatsAppAction", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     await handleWhatsAppAction(
       {

@@ -137,7 +137,7 @@ describe("subagent registry persistence resume", () => {
   });
 
   it("persists runs to disk and resumes after restart", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-subagent-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
     const registryPath = path.join(tempStateDir, "subagents", "runs.json");
     hoisted.registryPath = registryPath;

@@ -1,9 +1,9 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
 
 export default definePluginEntry({
   id: "memory-wiki",
   name: "Memory Wiki",
-  description: "Persistent wiki compiler and Obsidian-friendly knowledge vault for NexisClaw.",
+  description: "Persistent wiki compiler and Obsidian-friendly knowledge vault for FirstNexus.",
   register(api) {
     api.registerCli(
       async ({ program, config: appConfig }) => {

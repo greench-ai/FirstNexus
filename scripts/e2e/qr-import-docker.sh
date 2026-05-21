@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-build.sh"
-IMAGE_NAME="${NEXISCLAW_QR_SMOKE_IMAGE:-NexisClaw-qr-smoke}"
+IMAGE_NAME="${NEXISCLAW_QR_SMOKE_IMAGE:-FirstNexus-qr-smoke}"
 DOCKER_BUILD_ARGS=()
 
 if [[ "${NEXISCLAW_QR_SMOKE_FORCE_INSTALL:-0}" == "1" ]]; then

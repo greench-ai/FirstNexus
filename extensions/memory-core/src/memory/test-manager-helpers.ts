@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/memory-core-host-engine-foundation";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/memory-core-host-engine-foundation";
 import type { MemoryIndexManager } from "./index.js";
 
 type MemoryIndexModule = typeof import("./index.js");
@@ -18,7 +18,7 @@ async function loadGetMemorySearchManager(): Promise<MemoryIndexModule["getMemor
 }
 
 export async function getRequiredMemoryIndexManager(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   purpose?: "default" | "status" | "cli";
 }): Promise<MemoryIndexManager> {

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { createDelegatedSetupWizardStatusResolvers } from "./setup-wizard-binary.js";
 import type { ChannelSetupDmPolicy } from "./setup-wizard-types.js";
 import type { ChannelSetupWizard } from "./setup-wizard.js";
@@ -73,7 +73,7 @@ export function createDelegatedSetupWizardProxy(params: {
 export function createAllowlistSetupWizardProxy<TGroupResolved>(params: {
   loadWizard: () => Promise<ChannelSetupWizard>;
   createBase: (handlers: {
-    promptAllowFrom: (params: PromptAllowFromParams) => Promise<NexisClawConfig>;
+    promptAllowFrom: (params: PromptAllowFromParams) => Promise<FirstNexusConfig>;
     resolveAllowFromEntries: (
       params: ResolveAllowFromEntriesParams,
     ) => Promise<ResolveAllowFromEntriesResult>;

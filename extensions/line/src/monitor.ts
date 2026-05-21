@@ -1,24 +1,24 @@
 import type { webhook } from "@line/bot-sdk";
-import { hasFinalChannelTurnDispatch } from "NexisClaw/plugin-sdk/channel-message";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { chunkMarkdownText } from "NexisClaw/plugin-sdk/reply-runtime";
+import { hasFinalChannelTurnDispatch } from "FirstNexus/plugin-sdk/channel-message";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { chunkMarkdownText } from "FirstNexus/plugin-sdk/reply-runtime";
 import {
   danger,
   logVerbose,
   waitForAbortSignal,
   type RuntimeEnv,
-} from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/runtime-env";
 import {
   isRequestBodyLimitError,
   normalizePluginHttpPath,
   registerWebhookTargetWithPluginRoute,
   requestBodyErrorToText,
   resolveSingleWebhookTarget,
-} from "NexisClaw/plugin-sdk/webhook-ingress";
+} from "FirstNexus/plugin-sdk/webhook-ingress";
 import {
   beginWebhookRequestPipelineOrReject,
   createWebhookInFlightLimiter,
-} from "NexisClaw/plugin-sdk/webhook-request-guards";
+} from "FirstNexus/plugin-sdk/webhook-request-guards";
 import { resolveDefaultLineAccountId } from "./accounts.js";
 import { deliverLineAutoReply } from "./auto-reply-delivery.js";
 import { createLineBot } from "./bot.js";
@@ -48,7 +48,7 @@ export interface MonitorLineProviderOptions {
   channelAccessToken: string;
   channelSecret: string;
   accountId?: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   runtime: RuntimeEnv;
   abortSignal?: AbortSignal;
   webhookUrl?: string;
@@ -117,7 +117,7 @@ export function clearLineRuntimeStateForTests() {
 }
 
 function startLineLoadingKeepalive(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   userId: string;
   accountId?: string;
   intervalMs?: number;

@@ -1,8 +1,8 @@
 import { vi } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
 type AutoThreadResolver = (params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   to: string;
   toolContext?: Record<string, unknown>;
@@ -10,7 +10,7 @@ type AutoThreadResolver = (params: {
 }) => string | undefined;
 
 type OutboundThreadContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   to: string;
   accountId?: string | null;
   toolContext?: Record<string, unknown>;
@@ -127,7 +127,7 @@ export function createOutboundThreadingMock() {
         resolveAutoThreadId,
       }: {
         actionParams: Record<string, unknown>;
-        cfg: NexisClawConfig;
+        cfg: FirstNexusConfig;
         to: string;
         accountId?: string | null;
         toolContext?: Record<string, unknown>;

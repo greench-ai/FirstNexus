@@ -1,7 +1,10 @@
-import { agentCommandFromIngress } from "NexisClaw/plugin-sdk/agent-runtime";
-import type { DiscordAccountConfig, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { agentCommandFromIngress } from "FirstNexus/plugin-sdk/agent-runtime";
+import type {
+  DiscordAccountConfig,
+  FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { formatMention } from "../mentions.js";
 import { normalizeDiscordSlug } from "../monitor/allow-list.js";
 import { buildDiscordGroupSystemPrompt } from "../monitor/inbound-context.js";
@@ -25,7 +28,7 @@ export type DiscordVoiceAgentTurnResult = {
 export async function resolveDiscordVoiceIngressContext(params: {
   entry: VoiceSessionEntry;
   userId: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordAccountConfig;
   ownerAllowFrom?: string[];
   fetchGuildName: (guildId: string) => Promise<string | undefined>;
@@ -68,7 +71,7 @@ export async function runDiscordVoiceAgentTurn(params: {
   entry: VoiceSessionEntry;
   userId: string;
   message: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordAccountConfig;
   runtime: RuntimeEnv;
   context?: DiscordVoiceIngressContext;

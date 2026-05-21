@@ -1,15 +1,15 @@
 ---
-summary: "Run NexisClaw Gateway 24/7 on a GCP Compute Engine VM (Docker) with durable state"
+summary: "Run FirstNexus Gateway 24/7 on a GCP Compute Engine VM (Docker) with durable state"
 read_when:
-  - You want NexisClaw running 24/7 on GCP
+  - You want FirstNexus running 24/7 on GCP
   - You want a production-grade, always-on Gateway on your own VM
   - You want full control over persistence, binaries, and restart behavior
 title: "GCP"
 ---
 
-Run a persistent NexisClaw Gateway on a GCP Compute Engine VM using Docker, with durable state, baked-in binaries, and safe restart behavior.
+Run a persistent FirstNexus Gateway on a GCP Compute Engine VM using Docker, with durable state, baked-in binaries, and safe restart behavior.
 
-If you want "NexisClaw 24/7 for ~$5-12/mo", this is a reliable setup on Google Cloud.
+If you want "FirstNexus 24/7 for ~$5-12/mo", this is a reliable setup on Google Cloud.
 Pricing varies by machine type and region; pick the smallest VM that fits your workload and scale up if you hit OOMs.
 
 ## What are we doing (simple terms)?
@@ -17,11 +17,11 @@ Pricing varies by machine type and region; pick the smallest VM that fits your w
 - Create a GCP project and enable billing
 - Create a Compute Engine VM
 - Install Docker (isolated app runtime)
-- Start the NexisClaw Gateway in Docker
-- Persist `~/.NexisClaw` + `~/.NexisClaw/workspace` on the host (survives restarts/rebuilds)
+- Start the FirstNexus Gateway in Docker
+- Persist `~/.FirstNexus` + `~/.FirstNexus/workspace` on the host (survives restarts/rebuilds)
 - Access the Control UI from your laptop via an SSH tunnel
 
-That mounted `~/.NexisClaw` state includes `NexisClaw.json`, per-agent
+That mounted `~/.FirstNexus` state includes `FirstNexus.json`, per-agent
 `agents/<agentId>/agent/auth-profiles.json`, and `.env`.
 
 The Gateway can be accessed via:
@@ -41,7 +41,7 @@ For the generic Docker flow, see [Docker](/install/docker).
 2. Create Compute Engine VM (e2-small, Debian 12, 20GB)
 3. SSH into the VM
 4. Install Docker
-5. Clone NexisClaw repository
+5. Clone FirstNexus repository
 6. Create persistent host directories
 7. Configure `.env` and `docker-compose.yml`
 8. Bake required binaries, build, and launch
@@ -87,8 +87,8 @@ For the generic Docker flow, see [Docker](/install/docker).
     **CLI:**
 
     ```bash
-    gcloud projects create my-NexisClaw-project --name="NexisClaw Gateway"
-    gcloud config set project my-NexisClaw-project
+    gcloud projects create my-FirstNexus-project --name="FirstNexus Gateway"
+    gcloud config set project my-FirstNexus-project
     ```
 
     Enable billing at [https://console.cloud.google.com/billing](https://console.cloud.google.com/billing) (required for Compute Engine).
@@ -120,7 +120,7 @@ For the generic Docker flow, see [Docker](/install/docker).
     **CLI:**
 
     ```bash
-    gcloud compute instances create NexisClaw-gateway \
+    gcloud compute instances create FirstNexus-gateway \
       --zone=us-central1-a \
       --machine-type=e2-small \
       --boot-disk-size=20GB \
@@ -131,7 +131,7 @@ For the generic Docker flow, see [Docker](/install/docker).
     **Console:**
 
     1. Go to Compute Engine > VM instances > Create instance
-    2. Name: `NexisClaw-gateway`
+    2. Name: `FirstNexus-gateway`
     3. Region: `us-central1`, Zone: `us-central1-a`
     4. Machine type: `e2-small`
     5. Boot disk: Debian 12, 20GB
@@ -143,7 +143,7 @@ For the generic Docker flow, see [Docker](/install/docker).
     **CLI:**
 
     ```bash
-    gcloud compute ssh NexisClaw-gateway --zone=us-central1-a
+    gcloud compute ssh FirstNexus-gateway --zone=us-central1-a
     ```
 
     **Console:**
@@ -171,7 +171,7 @@ For the generic Docker flow, see [Docker](/install/docker).
     Then SSH back in:
 
     ```bash
-    gcloud compute ssh NexisClaw-gateway --zone=us-central1-a
+    gcloud compute ssh FirstNexus-gateway --zone=us-central1-a
     ```
 
     Verify:
@@ -183,10 +183,10 @@ For the generic Docker flow, see [Docker](/install/docker).
 
   </Step>
 
-  <Step title="Clone the NexisClaw repository">
+  <Step title="Clone the FirstNexus repository">
     ```bash
-    git clone https://github.com/NexisClaw/NexisClaw.git
-    cd NexisClaw
+    git clone https://github.com/FirstNexus/FirstNexus.git
+    cd FirstNexus
     ```
 
     This guide assumes you will build a custom image to guarantee binary persistence.
@@ -198,8 +198,8 @@ For the generic Docker flow, see [Docker](/install/docker).
     All long-lived state must live on the host.
 
     ```bash
-    mkdir -p ~/.NexisClaw
-    mkdir -p ~/.NexisClaw/workspace
+    mkdir -p ~/.FirstNexus
+    mkdir -p ~/.FirstNexus/workspace
     ```
 
   </Step>
@@ -208,21 +208,21 @@ For the generic Docker flow, see [Docker](/install/docker).
     Create `.env` in the repository root.
 
     ```bash
-    NEXISCLAW_IMAGE=NexisClaw:latest
+    NEXISCLAW_IMAGE=FirstNexus:latest
     NEXISCLAW_GATEWAY_TOKEN=
     NEXISCLAW_GATEWAY_BIND=lan
     NEXISCLAW_GATEWAY_PORT=18789
 
-    NEXISCLAW_CONFIG_DIR=/home/$USER/.NexisClaw
-    NEXISCLAW_WORKSPACE_DIR=/home/$USER/.NexisClaw/workspace
+    NEXISCLAW_CONFIG_DIR=/home/$USER/.FirstNexus
+    NEXISCLAW_WORKSPACE_DIR=/home/$USER/.FirstNexus/workspace
 
     GOG_KEYRING_PASSWORD=
-    XDG_CONFIG_HOME=/home/node/.NexisClaw
+    XDG_CONFIG_HOME=/home/node/.FirstNexus
     ```
 
     Set `NEXISCLAW_GATEWAY_TOKEN` when you want to manage the stable gateway
     token through `.env`; otherwise configure `gateway.auth.token` before
-    relying on clients across restarts. If neither source exists, NexisClaw uses
+    relying on clients across restarts. If neither source exists, FirstNexus uses
     a runtime-only token for that startup. Generate a keyring password and paste
     it into `GOG_KEYRING_PASSWORD`:
 
@@ -234,7 +234,7 @@ For the generic Docker flow, see [Docker](/install/docker).
 
     This `.env` file is for container/runtime env such as `NEXISCLAW_GATEWAY_TOKEN`.
     Stored provider OAuth/API-key auth lives in the mounted
-    `~/.NexisClaw/agents/<agentId>/agent/auth-profiles.json`.
+    `~/.FirstNexus/agents/<agentId>/agent/auth-profiles.json`.
 
   </Step>
 
@@ -243,7 +243,7 @@ For the generic Docker flow, see [Docker](/install/docker).
 
     ```yaml
     services:
-      NexisClaw-gateway:
+      FirstNexus-gateway:
         image: ${NEXISCLAW_IMAGE}
         build: .
         restart: unless-stopped
@@ -260,8 +260,8 @@ For the generic Docker flow, see [Docker](/install/docker).
           - XDG_CONFIG_HOME=${XDG_CONFIG_HOME}
           - PATH=/home/linuxbrew/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
         volumes:
-          - ${NEXISCLAW_CONFIG_DIR}:/home/node/.NexisClaw
-          - ${NEXISCLAW_WORKSPACE_DIR}:/home/node/.NexisClaw/workspace
+          - ${NEXISCLAW_CONFIG_DIR}:/home/node/.FirstNexus
+          - ${NEXISCLAW_WORKSPACE_DIR}:/home/node/.FirstNexus/workspace
         ports:
           # Recommended: keep the Gateway loopback-only on the VM; access via SSH tunnel.
           # To expose it publicly, remove the `127.0.0.1:` prefix and firewall accordingly.
@@ -299,7 +299,7 @@ For the generic Docker flow, see [Docker](/install/docker).
     When binding to LAN (`NEXISCLAW_GATEWAY_BIND=lan`), configure a trusted browser origin before continuing:
 
     ```bash
-    docker compose run --rm NexisClaw-cli config set gateway.controlUi.allowedOrigins '["http://127.0.0.1:18789"]' --strict-json
+    docker compose run --rm FirstNexus-cli config set gateway.controlUi.allowedOrigins '["http://127.0.0.1:18789"]' --strict-json
     ```
 
     If you changed the gateway port, replace `18789` with your configured port.
@@ -310,7 +310,7 @@ For the generic Docker flow, see [Docker](/install/docker).
     Create an SSH tunnel to forward the Gateway port:
 
     ```bash
-    gcloud compute ssh NexisClaw-gateway --zone=us-central1-a -- -L 18789:127.0.0.1:18789
+    gcloud compute ssh FirstNexus-gateway --zone=us-central1-a -- -L 18789:127.0.0.1:18789
     ```
 
     Open in your browser:
@@ -320,7 +320,7 @@ For the generic Docker flow, see [Docker](/install/docker).
     Reprint a clean dashboard link:
 
     ```bash
-    docker compose run --rm NexisClaw-cli dashboard --no-open
+    docker compose run --rm FirstNexus-cli dashboard --no-open
     ```
 
     If the UI prompts for shared-secret auth, paste the configured token or
@@ -331,8 +331,8 @@ For the generic Docker flow, see [Docker](/install/docker).
     If Control UI shows `unauthorized` or `disconnected (1008): pairing required`, approve the browser device:
 
     ```bash
-    docker compose run --rm NexisClaw-cli devices list
-    docker compose run --rm NexisClaw-cli devices approve <requestId>
+    docker compose run --rm FirstNexus-cli devices list
+    docker compose run --rm FirstNexus-cli devices approve <requestId>
     ```
 
     Need the shared persistence and update reference again?
@@ -365,15 +365,15 @@ If Docker build fails with `Killed` and `exit code 137`, the VM was OOM-killed. 
 
 ```bash
 # Stop the VM first
-gcloud compute instances stop NexisClaw-gateway --zone=us-central1-a
+gcloud compute instances stop FirstNexus-gateway --zone=us-central1-a
 
 # Change machine type
-gcloud compute instances set-machine-type NexisClaw-gateway \
+gcloud compute instances set-machine-type FirstNexus-gateway \
   --zone=us-central1-a \
   --machine-type=e2-small
 
 # Start the VM
-gcloud compute instances start NexisClaw-gateway --zone=us-central1-a
+gcloud compute instances start FirstNexus-gateway --zone=us-central1-a
 ```
 
 ---
@@ -387,15 +387,15 @@ For automation or CI/CD pipelines, create a dedicated service account with minim
 1. Create a service account:
 
    ```bash
-   gcloud iam service-accounts create NexisClaw-deploy \
-     --display-name="NexisClaw Deployment"
+   gcloud iam service-accounts create FirstNexus-deploy \
+     --display-name="FirstNexus Deployment"
    ```
 
 2. Grant Compute Instance Admin role (or narrower custom role):
 
    ```bash
-   gcloud projects add-iam-policy-binding my-NexisClaw-project \
-     --member="serviceAccount:NexisClaw-deploy@my-NexisClaw-project.iam.gserviceaccount.com" \
+   gcloud projects add-iam-policy-binding my-FirstNexus-project \
+     --member="serviceAccount:FirstNexus-deploy@my-FirstNexus-project.iam.gserviceaccount.com" \
      --role="roles/compute.instanceAdmin.v1"
    ```
 

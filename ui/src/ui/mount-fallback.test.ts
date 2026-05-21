@@ -8,8 +8,8 @@ type TestWindow = Window & typeof globalThis;
 async function readIndexHtmlWithDelay(delayMs: number): Promise<string> {
   const html = await readFile(indexHtmlPath, "utf8");
   return html.replace(
-    'data-NexisClaw-mount-timeout-ms="12000"',
-    `data-NexisClaw-mount-timeout-ms="${delayMs}"`,
+    'data-FirstNexus-mount-timeout-ms="12000"',
+    `data-FirstNexus-mount-timeout-ms="${delayMs}"`,
   );
 }
 
@@ -35,7 +35,7 @@ function installFallbackShell(window: TestWindow, html: string): void {
   window.document.body.innerHTML = parsed.body.innerHTML;
 
   const sentinel = Array.from(parsed.querySelectorAll<HTMLScriptElement>("script:not([src])")).find(
-    (script) => script.textContent?.includes("NexisClaw-mount-fallback"),
+    (script) => script.textContent?.includes("FirstNexus-mount-fallback"),
   );
   if (!sentinel?.textContent) {
     throw new Error("Expected inline mount fallback script in index.html");
@@ -63,17 +63,17 @@ describe("Control UI mount fallback", () => {
 
   it("shows the static troubleshooting panel when the app element is never registered", async () => {
     const frameWindow = createIsolatedWindow();
-    expect(frameWindow.customElements.get("nexisclaw-app")).toBeUndefined();
+    expect(frameWindow.customElements.get("firstnexus-app")).toBeUndefined();
     installFallbackShell(frameWindow, await readIndexHtmlWithDelay(1));
     await waitForWindowTimeout(frameWindow, 10);
 
     const fallback = requireElementById(
       frameWindow,
-      "NexisClaw-mount-fallback",
+      "FirstNexus-mount-fallback",
       frameWindow.HTMLElement,
     );
     expect(fallback.hidden).toBe(false);
-    expect([...frameWindow.document.body.classList]).toEqual(["NexisClaw-mount-fallback-active"]);
+    expect([...frameWindow.document.body.classList]).toEqual(["FirstNexus-mount-fallback-active"]);
     expect(fallback.querySelector("h1")?.textContent?.trim()).toBe("Control UI did not start");
     expect(fallback.querySelector("a")?.textContent?.trim()).toBe("Control UI troubleshooting");
     expect(frameWindow.document.activeElement).toBeInstanceOf(frameWindow.HTMLElement);
@@ -83,7 +83,7 @@ describe("Control UI mount fallback", () => {
 
     const waitButton = requireElementById(
       frameWindow,
-      "NexisClaw-mount-wait",
+      "FirstNexus-mount-wait",
       frameWindow.HTMLButtonElement,
     );
     waitButton.click();
@@ -97,15 +97,15 @@ describe("Control UI mount fallback", () => {
   it("keeps the fallback hidden when the app element registers before the timeout", async () => {
     const frameWindow = createIsolatedWindow();
     installFallbackShell(frameWindow, await readIndexHtmlWithDelay(25));
-    if (!frameWindow.customElements.get("nexisclaw-app")) {
-      frameWindow.customElements.define("nexisclaw-app", class extends frameWindow.HTMLElement {});
+    if (!frameWindow.customElements.get("firstnexus-app")) {
+      frameWindow.customElements.define("firstnexus-app", class extends frameWindow.HTMLElement {});
     }
-    await frameWindow.customElements.whenDefined("nexisclaw-app");
+    await frameWindow.customElements.whenDefined("firstnexus-app");
     await waitForWindowTimeout(frameWindow, 35);
 
     const fallback = requireElementById(
       frameWindow,
-      "NexisClaw-mount-fallback",
+      "FirstNexus-mount-fallback",
       frameWindow.HTMLElement,
     );
     expect(fallback.hidden).toBe(true);

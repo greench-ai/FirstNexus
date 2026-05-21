@@ -10,7 +10,7 @@ type EnvSnapshot = {
   userProfile: string | undefined;
   homeDrive: string | undefined;
   homePath: string | undefined;
-  NexisClawHome: string | undefined;
+  FirstNexusHome: string | undefined;
   stateDir: string | undefined;
 };
 
@@ -27,7 +27,7 @@ function snapshotEnv(): EnvSnapshot {
     userProfile: process.env.USERPROFILE,
     homeDrive: process.env.HOMEDRIVE,
     homePath: process.env.HOMEPATH,
-    NexisClawHome: process.env.NEXISCLAW_HOME,
+    FirstNexusHome: process.env.NEXISCLAW_HOME,
     stateDir: process.env.NEXISCLAW_STATE_DIR,
   };
 }
@@ -44,7 +44,7 @@ function restoreEnv(snapshot: EnvSnapshot) {
   restoreKey("USERPROFILE", snapshot.userProfile);
   restoreKey("HOMEDRIVE", snapshot.homeDrive);
   restoreKey("HOMEPATH", snapshot.homePath);
-  restoreKey("NEXISCLAW_HOME", snapshot.NexisClawHome);
+  restoreKey("NEXISCLAW_HOME", snapshot.FirstNexusHome);
   restoreKey("NEXISCLAW_STATE_DIR", snapshot.stateDir);
 }
 
@@ -71,7 +71,7 @@ function setTempHome(base: string) {
   process.env.USERPROFILE = base;
   // Ensure tests using HOME isolation aren't affected by leaked NEXISCLAW_HOME.
   delete process.env.NEXISCLAW_HOME;
-  process.env.NEXISCLAW_STATE_DIR = path.join(base, ".NexisClaw");
+  process.env.NEXISCLAW_STATE_DIR = path.join(base, ".FirstNexus");
 
   if (process.platform !== "win32") {
     return;
@@ -108,7 +108,7 @@ export async function withTempHome<T>(
     skipSessionCleanup?: boolean;
   } = {},
 ): Promise<T> {
-  const prefix = opts.prefix ?? "NexisClaw-test-home-";
+  const prefix = opts.prefix ?? "FirstNexus-test-home-";
   const base = await allocateTempHomeBase(prefix);
   const snapshot = snapshotEnv();
   const envKeys = Object.keys(opts.env ?? {});
@@ -120,7 +120,7 @@ export async function withTempHome<T>(
   const envSnapshot = snapshotExtraEnv(envKeys);
 
   setTempHome(base);
-  await fs.mkdir(path.join(base, ".NexisClaw", "agents", "main", "sessions"), { recursive: true });
+  await fs.mkdir(path.join(base, ".FirstNexus", "agents", "main", "sessions"), { recursive: true });
   if (opts.env) {
     for (const [key, raw] of Object.entries(opts.env)) {
       const value = typeof raw === "function" ? raw(base) : raw;

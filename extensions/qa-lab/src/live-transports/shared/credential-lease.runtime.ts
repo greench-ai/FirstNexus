@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import { z } from "zod";
 import {
   isQaCredentialTruthyOptIn,
@@ -17,7 +17,7 @@ const DEFAULT_HTTP_TIMEOUT_MS = 15_000;
 const DEFAULT_LEASE_TTL_MS = 20 * 60 * 1_000;
 const RETRY_BACKOFF_MS = [500, 1_000, 2_000, 4_000, 5_000] as const;
 const RETRYABLE_ACQUIRE_CODES = new Set(["POOL_EXHAUSTED", "NO_CREDENTIAL_AVAILABLE"]);
-const CHUNKED_PAYLOAD_MARKER = "__NexisClawQaCredentialPayloadChunksV1";
+const CHUNKED_PAYLOAD_MARKER = "__FirstNexusQaCredentialPayloadChunksV1";
 
 const convexAcquireSuccessSchema = z.object({
   status: z.literal("ok"),
@@ -159,7 +159,9 @@ function resolveConvexAuthToken(env: NodeJS.ProcessEnv, role: QaCredentialRole):
   if (role === "ci") {
     throw new Error("Missing NEXISCLAW_QA_CONVEX_SECRET_CI for CI credential access.");
   }
-  throw new Error("Missing NEXISCLAW_QA_CONVEX_SECRET_MAINTAINER for maintainer credential access.");
+  throw new Error(
+    "Missing NEXISCLAW_QA_CONVEX_SECRET_MAINTAINER for maintainer credential access.",
+  );
 }
 
 function resolveConvexCredentialBrokerConfig(params: {

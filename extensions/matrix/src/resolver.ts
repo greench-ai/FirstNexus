@@ -1,5 +1,5 @@
-import type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import { createLazyRuntimeNamedExport } from "NexisClaw/plugin-sdk/lazy-runtime";
+import type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import { createLazyRuntimeNamedExport } from "FirstNexus/plugin-sdk/lazy-runtime";
 import type { ResolvedMatrixAccount } from "./matrix/accounts.js";
 
 const loadMatrixChannelRuntime = createLazyRuntimeNamedExport(

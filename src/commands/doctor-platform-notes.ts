@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { hasConfiguredSecretInput } from "../config/types.secrets.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 import { note } from "../terminal/note.js";
@@ -20,7 +20,7 @@ export async function noteMacLaunchAgentOverrides() {
     return;
   }
   const home = resolveHomeDir();
-  const markerCandidates = [path.join(home, ".NexisClaw", "disable-launchagent")];
+  const markerCandidates = [path.join(home, ".FirstNexus", "disable-launchagent")];
   const markerPath = markerCandidates.find((candidate) => fs.existsSync(candidate));
   if (!markerPath) {
     return;
@@ -45,7 +45,7 @@ async function launchctlGetenv(name: string): Promise<string | undefined> {
   }
 }
 
-function hasConfigGatewayCreds(cfg: NexisClawConfig): boolean {
+function hasConfigGatewayCreds(cfg: FirstNexusConfig): boolean {
   const localPassword = cfg.gateway?.auth?.password;
   const remoteToken = cfg.gateway?.remote?.token;
   const remotePassword = cfg.gateway?.remote?.password;
@@ -58,7 +58,7 @@ function hasConfigGatewayCreds(cfg: NexisClawConfig): boolean {
 }
 
 export async function noteMacLaunchctlGatewayEnvOverrides(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   deps?: {
     platform?: NodeJS.Platform;
     getenv?: (name: string) => Promise<string | undefined>;
@@ -176,8 +176,8 @@ export function noteStartupOptimizationHints(
 
   const suggestions = [
     "- Suggested env for low-power hosts:",
-    "  export NODE_COMPILE_CACHE=/var/tmp/NexisClaw-compile-cache",
-    "  mkdir -p /var/tmp/NexisClaw-compile-cache",
+    "  export NODE_COMPILE_CACHE=/var/tmp/FirstNexus-compile-cache",
+    "  mkdir -p /var/tmp/FirstNexus-compile-cache",
     "  export NEXISCLAW_NO_RESPAWN=1",
     isTruthyEnvValue(disableCompileCache) ? "  unset NODE_DISABLE_COMPILE_CACHE" : undefined,
   ].filter((line): line is string => Boolean(line));

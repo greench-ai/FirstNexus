@@ -1,6 +1,6 @@
 import { listAgentEntries, listAgentIds, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { resolveMemorySearchConfig } from "../agents/memory-search.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   resolveMemoryBackendConfig,
   type ResolvedQmdConfig,
@@ -12,14 +12,14 @@ function shouldRunQmdStartupBootSync(qmd: ResolvedQmdConfig): boolean {
   return qmd.update.onBoot && qmd.update.startup !== "off";
 }
 
-function hasExplicitAgentMemorySearchConfig(cfg: NexisClawConfig, agentId: string): boolean {
+function hasExplicitAgentMemorySearchConfig(cfg: FirstNexusConfig, agentId: string): boolean {
   return listAgentEntries(cfg).some(
     (entry) => normalizeAgentId(entry.id) === agentId && entry.memorySearch != null,
   );
 }
 
 function shouldEagerlyStartAgentMemory(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   agentCount: number;
 }): boolean {
@@ -36,7 +36,7 @@ function shouldEagerlyStartAgentMemory(params: {
 }
 
 export async function startGatewayMemoryBackend(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   log: { info?: (msg: string) => void; warn: (msg: string) => void };
 }): Promise<void> {
   const agentIds = listAgentIds(params.cfg);

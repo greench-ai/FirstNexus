@@ -5,13 +5,13 @@ import {
   type AudioTranscriptionRequest,
   type AudioTranscriptionResult,
   type MediaUnderstandingProvider,
-} from "NexisClaw/plugin-sdk/media-understanding";
+} from "FirstNexus/plugin-sdk/media-understanding";
 import {
   assertOkOrThrowHttpError,
   postJsonRequest,
   requireTranscriptionText,
   resolveProviderHttpRequestConfig,
-} from "NexisClaw/plugin-sdk/provider-http";
+} from "FirstNexus/plugin-sdk/provider-http";
 import { OPENROUTER_BASE_URL } from "./provider-catalog.js";
 
 const DEFAULT_OPENROUTER_AUDIO_TRANSCRIPTION_MODEL = "openai/whisper-large-v3-turbo";
@@ -115,8 +115,8 @@ export async function transcribeOpenRouterAudio(
       defaultHeaders: {
         Authorization: `Bearer ${params.apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://NexisClaw.ai",
-        "X-OpenRouter-Title": "NexisClaw",
+        "HTTP-Referer": "https://FirstNexus.ai",
+        "X-OpenRouter-Title": "FirstNexus",
       },
       provider: "openrouter",
       api: "openrouter-stt",

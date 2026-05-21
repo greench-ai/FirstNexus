@@ -37,21 +37,21 @@ import type {
   ImageGenerationProviderPlugin,
   MediaUnderstandingProviderPlugin,
   MusicGenerationProviderPlugin,
-  NexisClawPluginChannelRegistration,
-  NexisClawPluginCliCommandDescriptor,
-  NexisClawPluginCliRegistrar,
-  NexisClawPluginCommandDefinition,
-  NexisClawPluginGatewayRuntimeScopeSurface,
-  NexisClawGatewayDiscoveryService,
-  NexisClawPluginHttpRouteAuth,
-  NexisClawPluginHttpRouteHandler,
-  NexisClawPluginHttpRouteUpgradeHandler,
-  NexisClawPluginHttpRouteMatch,
-  NexisClawPluginHostedMediaResolver,
-  NexisClawPluginReloadRegistration,
-  NexisClawPluginSecurityAuditCollector,
-  NexisClawPluginService,
-  NexisClawPluginToolFactory,
+  FirstNexusPluginChannelRegistration,
+  FirstNexusPluginCliCommandDescriptor,
+  FirstNexusPluginCliRegistrar,
+  FirstNexusPluginCommandDefinition,
+  FirstNexusPluginGatewayRuntimeScopeSurface,
+  FirstNexusGatewayDiscoveryService,
+  FirstNexusPluginHttpRouteAuth,
+  FirstNexusPluginHttpRouteHandler,
+  FirstNexusPluginHttpRouteUpgradeHandler,
+  FirstNexusPluginHttpRouteMatch,
+  FirstNexusPluginHostedMediaResolver,
+  FirstNexusPluginReloadRegistration,
+  FirstNexusPluginSecurityAuditCollector,
+  FirstNexusPluginService,
+  FirstNexusPluginToolFactory,
   PluginConversationBindingResolvedEvent,
   PluginHookRegistration as TypedPluginHookRegistration,
   PluginLogger,
@@ -71,7 +71,7 @@ import type {
 export type PluginToolRegistration = {
   pluginId: string;
   pluginName?: string;
-  factory: NexisClawPluginToolFactory;
+  factory: FirstNexusPluginToolFactory;
   names: string[];
   declaredNames?: string[];
   optional: boolean;
@@ -82,10 +82,10 @@ export type PluginToolRegistration = {
 export type PluginCliRegistration = {
   pluginId: string;
   pluginName?: string;
-  register: NexisClawPluginCliRegistrar;
+  register: FirstNexusPluginCliRegistrar;
   parentPath: string[];
   commands: string[];
-  descriptors: NexisClawPluginCliCommandDescriptor[];
+  descriptors: FirstNexusPluginCliCommandDescriptor[];
   source: string;
   rootDir?: string;
 };
@@ -93,11 +93,11 @@ export type PluginCliRegistration = {
 export type PluginHttpRouteRegistration = {
   pluginId?: string;
   path: string;
-  handler: NexisClawPluginHttpRouteHandler;
-  handleUpgrade?: NexisClawPluginHttpRouteUpgradeHandler;
-  auth: NexisClawPluginHttpRouteAuth;
-  match: NexisClawPluginHttpRouteMatch;
-  gatewayRuntimeScopeSurface?: NexisClawPluginGatewayRuntimeScopeSurface;
+  handler: FirstNexusPluginHttpRouteHandler;
+  handleUpgrade?: FirstNexusPluginHttpRouteUpgradeHandler;
+  auth: FirstNexusPluginHttpRouteAuth;
+  match: FirstNexusPluginHttpRouteMatch;
+  gatewayRuntimeScopeSurface?: FirstNexusPluginGatewayRuntimeScopeSurface;
   nodeCapability?: {
     surface: string;
     ttlMs?: number;
@@ -108,7 +108,7 @@ export type PluginHttpRouteRegistration = {
 export type PluginHostedMediaResolverRegistration = {
   pluginId: string;
   pluginName?: string;
-  resolver: NexisClawPluginHostedMediaResolver;
+  resolver: FirstNexusPluginHostedMediaResolver;
   source: string;
   rootDir?: string;
 };
@@ -228,7 +228,7 @@ export type PluginHookRegistration = {
 export type PluginServiceRegistration = {
   pluginId: string;
   pluginName?: string;
-  service: NexisClawPluginService;
+  service: FirstNexusPluginService;
   source: string;
   origin: PluginOrigin;
   trustedOfficialInstall?: boolean;
@@ -238,7 +238,7 @@ export type PluginServiceRegistration = {
 export type PluginGatewayDiscoveryServiceRegistration = {
   pluginId: string;
   pluginName?: string;
-  service: NexisClawGatewayDiscoveryService;
+  service: FirstNexusGatewayDiscoveryService;
   source: string;
   rootDir?: string;
 };
@@ -246,7 +246,7 @@ export type PluginGatewayDiscoveryServiceRegistration = {
 export type PluginReloadRegistration = {
   pluginId: string;
   pluginName?: string;
-  registration: NexisClawPluginReloadRegistration;
+  registration: FirstNexusPluginReloadRegistration;
   source: string;
   rootDir?: string;
 };
@@ -254,7 +254,7 @@ export type PluginReloadRegistration = {
 export type PluginNodeHostCommandRegistration = {
   pluginId: string;
   pluginName?: string;
-  command: import("./types.js").NexisClawPluginNodeHostCommand;
+  command: import("./types.js").FirstNexusPluginNodeHostCommand;
   source: string;
   rootDir?: string;
 };
@@ -262,7 +262,7 @@ export type PluginNodeHostCommandRegistration = {
 export type PluginNodeInvokePolicyRegistration = {
   pluginId: string;
   pluginName?: string;
-  policy: import("./types.js").NexisClawPluginNodeInvokePolicy;
+  policy: import("./types.js").FirstNexusPluginNodeInvokePolicy;
   pluginConfig?: Record<string, unknown>;
   source: string;
   rootDir?: string;
@@ -271,7 +271,7 @@ export type PluginNodeInvokePolicyRegistration = {
 export type PluginSecurityAuditCollectorRegistration = {
   pluginId: string;
   pluginName?: string;
-  collector: NexisClawPluginSecurityAuditCollector;
+  collector: FirstNexusPluginSecurityAuditCollector;
   source: string;
   rootDir?: string;
 };
@@ -279,7 +279,7 @@ export type PluginSecurityAuditCollectorRegistration = {
 export type PluginCommandRegistration = {
   pluginId: string;
   pluginName?: string;
-  command: NexisClawPluginCommandDefinition;
+  command: FirstNexusPluginCommandDefinition;
   source: string;
   rootDir?: string;
 };
@@ -481,11 +481,11 @@ export type PluginRegistryParams = {
 };
 
 export type PluginRegistrationMode = import("./types.js").PluginRegistrationMode;
-export type NexisClawPluginNodeHostCommand = import("./types.js").NexisClawPluginNodeHostCommand;
-export type NexisClawPluginToolContext = import("./types.js").NexisClawPluginToolContext;
-export type NexisClawPluginHttpRouteParams = import("./types.js").NexisClawPluginHttpRouteParams;
-export type NexisClawPluginHookOptions = import("./types.js").NexisClawPluginHookOptions;
+export type FirstNexusPluginNodeHostCommand = import("./types.js").FirstNexusPluginNodeHostCommand;
+export type FirstNexusPluginToolContext = import("./types.js").FirstNexusPluginToolContext;
+export type FirstNexusPluginHttpRouteParams = import("./types.js").FirstNexusPluginHttpRouteParams;
+export type FirstNexusPluginHookOptions = import("./types.js").FirstNexusPluginHookOptions;
 export type PluginHookHandlerMap = import("./types.js").PluginHookHandlerMap;
-export type NexisClawPluginApi = import("./types.js").NexisClawPluginApi;
+export type FirstNexusPluginApi = import("./types.js").FirstNexusPluginApi;
 export type TypedPluginHook = TypedPluginHookRegistration;
-export type NexisClawPluginChannelReg = NexisClawPluginChannelRegistration;
+export type FirstNexusPluginChannelReg = FirstNexusPluginChannelRegistration;

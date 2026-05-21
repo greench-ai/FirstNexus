@@ -3,8 +3,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-build.sh"
-IMAGE_NAME="${NEXISCLAW_INSTALL_E2E_IMAGE:-NexisClaw-install-e2e:local}"
-INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://NexisClaw.bot/install.sh}"
+IMAGE_NAME="${NEXISCLAW_INSTALL_E2E_IMAGE:-FirstNexus-install-e2e:local}"
+INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://FirstNexus.bot/install.sh}"
 
 OPENAI_API_KEY="${OPENAI_API_KEY:-}"
 ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-}"

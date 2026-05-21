@@ -1,14 +1,14 @@
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 
 export type DoctorConfigMutationState = {
-  cfg: NexisClawConfig;
-  candidate: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  candidate: FirstNexusConfig;
   pendingChanges: boolean;
   fixHints: string[];
 };
 
 export type DoctorConfigMutationResult = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   changes: string[];
 };
 

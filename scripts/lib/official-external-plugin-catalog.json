@@ -1,28 +1,28 @@
 {
   "entries": [
     {
-      "name": "@NexisClaw/acpx",
-      "description": "NexisClaw ACP runtime backend",
+      "name": "@FirstNexus/acpx",
+      "description": "FirstNexus ACP runtime backend",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "acpx",
           "label": "ACPX Runtime"
         },
         "install": {
-          "npmSpec": "@NexisClaw/acpx",
+          "npmSpec": "@FirstNexus/acpx",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@NexisClaw/brave-plugin",
-      "description": "NexisClaw Brave plugin",
+      "name": "@FirstNexus/brave-plugin",
+      "description": "FirstNexus Brave plugin",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "brave",
           "label": "Brave"
@@ -37,134 +37,134 @@
             "envVars": ["BRAVE_API_KEY"],
             "placeholder": "BSA...",
             "signupUrl": "https://api-dashboard.search.brave.com/app/keys",
-            "docsUrl": "https://docs.NexisClaw.ai/tools/brave-search",
+            "docsUrl": "https://docs.FirstNexus.ai/tools/brave-search",
             "credentialPath": "plugins.entries.brave.config.webSearch.apiKey",
             "autoDetectOrder": 10
           }
         ],
         "install": {
-          "npmSpec": "@NexisClaw/brave-plugin",
+          "npmSpec": "@FirstNexus/brave-plugin",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/diagnostics-otel",
-      "description": "NexisClaw diagnostics OpenTelemetry exporter",
+      "name": "@FirstNexus/diagnostics-otel",
+      "description": "FirstNexus diagnostics OpenTelemetry exporter",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "diagnostics-otel",
           "label": "Diagnostics OpenTelemetry"
         },
         "install": {
-          "clawhubSpec": "clawhub:@NexisClaw/diagnostics-otel",
-          "npmSpec": "@NexisClaw/diagnostics-otel",
+          "clawhubSpec": "clawhub:@FirstNexus/diagnostics-otel",
+          "npmSpec": "@FirstNexus/diagnostics-otel",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@NexisClaw/diagnostics-prometheus",
-      "description": "NexisClaw diagnostics Prometheus exporter",
+      "name": "@FirstNexus/diagnostics-prometheus",
+      "description": "FirstNexus diagnostics Prometheus exporter",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "diagnostics-prometheus",
           "label": "Diagnostics Prometheus"
         },
         "install": {
-          "clawhubSpec": "clawhub:@NexisClaw/diagnostics-prometheus",
-          "npmSpec": "@NexisClaw/diagnostics-prometheus",
+          "clawhubSpec": "clawhub:@FirstNexus/diagnostics-prometheus",
+          "npmSpec": "@FirstNexus/diagnostics-prometheus",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@NexisClaw/diffs",
-      "description": "NexisClaw diff viewer plugin",
+      "name": "@FirstNexus/diffs",
+      "description": "FirstNexus diff viewer plugin",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "diffs",
           "label": "Diffs"
         },
         "install": {
-          "npmSpec": "@NexisClaw/diffs",
+          "npmSpec": "@FirstNexus/diffs",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.30"
         }
       }
     },
     {
-      "name": "@NexisClaw/google-meet",
-      "description": "NexisClaw Google Meet participant plugin",
+      "name": "@FirstNexus/google-meet",
+      "description": "FirstNexus Google Meet participant plugin",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "google-meet",
           "label": "Google Meet"
         },
         "install": {
-          "npmSpec": "@NexisClaw/google-meet",
+          "npmSpec": "@FirstNexus/google-meet",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.20"
         }
       }
     },
     {
-      "name": "@NexisClaw/lobster",
+      "name": "@FirstNexus/lobster",
       "description": "Lobster workflow tool plugin (typed pipelines + resumable approvals)",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "lobster",
           "label": "Lobster"
         },
         "install": {
-          "npmSpec": "@NexisClaw/lobster",
+          "npmSpec": "@FirstNexus/lobster",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.25"
         }
       }
     },
     {
-      "name": "@NexisClaw/memory-lancedb",
-      "description": "NexisClaw LanceDB-backed long-term memory plugin with auto-recall/capture",
+      "name": "@FirstNexus/memory-lancedb",
+      "description": "FirstNexus LanceDB-backed long-term memory plugin with auto-recall/capture",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "memory-lancedb",
           "label": "Memory LanceDB"
         },
         "install": {
-          "npmSpec": "@NexisClaw/memory-lancedb",
+          "npmSpec": "@FirstNexus/memory-lancedb",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }
       }
     },
     {
-      "name": "@NexisClaw/voice-call",
-      "description": "NexisClaw voice-call plugin",
+      "name": "@FirstNexus/voice-call",
+      "description": "FirstNexus voice-call plugin",
       "source": "official",
       "kind": "plugin",
-      "NexisClaw": {
+      "FirstNexus": {
         "plugin": {
           "id": "voice-call",
           "label": "Voice Call"
         },
         "install": {
-          "npmSpec": "@NexisClaw/voice-call",
+          "npmSpec": "@FirstNexus/voice-call",
           "defaultChoice": "npm",
           "minHostVersion": ">=2026.4.10"
         }

@@ -8,15 +8,15 @@ import {
 import { createSuiteTempRootTracker } from "./test-helpers/fs-fixtures.js";
 
 const runCommandWithTimeoutMock = vi.fn();
-const resolveNexisClawPackageRootSyncMock = vi.fn();
+const resolveFirstNexusPackageRootSyncMock = vi.fn();
 
 vi.mock("../process/exec.js", () => ({
   runCommandWithTimeout: (...args: unknown[]) => runCommandWithTimeoutMock(...args),
 }));
 
-vi.mock("../infra/NexisClaw-root.js", () => ({
-  resolveNexisClawPackageRootSync: (...args: unknown[]) =>
-    resolveNexisClawPackageRootSyncMock(...args),
+vi.mock("../infra/FirstNexus-root.js", () => ({
+  resolveFirstNexusPackageRootSync: (...args: unknown[]) =>
+    resolveFirstNexusPackageRootSyncMock(...args),
 }));
 
 vi.resetModules();
@@ -24,7 +24,7 @@ vi.resetModules();
 const { installPluginFromNpmPackArchive, installPluginFromNpmSpec, PLUGIN_INSTALL_ERROR_CODE } =
   await import("./install.js");
 
-const suiteTempRootTracker = createSuiteTempRootTracker("NexisClaw-plugin-install-npm-spec");
+const suiteTempRootTracker = createSuiteTempRootTracker("FirstNexus-plugin-install-npm-spec");
 
 function successfulSpawn(stdout = "") {
   return {
@@ -93,7 +93,7 @@ function writeInstalledNpmPlugin(params: {
     JSON.stringify({
       name: params.packageName,
       version: params.version,
-      NexisClaw: { extensions: ["./dist/index.js"] },
+      FirstNexus: { extensions: ["./dist/index.js"] },
       ...(params.dependency
         ? { dependencies: { [params.dependency.name]: params.dependency.version } }
         : {}),
@@ -102,7 +102,7 @@ function writeInstalledNpmPlugin(params: {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: params.pluginId ?? params.packageName,
       name: params.pluginId ?? params.packageName,
@@ -158,7 +158,7 @@ type MockNpmPackage = {
   versions?: string[];
   installedVersion?: string;
   installedIntegrity?: string;
-  materializesRootNexisClaw?: boolean;
+  materializesRootFirstNexus?: boolean;
   skipLockfileEntry?: boolean;
   packArchivePath?: string;
   packTarballName?: string;
@@ -182,8 +182,8 @@ function writeNpmRootPackageLock(params: {
       version: pkg.installedVersion ?? pkg.version,
       integrity: pkg.installedIntegrity ?? pkg.integrity ?? "sha512-plugin-test",
     };
-    if (pkg.materializesRootNexisClaw) {
-      lockPackages["node_modules/NexisClaw"] = {
+    if (pkg.materializesRootFirstNexus) {
+      lockPackages["node_modules/FirstNexus"] = {
         peer: true,
         version: "2026.5.3",
       };
@@ -196,7 +196,7 @@ function writeNpmRootPackageLock(params: {
   );
 }
 
-function prunePluginLocalNexisClawPeerLinks(npmRoot: string) {
+function prunePluginLocalFirstNexusPeerLinks(npmRoot: string) {
   const nodeModulesDir = path.join(npmRoot, "node_modules");
   if (!fs.existsSync(nodeModulesDir)) {
     return;
@@ -213,7 +213,7 @@ function prunePluginLocalNexisClawPeerLinks(npmRoot: string) {
           .map((scopedEntry) => path.join(entryPath, scopedEntry.name))
       : [entryPath];
     for (const packageDir of packageDirs) {
-      fs.rmSync(path.join(packageDir, "node_modules", "NexisClaw"), {
+      fs.rmSync(path.join(packageDir, "node_modules", "FirstNexus"), {
         recursive: true,
         force: true,
       });
@@ -237,7 +237,7 @@ function mockNpmViewAndInstall(params: {
   versions?: string[];
   installedVersion?: string;
   installedIntegrity?: string;
-  materializesRootNexisClaw?: boolean;
+  materializesRootFirstNexus?: boolean;
   skipLockfileEntry?: boolean;
 }) {
   mockNpmViewAndInstallMany([params]);
@@ -302,7 +302,7 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
           dependencies?: Record<string, string>;
         };
         const installedPackages: MockNpmPackage[] = [];
-        prunePluginLocalNexisClawPeerLinks(npmRoot);
+        prunePluginLocalFirstNexusPeerLinks(npmRoot);
         for (const packageName of Object.keys(manifest.dependencies ?? {})) {
           const pkg = packagesByName.get(packageName);
           if (!pkg) {
@@ -324,12 +324,12 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
             ...pkg,
             version: pkg.installedVersion ?? pkg.version,
           });
-          if (pkg.materializesRootNexisClaw) {
-            const NexisClawRoot = path.join(npmRoot, "node_modules", "NexisClaw");
-            fs.mkdirSync(NexisClawRoot, { recursive: true });
+          if (pkg.materializesRootFirstNexus) {
+            const FirstNexusRoot = path.join(npmRoot, "node_modules", "FirstNexus");
+            fs.mkdirSync(FirstNexusRoot, { recursive: true });
             fs.writeFileSync(
-              path.join(NexisClawRoot, "package.json"),
-              JSON.stringify({ name: "NexisClaw", version: "2026.5.3" }),
+              path.join(FirstNexusRoot, "package.json"),
+              JSON.stringify({ name: "FirstNexus", version: "2026.5.3" }),
               "utf8",
             );
           }
@@ -344,12 +344,12 @@ function mockNpmViewAndInstallMany(packages: MockNpmPackage[]) {
       }
       if (argv[0] === "npm" && argv[1] === "uninstall") {
         const packageName = argv.at(-1);
-        if (packageName === "NexisClaw") {
+        if (packageName === "FirstNexus") {
           const npmRoot = options?.cwd;
           if (!npmRoot) {
             throw new Error(`unexpected npm uninstall command: ${argv.join(" ")}`);
           }
-          fs.rmSync(path.join(npmRoot, "node_modules", "NexisClaw"), {
+          fs.rmSync(path.join(npmRoot, "node_modules", "FirstNexus"), {
             recursive: true,
             force: true,
           });
@@ -376,14 +376,14 @@ afterAll(() => {
 
 beforeEach(() => {
   runCommandWithTimeoutMock.mockReset();
-  resolveNexisClawPackageRootSyncMock.mockReset();
+  resolveFirstNexusPackageRootSyncMock.mockReset();
   const hostRoot = suiteTempRootTracker.makeTempDir();
   fs.writeFileSync(
     path.join(hostRoot, "package.json"),
-    `${JSON.stringify({ name: "NexisClaw", version: "0.0.0-test" }, null, 2)}\n`,
+    `${JSON.stringify({ name: "FirstNexus", version: "0.0.0-test" }, null, 2)}\n`,
     "utf8",
   );
-  resolveNexisClawPackageRootSyncMock.mockReturnValue(hostRoot);
+  resolveFirstNexusPackageRootSyncMock.mockReturnValue(hostRoot);
   vi.unstubAllEnvs();
 });
 
@@ -391,12 +391,12 @@ describe("installPluginFromNpmSpec", () => {
   it("installs npm pack archives through the managed npm root", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const archivePath = path.join(stateDir, "NexisClaw-pack-demo-1.2.3.tgz");
+    const archivePath = path.join(stateDir, "FirstNexus-pack-demo-1.2.3.tgz");
     fs.writeFileSync(archivePath, "fixture pack contents", "utf8");
 
     mockNpmViewAndInstallMany([
       {
-        packageName: "@NexisClaw/pack-demo",
+        packageName: "@FirstNexus/pack-demo",
         version: "1.2.3",
         pluginId: "pack-demo",
         npmRoot,
@@ -405,8 +405,8 @@ describe("installPluginFromNpmSpec", () => {
         packArchivePath: archivePath,
       },
       {
-        spec: "@NexisClaw/voice-call@0.0.1",
-        packageName: "@NexisClaw/voice-call",
+        spec: "@FirstNexus/voice-call@0.0.1",
+        packageName: "@FirstNexus/voice-call",
         version: "0.0.1",
         pluginId: "voice-call",
         npmRoot,
@@ -424,10 +424,10 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(result.pluginId).toBe("pack-demo");
-    expect(result.targetDir).toBe(path.join(npmRoot, "node_modules", "@NexisClaw/pack-demo"));
-    expect(result.npmResolution?.resolvedSpec).toBe("@NexisClaw/pack-demo@1.2.3");
+    expect(result.targetDir).toBe(path.join(npmRoot, "node_modules", "@FirstNexus/pack-demo"));
+    expect(result.npmResolution?.resolvedSpec).toBe("@FirstNexus/pack-demo@1.2.3");
     expect(result.npmResolution?.integrity).toBe("sha512-pack-demo");
-    expect(result.npmTarballName).toBe("NexisClaw-pack-demo-1.2.3.tgz");
+    expect(result.npmTarballName).toBe("FirstNexus-pack-demo-1.2.3.tgz");
     expectNpmInstallIntoRoot({
       calls: runCommandWithTimeoutMock.mock.calls,
       npmRoot,
@@ -435,8 +435,8 @@ describe("installPluginFromNpmSpec", () => {
     const managedManifest = JSON.parse(
       await fs.promises.readFile(path.join(npmRoot, "package.json"), "utf8"),
     ) as { dependencies?: Record<string, string> };
-    const dependencySpec = managedManifest.dependencies?.["@NexisClaw/pack-demo"];
-    expect(dependencySpec).toMatch(/^file:\.\/_NexisClaw-pack-archives\/.+\.tgz$/);
+    const dependencySpec = managedManifest.dependencies?.["@FirstNexus/pack-demo"];
+    expect(dependencySpec).toMatch(/^file:\.\/_FirstNexus-pack-archives\/.+\.tgz$/);
     expect(dependencySpec).not.toContain(archivePath);
     const stagedArchivePath = dependencySpec
       ? resolveManagedFileDependency(npmRoot, dependencySpec)
@@ -450,7 +450,7 @@ describe("installPluginFromNpmSpec", () => {
 
     fs.unlinkSync(archivePath);
     const unrelatedResult = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call@0.0.1",
+      spec: "@FirstNexus/voice-call@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -489,17 +489,17 @@ describe("installPluginFromNpmSpec", () => {
     expect(result.error).toContain("unsupported npm pack package name");
     expect(fs.existsSync(path.join(victimDir, "keep.txt"))).toBe(true);
     expect(fs.existsSync(path.join(npmRoot, "package.json"))).toBe(false);
-    expect(fs.existsSync(path.join(npmRoot, "_NexisClaw-pack-archives"))).toBe(false);
+    expect(fs.existsSync(path.join(npmRoot, "_FirstNexus-pack-archives"))).toBe(false);
     expect(runCommandWithTimeoutMock.mock.calls).toHaveLength(1);
   });
 
-  it("installs npm plugins into .NexisClaw/npm", async () => {
+  it("installs npm plugins into .FirstNexus/npm", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
 
     mockNpmViewAndInstall({
-      spec: "@NexisClaw/voice-call@0.0.1",
-      packageName: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call@0.0.1",
+      packageName: "@FirstNexus/voice-call",
       version: "0.0.1",
       pluginId: "voice-call",
       npmRoot,
@@ -507,7 +507,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call@0.0.1",
+      spec: "@FirstNexus/voice-call@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -517,8 +517,8 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(result.pluginId).toBe("voice-call");
-    expect(result.targetDir).toBe(path.join(npmRoot, "node_modules", "@NexisClaw/voice-call"));
-    expect(result.npmResolution?.resolvedSpec).toBe("@NexisClaw/voice-call@0.0.1");
+    expect(result.targetDir).toBe(path.join(npmRoot, "node_modules", "@FirstNexus/voice-call"));
+    expect(result.npmResolution?.resolvedSpec).toBe("@FirstNexus/voice-call@0.0.1");
     expect(result.npmResolution?.integrity).toBe("sha512-plugin-test");
     expect(
       fs.existsSync(path.join(result.targetDir, "node_modules", "is-number", "package.json")),
@@ -665,7 +665,7 @@ describe("installPluginFromNpmSpec", () => {
   });
 
   it.runIf(process.platform !== "win32")(
-    "does not let managed NexisClaw peer links poison later npm installs",
+    "does not let managed FirstNexus peer links poison later npm installs",
     async () => {
       const stateDir = suiteTempRootTracker.makeTempDir();
       const npmRoot = path.join(stateDir, "npm");
@@ -677,7 +677,7 @@ describe("installPluginFromNpmSpec", () => {
           version: "1.0.0",
           pluginId: "peer-plugin",
           npmRoot,
-          peerDependencies: { NexisClaw: "^2026.0.0" },
+          peerDependencies: { FirstNexus: "^2026.0.0" },
         },
         {
           spec: "next-plugin@1.0.0",
@@ -696,7 +696,9 @@ describe("installPluginFromNpmSpec", () => {
       expect(first.ok).toBe(true);
       expect(
         fs
-          .lstatSync(path.join(npmRoot, "node_modules", "peer-plugin", "node_modules", "NexisClaw"))
+          .lstatSync(
+            path.join(npmRoot, "node_modules", "peer-plugin", "node_modules", "FirstNexus"),
+          )
           .isSymbolicLink(),
       ).toBe(true);
 
@@ -708,11 +710,13 @@ describe("installPluginFromNpmSpec", () => {
 
       expect(second.ok).toBe(true);
       if (!second.ok) {
-        expect(second.error).not.toContain("peer-plugin/node_modules/NexisClaw");
+        expect(second.error).not.toContain("peer-plugin/node_modules/FirstNexus");
       }
       expect(
         fs
-          .lstatSync(path.join(npmRoot, "node_modules", "peer-plugin", "node_modules", "NexisClaw"))
+          .lstatSync(
+            path.join(npmRoot, "node_modules", "peer-plugin", "node_modules", "FirstNexus"),
+          )
           .isSymbolicLink(),
       ).toBe(true);
     },
@@ -732,7 +736,7 @@ describe("installPluginFromNpmSpec", () => {
           version: "1.0.0",
           pluginId: "peer-plugin",
           npmRoot,
-          peerDependencies: { NexisClaw: "^2026.0.0" },
+          peerDependencies: { FirstNexus: "^2026.0.0" },
         },
         {
           spec: "next-plugin@1.0.0",
@@ -768,7 +772,9 @@ describe("installPluginFromNpmSpec", () => {
       expect(second.ok).toBe(true);
       expect(
         warnings.some((warning) =>
-          warning.includes(`Skipping NexisClaw peerDependency link because ${staleNodeModulesPath}`),
+          warning.includes(
+            `Skipping FirstNexus peerDependency link because ${staleNodeModulesPath}`,
+          ),
         ),
       ).toBe(true);
       expect(fs.existsSync(path.join(npmRoot, "node_modules", "next-plugin"))).toBe(true);
@@ -776,23 +782,23 @@ describe("installPluginFromNpmSpec", () => {
     },
   );
 
-  it("rejects managed npm plugins when their NexisClaw peer link cannot be repaired", async () => {
+  it("rejects managed npm plugins when their FirstNexus peer link cannot be repaired", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
     const warnings: string[] = [];
 
-    resolveNexisClawPackageRootSyncMock.mockReturnValue(null);
+    resolveFirstNexusPackageRootSyncMock.mockReturnValue(null);
     mockNpmViewAndInstall({
-      spec: "@NexisClaw/codex@2026.5.7",
-      packageName: "@NexisClaw/codex",
+      spec: "@FirstNexus/codex@2026.5.7",
+      packageName: "@FirstNexus/codex",
       version: "2026.5.7",
-      pluginId: "@NexisClaw/codex",
+      pluginId: "@FirstNexus/codex",
       npmRoot,
-      peerDependencies: { NexisClaw: ">=2026.5.7" },
+      peerDependencies: { FirstNexus: ">=2026.5.7" },
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/codex@2026.5.7",
+      spec: "@FirstNexus/codex@2026.5.7",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: (message) => warnings.push(message) },
     });
@@ -801,20 +807,20 @@ describe("installPluginFromNpmSpec", () => {
     if (result.ok) {
       return;
     }
-    expect(result.error).toContain("@NexisClaw/codex");
-    expect(result.error).toContain("plugin-local node_modules/NexisClaw link");
+    expect(result.error).toContain("@FirstNexus/codex");
+    expect(result.error).toContain("plugin-local node_modules/FirstNexus link");
     expect(
-      warnings.some((warning) => warning.includes("Could not locate NexisClaw package root")),
+      warnings.some((warning) => warning.includes("Could not locate FirstNexus package root")),
     ).toBe(true);
-    expect(fs.existsSync(path.join(npmRoot, "node_modules", "@NexisClaw", "codex"))).toBe(false);
+    expect(fs.existsSync(path.join(npmRoot, "node_modules", "@FirstNexus", "codex"))).toBe(false);
     const managedManifest = JSON.parse(
       fs.readFileSync(path.join(npmRoot, "package.json"), "utf8"),
     ) as { dependencies?: Record<string, string> };
-    expect(managedManifest.dependencies?.["@NexisClaw/codex"]).toBeUndefined();
+    expect(managedManifest.dependencies?.["@FirstNexus/codex"]).toBeUndefined();
   });
 
   it.runIf(process.platform !== "win32")(
-    "repairs root NexisClaw materialized by npm peer handling",
+    "repairs root FirstNexus materialized by npm peer handling",
     async () => {
       const stateDir = suiteTempRootTracker.makeTempDir();
       const npmRoot = path.join(stateDir, "npm");
@@ -825,8 +831,8 @@ describe("installPluginFromNpmSpec", () => {
         version: "1.0.0",
         pluginId: "required-peer-plugin",
         npmRoot,
-        peerDependencies: { NexisClaw: "^2026.0.0" },
-        materializesRootNexisClaw: true,
+        peerDependencies: { FirstNexus: "^2026.0.0" },
+        materializesRootFirstNexus: true,
       });
 
       const result = await installPluginFromNpmSpec({
@@ -836,34 +842,40 @@ describe("installPluginFromNpmSpec", () => {
       });
 
       expect(result.ok).toBe(true);
-      expect(fs.existsSync(path.join(npmRoot, "node_modules", "NexisClaw"))).toBe(false);
+      expect(fs.existsSync(path.join(npmRoot, "node_modules", "FirstNexus"))).toBe(false);
       const lockfile = JSON.parse(
         fs.readFileSync(path.join(npmRoot, "package-lock.json"), "utf8"),
       ) as {
         packages?: Record<string, unknown>;
       };
-      expect(lockfile.packages?.["node_modules/NexisClaw"]).toBeUndefined();
+      expect(lockfile.packages?.["node_modules/FirstNexus"]).toBeUndefined();
       expect(
         fs
           .lstatSync(
-            path.join(npmRoot, "node_modules", "required-peer-plugin", "node_modules", "NexisClaw"),
+            path.join(
+              npmRoot,
+              "node_modules",
+              "required-peer-plugin",
+              "node_modules",
+              "FirstNexus",
+            ),
           )
           .isSymbolicLink(),
       ).toBe(true);
     },
   );
 
-  it("repairs stale managed NexisClaw root packages before npm plugin installs", async () => {
+  it("repairs stale managed FirstNexus root packages before npm plugin installs", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    fs.mkdirSync(path.join(npmRoot, "node_modules", "NexisClaw"), { recursive: true });
+    fs.mkdirSync(path.join(npmRoot, "node_modules", "FirstNexus"), { recursive: true });
     fs.writeFileSync(
       path.join(npmRoot, "package.json"),
       JSON.stringify(
         {
           private: true,
           dependencies: {
-            NexisClaw: "2026.5.4",
+            FirstNexus: "2026.5.4",
           },
         },
         null,
@@ -879,16 +891,16 @@ describe("installPluginFromNpmSpec", () => {
           packages: {
             "": {
               dependencies: {
-                NexisClaw: "2026.5.4",
+                FirstNexus: "2026.5.4",
               },
             },
-            "node_modules/NexisClaw": {
+            "node_modules/FirstNexus": {
               version: "2026.5.4",
-              resolved: "https://registry.npmjs.org/NexisClaw/-/NexisClaw-2026.5.4.tgz",
+              resolved: "https://registry.npmjs.org/FirstNexus/-/FirstNexus-2026.5.4.tgz",
             },
           },
           dependencies: {
-            NexisClaw: {
+            FirstNexus: {
               version: "2026.5.4",
             },
           },
@@ -899,26 +911,26 @@ describe("installPluginFromNpmSpec", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(npmRoot, "node_modules", "NexisClaw", "package.json"),
+      path.join(npmRoot, "node_modules", "FirstNexus", "package.json"),
       JSON.stringify({
-        name: "NexisClaw",
+        name: "FirstNexus",
         version: "2026.5.4",
       }),
       "utf-8",
     );
 
     mockNpmViewAndInstall({
-      spec: "@NexisClaw/discord@beta",
-      packageName: "@NexisClaw/discord",
+      spec: "@FirstNexus/discord@beta",
+      packageName: "@FirstNexus/discord",
       version: "2026.5.5-beta.1",
       pluginId: "discord",
       npmRoot,
-      peerDependencies: { NexisClaw: ">=2026.5.5-beta.1" },
+      peerDependencies: { FirstNexus: ">=2026.5.5-beta.1" },
       expectedDependencySpec: "2026.5.5-beta.1",
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/discord@beta",
+      spec: "@FirstNexus/discord@beta",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -927,16 +939,16 @@ describe("installPluginFromNpmSpec", () => {
     const manifest = JSON.parse(fs.readFileSync(path.join(npmRoot, "package.json"), "utf8")) as {
       dependencies?: Record<string, string>;
     };
-    expect(manifest.dependencies).not.toHaveProperty("NexisClaw");
-    expect(manifest.dependencies?.["@NexisClaw/discord"]).toBe("2026.5.5-beta.1");
+    expect(manifest.dependencies).not.toHaveProperty("FirstNexus");
+    expect(manifest.dependencies?.["@FirstNexus/discord"]).toBe("2026.5.5-beta.1");
     const lockfile = JSON.parse(
       fs.readFileSync(path.join(npmRoot, "package-lock.json"), "utf8"),
     ) as {
       packages?: Record<string, unknown>;
       dependencies?: Record<string, unknown>;
     };
-    expect(lockfile.packages?.["node_modules/NexisClaw"]).toBeUndefined();
-    expect(lockfile.dependencies?.NexisClaw).toBeUndefined();
+    expect(lockfile.packages?.["node_modules/FirstNexus"]).toBeUndefined();
+    expect(lockfile.dependencies?.FirstNexus).toBeUndefined();
   });
 
   it("allows npm-spec installs with dangerous code patterns when forced unsafe install is set", async () => {
@@ -978,23 +990,23 @@ describe("installPluginFromNpmSpec", () => {
   it("rolls back the managed npm root when npm install fails", async () => {
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
     const peerPluginDir = path.join(npmRoot, "node_modules", "peer-plugin");
-    const peerLink = path.join(peerPluginDir, "node_modules", "NexisClaw");
+    const peerLink = path.join(peerPluginDir, "node_modules", "FirstNexus");
     fs.mkdirSync(path.dirname(peerLink), { recursive: true });
     fs.writeFileSync(
       path.join(peerPluginDir, "package.json"),
       JSON.stringify({
         name: "peer-plugin",
         version: "1.0.0",
-        peerDependencies: { NexisClaw: ">=2026.0.0" },
+        peerDependencies: { FirstNexus: ">=2026.0.0" },
       }),
       "utf8",
     );
     fs.symlinkSync(suiteTempRootTracker.makeTempDir(), peerLink, "junction");
     runCommandWithTimeoutMock.mockImplementation(async (argv: string[]) => {
-      if (JSON.stringify(argv) === JSON.stringify(npmViewArgv("@NexisClaw/voice-call@0.0.1"))) {
+      if (JSON.stringify(argv) === JSON.stringify(npmViewArgv("@FirstNexus/voice-call@0.0.1"))) {
         return successfulSpawn(
           JSON.stringify({
-            name: "@NexisClaw/voice-call",
+            name: "@FirstNexus/voice-call",
             version: "0.0.1",
             dist: {
               integrity: "sha512-plugin-test",
@@ -1016,7 +1028,7 @@ describe("installPluginFromNpmSpec", () => {
       }
       if (argv[0] === "npm" && argv[1] === "uninstall") {
         if (!argv.includes("--legacy-peer-deps")) {
-          fs.mkdirSync(path.join(npmRoot, "node_modules", "NexisClaw"), { recursive: true });
+          fs.mkdirSync(path.join(npmRoot, "node_modules", "FirstNexus"), { recursive: true });
         }
         return successfulSpawn("");
       }
@@ -1024,7 +1036,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call@0.0.1",
+      spec: "@FirstNexus/voice-call@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -1039,7 +1051,7 @@ describe("installPluginFromNpmSpec", () => {
     expect(manifest.dependencies).toEqual({});
     expect(fs.lstatSync(peerLink).isSymbolicLink()).toBe(true);
     await expect(
-      fs.promises.access(path.join(npmRoot, "node_modules", "NexisClaw")),
+      fs.promises.access(path.join(npmRoot, "node_modules", "FirstNexus")),
     ).rejects.toHaveProperty("code", "ENOENT");
   });
 
@@ -1070,22 +1082,22 @@ describe("installPluginFromNpmSpec", () => {
 
   const officialLaunchPluginCases = [
     {
-      spec: "@NexisClaw/acpx",
+      spec: "@FirstNexus/acpx",
       pluginId: "acpx",
       indexJs: `import { spawn } from "node:child_process";\nspawn("codex-acp", []);`,
     },
     {
-      spec: "@NexisClaw/codex",
+      spec: "@FirstNexus/codex",
       pluginId: "codex",
       indexJs: `import { spawn } from "node:child_process";\nspawn("codex", ["app-server"]);`,
     },
     {
-      spec: "@NexisClaw/google-meet",
+      spec: "@FirstNexus/google-meet",
       pluginId: "google-meet",
       indexJs: `import { spawnSync } from "node:child_process";\nspawnSync("node", ["bridge.js"]);`,
     },
     {
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       pluginId: "voice-call",
       indexJs: `import { spawn } from "node:child_process";\nspawn("ngrok", ["http", "3000"]);`,
     },
@@ -1122,7 +1134,7 @@ describe("installPluginFromNpmSpec", () => {
       expect(fs.existsSync(path.join(npmRoot, "node_modules", spec))).toBe(false);
       expect(
         warnings.some((warning) =>
-          warning.includes("allowed because it is an official NexisClaw package"),
+          warning.includes("allowed because it is an official FirstNexus package"),
         ),
       ).toBe(false);
     },
@@ -1178,17 +1190,17 @@ describe("installPluginFromNpmSpec", () => {
   it("rejects duplicate npm installs unless update mode is requested", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const installRoot = path.join(npmRoot, "node_modules", "@NexisClaw", "voice-call");
+    const installRoot = path.join(npmRoot, "node_modules", "@FirstNexus", "voice-call");
     fs.mkdirSync(installRoot, { recursive: true });
     mockNpmViewMetadataResult(runCommandWithTimeoutMock, {
-      name: "@NexisClaw/voice-call",
+      name: "@FirstNexus/voice-call",
       version: "0.0.1",
       integrity: "sha512-plugin-test",
       shasum: "pluginshasum",
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call@0.0.1",
+      spec: "@FirstNexus/voice-call@0.0.1",
       npmDir: npmRoot,
       mode: "install",
     });
@@ -1208,19 +1220,19 @@ describe("installPluginFromNpmSpec", () => {
   it("allows duplicate npm installs in update mode", async () => {
     const stateDir = suiteTempRootTracker.makeTempDir();
     const npmRoot = path.join(stateDir, "npm");
-    const installRoot = path.join(npmRoot, "node_modules", "@NexisClaw", "voice-call");
+    const installRoot = path.join(npmRoot, "node_modules", "@FirstNexus", "voice-call");
     fs.mkdirSync(installRoot, { recursive: true });
     fs.writeFileSync(path.join(installRoot, "old.txt"), "old", "utf-8");
     mockNpmViewAndInstall({
-      spec: "@NexisClaw/voice-call@0.0.2",
-      packageName: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call@0.0.2",
+      packageName: "@FirstNexus/voice-call",
       version: "0.0.2",
       pluginId: "voice-call",
       npmRoot,
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call@0.0.2",
+      spec: "@FirstNexus/voice-call@0.0.2",
       npmDir: npmRoot,
       mode: "update",
       logger: { info: () => {}, warn: () => {} },
@@ -1244,15 +1256,15 @@ describe("installPluginFromNpmSpec", () => {
 
     mockNpmViewAndInstallMany([
       {
-        spec: "@NexisClaw/voice-call@0.0.1",
-        packageName: "@NexisClaw/voice-call",
+        spec: "@FirstNexus/voice-call@0.0.1",
+        packageName: "@FirstNexus/voice-call",
         version: "0.0.1",
         pluginId: "voice-call",
         npmRoot,
       },
       {
-        spec: "@NexisClaw/whatsapp@0.0.1",
-        packageName: "@NexisClaw/whatsapp",
+        spec: "@FirstNexus/whatsapp@0.0.1",
+        packageName: "@FirstNexus/whatsapp",
         version: "0.0.1",
         pluginId: "whatsapp",
         npmRoot,
@@ -1260,7 +1272,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const result1 = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call@0.0.1",
+      spec: "@FirstNexus/voice-call@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -1268,7 +1280,7 @@ describe("installPluginFromNpmSpec", () => {
 
     runCommandWithTimeoutMock.mockClear();
     const result2 = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/whatsapp@0.0.1",
+      spec: "@FirstNexus/whatsapp@0.0.1",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -1278,13 +1290,15 @@ describe("installPluginFromNpmSpec", () => {
       calls: runCommandWithTimeoutMock.mock.calls,
       npmRoot,
     });
-    expect(fs.existsSync(path.join(npmRoot, "node_modules", "@NexisClaw", "voice-call"))).toBe(true);
-    expect(fs.existsSync(path.join(npmRoot, "node_modules", "@NexisClaw", "whatsapp"))).toBe(true);
+    expect(fs.existsSync(path.join(npmRoot, "node_modules", "@FirstNexus", "voice-call"))).toBe(
+      true,
+    );
+    expect(fs.existsSync(path.join(npmRoot, "node_modules", "@FirstNexus", "whatsapp"))).toBe(true);
   });
 
   it("aborts when integrity drift callback rejects the fetched artifact", async () => {
     mockNpmViewMetadataResult(runCommandWithTimeoutMock, {
-      name: "@NexisClaw/voice-call",
+      name: "@FirstNexus/voice-call",
       version: "0.0.1",
       integrity: "sha512-new",
       shasum: "newshasum",
@@ -1292,7 +1306,7 @@ describe("installPluginFromNpmSpec", () => {
 
     const onIntegrityDrift = vi.fn(async () => false);
     const result = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call@0.0.1",
+      spec: "@FirstNexus/voice-call@0.0.1",
       expectedIntegrity: "sha512-old",
       onIntegrityDrift,
     });
@@ -1315,7 +1329,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const result = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/not-found",
+      spec: "@FirstNexus/not-found",
       logger: { info: () => {}, warn: () => {} },
     });
     expect(result.ok).toBe(false);
@@ -1326,20 +1340,20 @@ describe("installPluginFromNpmSpec", () => {
 
   it("handles prerelease npm specs correctly", async () => {
     mockNpmViewMetadataResult(runCommandWithTimeoutMock, {
-      name: "@NexisClaw/voice-call",
+      name: "@FirstNexus/voice-call",
       version: "0.0.2-beta.1",
       integrity: "sha512-beta",
       shasum: "betashasum",
     });
 
     const rejected = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       logger: { info: () => {}, warn: () => {} },
     });
     expect(rejected.ok).toBe(false);
     if (!rejected.ok) {
       expect(rejected.error).toContain("prerelease version 0.0.2-beta.1");
-      expect(rejected.error).toContain('"@NexisClaw/voice-call@beta"');
+      expect(rejected.error).toContain('"@FirstNexus/voice-call@beta"');
     }
 
     runCommandWithTimeoutMock.mockReset();
@@ -1347,15 +1361,15 @@ describe("installPluginFromNpmSpec", () => {
     const warnings: string[] = [];
     mockNpmViewAndInstallMany([
       {
-        spec: "@NexisClaw/voice-call",
-        packageName: "@NexisClaw/voice-call",
+        spec: "@FirstNexus/voice-call",
+        packageName: "@FirstNexus/voice-call",
         version: "0.0.2-beta.1",
         npmRoot: officialNpmRoot,
         versions: ["0.0.1", "0.0.2-beta.1"],
       },
       {
-        spec: "@NexisClaw/voice-call@0.0.1",
-        packageName: "@NexisClaw/voice-call",
+        spec: "@FirstNexus/voice-call@0.0.1",
+        packageName: "@FirstNexus/voice-call",
         version: "0.0.1",
         pluginId: "voice-call",
         npmRoot: officialNpmRoot,
@@ -1364,7 +1378,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const officialFallback = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       npmDir: officialNpmRoot,
       expectedPluginId: "voice-call",
       trustedSourceLinkedOfficialInstall: true,
@@ -1378,16 +1392,16 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(officialFallback.npmResolution?.version).toBe("0.0.1");
-    expect(officialFallback.npmResolution?.resolvedSpec).toBe("@NexisClaw/voice-call@0.0.1");
-    expect(warnings.join("\n")).toContain("falling back to stable @NexisClaw/voice-call@0.0.1");
+    expect(officialFallback.npmResolution?.resolvedSpec).toBe("@FirstNexus/voice-call@0.0.1");
+    expect(warnings.join("\n")).toContain("falling back to stable @FirstNexus/voice-call@0.0.1");
 
     runCommandWithTimeoutMock.mockReset();
     const correctionNpmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
     const correctionWarnings: string[] = [];
     mockNpmViewAndInstallMany([
       {
-        spec: "@NexisClaw/voice-call",
-        packageName: "@NexisClaw/voice-call",
+        spec: "@FirstNexus/voice-call",
+        packageName: "@FirstNexus/voice-call",
         version: "2026.5.3-1",
         pluginId: "voice-call",
         npmRoot: correctionNpmRoot,
@@ -1397,7 +1411,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const stableCorrection = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       npmDir: correctionNpmRoot,
       expectedPluginId: "voice-call",
       trustedSourceLinkedOfficialInstall: true,
@@ -1411,7 +1425,7 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(stableCorrection.npmResolution?.version).toBe("2026.5.3-1");
-    expect(stableCorrection.npmResolution?.resolvedSpec).toBe("@NexisClaw/voice-call@2026.5.3-1");
+    expect(stableCorrection.npmResolution?.resolvedSpec).toBe("@FirstNexus/voice-call@2026.5.3-1");
     expect(correctionWarnings).toStrictEqual([]);
 
     runCommandWithTimeoutMock.mockReset();
@@ -1419,16 +1433,16 @@ describe("installPluginFromNpmSpec", () => {
     const prereleaseOnlyWarnings: string[] = [];
     mockNpmViewAndInstallMany([
       {
-        spec: "@NexisClaw/voice-call",
-        packageName: "@NexisClaw/voice-call",
+        spec: "@FirstNexus/voice-call",
+        packageName: "@FirstNexus/voice-call",
         version: "0.0.1-beta.1",
         pluginId: "voice-call",
         npmRoot: prereleaseOnlyNpmRoot,
         versions: ["0.0.1-beta.1", "0.0.2-beta.1"],
       },
       {
-        spec: "@NexisClaw/voice-call@0.0.2-beta.1",
-        packageName: "@NexisClaw/voice-call",
+        spec: "@FirstNexus/voice-call@0.0.2-beta.1",
+        packageName: "@FirstNexus/voice-call",
         version: "0.0.2-beta.1",
         pluginId: "voice-call",
         npmRoot: prereleaseOnlyNpmRoot,
@@ -1437,7 +1451,7 @@ describe("installPluginFromNpmSpec", () => {
     ]);
 
     const prereleaseOnly = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call",
       npmDir: prereleaseOnlyNpmRoot,
       expectedPluginId: "voice-call",
       trustedSourceLinkedOfficialInstall: true,
@@ -1451,17 +1465,17 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(prereleaseOnly.npmResolution?.version).toBe("0.0.2-beta.1");
-    expect(prereleaseOnly.npmResolution?.resolvedSpec).toBe("@NexisClaw/voice-call@0.0.2-beta.1");
+    expect(prereleaseOnly.npmResolution?.resolvedSpec).toBe("@FirstNexus/voice-call@0.0.2-beta.1");
     expect(prereleaseOnlyWarnings.join("\n")).toContain("has no stable npm versions yet");
     expect(prereleaseOnlyWarnings.join("\n")).toContain(
-      "using newest prerelease @NexisClaw/voice-call@0.0.2-beta.1",
+      "using newest prerelease @FirstNexus/voice-call@0.0.2-beta.1",
     );
 
     runCommandWithTimeoutMock.mockReset();
     const npmRoot = path.join(suiteTempRootTracker.makeTempDir(), "npm");
     mockNpmViewAndInstall({
-      spec: "@NexisClaw/voice-call@beta",
-      packageName: "@NexisClaw/voice-call",
+      spec: "@FirstNexus/voice-call@beta",
+      packageName: "@FirstNexus/voice-call",
       version: "0.0.2-beta.1",
       pluginId: "voice-call",
       integrity: "sha512-beta",
@@ -1470,7 +1484,7 @@ describe("installPluginFromNpmSpec", () => {
     });
 
     const accepted = await installPluginFromNpmSpec({
-      spec: "@NexisClaw/voice-call@beta",
+      spec: "@FirstNexus/voice-call@beta",
       npmDir: npmRoot,
       logger: { info: () => {}, warn: () => {} },
     });
@@ -1479,7 +1493,7 @@ describe("installPluginFromNpmSpec", () => {
       return;
     }
     expect(accepted.npmResolution?.version).toBe("0.0.2-beta.1");
-    expect(accepted.npmResolution?.resolvedSpec).toBe("@NexisClaw/voice-call@0.0.2-beta.1");
+    expect(accepted.npmResolution?.resolvedSpec).toBe("@FirstNexus/voice-call@0.0.2-beta.1");
     expectNpmInstallIntoRoot({
       calls: runCommandWithTimeoutMock.mock.calls,
       npmRoot,

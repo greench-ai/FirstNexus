@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import type { ImageGenerationProviderPlugin } from "../plugins/types.js";
 
 const resolvePluginCapabilityProvidersMock = vi.hoisted(() =>
@@ -49,7 +49,7 @@ describe("image-generation provider registry", () => {
 
   it("delegates provider resolution to the capability provider boundary", async () => {
     const { listImageGenerationProviders } = await loadRegistry();
-    const cfg = {} as NexisClawConfig;
+    const cfg = {} as FirstNexusConfig;
 
     expect(listImageGenerationProviders(cfg)).toStrictEqual([]);
     expect(resolvePluginCapabilityProvidersMock).toHaveBeenCalledWith({

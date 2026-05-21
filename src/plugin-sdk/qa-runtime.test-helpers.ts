@@ -60,10 +60,10 @@ export async function expectPrivateQaLabRuntimeSurfaceLoad(params: {
   tempDirs: string[];
   importRuntime: () => Promise<QaRuntimeModule>;
   loadBundledPluginPublicSurfaceModuleSync: SurfaceLoaderMock;
-  resolveNexisClawPackageRootSync: SurfaceLoaderMock;
+  resolveFirstNexusPackageRootSync: SurfaceLoaderMock;
 }) {
-  const sourceRoot = makePrivateQaSourceRoot(params.tempDirs, "NexisClaw-qa-runtime-root-");
-  params.resolveNexisClawPackageRootSync.mockReturnValue(sourceRoot);
+  const sourceRoot = makePrivateQaSourceRoot(params.tempDirs, "FirstNexus-qa-runtime-root-");
+  params.resolveFirstNexusPackageRootSync.mockReturnValue(sourceRoot);
 
   const runtimeSurface = makeQaRuntimeSurface();
   params.loadBundledPluginPublicSurfaceModuleSync.mockReturnValue(runtimeSurface);

@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   createProviderOperationDeadline,
@@ -8,11 +8,11 @@ import {
   resolveProviderOperationTimeoutMs,
   resolveProviderHttpRequestConfig,
   waitProviderOperationPollInterval,
-} from "NexisClaw/plugin-sdk/provider-http";
+} from "FirstNexus/plugin-sdk/provider-http";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export const DEFAULT_VYDRA_BASE_URL = "https://www.vydra.ai/api/v1";
 export const DEFAULT_VYDRA_IMAGE_MODEL = "grok-imagine";
@@ -88,7 +88,7 @@ function resolveVydraBaseUrlFromConfig(cfg: unknown): string {
 }
 
 export async function resolveVydraRequestContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentDir?: string;
   authStore?: VydraAuthStore;
   capability: "image" | "video";

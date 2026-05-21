@@ -11,8 +11,8 @@ OpenProse VM skill pack with a /prose slash command.
 
 ## Distribution
 
-- Package: `@NexisClaw/open-prose`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/open-prose`
+- Install route: included in FirstNexus
 
 ## Surface
 

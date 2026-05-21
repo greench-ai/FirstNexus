@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   clearAgentHarnesses,
   disposeRegisteredAgentHarnesses,
@@ -50,18 +50,18 @@ function makeHarness(
   };
 }
 
-function providerRuntimeConfig(provider: string, runtime: string): NexisClawConfig {
+function providerRuntimeConfig(provider: string, runtime: string): FirstNexusConfig {
   return {
     models: {
       providers: {
         [provider]: {
-          baseUrl: "https://api.NexisClaw.test/v1",
+          baseUrl: "https://api.FirstNexus.test/v1",
           agentRuntime: { id: runtime },
           models: [],
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 describe("agent harness registry", () => {

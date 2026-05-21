@@ -1,10 +1,10 @@
-import type { AckReactionHandle } from "NexisClaw/plugin-sdk/channel-feedback";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { getReplyFromConfig } from "NexisClaw/plugin-sdk/reply-runtime";
-import type { MsgContext } from "NexisClaw/plugin-sdk/reply-runtime";
-import { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { buildGroupHistoryKey } from "NexisClaw/plugin-sdk/routing";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+import type { AckReactionHandle } from "FirstNexus/plugin-sdk/channel-feedback";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { getReplyFromConfig } from "FirstNexus/plugin-sdk/reply-runtime";
+import type { MsgContext } from "FirstNexus/plugin-sdk/reply-runtime";
+import { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { buildGroupHistoryKey } from "FirstNexus/plugin-sdk/routing";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import { resolveWhatsAppAccount } from "../../accounts.js";
 import { resolveWhatsAppGroupSessionRoute } from "../../group-session-key.js";
 import { getPrimaryIdentityId, getSenderIdentity } from "../../identity.js";
@@ -22,8 +22,8 @@ import { resolvePeerId } from "./peer.js";
 import { processMessage } from "./process-message.js";
 
 export function createWebOnMessageHandler(params: {
-  cfg: NexisClawConfig;
-  loadConfig?: () => NexisClawConfig;
+  cfg: FirstNexusConfig;
+  loadConfig?: () => FirstNexusConfig;
   verbose: boolean;
   connectionId: string;
   maxMediaBytes: number;
@@ -33,12 +33,12 @@ export function createWebOnMessageHandler(params: {
   echoTracker: EchoTracker;
   backgroundTasks: Set<Promise<unknown>>;
   replyResolver: typeof getReplyFromConfig;
-  replyLogger: ReturnType<(typeof import("NexisClaw/plugin-sdk/runtime-env"))["getChildLogger"]>;
+  replyLogger: ReturnType<(typeof import("FirstNexus/plugin-sdk/runtime-env"))["getChildLogger"]>;
   baseMentionConfig: MentionConfig;
   account: { authDir?: string; accountId?: string; selfChatMode?: boolean };
 }) {
   const processForRoute = async (
-    cfg: NexisClawConfig,
+    cfg: FirstNexusConfig,
     msg: WebInboundMsg,
     route: ReturnType<typeof resolveAgentRoute>,
     groupHistoryKey: string,

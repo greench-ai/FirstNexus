@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   resolveThreadBindingIdleTimeoutMsForChannel,
   resolveThreadBindingMaxAgeMsForChannel,
@@ -8,9 +8,9 @@ import {
   type BindingTargetKind,
   type SessionBindingAdapter,
   type SessionBindingRecord,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { normalizeAccountId, resolveAgentIdFromSessionKey } from "NexisClaw/plugin-sdk/routing";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { normalizeAccountId, resolveAgentIdFromSessionKey } from "FirstNexus/plugin-sdk/routing";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 type FeishuBindingTargetKind = "subagent" | "acp";
 
@@ -51,7 +51,7 @@ type FeishuThreadBindingsState = {
   bindingsByAccountConversation: Map<string, FeishuThreadBindingRecord>;
 };
 
-const FEISHU_THREAD_BINDINGS_STATE_KEY = Symbol.for("NexisClaw.feishuThreadBindingsState");
+const FEISHU_THREAD_BINDINGS_STATE_KEY = Symbol.for("FirstNexus.feishuThreadBindingsState");
 let state: FeishuThreadBindingsState | undefined;
 
 function getState(): FeishuThreadBindingsState {
@@ -122,7 +122,7 @@ function toSessionBindingRecord(
 
 export function createFeishuThreadBindingManager(params: {
   accountId?: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 }): FeishuThreadBindingManager {
   const accountId = normalizeAccountId(params.accountId);
   const existing = getState().managersByAccountId.get(accountId);

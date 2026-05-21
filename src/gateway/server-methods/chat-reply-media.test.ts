@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { getAgentScopedMediaLocalRoots } from "../../media/local-roots.js";
 import { createManagedOutgoingImageBlocks } from "../managed-image-attachments.js";
 import { normalizeWebchatReplyMediaPathsForDisplay } from "./chat-reply-media.js";
@@ -16,7 +16,7 @@ describe("normalizeWebchatReplyMediaPathsForDisplay", () => {
   let rootDir = "";
 
   beforeEach(async () => {
-    rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-webchat-reply-media-"));
+    rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-webchat-reply-media-"));
     vi.stubEnv("NEXISCLAW_STATE_DIR", path.join(rootDir, "state"));
   });
 
@@ -30,7 +30,7 @@ describe("normalizeWebchatReplyMediaPathsForDisplay", () => {
     agentDir: string;
     workspaceDir: string;
     allowRead: boolean;
-  }): NexisClawConfig {
+  }): FirstNexusConfig {
     return {
       tools: params.allowRead ? { allow: ["read"] } : { fs: { workspaceOnly: true } },
       agents: {

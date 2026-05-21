@@ -1,12 +1,12 @@
-import type { ReplyToMode } from "NexisClaw/plugin-sdk/config-contracts";
-import type { TelegramAccountConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { ReplyToMode } from "FirstNexus/plugin-sdk/config-contracts";
+import type { TelegramAccountConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   createSubsystemLogger,
   danger,
   logVerbose,
   shouldLogVerbose,
-} from "NexisClaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import type { TelegramBotDeps } from "./bot-deps.js";
 import {
   buildTelegramMessageContext,

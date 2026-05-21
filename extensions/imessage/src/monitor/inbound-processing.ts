@@ -7,28 +7,32 @@ import {
   matchesMentionPatterns,
   resolveEnvelopeFormatOptions,
   resolveInboundMentionDecision,
-} from "NexisClaw/plugin-sdk/channel-inbound";
+} from "FirstNexus/plugin-sdk/channel-inbound";
 import {
   createChannelIngressResolver,
   defineStableChannelIngressIdentity,
-} from "NexisClaw/plugin-sdk/channel-ingress-runtime";
+} from "FirstNexus/plugin-sdk/channel-ingress-runtime";
 import {
   resolveChannelGroupPolicy,
   resolveChannelGroupRequireMention,
-} from "NexisClaw/plugin-sdk/channel-policy";
-import { hasControlCommand } from "NexisClaw/plugin-sdk/command-auth-native";
-import type { DmPolicy, GroupPolicy, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveChannelContextVisibilityMode } from "NexisClaw/plugin-sdk/context-visibility-runtime";
+} from "FirstNexus/plugin-sdk/channel-policy";
+import { hasControlCommand } from "FirstNexus/plugin-sdk/command-auth-native";
+import type {
+  DmPolicy,
+  GroupPolicy,
+  FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveChannelContextVisibilityMode } from "FirstNexus/plugin-sdk/context-visibility-runtime";
 import {
   buildPendingHistoryContextFromMap,
   recordPendingHistoryEntryIfEnabled,
   type HistoryEntry,
-} from "NexisClaw/plugin-sdk/reply-history";
-import { finalizeInboundContext } from "NexisClaw/plugin-sdk/reply-runtime";
-import { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { evaluateSupplementalContextVisibility } from "NexisClaw/plugin-sdk/security-runtime";
-import { sanitizeTerminalText } from "NexisClaw/plugin-sdk/text-chunking";
-import { truncateUtf16Safe } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/reply-history";
+import { finalizeInboundContext } from "FirstNexus/plugin-sdk/reply-runtime";
+import { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { evaluateSupplementalContextVisibility } from "FirstNexus/plugin-sdk/security-runtime";
+import { sanitizeTerminalText } from "FirstNexus/plugin-sdk/text-chunking";
+import { truncateUtf16Safe } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { resolveIMessageConversationRoute } from "../conversation-route.js";
 import {
   isKnownFromMeIMessageMessageId,
@@ -384,7 +388,7 @@ type IMessageInboundDecision =
   | IMessageInboundDispatchDecision;
 
 export async function resolveIMessageInboundDecision(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   message: IMessagePayload;
   opts?: Pick<MonitorIMessageOpts, "requireMention">;
@@ -839,7 +843,7 @@ export async function resolveIMessageInboundDecision(params: {
 }
 
 export function buildIMessageInboundContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   decision: IMessageInboundDispatchDecision;
   message: IMessagePayload;
   envelopeOptions?: EnvelopeFormatOptions;

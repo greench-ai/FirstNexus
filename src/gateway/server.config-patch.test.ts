@@ -39,7 +39,7 @@ function requireConfigObject(
 }
 
 beforeAll(async () => {
-  sharedTempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-sessions-config-"));
+  sharedTempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-sessions-config-"));
   startedServer = await startServerWithClient(undefined, { controlUiEnabled: true });
   await connectOk(requireWs());
 });

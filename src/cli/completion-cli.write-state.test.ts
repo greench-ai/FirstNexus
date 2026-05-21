@@ -81,24 +81,24 @@ describe("completion-cli write-state", () => {
 
   it("keeps completion cache generation alive when a subcli fails to register", async () => {
     const { registerCompletionCli } = await import("./completion-cli.js");
-    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-completion-state-"));
-    const homeDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-completion-home-"));
+    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-completion-state-"));
+    const homeDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-completion-home-"));
 
     process.env.NEXISCLAW_STATE_DIR = stateDir;
     process.env.HOME = homeDir;
 
     const program = new Command();
-    program.name("NexisClaw");
+    program.name("FirstNexus");
     registerCompletionCli(program);
 
     await program.parseAsync(["completion", "--write-state"], { from: "user" });
 
     const cacheDir = path.join(stateDir, "completions");
     expect((await fs.readdir(cacheDir)).toSorted()).toEqual([
-      "NexisClaw.bash",
-      "NexisClaw.fish",
-      "NexisClaw.ps1",
-      "NexisClaw.zsh",
+      "FirstNexus.bash",
+      "FirstNexus.fish",
+      "FirstNexus.ps1",
+      "FirstNexus.zsh",
     ]);
     expect(registerSubCliByNameMock.mock.calls).toEqual([
       [program, "qa", process.argv, { purpose: "completion" }],
@@ -119,8 +119,8 @@ describe("completion-cli write-state", () => {
       import("./completion-runtime.js"),
       import("./completion-cli.js"),
     ]);
-    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-completion-state-"));
-    const homeDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-completion-home-"));
+    const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-completion-state-"));
+    const homeDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-completion-home-"));
 
     process.env.NEXISCLAW_STATE_DIR = stateDir;
     process.env.HOME = homeDir;
@@ -128,7 +128,7 @@ describe("completion-cli write-state", () => {
 
     try {
       const program = new Command();
-      program.name("NexisClaw");
+      program.name("FirstNexus");
       registerCompletionCli(program);
 
       await program.parseAsync(["completion", "--write-state"], { from: "user" });
@@ -138,10 +138,10 @@ describe("completion-cli write-state", () => {
       ]);
       expect(registerPluginCliCommandsFromValidatedConfigMock).not.toHaveBeenCalled();
       expect((await fs.readdir(path.join(stateDir, "completions"))).toSorted()).toEqual([
-        "NexisClaw.bash",
-        "NexisClaw.fish",
-        "NexisClaw.ps1",
-        "NexisClaw.zsh",
+        "FirstNexus.bash",
+        "FirstNexus.fish",
+        "FirstNexus.ps1",
+        "FirstNexus.zsh",
       ]);
     } finally {
       delete process.env[COMPLETION_SKIP_PLUGIN_COMMANDS_ENV];

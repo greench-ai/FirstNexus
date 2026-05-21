@@ -6,14 +6,14 @@ import {
 import {
   NEXISCLAW_DOCS_URL,
   NEXISCLAW_SOURCE_URL,
-  resolveNexisClawReferencePaths,
+  resolveFirstNexusReferencePaths,
 } from "../agents/docs-path.js";
 import {
   readConfigFileSnapshot,
   resolveConfigPath,
   resolveGatewayPort,
   type ConfigFileSnapshot,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../config/config.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
 import { normalizeAgentId } from "../routing/session-key.js";
@@ -60,7 +60,7 @@ export type CrestodianOverview = {
   };
 };
 
-type NexisClawReferencePaths = Awaited<ReturnType<typeof resolveNexisClawReferencePaths>>;
+type FirstNexusReferencePaths = Awaited<ReturnType<typeof resolveFirstNexusReferencePaths>>;
 
 type GatewayConnectionDetails = {
   url: string;
@@ -73,12 +73,12 @@ type CrestodianOverviewDependencies = {
   resolveConfigPath?: typeof resolveConfigPath;
   resolveGatewayPort?: typeof resolveGatewayPort;
   buildGatewayConnectionDetails?: (input: {
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     configPath: string;
   }) => GatewayConnectionDetails;
   probeLocalCommand?: typeof probeLocalCommand;
   probeGatewayUrl?: typeof probeGatewayUrl;
-  resolveNexisClawReferencePaths?: typeof resolveNexisClawReferencePaths;
+  resolveFirstNexusReferencePaths?: typeof resolveFirstNexusReferencePaths;
 };
 
 function issueMessages(snapshot: ConfigFileSnapshot): string[] {
@@ -88,7 +88,7 @@ function issueMessages(snapshot: ConfigFileSnapshot): string[] {
   });
 }
 
-function buildAgentSummaries(cfg: NexisClawConfig): CrestodianAgentSummary[] {
+function buildAgentSummaries(cfg: FirstNexusConfig): CrestodianAgentSummary[] {
   const defaultAgentId = resolveDefaultAgentId(cfg);
   const entries = listAgentEntries(cfg);
   if (entries.length === 0) {
@@ -127,7 +127,7 @@ function buildAgentSummaries(cfg: NexisClawConfig): CrestodianAgentSummary[] {
   return summaries;
 }
 
-function resolveFastTestReferences(env: NodeJS.ProcessEnv): NexisClawReferencePaths | undefined {
+function resolveFastTestReferences(env: NodeJS.ProcessEnv): FirstNexusReferencePaths | undefined {
   if (env.NEXISCLAW_TEST_FAST !== "1") {
     return undefined;
   }
@@ -165,7 +165,7 @@ export async function loadCrestodianOverview(
   } catch (err) {
     gatewayError = err instanceof Error ? err.message : String(err);
   }
-  const resolveReferences = deps.resolveNexisClawReferencePaths ?? resolveNexisClawReferencePaths;
+  const resolveReferences = deps.resolveFirstNexusReferencePaths ?? resolveFirstNexusReferencePaths;
   const commandProbe = deps.probeLocalCommand ?? probeLocalCommand;
   const [codex, claude, gateway, references] = await Promise.all([
     commandProbe("codex"),

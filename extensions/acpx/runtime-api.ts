@@ -1,11 +1,11 @@
-export type { AcpRuntimeErrorCode } from "NexisClaw/plugin-sdk/acp-runtime-backend";
+export type { AcpRuntimeErrorCode } from "FirstNexus/plugin-sdk/acp-runtime-backend";
 export {
   AcpRuntimeError,
   getAcpRuntimeBackend,
   tryDispatchAcpReplyHook,
   registerAcpRuntimeBackend,
   unregisterAcpRuntimeBackend,
-} from "NexisClaw/plugin-sdk/acp-runtime-backend";
+} from "FirstNexus/plugin-sdk/acp-runtime-backend";
 export type {
   AcpRuntime,
   AcpRuntimeCapabilities,
@@ -17,30 +17,30 @@ export type {
   AcpRuntimeTurnAttachment,
   AcpRuntimeTurnInput,
   AcpSessionUpdateTag,
-} from "NexisClaw/plugin-sdk/acp-runtime-backend";
+} from "FirstNexus/plugin-sdk/acp-runtime-backend";
 export type {
-  NexisClawPluginApi,
-  NexisClawPluginConfigSchema,
-  NexisClawPluginService,
-  NexisClawPluginServiceContext,
+  FirstNexusPluginApi,
+  FirstNexusPluginConfigSchema,
+  FirstNexusPluginService,
+  FirstNexusPluginServiceContext,
   PluginLogger,
-} from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/core";
 export type {
   PluginHookReplyDispatchContext,
   PluginHookReplyDispatchEvent,
   PluginHookReplyDispatchResult,
-} from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/core";
 export type {
   WindowsSpawnProgram,
   WindowsSpawnProgramCandidate,
   WindowsSpawnResolution,
-} from "NexisClaw/plugin-sdk/windows-spawn";
+} from "FirstNexus/plugin-sdk/windows-spawn";
 export {
   applyWindowsSpawnProgramPolicy,
   materializeWindowsSpawnProgram,
   resolveWindowsSpawnProgramCandidate,
-} from "NexisClaw/plugin-sdk/windows-spawn";
+} from "FirstNexus/plugin-sdk/windows-spawn";
 export {
   listKnownProviderAuthEnvVarNames,
   omitEnvKeysCaseInsensitive,
-} from "NexisClaw/plugin-sdk/provider-env-vars";
+} from "FirstNexus/plugin-sdk/provider-env-vars";

@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { isAcpEnabledByPolicy } from "../policy.js";
 import { getAcpRuntimeBackend } from "./registry.js";
 
 export function isAcpRuntimeSpawnAvailable(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   sandboxed?: boolean;
   backendId?: string;
 }): boolean {

@@ -63,10 +63,12 @@ export function buildGatewayRuntimeHints(
     hints.push(
       `LaunchAgent label cached but plist missing. Clear with: launchctl bootout gui/$UID/${label}`,
     );
-    hints.push(`Then reinstall: ${formatCliCommand("NexisClaw gateway install", env)}`);
+    hints.push(`Then reinstall: ${formatCliCommand("FirstNexus gateway install", env)}`);
   }
   if (runtime.missingUnit) {
-    hints.push(`Service not installed. Run: ${formatCliCommand("NexisClaw gateway install", env)}`);
+    hints.push(
+      `Service not installed. Run: ${formatCliCommand("FirstNexus gateway install", env)}`,
+    );
     if (fileLog) {
       hints.push(`File logs: ${fileLog}`);
     }
@@ -74,7 +76,7 @@ export function buildGatewayRuntimeHints(
   }
   if (runtime.missingSupervision && platform === "darwin") {
     hints.push(
-      `LaunchAgent installed but not loaded. Run: ${formatCliCommand("NexisClaw gateway restart", env)}`,
+      `LaunchAgent installed but not loaded. Run: ${formatCliCommand("FirstNexus gateway restart", env)}`,
     );
     if (fileLog) {
       hints.push(`File logs: ${fileLog}`);

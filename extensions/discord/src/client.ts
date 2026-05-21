@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import type { RetryConfig, RetryRunner } from "NexisClaw/plugin-sdk/retry-runtime";
-import { normalizeAccountId } from "NexisClaw/plugin-sdk/routing";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import type { RetryConfig, RetryRunner } from "FirstNexus/plugin-sdk/retry-runtime";
+import { normalizeAccountId } from "FirstNexus/plugin-sdk/routing";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   mergeDiscordAccountConfig,
   resolveDiscordAccount,
@@ -17,7 +17,7 @@ import type { DiscordRuntimeAccountContext } from "./send.types.js";
 import { normalizeDiscordToken } from "./token.js";
 
 export type DiscordClientOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   token?: string;
   accountId?: string;
   rest?: RequestClient;
@@ -26,7 +26,7 @@ export type DiscordClientOpts = {
 };
 
 export function createDiscordRuntimeAccountContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
 }): DiscordRuntimeAccountContext {
   return {
@@ -73,7 +73,7 @@ function resolveToken(params: {
 function resolveRest(
   token: string,
   account: ResolvedDiscordAccount,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   rest?: RequestClient,
   proxyFetch?: typeof fetch,
 ) {
@@ -88,7 +88,7 @@ function resolveRest(
 }
 
 function resolveAccountWithoutToken(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
 }): ResolvedDiscordAccount {
   const accountId = normalizeAccountId(params.accountId);

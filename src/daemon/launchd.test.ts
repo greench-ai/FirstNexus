@@ -93,7 +93,7 @@ async function runStopLaunchAgentWithFakeTimers(args: Parameters<typeof stopLaun
 
 function expectLaunchctlEnableBootstrapOrder(env: Record<string, string | undefined>) {
   const domain = typeof process.getuid === "function" ? `gui/${process.getuid()}` : "gui/501";
-  const label = "ai.NexisClaw.gateway";
+  const label = "ai.FirstNexus.gateway";
   const plistPath = resolveLaunchAgentPlistPath(env);
   const serviceId = `${domain}/${label}`;
   const enableIndex = state.launchctlCalls.findIndex(
@@ -391,7 +391,7 @@ describe("launchd runtime state", () => {
 
 describe("launchctl list detection", () => {
   it("detects the resolved label in launchctl list", async () => {
-    state.listOutput = "123 0 ai.NexisClaw.gateway\n";
+    state.listOutput = "123 0 ai.FirstNexus.gateway\n";
     const listed = await isLaunchAgentListed({
       env: { HOME: "/Users/test", NEXISCLAW_PROFILE: "default" },
     });
@@ -513,7 +513,7 @@ describe("launchd install", () => {
 
   it("writes LaunchAgent environment to an owner-only env file when provided", async () => {
     const env = createDefaultLaunchdEnv();
-    const tmpDir = "/Users/test/.NexisClaw/tmp";
+    const tmpDir = "/Users/test/.FirstNexus/tmp";
     const apiKey = "secret-api-key";
     await installLaunchAgent({
       env,
@@ -523,8 +523,8 @@ describe("launchd install", () => {
     });
 
     const plistPath = resolveLaunchAgentPlistPath(env);
-    const envFilePath = "/Users/test/.NexisClaw/service-env/ai.NexisClaw.gateway.env";
-    const wrapperPath = "/Users/test/.NexisClaw/service-env/ai.NexisClaw.gateway-env-wrapper.sh";
+    const envFilePath = "/Users/test/.FirstNexus/service-env/ai.FirstNexus.gateway.env";
+    const wrapperPath = "/Users/test/.FirstNexus/service-env/ai.FirstNexus.gateway-env-wrapper.sh";
     const plist = state.files.get(plistPath) ?? "";
     expect(plist).not.toContain("<key>EnvironmentVariables</key>");
     expect(plist).not.toContain(apiKey);
@@ -535,7 +535,7 @@ describe("launchd install", () => {
     expect(envFile).toContain(`export OPENAI_API_KEY='${apiKey}'`);
     expect(state.fileModes.get(envFilePath)).toBe(0o600);
     expect(state.fileModes.get(wrapperPath)).toBe(0o700);
-    expect(state.dirModes.get("/Users/test/.NexisClaw/service-env")).toBe(0o700);
+    expect(state.dirModes.get("/Users/test/.FirstNexus/service-env")).toBe(0o700);
 
     const command = await readLaunchAgentProgramArguments(env);
     expect(command?.programArguments).toEqual(defaultProgramArguments);
@@ -547,7 +547,7 @@ describe("launchd install", () => {
 
   it("creates the LaunchAgent TMPDIR before bootstrap", async () => {
     const env = createDefaultLaunchdEnv();
-    const tmpDir = "/Users/test/.NexisClaw/tmp";
+    const tmpDir = "/Users/test/.FirstNexus/tmp";
     await installLaunchAgent({
       env,
       stdout: new PassThrough(),
@@ -595,7 +595,7 @@ describe("launchd install", () => {
         '<plist version="1.0">',
         "  <dict>",
         "    <key>Label</key>",
-        "    <string>ai.NexisClaw.gateway</string>",
+        "    <string>ai.FirstNexus.gateway</string>",
         "    <key>ProgramArguments</key>",
         "    <array>",
         "      <string>node</string>",
@@ -655,7 +655,7 @@ describe("launchd install", () => {
     await stopLaunchAgent({ env, stdout });
 
     const domain = typeof process.getuid === "function" ? `gui/${process.getuid()}` : "gui/501";
-    const serviceId = `${domain}/ai.NexisClaw.gateway`;
+    const serviceId = `${domain}/ai.FirstNexus.gateway`;
     expect(state.launchctlCalls).toContainEqual(["bootout", serviceId]);
     expect(launchctlCommandNames()).not.toContain("disable");
     expect(launchctlCommandNames()).not.toContain("stop");
@@ -673,9 +673,9 @@ describe("launchd install", () => {
     await stopLaunchAgent({ env, stdout, disable: true });
 
     const domain = typeof process.getuid === "function" ? `gui/${process.getuid()}` : "gui/501";
-    const serviceId = `${domain}/ai.NexisClaw.gateway`;
+    const serviceId = `${domain}/ai.FirstNexus.gateway`;
     expect(state.launchctlCalls).toContainEqual(["disable", serviceId]);
-    expect(state.launchctlCalls).toContainEqual(["stop", "ai.NexisClaw.gateway"]);
+    expect(state.launchctlCalls).toContainEqual(["stop", "ai.FirstNexus.gateway"]);
     expect(launchctlCommandNames()).not.toContain("bootout");
     expect(output).toContain("Stopped LaunchAgent");
   });
@@ -696,7 +696,7 @@ describe("launchd install", () => {
 
     expect(state.launchctlCalls).toContainEqual([
       "disable",
-      `${typeof process.getuid === "function" ? `gui/${process.getuid()}` : "gui/501"}/ai.NexisClaw.gateway`,
+      `${typeof process.getuid === "function" ? `gui/${process.getuid()}` : "gui/501"}/ai.FirstNexus.gateway`,
     ]);
     expect(launchctlCommandNames()).not.toContain("bootout");
     expect(output).toContain("Stopped LaunchAgent");
@@ -856,7 +856,7 @@ describe("launchd install", () => {
     });
 
     const domain = typeof process.getuid === "function" ? `gui/${process.getuid()}` : "gui/501";
-    const label = "ai.NexisClaw.gateway";
+    const label = "ai.FirstNexus.gateway";
     const serviceId = `${domain}/${label}`;
     expect(result).toEqual({ outcome: "completed" });
     expect(cleanStaleGatewayProcessesSync).toHaveBeenCalledWith(18789);
@@ -903,7 +903,7 @@ describe("launchd install", () => {
     });
 
     const domain = typeof process.getuid === "function" ? `gui/${process.getuid()}` : "gui/501";
-    const serviceId = `${domain}/ai.NexisClaw.gateway`;
+    const serviceId = `${domain}/ai.FirstNexus.gateway`;
     const kickstartCalls = state.launchctlCalls.filter(
       (c) => c[0] === "kickstart" && c[1] === "-k" && c[2] === serviceId,
     );
@@ -998,7 +998,7 @@ describe("launchd install", () => {
     }
     expect(message).toContain("logged-in macOS GUI session");
     expect(message).toContain("wrong user (including sudo)");
-    expect(message).toContain("https://docs.NexisClaw.ai/gateway");
+    expect(message).toContain("https://docs.FirstNexus.ai/gateway");
   });
 
   it("surfaces generic bootstrap failures without GUI-specific guidance", async () => {
@@ -1020,12 +1020,12 @@ describe("resolveLaunchAgentPlistPath", () => {
     {
       name: "uses default label when NEXISCLAW_PROFILE is unset",
       env: { HOME: "/Users/test" },
-      expected: "/Users/test/Library/LaunchAgents/ai.NexisClaw.gateway.plist",
+      expected: "/Users/test/Library/LaunchAgents/ai.FirstNexus.gateway.plist",
     },
     {
       name: "uses profile-specific label when NEXISCLAW_PROFILE is set to a custom value",
       env: { HOME: "/Users/test", NEXISCLAW_PROFILE: "jbphoenix" },
-      expected: "/Users/test/Library/LaunchAgents/ai.NexisClaw.jbphoenix.plist",
+      expected: "/Users/test/Library/LaunchAgents/ai.FirstNexus.jbphoenix.plist",
     },
     {
       name: "prefers NEXISCLAW_LAUNCHD_LABEL over NEXISCLAW_PROFILE",
@@ -1051,7 +1051,7 @@ describe("resolveLaunchAgentPlistPath", () => {
         NEXISCLAW_PROFILE: "myprofile",
         NEXISCLAW_LAUNCHD_LABEL: "   ",
       },
-      expected: "/Users/test/Library/LaunchAgents/ai.NexisClaw.myprofile.plist",
+      expected: "/Users/test/Library/LaunchAgents/ai.FirstNexus.myprofile.plist",
     },
   ])("$name", ({ env, expected }) => {
     expect(resolveLaunchAgentPlistPath(env)).toBe(expected);

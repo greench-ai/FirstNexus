@@ -1,4 +1,4 @@
-profile: NexisClaw-check
+profile: FirstNexus-check
 provider: aws
 class: standard
 capacity:
@@ -18,7 +18,7 @@ actions:
   ref: main
   runnerLabels:
     - crabbox
-    - NexisClaw
+    - FirstNexus
   runnerVersion: latest
   ephemeral: true
 aws:

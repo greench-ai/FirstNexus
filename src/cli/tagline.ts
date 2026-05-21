@@ -1,4 +1,4 @@
-const DEFAULT_TAGLINE = "All your chats, one NexisClaw.";
+const DEFAULT_TAGLINE = "All your chats, one FirstNexus.";
 export type TaglineMode = "random" | "default" | "off";
 
 const HOLIDAY_TAGLINES = {
@@ -99,7 +99,7 @@ const TAGLINES: string[] = [
   "Alexa, but with taste.",
   "I'm not AI-powered, I'm AI-possessed. Big difference.",
   "Deployed locally, trusted globally, debugged eternally.",
-  "You had me at 'NexisClaw gateway start.'",
+  "You had me at 'FirstNexus gateway start.'",
   HOLIDAY_TAGLINES.newYear,
   HOLIDAY_TAGLINES.lunarNewYear,
   HOLIDAY_TAGLINES.christmas,

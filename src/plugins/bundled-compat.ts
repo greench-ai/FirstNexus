@@ -1,12 +1,12 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginEntryConfig } from "../config/types.plugins.js";
 import { hasExplicitPluginConfig } from "./config-policy.js";
 import { normalizePluginId } from "./config-state.js";
 
 export function withBundledPluginAllowlistCompat(params: {
-  config: NexisClawConfig | undefined;
+  config: FirstNexusConfig | undefined;
   pluginIds: readonly string[];
-}): NexisClawConfig | undefined {
+}): FirstNexusConfig | undefined {
   if (params.config?.plugins?.bundledDiscovery !== "compat") {
     return params.config;
   }
@@ -38,9 +38,9 @@ export function withBundledPluginAllowlistCompat(params: {
 }
 
 export function withBundledPluginEnablementCompat(params: {
-  config: NexisClawConfig | undefined;
+  config: FirstNexusConfig | undefined;
   pluginIds: readonly string[];
-}): NexisClawConfig | undefined {
+}): FirstNexusConfig | undefined {
   const existingEntries = params.config?.plugins?.entries ?? {};
   const forcePluginsEnabled = params.config?.plugins?.enabled === false;
   const useCompatDiscovery = params.config?.plugins?.bundledDiscovery === "compat";
@@ -85,10 +85,10 @@ export function withBundledPluginEnablementCompat(params: {
 }
 
 export function withBundledPluginVitestCompat(params: {
-  config: NexisClawConfig | undefined;
+  config: FirstNexusConfig | undefined;
   pluginIds: readonly string[];
   env?: NodeJS.ProcessEnv;
-}): NexisClawConfig | undefined {
+}): FirstNexusConfig | undefined {
   const env = params.env ?? process.env;
   const isVitest = Boolean(env.VITEST);
   if (

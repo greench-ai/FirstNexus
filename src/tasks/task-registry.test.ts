@@ -187,7 +187,7 @@ function configureTaskRegistryMaintenanceRuntimeForTest(params: {
       return next;
     },
     isCronRuntimeAuthoritative: () => true,
-    resolveCronStorePath: () => "/tmp/NexisClaw-test-cron/jobs.json",
+    resolveCronStorePath: () => "/tmp/FirstNexus-test-cron/jobs.json",
     loadCronStoreSync: () => ({ version: 1, jobs: [] }),
     resolveCronRunLogPath: ({ jobId }) => jobId,
     readCronRunLogEntriesSync: () => [],
@@ -228,7 +228,7 @@ function createAcpSessionStoreEntry(params: {
   } as const;
   return {
     cfg: {} as never,
-    storePath: "/tmp/NexisClaw-test-sessions.json",
+    storePath: "/tmp/FirstNexus-test-sessions.json",
     sessionKey: params.sessionKey,
     storeSessionKey: params.sessionKey,
     entry: {
@@ -393,7 +393,7 @@ async function withTaskRegistryTempDir<T>(
   run: (root: string) => Promise<T>,
   options?: { durableStore?: boolean },
 ): Promise<T> {
-  return await withTempDir({ prefix: "NexisClaw-task-registry-" }, async (root) => {
+  return await withTempDir({ prefix: "FirstNexus-task-registry-" }, async (root) => {
     process.env.NEXISCLAW_STATE_DIR = root;
     resetTaskRegistryForTests({ persist: false });
     resetTaskFlowRegistryForTests({ persist: false });
@@ -1780,7 +1780,7 @@ describe("task-registry", () => {
     });
   });
 
-  it("does not mark codex-native subagent tasks lost when they have no NexisClaw child session", async () => {
+  it("does not mark codex-native subagent tasks lost when they have no FirstNexus child session", async () => {
     await withTaskRegistryTempDir(async (root) => {
       process.env.NEXISCLAW_STATE_DIR = root;
       resetTaskRegistryForTests();
@@ -2332,7 +2332,7 @@ describe("task-registry", () => {
         resolveTaskForLookupToken: () => undefined,
         setTaskCleanupAfterById: () => null,
         isCronRuntimeAuthoritative: () => true,
-        resolveCronStorePath: () => "/tmp/NexisClaw-test-cron/jobs.json",
+        resolveCronStorePath: () => "/tmp/FirstNexus-test-cron/jobs.json",
         loadCronStoreSync: () => ({ version: 1, jobs: [] }),
         resolveCronRunLogPath: ({ jobId }) => jobId,
         readCronRunLogEntriesSync: () => [],
@@ -3065,7 +3065,7 @@ describe("task-registry", () => {
     });
   });
 
-  it("does not route codex-native task cancellation through NexisClaw subagent sessions", async () => {
+  it("does not route codex-native task cancellation through FirstNexus subagent sessions", async () => {
     await withTaskRegistryTempDir(async (root) => {
       process.env.NEXISCLAW_STATE_DIR = root;
       resetTaskRegistryForTests();

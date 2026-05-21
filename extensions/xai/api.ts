@@ -1,8 +1,8 @@
-import { normalizeProviderId } from "NexisClaw/plugin-sdk/provider-model-shared";
+import { normalizeProviderId } from "FirstNexus/plugin-sdk/provider-model-shared";
 import {
   normalizeOptionalLowercaseString,
   readStringValue,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   applyXaiModelCompat,
   HTML_ENTITY_TOOL_CALL_ARGUMENTS_ENCODING,

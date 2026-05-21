@@ -4,11 +4,11 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-openai-chat-tools-e2e" NEXISCLAW_OPENAI_CHAT_TOOLS_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-openai-chat-tools-e2e" NEXISCLAW_OPENAI_CHAT_TOOLS_E2E_IMAGE)"
 SKIP_BUILD="${NEXISCLAW_OPENAI_CHAT_TOOLS_E2E_SKIP_BUILD:-0}"
 PORT="${NEXISCLAW_OPENAI_CHAT_TOOLS_PORT:-18789}"
 TOKEN="openai-chat-tools-e2e-$$"
-PROFILE_FILE="${NEXISCLAW_OPENAI_CHAT_TOOLS_PROFILE_FILE:-${NEXISCLAW_TESTBOX_PROFILE_FILE:-$HOME/.NexisClaw-testbox-live.profile}}"
+PROFILE_FILE="${NEXISCLAW_OPENAI_CHAT_TOOLS_PROFILE_FILE:-${NEXISCLAW_TESTBOX_PROFILE_FILE:-$HOME/.FirstNexus-testbox-live.profile}}"
 if [ ! -f "$PROFILE_FILE" ] && [ -f "$HOME/.profile" ]; then
   PROFILE_FILE="$HOME/.profile"
 fi

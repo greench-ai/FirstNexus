@@ -80,7 +80,10 @@ function resolveProfileStateDir(
   homedir: () => string,
 ): string {
   const suffix = normalizeLowercaseStringOrEmpty(profile) === "default" ? "" : `-${profile}`;
-  return path.join(resolveRequiredHomeDir(env as NodeJS.ProcessEnv, homedir), `.NexisClaw${suffix}`);
+  return path.join(
+    resolveRequiredHomeDir(env as NodeJS.ProcessEnv, homedir),
+    `.FirstNexus${suffix}`,
+  );
 }
 
 export function applyCliProfileEnv(params: {
@@ -105,7 +108,7 @@ export function applyCliProfileEnv(params: {
   }
 
   if (!normalizeOptionalString(env.NEXISCLAW_CONFIG_PATH)) {
-    env.NEXISCLAW_CONFIG_PATH = path.join(stateDir, "NexisClaw.json");
+    env.NEXISCLAW_CONFIG_PATH = path.join(stateDir, "FirstNexus.json");
   }
 
   if (profile === "dev" && !env.NEXISCLAW_GATEWAY_PORT?.trim()) {

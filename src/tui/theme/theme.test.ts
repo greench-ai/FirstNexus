@@ -1,4 +1,4 @@
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it } from "vitest";
 
 const { markdownTheme, searchableSelectListTheme, selectListTheme, theme } =

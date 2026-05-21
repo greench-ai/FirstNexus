@@ -1,6 +1,6 @@
 import { normalizeChatChannelId } from "../../../channels/ids.js";
 import { listRouteBindings } from "../../../config/bindings.js";
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import {
   formatChannelAccountsDefaultPath,
   formatSetExplicitDefaultInstruction,
@@ -32,7 +32,7 @@ function normalizeBindingChannelKey(raw?: string | null): string {
 }
 
 function collectChannelsMissingDefaultAccount(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): ChannelMissingDefaultAccountContext[] {
   const channels = asObjectRecord(cfg.channels);
   if (!channels) {
@@ -65,7 +65,7 @@ function collectChannelsMissingDefaultAccount(
   return contexts;
 }
 
-export function collectMissingDefaultAccountBindingWarnings(cfg: NexisClawConfig): string[] {
+export function collectMissingDefaultAccountBindingWarnings(cfg: FirstNexusConfig): string[] {
   const bindings = listRouteBindings(cfg);
   const warnings: string[] = [];
 
@@ -130,7 +130,7 @@ export function collectMissingDefaultAccountBindingWarnings(cfg: NexisClawConfig
   return warnings;
 }
 
-export function collectMissingExplicitDefaultAccountWarnings(cfg: NexisClawConfig): string[] {
+export function collectMissingExplicitDefaultAccountWarnings(cfg: FirstNexusConfig): string[] {
   const warnings: string[] = [];
   for (const { channelKey, channel, normalizedAccountIds } of collectChannelsMissingDefaultAccount(
     cfg,

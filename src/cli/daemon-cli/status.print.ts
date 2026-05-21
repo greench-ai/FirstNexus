@@ -117,7 +117,7 @@ export function printDaemonStatus(status: DaemonStatus, opts: { json: boolean })
     }
     defaultRuntime.error(
       warnText(
-        `Recommendation: run "${formatCliCommand("NexisClaw doctor")}" (or "${formatCliCommand("NexisClaw doctor --repair")}").`,
+        `Recommendation: run "${formatCliCommand("FirstNexus doctor")}" (or "${formatCliCommand("FirstNexus doctor --repair")}").`,
       ),
     );
   }
@@ -171,7 +171,7 @@ export function printDaemonStatus(status: DaemonStatus, opts: { json: boolean })
       );
       defaultRuntime.error(
         errorText(
-          `Fix: rerun \`${formatCliCommand("NexisClaw gateway install --force")}\` from the same --profile / NEXISCLAW_STATE_DIR you expect.`,
+          `Fix: rerun \`${formatCliCommand("FirstNexus gateway install --force")}\` from the same --profile / NEXISCLAW_STATE_DIR you expect.`,
         ),
       );
     }
@@ -213,12 +213,12 @@ export function printDaemonStatus(status: DaemonStatus, opts: { json: boolean })
     if (status.cli?.version && status.cli.version !== gatewayVersion) {
       defaultRuntime.error(
         warnText(
-          `Warning: this NexisClaw command is version ${status.cli.version}, but the running Gateway is version ${gatewayVersion}.`,
+          `Warning: this FirstNexus command is version ${status.cli.version}, but the running Gateway is version ${gatewayVersion}.`,
         ),
       );
       defaultRuntime.error(
         warnText(
-          "Check `NexisClaw --version`, `which NexisClaw`, and `NexisClaw gateway status --deep`; if this mismatch is unexpected, update PATH so `NexisClaw` points to the version you want, or reinstall the Gateway service from that same NexisClaw install.",
+          "Check `FirstNexus --version`, `which FirstNexus`, and `FirstNexus gateway status --deep`; if this mismatch is unexpected, update PATH so `FirstNexus` points to the version you want, or reinstall the Gateway service from that same FirstNexus install.",
         ),
       );
     }
@@ -276,7 +276,7 @@ export function printDaemonStatus(status: DaemonStatus, opts: { json: boolean })
     );
     defaultRuntime.error(
       errorText(
-        `Fix: run ${formatCliCommand("NexisClaw gateway restart")} and re-check with ${formatCliCommand("NexisClaw gateway status --deep")}.`,
+        `Fix: run ${formatCliCommand("FirstNexus gateway restart")} and re-check with ${formatCliCommand("FirstNexus gateway status --deep")}.`,
       ),
     );
     spacer();
@@ -336,7 +336,7 @@ export function printDaemonStatus(status: DaemonStatus, opts: { json: boolean })
       ),
     );
     defaultRuntime.error(
-      errorText(`Then reinstall: ${formatCliCommand("NexisClaw gateway install")}`),
+      errorText(`Then reinstall: ${formatCliCommand("FirstNexus gateway install")}`),
     );
     spacer();
   }
@@ -412,6 +412,6 @@ export function printDaemonStatus(status: DaemonStatus, opts: { json: boolean })
     spacer();
   }
 
-  defaultRuntime.log(`${label("Troubles:")} run ${formatCliCommand("NexisClaw status")}`);
-  defaultRuntime.log(`${label("Troubleshooting:")} https://docs.NexisClaw.ai/troubleshooting`);
+  defaultRuntime.log(`${label("Troubles:")} run ${formatCliCommand("FirstNexus status")}`);
+  defaultRuntime.log(`${label("Troubleshooting:")} https://docs.FirstNexus.ai/troubleshooting`);
 }

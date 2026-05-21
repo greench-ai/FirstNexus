@@ -8,7 +8,7 @@ const subCliCommandCatalog = defineCommandDescriptorCatalog([
   { name: "acp", description: "Run and manage ACP-backed coding agents", hasSubcommands: true },
   {
     name: "gateway",
-    description: "Run, inspect, and query the NexisClaw Gateway",
+    description: "Run, inspect, and query the FirstNexus Gateway",
     hasSubcommands: true,
   },
   {
@@ -94,7 +94,7 @@ const subCliCommandCatalog = defineCommandDescriptorCatalog([
   },
   {
     name: "docs",
-    description: "Search the live NexisClaw docs",
+    description: "Search the live FirstNexus docs",
     hasSubcommands: false,
   },
   {
@@ -104,7 +104,7 @@ const subCliCommandCatalog = defineCommandDescriptorCatalog([
   },
   {
     name: "proxy",
-    description: "Run the NexisClaw debug proxy and inspect captured traffic",
+    description: "Run the FirstNexus debug proxy and inspect captured traffic",
     hasSubcommands: true,
   },
   {
@@ -164,7 +164,7 @@ const subCliCommandCatalog = defineCommandDescriptorCatalog([
   },
   {
     name: "update",
-    description: "Update NexisClaw and inspect update channel status",
+    description: "Update FirstNexus and inspect update channel status",
     hasSubcommands: true,
   },
   {

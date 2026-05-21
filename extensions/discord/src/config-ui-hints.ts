@@ -1,4 +1,4 @@
-import type { ChannelConfigUiHint } from "NexisClaw/plugin-sdk/channel-core";
+import type { ChannelConfigUiHint } from "FirstNexus/plugin-sdk/channel-core";
 
 export const discordChannelConfigUiHints = {
   "": {
@@ -75,7 +75,7 @@ export const discordChannelConfigUiHints = {
   },
   "streaming.progress.labels": {
     label: "Discord Progress Label Pool",
-    help: 'Candidate labels for streaming.progress.label="auto". Leave unset to use NexisClaw built-in progress labels.',
+    help: 'Candidate labels for streaming.progress.label="auto". Leave unset to use FirstNexus built-in progress labels.',
   },
   "streaming.progress.maxLines": {
     label: "Discord Progress Max Lines",
@@ -115,7 +115,7 @@ export const discordChannelConfigUiHints = {
   },
   "eventQueue.listenerTimeout": {
     label: "Discord EventQueue Listener Timeout (ms)",
-    help: "Canonical Discord listener timeout control in ms for gateway normalization/enqueue handlers. Default is 120000 in NexisClaw; set per account via channels.discord.accounts.<id>.eventQueue.listenerTimeout.",
+    help: "Canonical Discord listener timeout control in ms for gateway normalization/enqueue handlers. Default is 120000 in FirstNexus; set per account via channels.discord.accounts.<id>.eventQueue.listenerTimeout.",
   },
   "eventQueue.maxQueueSize": {
     label: "Discord EventQueue Max Queue Size",
@@ -183,11 +183,11 @@ export const discordChannelConfigUiHints = {
   },
   "voice.mode": {
     label: "Discord Voice Mode",
-    help: "Conversation mode: agent-proxy (default) uses realtime voice as the microphone/speaker for the routed NexisClaw agent, stt-tts uses batch speech-to-text plus TTS, and bidi lets the realtime provider converse directly with the NexisClaw consult tool.",
+    help: "Conversation mode: agent-proxy (default) uses realtime voice as the microphone/speaker for the routed FirstNexus agent, stt-tts uses batch speech-to-text plus TTS, and bidi lets the realtime provider converse directly with the FirstNexus consult tool.",
   },
   "voice.agentSession": {
     label: "Discord Voice Agent Session",
-    help: 'Controls which NexisClaw conversation receives voice turns. Leave unset for the voice channel session, or set mode="target" with a Discord target such as channel:123 to make voice an extension of an existing text channel session.',
+    help: 'Controls which FirstNexus conversation receives voice turns. Leave unset for the voice channel session, or set mode="target" with a Discord target such as channel:123 to make voice an extension of an existing text channel session.',
   },
   "voice.agentSession.target": {
     label: "Discord Voice Agent Session Target",
@@ -199,7 +199,7 @@ export const discordChannelConfigUiHints = {
   },
   "voice.realtime.model": {
     label: "Discord Realtime Model",
-    help: "Provider realtime session model, such as gpt-realtime-2. This is separate from voice.model, which remains the NexisClaw agent brain model.",
+    help: "Provider realtime session model, such as gpt-realtime-2. This is separate from voice.model, which remains the FirstNexus agent brain model.",
   },
   "voice.realtime.voice": {
     label: "Discord Realtime Voice",
@@ -207,11 +207,11 @@ export const discordChannelConfigUiHints = {
   },
   "voice.realtime.toolPolicy": {
     label: "Discord Realtime Tool Policy",
-    help: "Tool policy for the NexisClaw agent consult tool in realtime voice modes: safe-read-only, owner, or none. Default is owner for agent-proxy and safe-read-only for bidi.",
+    help: "Tool policy for the FirstNexus agent consult tool in realtime voice modes: safe-read-only, owner, or none. Default is owner for agent-proxy and safe-read-only for bidi.",
   },
   "voice.realtime.consultPolicy": {
     label: "Discord Realtime Consult Policy",
-    help: "Use always to strongly prefer the NexisClaw agent brain for substantive realtime turns. agent-proxy defaults to always.",
+    help: "Use always to strongly prefer the FirstNexus agent brain for substantive realtime turns. agent-proxy defaults to always.",
   },
   "voice.realtime.bargeIn": {
     label: "Discord Realtime Barge-In",
@@ -248,11 +248,11 @@ export const discordChannelConfigUiHints = {
   },
   "voice.reconnectGraceMs": {
     label: "Discord Voice Reconnect Grace (ms)",
-    help: "Grace period for a disconnected Discord voice session to enter Signalling or Connecting before NexisClaw destroys it. Default: 15000.",
+    help: "Grace period for a disconnected Discord voice session to enter Signalling or Connecting before FirstNexus destroys it. Default: 15000.",
   },
   "voice.captureSilenceGraceMs": {
     label: "Discord Voice Capture Silence Grace (ms)",
-    help: "Silence window after Discord reports a speaker ended before NexisClaw finalizes the audio segment for transcription. Default: 2500.",
+    help: "Silence window after Discord reports a speaker ended before FirstNexus finalizes the audio segment for transcription. Default: 2500.",
   },
   "voice.tts": {
     label: "Discord Voice Text-to-Speech",

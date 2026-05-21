@@ -2,14 +2,14 @@ import {
   buildExecApprovalPendingReplyPayload,
   resolveExecApprovalRequestAllowedDecisions,
   resolveExecApprovalCommandDisplay,
-} from "NexisClaw/plugin-sdk/approval-reply-runtime";
-import type { ExecApprovalRequest } from "NexisClaw/plugin-sdk/approval-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { normalizeMessageChannel } from "NexisClaw/plugin-sdk/routing";
+} from "FirstNexus/plugin-sdk/approval-reply-runtime";
+import type { ExecApprovalRequest } from "FirstNexus/plugin-sdk/approval-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { normalizeMessageChannel } from "FirstNexus/plugin-sdk/routing";
 import { isTelegramExecApprovalClientEnabled } from "./exec-approvals.js";
 
 export function shouldSuppressTelegramExecApprovalForwardingFallback(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   target: { channel: string; accountId?: string | null };
   request: ExecApprovalRequest;
 }): boolean {

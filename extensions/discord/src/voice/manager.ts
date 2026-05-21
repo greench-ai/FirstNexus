@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { DiscordAccountConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { DiscordAccountConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { resolveDiscordAccountAllowFrom } from "../accounts.js";
 import {
   type APIVoiceState,
@@ -142,7 +142,7 @@ function startAutoJoin(manager: Pick<DiscordVoiceManager, "autoJoin">) {
 }
 
 function resolveDiscordVoiceAgentRoute(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   guildId: string;
   sessionChannelId: string;
@@ -202,7 +202,7 @@ export class DiscordVoiceManager {
   constructor(
     private params: {
       client: Client;
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       discordConfig: DiscordAccountConfig;
       accountId: string;
       runtime: RuntimeEnv;

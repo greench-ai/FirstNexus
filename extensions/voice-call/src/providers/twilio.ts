@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { setTimeout as sleep } from "node:timers/promises";
-import { safeEqualSecret } from "NexisClaw/plugin-sdk/security-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { safeEqualSecret } from "FirstNexus/plugin-sdk/security-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { getHeader } from "../http-headers.js";
 import type { MediaStreamHandler } from "../media-stream.js";
 import { chunkAudio } from "../telephony-audio.js";

@@ -1,52 +1,52 @@
 import {
   defineBundledChannelEntry,
   loadBundledEntryExportSync,
-} from "NexisClaw/plugin-sdk/channel-entry-contract";
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/channel-entry-contract";
+} from "FirstNexus/plugin-sdk/channel-entry-contract";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/channel-entry-contract";
 import { registerFeishuSubagentHooks } from "./subagent-hooks-api.js";
 
-function registerFeishuDocTools(api: NexisClawPluginApi) {
-  const register = loadBundledEntryExportSync<(api: NexisClawPluginApi) => void>(import.meta.url, {
+function registerFeishuDocTools(api: FirstNexusPluginApi) {
+  const register = loadBundledEntryExportSync<(api: FirstNexusPluginApi) => void>(import.meta.url, {
     specifier: "./api.js",
     exportName: "registerFeishuDocTools",
   });
   register(api);
 }
 
-function registerFeishuChatTools(api: NexisClawPluginApi) {
-  const register = loadBundledEntryExportSync<(api: NexisClawPluginApi) => void>(import.meta.url, {
+function registerFeishuChatTools(api: FirstNexusPluginApi) {
+  const register = loadBundledEntryExportSync<(api: FirstNexusPluginApi) => void>(import.meta.url, {
     specifier: "./api.js",
     exportName: "registerFeishuChatTools",
   });
   register(api);
 }
 
-function registerFeishuWikiTools(api: NexisClawPluginApi) {
-  const register = loadBundledEntryExportSync<(api: NexisClawPluginApi) => void>(import.meta.url, {
+function registerFeishuWikiTools(api: FirstNexusPluginApi) {
+  const register = loadBundledEntryExportSync<(api: FirstNexusPluginApi) => void>(import.meta.url, {
     specifier: "./api.js",
     exportName: "registerFeishuWikiTools",
   });
   register(api);
 }
 
-function registerFeishuDriveTools(api: NexisClawPluginApi) {
-  const register = loadBundledEntryExportSync<(api: NexisClawPluginApi) => void>(import.meta.url, {
+function registerFeishuDriveTools(api: FirstNexusPluginApi) {
+  const register = loadBundledEntryExportSync<(api: FirstNexusPluginApi) => void>(import.meta.url, {
     specifier: "./api.js",
     exportName: "registerFeishuDriveTools",
   });
   register(api);
 }
 
-function registerFeishuPermTools(api: NexisClawPluginApi) {
-  const register = loadBundledEntryExportSync<(api: NexisClawPluginApi) => void>(import.meta.url, {
+function registerFeishuPermTools(api: FirstNexusPluginApi) {
+  const register = loadBundledEntryExportSync<(api: FirstNexusPluginApi) => void>(import.meta.url, {
     specifier: "./api.js",
     exportName: "registerFeishuPermTools",
   });
   register(api);
 }
 
-function registerFeishuBitableTools(api: NexisClawPluginApi) {
-  const register = loadBundledEntryExportSync<(api: NexisClawPluginApi) => void>(import.meta.url, {
+function registerFeishuBitableTools(api: FirstNexusPluginApi) {
+  const register = loadBundledEntryExportSync<(api: FirstNexusPluginApi) => void>(import.meta.url, {
     specifier: "./api.js",
     exportName: "registerFeishuBitableTools",
   });

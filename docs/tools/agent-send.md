@@ -6,7 +6,7 @@ read_when:
 title: "Agent send"
 ---
 
-`NexisClaw agent` runs a single agent turn from the command line without needing
+`FirstNexus agent` runs a single agent turn from the command line without needing
 an inbound chat message. Use it for scripted workflows, testing, and
 programmatic delivery.
 
@@ -15,7 +15,7 @@ programmatic delivery.
 <Steps>
   <Step title="Run a simple agent turn">
     ```bash
-    NexisClaw agent --message "What is the weather today?"
+    FirstNexus agent --message "What is the weather today?"
     ```
 
     This sends the message through the Gateway and prints the reply.
@@ -25,13 +25,13 @@ programmatic delivery.
   <Step title="Target a specific agent or session">
     ```bash
     # Target a specific agent
-    NexisClaw agent --agent ops --message "Summarize logs"
+    FirstNexus agent --agent ops --message "Summarize logs"
 
     # Target a phone number (derives session key)
-    NexisClaw agent --to +15555550123 --message "Status update"
+    FirstNexus agent --to +15555550123 --message "Status update"
 
     # Reuse an existing session
-    NexisClaw agent --session-id abc123 --message "Continue the task"
+    FirstNexus agent --session-id abc123 --message "Continue the task"
     ```
 
   </Step>
@@ -39,10 +39,10 @@ programmatic delivery.
   <Step title="Deliver the reply to a channel">
     ```bash
     # Deliver to WhatsApp (default channel)
-    NexisClaw agent --to +15555550123 --message "Report ready" --deliver
+    FirstNexus agent --to +15555550123 --message "Report ready" --deliver
 
     # Deliver to Slack
-    NexisClaw agent --agent ops --message "Generate report" \
+    FirstNexus agent --agent ops --message "Generate report" \
       --deliver --reply-channel slack --reply-to "#reports"
     ```
 
@@ -85,20 +85,20 @@ programmatic delivery.
 
 ```bash
 # Simple turn with JSON output
-NexisClaw agent --to +15555550123 --message "Trace logs" --verbose on --json
+FirstNexus agent --to +15555550123 --message "Trace logs" --verbose on --json
 
 # Turn with thinking level
-NexisClaw agent --session-id 1234 --message "Summarize inbox" --thinking medium
+FirstNexus agent --session-id 1234 --message "Summarize inbox" --thinking medium
 
 # Deliver to a different channel than the session
-NexisClaw agent --agent ops --message "Alert" --deliver --reply-channel telegram --reply-to "@admin"
+FirstNexus agent --agent ops --message "Alert" --deliver --reply-channel telegram --reply-to "@admin"
 ```
 
 ## Related
 
 <CardGroup cols={2}>
   <Card title="Agent CLI reference" href="/cli/agent" icon="terminal">
-    Full `NexisClaw agent` flag and option reference.
+    Full `FirstNexus agent` flag and option reference.
   </Card>
   <Card title="Sub-agents" href="/tools/subagents" icon="users">
     Background sub-agent spawning.

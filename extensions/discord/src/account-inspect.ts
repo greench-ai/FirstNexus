@@ -1,15 +1,15 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
 import {
   hasConfiguredSecretInput,
   normalizeSecretInputString,
-} from "NexisClaw/plugin-sdk/secret-input";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/secret-input";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   mergeDiscordAccountConfig,
   resolveDefaultDiscordAccountId,
   resolveDiscordAccountConfig,
 } from "./accounts.js";
-import type { DiscordAccountConfig, NexisClawConfig } from "./runtime-api.js";
+import type { DiscordAccountConfig, FirstNexusConfig } from "./runtime-api.js";
 import type { DiscordCredentialStatus } from "./token.js";
 
 export type InspectedDiscordAccount = {
@@ -47,7 +47,7 @@ function inspectDiscordTokenValue(value: unknown): {
 }
 
 export function inspectDiscordAccount(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   envToken?: string | null;
 }): InspectedDiscordAccount {

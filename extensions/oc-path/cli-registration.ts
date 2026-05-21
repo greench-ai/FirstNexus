@@ -1,6 +1,6 @@
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
 
-export function registerOcPathCli(api: NexisClawPluginApi): void {
+export function registerOcPathCli(api: FirstNexusPluginApi): void {
   api.registerCli(
     async ({ program }) => {
       const { registerPathCli } = await import("./src/cli.js");

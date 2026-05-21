@@ -311,7 +311,7 @@ describe("runReplyAgent media path normalization", () => {
   });
 
   it("does not create a second media context inside runAgentTurnWithFallback when onBlockReply is provided", async () => {
-    // Regression test for NexisClaw/NexisClaw#68056.
+    // Regression test for FirstNexus/FirstNexus#68056.
     // Before the fix, runAgentTurnWithFallback created its own media context, separate from
     // the one agent-runner.ts created and passed to buildReplyPayloads. Two separate caches
     // meant the same source could be persisted twice (two UUID outbound files, two sends).

@@ -3,7 +3,7 @@ import type {
   AgentToolResultMiddleware,
   AgentToolResultMiddlewareContext,
   AgentToolResultMiddlewareEvent,
-  NexisClawAgentToolResult,
+  FirstNexusAgentToolResult,
 } from "../../plugins/agent-tool-result-middleware-types.js";
 import { createLazyPromiseLoader } from "../../shared/lazy-promise.js";
 import { truncateUtf16Safe } from "../../utils.js";
@@ -93,7 +93,7 @@ function isValidMiddlewareDetails(
   return true;
 }
 
-function isValidMiddlewareToolResult(value: unknown): value is NexisClawAgentToolResult {
+function isValidMiddlewareToolResult(value: unknown): value is FirstNexusAgentToolResult {
   if (!isRecord(value) || !Array.isArray(value.content)) {
     return false;
   }
@@ -105,7 +105,7 @@ function isValidMiddlewareToolResult(value: unknown): value is NexisClawAgentToo
   );
 }
 
-function buildMiddlewareFailureResult(): NexisClawAgentToolResult {
+function buildMiddlewareFailureResult(): FirstNexusAgentToolResult {
   return {
     content: [
       {
@@ -143,7 +143,7 @@ export function createAgentToolResultMiddlewareRunner(
   return {
     async applyToolResultMiddleware(
       event: AgentToolResultMiddlewareEvent,
-    ): Promise<NexisClawAgentToolResult> {
+    ): Promise<FirstNexusAgentToolResult> {
       let current = event.result;
       for (const handler of await resolveHandlers()) {
         try {

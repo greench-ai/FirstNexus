@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { parseClawHubPluginSpec } from "../infra/clawhub-spec.js";
 import type { PluginRecord } from "../plugins/registry.js";
 
@@ -6,7 +6,7 @@ export function resolvePluginUninstallId<
   TPlugin extends Pick<PluginRecord, "id" | "name">,
 >(params: {
   rawId: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   plugins: TPlugin[];
 }): { pluginId: string; plugin?: TPlugin } {
   const rawId = params.rawId.trim();

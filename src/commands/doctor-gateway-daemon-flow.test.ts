@@ -41,8 +41,8 @@ vi.mock("../config/config.js", async () => {
 });
 
 vi.mock("../daemon/constants.js", () => ({
-  resolveGatewayLaunchAgentLabel: vi.fn(() => "ai.NexisClaw.gateway"),
-  resolveNodeLaunchAgentLabel: vi.fn(() => "ai.NexisClaw.node"),
+  resolveGatewayLaunchAgentLabel: vi.fn(() => "ai.FirstNexus.gateway"),
+  resolveNodeLaunchAgentLabel: vi.fn(() => "ai.FirstNexus.node"),
 }));
 
 vi.mock("../daemon/diagnostics.js", () => ({
@@ -277,8 +277,8 @@ describe("maybeRepairGatewayDaemon", () => {
     service.readCommand.mockResolvedValueOnce({
       programArguments: ["/bin/node", "cli", "gateway"],
       environment: {
-        NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-service",
-        NEXISCLAW_CONFIG_PATH: "/tmp/NexisClaw-service/NexisClaw.json",
+        NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-service",
+        NEXISCLAW_CONFIG_PATH: "/tmp/FirstNexus-service/FirstNexus.json",
       },
     });
     readGatewayRestartHandoffSync.mockReturnValueOnce({
@@ -310,8 +310,8 @@ describe("maybeRepairGatewayDaemon", () => {
     const [handoffEnv] = readGatewayRestartHandoffSync.mock.calls.at(0) as unknown as [
       { NEXISCLAW_STATE_DIR?: string; NEXISCLAW_CONFIG_PATH?: string },
     ];
-    expect(handoffEnv?.NEXISCLAW_STATE_DIR).toBe("/tmp/NexisClaw-service");
-    expect(handoffEnv?.NEXISCLAW_CONFIG_PATH).toBe("/tmp/NexisClaw-service/NexisClaw.json");
+    expect(handoffEnv?.NEXISCLAW_STATE_DIR).toBe("/tmp/FirstNexus-service");
+    expect(handoffEnv?.NEXISCLAW_CONFIG_PATH).toBe("/tmp/FirstNexus-service/FirstNexus.json");
     expect(note).toHaveBeenCalledWith(
       "Recent restart handoff: full-process via systemd; source=plugin-change; reason=plugin source changed; pid=12345; age=30s; expiresIn=30s",
       "Gateway",
@@ -328,7 +328,7 @@ describe("maybeRepairGatewayDaemon", () => {
 
   it("suppresses busy-port note for expected Gateway listeners", async () => {
     setPlatform("linux");
-    const listeners = [{ pid: 5001, commandLine: "NexisClaw-gateway", address: "0.0.0.0:18789" }];
+    const listeners = [{ pid: 5001, commandLine: "FirstNexus-gateway", address: "0.0.0.0:18789" }];
     inspectPortUsage.mockResolvedValue({
       port: 18789,
       status: "busy",
@@ -350,8 +350,8 @@ describe("maybeRepairGatewayDaemon", () => {
       port: 18789,
       status: "busy",
       listeners: [
-        { pid: 5001, commandLine: "NexisClaw-gateway", address: "0.0.0.0:18789" },
-        { pid: 5002, commandLine: "NexisClaw-gateway", address: "127.0.0.1:18789" },
+        { pid: 5001, commandLine: "FirstNexus-gateway", address: "0.0.0.0:18789" },
+        { pid: 5002, commandLine: "FirstNexus-gateway", address: "127.0.0.1:18789" },
       ],
       hints: ["Multiple listeners detected"],
     });
@@ -385,7 +385,7 @@ describe("maybeRepairGatewayDaemon", () => {
     expect(service.install).not.toHaveBeenCalled();
     expect(service.restart).not.toHaveBeenCalled();
     expect(note).toHaveBeenCalledWith(
-      `Run ${formatCliCommand("NexisClaw gateway install")} when you want to install the gateway service.`,
+      `Run ${formatCliCommand("FirstNexus gateway install")} when you want to install the gateway service.`,
       "Gateway",
     );
   });
@@ -411,16 +411,16 @@ describe("maybeRepairGatewayDaemon", () => {
     expect(note).toHaveBeenCalledWith(EXTERNAL_SERVICE_REPAIR_NOTE, "Gateway");
   });
 
-  it("skips gateway service install when a system NexisClaw gateway service exists", async () => {
+  it("skips gateway service install when a system FirstNexus gateway service exists", async () => {
     setPlatform("linux");
     service.isLoaded.mockResolvedValue(false);
     findSystemGatewayServices.mockResolvedValue([
       {
         platform: "linux",
-        label: "NexisClaw-gateway.service",
-        detail: "unit: /etc/systemd/system/NexisClaw-gateway.service",
+        label: "FirstNexus-gateway.service",
+        detail: "unit: /etc/systemd/system/FirstNexus-gateway.service",
         scope: "system",
-        marker: "NexisClaw",
+        marker: "FirstNexus",
         legacy: false,
       },
     ]);
@@ -432,10 +432,10 @@ describe("maybeRepairGatewayDaemon", () => {
     expect(service.restart).not.toHaveBeenCalled();
     expect(note).toHaveBeenCalledWith(
       [
-        "System-level NexisClaw gateway service detected while the user gateway service is not installed.",
-        "- NexisClaw-gateway.service (unit: /etc/systemd/system/NexisClaw-gateway.service)",
-        "NexisClaw will not install a second user-level gateway service automatically.",
-        "Run `NexisClaw gateway status --deep` or `NexisClaw doctor --deep` to inspect duplicate services.",
+        "System-level FirstNexus gateway service detected while the user gateway service is not installed.",
+        "- FirstNexus-gateway.service (unit: /etc/systemd/system/FirstNexus-gateway.service)",
+        "FirstNexus will not install a second user-level gateway service automatically.",
+        "Run `FirstNexus gateway status --deep` or `FirstNexus doctor --deep` to inspect duplicate services.",
         `Set ${SERVICE_REPAIR_POLICY_ENV}=external if a system supervisor owns the gateway lifecycle.`,
       ].join("\n"),
       "Gateway",

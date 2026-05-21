@@ -29,7 +29,7 @@ function capturedGatewayCall(): CallGatewayScopedOptions {
 
 describe("gateway tool defaults", () => {
   const envSnapshot = {
-    NexisClaw: process.env.NEXISCLAW_GATEWAY_TOKEN,
+    FirstNexus: process.env.NEXISCLAW_GATEWAY_TOKEN,
   };
 
   beforeEach(() => {
@@ -40,10 +40,10 @@ describe("gateway tool defaults", () => {
   });
 
   afterAll(() => {
-    if (envSnapshot.NexisClaw === undefined) {
+    if (envSnapshot.FirstNexus === undefined) {
       delete process.env.NEXISCLAW_GATEWAY_TOKEN;
     } else {
-      process.env.NEXISCLAW_GATEWAY_TOKEN = envSnapshot.NexisClaw;
+      process.env.NEXISCLAW_GATEWAY_TOKEN = envSnapshot.FirstNexus;
     }
   });
 

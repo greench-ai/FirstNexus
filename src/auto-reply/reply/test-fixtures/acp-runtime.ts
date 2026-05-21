@@ -1,7 +1,7 @@
 import type { SessionAcpMeta } from "../../../config/sessions/types.js";
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 
-export function createAcpTestConfig(overrides?: Partial<NexisClawConfig>): NexisClawConfig {
+export function createAcpTestConfig(overrides?: Partial<FirstNexusConfig>): FirstNexusConfig {
   return {
     acp: {
       enabled: true,
@@ -11,7 +11,7 @@ export function createAcpTestConfig(overrides?: Partial<NexisClawConfig>): Nexis
       },
     },
     ...overrides,
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 export function createAcpSessionMeta(overrides?: Partial<SessionAcpMeta>): SessionAcpMeta {

@@ -1,14 +1,14 @@
 import {
   createDefaultModelsPresetAppliers,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/provider-onboard";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/provider-onboard";
 import { buildXiaomiProvider, XIAOMI_DEFAULT_MODEL_ID } from "./provider-catalog.js";
 
 export const XIAOMI_DEFAULT_MODEL_REF = `xiaomi/${XIAOMI_DEFAULT_MODEL_ID}`;
 
 const xiaomiPresetAppliers = createDefaultModelsPresetAppliers({
   primaryModelRef: XIAOMI_DEFAULT_MODEL_REF,
-  resolveParams: (_cfg: NexisClawConfig) => {
+  resolveParams: (_cfg: FirstNexusConfig) => {
     const defaultProvider = buildXiaomiProvider();
     return {
       providerId: "xiaomi",
@@ -21,10 +21,10 @@ const xiaomiPresetAppliers = createDefaultModelsPresetAppliers({
   },
 });
 
-export function applyXiaomiProviderConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applyXiaomiProviderConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   return xiaomiPresetAppliers.applyProviderConfig(cfg);
 }
 
-export function applyXiaomiConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applyXiaomiConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   return xiaomiPresetAppliers.applyConfig(cfg);
 }

@@ -20,7 +20,7 @@ describe("fs-safe defaults", () => {
     delete process.env.NEXISCLAW_FS_SAFE_PYTHON_MODE;
   });
 
-  it("disables the Python helper by default in NexisClaw", async () => {
+  it("disables the Python helper by default in FirstNexus", async () => {
     await importDefaults();
 
     expect(configureFsSafePython).toHaveBeenCalledWith({ mode: "off" });
@@ -34,7 +34,7 @@ describe("fs-safe defaults", () => {
     expect(configureFsSafePython).not.toHaveBeenCalled();
   });
 
-  it("honors the NexisClaw-specific env mode override", async () => {
+  it("honors the FirstNexus-specific env mode override", async () => {
     process.env.NEXISCLAW_FS_SAFE_PYTHON_MODE = "auto";
 
     await importDefaults();

@@ -11,7 +11,7 @@ const NIX_STORE_ROOT = "/nix/store";
 // before loading plugin code.
 //
 // Two roots are allowed:
-// - bundled: plugins shipped with NexisClaw itself, not user-installed code.
+// - bundled: plugins shipped with FirstNexus itself, not user-installed code.
 // - /nix/store in NEXISCLAW_NIX_MODE: immutable Nix package outputs, where
 //   hardlinked files are normal package-store layout rather than user mutation.
 export function isNixStorePluginRoot(

@@ -3,8 +3,8 @@ run_plugins_clawhub_scenario() {
     echo "Skipping ClawHub plugin install and uninstall (NEXISCLAW_PLUGINS_E2E_CLAWHUB=0)."
   else
     echo "Testing ClawHub plugin install and uninstall..."
-    CLAWHUB_PLUGIN_SPEC="${NEXISCLAW_PLUGINS_E2E_CLAWHUB_SPEC:-clawhub:@NexisClaw/kitchen-sink}"
-    CLAWHUB_PLUGIN_ID="${NEXISCLAW_PLUGINS_E2E_CLAWHUB_ID:-NexisClaw-kitchen-sink-fixture}"
+    CLAWHUB_PLUGIN_SPEC="${NEXISCLAW_PLUGINS_E2E_CLAWHUB_SPEC:-clawhub:@FirstNexus/kitchen-sink}"
+    CLAWHUB_PLUGIN_ID="${NEXISCLAW_PLUGINS_E2E_CLAWHUB_ID:-FirstNexus-kitchen-sink-fixture}"
     export CLAWHUB_PLUGIN_SPEC CLAWHUB_PLUGIN_ID
 
     start_clawhub_fixture_server() {
@@ -44,7 +44,7 @@ run_plugins_clawhub_scenario() {
         echo "Ignoring ambient ClawHub URL for fixture-mode plugin E2E; set NEXISCLAW_PLUGINS_E2E_LIVE_CLAWHUB=1 for live ClawHub."
       fi
       unset NEXISCLAW_CLAWHUB_URL CLAWHUB_URL
-      clawhub_fixture_dir="$(mktemp -d "/tmp/NexisClaw-clawhub-fixture.XXXXXX")"
+      clawhub_fixture_dir="$(mktemp -d "/tmp/FirstNexus-clawhub-fixture.XXXXXX")"
       start_clawhub_fixture_server "$clawhub_fixture_dir"
     fi
 

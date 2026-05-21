@@ -1,5 +1,5 @@
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ModelProviderConfig } from "../config/types.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
 
 /**
  * Provider-owned config normalization for `models.providers.<id>` entries.
@@ -31,6 +31,6 @@ export type ProviderResolveConfigApiKeyContext = {
  */
 export type ProviderApplyConfigDefaultsContext = {
   provider: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
 };

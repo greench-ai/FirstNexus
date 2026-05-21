@@ -10,7 +10,7 @@ import {
 import { buildQaGatewayConfig } from "./qa-gateway-config.js";
 
 const QA_LAB_INTERNAL_PORT = 43123;
-const QA_LAB_UI_OVERLAY_DIR = "/opt/NexisClaw-qa-lab-ui";
+const QA_LAB_UI_OVERLAY_DIR = "/opt/FirstNexus-qa-lab-ui";
 
 function toPosixRelative(fromDir: string, toPath: string): string {
   return path.relative(fromDir, toPath).split(path.sep).join("/");
@@ -106,7 +106,7 @@ ${params.bindUiDist ? `    volumes:\n      - ${qaLabUiMount}:${QA_LAB_UI_OVERLAY
       - --control-ui-url
       - "http://127.0.0.1:${params.gatewayPort}/"
       - --control-ui-proxy-target
-      - "http://NexisClaw-qa-gateway:18789/"
+      - "http://FirstNexus-qa-gateway:18789/"
       - --control-ui-token
       - "${params.gatewayToken}"
 ${params.bindUiDist ? `      - --ui-dist-dir\n      - "${QA_LAB_UI_OVERLAY_DIR}"\n` : ""}      - --auto-kickoff-target
@@ -119,23 +119,23 @@ ${params.bindUiDist ? `      - --ui-dist-dir\n      - "${QA_LAB_UI_OVERLAY_DIR}"
         condition: service_healthy
 `
     : ""
-}  NexisClaw-qa-gateway:
+}  FirstNexus-qa-gateway:
 ${imageBlock}    pull_policy: never
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
       - "${params.gatewayPort}:18789"
     environment:
-      NEXISCLAW_CONFIG_PATH: /tmp/NexisClaw/NexisClaw.json
-      NEXISCLAW_STATE_DIR: /tmp/NexisClaw/state
+      NEXISCLAW_CONFIG_PATH: /tmp/FirstNexus/FirstNexus.json
+      NEXISCLAW_STATE_DIR: /tmp/FirstNexus/state
       NEXISCLAW_NO_RESPAWN: "1"
       NEXISCLAW_SKIP_GMAIL_WATCHER: "1"
       NEXISCLAW_SKIP_BROWSER_CONTROL_SERVER: "1"
       NEXISCLAW_SKIP_CANVAS_HOST: "1"
       NEXISCLAW_PROFILE: ""
     volumes:
-      - ./state:/opt/NexisClaw-scaffold:ro
-      - ${repoMount}:/opt/NexisClaw-repo:ro
+      - ./state:/opt/FirstNexus-scaffold:ro
+      - ${repoMount}:/opt/FirstNexus-repo:ro
     healthcheck:
       test:
         - CMD
@@ -158,7 +158,7 @@ ${
     command:
       - sh
       - -lc
-      - mkdir -p /tmp/NexisClaw/workspace /tmp/NexisClaw/state && cp /opt/NexisClaw-scaffold/NexisClaw.json /tmp/NexisClaw/NexisClaw.json && cp -R /opt/NexisClaw-scaffold/seed-workspace/. /tmp/NexisClaw/workspace/ && ln -snf /opt/NexisClaw-repo /tmp/NexisClaw/workspace/repo && exec node dist/index.js gateway run --port 18789 --bind lan --allow-unconfigured
+      - mkdir -p /tmp/FirstNexus/workspace /tmp/FirstNexus/state && cp /opt/FirstNexus-scaffold/FirstNexus.json /tmp/FirstNexus/FirstNexus.json && cp -R /opt/FirstNexus-scaffold/seed-workspace/. /tmp/FirstNexus/workspace/ && ln -snf /opt/FirstNexus-repo /tmp/FirstNexus/workspace/repo && exec node dist/index.js gateway run --port 18789 --bind lan --allow-unconfigured
 `;
 }
 
@@ -193,12 +193,12 @@ Files:
 
 - \`docker-compose.qa.yml\`
 - \`.env.example\`
-- \`state/NexisClaw.json\`
+- \`state/FirstNexus.json\`
 
 Suggested flow:
 
 1. Build the prebaked image once:
-   - \`docker build -t NexisClaw:qa-local-prebaked --build-arg NEXISCLAW_EXTENSIONS="qa-channel qa-lab" -f Dockerfile .\`
+   - \`docker build -t FirstNexus:qa-local-prebaked --build-arg NEXISCLAW_EXTENSIONS="qa-channel qa-lab" -f Dockerfile .\`
 2. Start the stack:
    - \`docker compose -f docker-compose.qa.yml up${params.usePrebuiltImage ? "" : " --build"} -d\`
 3. Open the QA dashboard:
@@ -246,7 +246,7 @@ export async function writeQaDockerHarnessFiles(params: {
   const gatewayToken = params.gatewayToken ?? `qa-token-${randomUUID()}`;
   const providerBaseUrl = params.providerBaseUrl ?? "http://qa-mock-openai:44080/v1";
   const qaBusBaseUrl = params.qaBusBaseUrl ?? "http://qa-lab:43123";
-  const imageName = params.imageName ?? "NexisClaw:qa-local-prebaked";
+  const imageName = params.imageName ?? "FirstNexus:qa-local-prebaked";
   const usePrebuiltImage = params.usePrebuiltImage ?? false;
   const bindUiDist = params.bindUiDist ?? false;
   const includeQaLabUi = params.includeQaLabUi ?? true;
@@ -262,7 +262,7 @@ export async function writeQaDockerHarnessFiles(params: {
     gatewayPort: 18789,
     gatewayToken,
     providerBaseUrl,
-    workspaceDir: "/tmp/NexisClaw/workspace",
+    workspaceDir: "/tmp/FirstNexus/workspace",
     controlUiRoot: "/app/dist/control-ui",
     transportPluginIds: QA_CHANNEL_REQUIRED_PLUGIN_IDS,
     transportConfig: createQaChannelGatewayConfig({
@@ -274,7 +274,7 @@ export async function writeQaDockerHarnessFiles(params: {
     path.join(params.outputDir, "docker-compose.qa.yml"),
     path.join(params.outputDir, ".env.example"),
     path.join(params.outputDir, "README.md"),
-    path.join(params.outputDir, "state", "NexisClaw.json"),
+    path.join(params.outputDir, "state", "FirstNexus.json"),
   ];
 
   await Promise.all([
@@ -317,7 +317,7 @@ export async function writeQaDockerHarnessFiles(params: {
       "utf8",
     ),
     fs.writeFile(
-      path.join(params.outputDir, "state", "NexisClaw.json"),
+      path.join(params.outputDir, "state", "FirstNexus.json"),
       `${JSON.stringify(config, null, 2)}\n`,
       "utf8",
     ),
@@ -349,7 +349,7 @@ export async function buildQaDockerHarnessImage(
     ) => Promise<{ stdout: string; stderr: string }>;
   },
 ) {
-  const imageName = params.imageName ?? "NexisClaw:qa-local-prebaked";
+  const imageName = params.imageName ?? "FirstNexus:qa-local-prebaked";
   const runCommand =
     deps?.runCommand ??
     (async (command: string, args: string[], cwd: string) => {

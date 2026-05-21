@@ -1,13 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
-import { loadJsonFile, saveJsonFile } from "NexisClaw/plugin-sdk/json-store";
+import { loadJsonFile, saveJsonFile } from "FirstNexus/plugin-sdk/json-store";
 import {
   DEFAULT_NEXISCLAW_BROWSER_COLOR,
   DEFAULT_NEXISCLAW_BROWSER_PROFILE_NAME,
 } from "./constants.js";
 
 function decoratedMarkerPath(userDataDir: string) {
-  return path.join(userDataDir, ".NexisClaw-profile-decorated");
+  return path.join(userDataDir, ".FirstNexus-profile-decorated");
 }
 
 function safeReadJson(filePath: string): Record<string, unknown> | null {
@@ -105,7 +105,7 @@ export function isProfileDecorated(
  * Best-effort profile decoration (name + lobster-orange). Chrome preference keys
  * vary by version; we keep this conservative and idempotent.
  */
-export function decorateNexisClawProfile(
+export function decorateFirstNexusProfile(
   userDataDir: string,
   opts?: { name?: string; color?: string; downloadDir?: string },
 ) {

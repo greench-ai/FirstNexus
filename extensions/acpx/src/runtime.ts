@@ -24,8 +24,8 @@ import {
   type AcpxProcessLeaseStore,
 } from "./process-lease.js";
 import {
-  cleanupNexisClawOwnedAcpxProcessTree,
-  isNexisClawOwnedAcpxProcessCommand,
+  cleanupFirstNexusOwnedAcpxProcessTree,
+  isFirstNexusOwnedAcpxProcessCommand,
   type AcpxProcessCleanupDeps,
 } from "./process-reaper.js";
 
@@ -33,13 +33,13 @@ type AcpSessionStore = AcpRuntimeOptions["sessionStore"];
 type AcpSessionRecord = Parameters<AcpSessionStore["save"]>[0];
 type AcpLoadedSessionRecord = Awaited<ReturnType<AcpSessionStore["load"]>>;
 type BaseAcpxRuntimeTestOptions = ConstructorParameters<typeof BaseAcpxRuntime>[1];
-type NexisClawAcpxRuntimeOptions = AcpRuntimeOptions & {
-  NexisClawWrapperRoot?: string;
-  NexisClawGatewayInstanceId?: string;
-  NexisClawProcessLeaseStore?: AcpxProcessLeaseStore;
+type FirstNexusAcpxRuntimeOptions = AcpRuntimeOptions & {
+  FirstNexusWrapperRoot?: string;
+  FirstNexusGatewayInstanceId?: string;
+  FirstNexusProcessLeaseStore?: AcpxProcessLeaseStore;
 };
 type AcpxRuntimeTestOptions = Record<string, unknown> & {
-  NexisClawProcessCleanup?: AcpxProcessCleanupDeps;
+  FirstNexusProcessCleanup?: AcpxProcessCleanupDeps;
 };
 
 type ResetAwareSessionStore = AcpSessionStore & {
@@ -104,12 +104,12 @@ function readRecordAgentPid(record: unknown): number | undefined {
   return numericPid && Number.isInteger(numericPid) && numericPid > 0 ? numericPid : undefined;
 }
 
-function readNexisClawLeaseIdFromRecord(record: AcpLoadedSessionRecord): string | undefined {
+function readFirstNexusLeaseIdFromRecord(record: AcpLoadedSessionRecord): string | undefined {
   if (typeof record !== "object" || record === null) {
     return undefined;
   }
-  const { NexisClawLeaseId } = record as { NexisClawLeaseId?: unknown };
-  return typeof NexisClawLeaseId === "string" ? NexisClawLeaseId.trim() || undefined : undefined;
+  const { FirstNexusLeaseId } = record as { FirstNexusLeaseId?: unknown };
+  return typeof FirstNexusLeaseId === "string" ? FirstNexusLeaseId.trim() || undefined : undefined;
 }
 
 function extractGeneratedWrapperPath(command: string | undefined): string {
@@ -173,8 +173,8 @@ function createResetAwareSessionStore(
       }
       return {
         ...(record as Record<string, unknown>),
-        NexisClawLeaseId: lease.leaseId,
-        NexisClawGatewayInstanceId: lease.gatewayInstanceId,
+        FirstNexusLeaseId: lease.leaseId,
+        FirstNexusGatewayInstanceId: lease.gatewayInstanceId,
       } as AcpLoadedSessionRecord;
     },
     async save(record: AcpSessionRecord): Promise<void> {
@@ -208,8 +208,8 @@ function createResetAwareSessionStore(
           // ACPX uses agentCommand as reuse identity. Lease metadata belongs to
           // our sidecar record, so keep the persisted command stable.
           agentCommand: stableAgentCommand,
-          NexisClawLeaseId: launch.leaseId,
-          NexisClawGatewayInstanceId: launch.gatewayInstanceId,
+          FirstNexusLeaseId: launch.leaseId,
+          FirstNexusGatewayInstanceId: launch.gatewayInstanceId,
         } as AcpSessionRecord;
       }
       await baseStore.save(recordToSave);
@@ -226,7 +226,7 @@ function createResetAwareSessionStore(
   };
 }
 
-const NEXISCLAW_BRIDGE_EXECUTABLE = "NexisClaw";
+const NEXISCLAW_BRIDGE_EXECUTABLE = "FirstNexus";
 const NEXISCLAW_BRIDGE_SUBCOMMAND = "acp";
 const CODEX_ACP_AGENT_ID = "codex";
 const CODEX_ACP_NEXISCLAW_PREFIX = "openai-codex/";
@@ -349,7 +349,7 @@ function unwrapEnvCommand(parts: string[]): string[] {
   return parts.slice(index);
 }
 
-function isNexisClawBridgeCommand(command: string | undefined): boolean {
+function isFirstNexusBridgeCommand(command: string | undefined): boolean {
   if (!command) {
     return false;
   }
@@ -361,7 +361,7 @@ function isNexisClawBridgeCommand(command: string | undefined): boolean {
     return false;
   }
   const scriptName = basename(parts[1] ?? "");
-  return /^NexisClaw(?:\.[cm]?js)?$/i.test(scriptName) && parts[2] === NEXISCLAW_BRIDGE_SUBCOMMAND;
+  return /^FirstNexus(?:\.[cm]?js)?$/i.test(scriptName) && parts[2] === NEXISCLAW_BRIDGE_SUBCOMMAND;
 }
 
 function isCodexAcpPackageSpec(value: string): boolean {
@@ -401,7 +401,7 @@ function failUnsupportedCodexAcpModel(rawModel: string, detail?: string): never 
 // acpx's `decodeAcpxRuntimeHandleState` only accepts `persistent` and `oneshot`; any other
 // value silently round-trips through the encoded handle as `persistent` and later throws
 // `SessionResumeRequiredError` on agent restart. Fail fast at this boundary instead.
-// See NexisClaw/NexisClaw#73071.
+// See FirstNexus/FirstNexus#73071.
 const SUPPORTED_RUNTIME_SESSION_MODES = new Set(["persistent", "oneshot"] as const);
 
 function assertSupportedRuntimeSessionMode(
@@ -552,7 +552,7 @@ function resolveAgentCommandForName(params: {
 }
 
 function shouldUseBridgeSafeDelegateForCommand(command: string | undefined): boolean {
-  return isNexisClawBridgeCommand(command);
+  return isFirstNexusBridgeCommand(command);
 }
 
 function shouldUseDistinctBridgeDelegate(options: AcpRuntimeOptions): boolean {
@@ -577,12 +577,12 @@ export class AcpxRuntime implements AcpRuntime {
   private readonly launchLeaseScope = new AsyncLocalStorage<AcpxLaunchLeaseContext | undefined>();
   private readonly cwd: string;
 
-  constructor(options: NexisClawAcpxRuntimeOptions, testOptions?: AcpxRuntimeTestOptions) {
-    const { NexisClawProcessCleanup, ...delegateTestOptions } = testOptions ?? {};
-    this.processCleanupDeps = NexisClawProcessCleanup;
-    this.wrapperRoot = options.NexisClawWrapperRoot;
-    this.gatewayInstanceId = options.NexisClawGatewayInstanceId;
-    this.processLeaseStore = options.NexisClawProcessLeaseStore;
+  constructor(options: FirstNexusAcpxRuntimeOptions, testOptions?: AcpxRuntimeTestOptions) {
+    const { FirstNexusProcessCleanup, ...delegateTestOptions } = testOptions ?? {};
+    this.processCleanupDeps = FirstNexusProcessCleanup;
+    this.wrapperRoot = options.FirstNexusWrapperRoot;
+    this.gatewayInstanceId = options.FirstNexusGatewayInstanceId;
+    this.processLeaseStore = options.FirstNexusProcessLeaseStore;
     this.cwd = options.cwd;
     this.sessionStore = createResetAwareSessionStore(options.sessionStore, {
       gatewayInstanceId: this.gatewayInstanceId,
@@ -709,7 +709,7 @@ export class AcpxRuntime implements AcpRuntime {
       !this.wrapperRoot ||
       !this.gatewayInstanceId ||
       !this.processLeaseStore ||
-      !isNexisClawOwnedAcpxProcessCommand({
+      !isFirstNexusOwnedAcpxProcessCommand({
         command: params.command,
         wrapperRoot: this.wrapperRoot,
       })
@@ -743,7 +743,7 @@ export class AcpxRuntime implements AcpRuntime {
     handle: AcpRuntimeHandle,
     record: AcpLoadedSessionRecord,
   ): Promise<void> {
-    const leaseId = readNexisClawLeaseIdFromRecord(record);
+    const leaseId = readFirstNexusLeaseIdFromRecord(record);
     const rootPid = readAgentPidFromRecord(record);
     const sessionKeys = [handle.sessionKey, readSessionRecordName(record)];
     const openLeases =
@@ -766,7 +766,7 @@ export class AcpxRuntime implements AcpRuntime {
         : undefined);
     if (lease && lease.gatewayInstanceId === this.gatewayInstanceId && lease.rootPid > 0) {
       await this.processLeaseStore?.markState(lease.leaseId, "closing");
-      const result = await cleanupNexisClawOwnedAcpxProcessTree({
+      const result = await cleanupFirstNexusOwnedAcpxProcessTree({
         rootPid: lease.rootPid,
         rootCommand: readAgentCommandFromRecord(record),
         expectedLeaseId: lease.leaseId,
@@ -792,7 +792,7 @@ export class AcpxRuntime implements AcpRuntime {
     if (!rootPid || !rootCommand) {
       return;
     }
-    await cleanupNexisClawOwnedAcpxProcessTree({
+    await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid,
       rootCommand,
       wrapperRoot: this.wrapperRoot,

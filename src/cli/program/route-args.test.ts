@@ -14,7 +14,7 @@ import {
 describe("route-args", () => {
   it("parses health and status route args", () => {
     expect(
-      parseHealthRouteArgs(["node", "NexisClaw", "health", "--json", "--timeout", "5000"]),
+      parseHealthRouteArgs(["node", "FirstNexus", "health", "--json", "--timeout", "5000"]),
     ).toEqual({
       json: true,
       verbose: false,
@@ -23,7 +23,7 @@ describe("route-args", () => {
     expect(
       parseStatusRouteArgs([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "status",
         "--json",
         "--deep",
@@ -40,14 +40,14 @@ describe("route-args", () => {
       verbose: false,
       timeoutMs: 5000,
     });
-    expect(parseStatusRouteArgs(["node", "NexisClaw", "status", "--timeout"])).toBeNull();
+    expect(parseStatusRouteArgs(["node", "FirstNexus", "status", "--timeout"])).toBeNull();
   });
 
   it("parses gateway status route args and rejects probe-only ssh flags", () => {
     expect(
       parseGatewayStatusRouteArgs([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "gateway",
         "status",
         "--url",
@@ -75,10 +75,10 @@ describe("route-args", () => {
       json: true,
     });
     expect(
-      parseGatewayStatusRouteArgs(["node", "NexisClaw", "gateway", "status", "--ssh", "host"]),
+      parseGatewayStatusRouteArgs(["node", "FirstNexus", "gateway", "status", "--ssh", "host"]),
     ).toBeNull();
     expect(
-      parseGatewayStatusRouteArgs(["node", "NexisClaw", "gateway", "status", "--ssh-auto"]),
+      parseGatewayStatusRouteArgs(["node", "FirstNexus", "gateway", "status", "--ssh-auto"]),
     ).toBeNull();
   });
 
@@ -86,7 +86,7 @@ describe("route-args", () => {
     expect(
       parseSessionsRouteArgs([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "sessions",
         "--json",
         "--all-agents",
@@ -107,15 +107,15 @@ describe("route-args", () => {
       active: "true",
       limit: "25",
     });
-    expect(parseSessionsRouteArgs(["node", "NexisClaw", "sessions", "--agent"])).toBeNull();
-    expect(parseSessionsRouteArgs(["node", "NexisClaw", "sessions", "--limit"])).toBeNull();
+    expect(parseSessionsRouteArgs(["node", "FirstNexus", "sessions", "--agent"])).toBeNull();
+    expect(parseSessionsRouteArgs(["node", "FirstNexus", "sessions", "--limit"])).toBeNull();
     expect(
-      parseAgentsListRouteArgs(["node", "NexisClaw", "agents", "list", "--json", "--bindings"]),
+      parseAgentsListRouteArgs(["node", "FirstNexus", "agents", "list", "--json", "--bindings"]),
     ).toEqual({
       json: true,
       bindings: true,
     });
-    expect(parseAgentsListRouteArgs(["node", "NexisClaw", "agents"])).toEqual({
+    expect(parseAgentsListRouteArgs(["node", "FirstNexus", "agents"])).toEqual({
       json: false,
       bindings: false,
     });
@@ -125,7 +125,7 @@ describe("route-args", () => {
     expect(
       parseConfigGetRouteArgs([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "--log-level",
         "debug",
         "config",
@@ -140,7 +140,7 @@ describe("route-args", () => {
     expect(
       parseConfigUnsetRouteArgs([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "config",
         "unset",
         "--profile",
@@ -150,14 +150,14 @@ describe("route-args", () => {
     ).toEqual({
       path: "update.channel",
     });
-    expect(parseConfigGetRouteArgs(["node", "NexisClaw", "config", "get", "--json"])).toBeNull();
+    expect(parseConfigGetRouteArgs(["node", "FirstNexus", "config", "get", "--json"])).toBeNull();
   });
 
   it("parses models list and models status route args", () => {
     expect(
       parseModelsListRouteArgs([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "models",
         "list",
         "--provider",
@@ -177,7 +177,7 @@ describe("route-args", () => {
     expect(
       parseModelsStatusRouteArgs([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "models",
         "status",
         "--probe-provider",
@@ -212,7 +212,7 @@ describe("route-args", () => {
       probe: true,
     });
     expect(
-      parseModelsStatusRouteArgs(["node", "NexisClaw", "models", "status", "--probe-profile"]),
+      parseModelsStatusRouteArgs(["node", "FirstNexus", "models", "status", "--probe-profile"]),
     ).toBeNull();
   });
 });

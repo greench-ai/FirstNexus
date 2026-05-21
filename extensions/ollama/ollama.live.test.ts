@@ -25,11 +25,13 @@ async function collectStreamEvents<T>(stream: AsyncIterable<T>): Promise<T[]> {
   return events;
 }
 
-async function withTempNexisClawState<T>(run: (paths: { root: string }) => Promise<T>): Promise<T> {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-ollama-cli-live-"));
+async function withTempFirstNexusState<T>(
+  run: (paths: { root: string }) => Promise<T>,
+): Promise<T> {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-ollama-cli-live-"));
   try {
     await fs.writeFile(
-      path.join(root, "NexisClaw.json"),
+      path.join(root, "FirstNexus.json"),
       JSON.stringify(
         {
           models: {
@@ -53,8 +55,8 @@ async function withTempNexisClawState<T>(run: (paths: { root: string }) => Promi
   }
 }
 
-async function runNexisClawCli(args: string[], env: NodeJS.ProcessEnv) {
-  const outputRoot = fsSync.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-ollama-cli-output-"));
+async function runFirstNexusCli(args: string[], env: NodeJS.ProcessEnv) {
+  const outputRoot = fsSync.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-ollama-cli-output-"));
   const stdoutPath = path.join(outputRoot, "stdout.txt");
   const stderrPath = path.join(outputRoot, "stderr.txt");
   const stdoutFd = fsSync.openSync(stdoutPath, "w");
@@ -62,7 +64,7 @@ async function runNexisClawCli(args: string[], env: NodeJS.ProcessEnv) {
   let stdoutClosed = false;
   let stderrClosed = false;
   try {
-    const result = spawnSync(process.execPath, ["NexisClaw.mjs", ...args], {
+    const result = spawnSync(process.execPath, ["FirstNexus.mjs", ...args], {
       cwd: process.cwd(),
       env,
       timeout: 90_000,
@@ -107,7 +109,7 @@ function buildCliEnv(root: string): NodeJS.ProcessEnv {
     NEXISCLAW_LIVE_OLLAMA: "1",
     NEXISCLAW_LIVE_OLLAMA_WEB_SEARCH: "0",
     NEXISCLAW_STATE_DIR: path.join(root, "state"),
-    NEXISCLAW_CONFIG_PATH: path.join(root, "NexisClaw.json"),
+    NEXISCLAW_CONFIG_PATH: path.join(root, "FirstNexus.json"),
     NEXISCLAW_NO_RESPAWN: "1",
     NEXISCLAW_TEST_FAST: "1",
     OLLAMA_API_KEY: "ollama-local",
@@ -116,8 +118,8 @@ function buildCliEnv(root: string): NodeJS.ProcessEnv {
 
 describe.skipIf(!LIVE)("ollama live", () => {
   it("runs infer model run through the local CLI path without PI model discovery", async () => {
-    await withTempNexisClawState(async ({ root }) => {
-      const result = await runNexisClawCli(
+    await withTempFirstNexusState(async ({ root }) => {
+      const result = await runFirstNexusCli(
         [
           "infer",
           "model",
@@ -271,7 +273,7 @@ describe.skipIf(!LIVE)("ollama live", () => {
       }
 
       const result = (await tool.execute({
-        query: "NexisClaw documentation",
+        query: "FirstNexus documentation",
         count: 1,
       })) as {
         provider?: string;

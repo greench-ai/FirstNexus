@@ -3,17 +3,17 @@ import { rmSync } from "node:fs";
 import { readdir, readFile, stat, unlink } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { join } from "node:path";
-import { loadOutboundMediaFromUrl } from "NexisClaw/plugin-sdk/outbound-media";
-import { privateFileStore } from "NexisClaw/plugin-sdk/security-runtime";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
-import { resolveWebhookPath } from "NexisClaw/plugin-sdk/webhook-ingress";
+import { loadOutboundMediaFromUrl } from "FirstNexus/plugin-sdk/outbound-media";
+import { privateFileStore } from "FirstNexus/plugin-sdk/security-runtime";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
+import { resolveWebhookPath } from "FirstNexus/plugin-sdk/webhook-ingress";
 
 const ZALO_OUTBOUND_MEDIA_TTL_MS = 2 * 60_000;
 const ZALO_OUTBOUND_MEDIA_SEGMENT = "media";
 const ZALO_OUTBOUND_MEDIA_PREFIX = `/${ZALO_OUTBOUND_MEDIA_SEGMENT}/`;
 const ZALO_OUTBOUND_MEDIA_DIR = join(
-  resolvePreferredNexisClawTmpDir(),
-  "NexisClaw-zalo-outbound-media",
+  resolvePreferredFirstNexusTmpDir(),
+  "FirstNexus-zalo-outbound-media",
 );
 const ZALO_OUTBOUND_MEDIA_ID_RE = /^[a-f0-9]{24}$/;
 

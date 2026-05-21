@@ -40,7 +40,7 @@ export function buildBrowserDoctorReport(params: {
     id: "profile",
     label: "Profile",
     status: "pass",
-    summary: `${status.profile ?? "NexisClaw"} via ${transport}`,
+    summary: `${status.profile ?? "FirstNexus"} via ${transport}`,
   });
 
   if (transport === "chrome-mcp") {
@@ -118,7 +118,8 @@ export function buildBrowserDoctorReport(params: {
       ...(status.cdpHttp || !status.running
         ? {}
         : {
-            fixHint: "Run NexisClaw browser start or inspect browser.cdpUrl/CDP port reachability.",
+            fixHint:
+              "Run FirstNexus browser start or inspect browser.cdpUrl/CDP port reachability.",
           }),
     });
 
@@ -139,7 +140,7 @@ export function buildBrowserDoctorReport(params: {
 
   return {
     ok: checks.every((check) => check.status !== "fail"),
-    profile: status.profile ?? "NexisClaw",
+    profile: status.profile ?? "FirstNexus",
     transport,
     checks,
     status,

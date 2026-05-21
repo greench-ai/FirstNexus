@@ -1,12 +1,12 @@
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveUserPath } from "../utils.js";
 import { getLoadedRuntimePluginRegistry } from "./active-runtime-registry.js";
 import { normalizePluginsConfig } from "./config-state.js";
 import { getMemoryRuntime } from "./memory-state.js";
 import { ensureStandaloneRuntimePluginRegistryLoaded } from "./runtime/standalone-runtime-registry-loader.js";
 
-function resolveMemoryRuntimePluginIds(config: NexisClawConfig): string[] {
+function resolveMemoryRuntimePluginIds(config: FirstNexusConfig): string[] {
   const plugins = normalizePluginsConfig(config.plugins);
   const memorySlot = plugins.slots.memory;
   if (!plugins.enabled || typeof memorySlot !== "string" || memorySlot.trim().length === 0) {
@@ -19,7 +19,7 @@ function resolveMemoryRuntimePluginIds(config: NexisClawConfig): string[] {
   return [pluginId];
 }
 
-function resolveMemoryRuntimeWorkspaceDir(cfg: NexisClawConfig): string | undefined {
+function resolveMemoryRuntimeWorkspaceDir(cfg: FirstNexusConfig): string | undefined {
   const agentId = resolveDefaultAgentId(cfg);
   const dir = resolveAgentWorkspaceDir(cfg, agentId);
   if (typeof dir !== "string" || !dir.trim()) {
@@ -28,7 +28,7 @@ function resolveMemoryRuntimeWorkspaceDir(cfg: NexisClawConfig): string | undefi
   return resolveUserPath(dir);
 }
 
-function ensureMemoryRuntime(cfg?: NexisClawConfig) {
+function ensureMemoryRuntime(cfg?: FirstNexusConfig) {
   const current = getMemoryRuntime();
   if (current || !cfg) {
     return current;
@@ -54,7 +54,7 @@ function ensureMemoryRuntime(cfg?: NexisClawConfig) {
 }
 
 export async function getActiveMemorySearchManager(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   purpose?: "default" | "status" | "cli";
 }) {
@@ -65,11 +65,14 @@ export async function getActiveMemorySearchManager(params: {
   return await runtime.getMemorySearchManager(params);
 }
 
-export function resolveActiveMemoryBackendConfig(params: { cfg: NexisClawConfig; agentId: string }) {
+export function resolveActiveMemoryBackendConfig(params: {
+  cfg: FirstNexusConfig;
+  agentId: string;
+}) {
   return ensureMemoryRuntime(params.cfg)?.resolveMemoryBackendConfig(params) ?? null;
 }
 
-export async function closeActiveMemorySearchManagers(cfg?: NexisClawConfig): Promise<void> {
+export async function closeActiveMemorySearchManagers(cfg?: FirstNexusConfig): Promise<void> {
   void cfg;
   const runtime = getMemoryRuntime();
   await runtime?.closeAllMemorySearchManagers?.();

@@ -167,7 +167,7 @@ function createTaskRegistryMaintenanceHarness(params: {
       return next;
     },
     isCronRuntimeAuthoritative: () => params.cronRuntimeAuthoritative ?? true,
-    resolveCronStorePath: () => "/tmp/NexisClaw-test-cron/jobs.json",
+    resolveCronStorePath: () => "/tmp/FirstNexus-test-cron/jobs.json",
     loadCronStoreSync: () => params.cronStore ?? { version: 1, jobs: [] },
     resolveCronRunLogPath: ({ jobId }) => jobId,
     readCronRunLogEntriesSync: (jobId) => cronRunLogEntries[jobId] ?? [],
@@ -217,7 +217,7 @@ describe("task-registry maintenance issue #60299", () => {
     createTaskRegistryMaintenanceHarness({
       tasks,
       loadSessionStore: loadSessionStoreMock,
-      resolveStorePath: () => "/tmp/NexisClaw-test-sessions-main.json",
+      resolveStorePath: () => "/tmp/FirstNexus-test-sessions-main.json",
     });
 
     expectMaintenanceCounts(await runTaskRegistryMaintenance(), { reconciled: tasks.length });

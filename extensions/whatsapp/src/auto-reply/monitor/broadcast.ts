@@ -1,12 +1,12 @@
-import type { AckReactionHandle } from "NexisClaw/plugin-sdk/channel-feedback";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { buildAgentSessionKey, deriveLastRoutePolicy } from "NexisClaw/plugin-sdk/routing";
+import type { AckReactionHandle } from "FirstNexus/plugin-sdk/channel-feedback";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { buildAgentSessionKey, deriveLastRoutePolicy } from "FirstNexus/plugin-sdk/routing";
 import {
   buildAgentMainSessionKey,
   DEFAULT_MAIN_KEY,
   normalizeAgentId,
-} from "NexisClaw/plugin-sdk/routing";
+} from "FirstNexus/plugin-sdk/routing";
 import { resolveWhatsAppGroupSessionRoute } from "../../group-session-key.js";
 import { formatError } from "../../session.js";
 import { whatsappInboundLog } from "../loggers.js";
@@ -14,7 +14,7 @@ import type { WebInboundMsg } from "../types.js";
 import type { GroupHistoryEntry } from "./inbound-context.js";
 
 function buildBroadcastRouteKeys(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   msg: WebInboundMsg;
   route: ReturnType<typeof resolveAgentRoute>;
   peerId: string;
@@ -47,7 +47,7 @@ function buildBroadcastRouteKeys(params: {
 }
 
 export async function maybeBroadcastMessage(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   msg: WebInboundMsg;
   peerId: string;
   route: ReturnType<typeof resolveAgentRoute>;

@@ -2,7 +2,7 @@ import {
   resolveConfiguredBindingRecord,
   resolveConfiguredBindingRecordBySessionKey,
 } from "../channels/plugins/binding-registry.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   resolveConfiguredAcpBindingSpecFromRecord,
   toResolvedConfiguredAcpBinding,
@@ -11,7 +11,7 @@ import {
 } from "./persistent-bindings.types.js";
 
 export function resolveConfiguredAcpBindingRecord(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channel: string;
   accountId: string;
   conversationId: string;
@@ -22,7 +22,7 @@ export function resolveConfiguredAcpBindingRecord(params: {
 }
 
 export function resolveConfiguredAcpBindingSpecBySessionKey(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
 }): ConfiguredAcpBindingSpec | null {
   const resolved = resolveConfiguredBindingRecordBySessionKey(params);

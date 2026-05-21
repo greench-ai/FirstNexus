@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { normalizeLowercaseStringOrEmpty } from "../../shared/string-coerce.js";
 import {
   authorizeConfigWriteShared,
@@ -21,7 +21,7 @@ function isInternalConfigWriteMessageChannel(channel?: string | null): boolean {
 }
 
 export function resolveChannelConfigWrites(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channelId?: ChannelId | null;
   accountId?: string | null;
 }): boolean {
@@ -29,7 +29,7 @@ export function resolveChannelConfigWrites(params: {
 }
 
 export function authorizeConfigWrite(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   origin?: ConfigWriteScope;
   target?: ConfigWriteTarget;
   allowBypass?: boolean;

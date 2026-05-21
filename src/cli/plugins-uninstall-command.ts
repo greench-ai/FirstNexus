@@ -2,7 +2,7 @@ import os from "node:os";
 import path from "node:path";
 import { assertConfigWriteAllowedInCurrentMode, readConfigFileSnapshot } from "../config/config.js";
 import { resolveStateDir } from "../config/paths.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   tracePluginLifecyclePhase,
   tracePluginLifecyclePhaseAsync,
@@ -59,7 +59,7 @@ export async function runPluginUninstallCommand(
     () => readConfigFileSnapshot(),
     { command: "uninstall" },
   );
-  const sourceConfig = (snapshot.sourceConfig ?? snapshot.config) as NexisClawConfig;
+  const sourceConfig = (snapshot.sourceConfig ?? snapshot.config) as FirstNexusConfig;
   const installRecords = await tracePluginLifecyclePhaseAsync(
     "install records load",
     () => loadInstalledPluginIndexInstallRecords(),

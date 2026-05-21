@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../../config/types.js";
+import type { FirstNexusConfig } from "../../../config/types.js";
 import { buildMemorySystemPromptAddition } from "../../../context-engine/delegate.js";
 import {
   clearMemoryPluginState,
@@ -201,15 +201,15 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
           tools: {
             toolSearch: true,
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
       },
     });
 
-    expect(hoisted.createNexisClawCodingToolsMock).toHaveBeenCalledTimes(1);
+    expect(hoisted.createFirstNexusCodingToolsMock).toHaveBeenCalledTimes(1);
     const options = mockParams(
-      hoisted.createNexisClawCodingToolsMock,
+      hoisted.createFirstNexusCodingToolsMock,
       0,
-      "createNexisClawCodingTools options",
+      "createFirstNexusCodingTools options",
     );
     expect(options.includeToolSearchControls).toBe(true);
     expect(options.toolSearchCatalogRef).toEqual({});
@@ -249,19 +249,19 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expectFields(
       findRecord(
         requireRecords(seen.messages, "seen messages"),
-        (message) => message.customType === "NexisClaw.runtime-context",
+        (message) => message.customType === "FirstNexus.runtime-context",
         "runtime context message",
       ),
       {
         role: "custom",
-        customType: "NexisClaw.runtime-context",
+        customType: "FirstNexus.runtime-context",
         display: false,
         content:
           "<<<BEGIN_NEXISCLAW_INTERNAL_CONTEXT>>>\nsecret runtime context\n<<<END_NEXISCLAW_INTERNAL_CONTEXT>>>",
       },
     );
     expect(JSON.stringify(seen.messages)).not.toContain(
-      "NexisClaw runtime context for the immediately preceding user message.",
+      "FirstNexus runtime context for the immediately preceding user message.",
     );
     expect(JSON.stringify(seen.messages)).not.toContain("not user-authored");
     expect(seen.systemPrompt).not.toContain("secret runtime context");
@@ -293,7 +293,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
   });
 
   it("rebuilds skill prompt inputs from the sandbox workspace for non-rw sandbox runs", async () => {
-    const sandboxWorkspace = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-sandbox-skills-"));
+    const sandboxWorkspace = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-sandbox-skills-"));
     tempPaths.push(sandboxWorkspace);
     hoisted.resolveSandboxContextMock.mockResolvedValue({
       enabled: true,
@@ -308,22 +308,22 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       attemptOverrides: {
         skillsSnapshot: {
           prompt:
-            "<available_skills><skill><location>~/.NexisClaw/skills/smaug/SKILL.md</location></skill></available_skills>",
+            "<available_skills><skill><location>~/.FirstNexus/skills/smaug/SKILL.md</location></skill></available_skills>",
           skills: [{ name: "smaug" }],
           resolvedSkills: [
             {
               name: "smaug",
               description: "Host copy",
               disableModelInvocation: false,
-              filePath: "/Users/alice/.NexisClaw/skills/smaug/SKILL.md",
-              baseDir: "/Users/alice/.NexisClaw/skills/smaug",
-              source: "NexisClaw-workspace",
+              filePath: "/Users/alice/.FirstNexus/skills/smaug/SKILL.md",
+              baseDir: "/Users/alice/.FirstNexus/skills/smaug",
+              source: "FirstNexus-workspace",
               sourceInfo: {
-                path: "/Users/alice/.NexisClaw/skills/smaug/SKILL.md",
-                source: "NexisClaw-workspace",
+                path: "/Users/alice/.FirstNexus/skills/smaug/SKILL.md",
+                source: "FirstNexus-workspace",
                 scope: "project",
                 origin: "top-level",
-                baseDir: "/Users/alice/.NexisClaw/skills/smaug",
+                baseDir: "/Users/alice/.FirstNexus/skills/smaug",
               },
             },
           ],
@@ -378,12 +378,12 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expectFields(
       findRecord(
         requireRecords(seen.messages, "seen messages"),
-        (message) => message.customType === "NexisClaw.runtime-context",
+        (message) => message.customType === "FirstNexus.runtime-context",
         "hook runtime context message",
       ),
       {
         role: "custom",
-        customType: "NexisClaw.runtime-context",
+        customType: "FirstNexus.runtime-context",
         display: false,
         content: "dynamic hook context",
       },
@@ -396,13 +396,13 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       bootstrapFiles: [
         {
           name: "AGENTS.md",
-          path: "/tmp/NexisClaw-warning-workspace/AGENTS.md",
+          path: "/tmp/FirstNexus-warning-workspace/AGENTS.md",
           content: "A".repeat(200),
           missing: false,
         },
       ],
       contextFiles: [
-        { path: "/tmp/NexisClaw-warning-workspace/AGENTS.md", content: "A".repeat(20) },
+        { path: "/tmp/FirstNexus-warning-workspace/AGENTS.md", content: "A".repeat(20) },
       ],
     });
 
@@ -418,7 +418,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
               bootstrapTotalMaxChars: 50,
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         prompt: "visible ask",
         transcriptPrompt: "visible ask",
       },
@@ -440,21 +440,21 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
   it("preserves bootstrap system context when system prompt override is configured", async () => {
     const seen: { prompt?: string; messages?: unknown[] } = {};
     hoisted.isWorkspaceBootstrapPendingMock.mockResolvedValueOnce(true);
-    hoisted.createNexisClawCodingToolsMock.mockImplementationOnce(() => [
+    hoisted.createFirstNexusCodingToolsMock.mockImplementationOnce(() => [
       { name: "read", execute: async () => "" },
     ]);
     hoisted.resolveBootstrapContextForRunMock.mockResolvedValueOnce({
       bootstrapFiles: [
         {
           name: "BOOTSTRAP.md",
-          path: "/tmp/NexisClaw-override-workspace/BOOTSTRAP.md",
+          path: "/tmp/FirstNexus-override-workspace/BOOTSTRAP.md",
           content: "Ask who I am.",
           missing: false,
         },
       ],
       contextFiles: [
         {
-          path: "/tmp/NexisClaw-override-workspace/BOOTSTRAP.md",
+          path: "/tmp/FirstNexus-override-workspace/BOOTSTRAP.md",
           content: "Ask who I am.",
         },
       ],
@@ -471,7 +471,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
               systemPromptOverride: "Custom override prompt.",
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         disableTools: false,
         prompt: "visible ask",
         transcriptPrompt: "visible ask",
@@ -496,12 +496,12 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
     expect(systemPrompt).toContain("Custom override prompt.");
     expect(systemPrompt).toContain("## Bootstrap Pending");
     expect(systemPrompt).toContain("BOOTSTRAP.md is included below in Project Context");
-    expect(systemPrompt).toContain("## /tmp/NexisClaw-override-workspace/BOOTSTRAP.md");
+    expect(systemPrompt).toContain("## /tmp/FirstNexus-override-workspace/BOOTSTRAP.md");
     expect(systemPrompt).toContain("Ask who I am.");
   });
 
   it("includes hook-adjusted bootstrap files preloaded before routing", async () => {
-    const workspaceDir = "/tmp/NexisClaw-hook-workspace";
+    const workspaceDir = "/tmp/FirstNexus-hook-workspace";
     hoisted.resolveBootstrapFilesForRunMock.mockResolvedValueOnce([
       {
         name: "BOOTSTRAP.md",
@@ -522,7 +522,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
               systemPromptOverride: "Custom override prompt.",
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         prompt: "visible ask",
         transcriptPrompt: "visible ask",
         trigger: "user",
@@ -674,8 +674,8 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       },
     });
 
-    expect(seenPrompt).toBe("Continue the NexisClaw runtime event.");
-    expect(result.finalPromptText).toBe("Continue the NexisClaw runtime event.");
+    expect(seenPrompt).toBe("Continue the FirstNexus runtime event.");
+    expect(result.finalPromptText).toBe("Continue the FirstNexus runtime event.");
     expect(
       requireRecords(result.messagesSnapshot, "messages snapshot").some(
         (message) =>
@@ -689,7 +689,7 @@ describe("runEmbeddedAttempt context engine sessionKey forwarding", () => {
       .split("\n")
       .map((line) => JSON.parse(line) as TrajectoryEvent);
     const contextCompiled = trajectoryEvents.find((event) => event.type === "context.compiled");
-    expect(contextCompiled?.data?.prompt).toBe("Continue the NexisClaw runtime event.");
+    expect(contextCompiled?.data?.prompt).toBe("Continue the FirstNexus runtime event.");
     expect(contextCompiled?.data?.systemPrompt).toContain("internal heartbeat event");
   });
 
@@ -1357,7 +1357,7 @@ describe("runEmbeddedAttempt context engine mid-turn precheck integration", () =
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
       },
     });
 
@@ -1405,7 +1405,7 @@ describe("runEmbeddedAttempt context engine mid-turn precheck integration", () =
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
       },
       sessionMessages: [seedMessage],
       sessionPrompt: async (session) => {

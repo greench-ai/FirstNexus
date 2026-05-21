@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { withTempDir } from "../test-helpers/temp-dir.js";
 import { migrateOrphanedSessionKeys } from "./state-migrations.js";
 
@@ -29,7 +29,7 @@ async function withStateFixture(
   run: (params: { tmpDir: string; stateDir: string }) => Promise<void>,
 ): Promise<void> {
   await withTempDir({ prefix: "orphan-keys-test-" }, async (tmpDir) => {
-    const stateDir = path.join(tmpDir, ".NexisClaw");
+    const stateDir = path.join(tmpDir, ".FirstNexus");
     fs.mkdirSync(stateDir, { recursive: true });
     await run({ tmpDir, stateDir });
   });
@@ -38,20 +38,20 @@ async function withStateFixture(
 const OPS_WORK_CONFIG = {
   session: { mainKey: "work" },
   agents: { list: [{ id: "ops", default: true }] },
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 function opsSessionStorePath(stateDir: string): string {
   return path.join(stateDir, "agents", "ops", "sessions", "sessions.json");
 }
 
-function sharedMainOpsConfig(sharedStorePath: string): NexisClawConfig {
+function sharedMainOpsConfig(sharedStorePath: string): FirstNexusConfig {
   return {
     session: { mainKey: "work", store: sharedStorePath },
     agents: { list: [{ id: "main" }, { id: "ops", default: true }] },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
-async function migrateFixtureState(stateDir: string, cfg: NexisClawConfig = OPS_WORK_CONFIG) {
+async function migrateFixtureState(stateDir: string, cfg: FirstNexusConfig = OPS_WORK_CONFIG) {
   return migrateOrphanedSessionKeys({
     cfg,
     env: { NEXISCLAW_STATE_DIR: stateDir },
@@ -179,7 +179,7 @@ describe("migrateOrphanedSessionKeys", () => {
         "agent:main:main": { sessionId: "abc-123", updatedAt: 1000 },
       });
 
-      const cfg = {} as NexisClawConfig;
+      const cfg = {} as FirstNexusConfig;
 
       const result = await migrateOrphanedSessionKeys({
         cfg,

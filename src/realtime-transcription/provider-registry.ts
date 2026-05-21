@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   resolvePluginCapabilityProvider,
   resolvePluginCapabilityProviders,
@@ -17,7 +17,7 @@ export function normalizeRealtimeTranscriptionProviderId(
 }
 
 function resolveRealtimeTranscriptionProviderEntries(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): RealtimeTranscriptionProviderPlugin[] {
   return resolvePluginCapabilityProviders({
     key: "realtimeTranscriptionProviders",
@@ -25,7 +25,7 @@ function resolveRealtimeTranscriptionProviderEntries(
   });
 }
 
-function buildProviderMaps(cfg?: NexisClawConfig): {
+function buildProviderMaps(cfg?: FirstNexusConfig): {
   canonical: Map<string, RealtimeTranscriptionProviderPlugin>;
   aliases: Map<string, RealtimeTranscriptionProviderPlugin>;
 } {
@@ -33,14 +33,14 @@ function buildProviderMaps(cfg?: NexisClawConfig): {
 }
 
 export function listRealtimeTranscriptionProviders(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): RealtimeTranscriptionProviderPlugin[] {
   return [...buildProviderMaps(cfg).canonical.values()];
 }
 
 export function getRealtimeTranscriptionProvider(
   providerId: string | undefined,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): RealtimeTranscriptionProviderPlugin | undefined {
   const normalized = normalizeRealtimeTranscriptionProviderId(providerId);
   if (!normalized) {
@@ -59,7 +59,7 @@ export function getRealtimeTranscriptionProvider(
 
 export function canonicalizeRealtimeTranscriptionProviderId(
   providerId: string | undefined,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): RealtimeTranscriptionProviderId | undefined {
   const normalized = normalizeRealtimeTranscriptionProviderId(providerId);
   if (!normalized) {

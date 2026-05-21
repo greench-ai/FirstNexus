@@ -30,7 +30,7 @@ import { createUnitFastVitestConfig } from "./vitest/vitest.unit-fast.config.ts"
 import unitUiConfig from "./vitest/vitest.unit-ui.config.ts";
 import { createUnitVitestConfig } from "./vitest/vitest.unit.config.ts";
 
-const patternFiles = createPatternFileHelper("NexisClaw-vitest-projects-config-");
+const patternFiles = createPatternFileHelper("FirstNexus-vitest-projects-config-");
 
 function requireTestConfig<T extends { test?: unknown }>(config: T): NonNullable<T["test"]> {
   if (!config.test) {
@@ -172,7 +172,7 @@ describe("projects vitest config", () => {
     expect(testConfig.isolate).toBe(false);
     expect(normalizeConfigPath(testConfig.runner)).toBe("test/non-isolated-runner.ts");
     const setupFiles = normalizeConfigPaths(testConfig.setupFiles);
-    expect(setupFiles).not.toContain("test/setup-NexisClaw-runtime.ts");
+    expect(setupFiles).not.toContain("test/setup-FirstNexus-runtime.ts");
     expect(setupFiles).toContain("ui/src/test-helpers/lit-warnings.setup.ts");
     expect(requireWebOptimizer(testConfig).enabled).toBe(true);
   });
@@ -184,7 +184,7 @@ describe("projects vitest config", () => {
     expect(normalizeConfigPath(testConfig.runner)).toBe("test/non-isolated-runner.ts");
     expect(unitUiIncludePatterns).toContain("ui/src/ui/views/dreaming.test.ts");
     const setupFiles = normalizeConfigPaths(testConfig.setupFiles);
-    expect(setupFiles).not.toContain("test/setup-NexisClaw-runtime.ts");
+    expect(setupFiles).not.toContain("test/setup-FirstNexus-runtime.ts");
     expect(setupFiles).toContain("ui/src/test-helpers/lit-warnings.setup.ts");
   });
 

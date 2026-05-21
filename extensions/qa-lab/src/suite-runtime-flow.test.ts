@@ -261,8 +261,8 @@ describe("qa suite runtime flow", () => {
       imageUnderstandingValidPngBase64: "valid",
     });
 
-    await call.deps.webOpenPage({ url: "https://NexisClaw.ai" });
-    expect(webOpenPage).toHaveBeenCalledWith({ url: "https://NexisClaw.ai" });
+    await call.deps.webOpenPage({ url: "https://FirstNexus.ai" });
+    expect(webOpenPage).toHaveBeenCalledWith({ url: "https://FirstNexus.ai" });
     expect(env.webSessionIds.has("page-1")).toBe(true);
   });
 });

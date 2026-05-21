@@ -1,15 +1,15 @@
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { bundledDistPluginFile, bundledPluginFile } from "NexisClaw/plugin-sdk/test-fixtures";
+import { bundledDistPluginFile, bundledPluginFile } from "FirstNexus/plugin-sdk/test-fixtures";
 import { describe, expect, it } from "vitest";
+import { collectInstalledRootDependencyManifestErrors } from "../scripts/FirstNexus-npm-postpublish-verify.ts";
 import { listBundledPluginPackArtifacts } from "../scripts/lib/bundled-plugin-build-entries.mjs";
 import { listPluginSdkDistArtifacts } from "../scripts/lib/plugin-sdk-entries.mjs";
 import {
   WORKSPACE_TEMPLATE_PACK_PATHS,
   createWorkspaceBootstrapSmokeEnv,
 } from "../scripts/lib/workspace-bootstrap-smoke.mjs";
-import { collectInstalledRootDependencyManifestErrors } from "../scripts/NexisClaw-npm-postpublish-verify.ts";
 import {
   collectAppcastSparkleVersionErrors,
   collectBundledExtensionManifestErrors,
@@ -197,14 +197,14 @@ describe("collectBundledExtensionManifestErrors", () => {
         {
           id: "broken",
           packageJson: {
-            NexisClaw: {
+            FirstNexus: {
               install: { npmSpec: "   " },
             },
           },
         },
       ]),
     ).toEqual([
-      "bundled extension 'broken' manifest invalid | NexisClaw.install.npmSpec must be a non-empty string",
+      "bundled extension 'broken' manifest invalid | FirstNexus.install.npmSpec must be a non-empty string",
     ]);
   });
 
@@ -214,14 +214,14 @@ describe("collectBundledExtensionManifestErrors", () => {
         {
           id: "broken",
           packageJson: {
-            NexisClaw: {
-              install: { npmSpec: "@NexisClaw/broken", minHostVersion: "2026.3.14" },
+            FirstNexus: {
+              install: { npmSpec: "@FirstNexus/broken", minHostVersion: "2026.3.14" },
             },
           },
         },
       ]),
     ).toEqual([
-      "bundled extension 'broken' manifest invalid | NexisClaw.install.minHostVersion must use a semver floor in the form \">=x.y.z[-prerelease][+build]\"",
+      "bundled extension 'broken' manifest invalid | FirstNexus.install.minHostVersion must use a semver floor in the form \">=x.y.z[-prerelease][+build]\"",
     ]);
   });
 
@@ -231,7 +231,7 @@ describe("collectBundledExtensionManifestErrors", () => {
         {
           id: "irc",
           packageJson: {
-            NexisClaw: {
+            FirstNexus: {
               install: { minHostVersion: ">=2026.3.14" },
             },
           },
@@ -246,13 +246,15 @@ describe("collectBundledExtensionManifestErrors", () => {
         {
           id: "broken",
           packageJson: {
-            NexisClaw: {
+            FirstNexus: {
               install: 123,
             },
           },
         },
       ]),
-    ).toEqual(["bundled extension 'broken' manifest invalid | NexisClaw.install must be an object"]);
+    ).toEqual([
+      "bundled extension 'broken' manifest invalid | FirstNexus.install must be an object",
+    ]);
   });
 });
 
@@ -281,18 +283,18 @@ describe("bundled plugin package dependency checks", () => {
   });
 
   it("does not require root deps for root chunks sourced from the owning installed plugin", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "NexisClaw-root-owned-installed-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "FirstNexus-root-owned-installed-"));
 
     try {
       mkdirSync(join(tempRoot, "dist", "extensions", "memory-lancedb"), { recursive: true });
       writeFileSync(
         join(tempRoot, "package.json"),
-        `{"name":"NexisClaw","dependencies":{}}\n`,
+        `{"name":"FirstNexus","dependencies":{}}\n`,
         "utf8",
       );
       writeFileSync(
         join(tempRoot, "dist", "extensions", "memory-lancedb", "package.json"),
-        `{"name":"@NexisClaw/memory-lancedb","dependencies":{"root-owned-test-dep":"^1.0.0"}}\n`,
+        `{"name":"@FirstNexus/memory-lancedb","dependencies":{"root-owned-test-dep":"^1.0.0"}}\n`,
         "utf8",
       );
       writeFileSync(
@@ -308,18 +310,18 @@ describe("bundled plugin package dependency checks", () => {
   });
 
   it("still requires root deps for root-owned installed chunks", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "NexisClaw-root-owned-installed-missing-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "FirstNexus-root-owned-installed-missing-"));
 
     try {
       mkdirSync(join(tempRoot, "dist", "extensions", "memory-lancedb"), { recursive: true });
       writeFileSync(
         join(tempRoot, "package.json"),
-        `{"name":"NexisClaw","dependencies":{}}\n`,
+        `{"name":"FirstNexus","dependencies":{}}\n`,
         "utf8",
       );
       writeFileSync(
         join(tempRoot, "dist", "extensions", "memory-lancedb", "package.json"),
-        `{"name":"@NexisClaw/memory-lancedb","dependencies":{"root-owned-test-dep":"^1.0.0"}}\n`,
+        `{"name":"@FirstNexus/memory-lancedb","dependencies":{"root-owned-test-dep":"^1.0.0"}}\n`,
         "utf8",
       );
       writeFileSync(
@@ -344,12 +346,12 @@ describe("collectForbiddenPackPaths", () => {
         "dist/index.js",
         bundledDistPluginFile("discord", "node_modules/@discordjs/voice/index.js"),
         bundledPluginFile("tlon", "node_modules/.bin/tlon"),
-        "node_modules/.bin/NexisClaw",
+        "node_modules/.bin/FirstNexus",
       ]),
     ).toEqual([
       bundledDistPluginFile("discord", "node_modules/@discordjs/voice/index.js"),
       bundledPluginFile("tlon", "node_modules/.bin/tlon"),
-      "node_modules/.bin/NexisClaw",
+      "node_modules/.bin/FirstNexus",
     ]);
   });
 
@@ -389,14 +391,14 @@ describe("collectForbiddenPackPaths", () => {
     expect(
       collectForbiddenPackPaths([
         "dist/index.js",
-        "dist/extensions/browser/.NexisClaw-Install-Stage/package.json",
-        "dist/extensions/codex/.NexisClaw-runtime-deps-backup-node_modules-old/zod/index.js",
-        "dist/extensions/discord/.NexisClaw-runtime-deps-stamp.json",
+        "dist/extensions/browser/.FirstNexus-Install-Stage/package.json",
+        "dist/extensions/codex/.FirstNexus-runtime-deps-backup-node_modules-old/zod/index.js",
+        "dist/extensions/discord/.FirstNexus-runtime-deps-stamp.json",
       ]),
     ).toEqual([
-      "dist/extensions/browser/.NexisClaw-Install-Stage/package.json",
-      "dist/extensions/codex/.NexisClaw-runtime-deps-backup-node_modules-old/zod/index.js",
-      "dist/extensions/discord/.NexisClaw-runtime-deps-stamp.json",
+      "dist/extensions/browser/.FirstNexus-Install-Stage/package.json",
+      "dist/extensions/codex/.FirstNexus-runtime-deps-backup-node_modules-old/zod/index.js",
+      "dist/extensions/discord/.FirstNexus-runtime-deps-stamp.json",
     ]);
   });
 
@@ -432,7 +434,7 @@ describe("collectForbiddenPackPaths", () => {
   });
 
   it("blocks root dist chunks that still reference private qa lab sources", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "NexisClaw-release-private-qa-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "FirstNexus-release-private-qa-"));
 
     try {
       mkdirSync(join(tempRoot, "dist"), { recursive: true });
@@ -452,7 +454,7 @@ describe("collectForbiddenPackPaths", () => {
   });
 
   it("blocks private QA paths in the generated dist inventory", () => {
-    const tempRoot = mkdtempSync(join(tmpdir(), "NexisClaw-release-inventory-"));
+    const tempRoot = mkdtempSync(join(tmpdir(), "FirstNexus-release-inventory-"));
 
     try {
       mkdirSync(join(tempRoot, "dist"), { recursive: true });
@@ -496,10 +498,10 @@ describe("collectMissingPackPaths", () => {
       "scripts/postinstall-bundled-plugins.mjs",
       "dist/task-registry-control.runtime.js",
       bundledDistPluginFile("slack", "runtime-api.js"),
-      bundledDistPluginFile("slack", "NexisClaw.plugin.json"),
+      bundledDistPluginFile("slack", "FirstNexus.plugin.json"),
       bundledDistPluginFile("slack", "package.json"),
       bundledDistPluginFile("telegram", "runtime-api.js"),
-      bundledDistPluginFile("telegram", "NexisClaw.plugin.json"),
+      bundledDistPluginFile("telegram", "FirstNexus.plugin.json"),
       bundledDistPluginFile("telegram", "package.json"),
     ]) {
       expect(missing).toContain(path);
@@ -573,23 +575,23 @@ describe("resolveMissingPackBuildHint", () => {
 describe("collectPackUnpackedSizeErrors", () => {
   it("accepts pack results within the unpacked size budget", () => {
     expect(
-      collectPackUnpackedSizeErrors([makePackResult("NexisClaw-2026.3.14.tgz", 120_354_302)]),
+      collectPackUnpackedSizeErrors([makePackResult("FirstNexus-2026.3.14.tgz", 120_354_302)]),
     ).toStrictEqual([]);
   });
 
   it("flags oversized pack results that risk low-memory startup failures", () => {
     expect(
-      collectPackUnpackedSizeErrors([makePackResult("NexisClaw-2026.3.12.tgz", 224_002_564)]),
+      collectPackUnpackedSizeErrors([makePackResult("FirstNexus-2026.3.12.tgz", 224_002_564)]),
     ).toEqual([
-      "NexisClaw-2026.3.12.tgz unpackedSize 224002564 bytes (213.6 MiB) exceeds budget 211812352 bytes (202.0 MiB). Investigate duplicate channel shims, copied extension trees, or other accidental pack bloat before release.",
+      "FirstNexus-2026.3.12.tgz unpackedSize 224002564 bytes (213.6 MiB) exceeds budget 211812352 bytes (202.0 MiB). Investigate duplicate channel shims, copied extension trees, or other accidental pack bloat before release.",
     ]);
   });
 
   it("fails closed when npm pack output omits unpackedSize for every result", () => {
     expect(
       collectPackUnpackedSizeErrors([
-        { filename: "NexisClaw-2026.3.14.tgz" },
-        { filename: "NexisClaw-extra.tgz", unpackedSize: Number.NaN },
+        { filename: "FirstNexus-2026.3.14.tgz" },
+        { filename: "FirstNexus-extra.tgz", unpackedSize: Number.NaN },
       ]),
     ).toEqual([
       "npm pack --dry-run produced no unpackedSize data; pack size budget was not verified.",

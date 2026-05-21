@@ -55,7 +55,7 @@ vi.mock("../../cli/plugins-install-persist.js", () => ({
   persistPluginInstall: persistPluginInstallMock,
 }));
 
-const workspaceHarness = createCommandWorkspaceHarness("NexisClaw-command-plugins-install-");
+const workspaceHarness = createCommandWorkspaceHarness("FirstNexus-command-plugins-install-");
 
 function buildPluginsParams(commandBodyNormalized: string, workspaceDir: string) {
   return buildPluginsCommandParams({
@@ -118,7 +118,7 @@ describe("handleCommands /plugins install", () => {
     });
     persistPluginInstallMock.mockResolvedValue({});
 
-    await withTempHome("NexisClaw-command-plugins-home-", async () => {
+    await withTempHome("FirstNexus-command-plugins-home-", async () => {
       const workspaceDir = await workspaceHarness.createWorkspace();
       const pluginDir = path.join(workspaceDir, "fixtures", "path-install-plugin");
       await fs.mkdir(pluginDir, { recursive: true });
@@ -146,11 +146,11 @@ describe("handleCommands /plugins install", () => {
       targetDir: "/tmp/clawhub-demo",
       version: "1.2.3",
       extensions: ["index.js"],
-      packageName: "@NexisClaw/clawhub-demo",
+      packageName: "@FirstNexus/clawhub-demo",
       clawhub: {
         source: "clawhub",
         clawhubUrl: "https://clawhub.ai",
-        clawhubPackage: "@NexisClaw/clawhub-demo",
+        clawhubPackage: "@FirstNexus/clawhub-demo",
         clawhubFamily: "code-plugin",
         clawhubChannel: "official",
         version: "1.2.3",
@@ -160,10 +160,10 @@ describe("handleCommands /plugins install", () => {
     });
     persistPluginInstallMock.mockResolvedValue({});
 
-    await withTempHome("NexisClaw-command-plugins-home-", async () => {
+    await withTempHome("FirstNexus-command-plugins-home-", async () => {
       const workspaceDir = await workspaceHarness.createWorkspace();
       const params = buildPluginsParams(
-        "/plugins install clawhub:@NexisClaw/clawhub-demo@1.2.3",
+        "/plugins install clawhub:@FirstNexus/clawhub-demo@1.2.3",
         workspaceDir,
       );
       const result = await handlePluginsCommand(params, true);
@@ -172,15 +172,15 @@ describe("handleCommands /plugins install", () => {
       }
       expect(result.reply?.text).toContain('Installed plugin "clawhub-demo"');
       expect(mockFirstObjectArg(installPluginFromClawHubMock).spec).toBe(
-        "clawhub:@NexisClaw/clawhub-demo@1.2.3",
+        "clawhub:@FirstNexus/clawhub-demo@1.2.3",
       );
       expectPersistedInstall("clawhub-demo", {
         source: "clawhub",
-        spec: "clawhub:@NexisClaw/clawhub-demo@1.2.3",
+        spec: "clawhub:@FirstNexus/clawhub-demo@1.2.3",
         installPath: "/tmp/clawhub-demo",
         version: "1.2.3",
         integrity: "sha512-demo",
-        clawhubPackage: "@NexisClaw/clawhub-demo",
+        clawhubPackage: "@FirstNexus/clawhub-demo",
         clawhubChannel: "official",
       });
     });
@@ -190,7 +190,7 @@ describe("handleCommands /plugins install", () => {
     const previousNixMode = process.env.NEXISCLAW_NIX_MODE;
     process.env.NEXISCLAW_NIX_MODE = "1";
     try {
-      await withTempHome("NexisClaw-command-plugins-home-", async () => {
+      await withTempHome("FirstNexus-command-plugins-home-", async () => {
         const workspaceDir = await workspaceHarness.createWorkspace();
         const params = buildPluginsParams("/plugins install @acme/demo", workspaceDir);
         const result = await handlePluginsCommand(params, true);
@@ -199,7 +199,7 @@ describe("handleCommands /plugins install", () => {
         }
 
         expect(result.reply?.text).toContain("NEXISCLAW_NIX_MODE=1");
-        expect(result.reply?.text).toContain("nix-NexisClaw#quick-start");
+        expect(result.reply?.text).toContain("nix-FirstNexus#quick-start");
         expect(installPluginFromNpmSpecMock).not.toHaveBeenCalled();
         expect(installPluginFromPathMock).not.toHaveBeenCalled();
         expect(installPluginFromClawHubMock).not.toHaveBeenCalled();
@@ -231,7 +231,7 @@ describe("handleCommands /plugins install", () => {
     });
     persistPluginInstallMock.mockResolvedValue({});
 
-    await withTempHome("NexisClaw-command-plugins-home-", async () => {
+    await withTempHome("FirstNexus-command-plugins-home-", async () => {
       const workspaceDir = await workspaceHarness.createWorkspace();
       const params = buildPluginsParams(
         "/plugins install git:github.com/acme/git-demo@v1.2.3",
@@ -264,11 +264,11 @@ describe("handleCommands /plugins install", () => {
       targetDir: "/tmp/alias-demo",
       version: "1.0.0",
       extensions: ["index.js"],
-      packageName: "@NexisClaw/alias-demo",
+      packageName: "@FirstNexus/alias-demo",
       clawhub: {
         source: "clawhub",
         clawhubUrl: "https://clawhub.ai",
-        clawhubPackage: "@NexisClaw/alias-demo",
+        clawhubPackage: "@FirstNexus/alias-demo",
         clawhubFamily: "code-plugin",
         clawhubChannel: "official",
         version: "1.0.0",
@@ -278,10 +278,10 @@ describe("handleCommands /plugins install", () => {
     });
     persistPluginInstallMock.mockResolvedValue({});
 
-    await withTempHome("NexisClaw-command-plugins-home-", async () => {
+    await withTempHome("FirstNexus-command-plugins-home-", async () => {
       const workspaceDir = await workspaceHarness.createWorkspace();
       const params = buildPluginsParams(
-        "/plugin add clawhub:@NexisClaw/alias-demo@1.0.0",
+        "/plugin add clawhub:@FirstNexus/alias-demo@1.0.0",
         workspaceDir,
       );
       const result = await handlePluginsCommand(params, true);
@@ -290,7 +290,7 @@ describe("handleCommands /plugins install", () => {
       }
       expect(result.reply?.text).toContain('Installed plugin "alias-demo"');
       expect(mockFirstObjectArg(installPluginFromClawHubMock).spec).toBe(
-        "clawhub:@NexisClaw/alias-demo@1.0.0",
+        "clawhub:@FirstNexus/alias-demo@1.0.0",
       );
     });
   });
@@ -298,44 +298,44 @@ describe("handleCommands /plugins install", () => {
   it("trusts catalog npm package installs with alternate selectors", async () => {
     installPluginFromNpmSpecMock.mockResolvedValue({
       ok: true,
-      pluginId: "wecom-NexisClaw-plugin",
-      targetDir: "/tmp/wecom-NexisClaw-plugin",
+      pluginId: "wecom-FirstNexus-plugin",
+      targetDir: "/tmp/wecom-FirstNexus-plugin",
       version: "2026.4.23",
       extensions: ["index.js"],
       npmResolution: {
-        name: "@wecom/wecom-NexisClaw-plugin",
+        name: "@wecom/wecom-FirstNexus-plugin",
         version: "2026.4.23",
-        resolvedSpec: "@wecom/wecom-NexisClaw-plugin@2026.4.23",
+        resolvedSpec: "@wecom/wecom-FirstNexus-plugin@2026.4.23",
         integrity: "sha512-wecom",
         resolvedAt: "2026-05-04T20:00:00.000Z",
       },
     });
     persistPluginInstallMock.mockResolvedValue({});
 
-    await withTempHome("NexisClaw-command-plugins-home-", async () => {
+    await withTempHome("FirstNexus-command-plugins-home-", async () => {
       const workspaceDir = await workspaceHarness.createWorkspace();
       const params = buildPluginsParams(
-        "/plugins install @wecom/wecom-NexisClaw-plugin@latest",
+        "/plugins install @wecom/wecom-FirstNexus-plugin@latest",
         workspaceDir,
       );
       const result = await handlePluginsCommand(params, true);
       if (result === null) {
         throw new Error("expected plugin install result");
       }
-      expect(result.reply?.text).toContain('Installed plugin "wecom-NexisClaw-plugin"');
+      expect(result.reply?.text).toContain('Installed plugin "wecom-FirstNexus-plugin"');
       const npmInstallArgs = mockFirstObjectArg(installPluginFromNpmSpecMock);
       expectObjectFields(npmInstallArgs, {
-        spec: "@wecom/wecom-NexisClaw-plugin@latest",
-        expectedPluginId: "wecom-NexisClaw-plugin",
+        spec: "@wecom/wecom-FirstNexus-plugin@latest",
+        expectedPluginId: "wecom-FirstNexus-plugin",
         trustedSourceLinkedOfficialInstall: true,
       });
       expect(npmInstallArgs.expectedIntegrity).toBeUndefined();
-      expectPersistedInstall("wecom-NexisClaw-plugin", {
+      expectPersistedInstall("wecom-FirstNexus-plugin", {
         source: "npm",
-        spec: "@wecom/wecom-NexisClaw-plugin@latest",
-        installPath: "/tmp/wecom-NexisClaw-plugin",
+        spec: "@wecom/wecom-FirstNexus-plugin@latest",
+        installPath: "/tmp/wecom-FirstNexus-plugin",
         version: "2026.4.23",
-        resolvedName: "@wecom/wecom-NexisClaw-plugin",
+        resolvedName: "@wecom/wecom-FirstNexus-plugin",
         resolvedVersion: "2026.4.23",
       });
     });

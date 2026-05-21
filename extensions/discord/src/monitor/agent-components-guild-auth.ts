@@ -1,7 +1,7 @@
-import { resolveCommandAuthorizedFromAuthorizers } from "NexisClaw/plugin-sdk/command-auth-native";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { resolveOpenProviderRuntimeGroupPolicy } from "NexisClaw/plugin-sdk/runtime-group-policy";
+import { resolveCommandAuthorizedFromAuthorizers } from "FirstNexus/plugin-sdk/command-auth-native";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { resolveOpenProviderRuntimeGroupPolicy } from "FirstNexus/plugin-sdk/runtime-group-policy";
 import type { DiscordComponentEntry } from "../components.js";
 import { resolveDiscordChannelContext } from "./agent-components-context.js";
 import { resolveInteractionContextWithDmAuth } from "./agent-components-dm-auth.js";

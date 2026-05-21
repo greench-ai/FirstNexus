@@ -1,11 +1,11 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveSlackAccount } from "./accounts.js";
 import { createSlackWebClient } from "./client.js";
 import { normalizeAllowListLower } from "./monitor/allow-list.js";
-import type { NexisClawConfig } from "./runtime-api.js";
+import type { FirstNexusConfig } from "./runtime-api.js";
 
 export type SlackConversationInfo = {
   type: "channel" | "group" | "dm" | "unknown";
@@ -15,7 +15,7 @@ export type SlackConversationInfo = {
 const SLACK_CONVERSATION_INFO_CACHE = new Map<string, SlackConversationInfo>();
 
 export async function resolveSlackConversationInfo(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   channelId: string;
 }): Promise<SlackConversationInfo> {
@@ -108,7 +108,7 @@ export async function resolveSlackConversationInfo(params: {
 }
 
 export async function resolveSlackChannelType(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   channelId: string;
 }): Promise<"channel" | "group" | "dm" | "unknown"> {

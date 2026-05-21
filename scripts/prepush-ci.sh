@@ -17,7 +17,7 @@ run_step() {
 run_protocol_ci_mirror() {
   local targets=(
     "dist/protocol.schema.json"
-    "apps/shared/NexisClawKit/Sources/NexisClawProtocol/GatewayModels.swift"
+    "apps/shared/FirstNexusKit/Sources/FirstNexusProtocol/GatewayModels.swift"
   )
   local before after
   before="$(git diff --no-ext-diff -- "${targets[@]}" || true)"
@@ -36,17 +36,17 @@ run_protocol_ci_mirror() {
 
 has_native_swift_changes() {
   if git rev-parse --verify --quiet origin/main >/dev/null; then
-    if git diff --name-only --relative origin/main...HEAD -- apps/macos apps/ios apps/shared/NexisClawKit | rg -q .; then
+    if git diff --name-only --relative origin/main...HEAD -- apps/macos apps/ios apps/shared/FirstNexusKit | rg -q .; then
       return 0
     fi
   fi
 
   if git rev-parse --verify --quiet HEAD^ >/dev/null; then
-    git diff --name-only --relative HEAD^..HEAD -- apps/macos apps/ios apps/shared/NexisClawKit | rg -q .
+    git diff --name-only --relative HEAD^..HEAD -- apps/macos apps/ios apps/shared/FirstNexusKit | rg -q .
     return $?
   fi
 
-  git show --name-only --relative --pretty='' HEAD -- apps/macos apps/ios apps/shared/NexisClawKit | rg -q .
+  git show --name-only --relative --pretty='' HEAD -- apps/macos apps/ios apps/shared/FirstNexusKit | rg -q .
 }
 
 run_linux_ci_mirror() {
@@ -81,7 +81,7 @@ run_macos_ci_mirror() {
   fi
 
   run_step swiftlint lint --config config/swiftlint.yml
-  run_step swiftformat --lint apps/macos/Sources --config config/swiftformat --exclude '**/NexisClawProtocol,**/HostEnvSecurityPolicy.generated.swift'
+  run_step swiftformat --lint apps/macos/Sources --config config/swiftformat --exclude '**/FirstNexusProtocol,**/HostEnvSecurityPolicy.generated.swift'
   run_step swift build --package-path apps/macos --configuration release
   run_step swift test --package-path apps/macos --parallel
 }

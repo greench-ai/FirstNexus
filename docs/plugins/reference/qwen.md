@@ -1,5 +1,5 @@
 ---
-summary: "Adds Qwen, Qwen Cloud, Model Studio, DashScope model provider support to NexisClaw."
+summary: "Adds Qwen, Qwen Cloud, Model Studio, DashScope model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the qwen plugin
 title: "Qwen plugin"
@@ -7,12 +7,12 @@ title: "Qwen plugin"
 
 # Qwen plugin
 
-Adds Qwen, Qwen Cloud, Model Studio, DashScope model provider support to NexisClaw.
+Adds Qwen, Qwen Cloud, Model Studio, DashScope model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/qwen-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/qwen-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

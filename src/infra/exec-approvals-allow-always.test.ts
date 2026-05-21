@@ -185,7 +185,7 @@ describe("resolveAllowAlwaysPatterns", () => {
   }
 
   it("returns direct executable paths for non-shell segments", () => {
-    const exe = path.join("/tmp", "NexisClaw-tool");
+    const exe = path.join("/tmp", "FirstNexus-tool");
     const patterns = resolveAllowAlwaysPatterns({
       segments: [
         {
@@ -195,7 +195,7 @@ describe("resolveAllowAlwaysPatterns", () => {
             execution: makeMockExecutableResolution({
               rawExecutable: exe,
               resolvedPath: exe,
-              executableName: "NexisClaw-tool",
+              executableName: "FirstNexus-tool",
             }),
           }),
         },
@@ -504,14 +504,14 @@ describe("resolveAllowAlwaysPatterns", () => {
       return;
     }
     const dir = makeTempDir();
-    const tool = makeExecutable(dir, "NexisClaw-ok");
+    const tool = makeExecutable(dir, "FirstNexus-ok");
     const env = { PATH: `${dir}${path.delimiter}${process.env.PATH ?? ""}` };
     const safeBins = resolveSafeBins(undefined);
 
     for (const command of [
-      `bash --login -c "NexisClaw-ok && NexisClaw-ok"`,
-      `bash -i -c "NexisClaw-ok && NexisClaw-ok"`,
-      `bash -lc "NexisClaw-ok && NexisClaw-ok"`,
+      `bash --login -c "FirstNexus-ok && FirstNexus-ok"`,
+      `bash -i -c "FirstNexus-ok && FirstNexus-ok"`,
+      `bash -lc "FirstNexus-ok && FirstNexus-ok"`,
       `bash --login -c '$0 "$1"' ${tool} marker`,
       `bash -i -c '$0 "$1"' ${tool} marker`,
       `bash -lc '$0 "$1"' ${tool} marker`,

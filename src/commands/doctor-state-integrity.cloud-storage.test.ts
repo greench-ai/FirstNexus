@@ -12,8 +12,8 @@ describe("detectMacCloudSyncedStateDir", () => {
       "Library",
       "Mobile Documents",
       "com~apple~CloudDocs",
-      "NexisClaw",
-      ".NexisClaw",
+      "FirstNexus",
+      ".FirstNexus",
     );
 
     const result = detectMacCloudSyncedStateDir(stateDir, {
@@ -28,7 +28,14 @@ describe("detectMacCloudSyncedStateDir", () => {
   });
 
   it("detects state dir under Library/CloudStorage", () => {
-    const stateDir = path.join(home, "Library", "CloudStorage", "Dropbox", "NexisClaw", ".NexisClaw");
+    const stateDir = path.join(
+      home,
+      "Library",
+      "CloudStorage",
+      "Dropbox",
+      "FirstNexus",
+      ".FirstNexus",
+    );
 
     const result = detectMacCloudSyncedStateDir(stateDir, {
       platform: "darwin",
@@ -42,14 +49,14 @@ describe("detectMacCloudSyncedStateDir", () => {
   });
 
   it("detects cloud-synced target when state dir resolves via symlink", () => {
-    const symlinkPath = "/tmp/NexisClaw-state";
+    const symlinkPath = "/tmp/FirstNexus-state";
     const resolvedCloudPath = path.join(
       home,
       "Library",
       "CloudStorage",
       "OneDrive-Personal",
-      "NexisClaw",
-      ".NexisClaw",
+      "FirstNexus",
+      ".FirstNexus",
     );
 
     const result = detectMacCloudSyncedStateDir(symlinkPath, {
@@ -70,10 +77,10 @@ describe("detectMacCloudSyncedStateDir", () => {
       "Library",
       "CloudStorage",
       "OneDrive-Personal",
-      "NexisClaw",
-      ".NexisClaw",
+      "FirstNexus",
+      ".FirstNexus",
     );
-    const resolvedLocalPath = path.join(home, ".NexisClaw");
+    const resolvedLocalPath = path.join(home, ".FirstNexus");
 
     const result = detectMacCloudSyncedStateDir(symlinkPath, {
       platform: "darwin",
@@ -85,9 +92,9 @@ describe("detectMacCloudSyncedStateDir", () => {
   });
 
   it("anchors cloud detection to OS homedir when NEXISCLAW_HOME is overridden", () => {
-    const stateDir = path.join(home, "Library", "CloudStorage", "iCloud Drive", ".NexisClaw");
-    const originalNexisClawHome = process.env.NEXISCLAW_HOME;
-    process.env.NEXISCLAW_HOME = "/tmp/NexisClaw-home-override";
+    const stateDir = path.join(home, "Library", "CloudStorage", "iCloud Drive", ".FirstNexus");
+    const originalFirstNexusHome = process.env.NEXISCLAW_HOME;
+    process.env.NEXISCLAW_HOME = "/tmp/FirstNexus-home-override";
     const homedirSpy = vi.spyOn(os, "homedir").mockReturnValue(home);
     try {
       const result = detectMacCloudSyncedStateDir(stateDir, {
@@ -100,10 +107,10 @@ describe("detectMacCloudSyncedStateDir", () => {
       });
     } finally {
       homedirSpy.mockRestore();
-      if (originalNexisClawHome === undefined) {
+      if (originalFirstNexusHome === undefined) {
         delete process.env.NEXISCLAW_HOME;
       } else {
-        process.env.NEXISCLAW_HOME = originalNexisClawHome;
+        process.env.NEXISCLAW_HOME = originalFirstNexusHome;
       }
     }
   });
@@ -114,8 +121,8 @@ describe("detectMacCloudSyncedStateDir", () => {
       "Library",
       "Mobile Documents",
       "com~apple~CloudDocs",
-      "NexisClaw",
-      ".NexisClaw",
+      "FirstNexus",
+      ".FirstNexus",
     );
 
     const result = detectMacCloudSyncedStateDir(stateDir, {

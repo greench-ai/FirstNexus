@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { normalizeLowercaseStringOrEmpty } from "../../shared/string-coerce.js";
 import { resolveAgentConfig } from "../agent-scope.js";
 import { compileGlobPatterns, matchesAnyGlobPattern } from "../glob-pattern.js";
@@ -209,7 +209,7 @@ export function isToolAllowed(policy: SandboxToolPolicy, name: string) {
 }
 
 export function resolveSandboxToolPolicyForAgent(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
   agentId?: string,
 ): SandboxToolPolicyResolved {
   const agentConfig = cfg && agentId ? resolveAgentConfig(cfg, agentId) : undefined;

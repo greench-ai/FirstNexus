@@ -22,20 +22,20 @@ function resolveInstallerVersionCases(params: { stdinCwd: string }): string[] {
     [
       "-c",
       `${versionHelperSource}
-fake_NexisClaw_decorated() { printf '%s\\n' 'NexisClaw 2026.3.10 (abcdef0)'; }
-fake_NexisClaw_raw() { printf '%s\\n' "NexisClaw dev's build"; }
-NEXISCLAW_BIN=fake_NexisClaw_decorated resolve_NexisClaw_version
-NEXISCLAW_BIN=fake_NexisClaw_raw resolve_NexisClaw_version
+fake_FirstNexus_decorated() { printf '%s\\n' 'FirstNexus 2026.3.10 (abcdef0)'; }
+fake_FirstNexus_raw() { printf '%s\\n' "FirstNexus dev's build"; }
+NEXISCLAW_BIN=fake_FirstNexus_decorated resolve_FirstNexus_version
+NEXISCLAW_BIN=fake_FirstNexus_raw resolve_FirstNexus_version
 (
   cd "$1"
   source /dev/stdin <<'NEXISCLAW_STDIN_INSTALLER'
 ${versionHelperSource}
-fake_NexisClaw_stdin() { printf '%s\\n' 'NexisClaw 2026.3.10 (abcdef0)'; }
-NEXISCLAW_BIN=fake_NexisClaw_stdin
-resolve_NexisClaw_version
+fake_FirstNexus_stdin() { printf '%s\\n' 'FirstNexus 2026.3.10 (abcdef0)'; }
+NEXISCLAW_BIN=fake_FirstNexus_stdin
+resolve_FirstNexus_version
 NEXISCLAW_STDIN_INSTALLER
 )`,
-      "NexisClaw-version-test",
+      "FirstNexus-version-test",
       params.stdinCwd,
     ],
     {
@@ -58,7 +58,7 @@ describe("install.sh version resolution", () => {
   it.runIf(process.platform !== "win32")(
     "parses CLI versions and keeps stdin helpers isolated from cwd",
     () => {
-      const hostileCwd = makeTempDir(tempRoots, "NexisClaw-install-stdin-");
+      const hostileCwd = makeTempDir(tempRoots, "FirstNexus-install-stdin-");
       const hostileHelper = path.join(
         hostileCwd,
         "docker",
@@ -69,7 +69,7 @@ describe("install.sh version resolution", () => {
       fs.writeFileSync(
         hostileHelper,
         `#!/usr/bin/env bash
-extract_NexisClaw_semver() {
+extract_FirstNexus_semver() {
   printf '%s' 'poisoned'
 }
 `,
@@ -80,7 +80,7 @@ extract_NexisClaw_semver() {
         resolveInstallerVersionCases({
           stdinCwd: hostileCwd,
         }),
-      ).toEqual(["2026.3.10", "NexisClaw dev's build", "2026.3.10"]);
+      ).toEqual(["2026.3.10", "FirstNexus dev's build", "2026.3.10"]);
     },
   );
 });

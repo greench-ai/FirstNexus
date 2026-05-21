@@ -22,10 +22,10 @@ import {
 } from "../config/sessions/paths.js";
 import { loadSessionStore } from "../config/sessions/store-load.js";
 import { updateSessionStore } from "../config/sessions/store.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveRequiredHomeDir } from "../infra/home-dir.js";
 import { resolveMemoryBackendConfig } from "../memory-host-sdk/engine-storage.js";
-import { resolveNexisClawAgentDir } from "../plugin-sdk/agent-dir-compat.js";
+import { resolveFirstNexusAgentDir } from "../plugin-sdk/agent-dir-compat.js";
 import { listConfiguredChannelIdsForReadOnlyScope } from "../plugins/channel-plugin-ids.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import { parseAgentSessionKey } from "../sessions/session-key-utils.js";
@@ -125,7 +125,7 @@ function formatOrphanAgentDirPreview(entries: OrphanAgentDir[], limit = 3): stri
   return labels.join(", ");
 }
 
-function listOrphanAgentDirs(cfg: NexisClawConfig, stateDir: string): OrphanAgentDir[] {
+function listOrphanAgentDirs(cfg: FirstNexusConfig, stateDir: string): OrphanAgentDir[] {
   const configuredIds = new Set<string>();
   configuredIds.add(normalizeAgentId(resolveDefaultAgentId(cfg)));
   for (const entry of listAgentEntries(cfg)) {
@@ -133,7 +133,7 @@ function listOrphanAgentDirs(cfg: NexisClawConfig, stateDir: string): OrphanAgen
   }
 
   const agentsRoot = path.join(stateDir, "agents");
-  const liveCompatibilityAgentDir = resolveNexisClawAgentDir();
+  const liveCompatibilityAgentDir = resolveFirstNexusAgentDir();
   try {
     const entries = fs.readdirSync(agentsRoot, { withFileTypes: true });
     return entries
@@ -249,7 +249,7 @@ function findOtherStateDirs(stateDir: string): string[] {
       if (entry.name.startsWith(".")) {
         continue;
       }
-      const candidates = [".NexisClaw"].map((dir) => path.resolve(root, entry.name, dir));
+      const candidates = [".FirstNexus"].map((dir) => path.resolve(root, entry.name, dir));
       for (const candidate of candidates) {
         if (candidate === resolvedState) {
           continue;
@@ -568,7 +568,7 @@ function isSlashRoutingSessionKey(sessionKey: string): boolean {
   return /^[^:]+:slash:[^:]+(?:$|:)/.test(scoped);
 }
 
-function shouldRequireOAuthDir(cfg: NexisClawConfig, env: NodeJS.ProcessEnv): boolean {
+function shouldRequireOAuthDir(cfg: FirstNexusConfig, env: NodeJS.ProcessEnv): boolean {
   if (env.NEXISCLAW_OAUTH_DIR?.trim()) {
     return true;
   }
@@ -604,13 +604,13 @@ function shouldRequireOAuthDir(cfg: NexisClawConfig, env: NodeJS.ProcessEnv): bo
   return false;
 }
 
-function shouldSuppressOrphanTranscriptWarning(cfg: NexisClawConfig, agentId: string): boolean {
+function shouldSuppressOrphanTranscriptWarning(cfg: FirstNexusConfig, agentId: string): boolean {
   const backendConfig = resolveMemoryBackendConfig({ cfg, agentId });
   return backendConfig?.backend === "qmd" && backendConfig.qmd?.sessions.enabled === true;
 }
 
 export async function noteStateIntegrity(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   prompter: DoctorPrompterLike,
   configPath?: string,
 ) {
@@ -620,7 +620,7 @@ export async function noteStateIntegrity(
   const env = process.env;
   const homedir = () => resolveRequiredHomeDir(env, os.homedir);
   const stateDir = resolveStateDir(env, homedir);
-  const defaultStateDir = path.join(homedir(), ".NexisClaw");
+  const defaultStateDir = path.join(homedir(), ".FirstNexus");
   const oauthDir = resolveOAuthDir(env, stateDir);
   const agentId = resolveDefaultAgentId(cfg);
   const sessionsDir = resolveSessionTranscriptsDirForAgent(agentId, env, homedir);
@@ -642,8 +642,8 @@ export async function noteStateIntegrity(
       [
         `- State directory is under macOS cloud-synced storage (${displayStateDir}; ${cloudSyncedStateDir.storage}).`,
         "- This can cause slow I/O and sync/lock races for sessions and credentials.",
-        "- Prefer a local non-synced state dir (for example: ~/.NexisClaw).",
-        `  Set locally: NEXISCLAW_STATE_DIR=~/.NexisClaw ${formatCliCommand("NexisClaw doctor")}`,
+        "- Prefer a local non-synced state dir (for example: ~/.FirstNexus).",
+        `  Set locally: NEXISCLAW_STATE_DIR=~/.FirstNexus ${formatCliCommand("FirstNexus doctor")}`,
       ].join("\n"),
     );
   }
@@ -876,9 +876,9 @@ export async function noteStateIntegrity(
       warnings.push(
         [
           `- ${missing.length}/${recentTranscriptCandidates.length} recent sessions are missing transcripts.`,
-          `  Verify sessions in store: ${formatCliCommand(`NexisClaw sessions --store "${absoluteStorePath}"`)}`,
-          `  Preview cleanup impact: ${formatCliCommand(`NexisClaw sessions cleanup --store "${absoluteStorePath}" --dry-run`)}`,
-          `  Prune missing entries: ${formatCliCommand(`NexisClaw sessions cleanup --store "${absoluteStorePath}" --enforce --fix-missing`)}`,
+          `  Verify sessions in store: ${formatCliCommand(`FirstNexus sessions --store "${absoluteStorePath}"`)}`,
+          `  Preview cleanup impact: ${formatCliCommand(`FirstNexus sessions cleanup --store "${absoluteStorePath}" --dry-run`)}`,
+          `  Prune missing entries: ${formatCliCommand(`FirstNexus sessions cleanup --store "${absoluteStorePath}" --enforce --fix-missing`)}`,
         ].join("\n"),
       );
     }
@@ -891,12 +891,12 @@ export async function noteStateIntegrity(
       warnings.push(
         [
           `- Found ${wedgedCount} with automatic restart recovery tombstoned.`,
-          "  NexisClaw will not auto-resume these child sessions on restart; reconcile their task records instead.",
+          "  FirstNexus will not auto-resume these child sessions on restart; reconcile their task records instead.",
           `  Examples: ${wedgedSubagentSessions
             .slice(0, 3)
             .map(([key]) => key)
             .join(", ")}`,
-          `  Fix: ${formatCliCommand("NexisClaw tasks maintenance --apply")}`,
+          `  Fix: ${formatCliCommand("FirstNexus tasks maintenance --apply")}`,
         ].join("\n"),
       );
       const repairWedged = await prompter.confirmRuntimeRepair({
@@ -1059,7 +1059,7 @@ export function noteWorkspaceBackupTip(workspaceDir: string) {
   note(
     [
       "- Tip: back up the workspace in a private git repo (GitHub or GitLab).",
-      "- Keep ~/.NexisClaw out of git; it contains credentials and session history.",
+      "- Keep ~/.FirstNexus out of git; it contains credentials and session history.",
       "- Details: /concepts/agent-workspace#git-backup-recommended",
     ].join("\n"),
     "Workspace",

@@ -1,9 +1,9 @@
-import { defineBundledChannelEntry } from "NexisClaw/plugin-sdk/channel-entry-contract";
+import { defineBundledChannelEntry } from "FirstNexus/plugin-sdk/channel-entry-contract";
 
 export default defineBundledChannelEntry({
   id: "synology-chat",
   name: "Synology Chat",
-  description: "Native Synology Chat channel plugin for NexisClaw",
+  description: "Native Synology Chat channel plugin for FirstNexus",
   importMetaUrl: import.meta.url,
   plugin: {
     specifier: "./channel-plugin-api.js",

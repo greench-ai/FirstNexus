@@ -98,7 +98,7 @@ const BLOCKED_WORKSPACE_DOTENV_PREFIXES = [
   "ANTHROPIC_API_KEY_",
   "CLAWHUB_",
   "OPENAI_API_KEY_",
-  // Workspace .env is untrusted; reserve the full NexisClaw runtime namespace
+  // Workspace .env is untrusted; reserve the full FirstNexus runtime namespace
   // for shell/global config so new NEXISCLAW_* controls are fail-closed by default.
   "NEXISCLAW_",
   "NEXISCLAW_CLAWHUB_",
@@ -112,7 +112,7 @@ function shouldBlockWorkspaceRuntimeDotEnvKey(key: string): boolean {
 }
 
 function shouldBlockRuntimeDotEnvKey(key: string): boolean {
-  // The global ~/.NexisClaw/.env (or NEXISCLAW_STATE_DIR/.env) is a trusted
+  // The global ~/.FirstNexus/.env (or NEXISCLAW_STATE_DIR/.env) is a trusted
   // operator-controlled runtime surface. Workspace .env is untrusted and gets
   // the strict blocklist, but the trusted global fallback is allowed to set
   // runtime vars like proxy/base-url/auth values.
@@ -247,7 +247,7 @@ export function loadGlobalRuntimeDotEnvFiles(opts?: { quiet?: boolean; stateEnvP
   const stateEnvPath = opts?.stateEnvPath ?? path.join(resolveConfigDir(process.env), ".env");
   const defaultStateEnvPath = path.join(
     resolveRequiredHomeDir(process.env, os.homedir),
-    ".NexisClaw",
+    ".FirstNexus",
     ".env",
   );
   const hasExplicitNonDefaultStateDir =
@@ -266,7 +266,7 @@ export function loadGlobalRuntimeDotEnvFiles(opts?: { quiet?: boolean; stateEnvP
         filePath: path.join(
           resolveRequiredHomeDir(process.env, os.homedir),
           ".config",
-          "NexisClaw",
+          "FirstNexus",
           "gateway.env",
         ),
         shouldBlockKey: shouldBlockRuntimeDotEnvKey,
@@ -283,7 +283,7 @@ export function loadDotEnv(opts?: { quiet?: boolean }) {
   const cwdEnvPath = path.join(process.cwd(), ".env");
   loadWorkspaceDotEnvFile(cwdEnvPath, { quiet });
 
-  // Then load global fallback: ~/.NexisClaw/.env (or NEXISCLAW_STATE_DIR/.env),
+  // Then load global fallback: ~/.FirstNexus/.env (or NEXISCLAW_STATE_DIR/.env),
   // without overriding any env vars already present.
   loadGlobalRuntimeDotEnvFiles({ quiet });
 }

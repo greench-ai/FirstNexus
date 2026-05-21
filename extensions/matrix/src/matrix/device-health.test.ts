@@ -1,29 +1,29 @@
 import { describe, expect, it } from "vitest";
-import { isNexisClawManagedMatrixDevice, summarizeMatrixDeviceHealth } from "./device-health.js";
+import { isFirstNexusManagedMatrixDevice, summarizeMatrixDeviceHealth } from "./device-health.js";
 
 describe("matrix device health", () => {
-  it("detects NexisClaw-managed device names", () => {
-    expect(isNexisClawManagedMatrixDevice("NexisClaw Gateway")).toBe(true);
-    expect(isNexisClawManagedMatrixDevice("NexisClaw Debug")).toBe(true);
-    expect(isNexisClawManagedMatrixDevice("Element iPhone")).toBe(false);
-    expect(isNexisClawManagedMatrixDevice(null)).toBe(false);
+  it("detects FirstNexus-managed device names", () => {
+    expect(isFirstNexusManagedMatrixDevice("FirstNexus Gateway")).toBe(true);
+    expect(isFirstNexusManagedMatrixDevice("FirstNexus Debug")).toBe(true);
+    expect(isFirstNexusManagedMatrixDevice("Element iPhone")).toBe(false);
+    expect(isFirstNexusManagedMatrixDevice(null)).toBe(false);
   });
 
-  it("summarizes stale NexisClaw-managed devices separately from the current device", () => {
+  it("summarizes stale FirstNexus-managed devices separately from the current device", () => {
     const summary = summarizeMatrixDeviceHealth([
       {
         deviceId: "du314Zpw3A",
-        displayName: "NexisClaw Gateway",
+        displayName: "FirstNexus Gateway",
         current: true,
       },
       {
         deviceId: "BritdXC6iL",
-        displayName: "NexisClaw Gateway",
+        displayName: "FirstNexus Gateway",
         current: false,
       },
       {
         deviceId: "G6NJU9cTgs",
-        displayName: "NexisClaw Debug",
+        displayName: "FirstNexus Debug",
         current: false,
       },
       {
@@ -35,22 +35,22 @@ describe("matrix device health", () => {
 
     expect(summary).toEqual({
       currentDeviceId: "du314Zpw3A",
-      currentNexisClawDevices: [
+      currentFirstNexusDevices: [
         {
           deviceId: "du314Zpw3A",
-          displayName: "NexisClaw Gateway",
+          displayName: "FirstNexus Gateway",
           current: true,
         },
       ],
-      staleNexisClawDevices: [
+      staleFirstNexusDevices: [
         {
           deviceId: "BritdXC6iL",
-          displayName: "NexisClaw Gateway",
+          displayName: "FirstNexus Gateway",
           current: false,
         },
         {
           deviceId: "G6NJU9cTgs",
-          displayName: "NexisClaw Debug",
+          displayName: "FirstNexus Debug",
           current: false,
         },
       ],

@@ -45,7 +45,7 @@ parallels_macos_desktop_user_exec_with_secret_file() {
   shift 7
 
   local secret_path
-  secret_path="/tmp/NexisClaw-secret-${api_key_env:-env}-$RANDOM-$RANDOM"
+  secret_path="/tmp/FirstNexus-secret-${api_key_env:-env}-$RANDOM-$RANDOM"
 
   if [[ -n "$api_key_env" && -n "$api_key_value" ]]; then
     if [[ "$user_flag" == "current-user" ]]; then
@@ -59,7 +59,7 @@ parallels_macos_desktop_user_exec_with_secret_file() {
 
   local wrapper
   local wrapper_path
-  wrapper_path="/tmp/NexisClaw-secret-env-wrapper-$RANDOM-$RANDOM.sh"
+  wrapper_path="/tmp/FirstNexus-secret-env-wrapper-$RANDOM-$RANDOM.sh"
   wrapper='#!/bin/bash
 set -e
 cleanup() {

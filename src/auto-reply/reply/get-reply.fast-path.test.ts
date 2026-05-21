@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import {
   buildFastReplyCommandContext,
   initFastReplySessionState,
@@ -50,7 +50,7 @@ vi.mock("../../agents/model-catalog.js", async () => {
 });
 
 vi.mock("../../agents/workspace.js", () => ({
-  DEFAULT_AGENT_WORKSPACE_DIR: "/tmp/NexisClaw-workspace",
+  DEFAULT_AGENT_WORKSPACE_DIR: "/tmp/FirstNexus-workspace",
   ensureAgentWorkspace: (...args: unknown[]) => mocks.ensureAgentWorkspace(...args),
 }));
 registerGetReplyRuntimeOverrides(mocks);
@@ -107,23 +107,23 @@ describe("getReplyFromConfig fast test bootstrap", () => {
 
   it("fails fast on unmarked config overrides in strict fast-test mode", async () => {
     await expect(
-      getReplyFromConfig(buildGetReplyCtx(), undefined, {} as NexisClawConfig),
+      getReplyFromConfig(buildGetReplyCtx(), undefined, {} as FirstNexusConfig),
     ).rejects.toThrow(/withFastReplyConfig\(\)\/markCompleteReplyConfig\(\)/);
     expect(vi.mocked(loadConfigMock)).not.toHaveBeenCalled();
   });
 
   it("skips getRuntimeConfig, workspace bootstrap, and session bootstrap for marked test configs", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-fast-reply-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-fast-reply-"));
     const cfg = markCompleteReplyConfig({
       agents: {
         defaults: {
           model: "anthropic/claude-opus-4-6",
-          workspace: path.join(home, "NexisClaw"),
+          workspace: path.join(home, "FirstNexus"),
         },
       },
       channels: { telegram: { allowFrom: ["*"] } },
       session: { store: path.join(home, "sessions.json") },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     await expect(getReplyFromConfig(buildGetReplyCtx(), undefined, cfg)).resolves.toEqual({
       text: "ok",
@@ -148,7 +148,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
           botToken: "resolved-telegram-token",
         },
       },
-    } satisfies NexisClawConfig);
+    } satisfies FirstNexusConfig);
 
     await getReplyFromConfig(buildGetReplyCtx(), undefined, {
       agents: {
@@ -156,7 +156,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
           userTimezone: "America/New_York",
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     expect(vi.mocked(loadConfigMock)).toHaveBeenCalledOnce();
     expect(mocks.initSessionState).toHaveBeenCalledOnce();
@@ -164,7 +164,9 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("marks configs through withFastReplyConfig()", async () => {
-    const cfg = withFastReplyConfig({ session: { store: "/tmp/sessions.json" } } as NexisClawConfig);
+    const cfg = withFastReplyConfig({
+      session: { store: "/tmp/sessions.json" },
+    } as FirstNexusConfig);
 
     await expect(getReplyFromConfig(buildGetReplyCtx(), undefined, cfg)).resolves.toEqual({
       text: "ok",
@@ -175,7 +177,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("clears stale ack-only heartbeat pending delivery before replay", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-heartbeat-pending-clear-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-heartbeat-pending-clear-"));
     const storePath = path.join(home, "sessions.json");
     const sessionKey = "agent:main:telegram:123";
     await fs.writeFile(
@@ -202,7 +204,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: storePath },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     await expect(
       getReplyFromConfig(buildGetReplyCtx(), { isHeartbeat: true }, cfg),
@@ -215,7 +217,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("uses ackMaxChars when replaying stale heartbeat pending delivery", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-heartbeat-pending-replay-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-heartbeat-pending-replay-"));
     const storePath = path.join(home, "sessions.json");
     const sessionKey = "agent:main:telegram:123";
     await fs.writeFile(
@@ -239,7 +241,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: storePath },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     await expect(
       getReplyFromConfig(buildGetReplyCtx(), { isHeartbeat: true }, cfg),
@@ -252,7 +254,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("handles native /status before workspace bootstrap", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-native-status-fast-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-native-status-fast-"));
     const targetSessionKey = "agent:main:telegram:123";
     const cfg = markCompleteReplyConfig({
       agents: {
@@ -262,7 +264,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: path.join(home, "sessions.json") },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
     vi.mocked(resolveDefaultModelMock).mockReturnValueOnce({
       defaultProvider: "openai",
       defaultModel: "gpt-5.5",
@@ -287,7 +289,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
     if (!reply || Array.isArray(reply) || typeof reply.text !== "string") {
       throw new Error("expected status reply text");
     }
-    expect(reply.text.includes("NexisClaw")).toBe(true);
+    expect(reply.text.includes("FirstNexus")).toBe(true);
     expect(reply.text.includes("Think: medium")).toBe(true);
     expect(mocks.loadModelCatalog).toHaveBeenCalledWith({ config: cfg });
     expect(mocks.ensureAgentWorkspace).not.toHaveBeenCalled();
@@ -297,7 +299,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("uses configured agent thinking defaults for native /status", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-native-status-agent-think-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-native-status-agent-think-"));
     const targetSessionKey = "agent:main:telegram:123";
     const cfg = markCompleteReplyConfig({
       agents: {
@@ -314,7 +316,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         ],
       },
       session: { store: path.join(home, "sessions.json") },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
     vi.mocked(resolveDefaultModelMock).mockReturnValueOnce({
       defaultProvider: "openai",
       defaultModel: "gpt-5.5",
@@ -349,7 +351,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("uses the target session thinking override for native /status", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-native-status-think-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-native-status-think-"));
     const storePath = path.join(home, "sessions.json");
     const targetSessionKey = "agent:main:telegram:123";
     await fs.writeFile(
@@ -371,7 +373,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: storePath },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
     vi.mocked(resolveDefaultModelMock).mockReturnValueOnce({
       defaultProvider: "openai",
       defaultModel: "gpt-5.5",
@@ -406,7 +408,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("handles native slash directives before workspace bootstrap", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-native-slash-fast-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-native-slash-fast-"));
     const targetSessionKey = "agent:main:telegram:123";
     const cfg = markCompleteReplyConfig({
       agents: {
@@ -416,7 +418,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         },
       },
       session: { store: path.join(home, "sessions.json") },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
     mocks.resolveReplyDirectives.mockResolvedValueOnce({
       kind: "reply",
       reply: { text: "model status" },
@@ -460,7 +462,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandSource: "native",
         CommandTargetSessionKey: "agent:main:main",
       }),
-      cfg: { session: { store: "/tmp/sessions.json" } } as NexisClawConfig,
+      cfg: { session: { store: "/tmp/sessions.json" } } as FirstNexusConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: "/tmp/workspace",
@@ -481,7 +483,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         To: undefined,
         SenderId: "gateway-client",
       }),
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       sessionKey: "main",
       isGroup: false,
       triggerBodyNormalized: "/codex bind",
@@ -495,7 +497,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("keeps the existing session for /reset newline soft during fast bootstrap", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-fast-reset-newline-soft-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-fast-reset-newline-soft-"));
     const storePath = path.join(home, "sessions.json");
     const sessionKey = "agent:main:telegram:123";
     await fs.writeFile(
@@ -516,7 +518,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandBody: "/reset \nsoft",
         SessionKey: sessionKey,
       }),
-      cfg: { session: { store: storePath } } as NexisClawConfig,
+      cfg: { session: { store: storePath } } as FirstNexusConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: home,
@@ -528,7 +530,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
   });
 
   it("keeps the existing session for /reset: soft during fast bootstrap", async () => {
-    const home = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-fast-reset-colon-soft-"));
+    const home = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-fast-reset-colon-soft-"));
     const storePath = path.join(home, "sessions.json");
     const sessionKey = "agent:main:telegram:123";
     await fs.writeFile(
@@ -549,7 +551,7 @@ describe("getReplyFromConfig fast test bootstrap", () => {
         CommandBody: "/reset: soft",
         SessionKey: sessionKey,
       }),
-      cfg: { session: { store: storePath } } as NexisClawConfig,
+      cfg: { session: { store: storePath } } as FirstNexusConfig,
       agentId: "main",
       commandAuthorized: true,
       workspaceDir: home,

@@ -22,7 +22,7 @@ describe("commitment store delivery selection", () => {
   });
 
   async function useTempStateDir(): Promise<string> {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-commitments-store-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-commitments-store-"));
     tmpDirs.push(tmpDir);
     vi.stubEnv("NEXISCLAW_STATE_DIR", tmpDir);
     return tmpDir;

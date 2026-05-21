@@ -63,7 +63,7 @@ export function buildChangedCheckCrabboxArgs(argv = []) {
     "--provider",
     "blacksmith-testbox",
     "--blacksmith-org",
-    "NexisClaw",
+    "FirstNexus",
     "--blacksmith-workflow",
     ".github/workflows/ci-check-testbox.yml",
     "--blacksmith-job",

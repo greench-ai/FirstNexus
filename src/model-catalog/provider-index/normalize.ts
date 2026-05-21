@@ -8,11 +8,11 @@ import { normalizeModelCatalog } from "../normalize.js";
 import { normalizeModelCatalogProviderId } from "../refs.js";
 import type { ModelCatalogProvider } from "../types.js";
 import type {
-  NexisClawProviderIndex,
-  NexisClawProviderIndexPluginInstall,
-  NexisClawProviderIndexPlugin,
-  NexisClawProviderIndexProviderAuthChoice,
-  NexisClawProviderIndexProvider,
+  FirstNexusProviderIndex,
+  FirstNexusProviderIndexPluginInstall,
+  FirstNexusProviderIndexPlugin,
+  FirstNexusProviderIndexProviderAuthChoice,
+  FirstNexusProviderIndexProvider,
 } from "./types.js";
 
 const NEXISCLAW_PROVIDER_INDEX_VERSION = 1;
@@ -22,7 +22,7 @@ function normalizeSafeKey(value: unknown): string {
   return key && !isBlockedObjectKey(key) ? key : "";
 }
 
-function normalizeInstall(value: unknown): NexisClawProviderIndexPluginInstall | undefined {
+function normalizeInstall(value: unknown): FirstNexusProviderIndexPluginInstall | undefined {
   if (!isRecord(value)) {
     return undefined;
   }
@@ -50,7 +50,7 @@ function normalizeInstall(value: unknown): NexisClawProviderIndexPluginInstall |
   };
 }
 
-function normalizePlugin(value: unknown): NexisClawProviderIndexPlugin | undefined {
+function normalizePlugin(value: unknown): FirstNexusProviderIndexPlugin | undefined {
   if (!isRecord(value)) {
     return undefined;
   }
@@ -93,7 +93,7 @@ function normalizePreviewCatalog(params: {
 
 function normalizeOnboardingScopes(
   value: unknown,
-): NexisClawProviderIndexProviderAuthChoice["onboardingScopes"] | undefined {
+): FirstNexusProviderIndexProviderAuthChoice["onboardingScopes"] | undefined {
   const scopes = normalizeTrimmedStringList(value).filter(
     (scope): scope is "text-inference" | "image-generation" =>
       scope === "text-inference" || scope === "image-generation",
@@ -103,7 +103,7 @@ function normalizeOnboardingScopes(
 
 function normalizeAssistantVisibility(
   value: unknown,
-): NexisClawProviderIndexProviderAuthChoice["assistantVisibility"] | undefined {
+): FirstNexusProviderIndexProviderAuthChoice["assistantVisibility"] | undefined {
   return value === "visible" || value === "manual-only" ? value : undefined;
 }
 
@@ -115,7 +115,7 @@ function normalizeAuthChoice(params: {
   providerId: string;
   providerName: string;
   value: unknown;
-}): NexisClawProviderIndexProviderAuthChoice | undefined {
+}): FirstNexusProviderIndexProviderAuthChoice | undefined {
   if (!isRecord(params.value)) {
     return undefined;
   }
@@ -158,20 +158,20 @@ function normalizeAuthChoices(params: {
   providerId: string;
   providerName: string;
   value: unknown;
-}): readonly NexisClawProviderIndexProviderAuthChoice[] | undefined {
+}): readonly FirstNexusProviderIndexProviderAuthChoice[] | undefined {
   if (!Array.isArray(params.value)) {
     return undefined;
   }
   const choices = params.value
     .map((value) => normalizeAuthChoice({ ...params, value }))
-    .filter((choice): choice is NexisClawProviderIndexProviderAuthChoice => Boolean(choice));
+    .filter((choice): choice is FirstNexusProviderIndexProviderAuthChoice => Boolean(choice));
   return choices.length > 0 ? choices : undefined;
 }
 
 function normalizeProvider(
   rawProviderId: string,
   value: unknown,
-): NexisClawProviderIndexProvider | undefined {
+): FirstNexusProviderIndexProvider | undefined {
   if (!isRecord(value)) {
     return undefined;
   }
@@ -210,14 +210,16 @@ function normalizeProvider(
   };
 }
 
-export function normalizeNexisClawProviderIndex(value: unknown): NexisClawProviderIndex | undefined {
+export function normalizeFirstNexusProviderIndex(
+  value: unknown,
+): FirstNexusProviderIndex | undefined {
   if (!isRecord(value) || value.version !== NEXISCLAW_PROVIDER_INDEX_VERSION) {
     return undefined;
   }
   if (!isRecord(value.providers)) {
     return undefined;
   }
-  const providers: Record<string, NexisClawProviderIndexProvider> = {};
+  const providers: Record<string, FirstNexusProviderIndexProvider> = {};
   for (const [rawProviderId, rawProvider] of Object.entries(value.providers)) {
     const providerId = normalizeModelCatalogProviderId(rawProviderId);
     if (!providerId || isBlockedObjectKey(providerId)) {

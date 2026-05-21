@@ -3,7 +3,7 @@ import { SILENT_REPLY_TOKEN } from "../auto-reply/tokens.js";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../config/config.js";
 import * as configSessions from "../config/sessions.js";
 import type { SessionEntry } from "../config/sessions/types.js";
@@ -197,7 +197,7 @@ const chatHistoryMock = vi.fn(async (_sessionKey?: string) => ({
   messages: [] as Array<unknown>,
 }));
 let sessionStore: SessionStoreFixture = {};
-let configOverride: NexisClawConfig = {
+let configOverride: FirstNexusConfig = {
   session: {
     mainKey: "main",
     scope: "per-sender",
@@ -262,7 +262,7 @@ const announceFormatChannelPlugins = [
   },
 ];
 
-function setConfigOverride(next: NexisClawConfig): void {
+function setConfigOverride(next: FirstNexusConfig): void {
   configOverride = next;
   setRuntimeConfigSnapshot(configOverride);
 }
@@ -311,7 +311,7 @@ describe("subagent announce formatting", () => {
     // Set FAST_TEST_MODE before importing the module to ensure the module-level
     // constant picks it up. This fixes flaky Windows CI failures where the test
     // timeout budget is too tight without fast mode enabled.
-    // See: https://github.com/NexisClaw/NexisClaw/issues/31298
+    // See: https://github.com/FirstNexus/FirstNexus/issues/31298
     previousFastTestEnv = process.env.NEXISCLAW_TEST_FAST;
     process.env.NEXISCLAW_TEST_FAST = "1";
     ({ runSubagentAnnounceFlow, __testing: subagentAnnounceTesting } =
@@ -503,7 +503,7 @@ describe("subagent announce formatting", () => {
     const call = getAgentCall();
     const msg = call?.params?.message as string;
     expect(call?.params?.sessionKey).toBe("agent:main:main");
-    expect(msg).toContain("NexisClaw runtime context (internal):");
+    expect(msg).toContain("FirstNexus runtime context (internal):");
     expect(msg).toContain("[Internal task completion event]");
     expect(msg).toContain("session_id: child-session-123");
     expect(msg).toContain("subagent task");

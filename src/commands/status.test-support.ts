@@ -73,7 +73,7 @@ export const baseStatusOverviewScanFields = {
 const baseStatusGatewayService = {
   label: "LaunchAgent",
   installed: true,
-  managedByNexisClaw: true,
+  managedByFirstNexus: true,
   loadedText: "loaded",
   runtimeShort: "running",
 };
@@ -116,7 +116,7 @@ const baseStatusSummary = {
         updatedAt: 1,
         age: 5_000,
         model: "gpt-5.5",
-        runtime: "NexisClaw Pi Default",
+        runtime: "FirstNexus Pi Default",
         totalTokens: 12_000,
         totalTokensFresh: true,
         remainingTokens: 4_000,

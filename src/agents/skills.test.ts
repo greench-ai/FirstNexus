@@ -5,7 +5,7 @@ import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
 } from "../config/runtime-snapshot.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { captureEnv, withPathResolutionEnv } from "../test-utils/env.js";
 import { createFixtureSuite } from "../test-utils/fixture-suite.js";
 import { createTempHomeEnv, type TempHomeEnv } from "../test-utils/temp-home.js";
@@ -28,7 +28,7 @@ vi.mock("./skills/plugin-skills.js", () => ({
   resolvePluginSkillDirs: () => [],
 }));
 
-const fixtureSuite = createFixtureSuite("NexisClaw-skills-suite-");
+const fixtureSuite = createFixtureSuite("FirstNexus-skills-suite-");
 let tempHome: TempHomeEnv | null = null;
 let skillsHomeEnv: SkillsHomeEnvSnapshot | null = null;
 const pluginEnvSnapshot = captureEnv(["NEXISCLAW_DISABLE_BUNDLED_PLUGINS"]);
@@ -118,7 +118,7 @@ function envSkillSnapshot(name: string, metadata: SkillEntry["metadata"]): Skill
   };
 }
 
-function rawSkillApiKeyRefConfig(skillName: string): NexisClawConfig {
+function rawSkillApiKeyRefConfig(skillName: string): FirstNexusConfig {
   return {
     skills: {
       entries: {
@@ -134,7 +134,7 @@ function rawSkillApiKeyRefConfig(skillName: string): NexisClawConfig {
   };
 }
 
-function resolvedSkillApiKeyConfig(skillName: string, apiKey: string): NexisClawConfig {
+function resolvedSkillApiKeyConfig(skillName: string, apiKey: string): FirstNexusConfig {
   return {
     skills: {
       entries: {
@@ -149,9 +149,9 @@ function resolvedSkillApiKeyConfig(skillName: string, apiKey: string): NexisClaw
 beforeAll(async () => {
   await fixtureSuite.setup();
   process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS = "1";
-  tempHome = await createTempHomeEnv("NexisClaw-skills-home-");
+  tempHome = await createTempHomeEnv("FirstNexus-skills-home-");
   skillsHomeEnv = setMockSkillsHomeEnv(tempHome.home);
-  await fs.mkdir(path.join(tempHome.home, ".NexisClaw", "agents", "main", "sessions"), {
+  await fs.mkdir(path.join(tempHome.home, ".FirstNexus", "agents", "main", "sessions"), {
     recursive: true,
   });
 });
@@ -275,7 +275,7 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
     expect(commands.map((entry) => entry.skillName)).toEqual(["alpha-skill"]);
   });
 
-  it("includes enabled Claude bundle markdown commands as native NexisClaw slash commands", async () => {
+  it("includes enabled Claude bundle markdown commands as native FirstNexus slash commands", async () => {
     const workspaceDir = await makeWorkspace();
     const config = {
       plugins: {
@@ -283,7 +283,7 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
           "compound-bundle": { enabled: true },
         },
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     // Prime plugin discovery before the bundle exists so command loading proves
     // it sees the current filesystem state instead of a stale cached snapshot.
@@ -292,7 +292,7 @@ describe("buildWorkspaceSkillCommandSpecs", () => {
       config,
     });
 
-    const pluginRoot = path.join(workspaceDir, ".NexisClaw", "extensions", "compound-bundle");
+    const pluginRoot = path.join(workspaceDir, ".FirstNexus", "extensions", "compound-bundle");
     await fs.mkdir(path.join(pluginRoot, ".claude-plugin"), { recursive: true });
     await fs.mkdir(path.join(pluginRoot, "commands"), { recursive: true });
     await fs.writeFile(

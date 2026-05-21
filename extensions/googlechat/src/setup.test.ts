@@ -2,17 +2,17 @@ import {
   expectLifecyclePatch,
   expectPendingUntilAbort,
   startAccountAndTrackLifecycle,
-} from "NexisClaw/plugin-sdk/channel-test-helpers";
+} from "FirstNexus/plugin-sdk/channel-test-helpers";
 import {
   createPluginSetupWizardConfigure,
   createPluginSetupWizardStatus,
   createTestWizardPrompter,
   runSetupWizardConfigure,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import type { WizardPrompter } from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import type { WizardPrompter } from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/setup";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../runtime-api.js";
+import type { FirstNexusConfig } from "../runtime-api.js";
 import {
   listGoogleChatAccountIds,
   resolveGoogleChatAccount,
@@ -178,7 +178,7 @@ describe("googlechat setup", () => {
 
     const result = await runSetupWizardConfigure({
       configure: googlechatConfigure,
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       prompter,
       options: {},
     });
@@ -211,7 +211,7 @@ describe("googlechat setup", () => {
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         "alerts",
       ),
     ).toBe("allowlist");
@@ -230,7 +230,7 @@ describe("googlechat setup", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       accountOverrides: {
         googlechat: "alerts",
       },
@@ -254,7 +254,7 @@ describe("googlechat setup", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       accountOverrides: {},
       options: {},
     });
@@ -287,7 +287,7 @@ describe("googlechat setup", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(googlechatSetupWizard.dmPolicy?.getCurrent(cfg)).toBe("allowlist");
     expect(googlechatSetupWizard.dmPolicy?.resolveConfigKeys?.(cfg)).toEqual({
@@ -324,7 +324,7 @@ describe("googlechat setup", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       prompter: prompter as any,
     });
 
@@ -349,7 +349,7 @@ describe("googlechat setup", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       "open",
       "alerts",
     );
@@ -412,7 +412,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("inherits shared defaults from accounts.default for named accounts", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -437,7 +437,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("prefers top-level and account overrides over accounts.default", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         googlechat: {
           audienceType: "project-number",
@@ -463,7 +463,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("does not inherit disabled state from accounts.default for named accounts", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -487,7 +487,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("does not inherit default-account credentials into named accounts", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -515,7 +515,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("does not inherit dangerous name matching from accounts.default", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         googlechat: {
           accounts: {
@@ -538,7 +538,7 @@ describe("resolveGoogleChatAccount", () => {
   });
 
   it("uses configured defaultAccount when accountId is omitted", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         googlechat: {
           defaultAccount: "alerts",

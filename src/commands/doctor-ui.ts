@@ -4,7 +4,7 @@ import {
   resolveControlUiDistIndexHealth,
   resolveControlUiDistIndexPathForRoot,
 } from "../infra/control-ui-assets.js";
-import { resolveNexisClawPackageRoot } from "../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRoot } from "../infra/FirstNexus-root.js";
 import { runCommandWithTimeout } from "../process/exec.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { note } from "../terminal/note.js";
@@ -14,7 +14,7 @@ export async function maybeRepairUiProtocolFreshness(
   _runtime: RuntimeEnv,
   prompter: DoctorPrompter,
 ) {
-  const root = await resolveNexisClawPackageRoot({
+  const root = await resolveFirstNexusPackageRoot({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],
     cwd: process.cwd(),

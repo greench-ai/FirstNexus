@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import net from "node:net";
 import path from "node:path";
-import { clearRuntimeConfigSnapshot } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
+import { clearRuntimeConfigSnapshot } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createTempHomeEnv } from "../../test-support.js";
 import { stopBrowserControlService } from "../control-service.js";
@@ -30,7 +30,7 @@ describe("browser client fetch attachOnly diagnostics", () => {
   });
 
   it("does not suggest gateway restart when an attachOnly CDP endpoint hangs", async () => {
-    tempHome = await createTempHomeEnv("NexisClaw-browser-client-fetch-live-");
+    tempHome = await createTempHomeEnv("FirstNexus-browser-client-fetch-live-");
     const sockets = new Set<net.Socket>();
     const server = net.createServer((socket) => {
       sockets.add(socket);
@@ -39,7 +39,7 @@ describe("browser client fetch attachOnly diagnostics", () => {
     });
     await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
     const port = (server.address() as { port: number }).port;
-    const configPath = path.join(tempHome.home, ".NexisClaw", "NexisClaw.json");
+    const configPath = path.join(tempHome.home, ".FirstNexus", "FirstNexus.json");
     await fs.writeFile(
       configPath,
       JSON.stringify(
@@ -70,9 +70,9 @@ describe("browser client fetch attachOnly diagnostics", () => {
       );
       expect(thrown).toBeInstanceOf(Error);
       const message = thrown instanceof Error ? thrown.message : String(thrown);
-      expect(message).toContain("browser profile is external to NexisClaw");
-      expect(message).toContain("Restarting the NexisClaw gateway will not launch it");
-      expect(message).not.toContain("Restart the NexisClaw gateway");
+      expect(message).toContain("browser profile is external to FirstNexus");
+      expect(message).toContain("Restarting the FirstNexus gateway will not launch it");
+      expect(message).not.toContain("Restart the FirstNexus gateway");
       expect(message).not.toContain("Do NOT retry the browser tool");
     } finally {
       for (const socket of sockets) {

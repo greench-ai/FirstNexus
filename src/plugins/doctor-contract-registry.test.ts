@@ -20,7 +20,7 @@ let setPluginDoctorContractRegistryModuleLoaderFactoryForTest:
   | undefined;
 
 function makeTempDir(): string {
-  return makeTrackedTempDir("NexisClaw-doctor-contract-registry", tempDirs);
+  return makeTrackedTempDir("FirstNexus-doctor-contract-registry", tempDirs);
 }
 
 function requireFirstCreateJitiCall(): [string, { tryNative?: boolean }] {

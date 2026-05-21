@@ -1,13 +1,13 @@
 ---
 summary: "Windows support: native and WSL2 install paths, daemon, and current caveats"
 read_when:
-  - Installing NexisClaw on Windows
+  - Installing FirstNexus on Windows
   - Choosing between native Windows and WSL2
   - Looking for Windows companion app status
 title: "Windows"
 ---
 
-NexisClaw supports both **native Windows** and **WSL2**. WSL2 is the more
+FirstNexus supports both **native Windows** and **WSL2**. WSL2 is the more
 stable path and recommended for the full experience — the CLI, Gateway, and
 tooling run inside Linux with full compatibility. Native Windows works for
 core CLI and Gateway use, with some caveats noted below.
@@ -27,33 +27,33 @@ Native Windows CLI flows are improving, but WSL2 is still the recommended path.
 What works well on native Windows today:
 
 - website installer via `install.ps1`
-- local CLI use such as `NexisClaw --version`, `NexisClaw doctor`, and `NexisClaw plugins list --json`
+- local CLI use such as `FirstNexus --version`, `FirstNexus doctor`, and `FirstNexus plugins list --json`
 - embedded local-agent/provider smoke such as:
 
 ```powershell
-NexisClaw agent --local --agent main --thinking low -m "Reply with exactly WINDOWS-HATCH-OK."
+FirstNexus agent --local --agent main --thinking low -m "Reply with exactly WINDOWS-HATCH-OK."
 ```
 
 Current caveats:
 
-- `NexisClaw onboard --non-interactive` still expects a reachable local gateway unless you pass `--skip-health`
-- `NexisClaw onboard --non-interactive --install-daemon` and `NexisClaw gateway install` try Windows Scheduled Tasks first
-- if Scheduled Task creation is denied, NexisClaw falls back to a per-user Startup-folder login item and starts the gateway immediately
-- if `schtasks` itself wedges or stops responding, NexisClaw now aborts that path quickly and falls back instead of hanging forever
+- `FirstNexus onboard --non-interactive` still expects a reachable local gateway unless you pass `--skip-health`
+- `FirstNexus onboard --non-interactive --install-daemon` and `FirstNexus gateway install` try Windows Scheduled Tasks first
+- if Scheduled Task creation is denied, FirstNexus falls back to a per-user Startup-folder login item and starts the gateway immediately
+- if `schtasks` itself wedges or stops responding, FirstNexus now aborts that path quickly and falls back instead of hanging forever
 - Scheduled Tasks are still preferred when available because they provide better supervisor status
 
 If you want the native CLI only, without gateway service install, use one of these:
 
 ```powershell
-NexisClaw onboard --non-interactive --skip-health
-NexisClaw gateway run
+FirstNexus onboard --non-interactive --skip-health
+FirstNexus gateway run
 ```
 
 If you do want managed startup on native Windows:
 
 ```powershell
-NexisClaw gateway install
-NexisClaw gateway status --json
+FirstNexus gateway install
+FirstNexus gateway status --json
 ```
 
 If Scheduled Task creation is blocked, the fallback service mode still auto-starts after login through the current user's Startup folder.
@@ -68,19 +68,19 @@ If Scheduled Task creation is blocked, the fallback service mode still auto-star
 Inside WSL2:
 
 ```
-NexisClaw onboard --install-daemon
+FirstNexus onboard --install-daemon
 ```
 
 Or:
 
 ```
-NexisClaw gateway install
+FirstNexus gateway install
 ```
 
 Or:
 
 ```
-NexisClaw configure
+FirstNexus configure
 ```
 
 Select **Gateway service** when prompted.
@@ -88,7 +88,7 @@ Select **Gateway service** when prompted.
 Repair/migrate:
 
 ```
-NexisClaw doctor
+FirstNexus doctor
 ```
 
 ## Gateway auto-start before Windows login
@@ -104,12 +104,12 @@ Inside WSL:
 sudo loginctl enable-linger "$(whoami)"
 ```
 
-### 2) Install the NexisClaw gateway user service
+### 2) Install the FirstNexus gateway user service
 
 Inside WSL:
 
 ```bash
-NexisClaw gateway install
+FirstNexus gateway install
 ```
 
 ### 3) Start WSL automatically at Windows boot
@@ -131,8 +131,8 @@ wsl --list --verbose
 After a reboot (before Windows sign-in), check from WSL:
 
 ```bash
-systemctl --user is-enabled NexisClaw-gateway.service
-systemctl --user status NexisClaw-gateway.service --no-pager
+systemctl --user is-enabled FirstNexus-gateway.service
+systemctl --user status FirstNexus-gateway.service --no-pager
 ```
 
 ## Advanced: expose WSL services over LAN (portproxy)
@@ -175,7 +175,7 @@ Notes:
 
 - SSH from another machine targets the **Windows host IP** (example: `ssh user@windows-host -p 2222`).
 - Remote nodes must point at a **reachable** Gateway URL (not `127.0.0.1`); use
-  `NexisClaw status --all` to confirm.
+  `FirstNexus status --all` to confirm.
 - Use `listenaddress=0.0.0.0` for LAN access; `127.0.0.1` keeps it local only.
 - If you want this automatic, register a Scheduled Task to run the refresh
   step at login.
@@ -218,17 +218,17 @@ Re-open Ubuntu, then verify:
 systemctl --user status
 ```
 
-### 3) Install NexisClaw (inside WSL)
+### 3) Install FirstNexus (inside WSL)
 
 For a normal first-time setup inside WSL, follow the Linux Getting Started flow:
 
 ```bash
-git clone https://github.com/NexisClaw/NexisClaw.git
-cd NexisClaw
+git clone https://github.com/FirstNexus/FirstNexus.git
+cd FirstNexus
 pnpm install
 pnpm build
 pnpm ui:build
-pnpm NexisClaw onboard --install-daemon
+pnpm FirstNexus onboard --install-daemon
 ```
 
 If you are developing from source instead of doing first-time onboarding, use the
@@ -236,8 +236,8 @@ source dev loop from [Setup](/start/setup):
 
 ```bash
 pnpm install
-# First run only (or after resetting local NexisClaw config/workspace)
-pnpm NexisClaw setup
+# First run only (or after resetting local FirstNexus config/workspace)
+pnpm FirstNexus setup
 pnpm gateway:watch
 ```
 

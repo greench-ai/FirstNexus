@@ -61,14 +61,14 @@ vi.mock("../internal/gateway.js", () => ({
   GatewayPlugin,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/proxy-capture", () => ({
+vi.mock("FirstNexus/plugin-sdk/proxy-capture", () => ({
   captureHttpExchange: vi.fn(),
   captureWsEvent: vi.fn(),
   resolveEffectiveDebugProxyUrl: () => undefined,
   resolveDebugProxySettings: () => ({ enabled: false }),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/runtime-env", () => ({
+vi.mock("FirstNexus/plugin-sdk/runtime-env", () => ({
   danger: (value: string) => value,
 }));
 
@@ -217,7 +217,7 @@ describe("createDiscordGatewayPlugin", () => {
     );
   });
 
-  it("leaves autoInteractions disabled so NexisClaw owns interaction handoff", () => {
+  it("leaves autoInteractions disabled so FirstNexus owns interaction handoff", () => {
     const plugin = createPlugin();
 
     expect(
@@ -243,7 +243,7 @@ describe("createDiscordGatewayPlugin", () => {
     });
   });
 
-  it("keeps NexisClaw metadata timeout out of gateway options", () => {
+  it("keeps FirstNexus metadata timeout out of gateway options", () => {
     const plugin = createDiscordGatewayPlugin({
       discordConfig: { gatewayInfoTimeoutMs: 5_000 },
       runtime: {

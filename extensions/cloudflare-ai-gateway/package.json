@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/cloudflare-ai-gateway-provider",
+  "name": "@FirstNexus/cloudflare-ai-gateway-provider",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw Cloudflare AI Gateway provider plugin",
+  "description": "FirstNexus Cloudflare AI Gateway provider plugin",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

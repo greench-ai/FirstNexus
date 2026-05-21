@@ -1,10 +1,10 @@
 {
-  "name": "@NexisClaw/diffs",
+  "name": "@FirstNexus/diffs",
   "version": "2026.5.12-beta.1",
-  "description": "NexisClaw diff viewer plugin",
+  "description": "FirstNexus diff viewer plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexisClaw/NexisClaw"
+    "url": "https://github.com/FirstNexus/FirstNexus"
   },
   "type": "module",
   "scripts": {
@@ -18,14 +18,14 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@NexisClaw/diffs",
+      "npmSpec": "@FirstNexus/diffs",
       "localPath": "extensions/diffs",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.30"
@@ -34,7 +34,7 @@
       "pluginApi": ">=2026.5.12-beta.1"
     },
     "build": {
-      "NexisClawVersion": "2026.5.12-beta.1",
+      "FirstNexusVersion": "2026.5.12-beta.1",
       "staticAssets": [
         {
           "source": "./assets/viewer-runtime.js",

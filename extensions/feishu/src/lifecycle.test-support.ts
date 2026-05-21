@@ -127,7 +127,7 @@ vi.mock("./client.js", () => {
     FEISHU_HTTP_TIMEOUT_ENV_VAR: "NEXISCLAW_FEISHU_HTTP_TIMEOUT_MS",
     FEISHU_HTTP_TIMEOUT_MAX_MS: 300_000,
     FEISHU_HTTP_TIMEOUT_MS: 30_000,
-    FEISHU_USER_AGENT: "NexisClaw-feishu-test",
+    FEISHU_USER_AGENT: "FirstNexus-feishu-test",
     clearClientCache: vi.fn(),
     createFeishuClient: vi.fn(() => {
       throw new Error("unexpected Feishu client call in lifecycle test");
@@ -138,7 +138,7 @@ vi.mock("./client.js", () => {
     })),
     createEventDispatcher: createEventDispatcherMock,
     getFeishuClient: vi.fn(() => null),
-    getFeishuUserAgent: vi.fn(() => "NexisClaw-feishu-test"),
+    getFeishuUserAgent: vi.fn(() => "FirstNexus-feishu-test"),
     pluginVersion: "test",
     setFeishuClientRuntimeForTest: vi.fn(),
   };
@@ -164,9 +164,9 @@ vi.mock("./send.js", () => ({
   sendMessageFeishu: sendMessageFeishuMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/conversation-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/conversation-runtime")>(
-    "NexisClaw/plugin-sdk/conversation-runtime",
+vi.mock("FirstNexus/plugin-sdk/conversation-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/conversation-runtime")>(
+    "FirstNexus/plugin-sdk/conversation-runtime",
   );
   return {
     ...actual,

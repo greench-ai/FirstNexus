@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   createGatewayCredentialPlan,
   type GatewayCredentialPlan,
@@ -242,7 +242,7 @@ function resolveRemoteGatewayCredentials(params: {
 }
 
 export function resolveGatewayCredentialsFromConfig(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   explicitAuth?: ExplicitGatewayAuth;
   urlOverride?: string;
@@ -309,7 +309,7 @@ export function resolveGatewayCredentialsFromConfig(params: {
 }
 
 export function resolveGatewayProbeCredentialsFromConfig(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   mode: GatewayCredentialMode;
   env?: NodeJS.ProcessEnv;
   explicitAuth?: ExplicitGatewayAuth;

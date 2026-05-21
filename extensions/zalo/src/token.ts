@@ -1,7 +1,7 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
-import type { BaseTokenResolution } from "NexisClaw/plugin-sdk/channel-contract";
-import { tryReadSecretFileSync } from "NexisClaw/plugin-sdk/core";
-import { resolveAccountEntry } from "NexisClaw/plugin-sdk/routing";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
+import type { BaseTokenResolution } from "FirstNexus/plugin-sdk/channel-contract";
+import { tryReadSecretFileSync } from "FirstNexus/plugin-sdk/core";
+import { resolveAccountEntry } from "FirstNexus/plugin-sdk/routing";
 import { normalizeResolvedSecretInputString, normalizeSecretInputString } from "./secret-input.js";
 import type { ZaloConfig } from "./types.js";
 

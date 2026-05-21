@@ -1,4 +1,4 @@
-import { createAccountListHelpers } from "NexisClaw/plugin-sdk/account-core";
+import { createAccountListHelpers } from "FirstNexus/plugin-sdk/account-core";
 
 const {
   listConfiguredAccountIds,

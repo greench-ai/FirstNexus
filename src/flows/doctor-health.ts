@@ -17,10 +17,10 @@ export async function doctorCommand(runtime?: RuntimeEnv, options: DoctorOptions
   const { printWizardHeader } = await import("../commands/onboard-helpers.js");
   const prompter = createDoctorPrompter({ runtime: effectiveRuntime, options });
   printWizardHeader(effectiveRuntime);
-  intro("NexisClaw doctor");
+  intro("FirstNexus doctor");
 
-  const { resolveNexisClawPackageRoot } = await import("../infra/NexisClaw-root.js");
-  const root = await resolveNexisClawPackageRoot({
+  const { resolveFirstNexusPackageRoot } = await import("../infra/FirstNexus-root.js");
+  const root = await resolveFirstNexusPackageRoot({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],
     cwd: process.cwd(),

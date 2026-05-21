@@ -1,4 +1,4 @@
-import type { MessageReceipt } from "NexisClaw/plugin-sdk/channel-message";
+import type { MessageReceipt } from "FirstNexus/plugin-sdk/channel-message";
 import type { Style } from "./zca-constants.js";
 
 export type ZcaFriend = {

@@ -1,7 +1,7 @@
-import type { BaseProbeResult } from "NexisClaw/plugin-sdk/channel-contract";
-import type { TelegramNetworkConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { fetchWithTimeout } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import type { BaseProbeResult } from "FirstNexus/plugin-sdk/channel-contract";
+import type { TelegramNetworkConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { fetchWithTimeout } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import type { TelegramBotInfo } from "./bot-info.js";
 import { resolveTelegramApiBase, resolveTelegramFetch } from "./fetch.js";
 import { makeProxyFetch } from "./proxy.js";

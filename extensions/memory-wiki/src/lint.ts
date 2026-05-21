@@ -3,7 +3,7 @@ import path from "node:path";
 import {
   replaceManagedMarkdownBlock,
   withTrailingNewline,
-} from "NexisClaw/plugin-sdk/memory-host-markdown";
+} from "FirstNexus/plugin-sdk/memory-host-markdown";
 import {
   assessPageFreshness,
   buildClaimContradictionClusters,
@@ -341,8 +341,8 @@ async function writeLintReport(rootDir: string, issues: MemoryWikiLintIssue[]): 
   const updated = replaceManagedMarkdownBlock({
     original,
     heading: "## Generated",
-    startMarker: "<!-- NexisClaw:wiki:lint:start -->",
-    endMarker: "<!-- NexisClaw:wiki:lint:end -->",
+    startMarker: "<!-- FirstNexus:wiki:lint:start -->",
+    endMarker: "<!-- FirstNexus:wiki:lint:end -->",
     body: buildLintReportBody(issues),
   });
   await fs.writeFile(reportPath, withTrailingNewline(updated), "utf8");

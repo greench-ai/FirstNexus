@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/open-prose",
+  "name": "@FirstNexus/open-prose",
   "version": "2026.5.12-beta.1",
   "private": true,
   "description": "OpenProse VM skill pack plugin (slash command + telemetry).",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

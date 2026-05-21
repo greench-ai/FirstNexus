@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import type { ProviderSystemPromptContributionContext } from "../../../plugins/types.js";
 
 export const GPT5_CONTRACT_MODEL_ID = "gpt-5.4";
@@ -9,7 +9,7 @@ export const OPENAI_CODEX_CONTRACT_PROVIDER_ID = "openai-codex";
 export const CODEX_CONTRACT_PROVIDER_ID = "codex";
 export const NON_OPENAI_CONTRACT_PROVIDER_ID = "openrouter";
 
-export function openAiPluginPersonalityConfig(personality: "friendly" | "off"): NexisClawConfig {
+export function openAiPluginPersonalityConfig(personality: "friendly" | "off"): FirstNexusConfig {
   return {
     plugins: {
       entries: {
@@ -18,10 +18,10 @@ export function openAiPluginPersonalityConfig(personality: "friendly" | "off"): 
         },
       },
     },
-  } satisfies NexisClawConfig;
+  } satisfies FirstNexusConfig;
 }
 
-export function sharedGpt5PersonalityConfig(personality: "friendly" | "off"): NexisClawConfig {
+export function sharedGpt5PersonalityConfig(personality: "friendly" | "off"): FirstNexusConfig {
   return {
     agents: {
       defaults: {
@@ -30,19 +30,19 @@ export function sharedGpt5PersonalityConfig(personality: "friendly" | "off"): Ne
         },
       },
     },
-  } satisfies NexisClawConfig;
+  } satisfies FirstNexusConfig;
 }
 
 export function codexPromptOverlayContext(params?: {
   modelId?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 }): ProviderSystemPromptContributionContext {
   return {
     provider: CODEX_CONTRACT_PROVIDER_ID,
     modelId: params?.modelId ?? GPT5_CONTRACT_MODEL_ID,
     promptMode: "full",
-    agentDir: "/tmp/NexisClaw-codex-prompt-contract-agent",
-    workspaceDir: "/tmp/NexisClaw-codex-prompt-contract-workspace",
+    agentDir: "/tmp/FirstNexus-codex-prompt-contract-agent",
+    workspaceDir: "/tmp/FirstNexus-codex-prompt-contract-workspace",
     ...(params?.config ? { config: params.config } : {}),
   };
 }

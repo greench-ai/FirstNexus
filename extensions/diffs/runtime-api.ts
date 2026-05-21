@@ -1,1 +1,1 @@
-export { resolveRequestClientIp } from "NexisClaw/plugin-sdk/webhook-ingress";
+export { resolveRequestClientIp } from "FirstNexus/plugin-sdk/webhook-ingress";

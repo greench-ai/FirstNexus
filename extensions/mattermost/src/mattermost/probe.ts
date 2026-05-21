@@ -1,8 +1,8 @@
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import {
   fetchWithSsrFGuard,
   ssrfPolicyFromPrivateNetworkOptIn,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { normalizeMattermostBaseUrl, readMattermostError, type MattermostUser } from "./client.js";
 import type { BaseProbeResult } from "./runtime-api.js";
 

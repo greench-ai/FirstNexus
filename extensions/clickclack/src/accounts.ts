@@ -1,13 +1,13 @@
-import { createAccountListHelpers } from "NexisClaw/plugin-sdk/account-helpers";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
-import { resolveMergedAccountConfig } from "NexisClaw/plugin-sdk/account-resolution";
-import { resolveDefaultSecretProviderAlias } from "NexisClaw/plugin-sdk/provider-auth";
+import { createAccountListHelpers } from "FirstNexus/plugin-sdk/account-helpers";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
+import { resolveMergedAccountConfig } from "FirstNexus/plugin-sdk/account-resolution";
+import { resolveDefaultSecretProviderAlias } from "FirstNexus/plugin-sdk/provider-auth";
 import {
   normalizeSecretInputString,
   normalizeResolvedSecretInputString,
   resolveSecretInputString,
-} from "NexisClaw/plugin-sdk/secret-input";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/secret-input";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { ClickClackAccountConfig, CoreConfig, ResolvedClickClackAccount } from "./types.js";
 
 const DEFAULT_RECONNECT_MS = 1_500;

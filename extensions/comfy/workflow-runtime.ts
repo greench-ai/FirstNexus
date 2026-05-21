@@ -1,21 +1,21 @@
 import fs from "node:fs/promises";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { canResolveEnvSecretRefInReadOnlyPath } from "NexisClaw/plugin-sdk/extension-shared";
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { canResolveEnvSecretRefInReadOnlyPath } from "FirstNexus/plugin-sdk/extension-shared";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
 import {
   isProviderApiKeyConfigured,
   type AuthProfileStore,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   normalizeBaseUrl,
   resolveProviderHttpRequestConfig,
-} from "NexisClaw/plugin-sdk/provider-http";
+} from "FirstNexus/plugin-sdk/provider-http";
 import {
   normalizeSecretInputString,
   resolveSecretInputString,
-} from "NexisClaw/plugin-sdk/secret-input-runtime";
+} from "FirstNexus/plugin-sdk/secret-input-runtime";
 import {
   buildHostnameAllowlistPolicyFromSuffixAllowlist,
   fetchWithSsrFGuard,
@@ -23,13 +23,13 @@ import {
   mergeSsrFPolicies,
   ssrfPolicyFromDangerouslyAllowPrivateNetwork,
   type SsrFPolicy,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   isRecord,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { resolveUserPath } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { resolveUserPath } from "FirstNexus/plugin-sdk/text-utility-runtime";
 
 const DEFAULT_COMFY_LOCAL_BASE_URL = "http://127.0.0.1:8188";
 const DEFAULT_COMFY_CLOUD_BASE_URL = "https://cloud.comfy.org";
@@ -121,7 +121,7 @@ function readConfigInteger(config: ComfyProviderConfig, key: string): number | u
   return typeof value === "number" && Number.isInteger(value) && value > 0 ? value : undefined;
 }
 
-export function getComfyConfig(cfg?: NexisClawConfig): ComfyProviderConfig {
+export function getComfyConfig(cfg?: FirstNexusConfig): ComfyProviderConfig {
   const pluginConfig = cfg?.plugins?.entries?.comfy?.config;
   if (isRecord(pluginConfig)) {
     return pluginConfig;
@@ -156,7 +156,7 @@ function resolveComfyMode(config: ComfyProviderConfig): ComfyMode {
 
 function resolveComfyApiKey(
   config: ComfyProviderConfig,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): ComfyApiKeyResolution {
   const resolved = resolveSecretInputString({
     value: config.apiKey,
@@ -574,7 +574,7 @@ async function downloadOutputFile(params: {
 }
 
 export function isComfyCapabilityConfigured(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentDir?: string;
   capability: ComfyCapability;
 }): boolean {
@@ -605,7 +605,7 @@ export function isComfyCapabilityConfigured(params: {
 }
 
 export async function runComfyWorkflow(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentDir?: string;
   authStore?: AuthProfileStore;
   prompt: string;

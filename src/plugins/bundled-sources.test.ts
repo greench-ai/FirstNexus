@@ -1,4 +1,4 @@
-import { bundledPluginRootAt } from "NexisClaw/plugin-sdk/test-fixtures";
+import { bundledPluginRootAt } from "FirstNexus/plugin-sdk/test-fixtures";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   findBundledPluginSource,
@@ -12,11 +12,11 @@ function appBundledPluginRoot(pluginId: string): string {
   return bundledPluginRootAt(APP_ROOT, pluginId);
 }
 
-const discoverNexisClawPluginsMock = vi.fn();
+const discoverFirstNexusPluginsMock = vi.fn();
 const loadPluginManifestMock = vi.fn();
 
 vi.mock("./discovery.js", () => ({
-  discoverNexisClawPlugins: (...args: unknown[]) => discoverNexisClawPluginsMock(...args),
+  discoverFirstNexusPlugins: (...args: unknown[]) => discoverFirstNexusPluginsMock(...args),
 }));
 
 vi.mock("./manifest.js", () => ({
@@ -42,7 +42,7 @@ function createBundledCandidate(params: {
 }
 
 function setBundledDiscoveryCandidates(candidates: unknown[]) {
-  discoverNexisClawPluginsMock.mockReturnValue({
+  discoverFirstNexusPluginsMock.mockReturnValue({
     candidates,
     diagnostics: [],
   });
@@ -69,7 +69,7 @@ function setBundledManifestIdsByRoot(
       : {
           ok: false,
           error: "invalid manifest",
-          manifestPath: `${rootDir}/NexisClaw.plugin.json`,
+          manifestPath: `${rootDir}/FirstNexus.plugin.json`,
         },
   );
 }
@@ -78,11 +78,11 @@ function setBundledLookupFixture() {
   setBundledDiscoveryCandidates([
     createBundledCandidate({
       rootDir: appBundledPluginRoot("feishu"),
-      packageName: "@NexisClaw/feishu",
+      packageName: "@FirstNexus/feishu",
     }),
     createBundledCandidate({
       rootDir: appBundledPluginRoot("diffs"),
-      packageName: "@NexisClaw/diffs",
+      packageName: "@FirstNexus/diffs",
     }),
   ]);
   setBundledManifestIdsByRoot({
@@ -101,7 +101,7 @@ function createResolvedBundledSource(params: {
   return {
     pluginId: params.pluginId,
     localPath: params.localPath,
-    npmSpec: params.npmSpec ?? `@NexisClaw/${params.pluginId}`,
+    npmSpec: params.npmSpec ?? `@FirstNexus/${params.pluginId}`,
     ...(params.configSchema ? { configSchema: params.configSchema } : {}),
     requiresConfig: params.requiresConfig ?? false,
   };
@@ -140,7 +140,7 @@ function expectBundledSourceLookupCase(params: {
 
 describe("bundled plugin sources", () => {
   beforeEach(() => {
-    discoverNexisClawPluginsMock.mockReset();
+    discoverFirstNexusPluginsMock.mockReset();
     loadPluginManifestMock.mockReset();
   });
 
@@ -149,19 +149,19 @@ describe("bundled plugin sources", () => {
       createBundledCandidate({
         origin: "global",
         rootDir: "/global/feishu",
-        packageName: "@NexisClaw/feishu",
+        packageName: "@FirstNexus/feishu",
       }),
       createBundledCandidate({
         rootDir: appBundledPluginRoot("feishu"),
-        packageName: "@NexisClaw/feishu",
+        packageName: "@FirstNexus/feishu",
       }),
       createBundledCandidate({
         rootDir: appBundledPluginRoot("feishu-dup"),
-        packageName: "@NexisClaw/feishu",
+        packageName: "@FirstNexus/feishu",
       }),
       createBundledCandidate({
         rootDir: appBundledPluginRoot("msteams"),
-        packageName: "@NexisClaw/msteams",
+        packageName: "@FirstNexus/msteams",
       }),
     ]);
     setBundledManifestIdsByRoot({
@@ -183,12 +183,12 @@ describe("bundled plugin sources", () => {
   it.each([
     [
       "finds bundled source by npm spec",
-      { kind: "npmSpec", value: "@NexisClaw/feishu" } as const,
+      { kind: "npmSpec", value: "@FirstNexus/feishu" } as const,
       { pluginId: "feishu", localPath: appBundledPluginRoot("feishu") },
     ],
     [
       "returns undefined for missing npm spec",
-      { kind: "npmSpec", value: "@NexisClaw/not-found" } as const,
+      { kind: "npmSpec", value: "@FirstNexus/not-found" } as const,
       undefined,
     ],
     [
@@ -208,7 +208,7 @@ describe("bundled plugin sources", () => {
   it("forwards an explicit env to bundled discovery helpers", () => {
     setBundledDiscoveryCandidates([]);
 
-    const env = { HOME: "/tmp/NexisClaw-home" } as NodeJS.ProcessEnv;
+    const env = { HOME: "/tmp/FirstNexus-home" } as NodeJS.ProcessEnv;
 
     resolveBundledPluginSources({
       workspaceDir: "/workspace",
@@ -220,11 +220,11 @@ describe("bundled plugin sources", () => {
       env,
     });
 
-    expect(discoverNexisClawPluginsMock).toHaveBeenNthCalledWith(1, {
+    expect(discoverFirstNexusPluginsMock).toHaveBeenNthCalledWith(1, {
       workspaceDir: "/workspace",
       env,
     });
-    expect(discoverNexisClawPluginsMock).toHaveBeenNthCalledWith(2, {
+    expect(discoverFirstNexusPluginsMock).toHaveBeenNthCalledWith(2, {
       workspaceDir: "/workspace",
       env,
     });
@@ -234,7 +234,7 @@ describe("bundled plugin sources", () => {
     setBundledDiscoveryCandidates([
       createBundledCandidate({
         rootDir: appBundledPluginRoot("memory-lancedb"),
-        packageName: "@NexisClaw/memory-lancedb",
+        packageName: "@FirstNexus/memory-lancedb",
       }),
     ]);
     setBundledManifestIdsByRoot({
@@ -282,7 +282,7 @@ describe("bundled plugin sources", () => {
     expect(
       findBundledPluginSourceInMap({
         bundled,
-        lookup: { kind: "npmSpec", value: "@NexisClaw/feishu" },
+        lookup: { kind: "npmSpec", value: "@FirstNexus/feishu" },
       })?.pluginId,
     ).toBe("feishu");
   });

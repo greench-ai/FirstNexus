@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
   resolveSystemNodeInfo: vi.fn(),
   renderSystemNodeWarning: vi.fn(),
   buildServiceEnvironment: vi.fn(),
-  resolveNexisClawWrapperPath: vi.fn(),
+  resolveFirstNexusWrapperPath: vi.fn(),
 }));
 
 vi.mock("./daemon-install-auth-profiles-source.runtime.js", () => ({
@@ -32,7 +32,7 @@ vi.mock("../daemon/runtime-paths.js", () => ({
 vi.mock("../daemon/program-args.js", () => ({
   NEXISCLAW_WRAPPER_ENV_KEY: "NEXISCLAW_WRAPPER",
   resolveGatewayProgramArguments: mocks.resolveGatewayProgramArguments,
-  resolveNexisClawWrapperPath: mocks.resolveNexisClawWrapperPath,
+  resolveFirstNexusWrapperPath: mocks.resolveFirstNexusWrapperPath,
 }));
 
 vi.mock("../daemon/service-env.js", () => ({
@@ -63,11 +63,11 @@ function firstMockArg(mockFn: ReturnType<typeof vi.fn>, label: string): Record<s
 
 describe("resolveGatewayDevMode", () => {
   it("detects dev mode for src ts entrypoints", () => {
-    expect(resolveGatewayDevMode(["node", "/Users/me/NexisClaw/src/cli/index.ts"])).toBe(true);
-    expect(resolveGatewayDevMode(["node", "C:\\Users\\me\\NexisClaw\\src\\cli\\index.ts"])).toBe(
+    expect(resolveGatewayDevMode(["node", "/Users/me/FirstNexus/src/cli/index.ts"])).toBe(true);
+    expect(resolveGatewayDevMode(["node", "C:\\Users\\me\\FirstNexus\\src\\cli\\index.ts"])).toBe(
       true,
     );
-    expect(resolveGatewayDevMode(["node", "/Users/me/NexisClaw/dist/cli/index.js"])).toBe(false);
+    expect(resolveGatewayDevMode(["node", "/Users/me/FirstNexus/dist/cli/index.js"])).toBe(false);
   });
 });
 
@@ -90,7 +90,7 @@ function mockNodeGatewayPlanFixture(
     ? params.workingDirectory
     : "/Users/me";
   mocks.resolvePreferredNodePath.mockResolvedValue("/opt/node");
-  mocks.resolveNexisClawWrapperPath.mockImplementation(async (value: string | undefined) =>
+  mocks.resolveFirstNexusWrapperPath.mockImplementation(async (value: string | undefined) =>
     value?.trim() ? path.resolve(value) : undefined,
   );
   mocks.resolveGatewayProgramArguments.mockResolvedValue({
@@ -111,7 +111,7 @@ function mockNodeGatewayPlanFixture(
 }
 
 describe("buildGatewayInstallPlan", () => {
-  // Prevent tests from reading the developer's real ~/.NexisClaw/.env when
+  // Prevent tests from reading the developer's real ~/.FirstNexus/.env when
   // passing `env: {}` (which falls back to os.homedir for state-dir resolution).
   let isolatedHome: string;
   beforeEach(() => {
@@ -199,7 +199,7 @@ describe("buildGatewayInstallPlan", () => {
       platform: "darwin",
     });
 
-    expect(plan.workingDirectory).toBe(path.join(isolatedHome, ".NexisClaw"));
+    expect(plan.workingDirectory).toBe(path.join(isolatedHome, ".FirstNexus"));
     expect(mocks.buildServiceEnvironment).toHaveBeenCalledOnce();
     expect(firstMockArg(mocks.buildServiceEnvironment, "buildServiceEnvironment").platform).toBe(
       "darwin",
@@ -223,7 +223,7 @@ describe("buildGatewayInstallPlan", () => {
   });
 
   it("passes NEXISCLAW_WRAPPER through program args and managed service env", async () => {
-    const wrapperPath = path.resolve("/usr/local/bin/NexisClaw-doppler");
+    const wrapperPath = path.resolve("/usr/local/bin/FirstNexus-doppler");
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         NEXISCLAW_PORT: "3000",
@@ -365,8 +365,8 @@ describe("buildGatewayInstallPlan", () => {
     const warn = vi.fn();
     const plan = await buildGatewayInstallPlan({
       env: isolatedPlanEnv({
-        BASH_ENV: "/tmp/NexisClaw-test-bashenv",
-        XDG_CONFIG_HOME: "/tmp/NexisClaw-test-xdg-home",
+        BASH_ENV: "/tmp/FirstNexus-test-bashenv",
+        XDG_CONFIG_HOME: "/tmp/FirstNexus-test-xdg-home",
         XDG_CONFIG_DIRS: "/etc/xdg:/opt/xdg",
         GH_TOKEN: "gh-test-token",
         AWS_ACCESS_KEY_ID: "aws-access-key",
@@ -491,7 +491,7 @@ describe("buildGatewayInstallPlan", () => {
 
   it("does not inline config env SecretRef values already backed by state-dir dotenv", async () => {
     await writeStateDirDotEnv("DISCORD_BOT_TOKEN=discord-dotenv-token\n", {
-      stateDir: path.join(isolatedHome, ".NexisClaw"),
+      stateDir: path.join(isolatedHome, ".FirstNexus"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
@@ -655,7 +655,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
     await writeStateDirDotEnv(
       "BRAVE_API_KEY=BSA-from-env\nOPENROUTER_API_KEY=or-key\nMY_KEY=from-dotenv\nHOME=/from-dotenv\n",
       {
-        stateDir: path.join(tmpDir, ".NexisClaw"),
+        stateDir: path.join(tmpDir, ".FirstNexus"),
       },
     );
     mockNodeGatewayPlanFixture({
@@ -690,12 +690,12 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("retains managed .env values for macOS LaunchAgent env files", async () => {
     await writeStateDirDotEnv("TAVILY_API_KEY=dotenv-tavily\nOPENROUTER_API_KEY=or-key\n", {
-      stateDir: path.join(tmpDir, ".NexisClaw"),
+      stateDir: path.join(tmpDir, ".FirstNexus"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         HOME: "/from-service",
-        NEXISCLAW_LAUNCHD_LABEL: "ai.NexisClaw.gateway",
+        NEXISCLAW_LAUNCHD_LABEL: "ai.FirstNexus.gateway",
         NEXISCLAW_PORT: "3000",
       },
     });
@@ -716,12 +716,12 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("does not retain config env values for macOS LaunchAgent env files", async () => {
     await writeStateDirDotEnv("OPENROUTER_API_KEY=or-dotenv\nTAVILY_API_KEY=dotenv-tavily\n", {
-      stateDir: path.join(tmpDir, ".NexisClaw"),
+      stateDir: path.join(tmpDir, ".FirstNexus"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
         HOME: "/from-service",
-        NEXISCLAW_LAUNCHD_LABEL: "ai.NexisClaw.gateway",
+        NEXISCLAW_LAUNCHD_LABEL: "ai.FirstNexus.gateway",
         NEXISCLAW_PORT: "3000",
       },
     });
@@ -792,7 +792,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
         BLOGWATCHER_HOME: "/Users/test/.blogwatcher",
         NODE_OPTIONS: "--require /tmp/evil.js",
         GOPATH: "/Users/test/.local/gopath",
-        NEXISCLAW_SERVICE_MARKER: "NexisClaw",
+        NEXISCLAW_SERVICE_MARKER: "FirstNexus",
       },
     });
 
@@ -968,7 +968,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("drops legacy inline env values when the key is now managed by .env", async () => {
     await writeStateDirDotEnv("TAVILY_API_KEY=fresh-dotenv-value\n", {
-      stateDir: path.join(tmpDir, ".NexisClaw"),
+      stateDir: path.join(tmpDir, ".FirstNexus"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
@@ -1026,7 +1026,7 @@ describe("buildGatewayInstallPlan — dotenv merge", () => {
 
   it("does not embed auth-profile env refs when the key is already durable", async () => {
     await writeStateDirDotEnv("OPENAI_API_KEY=dotenv-openai\n", {
-      stateDir: path.join(tmpDir, ".NexisClaw"),
+      stateDir: path.join(tmpDir, ".FirstNexus"),
     });
     mockNodeGatewayPlanFixture({
       serviceEnvironment: {
@@ -1064,7 +1064,7 @@ describe("gatewayInstallErrorHint", () => {
     expect(gatewayInstallErrorHint("win32")).toContain("Startup-folder login item");
     expect(gatewayInstallErrorHint("win32")).toContain("elevated PowerShell");
     expect(gatewayInstallErrorHint("linux")).toMatch(
-      /(?:NexisClaw|NexisClaw)( --profile isolated)? gateway install/,
+      /(?:FirstNexus|FirstNexus)( --profile isolated)? gateway install/,
     );
   });
 });

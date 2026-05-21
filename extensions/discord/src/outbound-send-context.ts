@@ -1,10 +1,13 @@
-import type { NexisClawConfig, ReplyToMode } from "NexisClaw/plugin-sdk/config-contracts";
-import { createReplyToFanout, type ReplyToResolution } from "NexisClaw/plugin-sdk/outbound-runtime";
+import type { FirstNexusConfig, ReplyToMode } from "FirstNexus/plugin-sdk/config-contracts";
+import {
+  createReplyToFanout,
+  type ReplyToResolution,
+} from "FirstNexus/plugin-sdk/outbound-runtime";
 import {
   resolveOutboundSendDep,
   type OutboundSendDeps,
-} from "NexisClaw/plugin-sdk/outbound-send-deps";
-import { normalizeOptionalStringifiedId } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/outbound-send-deps";
+import { normalizeOptionalStringifiedId } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { withDiscordDeliveryRetry } from "./delivery-retry.js";
 
 type DiscordSendRuntime = typeof import("./send.js");
@@ -52,7 +55,7 @@ export function resolveDiscordFormattingOptions(ctx: {
 }
 
 export async function createDiscordPayloadSendContext(ctx: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   to: string;
   accountId?: string | null;
   deps?: OutboundSendDeps;

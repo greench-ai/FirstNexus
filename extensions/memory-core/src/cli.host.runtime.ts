@@ -11,16 +11,16 @@ export {
   withManager,
   withProgress,
   withProgressTotals,
-} from "NexisClaw/plugin-sdk/memory-core-host-runtime-cli";
+} from "FirstNexus/plugin-sdk/memory-core-host-runtime-cli";
 export {
   getRuntimeConfig,
   resolveDefaultAgentId,
   resolveSessionTranscriptsDirForAgent,
   resolveStateDir,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/memory-core-host-runtime-core";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/memory-core-host-runtime-core";
 export {
   listMemoryFiles,
   normalizeExtraMemoryPaths,
-} from "NexisClaw/plugin-sdk/memory-core-host-runtime-files";
+} from "FirstNexus/plugin-sdk/memory-core-host-runtime-files";
 export { getMemorySearchManager } from "./memory/index.js";

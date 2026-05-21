@@ -1,4 +1,4 @@
-import { resolveSendableOutboundReplyParts } from "NexisClaw/plugin-sdk/reply-payload";
+import { resolveSendableOutboundReplyParts } from "FirstNexus/plugin-sdk/reply-payload";
 import { parseReplyDirectives } from "../../auto-reply/reply/reply-directives.js";
 import {
   formatBtwTextForExternalDelivery,
@@ -7,7 +7,7 @@ import {
 } from "../../auto-reply/reply/reply-payloads.js";
 import type { ReplyPayload } from "../../auto-reply/types.js";
 import { resolveSilentReplySettings } from "../../config/silent-reply.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   hasInteractiveReplyBlocks,
   hasMessagePresentationBlocks,
@@ -56,7 +56,7 @@ export type OutboundPayloadPlan = {
 };
 
 type OutboundPayloadPlanContext = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   sessionKey?: string;
   surface?: string;
   conversationType?: SilentReplyConversationType;

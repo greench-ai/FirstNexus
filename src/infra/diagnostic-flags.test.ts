@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   isDiagnosticFlagEnabled,
   matchesDiagnosticFlag,
@@ -10,7 +10,7 @@ describe("resolveDiagnosticFlags", () => {
   it("normalizes and dedupes config and env flags", () => {
     const cfg = {
       diagnostics: { flags: [" Telegram.Http ", "cache.*", "CACHE.*"] },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const env = {
       NEXISCLAW_DIAGNOSTICS: " foo, Cache.*  telegram.http  ",
     } as NodeJS.ProcessEnv;
@@ -21,7 +21,7 @@ describe("resolveDiagnosticFlags", () => {
   it("treats blank env values as no extra flags", () => {
     const cfg = {
       diagnostics: { flags: ["telegram.http"] },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(
       resolveDiagnosticFlags(cfg, {
@@ -33,7 +33,7 @@ describe("resolveDiagnosticFlags", () => {
   it("treats false-like env values as disable overrides", () => {
     const cfg = {
       diagnostics: { flags: ["telegram.http"] },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     for (const raw of ["0", "false", "off", "none"]) {
       expect(
@@ -65,7 +65,7 @@ describe("isDiagnosticFlagEnabled", () => {
   it("resolves config and env together before matching", () => {
     const cfg = {
       diagnostics: { flags: ["gateway.*"] },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const env = {
       NEXISCLAW_DIAGNOSTICS: "telegram.http",
     } as NodeJS.ProcessEnv;

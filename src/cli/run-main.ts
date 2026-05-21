@@ -3,11 +3,11 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { resolveStateDir } from "../config/paths.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isTruthyEnvValue, normalizeEnv } from "../infra/env.js";
 import { isMainModule } from "../infra/is-main.js";
 import type { ProxyHandle } from "../infra/net/proxy/proxy-lifecycle.js";
-import { ensureNexisClawCliOnPath } from "../infra/path-env.js";
+import { ensureFirstNexusCliOnPath } from "../infra/path-env.js";
 import { assertSupportedRuntime } from "../infra/runtime-guard.js";
 import type { PluginManifestCommandAliasRegistry } from "../plugins/manifest-command-aliases.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
@@ -171,7 +171,7 @@ async function tryRunGatewayRunFastPath(
     emitCliBanner(VERSION, { argv });
   }
   const program = new Command();
-  program.name("NexisClaw");
+  program.name("FirstNexus");
   program.enablePositionalOptions();
   program.option("--no-color", "Disable ANSI colors", false);
   program.exitOverride((err) => {
@@ -238,7 +238,7 @@ function pauseNonTtyStdinForCliExit(): void {
 
 export function resolveMissingPluginCommandMessage(
   pluginId: string,
-  config?: NexisClawConfig,
+  config?: FirstNexusConfig,
   options?: { registry?: PluginManifestCommandAliasRegistry },
 ): string | null {
   return resolveMissingPluginCommandMessageFromPolicy(
@@ -304,7 +304,7 @@ function isKnownBuiltInCommandRoot(primary: string): boolean {
 
 async function isPluginCliRoot(params: {
   primary: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
 }): Promise<boolean | null> {
   try {
     const { resolvePluginCliRootOwnerIds } = await import("../plugins/cli-registry-loader.js");
@@ -319,7 +319,7 @@ async function isPluginCliRoot(params: {
   }
 }
 
-function createAllowlistAgnosticCliLookupConfig(config: NexisClawConfig): NexisClawConfig {
+function createAllowlistAgnosticCliLookupConfig(config: FirstNexusConfig): FirstNexusConfig {
   if (!Array.isArray(config.plugins?.allow) || config.plugins.allow.length === 0) {
     return config;
   }
@@ -334,7 +334,7 @@ function createAllowlistAgnosticCliLookupConfig(config: NexisClawConfig): NexisC
 
 async function resolveCliCommandSurfaceOwner(params: {
   primary: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
 }): Promise<string | undefined> {
   const { resolveManifestCliCommandSurfaceOwner } =
     await import("../plugins/manifest-command-aliases.runtime.js");
@@ -362,7 +362,7 @@ async function resolveCliCommandSurfaceOwner(params: {
 
 async function resolveUnownedCliPrimary(params: {
   argv: string[];
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
 }): Promise<string | null> {
   const invocation = resolveCliArgvInvocation(rewriteUpdateFlagArgv(params.argv));
   const { primary } = invocation;
@@ -384,7 +384,7 @@ async function resolveUnownedCliPrimary(params: {
 
 async function resolveUnownedCliPrimaryMessage(params: {
   primary: string;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
 }): Promise<string> {
   const { resolveManifestCommandAliasOwner, resolveManifestToolOwner } =
     await import("../plugins/manifest-command-aliases.runtime.js");
@@ -395,7 +395,7 @@ async function resolveUnownedCliPrimaryMessage(params: {
       resolveToolOwner: resolveManifestToolOwner,
       resolveCliCommandSurfaceOwner: () => cliCommandSurfaceOwner,
     }) ??
-    `Unknown command: NexisClaw ${params.primary}. No built-in command or plugin CLI metadata owns "${params.primary}".`
+    `Unknown command: FirstNexus ${params.primary}. No built-in command or plugin CLI metadata owns "${params.primary}".`
   );
 }
 
@@ -459,7 +459,7 @@ export async function runCli(argv: string[] = process.argv) {
   }
   normalizeEnv();
   if (shouldEnsureCliPath(normalizedArgv)) {
-    ensureNexisClawCliOnPath();
+    ensureFirstNexusCliOnPath();
   }
 
   // Enforce the minimum supported runtime before doing any work.
@@ -469,8 +469,8 @@ export async function runCli(argv: string[] = process.argv) {
   // Local Gateway/control-plane commands keep direct loopback access while
   // runtime, provider, plugin, update, and manifest/metadata-owned plugin commands route egress.
   let proxyHandle: ProxyHandle | null = null;
-  let bestEffortConfigPromise: Promise<NexisClawConfig> | null = null;
-  const readBestEffortCliConfig = async (): Promise<NexisClawConfig> => {
+  let bestEffortConfigPromise: Promise<FirstNexusConfig> | null = null;
+  const readBestEffortCliConfig = async (): Promise<FirstNexusConfig> => {
     if (!bestEffortConfigPromise) {
       bestEffortConfigPromise = import("../config/io.js").then(({ readBestEffortConfig }) =>
         readBestEffortConfig(),
@@ -550,7 +550,7 @@ export async function runCli(argv: string[] = process.argv) {
     if (shouldRunBareRootCrestodian) {
       if (!process.stdin.isTTY || !process.stdout.isTTY) {
         console.error(
-          'Crestodian needs an interactive TTY. Use `NexisClaw crestodian --message "status"` for one command.',
+          'Crestodian needs an interactive TTY. Use `FirstNexus crestodian --message "status"` for one command.',
         );
         process.exitCode = 1;
         return;
@@ -622,7 +622,7 @@ export async function runCli(argv: string[] = process.argv) {
 
     const { createCliProgress } = await import("./progress.js");
     const startupProgress = createCliProgress({
-      label: "Loading NexisClaw CLI…",
+      label: "Loading FirstNexus CLI…",
       indeterminate: true,
       delayMs: 0,
       fallback: "none",
@@ -674,20 +674,20 @@ export async function runCli(argv: string[] = process.argv) {
         }
         if (isBenignUncaughtExceptionError(error)) {
           console.warn(
-            "[NexisClaw] Non-fatal uncaught exception (continuing):",
+            "[FirstNexus] Non-fatal uncaught exception (continuing):",
             formatUncaughtError(error),
           );
           return;
         }
         for (const line of formatCliFailureLines({
-          title: "NexisClaw hit an unexpected runtime error.",
+          title: "FirstNexus hit an unexpected runtime error.",
           error,
           argv: normalizedArgv,
         })) {
           console.error(line);
         }
         for (const message of runFatalErrorHooks({ reason: "uncaught_exception", error })) {
-          console.error("[NexisClaw]", message);
+          console.error("[FirstNexus]", message);
         }
         restoreTerminalState("uncaught exception", { resumeStdinIfPaused: false });
         process.exit(1);

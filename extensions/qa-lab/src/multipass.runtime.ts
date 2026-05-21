@@ -3,16 +3,16 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { sleep } from "NexisClaw/plugin-sdk/runtime-env";
-import { appendRegularFile } from "NexisClaw/plugin-sdk/security-runtime";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import { sleep } from "FirstNexus/plugin-sdk/runtime-env";
+import { appendRegularFile } from "FirstNexus/plugin-sdk/security-runtime";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 import type { QaProviderMode } from "./model-selection.js";
 import { resolveQaForwardedLiveEnv, resolveQaLiveProviderConfigPath } from "./providers/env.js";
 import { DEFAULT_QA_LIVE_PROVIDER_MODE, getQaProvider } from "./providers/index.js";
 
-const MULTIPASS_MOUNTED_REPO_PATH = "/workspace/NexisClaw-host";
-const MULTIPASS_GUEST_REPO_PATH = "/workspace/NexisClaw";
-const MULTIPASS_GUEST_CODEX_HOME_PATH = "/workspace/NexisClaw-codex-home";
+const MULTIPASS_MOUNTED_REPO_PATH = "/workspace/FirstNexus-host";
+const MULTIPASS_GUEST_REPO_PATH = "/workspace/FirstNexus";
+const MULTIPASS_GUEST_CODEX_HOME_PATH = "/workspace/FirstNexus-codex-home";
 const MULTIPASS_GUEST_PACKAGES = [
   "build-essential",
   "ca-certificates",
@@ -259,12 +259,12 @@ export function createQaMultipassPlan(params: {
     liveProviderConfig && fs.existsSync(liveProviderConfig.path)
       ? liveProviderConfig.path
       : undefined;
-  const vmName = `NexisClaw-qa-${createVmSuffix()}`;
+  const vmName = `FirstNexus-qa-${createVmSuffix()}`;
   const guestOutputDir = resolveGuestMountedPath(params.repoRoot, outputDir);
   const qaCommand = appendScenarioArgs(
     [
       "pnpm",
-      "NexisClaw",
+      "FirstNexus",
       "qa",
       "suite",
       "--transport",
@@ -560,7 +560,7 @@ export async function runQaMultipass(params: {
   await mkdir(plan.outputDir, { recursive: true });
   await writeFile(
     plan.hostLogPath,
-    `# NexisClaw QA Multipass host log\nvmName=${plan.vmName}\noutputDir=${plan.outputDir}\n\n`,
+    `# FirstNexus QA Multipass host log\nvmName=${plan.vmName}\noutputDir=${plan.outputDir}\n\n`,
     "utf8",
   );
   await writeFile(
@@ -582,13 +582,13 @@ export async function runQaMultipass(params: {
       );
     }
     throw new Error(
-      `Multipass is not installed on this host. Install it with '${resolveMultipassInstallHint()}', then rerun 'pnpm NexisClaw qa suite --runner multipass'.`,
+      `Multipass is not installed on this host. Install it with '${resolveMultipassInstallHint()}', then rerun 'pnpm FirstNexus qa suite --runner multipass'.`,
       { cause: error },
     );
   }
 
   const hostTransferDirPath = await fs.promises.mkdtemp(
-    path.join(resolvePreferredNexisClawTmpDir(), `${plan.vmName}-qa-suite-`),
+    path.join(resolvePreferredFirstNexusTmpDir(), `${plan.vmName}-qa-suite-`),
   );
   const hostTransferScriptPath = path.join(hostTransferDirPath, "guest-run.sh");
   await writeFile(hostTransferScriptPath, renderQaMultipassGuestScript(plan), {

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { withActivatedPluginIds } from "../activation-context.js";
 import { getLoadedRuntimePluginRegistry } from "../active-runtime-registry.js";
 import {
@@ -7,7 +7,7 @@ import {
   resolveDiscoverableScopedChannelPluginIds,
 } from "../channel-plugin-ids.js";
 import { resolveEffectivePluginIds } from "../effective-plugin-ids.js";
-import { loadNexisClawPlugins } from "../loader.js";
+import { loadFirstNexusPlugins } from "../loader.js";
 import {
   hasExplicitPluginIdScope,
   hasNonEmptyPluginIdScope,
@@ -106,7 +106,7 @@ function resolveScopePluginIds(params: {
 }
 
 function resolveOrLoadRuntimePluginRegistry(
-  loadOptions: NonNullable<Parameters<typeof loadNexisClawPlugins>[0]>,
+  loadOptions: NonNullable<Parameters<typeof loadFirstNexusPlugins>[0]>,
 ): void {
   if (
     !getLoadedRuntimePluginRegistry({
@@ -116,14 +116,14 @@ function resolveOrLoadRuntimePluginRegistry(
       requiredPluginIds: loadOptions.onlyPluginIds,
     })
   ) {
-    loadNexisClawPlugins(loadOptions);
+    loadFirstNexusPlugins(loadOptions);
   }
 }
 
 export function ensurePluginRegistryLoaded(options?: {
   scope?: PluginRegistryScope;
-  config?: NexisClawConfig;
-  activationSourceConfig?: NexisClawConfig;
+  config?: FirstNexusConfig;
+  activationSourceConfig?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
   onlyPluginIds?: string[];

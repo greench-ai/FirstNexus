@@ -4,7 +4,7 @@ import {
   listChatCommands,
   type ChatCommandDefinition,
   type CommandArgs,
-} from "NexisClaw/plugin-sdk/command-auth-native";
+} from "FirstNexus/plugin-sdk/command-auth-native";
 import {
   Button,
   StringSelectMenu,

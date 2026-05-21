@@ -1,12 +1,12 @@
 import {
   attachPluginApiFacades,
-  type NexisClawPluginApiWithoutFacades,
+  type FirstNexusPluginApiWithoutFacades,
 } from "../plugins/api-facades.js";
-import type { NexisClawPluginApi } from "./plugin-runtime.js";
+import type { FirstNexusPluginApi } from "./plugin-runtime.js";
 
-export type TestPluginApiInput = Partial<NexisClawPluginApi>;
+export type TestPluginApiInput = Partial<FirstNexusPluginApi>;
 
-export function createTestPluginApi(api: TestPluginApiInput = {}): NexisClawPluginApi {
+export function createTestPluginApi(api: TestPluginApiInput = {}): FirstNexusPluginApi {
   const { agent, lifecycle, runContext, session, ...flatApi } = api;
   const mergedApi = {
     id: "test-plugin",
@@ -14,7 +14,7 @@ export function createTestPluginApi(api: TestPluginApiInput = {}): NexisClawPlug
     source: "test",
     registrationMode: "full",
     config: {},
-    runtime: {} as NexisClawPluginApi["runtime"],
+    runtime: {} as FirstNexusPluginApi["runtime"],
     logger: { info() {}, warn() {}, error() {}, debug() {} },
     registerTool() {},
     registerHook() {},
@@ -87,7 +87,7 @@ export function createTestPluginApi(api: TestPluginApiInput = {}): NexisClawPlug
     },
     on() {},
     ...flatApi,
-  } as NexisClawPluginApiWithoutFacades;
+  } as FirstNexusPluginApiWithoutFacades;
   const withFacades = attachPluginApiFacades(mergedApi);
   return {
     ...withFacades,

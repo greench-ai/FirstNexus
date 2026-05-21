@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { resolveMainSessionKey } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { safeEqualSecret } from "../security/secret-equal.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
@@ -32,7 +32,7 @@ type McpRequestContext = {
   senderIsOwner: boolean;
 };
 
-function resolveScopedSessionKey(cfg: NexisClawConfig, rawSessionKey: string | undefined): string {
+function resolveScopedSessionKey(cfg: FirstNexusConfig, rawSessionKey: string | undefined): string {
   const trimmed = normalizeOptionalString(rawSessionKey);
   return !trimmed || trimmed === "main" ? resolveMainSessionKey(cfg) : trimmed;
 }
@@ -165,14 +165,14 @@ export async function readMcpHttpBody(req: IncomingMessage): Promise<string> {
 
 export function resolveMcpRequestContext(
   req: IncomingMessage,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   auth: { senderIsOwner: boolean },
 ): McpRequestContext {
   return {
     sessionKey: resolveScopedSessionKey(cfg, getHeader(req, "x-session-key")),
     messageProvider:
-      normalizeMessageChannel(getHeader(req, "x-NexisClaw-message-channel")) ?? undefined,
-    accountId: normalizeOptionalString(getHeader(req, "x-NexisClaw-account-id")),
+      normalizeMessageChannel(getHeader(req, "x-FirstNexus-message-channel")) ?? undefined,
+    accountId: normalizeOptionalString(getHeader(req, "x-FirstNexus-account-id")),
     senderIsOwner: auth.senderIsOwner,
   };
 }

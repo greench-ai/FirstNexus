@@ -21,7 +21,7 @@ import {
 async function withRestartSentinelStateDir(run: () => Promise<void>): Promise<void> {
   const envSnapshot = captureEnv(["NEXISCLAW_STATE_DIR"]);
   try {
-    await withTempDir({ prefix: "NexisClaw-sentinel-" }, async (tempDir) => {
+    await withTempDir({ prefix: "FirstNexus-sentinel-" }, async (tempDir) => {
       process.env.NEXISCLAW_STATE_DIR = tempDir;
       await run();
     });
@@ -158,7 +158,7 @@ describe("restart sentinel", () => {
       status: "error" as const,
       ts: Date.now(),
       message: "Patch failed",
-      doctorHint: "Run NexisClaw doctor",
+      doctorHint: "Run FirstNexus doctor",
       stats: { mode: "patch", reason: "validation failed" },
     };
 
@@ -167,7 +167,7 @@ describe("restart sentinel", () => {
         "Gateway restart config-patch error (patch)",
         "Patch failed",
         "Reason: validation failed",
-        "Run NexisClaw doctor",
+        "Run FirstNexus doctor",
       ].join("\n"),
     );
   });
@@ -320,7 +320,7 @@ describe("restart sentinel message dedup", () => {
 
   it("formats the non-interactive doctor command", () => {
     expect(formatDoctorNonInteractiveHint({ PATH: "/usr/bin:/bin" })).toContain(
-      "NexisClaw doctor --non-interactive",
+      "FirstNexus doctor --non-interactive",
     );
   });
 });

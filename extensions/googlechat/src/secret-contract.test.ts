@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   applyResolvedAssignments,
   createResolverContext,
   resolveSecretRefValues,
-} from "NexisClaw/plugin-sdk/secret-ref-runtime";
+} from "FirstNexus/plugin-sdk/secret-ref-runtime";
 import { describe, expect, it } from "vitest";
 import { collectRuntimeConfigAssignments } from "./secret-contract.js";
 
@@ -25,8 +25,8 @@ describe("googlechat secret contract", () => {
           },
         },
       },
-    } satisfies NexisClawConfig;
-    const resolvedConfig: NexisClawConfig = structuredClone(sourceConfig);
+    } satisfies FirstNexusConfig;
+    const resolvedConfig: FirstNexusConfig = structuredClone(sourceConfig);
     const context = createResolverContext({
       sourceConfig,
       env: {

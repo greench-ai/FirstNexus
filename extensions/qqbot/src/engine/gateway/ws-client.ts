@@ -1,5 +1,5 @@
 import type { Agent } from "node:http";
-import { resolveAmbientNodeProxyAgent } from "NexisClaw/plugin-sdk/extension-shared";
+import { resolveAmbientNodeProxyAgent } from "FirstNexus/plugin-sdk/extension-shared";
 import WebSocket from "ws";
 
 export interface QQWSClientOptions {

@@ -1,5 +1,5 @@
 import { hasPotentialConfiguredChannels } from "../channels/config-presence.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { executeStatusScanFromOverview } from "./status.scan-execute.ts";
 import {
@@ -13,7 +13,7 @@ type StatusJsonScanPolicy = {
   commandName: string;
   allowMissingConfigFastPath?: boolean;
   includeChannelSummary?: boolean;
-  resolveHasConfiguredChannels: (cfg: NexisClawConfig, sourceConfig: NexisClawConfig) => boolean;
+  resolveHasConfiguredChannels: (cfg: FirstNexusConfig, sourceConfig: FirstNexusConfig) => boolean;
   resolveMemory: Parameters<typeof executeStatusScanFromOverview>[0]["resolveMemory"];
 };
 

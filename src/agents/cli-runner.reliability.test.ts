@@ -8,7 +8,7 @@ import {
   createReplyOperation,
   replyRunRegistry,
 } from "../auto-reply/reply/reply-run-registry.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { getGlobalHookRunner } from "../plugins/hook-runner-global.js";
 import { runPreparedCliAgent } from "./cli-runner.js";
 import {
@@ -33,7 +33,7 @@ vi.mock("../tts/tts.js", () => ({
 }));
 
 const mockGetGlobalHookRunner = vi.mocked(getGlobalHookRunner);
-const hookRunnerGlobalStateKey = Symbol.for("NexisClaw.plugins.hook-runner-global-state");
+const hookRunnerGlobalStateKey = Symbol.for("FirstNexus.plugins.hook-runner-global-state");
 
 type HookRunnerGlobalStateForTest = {
   hookRunner: unknown;
@@ -55,7 +55,7 @@ function setHookRunnerForTest(hookRunner: unknown): void {
 }
 
 function createSessionFile(params?: { history?: Array<{ role: "user"; content: string }> }) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-cli-hooks-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-cli-hooks-"));
   vi.stubEnv("NEXISCLAW_STATE_DIR", dir);
   const sessionFile = path.join(dir, "agents", "main", "sessions", "s1.jsonl");
   const storePath = path.join(path.dirname(sessionFile), "sessions.json");
@@ -441,7 +441,7 @@ describe("runCliAgent reliability", () => {
     expect(completion.refusal).toBe(false);
   });
 
-  it("seeds fresh CLI sessions from the NexisClaw transcript", async () => {
+  it("seeds fresh CLI sessions from the FirstNexus transcript", async () => {
     supervisorSpawnMock.mockResolvedValueOnce(
       createManagedRun({
         reason: "exit",
@@ -458,7 +458,7 @@ describe("runCliAgent reliability", () => {
     const result = await runPreparedCliAgent(
       buildPreparedContext({
         openClawHistoryPrompt:
-          "Continue this conversation using the NexisClaw transcript below.\n\nUser: earlier ask\n\nAssistant: earlier answer\n\n<next_user_message>\nhi\n</next_user_message>",
+          "Continue this conversation using the FirstNexus transcript below.\n\nUser: earlier ask\n\nAssistant: earlier answer\n\n<next_user_message>\nhi\n</next_user_message>",
       }),
     );
 
@@ -777,9 +777,11 @@ describe("runCliAgent reliability", () => {
       );
       expect(JSON.stringify(blockedLine)).not.toContain("secret prompt");
       expect(JSON.stringify(blockedLine)).not.toContain("matched secret prompt");
-      expect(blockedLine.message.__NexisClaw.beforeAgentRunBlocked.blockedBy).toBe("policy-plugin");
-      expect(blockedLine.message.__NexisClaw.beforeAgentRunBlocked).not.toHaveProperty("reason");
-      expect(Object.hasOwn(blockedLine.message.__NexisClaw, "beforeAgentRunBlocked")).toBe(true);
+      expect(blockedLine.message.__FirstNexus.beforeAgentRunBlocked.blockedBy).toBe(
+        "policy-plugin",
+      );
+      expect(blockedLine.message.__FirstNexus.beforeAgentRunBlocked).not.toHaveProperty("reason");
+      expect(Object.hasOwn(blockedLine.message.__FirstNexus, "beforeAgentRunBlocked")).toBe(true);
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
     }
@@ -906,7 +908,7 @@ describe("runCliAgent reliability", () => {
           runId: "run-retry-success",
           cliSessionId: "thread-123",
           openClawHistoryPrompt:
-            "Continue this conversation using the NexisClaw transcript below.\n\nUser: recovered history\n\n<next_user_message>\nhi\n</next_user_message>",
+            "Continue this conversation using the FirstNexus transcript below.\n\nUser: recovered history\n\n<next_user_message>\nhi\n</next_user_message>",
         }),
         params: {
           ...buildPreparedContext({
@@ -914,7 +916,7 @@ describe("runCliAgent reliability", () => {
             runId: "run-retry-success",
             cliSessionId: "thread-123",
             openClawHistoryPrompt:
-              "Continue this conversation using the NexisClaw transcript below.\n\nUser: recovered history\n\n<next_user_message>\nhi\n</next_user_message>",
+              "Continue this conversation using the FirstNexus transcript below.\n\nUser: recovered history\n\n<next_user_message>\nhi\n</next_user_message>",
           }).params,
           agentId: "main",
           sessionFile,
@@ -996,7 +998,7 @@ describe("runCliAgent reliability", () => {
       })}\n`,
       "utf-8",
     );
-    const config: NexisClawConfig = {
+    const config: FirstNexusConfig = {
       agents: {
         defaults: {
           workspace: dir,

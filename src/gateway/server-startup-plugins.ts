@@ -1,7 +1,7 @@
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { initSubagentRegistry } from "../agents/subagent-registry.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { loadPluginLookUpTable } from "../plugins/plugin-lookup-table.js";
 import type { PluginMetadataSnapshot } from "../plugins/plugin-metadata-snapshot.js";
 import type { PluginRegistryParams } from "../plugins/registry-types.js";
@@ -22,9 +22,9 @@ type GatewayStartupTrace = {
 };
 
 export function resolveGatewayStartupMaintenanceConfig(params: {
-  cfgAtStart: NexisClawConfig;
-  startupRuntimeConfig: NexisClawConfig;
-}): NexisClawConfig {
+  cfgAtStart: FirstNexusConfig;
+  startupRuntimeConfig: FirstNexusConfig;
+}): FirstNexusConfig {
   return params.cfgAtStart.channels === undefined &&
     params.startupRuntimeConfig.channels !== undefined
     ? {
@@ -35,9 +35,9 @@ export function resolveGatewayStartupMaintenanceConfig(params: {
 }
 
 export async function prepareGatewayPluginBootstrap(params: {
-  cfgAtStart: NexisClawConfig;
-  activationSourceConfig?: NexisClawConfig;
-  startupRuntimeConfig: NexisClawConfig;
+  cfgAtStart: FirstNexusConfig;
+  activationSourceConfig?: FirstNexusConfig;
+  startupRuntimeConfig: FirstNexusConfig;
   pluginMetadataSnapshot?: PluginMetadataSnapshot;
   minimalTestGateway: boolean;
   log: GatewayPluginBootstrapLog;
@@ -147,8 +147,8 @@ export async function prepareGatewayPluginBootstrap(params: {
 }
 
 export async function loadGatewayStartupPluginRuntime(params: {
-  cfg: NexisClawConfig;
-  activationSourceConfig?: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  activationSourceConfig?: FirstNexusConfig;
   workspaceDir: string;
   log: GatewayPluginBootstrapLog;
   baseMethods: string[];

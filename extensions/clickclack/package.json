@@ -1,8 +1,8 @@
 {
-  "name": "@NexisClaw/clickclack",
+  "name": "@FirstNexus/clickclack",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw ClickClack channel plugin",
+  "description": "FirstNexus ClickClack channel plugin",
   "type": "module",
   "exports": {
     ".": "./index.ts",
@@ -14,18 +14,18 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*",
-    "NexisClaw": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*",
+    "FirstNexus": "workspace:*"
   },
   "peerDependencies": {
-    "NexisClaw": ">=2026.5.12-beta.1"
+    "FirstNexus": ">=2026.5.12-beta.1"
   },
   "peerDependenciesMeta": {
-    "NexisClaw": {
+    "FirstNexus": {
       "optional": true
     }
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],

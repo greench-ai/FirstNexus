@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { createChannelMessageAdapterFromOutbound } from "./outbound-bridge.js";
 import type {
   ChannelMessageSendPayloadContext,
@@ -7,7 +7,7 @@ import type {
   MessageReceipt,
 } from "./types.js";
 
-const cfg = {} as NexisClawConfig;
+const cfg = {} as FirstNexusConfig;
 
 function requireFirstCallArg(mock: {
   mock: { calls: readonly unknown[][] };

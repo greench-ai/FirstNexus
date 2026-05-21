@@ -1,11 +1,11 @@
 ---
-summary: "CLI reference for `NexisClaw agents` (list/add/delete/bindings/bind/unbind/set identity)"
+summary: "CLI reference for `FirstNexus agents` (list/add/delete/bindings/bind/unbind/set identity)"
 read_when:
   - You want multiple isolated agents (workspaces + routing + auth)
 title: "Agents"
 ---
 
-# `NexisClaw agents`
+# `FirstNexus agents`
 
 Manage isolated agents (workspaces + auth + routing).
 
@@ -18,56 +18,56 @@ Related:
 ## Examples
 
 ```bash
-NexisClaw agents list
-NexisClaw agents list --bindings
-NexisClaw agents add work --workspace ~/.NexisClaw/workspace-work
-NexisClaw agents add ops --workspace ~/.NexisClaw/workspace-ops --bind telegram:ops --non-interactive
-NexisClaw agents bindings
-NexisClaw agents bind --agent work --bind telegram:ops
-NexisClaw agents unbind --agent work --bind telegram:ops
-NexisClaw agents set-identity --workspace ~/.NexisClaw/workspace --from-identity
-NexisClaw agents set-identity --agent main --avatar avatars/NexisClaw.png
-NexisClaw agents delete work
+FirstNexus agents list
+FirstNexus agents list --bindings
+FirstNexus agents add work --workspace ~/.FirstNexus/workspace-work
+FirstNexus agents add ops --workspace ~/.FirstNexus/workspace-ops --bind telegram:ops --non-interactive
+FirstNexus agents bindings
+FirstNexus agents bind --agent work --bind telegram:ops
+FirstNexus agents unbind --agent work --bind telegram:ops
+FirstNexus agents set-identity --workspace ~/.FirstNexus/workspace --from-identity
+FirstNexus agents set-identity --agent main --avatar avatars/FirstNexus.png
+FirstNexus agents delete work
 ```
 
 ## Routing bindings
 
 Use routing bindings to pin inbound channel traffic to a specific agent.
 
-If you also want different visible skills per agent, configure `agents.defaults.skills` and `agents.list[].skills` in `NexisClaw.json`. See [Skills config](/tools/skills-config) and [Configuration reference](/gateway/config-agents#agents-defaults-skills).
+If you also want different visible skills per agent, configure `agents.defaults.skills` and `agents.list[].skills` in `FirstNexus.json`. See [Skills config](/tools/skills-config) and [Configuration reference](/gateway/config-agents#agents-defaults-skills).
 
 List bindings:
 
 ```bash
-NexisClaw agents bindings
-NexisClaw agents bindings --agent work
-NexisClaw agents bindings --json
+FirstNexus agents bindings
+FirstNexus agents bindings --agent work
+FirstNexus agents bindings --json
 ```
 
 Add bindings:
 
 ```bash
-NexisClaw agents bind --agent work --bind telegram:ops --bind discord:guild-a
+FirstNexus agents bind --agent work --bind telegram:ops --bind discord:guild-a
 ```
 
-If you omit `accountId` (`--bind <channel>`), NexisClaw resolves it from channel defaults and plugin setup hooks when available.
+If you omit `accountId` (`--bind <channel>`), FirstNexus resolves it from channel defaults and plugin setup hooks when available.
 
-If you omit `--agent` for `bind` or `unbind`, NexisClaw targets the current default agent.
+If you omit `--agent` for `bind` or `unbind`, FirstNexus targets the current default agent.
 
 ### Binding scope behavior
 
 - A binding without `accountId` matches the channel default account only.
 - `accountId: "*"` is the channel-wide fallback (all accounts) and is less specific than an explicit account binding.
-- If the same agent already has a matching channel binding without `accountId`, and you later bind with an explicit or resolved `accountId`, NexisClaw upgrades that existing binding in place instead of adding a duplicate.
+- If the same agent already has a matching channel binding without `accountId`, and you later bind with an explicit or resolved `accountId`, FirstNexus upgrades that existing binding in place instead of adding a duplicate.
 
 Example:
 
 ```bash
 # initial channel-only binding
-NexisClaw agents bind --agent work --bind telegram
+FirstNexus agents bind --agent work --bind telegram
 
 # later upgrade to account-scoped binding
-NexisClaw agents bind --agent work --bind telegram:ops
+FirstNexus agents bind --agent work --bind telegram:ops
 ```
 
 After the upgrade, routing for that binding is scoped to `telegram:ops`. If you also want default-account routing, add it explicitly (for example `--bind telegram:default`).
@@ -75,8 +75,8 @@ After the upgrade, routing for that binding is scoped to `telegram:ops`. If you 
 Remove bindings:
 
 ```bash
-NexisClaw agents unbind --agent work --bind telegram:ops
-NexisClaw agents unbind --agent work --all
+FirstNexus agents unbind --agent work --bind telegram:ops
+FirstNexus agents unbind --agent work --all
 ```
 
 `unbind` accepts either `--all` or one or more `--bind` values, not both.
@@ -85,7 +85,7 @@ NexisClaw agents unbind --agent work --all
 
 ### `agents`
 
-Running `NexisClaw agents` with no subcommand is equivalent to `NexisClaw agents list`.
+Running `FirstNexus agents` with no subcommand is equivalent to `FirstNexus agents list`.
 
 ### `agents list`
 
@@ -161,7 +161,7 @@ Notes:
 
 Each agent workspace can include an `IDENTITY.md` at the workspace root:
 
-- Example path: `~/.NexisClaw/workspace/IDENTITY.md`
+- Example path: `~/.FirstNexus/workspace/IDENTITY.md`
 - `set-identity --from-identity` reads from the workspace root (or an explicit `--identity-file`)
 
 Avatar paths resolve relative to the workspace root.
@@ -196,13 +196,13 @@ Notes:
 Load from `IDENTITY.md`:
 
 ```bash
-NexisClaw agents set-identity --workspace ~/.NexisClaw/workspace --from-identity
+FirstNexus agents set-identity --workspace ~/.FirstNexus/workspace --from-identity
 ```
 
 Override fields explicitly:
 
 ```bash
-NexisClaw agents set-identity --agent main --name "NexisClaw" --emoji "🦞" --avatar avatars/NexisClaw.png
+FirstNexus agents set-identity --agent main --name "FirstNexus" --emoji "🦞" --avatar avatars/FirstNexus.png
 ```
 
 Config sample:
@@ -214,10 +214,10 @@ Config sample:
       {
         id: "main",
         identity: {
-          name: "NexisClaw",
+          name: "FirstNexus",
           theme: "space lobster",
           emoji: "🦞",
-          avatar: "avatars/NexisClaw.png",
+          avatar: "avatars/FirstNexus.png",
         },
       },
     ],

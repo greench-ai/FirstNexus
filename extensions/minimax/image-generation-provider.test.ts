@@ -1,6 +1,6 @@
-import * as providerAuth from "NexisClaw/plugin-sdk/provider-auth-runtime";
-import * as providerHttp from "NexisClaw/plugin-sdk/provider-http";
-import { installPinnedHostnameTestHooks } from "NexisClaw/plugin-sdk/test-env";
+import * as providerAuth from "FirstNexus/plugin-sdk/provider-auth-runtime";
+import * as providerHttp from "FirstNexus/plugin-sdk/provider-http";
+import { installPinnedHostnameTestHooks } from "FirstNexus/plugin-sdk/test-env";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   buildMinimaxImageGenerationProvider,

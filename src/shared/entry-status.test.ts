@@ -26,7 +26,7 @@ describe("shared/entry-status", () => {
       always: false,
       metadata: {
         emoji: "🦀",
-        homepage: "https://NexisClaw.ai",
+        homepage: "https://FirstNexus.ai",
         requires: {
           bins: ["bun"],
           anyBins: ["ffmpeg", "sox"],
@@ -37,7 +37,7 @@ describe("shared/entry-status", () => {
       },
       frontmatter: {
         emoji: "🙂",
-        homepage: "https://docs.NexisClaw.ai",
+        homepage: "https://docs.FirstNexus.ai",
       },
       hasLocalBin: (bin) => bin === "bun",
       localPlatform: "linux",
@@ -50,7 +50,7 @@ describe("shared/entry-status", () => {
 
     expect(result).toEqual({
       emoji: "🦀",
-      homepage: "https://NexisClaw.ai",
+      homepage: "https://FirstNexus.ai",
       required: {
         bins: ["bun"],
         anyBins: ["ffmpeg", "sox"],
@@ -99,7 +99,7 @@ describe("shared/entry-status", () => {
           },
         },
         frontmatter: {
-          website: " https://docs.NexisClaw.ai ",
+          website: " https://docs.FirstNexus.ai ",
           emoji: "🙂",
         },
       },
@@ -110,7 +110,7 @@ describe("shared/entry-status", () => {
 
     expect(result).toEqual({
       emoji: "🙂",
-      homepage: "https://docs.NexisClaw.ai",
+      homepage: "https://docs.FirstNexus.ai",
       required: {
         bins: ["missing-bin"],
         anyBins: [],

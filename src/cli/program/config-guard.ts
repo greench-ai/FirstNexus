@@ -112,7 +112,7 @@ export async function ensureConfigReady(params: {
   const heading = (value: string) => colorize(rich, theme.heading, value);
   const commandText = (value: string) => colorize(rich, theme.command, value);
 
-  params.runtime.error(heading("NexisClaw config is invalid"));
+  params.runtime.error(heading("FirstNexus config is invalid"));
   params.runtime.error(`${muted("File:")} ${muted(shortenHomePath(snapshot.path))}`);
   if (issues.length > 0) {
     params.runtime.error(muted("Problem:"));
@@ -124,10 +124,10 @@ export async function ensureConfigReady(params: {
   }
   params.runtime.error("");
   params.runtime.error(
-    `${muted("Fix:")} ${commandText(formatCliCommand("NexisClaw doctor --fix"))}`,
+    `${muted("Fix:")} ${commandText(formatCliCommand("FirstNexus doctor --fix"))}`,
   );
   params.runtime.error(
-    `${muted("Inspect:")} ${commandText(formatCliCommand("NexisClaw config validate"))}`,
+    `${muted("Inspect:")} ${commandText(formatCliCommand("FirstNexus config validate"))}`,
   );
   params.runtime.error(
     muted("Status, health, logs, and doctor commands still run with invalid config."),

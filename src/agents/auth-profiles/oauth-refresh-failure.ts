@@ -61,6 +61,6 @@ export function classifyOAuthRefreshFailure(message: string): {
 export function buildOAuthRefreshFailureLoginCommand(provider: string | null | undefined): string {
   const safeProvider = sanitizeOAuthRefreshFailureProvider(provider);
   return safeProvider
-    ? formatCliCommand(`NexisClaw models auth login --provider ${safeProvider}`)
-    : formatCliCommand("NexisClaw models auth login");
+    ? formatCliCommand(`FirstNexus models auth login --provider ${safeProvider}`)
+    : formatCliCommand("FirstNexus models auth login");
 }

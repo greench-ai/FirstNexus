@@ -1,4 +1,4 @@
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/channel-entry-contract";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/channel-entry-contract";
 
 type MatrixSubagentHooksModule = typeof import("./src/matrix/subagent-hooks.js");
 
@@ -9,7 +9,7 @@ function loadMatrixSubagentHooksModule() {
   return matrixSubagentHooksPromise;
 }
 
-export function registerMatrixSubagentHooks(api: NexisClawPluginApi): void {
+export function registerMatrixSubagentHooks(api: FirstNexusPluginApi): void {
   api.on("subagent_spawning", async (event) => {
     const { handleMatrixSubagentSpawning } = await loadMatrixSubagentHooksModule();
     return await handleMatrixSubagentSpawning(api, event);

@@ -1,1 +1,1 @@
-export { createLoggerBackedRuntime } from "NexisClaw/plugin-sdk/runtime";
+export { createLoggerBackedRuntime } from "FirstNexus/plugin-sdk/runtime";

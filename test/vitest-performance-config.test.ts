@@ -29,14 +29,14 @@ describe("loadVitestExperimentalConfig", () => {
     expect(
       loadVitestExperimentalConfig(
         {
-          NEXISCLAW_VITEST_FS_MODULE_CACHE_PATH: "/tmp/NexisClaw-vitest-cache",
+          NEXISCLAW_VITEST_FS_MODULE_CACHE_PATH: "/tmp/FirstNexus-vitest-cache",
         },
         "linux",
       ),
     ).toEqual({
       experimental: {
         fsModuleCache: true,
-        fsModuleCachePath: "/tmp/NexisClaw-vitest-cache",
+        fsModuleCachePath: "/tmp/FirstNexus-vitest-cache",
       },
     });
   });

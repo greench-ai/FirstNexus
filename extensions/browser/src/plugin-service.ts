@@ -1,7 +1,7 @@
 import {
   startLazyPluginServiceModule,
   type LazyPluginServiceHandle,
-  type NexisClawPluginService,
+  type FirstNexusPluginService,
 } from "./sdk-node-runtime.js";
 
 type BrowserControlHandle = LazyPluginServiceHandle | null;
@@ -15,7 +15,7 @@ function validateBrowserControlOverrideSpecifier(specifier: string): string {
   return trimmed;
 }
 
-export function createBrowserPluginService(): NexisClawPluginService {
+export function createBrowserPluginService(): FirstNexusPluginService {
   let handle: BrowserControlHandle = null;
 
   return {

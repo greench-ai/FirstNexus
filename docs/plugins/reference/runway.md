@@ -11,8 +11,8 @@ Adds video generation provider support.
 
 ## Distribution
 
-- Package: `@NexisClaw/runway-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/runway-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

@@ -1,11 +1,11 @@
 import path from "node:path";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import {
   POSIX_NEXISCLAW_TMP_DIR,
-  resolvePreferredNexisClawTmpDir,
-} from "../infra/tmp-NexisClaw-dir.js";
+  resolvePreferredFirstNexusTmpDir,
+} from "../infra/tmp-FirstNexus-dir.js";
 
-const LOG_PREFIX = "NexisClaw";
+const LOG_PREFIX = "FirstNexus";
 const LOG_SUFFIX = ".log";
 
 function canUseNodeFs(): boolean {
@@ -32,10 +32,10 @@ function formatLocalDate(date: Date): string {
 }
 
 function resolveDefaultRollingLogFile(date = new Date()): string {
-  const logDir = canUseNodeFs() ? resolvePreferredNexisClawTmpDir() : POSIX_NEXISCLAW_TMP_DIR;
+  const logDir = canUseNodeFs() ? resolvePreferredFirstNexusTmpDir() : POSIX_NEXISCLAW_TMP_DIR;
   return path.join(logDir, `${LOG_PREFIX}-${formatLocalDate(date)}${LOG_SUFFIX}`);
 }
 
-export function resolveConfiguredLogFilePath(config?: NexisClawConfig | null): string {
+export function resolveConfiguredLogFilePath(config?: FirstNexusConfig | null): string {
   return config?.logging?.file ?? resolveDefaultRollingLogFile();
 }

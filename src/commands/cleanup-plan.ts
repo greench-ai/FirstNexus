@@ -4,11 +4,11 @@ import {
   resolveOAuthDir,
   resolveStateDir,
 } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { buildCleanupPlan } from "./cleanup-utils.js";
 
 export function resolveCleanupPlanFromDisk(): {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   stateDir: string;
   configPath: string;
   oauthDir: string;

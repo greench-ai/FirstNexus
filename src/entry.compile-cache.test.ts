@@ -5,12 +5,12 @@ import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanupTempDirs, makeTempDir } from "../test/helpers/temp-dir.js";
 import {
-  buildNexisClawCompileCacheRespawnPlan,
+  buildFirstNexusCompileCacheRespawnPlan,
   isSourceCheckoutInstallRoot,
-  resolveNexisClawCompileCacheDirectory,
+  resolveFirstNexusCompileCacheDirectory,
   resolveEntryInstallRoot,
-  runNexisClawCompileCacheRespawnPlan,
-  shouldEnableNexisClawCompileCache,
+  runFirstNexusCompileCacheRespawnPlan,
+  shouldEnableFirstNexusCompileCache,
 } from "./entry.compile-cache.js";
 
 function requireFirstMockCall(mock: { mock: { calls: unknown[][] } }, label: string): unknown[] {
@@ -29,25 +29,25 @@ describe("entry compile cache", () => {
   });
 
   it("resolves install roots from source and dist entry paths", () => {
-    expect(resolveEntryInstallRoot("/repo/NexisClaw/src/entry.ts")).toBe("/repo/NexisClaw");
-    expect(resolveEntryInstallRoot("/repo/NexisClaw/dist/entry.js")).toBe("/repo/NexisClaw");
-    expect(resolveEntryInstallRoot("/pkg/NexisClaw/entry.js")).toBe("/pkg/NexisClaw");
+    expect(resolveEntryInstallRoot("/repo/FirstNexus/src/entry.ts")).toBe("/repo/FirstNexus");
+    expect(resolveEntryInstallRoot("/repo/FirstNexus/dist/entry.js")).toBe("/repo/FirstNexus");
+    expect(resolveEntryInstallRoot("/pkg/FirstNexus/entry.js")).toBe("/pkg/FirstNexus");
   });
 
   it("treats git and source entry markers as source checkouts", async () => {
-    const root = makeTempDir(tempDirs, "NexisClaw-compile-cache-source-");
-    await fs.writeFile(path.join(root, ".git"), "gitdir: .git/worktrees/NexisClaw\n", "utf8");
+    const root = makeTempDir(tempDirs, "FirstNexus-compile-cache-source-");
+    await fs.writeFile(path.join(root, ".git"), "gitdir: .git/worktrees/FirstNexus\n", "utf8");
 
     expect(isSourceCheckoutInstallRoot(root)).toBe(true);
   });
 
   it("disables compile cache for source-checkout installs", async () => {
-    const root = makeTempDir(tempDirs, "NexisClaw-compile-cache-src-entry-");
+    const root = makeTempDir(tempDirs, "FirstNexus-compile-cache-src-entry-");
     await fs.mkdir(path.join(root, "src"), { recursive: true });
     await fs.writeFile(path.join(root, "src", "entry.ts"), "export {};\n", "utf8");
 
     expect(
-      shouldEnableNexisClawCompileCache({
+      shouldEnableFirstNexusCompileCache({
         env: {},
         installRoot: root,
       }),
@@ -55,11 +55,11 @@ describe("entry compile cache", () => {
   });
 
   it("keeps compile cache enabled for packaged installs unless disabled by env", () => {
-    const root = makeTempDir(tempDirs, "NexisClaw-compile-cache-package-");
+    const root = makeTempDir(tempDirs, "FirstNexus-compile-cache-package-");
 
-    expect(shouldEnableNexisClawCompileCache({ env: {}, installRoot: root })).toBe(true);
+    expect(shouldEnableFirstNexusCompileCache({ env: {}, installRoot: root })).toBe(true);
     expect(
-      shouldEnableNexisClawCompileCache({
+      shouldEnableFirstNexusCompileCache({
         env: { NODE_DISABLE_COMPILE_CACHE: "1" },
         installRoot: root,
       }),
@@ -67,28 +67,28 @@ describe("entry compile cache", () => {
   });
 
   it("scopes packaged compile cache by package install metadata", async () => {
-    const root = makeTempDir(tempDirs, "NexisClaw-compile-cache-package-key-");
+    const root = makeTempDir(tempDirs, "FirstNexus-compile-cache-package-key-");
     const packageJsonPath = path.join(root, "package.json");
     await fs.writeFile(packageJsonPath, '{"version":"2026.4.29"}\n', "utf8");
 
-    const directory = resolveNexisClawCompileCacheDirectory({
+    const directory = resolveFirstNexusCompileCacheDirectory({
       env: { NODE_COMPILE_CACHE: path.join(root, ".node-cache") },
       installRoot: root,
     });
 
-    expect(directory).toContain(path.join(".node-cache", "NexisClaw"));
+    expect(directory).toContain(path.join(".node-cache", "FirstNexus"));
     expect(directory).toContain("2026.4.29");
     expect(path.basename(directory)).toMatch(/^\d+-\d+$/);
   });
 
   it("builds a one-shot no-cache respawn plan when source checkout inherits NODE_COMPILE_CACHE", async () => {
-    const root = makeTempDir(tempDirs, "NexisClaw-compile-cache-respawn-");
+    const root = makeTempDir(tempDirs, "FirstNexus-compile-cache-respawn-");
     await fs.mkdir(path.join(root, "src"), { recursive: true });
     await fs.writeFile(path.join(root, "src", "entry.ts"), "export {};\n", "utf8");
 
-    const plan = buildNexisClawCompileCacheRespawnPlan({
+    const plan = buildFirstNexusCompileCacheRespawnPlan({
       currentFile: path.join(root, "dist", "entry.js"),
-      env: { NODE_COMPILE_CACHE: "/tmp/NexisClaw-cache" },
+      env: { NODE_COMPILE_CACHE: "/tmp/FirstNexus-cache" },
       execArgv: ["--no-warnings"],
       execPath: "/usr/bin/node",
       installRoot: root,
@@ -106,27 +106,27 @@ describe("entry compile cache", () => {
   });
 
   it("does not respawn packaged installs when NODE_COMPILE_CACHE is configured", () => {
-    const root = makeTempDir(tempDirs, "NexisClaw-compile-cache-package-respawn-");
+    const root = makeTempDir(tempDirs, "FirstNexus-compile-cache-package-respawn-");
 
     expect(
-      buildNexisClawCompileCacheRespawnPlan({
+      buildFirstNexusCompileCacheRespawnPlan({
         currentFile: path.join(root, "dist", "entry.js"),
-        env: { NODE_COMPILE_CACHE: "/tmp/NexisClaw-cache" },
+        env: { NODE_COMPILE_CACHE: "/tmp/FirstNexus-cache" },
         installRoot: root,
       }),
     ).toBeUndefined();
   });
 
   it("does not respawn source checkouts twice", async () => {
-    const root = makeTempDir(tempDirs, "NexisClaw-compile-cache-respawn-once-");
+    const root = makeTempDir(tempDirs, "FirstNexus-compile-cache-respawn-once-");
     await fs.mkdir(path.join(root, "src"), { recursive: true });
     await fs.writeFile(path.join(root, "src", "entry.ts"), "export {};\n", "utf8");
 
     expect(
-      buildNexisClawCompileCacheRespawnPlan({
+      buildFirstNexusCompileCacheRespawnPlan({
         currentFile: path.join(root, "dist", "entry.js"),
         env: {
-          NODE_COMPILE_CACHE: "/tmp/NexisClaw-cache",
+          NODE_COMPILE_CACHE: "/tmp/FirstNexus-cache",
           NEXISCLAW_SOURCE_COMPILE_CACHE_RESPAWNED: "1",
         },
         installRoot: root,
@@ -141,10 +141,10 @@ describe("entry compile cache", () => {
     const exit = vi.fn();
     const writeError = vi.fn();
 
-    runNexisClawCompileCacheRespawnPlan(
+    runFirstNexusCompileCacheRespawnPlan(
       {
         command: "/usr/bin/node",
-        args: ["/repo/NexisClaw/dist/entry.js", "status"],
+        args: ["/repo/FirstNexus/dist/entry.js", "status"],
         env: { NODE_DISABLE_COMPILE_CACHE: "1" },
       },
       {
@@ -157,7 +157,7 @@ describe("entry compile cache", () => {
 
     expect(spawn).toHaveBeenCalledWith(
       "/usr/bin/node",
-      ["/repo/NexisClaw/dist/entry.js", "status"],
+      ["/repo/FirstNexus/dist/entry.js", "status"],
       {
         stdio: "inherit",
         env: { NODE_DISABLE_COMPILE_CACHE: "1" },
@@ -181,10 +181,10 @@ describe("entry compile cache", () => {
     const spawn = vi.fn(() => child);
     const exit = vi.fn();
 
-    runNexisClawCompileCacheRespawnPlan(
+    runFirstNexusCompileCacheRespawnPlan(
       {
         command: "/usr/bin/node",
-        args: ["/repo/NexisClaw/dist/entry.js"],
+        args: ["/repo/FirstNexus/dist/entry.js"],
         env: {},
       },
       {
@@ -210,10 +210,10 @@ describe("entry compile cache", () => {
     let onSignal: ((signal: NodeJS.Signals) => void) | undefined;
 
     try {
-      runNexisClawCompileCacheRespawnPlan(
+      runFirstNexusCompileCacheRespawnPlan(
         {
           command: "/usr/bin/node",
-          args: ["/repo/NexisClaw/dist/entry.js"],
+          args: ["/repo/FirstNexus/dist/entry.js"],
           env: {},
         },
         {

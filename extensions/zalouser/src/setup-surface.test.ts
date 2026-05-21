@@ -2,9 +2,9 @@ import {
   createPluginSetupWizardConfigure,
   createTestWizardPrompter,
   runSetupWizardConfigure,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../runtime-api.js";
+import type { FirstNexusConfig } from "../runtime-api.js";
 import "./zalo-js.test-mocks.js";
 import { zalouserSetupWizard } from "./setup-surface.js";
 import { zalouserSetupPlugin } from "./setup-test-helpers.js";
@@ -12,7 +12,7 @@ import { zalouserSetupPlugin } from "./setup-test-helpers.js";
 const zalouserConfigure = createPluginSetupWizardConfigure(zalouserSetupPlugin);
 
 async function runSetup(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   prompter: ReturnType<typeof createTestWizardPrompter>;
   options?: Record<string, unknown>;
   forceAllowFrom?: boolean;
@@ -240,7 +240,7 @@ describe("zalouser setup wizard", () => {
         plugins: {
           allow: ["telegram"],
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       prompter,
     });
 
@@ -263,19 +263,19 @@ describe("zalouser setup wizard", () => {
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         "work",
       ),
     ).toBe("allowlist");
   });
 
   it("reports account-scoped config keys for named accounts", () => {
-    expect(zalouserSetupWizard.dmPolicy?.resolveConfigKeys?.({} as NexisClawConfig, "work")).toEqual(
-      {
-        policyKey: "channels.zalouser.accounts.work.dmPolicy",
-        allowFromKey: "channels.zalouser.accounts.work.allowFrom",
-      },
-    );
+    expect(
+      zalouserSetupWizard.dmPolicy?.resolveConfigKeys?.({} as FirstNexusConfig, "work"),
+    ).toEqual({
+      policyKey: "channels.zalouser.accounts.work.dmPolicy",
+      allowFromKey: "channels.zalouser.accounts.work.allowFrom",
+    });
   });
 
   it("uses configured defaultAccount for omitted DM policy account context", () => {
@@ -293,7 +293,7 @@ describe("zalouser setup wizard", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(zalouserSetupWizard.dmPolicy?.getCurrent(cfg)).toBe("allowlist");
     expect(zalouserSetupWizard.dmPolicy?.resolveConfigKeys?.(cfg)).toEqual({
@@ -322,7 +322,7 @@ describe("zalouser setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       "open",
       "work",
     );
@@ -354,7 +354,7 @@ describe("zalouser setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       prompter,
       options: { quickstartDefaults: true },
       accountOverrides: { zalouser: "work" },

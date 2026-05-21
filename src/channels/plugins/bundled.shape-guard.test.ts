@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("../../plugins/bundled-dir.js", async (importOriginal) => {
@@ -100,13 +100,13 @@ function listSourceBundledPluginRoots(): string[] {
     .filter(
       (entryPath) =>
         fs.existsSync(path.join(entryPath, "package.json")) ||
-        fs.existsSync(path.join(entryPath, "NexisClaw.plugin.json")),
+        fs.existsSync(path.join(entryPath, "FirstNexus.plugin.json")),
     );
 }
 
 afterEach(() => {
-  delete (globalThis as { __NexisClawBundledChannelReenter?: () => void })
-    .__NexisClawBundledChannelReenter;
+  delete (globalThis as { __FirstNexusBundledChannelReenter?: () => void })
+    .__FirstNexusBundledChannelReenter;
   vi.resetModules();
   vi.doUnmock("../../plugins/bundled-channel-runtime.js");
   vi.doUnmock("../../plugins/bundled-plugin-metadata.js");
@@ -165,7 +165,7 @@ describe("bundled channel entry shape guards", () => {
   });
 
   it("fills sparse bundled channel plugin metadata from package metadata", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-metadata-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-metadata-"));
     const previousBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
     const pluginDir = path.join(tempRoot, "dist", "extensions", "alpha");
     fs.mkdirSync(pluginDir, { recursive: true });
@@ -234,7 +234,7 @@ describe("bundled channel entry shape guards", () => {
   });
 
   it("uses the active bundled plugin root override for channel entry loading", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-override-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-override-"));
     const previousBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
     const pluginDir = path.join(tempRoot, "dist", "extensions", "alpha");
     fs.mkdirSync(pluginDir, { recursive: true });
@@ -306,7 +306,7 @@ describe("bundled channel entry shape guards", () => {
   });
 
   it("treats direct bundled plugin-tree overrides as scan roots", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-direct-override-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-direct-override-"));
     const previousBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
     const pluginsRoot = path.join(tempRoot, "bundled-plugins");
     const pluginDir = path.join(pluginsRoot, "alpha");
@@ -381,8 +381,8 @@ describe("bundled channel entry shape guards", () => {
   });
 
   it("partitions bundled channel lazy caches by active bundled root without re-importing", async () => {
-    const rootA = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-root-a-"));
-    const rootB = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-root-b-"));
+    const rootA = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-root-a-"));
+    const rootB = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-root-b-"));
     const previousBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
     const testGlobal = globalThis as typeof globalThis & {
       __bundledRootRuntime?: unknown;
@@ -488,7 +488,7 @@ describe("bundled channel entry shape guards", () => {
   });
 
   it("loads setup-entry feature plugins without loading the main channel entry", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-setup-only-"));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-setup-only-"));
     const previousBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
     const pluginDir = path.join(root, "dist", "extensions", "alpha");
     const testGlobal = globalThis as typeof globalThis & {
@@ -575,7 +575,7 @@ describe("bundled channel entry shape guards", () => {
     }
   });
   it("swallows and caches bundled plugin and setup load failures", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-load-failure-"));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-load-failure-"));
     const previousBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
     const pluginDir = path.join(root, "dist", "extensions", "alpha");
     const testGlobal = globalThis as typeof globalThis & {
@@ -587,7 +587,7 @@ describe("bundled channel entry shape guards", () => {
     fs.mkdirSync(pluginDir, { recursive: true });
     fs.writeFileSync(
       path.join(root, "package.json"),
-      JSON.stringify({ name: "NexisClaw", version: "2026.4.21" }),
+      JSON.stringify({ name: "FirstNexus", version: "2026.4.21" }),
       "utf8",
     );
     fs.writeFileSync(
@@ -664,7 +664,7 @@ describe("bundled channel entry shape guards", () => {
   });
 
   it("caches undefined bundled plugin loads as unavailable", async () => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-null-load-"));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-null-load-"));
     const previousBundledPluginsDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
     const pluginDir = path.join(root, "dist", "extensions", "alpha");
     const testGlobal = globalThis as typeof globalThis & {
@@ -714,9 +714,9 @@ describe("bundled channel entry shape guards", () => {
     const offenders = collectBundledChannelEntrypointOffenders(
       bundledPluginRoots,
       (source) =>
-        !source.includes('from "NexisClaw/plugin-sdk/channel-entry-contract"') ||
-        source.includes('from "NexisClaw/plugin-sdk/core"') ||
-        source.includes('from "NexisClaw/plugin-sdk/channel-core"'),
+        !source.includes('from "FirstNexus/plugin-sdk/channel-entry-contract"') ||
+        source.includes('from "FirstNexus/plugin-sdk/core"') ||
+        source.includes('from "FirstNexus/plugin-sdk/channel-core"'),
     );
 
     expect(offenders).toStrictEqual([]);
@@ -733,13 +733,13 @@ describe("bundled channel entry shape guards", () => {
       }
       const setupEntrySource = fs.readFileSync(setupEntryPath, "utf8");
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8")) as {
-        NexisClaw?: {
+        FirstNexus?: {
           setupFeatures?: Record<string, boolean>;
         };
       };
       for (const feature of ["legacyStateMigrations", "legacySessionSurfaces"]) {
         const usesFeature = setupEntrySource.includes(`${feature}: true`);
-        const hasHint = packageJson.NexisClaw?.setupFeatures?.[feature] === true;
+        const hasHint = packageJson.FirstNexus?.setupFeatures?.[feature] === true;
         if (usesFeature !== hasHint) {
           offenders.push(`${path.relative(process.cwd(), extensionDir)}:${feature}`);
         }
@@ -770,7 +770,7 @@ describe("bundled channel entry shape guards", () => {
         if (!source.includes("createChatChannelPlugin")) {
           continue;
         }
-        if (source.includes('from "NexisClaw/plugin-sdk/core"')) {
+        if (source.includes('from "FirstNexus/plugin-sdk/core"')) {
           offenders.push(path.relative(process.cwd(), filePath));
         }
       }
@@ -792,7 +792,7 @@ describe("bundled channel entry shape guards", () => {
       "extensions/irc/src/runtime-api.ts",
       "extensions/matrix/src/runtime-api.ts",
     ].filter((filePath) =>
-      fs.readFileSync(path.resolve(filePath), "utf8").includes("NexisClaw/plugin-sdk/core"),
+      fs.readFileSync(path.resolve(filePath), "utf8").includes("FirstNexus/plugin-sdk/core"),
     );
 
     expect(offenders).toStrictEqual([]);
@@ -827,19 +827,19 @@ describe("bundled channel entry shape guards", () => {
     ].filter((filePath) =>
       fs
         .readFileSync(path.resolve(filePath), "utf8")
-        .includes('from "NexisClaw/plugin-sdk/runtime"'),
+        .includes('from "FirstNexus/plugin-sdk/runtime"'),
     );
 
     expect(offenders).toStrictEqual([]);
   });
 
   it("breaks reentrant bundled channel discovery cycles with an empty fallback", async () => {
-    const pluginDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-bundled-reentrant-"));
+    const pluginDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-bundled-reentrant-"));
     const modulePath = path.join(pluginDir, "index.cjs");
     fs.writeFileSync(
       modulePath,
       `
-const reenter = globalThis.__NexisClawBundledChannelReenter;
+const reenter = globalThis.__FirstNexusBundledChannelReenter;
 if (typeof reenter === "function") {
   reenter();
 }
@@ -900,8 +900,8 @@ module.exports = {
 
     let reentered = false;
     (
-      globalThis as { __NexisClawBundledChannelReenter?: () => void }
-    ).__NexisClawBundledChannelReenter = () => {
+      globalThis as { __FirstNexusBundledChannelReenter?: () => void }
+    ).__FirstNexusBundledChannelReenter = () => {
       if (!reentered) {
         reentered = true;
         expect(bundled.listBundledChannelPlugins()).toStrictEqual([]);

@@ -2,10 +2,10 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
-import { formatMemoryDreamingDay } from "NexisClaw/plugin-sdk/memory-core-host-status";
-import { resolveSessionTranscriptsDirForAgent } from "NexisClaw/plugin-sdk/memory-host-core";
-import { buildAgentSessionKey } from "NexisClaw/plugin-sdk/routing";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { formatMemoryDreamingDay } from "FirstNexus/plugin-sdk/memory-core-host-status";
+import { resolveSessionTranscriptsDirForAgent } from "FirstNexus/plugin-sdk/memory-host-core";
+import { buildAgentSessionKey } from "FirstNexus/plugin-sdk/routing";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   callQaBrowserRequest,
   qaBrowserAct,

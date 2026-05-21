@@ -1,9 +1,9 @@
-# 🦞 NexisClaw — Personal AI Assistant
+# 🦞 FirstNexus — Personal AI Assistant
 
 <p align="center">
     <picture>
-        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/NexisClaw-logo-horizontal.svg">
-        <img src="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/NexisClaw-logo-horizontal.svg" alt="NexisClaw" width="500">
+        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/FirstNexus-logo-horizontal.svg">
+        <img src="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/FirstNexus-logo-horizontal.svg" alt="FirstNexus" width="500">
     </picture>
 </p>
 
@@ -12,25 +12,25 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/NexisClaw/NexisClaw/actions/workflows/ci.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/NexisClaw/NexisClaw/ci.yml?branch=main&style=for-the-badge" alt="CI status"></a>
-  <a href="https://github.com/NexisClaw/NexisClaw/releases"><img src="https://img.shields.io/github/v/release/NexisClaw/NexisClaw?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
+  <a href="https://github.com/FirstNexus/FirstNexus/actions/workflows/ci.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/FirstNexus/FirstNexus/ci.yml?branch=main&style=for-the-badge" alt="CI status"></a>
+  <a href="https://github.com/FirstNexus/FirstNexus/releases"><img src="https://img.shields.io/github/v/release/FirstNexus/FirstNexus?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
   <a href="https://discord.gg/clawd"><img src="https://img.shields.io/discord/1456350064065904867?label=Discord&logo=discord&logoColor=white&color=5865F2&style=for-the-badge" alt="Discord"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
 </p>
 
-**NexisClaw** is a _personal AI assistant_ you run on your own devices.
+**FirstNexus** is a _personal AI assistant_ you run on your own devices.
 It answers you on the channels you already use. It can speak and listen on macOS/iOS/Android, and can render a live Canvas you control. The Gateway is just the control plane — the product is the assistant.
 
 If you want a personal, single-user assistant that feels local, fast, and always-on, this is it.
 
 Supported channels include: WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, IRC, Microsoft Teams, Matrix, Feishu, LINE, Mattermost, Nextcloud Talk, Nostr, Synology Chat, Tlon, Twitch, Zalo, Zalo Personal, WeChat, QQ, WebChat.
 
-[Website](https://NexisClaw.ai) · [Docs](https://docs.NexisClaw.ai) · [Vision](VISION.md) · [DeepWiki](https://deepwiki.com/NexisClaw/NexisClaw) · [Getting Started](https://docs.NexisClaw.ai/start/getting-started) · [Updating](https://docs.NexisClaw.ai/install/updating) · [Showcase](https://docs.NexisClaw.ai/start/showcase) · [FAQ](https://docs.NexisClaw.ai/help/faq) · [Onboarding](https://docs.NexisClaw.ai/start/wizard) · [Nix](https://github.com/NexisClaw/nix-NexisClaw) · [Docker](https://docs.NexisClaw.ai/install/docker) · [Discord](https://discord.gg/clawd)
+[Website](https://FirstNexus.ai) · [Docs](https://docs.FirstNexus.ai) · [Vision](VISION.md) · [DeepWiki](https://deepwiki.com/FirstNexus/FirstNexus) · [Getting Started](https://docs.FirstNexus.ai/start/getting-started) · [Updating](https://docs.FirstNexus.ai/install/updating) · [Showcase](https://docs.FirstNexus.ai/start/showcase) · [FAQ](https://docs.FirstNexus.ai/help/faq) · [Onboarding](https://docs.FirstNexus.ai/start/wizard) · [Nix](https://github.com/FirstNexus/nix-FirstNexus) · [Docker](https://docs.FirstNexus.ai/install/docker) · [Discord](https://discord.gg/clawd)
 
-New install? Start here: [Getting started](https://docs.NexisClaw.ai/start/getting-started)
+New install? Start here: [Getting started](https://docs.FirstNexus.ai/start/getting-started)
 
-Preferred setup: run `NexisClaw onboard` in your terminal.
-NexisClaw Onboard guides you step by step through setting up the gateway, workspace, channels, and skills. It is the recommended CLI setup path and works on **macOS, Linux, and Windows (via WSL2; strongly recommended)**.
+Preferred setup: run `FirstNexus onboard` in your terminal.
+FirstNexus Onboard guides you step by step through setting up the gateway, workspace, channels, and skills. It is the recommended CLI setup path and works on **macOS, Linux, and Windows (via WSL2; strongly recommended)**.
 Works with npm, pnpm, or bun.
 
 ## Sponsors
@@ -40,48 +40,48 @@ Works with npm, pnpm, or bun.
     <td align="center" width="16.66%">
       <a href="https://openai.com/">
         <picture>
-          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/openai-light.svg">
-          <img src="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/openai.svg" alt="OpenAI" height="28">
+          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/openai-light.svg">
+          <img src="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/openai.svg" alt="OpenAI" height="28">
         </picture>
       </a>
     </td>
     <td align="center" width="16.66%">
       <a href="https://github.com/">
         <picture>
-          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/github-light.svg">
-          <img src="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/github.svg" alt="GitHub" height="28">
+          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/github-light.svg">
+          <img src="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/github.svg" alt="GitHub" height="28">
         </picture>
       </a>
     </td>
     <td align="center" width="16.66%">
       <a href="https://www.nvidia.com/">
         <picture>
-          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/nvidia.svg">
-          <img src="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/nvidia-dark.svg" alt="NVIDIA" height="28">
+          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/nvidia.svg">
+          <img src="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/nvidia-dark.svg" alt="NVIDIA" height="28">
         </picture>
       </a>
     </td>
     <td align="center" width="16.66%">
       <a href="https://vercel.com/">
         <picture>
-          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/vercel-light.svg">
-          <img src="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/vercel.svg" alt="Vercel" height="24">
+          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/vercel-light.svg">
+          <img src="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/vercel.svg" alt="Vercel" height="24">
         </picture>
       </a>
     </td>
     <td align="center" width="16.66%">
       <a href="https://blacksmith.sh/">
         <picture>
-          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/blacksmith-light.svg">
-          <img src="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/blacksmith.svg" alt="Blacksmith" height="28">
+          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/blacksmith-light.svg">
+          <img src="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/blacksmith.svg" alt="Blacksmith" height="28">
         </picture>
       </a>
     </td>
     <td align="center" width="16.66%">
       <a href="https://www.convex.dev/">
         <picture>
-          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/convex-light.svg">
-          <img src="https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/docs/assets/sponsors/convex.svg" alt="Convex" height="24">
+          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/convex-light.svg">
+          <img src="https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/docs/assets/sponsors/convex.svg" alt="Convex" height="24">
         </picture>
       </a>
     </td>
@@ -92,92 +92,92 @@ Works with npm, pnpm, or bun.
 
 - **[OpenAI](https://openai.com/)** (ChatGPT/Codex)
 
-Model note: while many providers and models are supported, prefer a current flagship model from the provider you trust and already use. See [Onboarding](https://docs.NexisClaw.ai/start/onboarding).
+Model note: while many providers and models are supported, prefer a current flagship model from the provider you trust and already use. See [Onboarding](https://docs.FirstNexus.ai/start/onboarding).
 
 ## Install (recommended)
 
 Runtime: **Node 24 (recommended) or Node 22.16+**.
 
 ```bash
-npm install -g NexisClaw@latest
-# or: pnpm add -g NexisClaw@latest
+npm install -g FirstNexus@latest
+# or: pnpm add -g FirstNexus@latest
 
-NexisClaw onboard --install-daemon
+FirstNexus onboard --install-daemon
 ```
 
-NexisClaw Onboard installs the Gateway daemon (launchd/systemd user service) so it stays running.
+FirstNexus Onboard installs the Gateway daemon (launchd/systemd user service) so it stays running.
 
 ## Quick start (TL;DR)
 
 Runtime: **Node 24 (recommended) or Node 22.16+**.
 
-Full beginner guide (auth, pairing, channels): [Getting started](https://docs.NexisClaw.ai/start/getting-started)
+Full beginner guide (auth, pairing, channels): [Getting started](https://docs.FirstNexus.ai/start/getting-started)
 
 ```bash
-NexisClaw onboard --install-daemon
+FirstNexus onboard --install-daemon
 
-NexisClaw gateway --port 18789 --verbose
+FirstNexus gateway --port 18789 --verbose
 
 # Send a message
-NexisClaw message send --target +1234567890 --message "Hello from NexisClaw"
+FirstNexus message send --target +1234567890 --message "Hello from FirstNexus"
 
 # Talk to the assistant (optionally deliver back to any connected channel: WhatsApp/Telegram/Slack/Discord/Google Chat/Signal/iMessage/IRC/Microsoft Teams/Matrix/Feishu/LINE/Mattermost/Nextcloud Talk/Nostr/Synology Chat/Tlon/Twitch/Zalo/Zalo Personal/WeChat/QQ/WebChat)
-NexisClaw agent --message "Ship checklist" --thinking high
+FirstNexus agent --message "Ship checklist" --thinking high
 ```
 
-Upgrading? [Updating guide](https://docs.NexisClaw.ai/install/updating) (and run `NexisClaw doctor`).
+Upgrading? [Updating guide](https://docs.FirstNexus.ai/install/updating) (and run `FirstNexus doctor`).
 
-Models config + CLI: [Models](https://docs.NexisClaw.ai/concepts/models). Auth profile rotation + fallbacks: [Model failover](https://docs.NexisClaw.ai/concepts/model-failover).
+Models config + CLI: [Models](https://docs.FirstNexus.ai/concepts/models). Auth profile rotation + fallbacks: [Model failover](https://docs.FirstNexus.ai/concepts/model-failover).
 
 ## Security defaults (DM access)
 
-NexisClaw connects to real messaging surfaces. Treat inbound DMs as **untrusted input**.
+FirstNexus connects to real messaging surfaces. Treat inbound DMs as **untrusted input**.
 
-Full security guide: [Security](https://docs.NexisClaw.ai/gateway/security)
+Full security guide: [Security](https://docs.FirstNexus.ai/gateway/security)
 
 Default behavior on Telegram/WhatsApp/Signal/iMessage/Microsoft Teams/Discord/Google Chat/Slack:
 
 - **DM pairing** (`dmPolicy="pairing"` / `channels.discord.dmPolicy="pairing"` / `channels.slack.dmPolicy="pairing"`; legacy: `channels.discord.dm.policy`, `channels.slack.dm.policy`): unknown senders receive a short pairing code and the bot does not process their message.
-- Approve with: `NexisClaw pairing approve <channel> <code>` (then the sender is added to a local allowlist store).
+- Approve with: `FirstNexus pairing approve <channel> <code>` (then the sender is added to a local allowlist store).
 - Public inbound DMs require an explicit opt-in: set `dmPolicy="open"` and include `"*"` in the channel allowlist (`allowFrom` / `channels.discord.allowFrom` / `channels.slack.allowFrom`; legacy: `channels.discord.dm.allowFrom`, `channels.slack.dm.allowFrom`).
 
-Run `NexisClaw doctor` to surface risky/misconfigured DM policies.
+Run `FirstNexus doctor` to surface risky/misconfigured DM policies.
 
 ## Highlights
 
-- **[Local-first Gateway](https://docs.NexisClaw.ai/gateway)** — single control plane for sessions, channels, tools, and events.
-- **[Multi-channel inbox](https://docs.NexisClaw.ai/channels)** — WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, IRC, Microsoft Teams, Matrix, Feishu, LINE, Mattermost, Nextcloud Talk, Nostr, Synology Chat, Tlon, Twitch, Zalo, Zalo Personal, WeChat, QQ, WebChat, macOS, iOS/Android.
-- **[Multi-agent routing](https://docs.NexisClaw.ai/gateway/configuration)** — route inbound channels/accounts/peers to isolated agents (workspaces + per-agent sessions).
-- **[Voice Wake](https://docs.NexisClaw.ai/nodes/voicewake) + [Talk Mode](https://docs.NexisClaw.ai/nodes/talk)** — wake words on macOS/iOS and continuous voice on Android (ElevenLabs + system TTS fallback).
-- **[Live Canvas](https://docs.NexisClaw.ai/platforms/mac/canvas)** — agent-driven visual workspace with [A2UI](https://docs.NexisClaw.ai/platforms/mac/canvas#canvas-a2ui).
-- **[First-class tools](https://docs.NexisClaw.ai/tools)** — browser, canvas, nodes, cron, sessions, and Discord/Slack actions.
-- **[Companion apps](https://docs.NexisClaw.ai/platforms/macos)** — macOS menu bar app + iOS/Android [nodes](https://docs.NexisClaw.ai/nodes).
-- **[Onboarding](https://docs.NexisClaw.ai/start/wizard) + [skills](https://docs.NexisClaw.ai/tools/skills)** — onboarding-driven setup with bundled/managed/workspace skills.
+- **[Local-first Gateway](https://docs.FirstNexus.ai/gateway)** — single control plane for sessions, channels, tools, and events.
+- **[Multi-channel inbox](https://docs.FirstNexus.ai/channels)** — WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, IRC, Microsoft Teams, Matrix, Feishu, LINE, Mattermost, Nextcloud Talk, Nostr, Synology Chat, Tlon, Twitch, Zalo, Zalo Personal, WeChat, QQ, WebChat, macOS, iOS/Android.
+- **[Multi-agent routing](https://docs.FirstNexus.ai/gateway/configuration)** — route inbound channels/accounts/peers to isolated agents (workspaces + per-agent sessions).
+- **[Voice Wake](https://docs.FirstNexus.ai/nodes/voicewake) + [Talk Mode](https://docs.FirstNexus.ai/nodes/talk)** — wake words on macOS/iOS and continuous voice on Android (ElevenLabs + system TTS fallback).
+- **[Live Canvas](https://docs.FirstNexus.ai/platforms/mac/canvas)** — agent-driven visual workspace with [A2UI](https://docs.FirstNexus.ai/platforms/mac/canvas#canvas-a2ui).
+- **[First-class tools](https://docs.FirstNexus.ai/tools)** — browser, canvas, nodes, cron, sessions, and Discord/Slack actions.
+- **[Companion apps](https://docs.FirstNexus.ai/platforms/macos)** — macOS menu bar app + iOS/Android [nodes](https://docs.FirstNexus.ai/nodes).
+- **[Onboarding](https://docs.FirstNexus.ai/start/wizard) + [skills](https://docs.FirstNexus.ai/tools/skills)** — onboarding-driven setup with bundled/managed/workspace skills.
 
 ## Security model (important)
 
 - Default: tools run on the host for the `main` session, so the agent has full access when it is just you.
 - Group/channel safety: set `agents.defaults.sandbox.mode: "non-main"` to run non-`main` sessions inside sandboxes. Docker is the default sandbox backend; SSH and OpenShell backends are also available.
 - Typical sandbox default: allow `bash`, `process`, `read`, `write`, `edit`, `sessions_list`, `sessions_history`, `sessions_send`, `sessions_spawn`; deny `browser`, `canvas`, `nodes`, `cron`, `discord`, `gateway`.
-- Before exposing anything remotely, read [Security](https://docs.NexisClaw.ai/gateway/security), [Sandboxing](https://docs.NexisClaw.ai/gateway/sandboxing), and [Configuration](https://docs.NexisClaw.ai/gateway/configuration).
+- Before exposing anything remotely, read [Security](https://docs.FirstNexus.ai/gateway/security), [Sandboxing](https://docs.FirstNexus.ai/gateway/sandboxing), and [Configuration](https://docs.FirstNexus.ai/gateway/configuration).
 
 ## Operator quick refs
 
 - Chat commands: `/status`, `/new`, `/reset`, `/compact`, `/think <level>`, `/verbose on|off`, `/trace on|off`, `/usage off|tokens|full`, `/restart`, `/activation mention|always`
 - Session tools: `sessions_list`, `sessions_history`, `sessions_send`
 - Skills registry: [ClawHub](https://clawhub.ai)
-- Architecture overview: [Architecture](https://docs.NexisClaw.ai/concepts/architecture)
+- Architecture overview: [Architecture](https://docs.FirstNexus.ai/concepts/architecture)
 
 ## Docs by goal
 
-- New here: [Getting started](https://docs.NexisClaw.ai/start/getting-started), [Onboarding](https://docs.NexisClaw.ai/start/wizard), [Updating](https://docs.NexisClaw.ai/install/updating)
-- Channel setup: [Channels index](https://docs.NexisClaw.ai/channels), [WhatsApp](https://docs.NexisClaw.ai/channels/whatsapp), [Telegram](https://docs.NexisClaw.ai/channels/telegram), [Discord](https://docs.NexisClaw.ai/channels/discord), [Slack](https://docs.NexisClaw.ai/channels/slack)
-- Apps + nodes: [macOS](https://docs.NexisClaw.ai/platforms/macos), [iOS](https://docs.NexisClaw.ai/platforms/ios), [Android](https://docs.NexisClaw.ai/platforms/android), [Nodes](https://docs.NexisClaw.ai/nodes)
-- Config + security: [Configuration](https://docs.NexisClaw.ai/gateway/configuration), [Security](https://docs.NexisClaw.ai/gateway/security), [Sandboxing](https://docs.NexisClaw.ai/gateway/sandboxing)
-- Remote + web: [Gateway](https://docs.NexisClaw.ai/gateway), [Remote access](https://docs.NexisClaw.ai/gateway/remote), [Tailscale](https://docs.NexisClaw.ai/gateway/tailscale), [Web surfaces](https://docs.NexisClaw.ai/web)
-- Tools + automation: [Tools](https://docs.NexisClaw.ai/tools), [Skills](https://docs.NexisClaw.ai/tools/skills), [Cron jobs](https://docs.NexisClaw.ai/automation/cron-jobs), [Webhooks](https://docs.NexisClaw.ai/automation/webhook), [Gmail Pub/Sub](https://docs.NexisClaw.ai/automation/gmail-pubsub)
-- Internals: [Architecture](https://docs.NexisClaw.ai/concepts/architecture), [Agent](https://docs.NexisClaw.ai/concepts/agent), [Session model](https://docs.NexisClaw.ai/concepts/session), [Gateway protocol](https://docs.NexisClaw.ai/reference/rpc)
-- Troubleshooting: [Channel troubleshooting](https://docs.NexisClaw.ai/channels/troubleshooting), [Logging](https://docs.NexisClaw.ai/logging), [Docs home](https://docs.NexisClaw.ai)
+- New here: [Getting started](https://docs.FirstNexus.ai/start/getting-started), [Onboarding](https://docs.FirstNexus.ai/start/wizard), [Updating](https://docs.FirstNexus.ai/install/updating)
+- Channel setup: [Channels index](https://docs.FirstNexus.ai/channels), [WhatsApp](https://docs.FirstNexus.ai/channels/whatsapp), [Telegram](https://docs.FirstNexus.ai/channels/telegram), [Discord](https://docs.FirstNexus.ai/channels/discord), [Slack](https://docs.FirstNexus.ai/channels/slack)
+- Apps + nodes: [macOS](https://docs.FirstNexus.ai/platforms/macos), [iOS](https://docs.FirstNexus.ai/platforms/ios), [Android](https://docs.FirstNexus.ai/platforms/android), [Nodes](https://docs.FirstNexus.ai/nodes)
+- Config + security: [Configuration](https://docs.FirstNexus.ai/gateway/configuration), [Security](https://docs.FirstNexus.ai/gateway/security), [Sandboxing](https://docs.FirstNexus.ai/gateway/sandboxing)
+- Remote + web: [Gateway](https://docs.FirstNexus.ai/gateway), [Remote access](https://docs.FirstNexus.ai/gateway/remote), [Tailscale](https://docs.FirstNexus.ai/gateway/tailscale), [Web surfaces](https://docs.FirstNexus.ai/web)
+- Tools + automation: [Tools](https://docs.FirstNexus.ai/tools), [Skills](https://docs.FirstNexus.ai/tools/skills), [Cron jobs](https://docs.FirstNexus.ai/automation/cron-jobs), [Webhooks](https://docs.FirstNexus.ai/automation/webhook), [Gmail Pub/Sub](https://docs.FirstNexus.ai/automation/gmail-pubsub)
+- Internals: [Architecture](https://docs.FirstNexus.ai/concepts/architecture), [Agent](https://docs.FirstNexus.ai/concepts/agent), [Session model](https://docs.FirstNexus.ai/concepts/session), [Gateway protocol](https://docs.FirstNexus.ai/reference/rpc)
+- Troubleshooting: [Channel troubleshooting](https://docs.FirstNexus.ai/channels/troubleshooting), [Logging](https://docs.FirstNexus.ai/logging), [Docs home](https://docs.FirstNexus.ai)
 
 ## Apps (optional)
 
@@ -185,28 +185,28 @@ The Gateway alone delivers a great experience. All apps are optional and add ext
 
 If you plan to build/run companion apps, follow the platform runbooks below.
 
-### macOS (NexisClaw.app) (optional)
+### macOS (FirstNexus.app) (optional)
 
 - Menu bar control for the Gateway and health.
 - Voice Wake + push-to-talk overlay.
 - WebChat + debug tools.
 - Remote gateway control over SSH.
 
-Note: signed builds required for macOS permissions to stick across rebuilds (see [macOS Permissions](https://docs.NexisClaw.ai/platforms/mac/permissions)).
+Note: signed builds required for macOS permissions to stick across rebuilds (see [macOS Permissions](https://docs.FirstNexus.ai/platforms/mac/permissions)).
 
 ### iOS node (optional)
 
 - Pairs as a node over the Gateway WebSocket (device pairing).
 - Voice trigger forwarding + Canvas surface.
-- Controlled via `NexisClaw nodes …`.
+- Controlled via `FirstNexus nodes …`.
 
-Runbook: [iOS connect](https://docs.NexisClaw.ai/platforms/ios).
+Runbook: [iOS connect](https://docs.FirstNexus.ai/platforms/ios).
 
 ### Android node (optional)
 
-- Pairs as a WS node via device pairing (`NexisClaw devices ...`).
+- Pairs as a WS node via device pairing (`FirstNexus devices ...`).
 - Exposes Connect/Chat/Voice tabs plus Canvas, Camera, Screen capture, and Android device command families.
-- Runbook: [Android connect](https://docs.NexisClaw.ai/platforms/android).
+- Runbook: [Android connect](https://docs.FirstNexus.ai/platforms/android).
 
 ## From source (development)
 
@@ -218,13 +218,13 @@ root is not a supported source setup.
 For the dev loop:
 
 ```bash
-git clone https://github.com/NexisClaw/NexisClaw.git
-cd NexisClaw
+git clone https://github.com/FirstNexus/FirstNexus.git
+cd FirstNexus
 
 pnpm install
 
-# First run only (or after resetting local NexisClaw config/workspace)
-pnpm NexisClaw setup
+# First run only (or after resetting local FirstNexus config/workspace)
+pnpm FirstNexus setup
 
 # Optional: prebuild Control UI before first startup
 pnpm ui:build
@@ -240,9 +240,9 @@ pnpm build
 pnpm ui:build
 ```
 
-`pnpm NexisClaw setup` writes the local config/workspace needed for `pnpm gateway:watch`. It is safe to re-run, but you normally only need it on first setup or after resetting local state. `pnpm gateway:watch` does not rebuild `dist/control-ui`, so rerun `pnpm ui:build` after `ui/` changes or use `pnpm ui:dev` when iterating on the Control UI. If you want this checkout to run onboarding directly, use `pnpm NexisClaw onboard --install-daemon`.
+`pnpm FirstNexus setup` writes the local config/workspace needed for `pnpm gateway:watch`. It is safe to re-run, but you normally only need it on first setup or after resetting local state. `pnpm gateway:watch` does not rebuild `dist/control-ui`, so rerun `pnpm ui:build` after `ui/` changes or use `pnpm ui:dev` when iterating on the Control UI. If you want this checkout to run onboarding directly, use `pnpm FirstNexus onboard --install-daemon`.
 
-Note: `pnpm NexisClaw ...` runs TypeScript directly (via `tsx`). `pnpm build` produces `dist/` for running via Node / the packaged `NexisClaw` binary, while `pnpm gateway:watch` rebuilds the runtime on demand during the dev loop.
+Note: `pnpm FirstNexus ...` runs TypeScript directly (via `tsx`). `pnpm build` produces `dist/` for running via Node / the packaged `FirstNexus` binary, while `pnpm gateway:watch` rebuilds the runtime on demand during the dev loop.
 
 ## Development channels
 
@@ -250,18 +250,18 @@ Note: `pnpm NexisClaw ...` runs TypeScript directly (via `tsx`). `pnpm build` pr
 - **beta**: prerelease tags (`vYYYY.M.D-beta.N`), npm dist-tag `beta` (macOS app may be missing).
 - **dev**: moving head of `main`, npm dist-tag `dev` (when published).
 
-Switch channels (git + npm): `NexisClaw update --channel stable|beta|dev`.
-Details: [Development channels](https://docs.NexisClaw.ai/install/development-channels).
+Switch channels (git + npm): `FirstNexus update --channel stable|beta|dev`.
+Details: [Development channels](https://docs.FirstNexus.ai/install/development-channels).
 
 ## Agent workspace + skills
 
-- Workspace root: `~/.NexisClaw/workspace` (configurable via `agents.defaults.workspace`).
+- Workspace root: `~/.FirstNexus/workspace` (configurable via `agents.defaults.workspace`).
 - Injected prompt files: `AGENTS.md`, `SOUL.md`, `TOOLS.md`.
-- Skills: `~/.NexisClaw/workspace/skills/<skill>/SKILL.md`.
+- Skills: `~/.FirstNexus/workspace/skills/<skill>/SKILL.md`.
 
 ## Configuration
 
-Minimal `~/.NexisClaw/NexisClaw.json` (model + defaults):
+Minimal `~/.FirstNexus/FirstNexus.json` (model + defaults):
 
 ```json5
 {
@@ -271,21 +271,21 @@ Minimal `~/.NexisClaw/NexisClaw.json` (model + defaults):
 }
 ```
 
-[Full configuration reference (all keys + examples).](https://docs.NexisClaw.ai/gateway/configuration)
+[Full configuration reference (all keys + examples).](https://docs.FirstNexus.ai/gateway/configuration)
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=NexisClaw/NexisClaw&type=date&legend=top-left)](https://www.star-history.com/#NexisClaw/NexisClaw&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=FirstNexus/FirstNexus&type=date&legend=top-left)](https://www.star-history.com/#FirstNexus/FirstNexus&type=date&legend=top-left)
 
 ## Molty
 
-NexisClaw was built for **Molty**, a space lobster AI assistant. 🦞
+FirstNexus was built for **Molty**, a space lobster AI assistant. 🦞
 by Peter Steinberger and the community.
 
-- [NexisClaw.ai](https://NexisClaw.ai)
+- [FirstNexus.ai](https://FirstNexus.ai)
 - [soul.md](https://soul.md)
 - [steipete.me](https://steipete.me)
-- [@NexisClaw](https://x.com/NexisClaw)
+- [@FirstNexus](https://x.com/FirstNexus)
 
 ## Community
 
@@ -355,7 +355,7 @@ Thanks to all clawtributors:
 [![scald](https://avatars.githubusercontent.com/u/1215913?v=4&s=48)](https://github.com/scald) [![Serhii](https://avatars.githubusercontent.com/u/151471784?v=4&s=48)](https://github.com/kashevk0) [![a](https://avatars.githubusercontent.com/u/33371662?v=4&s=48)](https://github.com/Yuandiaodiaodiao) [![Doğu Abaris](https://avatars.githubusercontent.com/u/135986694?v=4&s=48)](https://github.com/doguabaris) [![ysqander](https://avatars.githubusercontent.com/u/80843820?v=4&s=48)](https://github.com/ysqander) [![andranik-sahakyan](https://avatars.githubusercontent.com/u/8908029?v=4&s=48)](https://github.com/andranik-sahakyan) [![Wangnov](https://avatars.githubusercontent.com/u/48670012?v=4&s=48)](https://github.com/Wangnov) [![Austin](https://avatars.githubusercontent.com/u/112558420?v=4&s=48)](https://github.com/rixau) [![lisitan](https://avatars.githubusercontent.com/u/50470712?v=4&s=48)](https://github.com/lisitan) [![Rishi Vhavle](https://avatars.githubusercontent.com/u/134706404?v=4&s=48)](https://github.com/kaizen403)
 [![Frank Harris](https://avatars.githubusercontent.com/u/183158?v=4&s=48)](https://github.com/hirefrank) [![Kenny Lee](https://avatars.githubusercontent.com/u/1432489?v=4&s=48)](https://github.com/kennyklee) [![Alice Losasso](https://avatars.githubusercontent.com/u/104875499?v=4&s=48)](https://github.com/dddabtc) [![edincampara](https://avatars.githubusercontent.com/u/142477787?v=4&s=48)](https://github.com/edincampara) [![Felix Hellström](https://avatars.githubusercontent.com/u/30758862?v=4&s=48)](https://github.com/fellanH) [![Varun Chopra](https://avatars.githubusercontent.com/u/113368492?v=4&s=48)](https://github.com/VarunChopra11) [![wangai-studio](https://avatars.githubusercontent.com/u/256938352?v=4&s=48)](https://github.com/wangai-studio) [![sleontenko](https://avatars.githubusercontent.com/u/7135949?v=4&s=48)](https://github.com/sleontenko) [![Yassine Amjad](https://avatars.githubusercontent.com/u/59234686?v=4&s=48)](https://github.com/yassine20011) [![Anton Eicher](https://avatars.githubusercontent.com/u/54324760?v=4&s=48)](https://github.com/ant1eicher)
 [![Drake Thomsen](https://avatars.githubusercontent.com/u/120344051?v=4&s=48)](https://github.com/ThomsenDrake) [![Hinata Kaga (samon)](https://avatars.githubusercontent.com/u/61647657?v=4&s=48)](https://github.com/kakuteki) [![andreabadesso](https://avatars.githubusercontent.com/u/3586068?v=4&s=48)](https://github.com/andreabadesso) [![chenxin-yan](https://avatars.githubusercontent.com/u/71162231?v=4&s=48)](https://github.com/chenxin-yan) [![cordx56](https://avatars.githubusercontent.com/u/23298744?v=4&s=48)](https://github.com/cordx56) [![dvrshil](https://avatars.githubusercontent.com/u/81693876?v=4&s=48)](https://github.com/dvrshil) [![MarvinCui](https://avatars.githubusercontent.com/u/130876763?v=4&s=48)](https://github.com/MarvinCui) [![Yeom-JinHo](https://avatars.githubusercontent.com/u/81306489?v=4&s=48)](https://github.com/Yeom-JinHo) [![Jeremy Mumford](https://avatars.githubusercontent.com/u/36290330?v=4&s=48)](https://github.com/17jmumford) [![Charlie Niño](https://avatars.githubusercontent.com/u/2346724?v=4&s=48)](https://github.com/KnHack)
-[![Sharoon Sharif](https://avatars.githubusercontent.com/u/150296639?v=4&s=48)](https://github.com/SharoonSharif) [![Oren](https://avatars.githubusercontent.com/u/168856?v=4&s=48)](https://github.com/orenyomtov) [![MattQ](https://avatars.githubusercontent.com/u/115874885?v=4&s=48)](https://github.com/mattqdev) [![Parker Todd Brooks](https://avatars.githubusercontent.com/u/585456?v=4&s=48)](https://github.com/parkertoddbrooks) [![Yufeng He](https://avatars.githubusercontent.com/u/40085740?v=4&s=48)](https://github.com/he-yufeng) [![Milofax](https://avatars.githubusercontent.com/u/2537423?v=4&s=48)](https://github.com/Milofax) [![Steve (NexisClaw)](https://avatars.githubusercontent.com/u/261149299?v=4&s=48)](https://github.com/stevebot-alive) [![zhoulf1006](https://avatars.githubusercontent.com/u/35586967?v=4&s=48)](https://github.com/zhoulf1006) [![Jonatan](https://avatars.githubusercontent.com/u/19454127?v=4&s=48)](https://github.com/jrrcdev) [![Sebastian B Otaegui](https://avatars.githubusercontent.com/u/91633?v=4&s=48)](https://github.com/feniix)
+[![Sharoon Sharif](https://avatars.githubusercontent.com/u/150296639?v=4&s=48)](https://github.com/SharoonSharif) [![Oren](https://avatars.githubusercontent.com/u/168856?v=4&s=48)](https://github.com/orenyomtov) [![MattQ](https://avatars.githubusercontent.com/u/115874885?v=4&s=48)](https://github.com/mattqdev) [![Parker Todd Brooks](https://avatars.githubusercontent.com/u/585456?v=4&s=48)](https://github.com/parkertoddbrooks) [![Yufeng He](https://avatars.githubusercontent.com/u/40085740?v=4&s=48)](https://github.com/he-yufeng) [![Milofax](https://avatars.githubusercontent.com/u/2537423?v=4&s=48)](https://github.com/Milofax) [![Steve (FirstNexus)](https://avatars.githubusercontent.com/u/261149299?v=4&s=48)](https://github.com/stevebot-alive) [![zhoulf1006](https://avatars.githubusercontent.com/u/35586967?v=4&s=48)](https://github.com/zhoulf1006) [![Jonatan](https://avatars.githubusercontent.com/u/19454127?v=4&s=48)](https://github.com/jrrcdev) [![Sebastian B Otaegui](https://avatars.githubusercontent.com/u/91633?v=4&s=48)](https://github.com/feniix)
 [![Matthew](https://avatars.githubusercontent.com/u/76985631?v=4&s=48)](https://github.com/ZetiMente) [![ABFS Tech](https://avatars.githubusercontent.com/u/82096803?v=4&s=48)](https://github.com/QuantDeveloperUSA) [![alexstyl](https://avatars.githubusercontent.com/u/1665273?v=4&s=48)](https://github.com/alexstyl) [![Ethan Palm](https://avatars.githubusercontent.com/u/56270045?v=4&s=48)](https://github.com/ethanpalm) [![Qkal](https://avatars.githubusercontent.com/u/77361240?v=4&s=48)](https://github.com/qkal) [![cygaar](https://avatars.githubusercontent.com/u/97691933?v=4&s=48)](https://github.com/cygaar) [![Umut CAN](https://avatars.githubusercontent.com/u/78921017?v=4&s=48)](https://github.com/U-C4N) [![Jakob](https://avatars.githubusercontent.com/u/38699060?v=4&s=48)](https://github.com/jakobdylanc) [![antons](https://avatars.githubusercontent.com/u/129705?v=4&s=48)](https://github.com/antons) [![austinm911](https://avatars.githubusercontent.com/u/31991302?v=4&s=48)](https://github.com/austinm911)
 [![mahmoudashraf93](https://avatars.githubusercontent.com/u/9130129?v=4&s=48)](https://github.com/mahmoudashraf93) [![philipp-spiess](https://avatars.githubusercontent.com/u/458591?v=4&s=48)](https://github.com/philipp-spiess) [![pkrmf](https://avatars.githubusercontent.com/u/1714267?v=4&s=48)](https://github.com/pkrmf) [![joshrad-dev](https://avatars.githubusercontent.com/u/62785552?v=4&s=48)](https://github.com/joshrad-dev) [![factnest365-ops](https://avatars.githubusercontent.com/u/236534360?v=4&s=48)](https://github.com/factnest365-ops) [![yingchunbai](https://avatars.githubusercontent.com/u/33477283?v=4&s=48)](https://github.com/yingchunbai) [![AJ (@techfren)](https://avatars.githubusercontent.com/u/8023513?v=4&s=48)](https://github.com/aj47) [![Marchel Fahrezi](https://avatars.githubusercontent.com/u/53804949?v=4&s=48)](https://github.com/Alg0rix) [![futhgar](https://avatars.githubusercontent.com/u/51002668?v=4&s=48)](https://github.com/futhgar) [![Zhang](https://avatars.githubusercontent.com/u/56248212?v=4&s=48)](https://github.com/YonganZhang)
 [![Rémi](https://avatars.githubusercontent.com/u/1299873?v=4&s=48)](https://github.com/remusao) [![Dan Ballance](https://avatars.githubusercontent.com/u/13839912?v=4&s=48)](https://github.com/danballance) [![Eric Su](https://avatars.githubusercontent.com/u/60202455?v=4&s=48)](https://github.com/GHesericsu) [![Kimitaka Watanabe](https://avatars.githubusercontent.com/u/167225?v=4&s=48)](https://github.com/kimitaka) [![Justin Ling](https://avatars.githubusercontent.com/u/2521993?v=4&s=48)](https://github.com/itsjling) [![Raymond Berger](https://avatars.githubusercontent.com/u/921217?v=4&s=48)](https://github.com/RayBB) [![lutr0](https://avatars.githubusercontent.com/u/76906369?v=4&s=48)](https://github.com/lutr0) [![claude](https://avatars.githubusercontent.com/u/81847?v=4&s=48)](https://github.com/claude) [![AngryBird](https://avatars.githubusercontent.com/u/48046333?v=4&s=48)](https://github.com/angrybirddd) [![Fabian Williams](https://avatars.githubusercontent.com/u/92543063?v=4&s=48)](https://github.com/fabianwilliams)
@@ -443,7 +443,7 @@ nico-hoff
 nikus-pan
 nonggialiang
 oliviareid-svg
-NexisClaw-bot
+FirstNexus-bot
 pablohrcarvalho
 patrick-barletta
 pinghuachiu

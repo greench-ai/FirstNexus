@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source scripts/lib/NexisClaw-e2e-instance.sh
+source scripts/lib/FirstNexus-e2e-instance.sh
 source scripts/lib/docker-e2e-logs.sh
-NEXISCLAW_ENTRY="$(NexisClaw_e2e_resolve_entrypoint)"
+NEXISCLAW_ENTRY="$(FirstNexus_e2e_resolve_entrypoint)"
 export NEXISCLAW_ENTRY
 PACKAGE_VERSION="$(node -p 'require("./package.json").version')"
 NEXISCLAW_PACKAGE_ACCEPTANCE_LEGACY_COMPAT="$(node scripts/e2e/lib/package-compat.mjs "$PACKAGE_VERSION")"
 export NEXISCLAW_PACKAGE_ACCEPTANCE_LEGACY_COMPAT
 
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 BUNDLED_PLUGIN_ROOT_DIR="extensions"
-NEXISCLAW_PLUGIN_HOME="$HOME/.NexisClaw/$BUNDLED_PLUGIN_ROOT_DIR"
+NEXISCLAW_PLUGIN_HOME="$HOME/.FirstNexus/$BUNDLED_PLUGIN_ROOT_DIR"
 
 source scripts/e2e/lib/plugins/fixtures.sh
 source scripts/e2e/lib/plugins/marketplace.sh
@@ -27,7 +27,7 @@ node "$NEXISCLAW_ENTRY" plugins inspect demo-plugin --runtime --json >/tmp/plugi
 node scripts/e2e/lib/plugins/assertions.mjs demo-plugin
 
 echo "Testing tgz install flow..."
-pack_dir="$(mktemp -d "/tmp/NexisClaw-plugin-pack.XXXXXX")"
+pack_dir="$(mktemp -d "/tmp/FirstNexus-plugin-pack.XXXXXX")"
 pack_fixture_plugin "$pack_dir" /tmp/demo-plugin-tgz.tgz demo-plugin-tgz 0.0.1 demo.tgz "Demo Plugin TGZ"
 
 run_logged install-tgz node "$NEXISCLAW_ENTRY" plugins install /tmp/demo-plugin-tgz.tgz
@@ -41,7 +41,7 @@ node "$NEXISCLAW_ENTRY" plugins list --json >/tmp/plugins2-uninstalled.json
 node scripts/e2e/lib/plugins/assertions.mjs plugin-tgz-removed
 
 echo "Testing install from local folder (plugins.load.paths)..."
-dir_plugin="$(mktemp -d "/tmp/NexisClaw-plugin-dir.XXXXXX")"
+dir_plugin="$(mktemp -d "/tmp/FirstNexus-plugin-dir.XXXXXX")"
 write_fixture_plugin "$dir_plugin" demo-plugin-dir 0.0.1 demo.dir "Demo Plugin DIR"
 
 run_logged install-dir node "$NEXISCLAW_ENTRY" plugins install "$dir_plugin"
@@ -58,7 +58,7 @@ node "$NEXISCLAW_ENTRY" plugins list --json >/tmp/plugins3-uninstalled.json
 node scripts/e2e/lib/plugins/assertions.mjs plugin-dir-removed
 
 echo "Testing install from local folder with preinstalled dependencies..."
-dir_deps_plugin="$(mktemp -d "/tmp/NexisClaw-plugin-dir-deps.XXXXXX")"
+dir_deps_plugin="$(mktemp -d "/tmp/FirstNexus-plugin-dir-deps.XXXXXX")"
 write_fixture_plugin_with_vendored_dependency "$dir_deps_plugin" demo-plugin-dir-deps 0.0.1 demo.dir.deps "Demo Plugin DIR Deps"
 
 run_logged install-dir-deps node "$NEXISCLAW_ENTRY" plugins install "$dir_deps_plugin"
@@ -72,7 +72,7 @@ node "$NEXISCLAW_ENTRY" plugins list --json >/tmp/plugins-dir-deps-uninstalled.j
 node scripts/e2e/lib/plugins/assertions.mjs plugin-dir-deps-removed
 
 echo "Testing install from npm spec (file:)..."
-file_pack_dir="$(mktemp -d "/tmp/NexisClaw-plugin-filepack.XXXXXX")"
+file_pack_dir="$(mktemp -d "/tmp/FirstNexus-plugin-filepack.XXXXXX")"
 write_fixture_plugin "$file_pack_dir/package" demo-plugin-file 0.0.1 demo.file "Demo Plugin FILE"
 
 run_logged install-file node "$NEXISCLAW_ENTRY" plugins install "file:$file_pack_dir/package"
@@ -86,14 +86,14 @@ node "$NEXISCLAW_ENTRY" plugins list --json >/tmp/plugins4-uninstalled.json
 node scripts/e2e/lib/plugins/assertions.mjs plugin-file-removed
 
 echo "Testing install and update from npm registry..."
-npm_pack_dir="$(mktemp -d "/tmp/NexisClaw-plugin-npm-pack.XXXXXX")"
-npm_dep_pack_dir="$(mktemp -d "/tmp/NexisClaw-plugin-npm-dep-pack.XXXXXX")"
-npm_registry_dir="$(mktemp -d "/tmp/NexisClaw-plugin-npm-registry.XXXXXX")"
+npm_pack_dir="$(mktemp -d "/tmp/FirstNexus-plugin-npm-pack.XXXXXX")"
+npm_dep_pack_dir="$(mktemp -d "/tmp/FirstNexus-plugin-npm-dep-pack.XXXXXX")"
+npm_registry_dir="$(mktemp -d "/tmp/FirstNexus-plugin-npm-registry.XXXXXX")"
 pack_fixture_plugin_with_cli_registry_dependency "$npm_pack_dir" /tmp/demo-plugin-npm.tgz demo-plugin-npm 0.0.1 demo.npm "Demo Plugin NPM" demo-npm "demo-plugin-npm:pong"
 pack_fake_is_number_package "$npm_dep_pack_dir" /tmp/is-number-7.0.0.tgz
-start_npm_fixture_registry "@NexisClaw/demo-plugin-npm" "0.0.1" /tmp/demo-plugin-npm.tgz "$npm_registry_dir" "is-number" "7.0.0" /tmp/is-number-7.0.0.tgz
+start_npm_fixture_registry "@FirstNexus/demo-plugin-npm" "0.0.1" /tmp/demo-plugin-npm.tgz "$npm_registry_dir" "is-number" "7.0.0" /tmp/is-number-7.0.0.tgz
 
-run_logged install-npm node "$NEXISCLAW_ENTRY" plugins install "npm:@NexisClaw/demo-plugin-npm@0.0.1"
+run_logged install-npm node "$NEXISCLAW_ENTRY" plugins install "npm:@FirstNexus/demo-plugin-npm@0.0.1"
 node "$NEXISCLAW_ENTRY" plugins list --json >/tmp/plugins-npm.json
 node "$NEXISCLAW_ENTRY" plugins inspect demo-plugin-npm --runtime --json >/tmp/plugins-npm-inspect.json
 run_logged exec-npm-plugin-cli bash -c 'node "$NEXISCLAW_ENTRY" demo-npm ping >/tmp/plugins-npm-cli.txt'
@@ -108,13 +108,13 @@ node "$NEXISCLAW_ENTRY" plugins list --json >/tmp/plugins-npm-uninstalled.json
 node scripts/e2e/lib/plugins/assertions.mjs plugin-npm-removed
 
 echo "Testing install from git repo and plugin CLI execution..."
-git_fixture_root="$(mktemp -d "/tmp/NexisClaw-plugin-git.XXXXXX")"
+git_fixture_root="$(mktemp -d "/tmp/FirstNexus-plugin-git.XXXXXX")"
 git_repo="$git_fixture_root/repo"
 git_repo_url="file://$git_repo"
 write_fixture_plugin_with_cli "$git_repo" demo-plugin-git 0.0.1 demo.git "Demo Plugin Git" demo-git "demo-plugin-git:pong"
 git -C "$git_repo" init -q
-git -C "$git_repo" config user.email "docker-e2e@NexisClaw.local"
-git -C "$git_repo" config user.name "NexisClaw Docker E2E"
+git -C "$git_repo" config user.email "docker-e2e@FirstNexus.local"
+git -C "$git_repo" config user.name "FirstNexus Docker E2E"
 git -C "$git_repo" add -A
 git -C "$git_repo" commit -qm "test fixture"
 git_ref="$(git -C "$git_repo" rev-parse HEAD)"
@@ -131,13 +131,13 @@ node "$NEXISCLAW_ENTRY" plugins list --json >/tmp/plugins-git-uninstalled.json
 node scripts/e2e/lib/plugins/assertions.mjs plugin-git-removed
 
 echo "Testing git plugin update from moving ref..."
-git_update_fixture_root="$(mktemp -d "/tmp/NexisClaw-plugin-git-update.XXXXXX")"
+git_update_fixture_root="$(mktemp -d "/tmp/FirstNexus-plugin-git-update.XXXXXX")"
 git_update_repo="$git_update_fixture_root/repo"
 git_update_repo_url="file://$git_update_repo"
 write_fixture_plugin_with_cli "$git_update_repo" demo-plugin-git-update 0.0.1 demo.git.update.v1 "Demo Plugin Git Update" demo-git-update "demo-plugin-git-update:pong-v1"
 git -C "$git_update_repo" init -q
-git -C "$git_update_repo" config user.email "docker-e2e@NexisClaw.local"
-git -C "$git_update_repo" config user.name "NexisClaw Docker E2E"
+git -C "$git_update_repo" config user.email "docker-e2e@FirstNexus.local"
+git -C "$git_update_repo" config user.name "FirstNexus Docker E2E"
 git -C "$git_update_repo" checkout -qb main
 git -C "$git_update_repo" add -A
 git -C "$git_update_repo" commit -qm "test fixture v1"
@@ -169,7 +169,7 @@ node "$NEXISCLAW_ENTRY" plugins inspect claude-bundle-e2e --json >/tmp/plugins-b
 node scripts/e2e/lib/plugins/assertions.mjs bundle-inspect
 
 echo "Testing plugin install visible after explicit restart..."
-slash_install_dir="$(mktemp -d "/tmp/NexisClaw-plugin-slash-install.XXXXXX")"
+slash_install_dir="$(mktemp -d "/tmp/FirstNexus-plugin-slash-install.XXXXXX")"
 write_fixture_plugin "$slash_install_dir" slash-install-plugin 0.0.1 demo.slash.install "Slash Install Plugin"
 
 run_logged install-slash-plugin node "$NEXISCLAW_ENTRY" plugins install "$slash_install_dir"

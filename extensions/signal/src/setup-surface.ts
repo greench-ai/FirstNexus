@@ -2,8 +2,8 @@ import {
   createDetectedBinaryStatus,
   setSetupChannelEnabled,
   type ChannelSetupWizard,
-} from "NexisClaw/plugin-sdk/setup";
-import { detectBinary } from "NexisClaw/plugin-sdk/setup-tools";
+} from "FirstNexus/plugin-sdk/setup";
+import { detectBinary } from "FirstNexus/plugin-sdk/setup-tools";
 import { listSignalAccountIds, resolveSignalAccount } from "./accounts.js";
 import { installSignalCli } from "./install-signal-cli.js";
 import {

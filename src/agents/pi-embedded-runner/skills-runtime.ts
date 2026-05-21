@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { loadWorkspaceSkillEntries, type SkillEntry, type SkillSnapshot } from "../skills.js";
 import { resolveSkillRuntimeConfig } from "../skills/runtime-config.js";
 
 export function resolveEmbeddedRunSkillEntries(params: {
   workspaceDir: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   agentId?: string;
   skillsSnapshot?: SkillSnapshot;
 }): {

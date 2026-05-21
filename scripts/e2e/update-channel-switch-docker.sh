@@ -7,13 +7,13 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-update-channel-switch-e2e" NEXISCLAW_UPDATE_CHANNEL_SWITCH_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-update-channel-switch-e2e" NEXISCLAW_UPDATE_CHANNEL_SWITCH_E2E_IMAGE)"
 SKIP_BUILD="${NEXISCLAW_UPDATE_CHANNEL_SWITCH_E2E_SKIP_BUILD:-0}"
 PACKAGE_TGZ="$(docker_e2e_prepare_package_tgz update-channel-switch "${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}")"
 # Bare lanes mount the package artifact instead of baking app sources into the image.
 docker_e2e_package_mount_args "$PACKAGE_TGZ"
 NEXISCLAW_TEST_STATE_SCRIPT_B64="$(
-  node "$ROOT_DIR/scripts/lib/NexisClaw-test-state.mjs" shell \
+  node "$ROOT_DIR/scripts/lib/FirstNexus-test-state.mjs" shell \
     --label update-channel-switch \
     --scenario update-stable |
     base64 |
@@ -31,7 +31,7 @@ docker_e2e_run_with_harness \
   "${DOCKER_E2E_PACKAGE_ARGS[@]}" \
   "$IMAGE_NAME" \
   bash -lc 'set -euo pipefail
-source scripts/lib/NexisClaw-e2e-instance.sh
+source scripts/lib/FirstNexus-e2e-instance.sh
 
 export npm_config_loglevel=error
 export npm_config_fund=false
@@ -46,7 +46,7 @@ export NEXISCLAW_NO_ONBOARD=1
 export NEXISCLAW_NO_PROMPT=1
 
 package_tgz="${NEXISCLAW_CURRENT_PACKAGE_TGZ:?missing NEXISCLAW_CURRENT_PACKAGE_TGZ}"
-git_root="/tmp/NexisClaw-git"
+git_root="/tmp/FirstNexus-git"
 mkdir -p "$git_root"
 # Build the fake git install from the packed package contents, not the checkout.
 tar -xzf "$package_tgz" -C "$git_root" --strip-components=1
@@ -55,15 +55,15 @@ tar -xzf "$package_tgz" -C "$git_root" --strip-components=1
 node scripts/e2e/lib/update-channel-switch/assertions.mjs prepare-git-fixture "$git_root"
 (
   cd "$git_root"
-  if ! npm install --omit=optional --no-fund --no-audit >/tmp/NexisClaw-git-install.log 2>&1; then
-    cat /tmp/NexisClaw-git-install.log >&2 || true
+  if ! npm install --omit=optional --no-fund --no-audit >/tmp/FirstNexus-git-install.log 2>&1; then
+    cat /tmp/FirstNexus-git-install.log >&2 || true
     exit 1
   fi
 )
 node scripts/e2e/lib/update-channel-switch/assertions.mjs write-control-ui "$git_root"
 
-git config --global user.email "docker-e2e@NexisClaw.local"
-git config --global user.name "NexisClaw Docker E2E"
+git config --global user.email "docker-e2e@FirstNexus.local"
+git config --global user.name "FirstNexus Docker E2E"
 git config --global gc.auto 0
 git -C "$git_root" init -q
 git -C "$git_root" config gc.auto 0
@@ -75,20 +75,20 @@ fixture_sha="$(git -C "$git_root" rev-parse HEAD)"
 pkg_tgz_path="$package_tgz"
 
 npm install -g --prefix /tmp/npm-prefix --omit=optional "$pkg_tgz_path"
-package_version="$(node -p "JSON.parse(require(\"node:fs\").readFileSync(\"/tmp/npm-prefix/lib/node_modules/NexisClaw/package.json\", \"utf8\")).version")"
+package_version="$(node -p "JSON.parse(require(\"node:fs\").readFileSync(\"/tmp/npm-prefix/lib/node_modules/FirstNexus/package.json\", \"utf8\")).version")"
 NEXISCLAW_PACKAGE_ACCEPTANCE_LEGACY_COMPAT="$(
   node scripts/e2e/lib/package-compat.mjs "$package_version"
 )"
 export NEXISCLAW_PACKAGE_ACCEPTANCE_LEGACY_COMPAT
 
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 
 export NEXISCLAW_GIT_DIR="$git_root"
 export NEXISCLAW_UPDATE_DEV_TARGET_REF="$fixture_sha"
 
 echo "==> package -> git dev channel"
 set +e
-dev_json="$(NexisClaw update --channel dev --yes --json --no-restart)"
+dev_json="$(FirstNexus update --channel dev --yes --json --no-restart)"
 dev_status=$?
 set -e
 printf "%s\n" "$dev_json"
@@ -98,13 +98,13 @@ fi
 UPDATE_JSON="$dev_json" node scripts/e2e/lib/update-channel-switch/assertions.mjs assert-update dev
 node scripts/e2e/lib/update-channel-switch/assertions.mjs assert-config-channel dev
 
-status_json="$(NexisClaw update status --json)"
+status_json="$(FirstNexus update status --json)"
 printf "%s\n" "$status_json"
 STATUS_JSON="$status_json" node scripts/e2e/lib/update-channel-switch/assertions.mjs assert-status-kind git
 
 echo "==> git -> package stable channel"
 set +e
-stable_json="$(NexisClaw update --channel stable --tag "$pkg_tgz_path" --yes --json --no-restart)"
+stable_json="$(FirstNexus update --channel stable --tag "$pkg_tgz_path" --yes --json --no-restart)"
 stable_status=$?
 set -e
 printf "%s\n" "$stable_json"
@@ -114,7 +114,7 @@ fi
 UPDATE_JSON="$stable_json" node scripts/e2e/lib/update-channel-switch/assertions.mjs assert-update stable
 node scripts/e2e/lib/update-channel-switch/assertions.mjs assert-config-channel stable
 
-status_json="$(NexisClaw update status --json)"
+status_json="$(FirstNexus update status --json)"
 printf "%s\n" "$status_json"
 STATUS_JSON="$status_json" node scripts/e2e/lib/update-channel-switch/assertions.mjs assert-status-kind package
 

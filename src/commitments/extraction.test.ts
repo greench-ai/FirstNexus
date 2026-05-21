@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   buildCommitmentExtractionPrompt,
   parseCommitmentExtractionOutput,
@@ -22,8 +22,8 @@ describe("commitment extraction", () => {
     tmpDirs.length = 0;
   });
 
-  async function createConfig(): Promise<NexisClawConfig> {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-commitments-"));
+  async function createConfig(): Promise<FirstNexusConfig> {
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-commitments-"));
     tmpDirs.push(tmpDir);
     vi.stubEnv("NEXISCLAW_STATE_DIR", tmpDir);
     return {
@@ -114,7 +114,7 @@ describe("commitment extraction", () => {
   });
 
   it("rejects disabled, low-confidence, and non-future candidates", () => {
-    const cfg: NexisClawConfig = { commitments: { enabled: true } };
+    const cfg: FirstNexusConfig = { commitments: { enabled: true } };
     const valid = validateCommitmentCandidates({
       cfg,
       items: [item()],

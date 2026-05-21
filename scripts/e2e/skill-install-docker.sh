@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs a prepared NexisClaw npm tarball in Docker and proves live ClawHub
+# Installs a prepared FirstNexus npm tarball in Docker and proves live ClawHub
 # skill install works while uploaded archive installs stay disabled.
 set -euo pipefail
 
@@ -7,7 +7,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-skill-install-e2e" NEXISCLAW_SKILL_INSTALL_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-skill-install-e2e" NEXISCLAW_SKILL_INSTALL_E2E_IMAGE)"
 PACKAGE_TGZ="$(docker_e2e_prepare_package_tgz skill-install "${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}")"
 NEXISCLAW_TEST_STATE_SCRIPT_B64="$(docker_e2e_test_state_shell_b64 skill-install empty)"
 

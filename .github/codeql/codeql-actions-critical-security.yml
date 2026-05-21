@@ -1,4 +1,4 @@
-name: NexisClaw-codeql-actions-critical-security
+name: FirstNexus-codeql-actions-critical-security
 
 disable-default-queries: true
 

@@ -9,7 +9,7 @@ import {
   resetTaskRegistryDeliveryRuntimeForTests,
   resetTaskRegistryForTests,
 } from "../tasks/task-registry.js";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 import { flowsCancelCommand, flowsListCommand, flowsShowCommand } from "./flows.js";
 
 vi.mock("../config/config.js", () => ({
@@ -28,10 +28,10 @@ function createRuntime(): RuntimeEnv {
 }
 
 async function withTaskFlowCommandStateDir(run: (root: string) => Promise<void>): Promise<void> {
-  await withNexisClawTestState(
+  await withFirstNexusTestState(
     {
       layout: "state-only",
-      prefix: "NexisClaw-flows-command-",
+      prefix: "FirstNexus-flows-command-",
     },
     async (state) => {
       resetTaskRegistryDeliveryRuntimeForTests();

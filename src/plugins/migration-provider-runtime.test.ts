@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginRegistry } from "./registry-types.js";
 import { createEmptyPluginRegistry } from "./registry.js";
 
@@ -140,7 +140,7 @@ describe("migration provider runtime", () => {
     }));
 
     ensureStandaloneMigrationProviderRegistryLoaded({
-      cfg: { plugins: { enabled: false } } as NexisClawConfig,
+      cfg: { plugins: { enabled: false } } as FirstNexusConfig,
     });
 
     const standaloneParams = requireMockCallArg(
@@ -152,7 +152,7 @@ describe("migration provider runtime", () => {
       loadOptions?: {
         activate?: unknown;
         onlyPluginIds?: unknown;
-        config?: NexisClawConfig;
+        config?: FirstNexusConfig;
       };
     };
     expect(standaloneParams.surface).toBe("active");
@@ -168,7 +168,7 @@ describe("migration provider runtime", () => {
   it("loads configured external migration-provider plugins from manifest contracts", () => {
     const cfg = {
       plugins: { entries: { "external-migration": { enabled: true } } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const provider = createMigrationProvider("external-import");
     const active = createEmptyPluginRegistry();
     const loaded = createEmptyPluginRegistry();
@@ -232,7 +232,7 @@ describe("migration provider runtime", () => {
       "loadPluginManifestRegistry",
     ) as {
       index?: MockPluginIndex;
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
       env?: NodeJS.ProcessEnv;
       includeDisabled?: unknown;
     };
@@ -296,7 +296,7 @@ describe("migration provider runtime", () => {
       "loadPluginManifestRegistry",
     ) as {
       index?: MockPluginIndex;
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
       env?: NodeJS.ProcessEnv;
       includeDisabled?: unknown;
       workspaceDir?: unknown;

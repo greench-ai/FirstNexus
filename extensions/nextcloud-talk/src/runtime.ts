@@ -1,5 +1,5 @@
-import { createPluginRuntimeStore } from "NexisClaw/plugin-sdk/runtime-store";
-import type { PluginRuntime } from "NexisClaw/plugin-sdk/runtime-store";
+import { createPluginRuntimeStore } from "FirstNexus/plugin-sdk/runtime-store";
+import type { PluginRuntime } from "FirstNexus/plugin-sdk/runtime-store";
 
 const { setRuntime: setNextcloudTalkRuntime, getRuntime: getNextcloudTalkRuntime } =
   createPluginRuntimeStore<PluginRuntime>({

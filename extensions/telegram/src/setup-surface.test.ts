@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/setup";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/setup";
 import { describe, expect, it, vi } from "vitest";
 import {
   buildTelegramDmAccessWarningLines,
@@ -53,10 +53,10 @@ describe("telegram DM access warning helpers", () => {
     const lines = buildTelegramDmAccessWarningLines(DEFAULT_ACCOUNT_ID);
 
     expect(lines.join("\n")).toContain(
-      'NexisClaw config set channels.telegram.dmPolicy "allowlist"',
+      'FirstNexus config set channels.telegram.dmPolicy "allowlist"',
     );
     expect(lines.join("\n")).toContain(
-      `NexisClaw config set channels.telegram.allowFrom '["YOUR_USER_ID"]'`,
+      `FirstNexus config set channels.telegram.allowFrom '["YOUR_USER_ID"]'`,
     );
   });
 
@@ -64,10 +64,10 @@ describe("telegram DM access warning helpers", () => {
     const lines = buildTelegramDmAccessWarningLines("alerts");
 
     expect(lines.join("\n")).toContain(
-      'NexisClaw config set channels.telegram.accounts.alerts.dmPolicy "allowlist"',
+      'FirstNexus config set channels.telegram.accounts.alerts.dmPolicy "allowlist"',
     );
     expect(lines.join("\n")).toContain(
-      `NexisClaw config set channels.telegram.accounts.alerts.allowFrom '["YOUR_USER_ID"]'`,
+      `FirstNexus config set channels.telegram.accounts.alerts.allowFrom '["YOUR_USER_ID"]'`,
     );
   });
 
@@ -118,7 +118,7 @@ describe("telegramSetupDmPolicy", () => {
   });
 
   it("uses configured defaultAccount for omitted DM policy account context", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         telegram: {
           defaultAccount: "alerts",
@@ -146,7 +146,7 @@ describe("telegramSetupDmPolicy", () => {
   });
 
   it('writes open policy state to the named account and preserves inherited allowFrom with "*"', () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         telegram: {
           allowFrom: ["123"],

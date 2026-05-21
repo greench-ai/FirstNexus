@@ -163,7 +163,7 @@ export function execDockerRaw(
 }
 
 import { formatCliCommand } from "../../cli/command-format.js";
-import { markNexisClawExecEnv } from "../../infra/NexisClaw-exec-env.js";
+import { markFirstNexusExecEnv } from "../../infra/FirstNexus-exec-env.js";
 import { defaultRuntime } from "../../runtime.js";
 import { computeSandboxConfigHash } from "./config-hash.js";
 import { DEFAULT_SANDBOX_IMAGE } from "./constants.js";
@@ -318,7 +318,7 @@ export async function ensureDockerImage(image: string) {
   }
   if (image === DEFAULT_SANDBOX_IMAGE) {
     throw new Error(
-      `Sandbox image not found: ${image}. Build it with scripts/sandbox-setup.sh before enabling Docker sandboxing. The default image includes python3 for sandbox write/edit helpers; NexisClaw will not substitute plain debian:bookworm-slim.`,
+      `Sandbox image not found: ${image}. Build it with scripts/sandbox-setup.sh before enabling Docker sandboxing. The default image includes python3 for sandbox write/edit helpers; FirstNexus will not substitute plain debian:bookworm-slim.`,
     );
   }
   throw new Error(`Sandbox image not found: ${image}. Build or pull it first.`);
@@ -401,12 +401,12 @@ export function buildSandboxCreateArgs(params: {
 
   const createdAtMs = params.createdAtMs ?? Date.now();
   const args = ["create", "--name", params.name];
-  args.push("--label", "NexisClaw.sandbox=1");
-  args.push("--label", `NexisClaw.sessionKey=${params.scopeKey}`);
-  args.push("--label", `NexisClaw.createdAtMs=${createdAtMs}`);
-  args.push("--label", `NexisClaw.mountFormatVersion=${SANDBOX_MOUNT_FORMAT_VERSION}`);
+  args.push("--label", "FirstNexus.sandbox=1");
+  args.push("--label", `FirstNexus.sessionKey=${params.scopeKey}`);
+  args.push("--label", `FirstNexus.createdAtMs=${createdAtMs}`);
+  args.push("--label", `FirstNexus.mountFormatVersion=${SANDBOX_MOUNT_FORMAT_VERSION}`);
   if (params.configHash) {
-    args.push("--label", `NexisClaw.configHash=${params.configHash}`);
+    args.push("--label", `FirstNexus.configHash=${params.configHash}`);
   }
   for (const [key, value] of Object.entries(params.labels ?? {})) {
     if (key && value) {
@@ -432,7 +432,7 @@ export function buildSandboxCreateArgs(params: {
   if (envSanitization.warnings.length > 0) {
     log.warn(`Suspicious environment variables: ${envSanitization.warnings.join(", ")}`);
   }
-  for (const [key, value] of Object.entries(markNexisClawExecEnv(envSanitization.allowed))) {
+  for (const [key, value] of Object.entries(markFirstNexusExecEnv(envSanitization.allowed))) {
     args.push("--env", `${key}=${value}`);
   }
   for (const cap of params.cfg.capDrop) {
@@ -536,18 +536,18 @@ async function createSandboxContainer(params: {
 }
 
 async function readContainerConfigHash(containerName: string): Promise<string | null> {
-  return await readDockerContainerLabel(containerName, "NexisClaw.configHash");
+  return await readDockerContainerLabel(containerName, "FirstNexus.configHash");
 }
 
 function formatSandboxRecreateHint(params: { scope: SandboxConfig["scope"]; sessionKey: string }) {
   if (params.scope === "session") {
-    return formatCliCommand(`NexisClaw sandbox recreate --session ${params.sessionKey}`);
+    return formatCliCommand(`FirstNexus sandbox recreate --session ${params.sessionKey}`);
   }
   if (params.scope === "agent") {
     const agentId = resolveSandboxAgentId(params.sessionKey) ?? "main";
-    return formatCliCommand(`NexisClaw sandbox recreate --agent ${agentId}`);
+    return formatCliCommand(`FirstNexus sandbox recreate --agent ${agentId}`);
   }
-  return formatCliCommand("NexisClaw sandbox recreate --all");
+  return formatCliCommand("FirstNexus sandbox recreate --all");
 }
 
 export async function ensureSandboxContainer(params: {

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveAgentHarnessPolicy } from "./harness/policy.js";
 import { resolveDefaultModelForAgent } from "./model-selection.js";
 
@@ -8,7 +8,7 @@ type AgentRuntimeMetadata = {
 };
 
 export function resolveAgentRuntimeMetadata(
-  _cfg: NexisClawConfig,
+  _cfg: FirstNexusConfig,
   _agentId: string,
   _env: NodeJS.ProcessEnv = process.env,
 ): AgentRuntimeMetadata {
@@ -19,7 +19,7 @@ export function resolveAgentRuntimeMetadata(
 }
 
 export function resolveModelAgentRuntimeMetadata(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   provider?: string;
   model?: string;

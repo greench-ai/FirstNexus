@@ -1,6 +1,9 @@
 import { randomBytes, randomUUID } from "node:crypto";
-import { generatePkceVerifierChallenge, toFormUrlEncoded } from "NexisClaw/plugin-sdk/provider-auth";
-import { ensureGlobalUndiciEnvProxyDispatcher } from "NexisClaw/plugin-sdk/runtime-env";
+import {
+  generatePkceVerifierChallenge,
+  toFormUrlEncoded,
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { ensureGlobalUndiciEnvProxyDispatcher } from "FirstNexus/plugin-sdk/runtime-env";
 
 export type MiniMaxRegion = "cn" | "global";
 

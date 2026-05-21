@@ -1,8 +1,8 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 /** Resolve the config path prefix for a channel account, falling back to the root channel section. */
 export function resolveChannelAccountConfigBasePath(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channelKey: string;
   accountId: string;
 }): string {

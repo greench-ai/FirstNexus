@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { createAgentsListTool } from "./agents-list-tool.js";
 
-const loadConfigMock = vi.fn<() => NexisClawConfig>();
+const loadConfigMock = vi.fn<() => FirstNexusConfig>();
 
 type AgentListDetails = {
   requester?: string;
@@ -52,7 +52,7 @@ describe("agents_list tool", () => {
           },
         ],
       },
-    } satisfies NexisClawConfig);
+    } satisfies FirstNexusConfig);
 
     const result = await createAgentsListTool({ agentSessionKey: "agent:main:main" }).execute(
       "call",
@@ -80,7 +80,7 @@ describe("agents_list tool", () => {
       agents: {
         list: [{ id: "main", default: true }, { id: "codex" }],
       },
-    } satisfies NexisClawConfig);
+    } satisfies FirstNexusConfig);
 
     const result = await createAgentsListTool({ agentSessionKey: "agent:main:main" }).execute(
       "call",
@@ -112,7 +112,7 @@ describe("agents_list tool", () => {
         },
         list: [{ id: "main", default: true }],
       },
-    } satisfies NexisClawConfig);
+    } satisfies FirstNexusConfig);
 
     const result = await createAgentsListTool({ agentSessionKey: "agent:main:main" }).execute(
       "call",
@@ -147,7 +147,7 @@ describe("agents_list tool", () => {
           { id: "strict", agentRuntime: { id: "codex" } },
         ],
       },
-    } satisfies NexisClawConfig);
+    } satisfies FirstNexusConfig);
 
     const result = await createAgentsListTool({ agentSessionKey: "agent:main:main" }).execute(
       "call",

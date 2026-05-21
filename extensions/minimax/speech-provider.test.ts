@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const transcodeAudioBufferToOpusMock = vi.hoisted(() => vi.fn());
 
-vi.mock("NexisClaw/plugin-sdk/media-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/media-runtime", () => ({
   transcodeAudioBufferToOpus: transcodeAudioBufferToOpusMock,
 }));
 
@@ -73,7 +73,7 @@ describe("buildMinimaxSpeechProvider", () => {
     let tempAgentDir: string;
 
     beforeEach(async () => {
-      tempStateDir = await mkdtemp(path.join(tmpdir(), "NexisClaw-minimax-tts-auth-"));
+      tempStateDir = await mkdtemp(path.join(tmpdir(), "FirstNexus-minimax-tts-auth-"));
       tempAgentDir = path.join(tempStateDir, "agents", "main", "agent");
       await mkdir(tempAgentDir, { recursive: true });
       process.env.NEXISCLAW_STATE_DIR = tempStateDir;
@@ -312,7 +312,7 @@ describe("buildMinimaxSpeechProvider", () => {
     let tempAgentDir: string;
 
     beforeEach(async () => {
-      tempStateDir = await mkdtemp(path.join(tmpdir(), "NexisClaw-minimax-tts-synth-"));
+      tempStateDir = await mkdtemp(path.join(tmpdir(), "FirstNexus-minimax-tts-synth-"));
       tempAgentDir = path.join(tempStateDir, "agents", "main", "agent");
       await mkdir(tempAgentDir, { recursive: true });
       process.env = {

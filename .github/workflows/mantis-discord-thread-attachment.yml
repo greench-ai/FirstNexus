@@ -257,7 +257,7 @@ jobs:
           set -euo pipefail
           install_dir="${RUNNER_TEMP}/crabbox"
           mkdir -p "$install_dir" "$HOME/.local/bin"
-          git clone --depth 1 https://github.com/NexisClaw/crabbox.git "$install_dir/src"
+          git clone --depth 1 https://github.com/FirstNexus/crabbox.git "$install_dir/src"
           go build -C "$install_dir/src" -o "$HOME/.local/bin/crabbox" ./cmd/crabbox
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           "$HOME/.local/bin/crabbox" --version
@@ -364,7 +364,7 @@ jobs:
                 NEXISCLAW_QA_DISCORD_KEEP_THREADS=1
               )
             fi
-            env "${lane_env[@]}" pnpm --dir "$repo_root" NexisClaw qa discord \
+            env "${lane_env[@]}" pnpm --dir "$repo_root" FirstNexus qa discord \
               --repo-root "$repo_root" \
               --output-dir "$output_dir" \
               --provider-mode mock-openai \
@@ -413,7 +413,7 @@ jobs:
             if [[ -n "${MANTIS_DISCORD_VIEWER_CHROME_PROFILE_DIR:-}" ]]; then
               profile_args+=(--browser-profile-dir "$MANTIS_DISCORD_VIEWER_CHROME_PROFILE_DIR")
             fi
-            pnpm NexisClaw qa mantis desktop-browser-smoke \
+            pnpm FirstNexus qa mantis desktop-browser-smoke \
               --browser-url "$discord_url" \
               "${profile_args[@]}" \
               --video-duration 24 \

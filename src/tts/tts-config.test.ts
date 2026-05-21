@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   resolveConfiguredTtsMode,
   resolveEffectiveTtsConfig,
@@ -17,7 +17,7 @@ describe("shouldAttemptTtsPayload", () => {
   let caseId = 0;
 
   beforeAll(() => {
-    root = mkdtempSync(path.join(tmpdir(), "NexisClaw-tts-config-"));
+    root = mkdtempSync(path.join(tmpdir(), "FirstNexus-tts-config-"));
   });
 
   afterAll(() => {
@@ -43,13 +43,13 @@ describe("shouldAttemptTtsPayload", () => {
   });
 
   it("skips TTS when config, prefs, and session state leave auto mode off", () => {
-    expect(shouldAttemptTtsPayload({ cfg: {} as NexisClawConfig })).toBe(false);
+    expect(shouldAttemptTtsPayload({ cfg: {} as FirstNexusConfig })).toBe(false);
   });
 
   it("does not infer automatic TTS from a dashboard text turn without opt-in state", () => {
     expect(
       shouldAttemptTtsPayload({
-        cfg: {} as NexisClawConfig,
+        cfg: {} as FirstNexusConfig,
         agentId: "main",
         channelId: "webchat",
         accountId: "dashboard",
@@ -59,21 +59,23 @@ describe("shouldAttemptTtsPayload", () => {
 
   it("honors session auto state before prefs and config", () => {
     writeFileSync(prefsPath, JSON.stringify({ tts: { auto: "off" } }));
-    const cfg = { messages: { tts: { auto: "off" } } } as NexisClawConfig;
+    const cfg = { messages: { tts: { auto: "off" } } } as FirstNexusConfig;
 
     expect(shouldAttemptTtsPayload({ cfg, ttsAuto: "always" })).toBe(true);
     expect(shouldAttemptTtsPayload({ cfg, ttsAuto: "off" })).toBe(false);
   });
 
   it("uses local prefs before config auto mode", () => {
-    const cfg = { messages: { tts: { auto: "off" } } } as NexisClawConfig;
+    const cfg = { messages: { tts: { auto: "off" } } } as FirstNexusConfig;
 
     writeFileSync(prefsPath, JSON.stringify({ tts: { enabled: true } }));
     expect(shouldAttemptTtsPayload({ cfg })).toBe(true);
 
     writeFileSync(prefsPath, JSON.stringify({ tts: { auto: "off" } }));
     expect(
-      shouldAttemptTtsPayload({ cfg: { messages: { tts: { enabled: true } } } as NexisClawConfig }),
+      shouldAttemptTtsPayload({
+        cfg: { messages: { tts: { enabled: true } } } as FirstNexusConfig,
+      }),
     ).toBe(false);
   });
 
@@ -96,7 +98,7 @@ describe("shouldAttemptTtsPayload", () => {
           },
         ],
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(shouldAttemptTtsPayload({ cfg, agentId: "voice" })).toBe(true);
     expect(resolveConfiguredTtsMode(cfg, "voice")).toBe("all");
@@ -152,7 +154,7 @@ describe("shouldAttemptTtsPayload", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     const resolved = resolveEffectiveTtsConfig(cfg, {
       agentId: "reader",

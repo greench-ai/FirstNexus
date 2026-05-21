@@ -1,18 +1,18 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { encodePngRgba, fillPixel } from "NexisClaw/plugin-sdk/media-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { encodePngRgba, fillPixel } from "FirstNexus/plugin-sdk/media-runtime";
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import {
-  expectNexisClawLiveTranscriptMarker,
+  expectFirstNexusLiveTranscriptMarker,
   runRealtimeSttLiveTest,
-} from "NexisClaw/plugin-sdk/provider-test-contracts";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
-import { isBillingErrorMessage } from "NexisClaw/plugin-sdk/test-env";
+} from "FirstNexus/plugin-sdk/provider-test-contracts";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
+import { isBillingErrorMessage } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 import { XAI_DEFAULT_STT_MODEL } from "./stt.js";
@@ -23,7 +23,7 @@ const liveEnabled = XAI_API_KEY.trim().length > 0 && process.env.NEXISCLAW_LIVE_
 const describeLive = liveEnabled ? describe : describe.skip;
 const EMPTY_AUTH_STORE = { version: 1, profiles: {} } as const;
 
-function createLiveConfig(): NexisClawConfig {
+function createLiveConfig(): FirstNexusConfig {
   const cfg = getRuntimeConfig();
   return {
     ...cfg,
@@ -38,7 +38,7 @@ function createLiveConfig(): NexisClawConfig {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function createReferencePng(): Buffer {
@@ -100,7 +100,7 @@ describeLive("xai plugin live", () => {
       expect(voices?.some((voice) => voice.id === "eve")).toBe(true);
 
       const audioFile = await speechProvider.synthesize({
-        text: "NexisClaw xAI text to speech integration test OK.",
+        text: "FirstNexus xAI text to speech integration test OK.",
         cfg,
         providerConfig: {
           apiKey: XAI_API_KEY,
@@ -117,7 +117,7 @@ describeLive("xai plugin live", () => {
       expect(audioFile.audioBuffer.byteLength).toBeGreaterThan(512);
 
       const telephony = await speechProvider.synthesizeTelephony?.({
-        text: "NexisClaw xAI telephony check OK.",
+        text: "FirstNexus xAI telephony check OK.",
         cfg,
         providerConfig: {
           apiKey: XAI_API_KEY,
@@ -141,7 +141,7 @@ describeLive("xai plugin live", () => {
       const mediaProvider = requireRegisteredProvider(mediaProviders, "xai");
       const speechProvider = requireRegisteredProvider(speechProviders, "xai");
       const cfg = createLiveConfig();
-      const phrase = "NexisClaw xAI speech to text integration test OK.";
+      const phrase = "FirstNexus xAI speech to text integration test OK.";
 
       const audioFile = await speechProvider.synthesize({
         text: phrase,
@@ -167,7 +167,7 @@ describeLive("xai plugin live", () => {
 
       const normalized = transcript?.text.toLowerCase() ?? "";
       expect(transcript?.model).toBe(XAI_DEFAULT_STT_MODEL);
-      expectNexisClawLiveTranscriptMarker(normalized);
+      expectFirstNexusLiveTranscriptMarker(normalized);
       expect(normalized).toContain("speech");
       expect(normalized).toContain("text");
       expect(normalized).toContain("integration");
@@ -222,7 +222,7 @@ describeLive("xai plugin live", () => {
       const realtimeProvider = requireRegisteredProvider(realtimeTranscriptionProviders, "xai");
       const speechProvider = requireRegisteredProvider(speechProviders, "xai");
       const cfg = createLiveConfig();
-      const phrase = "NexisClaw xAI realtime transcription integration test OK.";
+      const phrase = "FirstNexus xAI realtime transcription integration test OK.";
 
       const telephony = await speechProvider.synthesizeTelephony?.({
         text: phrase,
@@ -259,7 +259,7 @@ describeLive("xai plugin live", () => {
       });
 
       const normalized = transcripts.join(" ").toLowerCase();
-      expectNexisClawLiveTranscriptMarker(normalized);
+      expectFirstNexusLiveTranscriptMarker(normalized);
       expect(normalized).toContain("transcription");
       expect(partials.length + transcripts.length).toBeGreaterThan(0);
     });

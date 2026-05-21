@@ -1,8 +1,8 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { buildAgentSessionKey, type RoutePeer } from "../../routing/resolve-route.js";
 
 export function buildOutboundBaseSessionKey(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   channel: string;
   accountId?: string | null;

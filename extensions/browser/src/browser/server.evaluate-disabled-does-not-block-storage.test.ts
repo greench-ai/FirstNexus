@@ -42,9 +42,9 @@ vi.mock("../config/config.js", async () => {
     browser: {
       enabled: true,
       evaluateEnabled: false,
-      defaultProfile: "NexisClaw",
+      defaultProfile: "FirstNexus",
       profiles: {
-        NexisClaw: { cdpPort: testPort + 1, color: "#FF4500" },
+        FirstNexus: { cdpPort: testPort + 1, color: "#FF4500" },
       },
     },
   });

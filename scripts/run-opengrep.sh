@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # scripts/run-opengrep.sh
 #
-# Run the NexisClaw precise OpenGrep rulepack against the local working tree
+# Run the FirstNexus precise OpenGrep rulepack against the local working tree
 # using the same paths and exclusions as CI. The .semgrepignore at the repo root
 # is the single source of truth for skipped paths.
 #

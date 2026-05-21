@@ -1,10 +1,10 @@
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-dispatch-runtime";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-dispatch-runtime";
 import {
   resolveSendableOutboundReplyParts,
   resolveTextChunksWithFallback,
-} from "NexisClaw/plugin-sdk/reply-payload";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { loadWebMedia } from "NexisClaw/plugin-sdk/web-media";
+} from "FirstNexus/plugin-sdk/reply-payload";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { loadWebMedia } from "FirstNexus/plugin-sdk/web-media";
 import { chunkDiscordTextWithMode } from "../chunk.js";
 import type {
   ButtonInteraction,

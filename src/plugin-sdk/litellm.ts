@@ -1,10 +1,10 @@
 // Manual facade. Keep loader boundary explicit.
-import type { ModelDefinitionConfig, NexisClawConfig } from "../config/types.js";
+import type { ModelDefinitionConfig, FirstNexusConfig } from "../config/types.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
 
 type FacadeModule = {
-  applyLitellmConfig: (cfg: NexisClawConfig) => NexisClawConfig;
-  applyLitellmProviderConfig: (cfg: NexisClawConfig) => NexisClawConfig;
+  applyLitellmConfig: (cfg: FirstNexusConfig) => FirstNexusConfig;
+  applyLitellmProviderConfig: (cfg: FirstNexusConfig) => FirstNexusConfig;
   buildLitellmModelDefinition: () => ModelDefinitionConfig;
   LITELLM_BASE_URL: string;
   LITELLM_DEFAULT_MODEL_ID: string;

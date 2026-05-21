@@ -2,14 +2,14 @@ import { createHash } from "node:crypto";
 import {
   resolveStoredModelOverride,
   type ModelsProviderData,
-} from "NexisClaw/plugin-sdk/command-auth-native";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/core";
-import { normalizeProviderId } from "NexisClaw/plugin-sdk/provider-model-shared";
-import { loadSessionStore, resolveStorePath } from "NexisClaw/plugin-sdk/session-store-runtime";
+} from "FirstNexus/plugin-sdk/command-auth-native";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/core";
+import { normalizeProviderId } from "FirstNexus/plugin-sdk/provider-model-shared";
+import { loadSessionStore, resolveStorePath } from "FirstNexus/plugin-sdk/session-store-runtime";
 import {
   normalizeOptionalString,
   normalizeStringifiedOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { MattermostInteractiveButtonInput } from "./interactions.js";
 
 const MATTERMOST_MODEL_PICKER_CONTEXT_KEY = "oc_model_picker";
@@ -235,7 +235,7 @@ export function buildMattermostAllowedModelRefs(data: ModelsProviderData): Set<s
 }
 
 export function resolveMattermostModelPickerCurrentModel(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   route: { agentId: string; sessionKey: string };
   data: ModelsProviderData;
   skipCache?: boolean;

@@ -33,7 +33,7 @@ describe("plugin gateway gauntlet helpers", () => {
   it("discovers bundled plugin manifests into lifecycle matrix rows", async () => {
     await writeManifest(
       "alpha",
-      "NexisClaw.plugin.json",
+      "FirstNexus.plugin.json",
       JSON.stringify({
         id: "alpha",
         enabledByDefault: true,
@@ -53,7 +53,7 @@ describe("plugin gateway gauntlet helpers", () => {
     );
     await writeManifest(
       "beta",
-      "NexisClaw.plugin.json",
+      "FirstNexus.plugin.json",
       JSON.stringify({ id: "beta", commandAliases: ["dreaming"], onboardingScopes: ["memory"] }),
     );
 
@@ -71,7 +71,7 @@ describe("plugin gateway gauntlet helpers", () => {
       hasConfigSchema: true,
       hasRequiredConfigFields: true,
       id: "alpha",
-      manifestPath: path.join("extensions", "alpha", "NexisClaw.plugin.json"),
+      manifestPath: path.join("extensions", "alpha", "FirstNexus.plugin.json"),
       name: "alpha",
       onboardingScopes: ["models"],
       providers: ["openai"],
@@ -84,8 +84,8 @@ describe("plugin gateway gauntlet helpers", () => {
   });
 
   it("skips source-only plugin dirs that are excluded from the built runtime", async () => {
-    await writeManifest("qqbot", "NexisClaw.plugin.json", JSON.stringify({ id: "qqbot" }));
-    await writeManifest("telegram", "NexisClaw.plugin.json", JSON.stringify({ id: "telegram" }));
+    await writeManifest("qqbot", "FirstNexus.plugin.json", JSON.stringify({ id: "qqbot" }));
+    await writeManifest("telegram", "FirstNexus.plugin.json", JSON.stringify({ id: "telegram" }));
 
     const matrix = discoverBundledPluginManifests(repoRoot);
 

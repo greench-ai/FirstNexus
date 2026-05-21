@@ -1,10 +1,10 @@
 {
-  "name": "@NexisClaw/speech-core",
+  "name": "@FirstNexus/speech-core",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw speech runtime package",
+  "description": "FirstNexus speech runtime package",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   }
 }

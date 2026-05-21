@@ -169,13 +169,15 @@ export function createTempHomeHarness(options: { prefix: string; beforeEachCase?
 
   async function withTempHome<T>(fn: (home: string) => Promise<T>): Promise<T> {
     const home = path.join(fixtureRoot, `case-${++caseId}`);
-    await fs.mkdir(path.join(home, ".NexisClaw", "agents", "main", "sessions"), { recursive: true });
+    await fs.mkdir(path.join(home, ".FirstNexus", "agents", "main", "sessions"), {
+      recursive: true,
+    });
     const envSnapshot = snapshotHomeEnv();
     process.env.HOME = home;
     process.env.USERPROFILE = home;
-    process.env.NEXISCLAW_STATE_DIR = path.join(home, ".NexisClaw");
-    process.env.NEXISCLAW_AGENT_DIR = path.join(home, ".NexisClaw", "agent");
-    process.env.PI_CODING_AGENT_DIR = path.join(home, ".NexisClaw", "agent");
+    process.env.NEXISCLAW_STATE_DIR = path.join(home, ".FirstNexus");
+    process.env.NEXISCLAW_AGENT_DIR = path.join(home, ".FirstNexus", "agent");
+    process.env.PI_CODING_AGENT_DIR = path.join(home, ".FirstNexus", "agent");
 
     if (process.platform === "win32") {
       const match = home.match(/^([A-Za-z]:)(.*)$/);
@@ -201,7 +203,7 @@ export function makeReplyConfig(home: string) {
     agents: {
       defaults: {
         model: "anthropic/claude-opus-4-6",
-        workspace: path.join(home, "NexisClaw"),
+        workspace: path.join(home, "FirstNexus"),
       },
     },
     channels: {

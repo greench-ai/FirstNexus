@@ -309,7 +309,7 @@ describe("runReplyAgent heartbeat followup guard", () => {
 
 describe("runReplyAgent pending final delivery capture", () => {
   async function createSessionStoreFile(entry: SessionEntry) {
-    const dir = await mkdtemp(join(tmpdir(), "NexisClaw-agent-runner-pending-"));
+    const dir = await mkdtemp(join(tmpdir(), "FirstNexus-agent-runner-pending-"));
     const storePath = join(dir, "sessions.json");
     await writeFile(storePath, JSON.stringify({ main: entry }), "utf8");
     return storePath;
@@ -495,7 +495,7 @@ describe("runReplyAgent typing (heartbeat)", () => {
   });
 
   it("does not persist heartbeat ack text as pending final delivery", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "NexisClaw-heartbeat-pending-"));
+    const dir = await mkdtemp(join(tmpdir(), "FirstNexus-heartbeat-pending-"));
     const storePath = join(dir, "sessions.json");
     await writeFile(
       storePath,
@@ -1705,7 +1705,7 @@ describe("runReplyAgent typing (heartbeat)", () => {
       fallbackNoticeReason: "selected model unavailable",
     };
     const sessionStore = { main: sessionEntry };
-    const dir = await mkdtemp(join(tmpdir(), "NexisClaw-agent-runner-cli-alias-"));
+    const dir = await mkdtemp(join(tmpdir(), "FirstNexus-agent-runner-cli-alias-"));
     const storePath = join(dir, "sessions.json");
     await writeFile(storePath, JSON.stringify({ main: sessionEntry }), "utf8");
 

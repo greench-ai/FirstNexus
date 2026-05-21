@@ -125,9 +125,13 @@ export function createPluginSdkScope(_repoRoot: string): TopologyScope {
     entrypoint,
     sourcePath: `src/plugin-sdk/${entrypoint}.ts`,
     importSpecifier:
-      entrypoint === "index" ? "NexisClaw/plugin-sdk" : `NexisClaw/plugin-sdk/${entrypoint}`,
+      entrypoint === "index" ? "FirstNexus/plugin-sdk" : `FirstNexus/plugin-sdk/${entrypoint}`,
   }));
-  return buildScopeFromEntrypoints("plugin-sdk", "NexisClaw plugin-sdk public surface", entrypoints);
+  return buildScopeFromEntrypoints(
+    "plugin-sdk",
+    "FirstNexus plugin-sdk public surface",
+    entrypoints,
+  );
 }
 
 export function createFilesystemPublicSurfaceScope(

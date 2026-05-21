@@ -2,4 +2,4 @@ export {
   resolveAgentDir,
   resolveDefaultAgentId,
   resolveDefaultModelForAgent,
-} from "NexisClaw/plugin-sdk/agent-runtime";
+} from "FirstNexus/plugin-sdk/agent-runtime";

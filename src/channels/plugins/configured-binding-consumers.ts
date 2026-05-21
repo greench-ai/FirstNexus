@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type {
   CompiledConfiguredBinding,
   ConfiguredBindingRecordResolution,
@@ -16,7 +16,7 @@ export type ConfiguredBindingConsumer = {
   id: string;
   supports: (binding: ConfiguredBindingRuleConfig) => boolean;
   buildTargetFactory: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     binding: ConfiguredBindingRuleConfig;
     channel: string;
     agentId: string;

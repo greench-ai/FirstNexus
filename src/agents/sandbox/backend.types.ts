@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { SandboxBackendHandle } from "./backend-handle.types.js";
 import type { SandboxRegistryEntry } from "./registry.js";
 import type { SandboxConfig } from "./types.js";
@@ -12,12 +12,12 @@ export type SandboxBackendRuntimeInfo = {
 export type SandboxBackendManager = {
   describeRuntime(params: {
     entry: SandboxRegistryEntry;
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     agentId?: string;
   }): Promise<SandboxBackendRuntimeInfo>;
   removeRuntime(params: {
     entry: SandboxRegistryEntry;
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     agentId?: string;
   }): Promise<void>;
 };

@@ -4,20 +4,20 @@ const recordChannelActivityMock = vi.hoisted(() => vi.fn());
 const loadConfigMock = vi.hoisted(() => vi.fn(() => ({ channels: { discord: {} } })));
 let dateNowSpy: ReturnType<typeof vi.spyOn>;
 
-vi.mock("NexisClaw/plugin-sdk/plugin-config-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/plugin-config-runtime")>(
-    "NexisClaw/plugin-sdk/plugin-config-runtime",
-  );
+vi.mock("FirstNexus/plugin-sdk/plugin-config-runtime", async () => {
+  const actual = await vi.importActual<
+    typeof import("FirstNexus/plugin-sdk/plugin-config-runtime")
+  >("FirstNexus/plugin-sdk/plugin-config-runtime");
   return {
     ...actual,
     requireRuntimeConfig: (cfg: unknown) => cfg ?? loadConfigMock(),
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/channel-activity-runtime", async () => {
+vi.mock("FirstNexus/plugin-sdk/channel-activity-runtime", async () => {
   const actual = await vi.importActual<
-    typeof import("NexisClaw/plugin-sdk/channel-activity-runtime")
-  >("NexisClaw/plugin-sdk/channel-activity-runtime");
+    typeof import("FirstNexus/plugin-sdk/channel-activity-runtime")
+  >("FirstNexus/plugin-sdk/channel-activity-runtime");
   return {
     ...actual,
     recordChannelActivity: (...args: unknown[]) => recordChannelActivityMock(...args),

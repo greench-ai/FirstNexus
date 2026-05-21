@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveStateDir } from "NexisClaw/plugin-sdk/state-paths";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveStateDir } from "FirstNexus/plugin-sdk/state-paths";
 import {
   resolveMatrixCredentialsDir,
   resolveMatrixCredentialsFilename,
@@ -10,13 +10,13 @@ import {
 
 type MatrixAuthPresenceParams =
   | {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       env?: NodeJS.ProcessEnv;
     }
-  | NexisClawConfig;
+  | FirstNexusConfig;
 
 function listMatrixCredentialPaths(
-  _cfg: NexisClawConfig,
+  _cfg: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): readonly string[] {
   const credentialsDir = resolveMatrixCredentialsDir(resolveStateDir(env, os.homedir));

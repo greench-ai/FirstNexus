@@ -1,39 +1,45 @@
 import fs from "node:fs/promises";
-import { resolveHumanDelayConfig } from "NexisClaw/plugin-sdk/agent-runtime";
-import { logTypingFailure } from "NexisClaw/plugin-sdk/channel-feedback";
+import { resolveHumanDelayConfig } from "FirstNexus/plugin-sdk/agent-runtime";
+import { logTypingFailure } from "FirstNexus/plugin-sdk/channel-feedback";
 import {
   createChannelInboundDebouncer,
   shouldDebounceTextInbound,
-} from "NexisClaw/plugin-sdk/channel-inbound";
+} from "FirstNexus/plugin-sdk/channel-inbound";
 import {
   deliverInboundReplyWithMessageSendContext,
   createChannelMessageReplyPipeline,
-} from "NexisClaw/plugin-sdk/channel-message";
-import { createChannelPairingChallengeIssuer } from "NexisClaw/plugin-sdk/channel-pairing";
+} from "FirstNexus/plugin-sdk/channel-message";
+import { createChannelPairingChallengeIssuer } from "FirstNexus/plugin-sdk/channel-pairing";
 import {
   readChannelAllowFromStore,
   upsertChannelPairingRequest,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { recordInboundSession } from "NexisClaw/plugin-sdk/conversation-runtime";
-import { normalizeScpRemoteHost } from "NexisClaw/plugin-sdk/host-runtime";
-import { runInboundReplyTurn } from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
-import { isInboundPathAllowed, kindFromMime } from "NexisClaw/plugin-sdk/media-runtime";
-import { DEFAULT_GROUP_HISTORY_LIMIT, type HistoryEntry } from "NexisClaw/plugin-sdk/reply-history";
-import { resolveTextChunkLimit } from "NexisClaw/plugin-sdk/reply-runtime";
-import { dispatchInboundMessage } from "NexisClaw/plugin-sdk/reply-runtime";
-import { createReplyDispatcherWithTyping } from "NexisClaw/plugin-sdk/reply-runtime";
-import { settleReplyDispatcher } from "NexisClaw/plugin-sdk/reply-runtime";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
-import { danger, logVerbose, shouldLogVerbose, warn } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { recordInboundSession } from "FirstNexus/plugin-sdk/conversation-runtime";
+import { normalizeScpRemoteHost } from "FirstNexus/plugin-sdk/host-runtime";
+import { runInboundReplyTurn } from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
+import { isInboundPathAllowed, kindFromMime } from "FirstNexus/plugin-sdk/media-runtime";
+import {
+  DEFAULT_GROUP_HISTORY_LIMIT,
+  type HistoryEntry,
+} from "FirstNexus/plugin-sdk/reply-history";
+import { resolveTextChunkLimit } from "FirstNexus/plugin-sdk/reply-runtime";
+import { dispatchInboundMessage } from "FirstNexus/plugin-sdk/reply-runtime";
+import { createReplyDispatcherWithTyping } from "FirstNexus/plugin-sdk/reply-runtime";
+import { settleReplyDispatcher } from "FirstNexus/plugin-sdk/reply-runtime";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
+import { danger, logVerbose, shouldLogVerbose, warn } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   resolveOpenProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "NexisClaw/plugin-sdk/security-runtime";
-import { readSessionUpdatedAt, resolveStorePath } from "NexisClaw/plugin-sdk/session-store-runtime";
-import { truncateUtf16Safe } from "NexisClaw/plugin-sdk/text-utility-runtime";
-import { waitForTransportReady } from "NexisClaw/plugin-sdk/transport-ready-runtime";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "FirstNexus/plugin-sdk/security-runtime";
+import {
+  readSessionUpdatedAt,
+  resolveStorePath,
+} from "FirstNexus/plugin-sdk/session-store-runtime";
+import { truncateUtf16Safe } from "FirstNexus/plugin-sdk/text-utility-runtime";
+import { waitForTransportReady } from "FirstNexus/plugin-sdk/transport-ready-runtime";
 import { resolveIMessageAccount } from "../accounts.js";
 import { markIMessageChatRead, sendIMessageTyping } from "../chat.js";
 import { createIMessageRpcClient, type IMessageRpcClient } from "../client.js";

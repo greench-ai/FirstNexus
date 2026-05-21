@@ -1,17 +1,17 @@
 {
-  "name": "@NexisClaw/web-readability-plugin",
+  "name": "@FirstNexus/web-readability-plugin",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw local Readability web extraction plugin",
+  "description": "FirstNexus local Readability web extraction plugin",
   "type": "module",
   "dependencies": {
     "@mozilla/readability": "0.6.0",
     "linkedom": "0.18.12"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

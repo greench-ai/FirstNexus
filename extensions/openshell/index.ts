@@ -1,5 +1,5 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
-import { registerSandboxBackend } from "NexisClaw/plugin-sdk/sandbox";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
+import { registerSandboxBackend } from "FirstNexus/plugin-sdk/sandbox";
 import {
   createOpenShellSandboxBackendFactory,
   createOpenShellSandboxBackendManager,

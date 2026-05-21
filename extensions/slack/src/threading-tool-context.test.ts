@@ -1,8 +1,8 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { buildSlackThreadingToolContext } from "./threading-tool-context.js";
 
-const emptyCfg = {} as NexisClawConfig;
+const emptyCfg = {} as FirstNexusConfig;
 
 function resolveReplyToModeWithConfig(params: {
   slackConfig: Record<string, unknown>;
@@ -12,7 +12,7 @@ function resolveReplyToModeWithConfig(params: {
     channels: {
       slack: params.slackConfig,
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
   const result = buildSlackThreadingToolContext({
     cfg,
     accountId: null,
@@ -27,7 +27,7 @@ describe("buildSlackThreadingToolContext", () => {
       channels: {
         slack: { replyToMode: "first" },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const result = buildSlackThreadingToolContext({
       cfg,
       accountId: null,
@@ -67,7 +67,7 @@ describe("buildSlackThreadingToolContext", () => {
           replyToMode: "first",
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const result = buildSlackThreadingToolContext({
       cfg,
       accountId: null,
@@ -127,7 +127,7 @@ describe("buildSlackThreadingToolContext", () => {
           replyToModeByChatType: { channel: "first" },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const result = buildSlackThreadingToolContext({
       cfg,
       accountId: null,

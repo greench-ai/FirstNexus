@@ -2,11 +2,11 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { normalizeCompatibilityConfigValues } from "./doctor-legacy-config.js";
 
 vi.mock("../plugins/setup-registry.js", () => ({
-  runPluginSetupConfigMigrations: ({ config }: { config: NexisClawConfig }) => ({
+  runPluginSetupConfigMigrations: ({ config }: { config: FirstNexusConfig }) => ({
     config,
     changes: [],
   }),
@@ -44,7 +44,7 @@ vi.mock("../plugins/manifest-registry.js", () => ({
 }));
 
 vi.mock("./doctor/shared/channel-legacy-config-migrate.js", () => ({
-  applyChannelDoctorCompatibilityMigrations: (cfg: NexisClawConfig) => ({
+  applyChannelDoctorCompatibilityMigrations: (cfg: FirstNexusConfig) => ({
     next: cfg,
     changes: [],
   }),
@@ -54,7 +54,7 @@ vi.mock("../secrets/target-registry.js", () => {
   const entry = {
     id: "channels.discord.token",
     targetType: "channels.discord.token",
-    configFile: "NexisClaw.json",
+    configFile: "FirstNexus.json",
     pathPattern: "channels.discord.token",
     secretShape: "secret_input",
     expectedResolvedValue: "string",
@@ -69,7 +69,7 @@ vi.mock("../secrets/target-registry.js", () => {
       : null;
 
   return {
-    discoverConfigSecretTargets: (cfg: NexisClawConfig) => {
+    discoverConfigSecretTargets: (cfg: FirstNexusConfig) => {
       const targets: Array<{
         entry: typeof entry;
         path: string;
@@ -128,7 +128,7 @@ describe("normalizeCompatibilityConfigValues", () => {
 
   beforeAll(() => {
     previousOauthDir = process.env.NEXISCLAW_OAUTH_DIR;
-    tempOauthDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-oauth-"));
+    tempOauthDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-oauth-"));
     process.env.NEXISCLAW_OAUTH_DIR = tempOauthDir;
   });
 
@@ -153,13 +153,13 @@ describe("normalizeCompatibilityConfigValues", () => {
       },
       messages: {
         groupChat: {
-          mentionPatterns: ["@NexisClaw"],
+          mentionPatterns: ["@FirstNexus"],
         },
       },
     });
 
     expect(res.config.messages?.groupChat).toEqual({
-      mentionPatterns: ["@NexisClaw"],
+      mentionPatterns: ["@FirstNexus"],
       visibleReplies: "message_tool",
     });
     expect(res.changes).toContain(
@@ -172,7 +172,7 @@ describe("normalizeCompatibilityConfigValues", () => {
       normalizeCompatibilityConfigValues({
         messages: {
           groupChat: {
-            mentionPatterns: ["@NexisClaw"],
+            mentionPatterns: ["@FirstNexus"],
           },
         },
       }).changes,
@@ -250,7 +250,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.channels?.discord?.token).toBeUndefined();
     expect(res.config.channels?.discord?.accounts?.default?.token).toEqual({
@@ -283,7 +283,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           token: "secretref-env:not-valid",
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.channels?.discord?.token).toBe("secretref-env:not-valid");
     expect(res.changes).toStrictEqual([]);
@@ -330,7 +330,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           allowedHostnames: ["localhost"],
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(
       (res.config.browser?.ssrfPolicy as Record<string, unknown> | undefined)?.allowPrivateNetwork,
@@ -350,7 +350,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           dangerouslyAllowPrivateNetwork: false,
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(
       (res.config.browser?.ssrfPolicy as Record<string, unknown> | undefined)?.allowPrivateNetwork,
@@ -399,7 +399,7 @@ describe("normalizeCompatibilityConfigValues", () => {
         text: true,
         modelsWrite: false,
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.commands).toEqual({ text: true });
     expect(res.changes).toContain(
@@ -429,7 +429,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.models?.providers?.openrouter?.api).toBe("openai-completions");
     expect(res.config.models?.providers?.openrouter?.models?.[0]?.api).toBe("openai-completions");
@@ -464,7 +464,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     const codexModel = res.config.models?.providers?.["openai-codex"]?.models?.[0];
     expect(codexModel?.id).toBe("gpt-5.5");
@@ -497,7 +497,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config).toEqual({
       models: {
@@ -547,7 +547,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         ],
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.agents?.defaults?.model).toEqual({
       primary: "openai/gpt-5.5",
@@ -588,7 +588,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const res = normalizeCompatibilityConfigValues(input);
 
@@ -610,7 +610,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.agents?.defaults?.model).toEqual({
       primary: "anthropic/claude-opus-4-7",
@@ -643,7 +643,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.agents?.defaults?.model).toEqual({
       primary: "openai/gpt-5.5",
@@ -676,7 +676,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.agents?.defaults?.model).toEqual({
       primary: "google/gemini-3.1-pro-preview",
@@ -708,7 +708,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const res = normalizeCompatibilityConfigValues(input);
 
@@ -920,7 +920,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     expect(res.config.plugins?.entries?.firecrawl).toEqual({
       enabled: true,
@@ -948,7 +948,7 @@ describe("normalizeCompatibilityConfigValues", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     expect(res.config.talk).toEqual({
       provider: "elevenlabs",

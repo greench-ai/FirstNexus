@@ -4,13 +4,13 @@ import { describe, expect, it } from "vitest";
 
 const ALLOWED_PLUGIN_SDK_FIXTURE_IMPORTS = new Set([
   // Intentional legacy SDK-root compatibility smoke tests.
-  'src/plugins/loader.test.ts:configSchema: (require("NexisClaw/plugin-sdk").emptyPluginConfigSchema)(),',
-  'src/plugins/loader.test.ts:const { onDiagnosticEvent } = require("NexisClaw/plugin-sdk");',
+  'src/plugins/loader.test.ts:configSchema: (require("FirstNexus/plugin-sdk").emptyPluginConfigSchema)(),',
+  'src/plugins/loader.test.ts:const { onDiagnosticEvent } = require("FirstNexus/plugin-sdk");',
   // Intentional jiti alias regression test.
-  'src/plugins/loader.git-path-regression.test.ts:`import { resolveOutboundSendDep } from "NexisClaw/plugin-sdk/outbound-send-deps";',
-  'src/plugins/loader.git-path-regression.test.ts:          "NexisClaw/plugin-sdk/outbound-send-deps": ${JSON.stringify(copiedChannelRuntimeShim)},',
+  'src/plugins/loader.git-path-regression.test.ts:`import { resolveOutboundSendDep } from "FirstNexus/plugin-sdk/outbound-send-deps";',
+  'src/plugins/loader.git-path-regression.test.ts:          "FirstNexus/plugin-sdk/outbound-send-deps": ${JSON.stringify(copiedChannelRuntimeShim)},',
   // Intentional packaged bundled-plugin SDK alias regression tests.
-  'src/plugins/loader.test.ts:`import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";`,',
+  'src/plugins/loader.test.ts:`import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";`,',
 ]);
 
 const LOADER_FIXTURE_TEST_FILES = [
@@ -26,8 +26,8 @@ function findLoaderFixtureSdkImports(): string[] {
     const source = fs.readFileSync(path.join(repoRoot, file), "utf-8");
     for (const line of source.split("\n")) {
       if (
-        line.includes('require("NexisClaw/plugin-sdk') ||
-        (line.includes("import ") && line.includes('"NexisClaw/plugin-sdk'))
+        line.includes('require("FirstNexus/plugin-sdk') ||
+        (line.includes("import ") && line.includes('"FirstNexus/plugin-sdk'))
       ) {
         matches.push(`${file}:${line.trim()}`);
       }

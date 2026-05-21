@@ -1,11 +1,11 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
 import { resolveIMessageAccount, type ResolvedIMessageAccount } from "./accounts.js";
 import { createIMessageRpcClient, type IMessageRpcClient } from "./client.js";
 import { formatIMessageChatTarget, type IMessageService, parseIMessageTarget } from "./targets.js";
 
 type ChatActionOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
   account?: ResolvedIMessageAccount;
   client?: IMessageRpcClient;

@@ -28,7 +28,7 @@ When enabled, the plugin prepends concise usage guidance into system-prompt spac
 <Steps>
   <Step title="Install the plugin">
     ```bash
-    NexisClaw plugins install diffs
+    FirstNexus plugins install diffs
     ```
   </Step>
   <Step title="Enable the plugin">
@@ -264,7 +264,7 @@ Mode behavior summary:
 
 ## Plugin defaults
 
-Set plugin-wide defaults in `~/.NexisClaw/NexisClaw.json`:
+Set plugin-wide defaults in `~/.FirstNexus/FirstNexus.json`:
 
 ```json5
 {
@@ -330,7 +330,7 @@ Explicit tool parameters override these defaults.
       diffs: {
         enabled: true,
         config: {
-          viewerBaseUrl: "https://gateway.example.com/NexisClaw",
+          viewerBaseUrl: "https://gateway.example.com/FirstNexus",
         },
       },
     },
@@ -363,7 +363,7 @@ Explicit tool parameters override these defaults.
 
 ## Artifact lifecycle and storage
 
-- Artifacts are stored under the temp subfolder: `$TMPDIR/NexisClaw-diffs`.
+- Artifacts are stored under the temp subfolder: `$TMPDIR/FirstNexus-diffs`.
 - Viewer artifact metadata contains:
   - random artifact ID (20 hex chars)
   - random token (48 hex chars)
@@ -432,7 +432,7 @@ Resolution order:
 
 <Steps>
   <Step title="Config">
-    `browser.executablePath` in NexisClaw config.
+    `browser.executablePath` in FirstNexus config.
   </Step>
   <Step title="Environment variables">
     - `NEXISCLAW_BROWSER_EXECUTABLE_PATH`

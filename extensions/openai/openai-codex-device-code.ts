@@ -12,9 +12,9 @@ function resolveOpenAICodexDeviceCodeHeaders(contentType: string): Record<string
   const version = process.env.NEXISCLAW_VERSION?.trim();
   return {
     "Content-Type": contentType,
-    originator: "NexisClaw",
+    originator: "FirstNexus",
     ...(version ? { version } : {}),
-    "User-Agent": version ? `NexisClaw/${version}` : "NexisClaw",
+    "User-Agent": version ? `FirstNexus/${version}` : "FirstNexus",
   };
 }
 

@@ -29,7 +29,7 @@ import {
   assertLiveImageProbeReply,
   buildLiveCronProbeMessage,
   createLiveCronProbeSpec,
-  runNexisClawCliJson,
+  runFirstNexusCliJson,
   shouldRunLiveImageProbe,
 } from "./live-agent-probes.js";
 import { renderCatFacePngBase64 } from "./live-image-probe.js";
@@ -578,9 +578,9 @@ describeLive("gateway live (ACP bind)", () => {
       const liveAgent = normalizeAcpAgent(process.env.NEXISCLAW_LIVE_ACP_BIND_AGENT);
       const agentCommandOverride =
         process.env.NEXISCLAW_LIVE_ACP_BIND_AGENT_COMMAND?.trim() || undefined;
-      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-live-acp-bind-"));
+      const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-live-acp-bind-"));
       const tempStateDir = path.join(tempRoot, "state");
-      const tempConfigPath = path.join(tempRoot, "NexisClaw.json");
+      const tempConfigPath = path.join(tempRoot, "FirstNexus.json");
       const port = await getFreeGatewayPort();
       const token = `test-${randomUUID()}`;
       const parentModel = resolveLiveParentModel();
@@ -1067,7 +1067,7 @@ describeLive("gateway live (ACP bind)", () => {
           }
           throw new Error(`acp cron cli verify did not create job ${lastCronProbeName}`);
         }
-        await runNexisClawCliJson(
+        await runFirstNexusCliJson(
           ["cron", "rm", cronJobId, "--json", "--url", `ws://127.0.0.1:${port}`, "--token", token],
           process.env,
         );

@@ -1,6 +1,6 @@
 import { formatPortRangeHint } from "../cli/error-format.js";
 import { resolveGatewayPort } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isValidEnvSecretRefId, type SecretInput } from "../config/types.secrets.js";
 import {
   maybeAddTailnetOriginToControlUiAllowedOrigins,
@@ -36,10 +36,10 @@ function validateGatewayPortInput(value: unknown): string | undefined {
 }
 
 export async function promptGatewayConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   runtime: RuntimeEnv,
 ): Promise<{
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   port: number;
   token?: string;
 }> {
@@ -225,7 +225,7 @@ export async function promptGatewayConfig(
         }),
         id: envVarName,
       };
-      note(`Validated ${envVarName}. NexisClaw will store a token SecretRef.`, "Gateway token");
+      note(`Validated ${envVarName}. FirstNexus will store a token SecretRef.`, "Gateway token");
     } else {
       const tokenInput = guardCancel(
         await text({
@@ -253,12 +253,12 @@ export async function promptGatewayConfig(
   if (authMode === "trusted-proxy") {
     note(
       [
-        "Trusted proxy mode: NexisClaw trusts user identity from a reverse proxy.",
+        "Trusted proxy mode: FirstNexus trusts user identity from a reverse proxy.",
         "The proxy must authenticate users and pass identity via headers.",
         "Only requests from specified proxy IPs will be trusted.",
         "",
         "Common use cases: Pomerium, Caddy + OAuth, Traefik + forward auth",
-        "Docs: https://docs.NexisClaw.ai/gateway/trusted-proxy-auth",
+        "Docs: https://docs.FirstNexus.ai/gateway/trusted-proxy-auth",
       ].join("\n"),
       "Trusted Proxy Auth",
     );

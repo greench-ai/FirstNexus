@@ -12,7 +12,7 @@ import {
 describe("schtasks runtime parsing", () => {
   it.each(["Ready", "Running"])("parses %s status", (status) => {
     const output = [
-      "TaskName: \\NexisClaw Gateway",
+      "TaskName: \\FirstNexus Gateway",
       `Status: ${status}`,
       "Last Run Time: 1/8/2026 1:23:45 AM",
       "Last Run Result: 0x0",
@@ -26,7 +26,7 @@ describe("schtasks runtime parsing", () => {
 
   it("parses 'Last Result' key variant (without 'Run') (#47726)", () => {
     const output = [
-      "TaskName: \\NexisClaw Gateway",
+      "TaskName: \\FirstNexus Gateway",
       "Status: Running",
       "Last Run Time: 2026/3/16 8:34:15",
       "Last Result: 267009",
@@ -128,26 +128,26 @@ describe("resolveTaskScriptPath", () => {
     {
       name: "uses default path when NEXISCLAW_PROFILE is unset",
       env: { USERPROFILE: "C:\\Users\\test" },
-      expected: path.join("C:\\Users\\test", ".NexisClaw", "gateway.cmd"),
+      expected: path.join("C:\\Users\\test", ".FirstNexus", "gateway.cmd"),
     },
     {
       name: "uses profile-specific path when NEXISCLAW_PROFILE is set to a custom value",
       env: { USERPROFILE: "C:\\Users\\test", NEXISCLAW_PROFILE: "jbphoenix" },
-      expected: path.join("C:\\Users\\test", ".NexisClaw-jbphoenix", "gateway.cmd"),
+      expected: path.join("C:\\Users\\test", ".FirstNexus-jbphoenix", "gateway.cmd"),
     },
     {
       name: "prefers NEXISCLAW_STATE_DIR over profile-derived defaults",
       env: {
         USERPROFILE: "C:\\Users\\test",
         NEXISCLAW_PROFILE: "rescue",
-        NEXISCLAW_STATE_DIR: "C:\\State\\NexisClaw",
+        NEXISCLAW_STATE_DIR: "C:\\State\\FirstNexus",
       },
-      expected: path.join("C:\\State\\NexisClaw", "gateway.cmd"),
+      expected: path.join("C:\\State\\FirstNexus", "gateway.cmd"),
     },
     {
       name: "falls back to HOME when USERPROFILE is not set",
       env: { HOME: "/home/test", NEXISCLAW_PROFILE: "default" },
-      expected: path.join("/home/test", ".NexisClaw", "gateway.cmd"),
+      expected: path.join("/home/test", ".FirstNexus", "gateway.cmd"),
     },
   ])("$name", ({ env, expected }) => {
     expect(resolveTaskScriptPath(env)).toBe(expected);
@@ -164,7 +164,7 @@ describe("readScheduledTaskCommand", () => {
     },
     run: (env: Record<string, string | undefined>) => Promise<void>,
   ) {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-schtasks-test-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-schtasks-test-"));
     try {
       const extraEnv = typeof options.env === "function" ? options.env(tmpDir) : options.env;
       const env = {
@@ -221,8 +221,8 @@ describe("readScheduledTaskCommand", () => {
       {
         scriptLines: [
           "@echo off",
-          "rem NexisClaw Gateway",
-          "cd /d C:\\Projects\\NexisClaw",
+          "rem FirstNexus Gateway",
+          "cd /d C:\\Projects\\FirstNexus",
           "set NODE_ENV=production",
           "set NEXISCLAW_PORT=18789",
           "node gateway.js --verbose",
@@ -232,7 +232,7 @@ describe("readScheduledTaskCommand", () => {
         const result = await readScheduledTaskCommand(env);
         expect(result).toEqual({
           programArguments: ["node", "gateway.js", "--verbose"],
-          workingDirectory: "C:\\Projects\\NexisClaw",
+          workingDirectory: "C:\\Projects\\FirstNexus",
           environment: {
             NODE_ENV: "production",
             NEXISCLAW_PORT: "18789",
@@ -252,7 +252,7 @@ describe("readScheduledTaskCommand", () => {
       {
         scriptLines: [
           "@echo off",
-          '"C:\\Program Files\\nodejs\\node.exe" C:\\Users\\test\\AppData\\Roaming\\npm\\node_modules\\NexisClaw\\dist\\index.js gateway --port 18789',
+          '"C:\\Program Files\\nodejs\\node.exe" C:\\Users\\test\\AppData\\Roaming\\npm\\node_modules\\FirstNexus\\dist\\index.js gateway --port 18789',
         ],
       },
       async (env) => {
@@ -260,7 +260,7 @@ describe("readScheduledTaskCommand", () => {
         expect(result).toEqual({
           programArguments: [
             "C:\\Program Files\\nodejs\\node.exe",
-            "C:\\Users\\test\\AppData\\Roaming\\npm\\node_modules\\NexisClaw\\dist\\index.js",
+            "C:\\Users\\test\\AppData\\Roaming\\npm\\node_modules\\FirstNexus\\dist\\index.js",
             "gateway",
             "--port",
             "18789",
@@ -276,15 +276,15 @@ describe("readScheduledTaskCommand", () => {
       {
         scriptLines: [
           "@echo off",
-          '"\\\\fileserver\\NexisClaw Share\\node.exe" "\\\\fileserver\\NexisClaw Share\\dist\\index.js" gateway --port 18789',
+          '"\\\\fileserver\\FirstNexus Share\\node.exe" "\\\\fileserver\\FirstNexus Share\\dist\\index.js" gateway --port 18789',
         ],
       },
       async (env) => {
         const result = await readScheduledTaskCommand(env);
         expect(result).toEqual({
           programArguments: [
-            "\\\\fileserver\\NexisClaw Share\\node.exe",
-            "\\\\fileserver\\NexisClaw Share\\dist\\index.js",
+            "\\\\fileserver\\FirstNexus Share\\node.exe",
+            "\\\\fileserver\\FirstNexus Share\\dist\\index.js",
             "gateway",
             "--port",
             "18789",

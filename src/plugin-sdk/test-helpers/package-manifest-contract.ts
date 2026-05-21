@@ -6,7 +6,7 @@ import { isAtLeast, parseMinHostVersionRequirement, parseSemver } from "../testi
 type PackageManifest = {
   dependencies?: Record<string, string>;
   optionalDependencies?: Record<string, string>;
-  NexisClaw?: {
+  FirstNexus?: {
     install?: {
       minHostVersion?: string;
     };
@@ -62,12 +62,12 @@ export function describePackageManifestContract(params: PackageManifestContractP
 
         const manifest = readJson<PackageManifest>(packagePath);
         const requirement = parseMinHostVersionRequirement(
-          manifest.NexisClaw?.install?.minHostVersion ?? null,
+          manifest.FirstNexus?.install?.minHostVersion ?? null,
         );
 
         expect(
           requirement,
-          `${packagePath} should declare NexisClaw.install.minHostVersion`,
+          `${packagePath} should declare FirstNexus.install.minHostVersion`,
         ).not.toBeNull();
         if (!requirement) {
           return;
@@ -81,7 +81,7 @@ export function describePackageManifestContract(params: PackageManifestContractP
 
         expect(
           isAtLeast(minimum, baseline),
-          `${packagePath} should require at least NexisClaw ${minHostVersionBaseline}`,
+          `${packagePath} should require at least FirstNexus ${minHostVersionBaseline}`,
         ).toBe(true);
       });
     }

@@ -1,5 +1,5 @@
 ---
-summary: "Install NexisClaw - installer script, npm/pnpm/bun, from source, Docker, and more"
+summary: "Install FirstNexus - installer script, npm/pnpm/bun, from source, Docker, and more"
 read_when:
   - You need an install method other than the Getting Started quickstart
   - You want to deploy to a cloud platform
@@ -15,17 +15,17 @@ title: "Install"
 
 ## Recommended: installer script
 
-The fastest way to install. It detects your OS, installs Node if needed, installs NexisClaw, and launches onboarding.
+The fastest way to install. It detects your OS, installs Node if needed, installs FirstNexus, and launches onboarding.
 
 <Tabs>
   <Tab title="macOS / Linux / WSL2">
     ```bash
-    curl -fsSL https://NexisClaw.ai/install.sh | bash
+    curl -fsSL https://FirstNexus.ai/install.sh | bash
     ```
   </Tab>
   <Tab title="Windows (PowerShell)">
     ```powershell
-    iwr -useb https://NexisClaw.ai/install.ps1 | iex
+    iwr -useb https://FirstNexus.ai/install.ps1 | iex
     ```
   </Tab>
 </Tabs>
@@ -35,12 +35,12 @@ To install without running onboarding:
 <Tabs>
   <Tab title="macOS / Linux / WSL2">
     ```bash
-    curl -fsSL https://NexisClaw.ai/install.sh | bash -s -- --no-onboard
+    curl -fsSL https://FirstNexus.ai/install.sh | bash -s -- --no-onboard
     ```
   </Tab>
   <Tab title="Windows (PowerShell)">
     ```powershell
-    & ([scriptblock]::Create((iwr -useb https://NexisClaw.ai/install.ps1))) -NoOnboard
+    & ([scriptblock]::Create((iwr -useb https://FirstNexus.ai/install.ps1))) -NoOnboard
     ```
   </Tab>
 </Tabs>
@@ -51,18 +51,18 @@ For all flags and CI/automation options, see [Installer internals](/install/inst
 
 ### Local prefix installer (`install-cli.sh`)
 
-Use this when you want NexisClaw and Node kept under a local prefix such as
-`~/.NexisClaw`, without depending on a system-wide Node install:
+Use this when you want FirstNexus and Node kept under a local prefix such as
+`~/.FirstNexus`, without depending on a system-wide Node install:
 
 ```bash
-curl -fsSL https://NexisClaw.ai/install-cli.sh | bash
+curl -fsSL https://FirstNexus.ai/install-cli.sh | bash
 ```
 
 It supports npm installs by default, plus git-checkout installs under the same
 prefix flow. Full reference: [Installer internals](/install/installer#install-clish).
 
 Already installed? Switch between package and git installs with
-`NexisClaw update --channel dev` and `NexisClaw update --channel stable`. See
+`FirstNexus update --channel dev` and `FirstNexus update --channel stable`. See
 [Updating](/install/updating#switch-between-npm-and-git-installs).
 
 ### npm, pnpm, or bun
@@ -72,15 +72,15 @@ If you already manage Node yourself:
 <Tabs>
   <Tab title="npm">
     ```bash
-    npm install -g NexisClaw@latest
-    NexisClaw onboard --install-daemon
+    npm install -g FirstNexus@latest
+    FirstNexus onboard --install-daemon
     ```
   </Tab>
   <Tab title="pnpm">
     ```bash
-    pnpm add -g NexisClaw@latest
+    pnpm add -g FirstNexus@latest
     pnpm approve-builds -g
-    NexisClaw onboard --install-daemon
+    FirstNexus onboard --install-daemon
     ```
 
     <Note>
@@ -90,8 +90,8 @@ If you already manage Node yourself:
   </Tab>
   <Tab title="bun">
     ```bash
-    bun add -g NexisClaw@latest
-    NexisClaw onboard --install-daemon
+    bun add -g FirstNexus@latest
+    FirstNexus onboard --install-daemon
     ```
 
     <Note>
@@ -105,7 +105,7 @@ If you already manage Node yourself:
   If `sharp` fails due to a globally installed libvips:
 
 ```bash
-SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install -g NexisClaw@latest
+SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install -g FirstNexus@latest
 ```
 
 </Accordion>
@@ -115,19 +115,19 @@ SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install -g NexisClaw@latest
 For contributors or anyone who wants to run from a local checkout:
 
 ```bash
-git clone https://github.com/NexisClaw/NexisClaw.git
-cd NexisClaw
+git clone https://github.com/FirstNexus/FirstNexus.git
+cd FirstNexus
 pnpm install && pnpm build && pnpm ui:build
 pnpm link --global
-NexisClaw onboard --install-daemon
+FirstNexus onboard --install-daemon
 ```
 
-Or skip the link and use `pnpm NexisClaw ...` from inside the repo. See [Setup](/start/setup) for full development workflows.
+Or skip the link and use `pnpm FirstNexus ...` from inside the repo. See [Setup](/start/setup) for full development workflows.
 
 ### Install from GitHub main
 
 ```bash
-npm install -g github:NexisClaw/NexisClaw#main
+npm install -g github:FirstNexus/FirstNexus#main
 ```
 
 ### Containers and package managers
@@ -153,20 +153,20 @@ npm install -g github:NexisClaw/NexisClaw#main
 ## Verify the install
 
 ```bash
-NexisClaw --version      # confirm the CLI is available
-NexisClaw doctor         # check for config issues
-NexisClaw gateway status # verify the Gateway is running
+FirstNexus --version      # confirm the CLI is available
+FirstNexus doctor         # check for config issues
+FirstNexus gateway status # verify the Gateway is running
 ```
 
 If you want managed startup after install:
 
-- macOS: LaunchAgent via `NexisClaw onboard --install-daemon` or `NexisClaw gateway install`
+- macOS: LaunchAgent via `FirstNexus onboard --install-daemon` or `FirstNexus gateway install`
 - Linux/WSL2: systemd user service via the same commands
 - Native Windows: Scheduled Task first, with a per-user Startup-folder login item fallback if task creation is denied
 
 ## Hosting and deployment
 
-Deploy NexisClaw on a cloud server or VPS:
+Deploy FirstNexus on a cloud server or VPS:
 
 <CardGroup cols={3}>
   <Card title="VPS" href="/vps">Any Linux VPS</Card>
@@ -185,19 +185,19 @@ Deploy NexisClaw on a cloud server or VPS:
 
 <CardGroup cols={3}>
   <Card title="Updating" href="/install/updating" icon="refresh-cw">
-    Keep NexisClaw up to date.
+    Keep FirstNexus up to date.
   </Card>
   <Card title="Migrating" href="/install/migrating" icon="arrow-right">
     Move to a new machine.
   </Card>
   <Card title="Uninstall" href="/install/uninstall" icon="trash-2">
-    Remove NexisClaw completely.
+    Remove FirstNexus completely.
   </Card>
 </CardGroup>
 
-## Troubleshooting: `NexisClaw` not found
+## Troubleshooting: `FirstNexus` not found
 
-If the install succeeded but `NexisClaw` is not found in your terminal:
+If the install succeeded but `FirstNexus` is not found in your terminal:
 
 ```bash
 node -v           # Node installed?

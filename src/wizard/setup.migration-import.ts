@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { OnboardOptions } from "../commands/onboard-types.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import type { MigrationProviderPlugin } from "../plugins/types.js";
 import type { RuntimeEnv } from "../runtime.js";
@@ -43,14 +43,14 @@ async function hasDirectoryEntries(candidate: string): Promise<boolean> {
   }
 }
 
-function hasMeaningfulConfig(config: NexisClawConfig): boolean {
+function hasMeaningfulConfig(config: FirstNexusConfig): boolean {
   return Object.keys(config as Record<string, unknown>).some(
     (key) => !MEANINGFUL_CONFIG_IGNORED_KEYS.has(key),
   );
 }
 
 export async function inspectSetupMigrationFreshness(params: {
-  baseConfig: NexisClawConfig;
+  baseConfig: FirstNexusConfig;
   stateDir: string;
   workspaceDir: string;
 }): Promise<{ fresh: boolean; reasons: string[] }> {
@@ -80,7 +80,7 @@ function assertFreshSetupMigrationTarget(freshness: {
   }
   throw new Error(
     [
-      "Migration import during onboarding requires a fresh NexisClaw setup.",
+      "Migration import during onboarding requires a fresh FirstNexus setup.",
       "Create a fresh setup or reset config, credentials, sessions, and workspace before importing.",
       "Backup plus overwrite/merge imports are feature-gated for now.",
       "Existing setup:",
@@ -90,7 +90,7 @@ function assertFreshSetupMigrationTarget(freshness: {
 }
 
 export async function detectSetupMigrationSources(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   runtime: RuntimeEnv;
 }): Promise<SetupMigrationDetection[]> {
   const [
@@ -148,7 +148,7 @@ function resolveImportSourceDefault(params: {
 
 async function selectSetupMigrationProvider(params: {
   opts: OnboardOptions;
-  baseConfig: NexisClawConfig;
+  baseConfig: FirstNexusConfig;
   detections: readonly SetupMigrationDetection[];
   prompter: WizardPrompter;
 }): Promise<{
@@ -202,11 +202,11 @@ async function selectSetupMigrationProvider(params: {
 
 export async function runSetupMigrationImport(params: {
   opts: OnboardOptions;
-  baseConfig: NexisClawConfig;
+  baseConfig: FirstNexusConfig;
   detections: readonly SetupMigrationDetection[];
   prompter: WizardPrompter;
   runtime: RuntimeEnv;
-  commitConfigFile: (config: NexisClawConfig) => Promise<NexisClawConfig>;
+  commitConfigFile: (config: FirstNexusConfig) => Promise<FirstNexusConfig>;
 }): Promise<void> {
   const [
     { applyLocalSetupWorkspaceConfig, applySkipBootstrapConfig },
@@ -308,5 +308,5 @@ export async function runSetupMigrationImport(params: {
   };
   assertApplySucceeded(withReport);
   await params.prompter.note(formatMigrationPlan(withReport).join("\n"), "Migration applied");
-  await params.prompter.outro("Migration complete. Run `NexisClaw doctor` next.");
+  await params.prompter.outro("Migration complete. Run `FirstNexus doctor` next.");
 }

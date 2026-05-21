@@ -1,9 +1,9 @@
-const SETTINGS_KEY_PREFIX = "NexisClaw.control.settings.v1:";
-const LEGACY_SETTINGS_KEY = "NexisClaw.control.settings.v1";
-const LOCAL_USER_IDENTITY_KEY = "NexisClaw.control.user.v1";
-const LOCAL_ASSISTANT_IDENTITY_KEY = "NexisClaw.control.assistant.v1";
-const LEGACY_TOKEN_SESSION_KEY = "NexisClaw.control.token.v1";
-const TOKEN_SESSION_KEY_PREFIX = "NexisClaw.control.token.v1:";
+const SETTINGS_KEY_PREFIX = "FirstNexus.control.settings.v1:";
+const LEGACY_SETTINGS_KEY = "FirstNexus.control.settings.v1";
+const LOCAL_USER_IDENTITY_KEY = "FirstNexus.control.user.v1";
+const LOCAL_ASSISTANT_IDENTITY_KEY = "FirstNexus.control.assistant.v1";
+const LEGACY_TOKEN_SESSION_KEY = "FirstNexus.control.token.v1";
+const TOKEN_SESSION_KEY_PREFIX = "FirstNexus.control.token.v1:";
 const MAX_SCOPED_SESSION_ENTRIES = 10;
 
 function settingsKeyForGateway(gatewayUrl: string): string {
@@ -352,7 +352,7 @@ function persistSettings(next: UiSettings) {
     const raw =
       storage?.getItem(scopedKey) ??
       storage?.getItem(SETTINGS_KEY_PREFIX + "default") ??
-      storage?.getItem("NexisClaw.control.settings.v1");
+      storage?.getItem("FirstNexus.control.settings.v1");
     if (raw) {
       const parsed = JSON.parse(raw) as PersistedUiSettings;
       if (parsed.sessionsByGateway && typeof parsed.sessionsByGateway === "object") {

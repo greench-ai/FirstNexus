@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { sanitizeDiagnosticPayload } from "../agents/payload-redaction.js";
 import { getQueuedFileWriter, type QueuedFileWriter } from "../agents/queued-file-writer.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { redactSecrets } from "../logging/redact.js";
 import { parseBooleanValue } from "../utils/boolean.js";
 import { safeJsonStringify } from "../utils/safe-json.js";
@@ -26,7 +26,7 @@ export {
 } from "./paths.js";
 
 type TrajectoryRuntimeInit = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   maxRuntimeFileBytes?: number;
   runId?: string;
@@ -84,7 +84,7 @@ function writeTrajectoryPointerBestEffort(params: {
         fd,
         `${JSON.stringify(
           {
-            traceSchema: "NexisClaw-trajectory-pointer",
+            traceSchema: "FirstNexus-trajectory-pointer",
             schemaVersion: 1,
             sessionId: params.sessionId,
             runtimeFile: params.filePath,
@@ -299,7 +299,7 @@ export function createTrajectoryRuntimeRecorder(
   const buildEventLine = (type: string, data?: Record<string, unknown>): string | undefined => {
     const nextSeq = seq + 1;
     const event: TrajectoryEvent = {
-      traceSchema: "NexisClaw-trajectory",
+      traceSchema: "FirstNexus-trajectory",
       schemaVersion: 1,
       traceId,
       source: "runtime",

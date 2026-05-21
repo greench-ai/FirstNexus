@@ -1,10 +1,10 @@
-export type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+export type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 export {
   definePluginEntry,
   type AnyAgentTool,
-  type NexisClawPluginApi,
-  type NexisClawPluginConfigSchema,
-  type NexisClawPluginToolContext,
+  type FirstNexusPluginApi,
+  type FirstNexusPluginConfigSchema,
+  type FirstNexusPluginToolContext,
   type PluginLogger,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-export { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+export { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";

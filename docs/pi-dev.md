@@ -6,7 +6,7 @@ read_when:
   - Running Pi-specific lint, typecheck, and live test flows
 ---
 
-A sane workflow for working on the Pi integration in NexisClaw.
+A sane workflow for working on the Pi integration in FirstNexus.
 
 ## Type checking and linting
 
@@ -50,7 +50,7 @@ Recommended flow:
 - Run the gateway in dev mode:
   - `pnpm gateway:dev`
 - Trigger the agent directly:
-  - `pnpm NexisClaw agent --message "Hello" --thinking low`
+  - `pnpm FirstNexus agent --message "Hello" --thinking low`
 - Use the TUI for interactive debugging:
   - `pnpm tui`
 
@@ -58,11 +58,11 @@ For tool call behavior, prompt for a `read` or `exec` action so you can see tool
 
 ## Clean slate reset
 
-State lives under the NexisClaw state directory. Default is `~/.NexisClaw`. If `NEXISCLAW_STATE_DIR` is set, use that directory instead.
+State lives under the FirstNexus state directory. Default is `~/.FirstNexus`. If `NEXISCLAW_STATE_DIR` is set, use that directory instead.
 
 To reset everything:
 
-- `NexisClaw.json` for config
+- `FirstNexus.json` for config
 - `agents/<agentId>/agent/auth-profiles.json` for model auth profiles (API keys + OAuth)
 - `credentials/` for provider/channel state that still lives outside the auth profile store
 - `agents/<agentId>/sessions/` for agent session history

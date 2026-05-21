@@ -508,15 +508,15 @@ describe("scripts/lib/docker-e2e-plan", () => {
     const plan = planFor({
       selectedLaneNames: ["published-upgrade-survivor"],
       upgradeSurvivorBaselines:
-        "NexisClaw@2026.4.29 2026.4.23 NexisClaw@2026.4.23 NexisClaw@2026.3.13-1",
+        "FirstNexus@2026.4.29 2026.4.23 FirstNexus@2026.4.23 FirstNexus@2026.3.13-1",
     });
 
     expect(plan.lanes.map(summarizeLane)).toEqual([
-      publishedUpgradeSurvivorLane("published-upgrade-survivor-2026.4.29", "NexisClaw@2026.4.29"),
-      publishedUpgradeSurvivorLane("published-upgrade-survivor-2026.4.23", "NexisClaw@2026.4.23"),
+      publishedUpgradeSurvivorLane("published-upgrade-survivor-2026.4.29", "FirstNexus@2026.4.29"),
+      publishedUpgradeSurvivorLane("published-upgrade-survivor-2026.4.23", "FirstNexus@2026.4.23"),
       publishedUpgradeSurvivorLane(
         "published-upgrade-survivor-2026.3.13-1",
-        "NexisClaw@2026.3.13-1",
+        "FirstNexus@2026.3.13-1",
       ),
     ]);
   });
@@ -531,32 +531,32 @@ describe("scripts/lib/docker-e2e-plan", () => {
     expect(plan.lanes.map(summarizeLane)).toEqual([
       publishedUpgradeSurvivorLane(
         "published-upgrade-survivor-2026.4.29",
-        "NexisClaw@2026.4.29",
+        "FirstNexus@2026.4.29",
         "base",
       ),
       publishedUpgradeSurvivorLane(
         "published-upgrade-survivor-2026.4.29-feishu-channel",
-        "NexisClaw@2026.4.29",
+        "FirstNexus@2026.4.29",
         "feishu-channel",
       ),
       publishedUpgradeSurvivorLane(
         "published-upgrade-survivor-2026.4.29-tilde-log-path",
-        "NexisClaw@2026.4.29",
+        "FirstNexus@2026.4.29",
         "tilde-log-path",
       ),
       publishedUpgradeSurvivorLane(
         "published-upgrade-survivor-2026.4.23",
-        "NexisClaw@2026.4.23",
+        "FirstNexus@2026.4.23",
         "base",
       ),
       publishedUpgradeSurvivorLane(
         "published-upgrade-survivor-2026.4.23-feishu-channel",
-        "NexisClaw@2026.4.23",
+        "FirstNexus@2026.4.23",
         "feishu-channel",
       ),
       publishedUpgradeSurvivorLane(
         "published-upgrade-survivor-2026.4.23-tilde-log-path",
-        "NexisClaw@2026.4.23",
+        "FirstNexus@2026.4.23",
         "tilde-log-path",
       ),
     ]);
@@ -615,8 +615,8 @@ describe("scripts/lib/docker-e2e-plan", () => {
     });
 
     expect(plan.lanes.map(summarizeLane)).toEqual([
-      updateMigrationLane("update-migration-2026.4.29-plugin-deps-cleanup", "NexisClaw@2026.4.29"),
-      updateMigrationLane("update-migration-2026.4.23-plugin-deps-cleanup", "NexisClaw@2026.4.23"),
+      updateMigrationLane("update-migration-2026.4.29-plugin-deps-cleanup", "FirstNexus@2026.4.29"),
+      updateMigrationLane("update-migration-2026.4.23-plugin-deps-cleanup", "FirstNexus@2026.4.23"),
     ]);
   });
 
@@ -789,7 +789,7 @@ describe("scripts/lib/docker-e2e-plan", () => {
     expect(plan.lanes.map(summarizeLane)).toEqual([
       {
         command:
-          "NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=openai NEXISCLAW_INSTALL_E2E_IMAGE=NexisClaw-install-e2e-openai:local NEXISCLAW_INSTALL_E2E_AGENT_TOOL_SMOKE=0 NEXISCLAW_INSTALL_E2E_OPENAI_MODEL=openai/gpt-5.4-mini NEXISCLAW_INSTALL_E2E_AGENT_TURN_TIMEOUT_SECONDS=120 NEXISCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS=120 pnpm test:install:e2e",
+          "NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=openai NEXISCLAW_INSTALL_E2E_IMAGE=FirstNexus-install-e2e-openai:local NEXISCLAW_INSTALL_E2E_AGENT_TOOL_SMOKE=0 NEXISCLAW_INSTALL_E2E_OPENAI_MODEL=openai/gpt-5.4-mini NEXISCLAW_INSTALL_E2E_AGENT_TURN_TIMEOUT_SECONDS=120 NEXISCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS=120 pnpm test:install:e2e",
         imageKind: "bare",
         live: false,
         name: "install-e2e-openai",
@@ -799,7 +799,7 @@ describe("scripts/lib/docker-e2e-plan", () => {
       },
       {
         command:
-          "NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=anthropic NEXISCLAW_INSTALL_E2E_IMAGE=NexisClaw-install-e2e-anthropic:local pnpm test:install:e2e",
+          "NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=anthropic NEXISCLAW_INSTALL_E2E_IMAGE=FirstNexus-install-e2e-anthropic:local pnpm test:install:e2e",
         imageKind: "bare",
         live: false,
         name: "install-e2e-anthropic",

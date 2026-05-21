@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import {
   buildIMessageInboundContext,
@@ -9,7 +9,7 @@ type DecisionParams = Parameters<typeof resolveIMessageInboundDecision>[0];
 
 function buildCfgWithGroups(
   groups: Record<string, { requireMention?: boolean; systemPrompt?: string }>,
-): NexisClawConfig {
+): FirstNexusConfig {
   return {
     channels: {
       imessage: {
@@ -17,12 +17,12 @@ function buildCfgWithGroups(
         groups,
       },
     },
-  } as unknown as NexisClawConfig;
+  } as unknown as FirstNexusConfig;
 }
 
 function buildDecisionParams(overrides: Partial<DecisionParams> = {}): DecisionParams {
   return {
-    cfg: overrides.cfg ?? ({} as NexisClawConfig),
+    cfg: overrides.cfg ?? ({} as FirstNexusConfig),
     accountId: "default",
     message: {
       id: 1,
@@ -188,7 +188,7 @@ describe("buildIMessageInboundContext forwards GroupSystemPrompt", () => {
     groupSystemPrompt?: string;
   }): Parameters<typeof buildIMessageInboundContext>[0] {
     return {
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       decision: {
         kind: "dispatch",
         isGroup: decision.isGroup,

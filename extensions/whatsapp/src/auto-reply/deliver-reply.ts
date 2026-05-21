@@ -2,15 +2,15 @@ import {
   createMessageReceiptFromOutboundResults,
   type MessageReceipt,
   type MessageReceiptSourceResult,
-} from "NexisClaw/plugin-sdk/channel-message";
-import type { MarkdownTableMode } from "NexisClaw/plugin-sdk/config-contracts";
-import { chunkMarkdownTextWithMode, type ChunkMode } from "NexisClaw/plugin-sdk/reply-chunking";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-chunking";
+} from "FirstNexus/plugin-sdk/channel-message";
+import type { MarkdownTableMode } from "FirstNexus/plugin-sdk/config-contracts";
+import { chunkMarkdownTextWithMode, type ChunkMode } from "FirstNexus/plugin-sdk/reply-chunking";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-chunking";
 import {
   isReasoningReplyPayload,
   sendMediaWithLeadingCaption,
-} from "NexisClaw/plugin-sdk/reply-payload";
-import { logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/reply-payload";
+import { logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import type { WhatsAppSendResult } from "../inbound/send-result.js";
 import { listWhatsAppSendResultMessageIds } from "../inbound/send-result.js";
 import { loadWebMedia } from "../media.js";

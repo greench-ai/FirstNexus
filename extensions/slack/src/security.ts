@@ -1,6 +1,6 @@
-import { createScopedDmSecurityResolver } from "NexisClaw/plugin-sdk/channel-config-helpers";
-import { createOpenProviderConfiguredRouteWarningCollector } from "NexisClaw/plugin-sdk/channel-policy";
-import { createLazyRuntimeModule } from "NexisClaw/plugin-sdk/lazy-runtime";
+import { createScopedDmSecurityResolver } from "FirstNexus/plugin-sdk/channel-config-helpers";
+import { createOpenProviderConfiguredRouteWarningCollector } from "FirstNexus/plugin-sdk/channel-policy";
+import { createLazyRuntimeModule } from "FirstNexus/plugin-sdk/lazy-runtime";
 import {
   resolveSlackAccountAllowFrom,
   resolveSlackAccountDmPolicy,

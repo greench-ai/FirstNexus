@@ -2,7 +2,7 @@ import {
   describeImageWithModel,
   describeImagesWithModel,
   type MediaUnderstandingProvider,
-} from "NexisClaw/plugin-sdk/media-understanding";
+} from "FirstNexus/plugin-sdk/media-understanding";
 
 export const anthropicMediaUnderstandingProvider: MediaUnderstandingProvider = {
   id: "anthropic",

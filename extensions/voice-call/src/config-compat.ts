@@ -1,4 +1,4 @@
-import { asOptionalRecord, readStringField } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { asOptionalRecord, readStringField } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { VoiceCallConfig } from "./config.js";
 import { VoiceCallConfigSchema } from "./config.js";
 

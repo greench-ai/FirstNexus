@@ -52,21 +52,32 @@ const browserCommandAliasRegistry: PluginManifestCommandAliasRegistry = {
 
 describe("isGatewayRunFastPathArgv", () => {
   it("matches only plain gateway foreground starts without root options or help", () => {
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway"])).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "--force"])).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "--port", "18789"])).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "--auth=none"])).toBe(true);
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway"])).toBe(true);
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "--force"])).toBe(true);
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "--port", "18789"])).toBe(
+      true,
+    );
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "--auth=none"])).toBe(true);
     expect(
-      isGatewayRunFastPathArgv(["node", "NexisClaw", "--no-color", "gateway", "--bind", "loopback"]),
+      isGatewayRunFastPathArgv([
+        "node",
+        "FirstNexus",
+        "--no-color",
+        "gateway",
+        "--bind",
+        "loopback",
+      ]),
     ).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "run"])).toBe(true);
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "run"])).toBe(true);
     expect(
-      isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "run", "--raw-stream-path", "x"]),
+      isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "run", "--raw-stream-path", "x"]),
     ).toBe(true);
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "call", "health"])).toBe(false);
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "--help"])).toBe(false);
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "--port"])).toBe(false);
-    expect(isGatewayRunFastPathArgv(["node", "NexisClaw", "gateway", "--unknown"])).toBe(false);
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "call", "health"])).toBe(
+      false,
+    );
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "--help"])).toBe(false);
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "--port"])).toBe(false);
+    expect(isGatewayRunFastPathArgv(["node", "FirstNexus", "gateway", "--unknown"])).toBe(false);
   });
 });
 
@@ -106,40 +117,44 @@ describe("rewriteUpdateFlagArgv", () => {
 
 describe("shouldEnsureCliPath", () => {
   it("skips path bootstrap for help/version invocations", () => {
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "--help"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "-V"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "-v"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "--help"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "-V"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "-v"])).toBe(false);
   });
 
   it("skips path bootstrap for read-only fast paths", () => {
-    expect(shouldEnsureCliPath(["node", "NexisClaw"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "--profile", "work"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "status"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "--log-level", "debug", "status"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "sessions", "--json"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "config", "get", "update"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "models", "status", "--json"])).toBe(false);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "tools", "effective"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "--profile", "work"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "status"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "--log-level", "debug", "status"])).toBe(
+      false,
+    );
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "sessions", "--json"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "config", "get", "update"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "models", "status", "--json"])).toBe(false);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "tools", "effective"])).toBe(false);
   });
 
   it("keeps path bootstrap for mutating or unknown commands", () => {
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "message", "send"])).toBe(true);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "voicecall", "status"])).toBe(true);
-    expect(shouldEnsureCliPath(["node", "NexisClaw", "acp", "-v"])).toBe(true);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "message", "send"])).toBe(true);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "voicecall", "status"])).toBe(true);
+    expect(shouldEnsureCliPath(["node", "FirstNexus", "acp", "-v"])).toBe(true);
   });
 });
 
 describe("shouldStartCrestodianForBareRoot", () => {
   it("starts Crestodian for bare root invocations", () => {
-    expect(shouldStartCrestodianForBareRoot(["node", "NexisClaw"])).toBe(true);
-    expect(shouldStartCrestodianForBareRoot(["node", "NexisClaw", "--profile", "work"])).toBe(true);
-    expect(shouldStartCrestodianForBareRoot(["node", "NexisClaw", "--dev"])).toBe(true);
+    expect(shouldStartCrestodianForBareRoot(["node", "FirstNexus"])).toBe(true);
+    expect(shouldStartCrestodianForBareRoot(["node", "FirstNexus", "--profile", "work"])).toBe(
+      true,
+    );
+    expect(shouldStartCrestodianForBareRoot(["node", "FirstNexus", "--dev"])).toBe(true);
   });
 
   it("does not start Crestodian for help, version, or commands", () => {
-    expect(shouldStartCrestodianForBareRoot(["node", "NexisClaw", "--help"])).toBe(false);
-    expect(shouldStartCrestodianForBareRoot(["node", "NexisClaw", "-V"])).toBe(false);
-    expect(shouldStartCrestodianForBareRoot(["node", "NexisClaw", "status"])).toBe(false);
+    expect(shouldStartCrestodianForBareRoot(["node", "FirstNexus", "--help"])).toBe(false);
+    expect(shouldStartCrestodianForBareRoot(["node", "FirstNexus", "-V"])).toBe(false);
+    expect(shouldStartCrestodianForBareRoot(["node", "FirstNexus", "status"])).toBe(false);
   });
 });
 
@@ -148,7 +163,7 @@ describe("shouldStartCrestodianForModernOnboard", () => {
     expect(
       shouldStartCrestodianForModernOnboard([
         "node",
-        "NexisClaw",
+        "FirstNexus",
         "onboard",
         "--modern",
         "--non-interactive",
@@ -158,43 +173,49 @@ describe("shouldStartCrestodianForModernOnboard", () => {
   });
 
   it("keeps classic onboard and help on the normal command path", () => {
-    expect(shouldStartCrestodianForModernOnboard(["node", "NexisClaw", "onboard"])).toBe(false);
+    expect(shouldStartCrestodianForModernOnboard(["node", "FirstNexus", "onboard"])).toBe(false);
     expect(
-      shouldStartCrestodianForModernOnboard(["node", "NexisClaw", "onboard", "--modern", "--help"]),
+      shouldStartCrestodianForModernOnboard([
+        "node",
+        "FirstNexus",
+        "onboard",
+        "--modern",
+        "--help",
+      ]),
     ).toBe(false);
   });
 });
 
 describe("shouldStartProxyForCli", () => {
   it("starts managed proxy routing for the --update shorthand", () => {
-    expect(shouldStartProxyForCli(["node", "NexisClaw", "--update"])).toBe(true);
-    expect(shouldStartProxyForCli(["node", "NexisClaw", "--profile", "p", "--update"])).toBe(true);
+    expect(shouldStartProxyForCli(["node", "FirstNexus", "--update"])).toBe(true);
+    expect(shouldStartProxyForCli(["node", "FirstNexus", "--profile", "p", "--update"])).toBe(true);
   });
 });
 
 describe("shouldUseRootHelpFastPath", () => {
   it("uses the fast path for root help only", () => {
-    expect(shouldUseRootHelpFastPath(["node", "NexisClaw", "--help"])).toBe(true);
-    expect(shouldUseRootHelpFastPath(["node", "NexisClaw", "--profile", "work", "-h"])).toBe(true);
-    expect(shouldUseRootHelpFastPath(["node", "NexisClaw", "help", "--help"])).toBe(true);
-    expect(shouldUseRootHelpFastPath(["node", "NexisClaw", "tools", "--help"])).toBe(true);
-    expect(shouldUseRootHelpFastPath(["node", "NexisClaw", "status", "--help"])).toBe(false);
-    expect(shouldUseRootHelpFastPath(["node", "NexisClaw", "--help", "status"])).toBe(false);
-    expect(shouldUseRootHelpFastPath(["node", "NexisClaw", "help", "gateway"])).toBe(false);
+    expect(shouldUseRootHelpFastPath(["node", "FirstNexus", "--help"])).toBe(true);
+    expect(shouldUseRootHelpFastPath(["node", "FirstNexus", "--profile", "work", "-h"])).toBe(true);
+    expect(shouldUseRootHelpFastPath(["node", "FirstNexus", "help", "--help"])).toBe(true);
+    expect(shouldUseRootHelpFastPath(["node", "FirstNexus", "tools", "--help"])).toBe(true);
+    expect(shouldUseRootHelpFastPath(["node", "FirstNexus", "status", "--help"])).toBe(false);
+    expect(shouldUseRootHelpFastPath(["node", "FirstNexus", "--help", "status"])).toBe(false);
+    expect(shouldUseRootHelpFastPath(["node", "FirstNexus", "help", "gateway"])).toBe(false);
   });
 });
 
 describe("shouldUseBrowserHelpFastPath", () => {
   it("uses the fast path for browser command help only", () => {
-    expect(shouldUseBrowserHelpFastPath(["node", "NexisClaw", "browser", "--help"])).toBe(true);
-    expect(shouldUseBrowserHelpFastPath(["node", "NexisClaw", "browser", "-h"])).toBe(true);
+    expect(shouldUseBrowserHelpFastPath(["node", "FirstNexus", "browser", "--help"])).toBe(true);
+    expect(shouldUseBrowserHelpFastPath(["node", "FirstNexus", "browser", "-h"])).toBe(true);
     expect(
-      shouldUseBrowserHelpFastPath(["node", "NexisClaw", "--profile", "work", "browser", "-h"]),
+      shouldUseBrowserHelpFastPath(["node", "FirstNexus", "--profile", "work", "browser", "-h"]),
     ).toBe(true);
-    expect(shouldUseBrowserHelpFastPath(["node", "NexisClaw", "browser", "status", "--help"])).toBe(
-      false,
-    );
-    expect(shouldUseBrowserHelpFastPath(["node", "NexisClaw", "status", "--help"])).toBe(false);
+    expect(
+      shouldUseBrowserHelpFastPath(["node", "FirstNexus", "browser", "status", "--help"]),
+    ).toBe(false);
+    expect(shouldUseBrowserHelpFastPath(["node", "FirstNexus", "status", "--help"])).toBe(false);
   });
 });
 
@@ -259,7 +280,7 @@ describe("resolveMissingPluginCommandMessage", () => {
     expect(message).toContain("runtime slash command");
     expect(message).toContain("/dreaming");
     expect(message).toContain("memory-core");
-    expect(message).toContain("NexisClaw memory");
+    expect(message).toContain("FirstNexus memory");
   });
 
   it("returns the runtime command message even when plugins.allow is set", () => {
@@ -313,7 +334,7 @@ describe("resolveMissingPluginCommandMessage", () => {
 
     expect(message).toContain('"voice-call" plugin');
     expect(message).toContain("disabled by default");
-    expect(message).toContain("NexisClaw plugins enable voice-call");
+    expect(message).toContain("FirstNexus plugins enable voice-call");
   });
 
   it("returns null for CLI command aliases when disabled-by-default parent plugins are enabled", () => {

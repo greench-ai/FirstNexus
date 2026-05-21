@@ -1,6 +1,6 @@
 import { format } from "node:util";
-import { redactSensitiveText } from "NexisClaw/plugin-sdk/logging-core";
-import type { RuntimeLogger } from "NexisClaw/plugin-sdk/plugin-runtime";
+import { redactSensitiveText } from "FirstNexus/plugin-sdk/logging-core";
+import type { RuntimeLogger } from "FirstNexus/plugin-sdk/plugin-runtime";
 import { getMatrixRuntime } from "../../runtime.js";
 
 type Logger = {

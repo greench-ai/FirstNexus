@@ -24,27 +24,29 @@ export async function packageBuildCommitFromTgz(tgzPath: string): Promise<string
   return info.commit ?? "";
 }
 
-export function resolveNexisClawRegistryVersion(specOrAlias: string): string {
+export function resolveFirstNexusRegistryVersion(specOrAlias: string): string {
   const rawValue = specOrAlias.trim();
-  const value = rawValue.startsWith("NexisClaw@") ? rawValue.slice("NexisClaw@".length) : rawValue;
+  const value = rawValue.startsWith("FirstNexus@")
+    ? rawValue.slice("FirstNexus@".length)
+    : rawValue;
   if (!value) {
     return "";
   }
   if (value === "latest" || value === "beta" || /^\d/.test(value)) {
-    return npmViewVersion(`NexisClaw@${value}`);
+    return npmViewVersion(`FirstNexus@${value}`);
   }
   const betaMatch = /^beta(\d+)$/u.exec(value);
   if (betaMatch) {
     const betaSuffix = `-beta.${betaMatch[1]}`;
     const versions = JSON.parse(
-      run("npm", ["view", "NexisClaw", "versions", "--json"], { quiet: true }).stdout,
+      run("npm", ["view", "FirstNexus", "versions", "--json"], { quiet: true }).stdout,
     ) as string[];
     const match = versions
       .filter((version) => version.endsWith(betaSuffix))
       .toSorted((a, b) => a.localeCompare(b, undefined, { numeric: true }))
       .at(-1);
     if (!match) {
-      die(`no NexisClaw registry version found for alias ${value}`);
+      die(`no FirstNexus registry version found for alias ${value}`);
     }
     return match;
   }
@@ -117,7 +119,7 @@ async function ensureCurrentBuildUnlocked(input: {
   }
 }
 
-export async function packNexisClaw(input: {
+export async function packFirstNexus(input: {
   destination: string;
   packageSpec?: string;
   requireControlUi?: boolean;
@@ -148,7 +150,7 @@ export async function packNexisClaw(input: {
     return { path: tgzPath, version };
   }
 
-  return await withPackageLock(path.join(tmpdir(), "NexisClaw-parallels-build.lock"), async () => {
+  return await withPackageLock(path.join(tmpdir(), "FirstNexus-parallels-build.lock"), async () => {
     await ensureCurrentBuildUnlocked({
       checkDirty: true,
       requireControlUi: input.requireControlUi,
@@ -172,7 +174,7 @@ export async function packNexisClaw(input: {
     if (!packed) {
       die("npm pack did not report a filename");
     }
-    const tgzPath = path.join(input.destination, `NexisClaw-main-${shortHead}.tgz`);
+    const tgzPath = path.join(input.destination, `FirstNexus-main-${shortHead}.tgz`);
     await copyFile(path.join(input.destination, packed), tgzPath);
     const buildCommit = await packageBuildCommitFromTgz(tgzPath);
     if (!buildCommit) {

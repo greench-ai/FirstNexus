@@ -1,8 +1,8 @@
-import { ensureModelAllowlistEntry } from "NexisClaw/plugin-sdk/provider-onboard";
+import { ensureModelAllowlistEntry } from "FirstNexus/plugin-sdk/provider-onboard";
 import {
   applyAgentDefaultModelPrimary,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/provider-onboard";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/provider-onboard";
 
 export const OPENAI_DEFAULT_MODEL = "openai/gpt-5.5";
 export const OPENAI_CODEX_DEFAULT_MODEL = OPENAI_DEFAULT_MODEL;
@@ -12,7 +12,7 @@ export const OPENAI_DEFAULT_TTS_VOICE = "alloy";
 export const OPENAI_DEFAULT_AUDIO_TRANSCRIPTION_MODEL = "gpt-4o-transcribe";
 export const OPENAI_DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small";
 
-export function applyOpenAIProviderConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applyOpenAIProviderConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   const next = ensureModelAllowlistEntry({
     cfg,
     modelRef: OPENAI_DEFAULT_MODEL,
@@ -35,6 +35,6 @@ export function applyOpenAIProviderConfig(cfg: NexisClawConfig): NexisClawConfig
   };
 }
 
-export function applyOpenAIConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applyOpenAIConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   return applyAgentDefaultModelPrimary(applyOpenAIProviderConfig(cfg), OPENAI_DEFAULT_MODEL);
 }

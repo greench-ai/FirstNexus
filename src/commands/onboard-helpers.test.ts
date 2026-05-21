@@ -63,10 +63,10 @@ function requireFirstRunCommandCall(): RunCommandCall {
 
 describe("handleReset", () => {
   it("uses active profile paths for destructive reset targets", async () => {
-    const homeDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-reset-profile-"));
-    const profileStateDir = path.join(homeDir, ".NexisClaw-work");
-    const defaultStateDir = path.join(homeDir, ".NexisClaw");
-    const profileConfigPath = path.join(profileStateDir, "NexisClaw.json");
+    const homeDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-reset-profile-"));
+    const profileStateDir = path.join(homeDir, ".FirstNexus-work");
+    const defaultStateDir = path.join(homeDir, ".FirstNexus");
+    const profileConfigPath = path.join(profileStateDir, "FirstNexus.json");
     const profileCredentialsDir = path.join(profileStateDir, "credentials");
     const profileSessionsDir = path.join(profileStateDir, "agents", "main", "sessions");
     const workspaceDir = path.join(profileStateDir, "workspace");

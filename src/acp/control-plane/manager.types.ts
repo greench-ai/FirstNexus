@@ -4,7 +4,7 @@ import type {
   SessionAcpMeta,
   SessionEntry,
 } from "../../config/sessions/types.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { AcpRuntimeError } from "../runtime/errors.js";
 import { getAcpRuntimeBackend, requireAcpRuntimeBackend } from "../runtime/registry.js";
 import {
@@ -39,7 +39,7 @@ export type AcpSessionResolution =
     };
 
 export type AcpInitializeSessionInput = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   agent: string;
   mode: AcpRuntimeSessionMode;
@@ -55,7 +55,7 @@ export type AcpTurnAttachment = {
 };
 
 export type AcpRunTurnInput = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   text: string;
   attachments?: AcpTurnAttachment[];
@@ -66,7 +66,7 @@ export type AcpRunTurnInput = {
 };
 
 export type AcpCloseSessionInput = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   reason: string;
   discardPersistentState?: boolean;

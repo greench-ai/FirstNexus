@@ -15,15 +15,15 @@ describe("qa channel transport", () => {
         "qa-channel": {
           enabled: true,
           baseUrl: "http://127.0.0.1:43123",
-          botUserId: "NexisClaw",
-          botDisplayName: "NexisClaw QA",
+          botUserId: "FirstNexus",
+          botDisplayName: "FirstNexus QA",
           allowFrom: ["*"],
           pollTimeoutMs: 250,
         },
       },
       messages: {
         groupChat: {
-          mentionPatterns: ["\\b@?NexisClaw\\b"],
+          mentionPatterns: ["\\b@?FirstNexus\\b"],
           visibleReplies: "automatic",
         },
       },

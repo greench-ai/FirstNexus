@@ -1,7 +1,7 @@
 import os from "node:os";
-import { resolveLoggerBackedRuntime } from "NexisClaw/plugin-sdk/extension-shared";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { resolveLoggerBackedRuntime } from "FirstNexus/plugin-sdk/extension-shared";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveNextcloudTalkAccount } from "./accounts.js";
 import { handleNextcloudTalkInbound } from "./inbound.js";
 import {

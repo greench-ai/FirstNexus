@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Verifies `NexisClaw update` succeeds when a managed external plugin is corrupt.
-# The lane installs an older published NexisClaw package, corrupts an npm-managed
+# Verifies `FirstNexus update` succeeds when a managed external plugin is corrupt.
+# The lane installs an older published FirstNexus package, corrupts an npm-managed
 # plugin payload, then updates to the prepared package artifact.
 set -euo pipefail
 
@@ -8,7 +8,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-update-corrupt-plugin-e2e" NEXISCLAW_UPDATE_CORRUPT_PLUGIN_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-update-corrupt-plugin-e2e" NEXISCLAW_UPDATE_CORRUPT_PLUGIN_E2E_IMAGE)"
 SKIP_BUILD="${NEXISCLAW_UPDATE_CORRUPT_PLUGIN_E2E_SKIP_BUILD:-0}"
 PACKAGE_TGZ="$(docker_e2e_prepare_package_tgz update-corrupt-plugin "${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}")"
 # Bare lanes mount the package artifact instead of baking app sources into the image.

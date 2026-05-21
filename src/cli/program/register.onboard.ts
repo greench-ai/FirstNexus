@@ -96,9 +96,9 @@ export function registerOnboardCommand(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/onboard", "docs.NexisClaw.ai/cli/onboard")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/onboard", "docs.FirstNexus.ai/cli/onboard")}\n`,
     )
-    .option("--workspace <dir>", "Agent workspace directory (default: ~/.NexisClaw/workspace)")
+    .option("--workspace <dir>", "Agent workspace directory (default: ~/.FirstNexus/workspace)")
     .option(
       "--reset",
       "Reset config + credentials + sessions before running onboard (workspace only with --reset-scope full)",

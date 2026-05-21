@@ -348,7 +348,7 @@ describe("codex provider", () => {
     const result = await codexProviderDiscovery.staticCatalog?.run({
       config: {},
       env: {},
-      agentDir: "/tmp/NexisClaw-agent",
+      agentDir: "/tmp/FirstNexus-agent",
     } as never);
 
     expect(

@@ -2,7 +2,7 @@
 
 Stop typing `docker-compose` commands. Just type `clawdock-start`.
 
-Inspired by Simon Willison's [Running NexisClaw in Docker](https://til.simonwillison.net/llms/NexisClaw-docker).
+Inspired by Simon Willison's [Running FirstNexus in Docker](https://til.simonwillison.net/llms/FirstNexus-docker).
 
 - [Quickstart](#quickstart)
 - [Available Commands](#available-commands)
@@ -32,14 +32,14 @@ Inspired by Simon Willison's [Running NexisClaw in Docker](https://til.simonwill
 **Install:**
 
 ```bash
-mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
+mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
 ```
 
 ```bash
 echo 'source ~/.clawdock/clawdock-helpers.sh' >> ~/.zshrc && source ~/.zshrc
 ```
 
-Canonical docs page: https://docs.NexisClaw.ai/install/clawdock
+Canonical docs page: https://docs.FirstNexus.ai/install/clawdock
 
 If you previously installed ClawDock from `scripts/shell-helpers/clawdock-helpers.sh`, rerun the install command above. The old raw GitHub path has been removed.
 
@@ -49,9 +49,9 @@ If you previously installed ClawDock from `scripts/shell-helpers/clawdock-helper
 clawdock-help
 ```
 
-On first command, ClawDock auto-detects your NexisClaw directory:
+On first command, ClawDock auto-detects your FirstNexus directory:
 
-- Checks common paths (`~/NexisClaw`, `~/workspace/NexisClaw`, etc.)
+- Checks common paths (`~/FirstNexus`, `~/workspace/FirstNexus`, etc.)
 - If found, asks you to confirm
 - Saves to `~/.clawdock/config`
 
@@ -98,7 +98,7 @@ clawdock-approve <request-id>
 | Command                   | Description                                    |
 | ------------------------- | ---------------------------------------------- |
 | `clawdock-shell`          | Interactive shell inside the gateway container |
-| `clawdock-cli <command>`  | Run NexisClaw CLI commands                      |
+| `clawdock-cli <command>`  | Run FirstNexus CLI commands                    |
 | `clawdock-exec <command>` | Execute arbitrary commands in the container    |
 
 ### Web UI & Devices
@@ -129,8 +129,8 @@ clawdock-approve <request-id>
 | ---------------------- | ----------------------------------------- |
 | `clawdock-health`      | Run gateway health check                  |
 | `clawdock-token`       | Display the gateway authentication token  |
-| `clawdock-cd`          | Jump to the NexisClaw project directory    |
-| `clawdock-config`      | Open the NexisClaw config directory        |
+| `clawdock-cd`          | Jump to the FirstNexus project directory  |
+| `clawdock-config`      | Open the FirstNexus config directory      |
 | `clawdock-show-config` | Print config files with redacted values   |
 | `clawdock-workspace`   | Open the workspace directory              |
 | `clawdock-help`        | Show all available commands with examples |
@@ -141,32 +141,32 @@ The Docker setup uses three config files on the host. The container never stores
 
 ### Docker Files
 
-| File                       | Purpose                                                                    |
-| -------------------------- | -------------------------------------------------------------------------- |
-| `Dockerfile`               | Builds the `NexisClaw:local` image (Node 22, pnpm, non-root `node` user)    |
-| `docker-compose.yml`       | Defines `NexisClaw-gateway` and `NexisClaw-cli` services, bind-mounts, ports |
-| `scripts/docker/setup.sh`  | First-time setup — builds image, creates `.env` from `.env.example`        |
-| `.env.example`             | Template for `<project>/.env` with all supported vars and docs             |
-| `docker-compose.extra.yml` | Optional overrides — auto-loaded by ClawDock helpers if present            |
+| File                       | Purpose                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| `Dockerfile`               | Builds the `FirstNexus:local` image (Node 22, pnpm, non-root `node` user)      |
+| `docker-compose.yml`       | Defines `FirstNexus-gateway` and `FirstNexus-cli` services, bind-mounts, ports |
+| `scripts/docker/setup.sh`  | First-time setup — builds image, creates `.env` from `.env.example`            |
+| `.env.example`             | Template for `<project>/.env` with all supported vars and docs                 |
+| `docker-compose.extra.yml` | Optional overrides — auto-loaded by ClawDock helpers if present                |
 
 ### Config Files
 
-| File                        | Purpose                                          | Examples                                                                                                |
-| --------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `<project>/.env`            | **Docker infra** — image, ports, gateway token   | `NEXISCLAW_GATEWAY_TOKEN`, `NEXISCLAW_IMAGE`, `NEXISCLAW_GATEWAY_PORT`, `NEXISCLAW_AUTH_PROFILE_SECRET_DIR` |
-| `~/.NexisClaw/.env`          | **Secrets** — API keys and bot tokens            | `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `TELEGRAM_BOT_TOKEN`                                             |
-| `~/.NexisClaw/NexisClaw.json` | **Behavior config** — models, channels, policies | Model selection, WhatsApp allowlists, agent settings                                                    |
+| File                            | Purpose                                          | Examples                                                                                                    |
+| ------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `<project>/.env`                | **Docker infra** — image, ports, gateway token   | `NEXISCLAW_GATEWAY_TOKEN`, `NEXISCLAW_IMAGE`, `NEXISCLAW_GATEWAY_PORT`, `NEXISCLAW_AUTH_PROFILE_SECRET_DIR` |
+| `~/.FirstNexus/.env`            | **Secrets** — API keys and bot tokens            | `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `TELEGRAM_BOT_TOKEN`                                                 |
+| `~/.FirstNexus/FirstNexus.json` | **Behavior config** — models, channels, policies | Model selection, WhatsApp allowlists, agent settings                                                        |
 
-**Do NOT** put API keys or bot tokens in `NexisClaw.json`. Use `~/.NexisClaw/.env` for all secrets.
+**Do NOT** put API keys or bot tokens in `FirstNexus.json`. Use `~/.FirstNexus/.env` for all secrets.
 
 ### Initial Setup
 
 `./scripts/docker/setup.sh` handles first-time Docker configuration:
 
-- Builds the `NexisClaw:local` image from `Dockerfile`
+- Builds the `FirstNexus:local` image from `Dockerfile`
 - Creates `<project>/.env` from `.env.example` with a generated gateway token
 - Creates the auth-profile secret key directory
-- Sets up `~/.NexisClaw` directories if they don't exist
+- Sets up `~/.FirstNexus` directories if they don't exist
 
 ```bash
 ./scripts/docker/setup.sh
@@ -175,7 +175,7 @@ The Docker setup uses three config files on the host. The container never stores
 After setup, add your API keys:
 
 ```bash
-vim ~/.NexisClaw/.env
+vim ~/.FirstNexus/.env
 ```
 
 See `.env.example` for all supported keys.
@@ -191,23 +191,23 @@ The `Dockerfile` supports two optional build args:
 
 ```yaml
 volumes:
-  - ${NEXISCLAW_CONFIG_DIR}:/home/node/.NexisClaw
-  - ${NEXISCLAW_WORKSPACE_DIR}:/home/node/.NexisClaw/workspace
-  - ${NEXISCLAW_AUTH_PROFILE_SECRET_DIR}:/home/node/.config/NexisClaw
+  - ${NEXISCLAW_CONFIG_DIR}:/home/node/.FirstNexus
+  - ${NEXISCLAW_WORKSPACE_DIR}:/home/node/.FirstNexus/workspace
+  - ${NEXISCLAW_AUTH_PROFILE_SECRET_DIR}:/home/node/.config/FirstNexus
 ```
 
 This means:
 
-- `~/.NexisClaw/.env` is available inside the container at `/home/node/.NexisClaw/.env` — NexisClaw loads it automatically as the global env fallback
-- `~/.NexisClaw/NexisClaw.json` is available at `/home/node/.NexisClaw/NexisClaw.json` — the gateway watches it and hot-reloads most changes
-- `~/.NexisClaw-auth-profile-secrets` is available at `/home/node/.config/NexisClaw` — NexisClaw stores the auth-profile encryption key there
-- Downloadable plugin packages and install records live under the mounted NexisClaw home
+- `~/.FirstNexus/.env` is available inside the container at `/home/node/.FirstNexus/.env` — FirstNexus loads it automatically as the global env fallback
+- `~/.FirstNexus/FirstNexus.json` is available at `/home/node/.FirstNexus/FirstNexus.json` — the gateway watches it and hot-reloads most changes
+- `~/.FirstNexus-auth-profile-secrets` is available at `/home/node/.config/FirstNexus` — FirstNexus stores the auth-profile encryption key there
+- Downloadable plugin packages and install records live under the mounted FirstNexus home
 - No need to add API keys to `docker-compose.yml` or configure anything inside the container
 - Keys survive `clawdock-update`, `clawdock-rebuild`, and `clawdock-clean` because they live on the host
 
-The project `.env` feeds Docker Compose directly (gateway token, image name, ports). The `~/.NexisClaw/.env` feeds the NexisClaw process inside the container.
+The project `.env` feeds Docker Compose directly (gateway token, image name, ports). The `~/.FirstNexus/.env` feeds the FirstNexus process inside the container.
 
-### Example `~/.NexisClaw/.env`
+### Example `~/.FirstNexus/.env`
 
 ```bash
 OPENAI_API_KEY=sk-...
@@ -218,31 +218,31 @@ TELEGRAM_BOT_TOKEN=123456:ABCDEF...
 ### Example `<project>/.env`
 
 ```bash
-NEXISCLAW_CONFIG_DIR=/Users/you/.NexisClaw
-NEXISCLAW_WORKSPACE_DIR=/Users/you/.NexisClaw/workspace
+NEXISCLAW_CONFIG_DIR=/Users/you/.FirstNexus
+NEXISCLAW_WORKSPACE_DIR=/Users/you/.FirstNexus/workspace
 NEXISCLAW_GATEWAY_PORT=19500
 NEXISCLAW_BRIDGE_PORT=18790
 NEXISCLAW_GATEWAY_BIND=lan
 NEXISCLAW_GATEWAY_TOKEN=<generated-by-docker-setup>
-NEXISCLAW_AUTH_PROFILE_SECRET_DIR=/Users/you/.NexisClaw-auth-profile-secrets
-NEXISCLAW_IMAGE=NexisClaw:local
+NEXISCLAW_AUTH_PROFILE_SECRET_DIR=/Users/you/.FirstNexus-auth-profile-secrets
+NEXISCLAW_IMAGE=FirstNexus:local
 ```
 
 ### Env Precedence
 
-NexisClaw loads env vars in this order (highest wins, never overrides existing):
+FirstNexus loads env vars in this order (highest wins, never overrides existing):
 
 1. **Process environment** — `docker-compose.yml` `environment:` block (gateway token, session keys)
 2. **`.env` in CWD** — project root `.env` (Docker infra vars)
-3. **`~/.NexisClaw/.env`** — global secrets (API keys, bot tokens)
-4. **`NexisClaw.json` `env` block** — inline vars, applied only if still missing
+3. **`~/.FirstNexus/.env`** — global secrets (API keys, bot tokens)
+4. **`FirstNexus.json` `env` block** — inline vars, applied only if still missing
 5. **Shell env import** — optional login-shell scrape (`NEXISCLAW_LOAD_SHELL_ENV=1`)
 
 ## Common Workflows
 
-### Update NexisClaw
+### Update FirstNexus
 
-> **Important:** `NexisClaw update` does not work inside Docker.
+> **Important:** `FirstNexus update` does not work inside Docker.
 > The container runs as a non-root user with a source-built image, so `npm i -g` fails with EACCES.
 > Use `clawdock-update` instead — it pulls, rebuilds, and restarts from the host.
 
@@ -289,7 +289,7 @@ clawdock-shell
 **Inside the container, login to WhatsApp:**
 
 ```bash
-NexisClaw channels login --channel whatsapp --verbose
+FirstNexus channels login --channel whatsapp --verbose
 ```
 
 Scan the QR code with WhatsApp on your phone.
@@ -297,7 +297,7 @@ Scan the QR code with WhatsApp on your phone.
 **Verify connection:**
 
 ```bash
-NexisClaw status
+FirstNexus status
 ```
 
 ### Troubleshooting Device Pairing
@@ -327,7 +327,7 @@ clawdock-fix-token
 This will:
 
 1. Read the token from your `.env` file
-2. Configure it in the NexisClaw config
+2. Configure it in the FirstNexus config
 3. Restart the gateway
 4. Verify the configuration
 
@@ -343,7 +343,7 @@ docker ps
 
 - Docker and Docker Compose installed
 - Bash or Zsh shell
-- NexisClaw project (run `scripts/docker/setup.sh`)
+- FirstNexus project (run `scripts/docker/setup.sh`)
 
 ## Development
 

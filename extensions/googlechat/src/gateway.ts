@@ -1,10 +1,10 @@
 import {
   createAccountStatusSink,
   runPassiveAccountLifecycle,
-} from "NexisClaw/plugin-sdk/channel-lifecycle";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { createLazyRuntimeNamedExport } from "NexisClaw/plugin-sdk/lazy-runtime";
-import type { ChannelAccountSnapshot } from "NexisClaw/plugin-sdk/status-helpers";
+} from "FirstNexus/plugin-sdk/channel-lifecycle";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { createLazyRuntimeNamedExport } from "FirstNexus/plugin-sdk/lazy-runtime";
+import type { ChannelAccountSnapshot } from "FirstNexus/plugin-sdk/status-helpers";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 import type { GoogleChatRuntimeEnv } from "./monitor-types.js";
 
@@ -15,7 +15,7 @@ const loadGoogleChatChannelRuntime = createLazyRuntimeNamedExport(
 
 export async function startGoogleChatGatewayAccount(ctx: {
   account: ResolvedGoogleChatAccount;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   runtime: GoogleChatRuntimeEnv;
   abortSignal: AbortSignal;
   setStatus: (next: ChannelAccountSnapshot) => void;

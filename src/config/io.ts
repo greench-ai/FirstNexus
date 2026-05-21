@@ -101,7 +101,7 @@ import {
   type RuntimeConfigWriteNotification,
 } from "./runtime-snapshot.js";
 import { resolveShellEnvExpectedKeys } from "./shell-env-expected-keys.js";
-import type { NexisClawConfig, ConfigFileSnapshot, LegacyConfigIssue } from "./types.js";
+import type { FirstNexusConfig, ConfigFileSnapshot, LegacyConfigIssue } from "./types.js";
 import {
   validateConfigObjectRawWithPlugins,
   validateConfigObjectWithPlugins,
@@ -205,7 +205,7 @@ export type ConfigWriteOptions = {
    * Internal companion for explicitSetPaths after a wrapper has projected a
    * runtime-shaped config back onto the authored source shape.
    */
-  explicitSetValueSource?: NexisClawConfig;
+  explicitSetValueSource?: FirstNexusConfig;
   /**
    * Internal fast path for callers that already hold a fresh config snapshot.
    * Avoids rereading the full config just to prepare an immediate write.
@@ -308,11 +308,11 @@ export function resolveConfigSnapshotHash(snapshot: {
   return hashConfigRaw(snapshot.raw);
 }
 
-function coerceConfig(value: unknown): NexisClawConfig {
+function coerceConfig(value: unknown): FirstNexusConfig {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return {};
   }
-  return value as NexisClawConfig;
+  return value as FirstNexusConfig;
 }
 
 function hasConfigMeta(value: unknown): boolean {
@@ -894,7 +894,7 @@ function warnOnConfigMiskeys(raw: unknown, logger: Pick<typeof console, "warn">)
   }
 }
 
-function stampConfigVersion(cfg: NexisClawConfig): NexisClawConfig {
+function stampConfigVersion(cfg: FirstNexusConfig): FirstNexusConfig {
   const now = new Date().toISOString();
   return {
     ...cfg,
@@ -906,7 +906,7 @@ function stampConfigVersion(cfg: NexisClawConfig): NexisClawConfig {
   };
 }
 
-function warnIfConfigFromFuture(cfg: NexisClawConfig, logger: Pick<typeof console, "warn">): void {
+function warnIfConfigFromFuture(cfg: FirstNexusConfig, logger: Pick<typeof console, "warn">): void {
   const touched = cfg.meta?.lastTouchedVersion;
   if (!touched) {
     return;
@@ -918,9 +918,9 @@ function warnIfConfigFromFuture(cfg: NexisClawConfig, logger: Pick<typeof consol
     warnedFutureTouchedVersions.add(touched);
     logger.warn(
       [
-        `Your NexisClaw config was written by version ${touched}, but this command is running ${VERSION}.`,
-        "Check: `NexisClaw --version`, `which NexisClaw`, and `NexisClaw gateway status --deep`.",
-        "If unexpected, update PATH so `NexisClaw` points to the version you want, or reinstall the Gateway service from that same NexisClaw install.",
+        `Your FirstNexus config was written by version ${touched}, but this command is running ${VERSION}.`,
+        "Check: `FirstNexus --version`, `which FirstNexus`, and `FirstNexus gateway status --deep`.",
+        "If unexpected, update PATH so `FirstNexus` points to the version you want, or reinstall the Gateway service from that same FirstNexus install.",
       ].join("\n"),
     );
   }
@@ -1152,7 +1152,7 @@ function resolveConfigForRead(
 ): ConfigReadResolution {
   // Apply config.env to process.env BEFORE substitution so ${VAR} can reference config-defined vars.
   if (resolvedIncludes && typeof resolvedIncludes === "object" && "env" in resolvedIncludes) {
-    applyConfigEnvVars(resolvedIncludes as NexisClawConfig, env);
+    applyConfigEnvVars(resolvedIncludes as FirstNexusConfig, env);
   }
 
   // Collect missing env var references as warnings instead of throwing,
@@ -1184,9 +1184,9 @@ function createConfigFileSnapshot(params: {
   exists: boolean;
   raw: string | null;
   parsed: unknown;
-  sourceConfig: NexisClawConfig;
+  sourceConfig: FirstNexusConfig;
   valid: boolean;
-  runtimeConfig: NexisClawConfig;
+  runtimeConfig: FirstNexusConfig;
   hash?: string;
   issues: ConfigFileSnapshot["issues"];
   warnings: ConfigFileSnapshot["warnings"];
@@ -1242,7 +1242,7 @@ export function createConfigIO(
     return snapshot;
   }
 
-  function finalizeLoadedRuntimeConfig(cfg: NexisClawConfig): NexisClawConfig {
+  function finalizeLoadedRuntimeConfig(cfg: FirstNexusConfig): FirstNexusConfig {
     const duplicates = findDuplicateAgentDirs(cfg, {
       env: deps.env,
       homedir: deps.homedir,
@@ -1401,9 +1401,9 @@ export function createConfigIO(
   }
 
   function retainRuntimeOnlyShippedPluginInstallConfigRecords(
-    config: NexisClawConfig,
+    config: FirstNexusConfig,
     sourceRaw: unknown,
-  ): NexisClawConfig {
+  ): FirstNexusConfig {
     const installRecords = extractShippedPluginInstallConfigRecords(sourceRaw);
     if (Object.keys(installRecords).length === 0) {
       return config;
@@ -1466,7 +1466,7 @@ export function createConfigIO(
       };
     } catch (err) {
       throw new Error(
-        `Config write blocked: shipped plugins.installs records in ${configPath} could not be migrated into the plugin index. Fix state directory permissions or run NexisClaw plugins registry --refresh, then retry. ${formatErrorMessage(
+        `Config write blocked: shipped plugins.installs records in ${configPath} could not be migrated into the plugin index. Fix state directory permissions or run FirstNexus plugins registry --refresh, then retry. ${formatErrorMessage(
           err,
         )}`,
         { cause: err },
@@ -1496,7 +1496,7 @@ export function createConfigIO(
     }
   }
 
-  function loadConfig(): NexisClawConfig {
+  function loadConfig(): FirstNexusConfig {
     try {
       maybeLoadDotEnvForConfig(deps.env);
       if (!deps.fs.existsSync(configPath)) {
@@ -1552,7 +1552,7 @@ export function createConfigIO(
         return {};
       }
       const preValidationDuplicates = findDuplicateAgentDirs(
-        validationConfigRaw as NexisClawConfig,
+        validationConfigRaw as FirstNexusConfig,
         {
           env: deps.env,
           homedir: deps.homedir,
@@ -1562,7 +1562,7 @@ export function createConfigIO(
         throw new DuplicateAgentDirError(preValidationDuplicates);
       }
       let pluginMetadataSnapshot: PluginMetadataSnapshot | undefined;
-      const loadValidationPluginMetadataSnapshot = (config: NexisClawConfig) => {
+      const loadValidationPluginMetadataSnapshot = (config: FirstNexusConfig) => {
         if (pluginMetadataSnapshot) {
           return pluginMetadataSnapshot;
         }
@@ -1680,7 +1680,7 @@ export function createConfigIO(
 
     let fallbackRaw: string | null = null;
     let fallbackParsed: unknown = {};
-    let fallbackSourceConfig: NexisClawConfig = {};
+    let fallbackSourceConfig: FirstNexusConfig = {};
     let fallbackHash = hashConfigRaw(null);
 
     try {
@@ -1778,7 +1778,7 @@ export function createConfigIO(
         : hash;
       fallbackSourceConfig = coerceConfig(effectiveConfigRaw);
       let pluginMetadataSnapshot: PluginMetadataSnapshot | undefined;
-      const loadValidationPluginMetadataSnapshot = (config: NexisClawConfig) => {
+      const loadValidationPluginMetadataSnapshot = (config: FirstNexusConfig) => {
         if (pluginMetadataSnapshot) {
           return pluginMetadataSnapshot;
         }
@@ -1947,7 +1947,7 @@ export function createConfigIO(
     };
   }
 
-  async function readBestEffortConfig(): Promise<NexisClawConfig> {
+  async function readBestEffortConfig(): Promise<FirstNexusConfig> {
     const result = await readConfigFileSnapshotInternal();
     if (!result.snapshot.valid) {
       return result.snapshot.config;
@@ -1959,7 +1959,7 @@ export function createConfigIO(
     );
   }
 
-  async function readSourceConfigBestEffort(): Promise<NexisClawConfig> {
+  async function readSourceConfigBestEffort(): Promise<FirstNexusConfig> {
     maybeLoadDotEnvForConfig(deps.env);
     const exists = deps.fs.existsSync(configPath);
     if (!exists) {
@@ -1988,9 +1988,9 @@ export function createConfigIO(
   }
 
   async function writeConfigFile(
-    cfg: NexisClawConfig,
+    cfg: FirstNexusConfig,
     options: ConfigWriteOptions = {},
-  ): Promise<{ persistedHash: string; persistedConfig: NexisClawConfig }> {
+  ): Promise<{ persistedHash: string; persistedConfig: FirstNexusConfig }> {
     assertConfigWriteAllowedInCurrentMode({ configPath, env: deps.env });
     clearConfigCache();
     const unsetPaths = resolveManagedUnsetPathsForWrite(options.unsetPaths);
@@ -2037,7 +2037,7 @@ export function createConfigIO(
       }
     }
 
-    persistCandidate = applyUnsetPathsForWrite(persistCandidate as NexisClawConfig, unsetPaths);
+    persistCandidate = applyUnsetPathsForWrite(persistCandidate as FirstNexusConfig, unsetPaths);
 
     const validated = validateConfigObjectRawWithPlugins(persistCandidate, {
       env: deps.env,
@@ -2069,7 +2069,7 @@ export function createConfigIO(
     // persisted to disk (issue #56772).
     // Apply legacy web-search normalization so that migration results are still
     // persisted even though we bypass validated.config.
-    let cfgToWrite = persistCandidate as NexisClawConfig;
+    let cfgToWrite = persistCandidate as FirstNexusConfig;
     try {
       if (deps.fs.existsSync(configPath)) {
         const currentRaw = await deps.fs.promises.readFile(configPath, "utf-8");
@@ -2083,7 +2083,7 @@ export function createConfigIO(
             cfgToWrite,
             parsedRes.parsed,
             envForRestore,
-          ) as NexisClawConfig;
+          ) as FirstNexusConfig;
         }
       }
     } catch {
@@ -2100,14 +2100,14 @@ export function createConfigIO(
     });
     const outputConfigBase =
       envRefMap && changedPaths
-        ? (restoreEnvRefsFromMap(cfgToWrite, "", envRefMap, changedPaths) as NexisClawConfig)
+        ? (restoreEnvRefsFromMap(cfgToWrite, "", envRefMap, changedPaths) as FirstNexusConfig)
         : cfgToWrite;
     const tildeRestoredOutputConfig = restoreAuthoredTildePathsForWrite(
       outputConfigBase,
       snapshot.parsed,
       undefined,
       deps.homedir(),
-    ) as NexisClawConfig;
+    ) as FirstNexusConfig;
     const outputConfig = applyUnsetPathsForWrite(tildeRestoredOutputConfig, unsetPaths);
     // Do NOT apply runtime defaults when writing - user config should only contain
     // explicitly set values. Runtime defaults are applied when loading (issue #6070).
@@ -2291,8 +2291,8 @@ export function registerConfigWriteListener(
 }
 
 function isCompatibleTopLevelRuntimeProjectionShape(params: {
-  runtimeSnapshot: NexisClawConfig;
-  candidate: NexisClawConfig;
+  runtimeSnapshot: FirstNexusConfig;
+  candidate: FirstNexusConfig;
 }): boolean {
   const runtime = params.runtimeSnapshot as Record<string, unknown>;
   const candidate = params.candidate as Record<string, unknown>;
@@ -2319,7 +2319,7 @@ function isCompatibleTopLevelRuntimeProjectionShape(params: {
   return true;
 }
 
-export function projectConfigOntoRuntimeSourceSnapshot(config: NexisClawConfig): NexisClawConfig {
+export function projectConfigOntoRuntimeSourceSnapshot(config: FirstNexusConfig): FirstNexusConfig {
   const runtimeConfigSnapshot = getRuntimeConfigSnapshotState();
   const runtimeConfigSourceSnapshot = getRuntimeConfigSourceSnapshotState();
   if (!runtimeConfigSnapshot || !runtimeConfigSourceSnapshot) {
@@ -2347,22 +2347,22 @@ export function projectConfigOntoRuntimeSourceSnapshot(config: NexisClawConfig):
   return coerceConfig(applyMergePatch(projectedSource, runtimePatch));
 }
 
-export function loadConfig(): NexisClawConfig {
+export function loadConfig(): FirstNexusConfig {
   // First successful load becomes the process snapshot. Long-lived runtimes
   // should swap this snapshot via explicit reload/watcher paths instead of
-  // reparsing NexisClaw.json on hot code paths.
+  // reparsing FirstNexus.json on hot code paths.
   return loadPinnedRuntimeConfig(() => createConfigIO().loadConfig());
 }
 
-export function getRuntimeConfig(): NexisClawConfig {
+export function getRuntimeConfig(): FirstNexusConfig {
   return loadConfig();
 }
 
-export async function readBestEffortConfig(): Promise<NexisClawConfig> {
+export async function readBestEffortConfig(): Promise<FirstNexusConfig> {
   return await createConfigIO().readBestEffortConfig();
 }
 
-export async function readSourceConfigBestEffort(): Promise<NexisClawConfig> {
+export async function readSourceConfigBestEffort(): Promise<FirstNexusConfig> {
   return await createConfigIO().readSourceConfigBestEffort();
 }
 
@@ -2414,7 +2414,7 @@ export async function readSourceConfigSnapshotForWrite(): Promise<ReadConfigFile
 }
 
 export async function writeConfigFile(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   options: ConfigWriteOptions = {},
 ): Promise<void> {
   const io = createConfigIO(options.skipPluginValidation ? { pluginValidation: "skip" } : {});
@@ -2464,7 +2464,7 @@ export async function writeConfigFile(
   // phantom paths under plugins.entries.* on every save — incorrectly
   // triggering a `plugins`-scoped restart of the gateway for changes that
   // never touched any plugin entry.
-  let canonicalSourceConfig: NexisClawConfig = nextCfg;
+  let canonicalSourceConfig: FirstNexusConfig = nextCfg;
   try {
     const freshSnapshot = await io.readConfigFileSnapshot();
     if (freshSnapshot.exists && freshSnapshot.valid) {

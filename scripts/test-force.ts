@@ -27,7 +27,7 @@ function killGatewayListeners(port: number): PortProcess[] {
 function runTests() {
   const isolatedLock =
     process.env.NEXISCLAW_GATEWAY_LOCK ??
-    path.join(os.tmpdir(), `NexisClaw-gateway.lock.test.${Date.now()}`);
+    path.join(os.tmpdir(), `FirstNexus-gateway.lock.test.${Date.now()}`);
   const result = spawnSync(process.execPath, ["scripts/test-projects.mjs"], {
     stdio: "inherit",
     env: {

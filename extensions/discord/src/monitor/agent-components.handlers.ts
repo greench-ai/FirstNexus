@@ -1,4 +1,4 @@
-import { logError } from "NexisClaw/plugin-sdk/logging-core";
+import { logError } from "FirstNexus/plugin-sdk/logging-core";
 import {
   resolveDiscordComponentEntryWithPersistence,
   resolveDiscordModalEntryWithPersistence,

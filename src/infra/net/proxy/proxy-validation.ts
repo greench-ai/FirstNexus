@@ -9,7 +9,7 @@ export const DEFAULT_PROXY_VALIDATION_ALLOWED_URLS = ["https://example.com/"] as
 export const DEFAULT_PROXY_VALIDATION_APNS_AUTHORITY = "https://api.sandbox.push.apple.com";
 
 const DEFAULT_PROXY_VALIDATION_TIMEOUT_MS = 5000;
-const DENIED_CANARY_HEADER = "x-NexisClaw-proxy-validation-canary";
+const DENIED_CANARY_HEADER = "x-FirstNexus-proxy-validation-canary";
 const APNS_REACHABILITY_REASON = "InvalidProviderToken";
 
 export type ProxyValidationConfigSource = "override" | "config" | "env" | "missing" | "disabled";

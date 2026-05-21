@@ -1,11 +1,11 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { withActivatedPluginIds } from "../../plugins/activation-context.js";
 import { resolveAgentHarnessPolicy } from "./selection.js";
 
 export async function ensureSelectedAgentHarnessPlugin(params: {
   provider: string;
   modelId: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   agentId?: string;
   sessionKey?: string;
   workspaceDir: string;

@@ -10,7 +10,7 @@ import {
   normalizeCommandDescriptorName,
   sanitizeCommandDescriptorDescription,
 } from "../cli/program/command-descriptor-utils.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   clearContextEnginesForOwner,
   registerContextEngineForOwner,
@@ -144,26 +144,26 @@ import type {
   CliBackendPlugin,
   ImageGenerationProviderPlugin,
   MusicGenerationProviderPlugin,
-  NexisClawPluginApi,
-  NexisClawPluginChannelRegistration,
-  NexisClawPluginCliCommandDescriptor,
-  NexisClawPluginCliRegistrar,
-  NexisClawPluginCommandDefinition,
+  FirstNexusPluginApi,
+  FirstNexusPluginChannelRegistration,
+  FirstNexusPluginCliCommandDescriptor,
+  FirstNexusPluginCliRegistrar,
+  FirstNexusPluginCommandDefinition,
   PluginConversationBindingResolvedEvent,
-  NexisClawPluginGatewayRuntimeScopeSurface,
-  NexisClawGatewayDiscoveryService,
-  NexisClawPluginHostedMediaResolver,
-  NexisClawPluginHttpRouteParams,
-  NexisClawPluginHookOptions,
-  NexisClawPluginNodeHostCommand,
-  NexisClawPluginNodeInvokePolicy,
-  NexisClawPluginReloadRegistration,
-  NexisClawPluginSecurityAuditCollector,
+  FirstNexusPluginGatewayRuntimeScopeSurface,
+  FirstNexusGatewayDiscoveryService,
+  FirstNexusPluginHostedMediaResolver,
+  FirstNexusPluginHttpRouteParams,
+  FirstNexusPluginHookOptions,
+  FirstNexusPluginNodeHostCommand,
+  FirstNexusPluginNodeInvokePolicy,
+  FirstNexusPluginReloadRegistration,
+  FirstNexusPluginSecurityAuditCollector,
   MediaUnderstandingProviderPlugin,
   MigrationProviderPlugin,
-  NexisClawPluginService,
-  NexisClawPluginToolContext,
-  NexisClawPluginToolFactory,
+  FirstNexusPluginService,
+  FirstNexusPluginToolContext,
+  FirstNexusPluginToolFactory,
   PluginHookHandlerMap,
   PluginHookName,
   PluginHookRegistration as TypedPluginHookRegistration,
@@ -179,7 +179,7 @@ import type {
 } from "./types.js";
 
 export type PluginHttpRouteRegistration = RegistryTypesPluginHttpRouteRegistration & {
-  gatewayRuntimeScopeSurface?: NexisClawPluginGatewayRuntimeScopeSurface;
+  gatewayRuntimeScopeSurface?: FirstNexusPluginGatewayRuntimeScopeSurface;
 };
 type PluginOwnedProviderRegistration<T extends { id: string }> = {
   pluginId: string;
@@ -280,14 +280,14 @@ function isOfficialCodexPluginRecord(
   if (record.origin !== "global") {
     return false;
   }
-  if (record.packageName === "@NexisClaw/codex") {
+  if (record.packageName === "@FirstNexus/codex") {
     return true;
   }
   const sourcePath = path
     .normalize(record.rootDir ?? record.source)
     .split(path.sep)
     .join("/");
-  return sourcePath.includes("/node_modules/@NexisClaw/codex");
+  return sourcePath.includes("/node_modules/@FirstNexus/codex");
 }
 
 function canClaimReservedCommandOwnership(
@@ -296,7 +296,7 @@ function canClaimReservedCommandOwnership(
   return record.origin === "bundled" || isOfficialCodexPluginRecord(record);
 }
 
-const ACTIVE_PLUGIN_HOOK_REGISTRATIONS_KEY = Symbol.for("NexisClaw.activePluginHookRegistrations");
+const ACTIVE_PLUGIN_HOOK_REGISTRATIONS_KEY = Symbol.for("FirstNexus.activePluginHookRegistrations");
 const activePluginHookRegistrations = resolveGlobalSingleton<
   Map<string, Array<{ event: string; handler: Parameters<typeof registerInternalHook>[1] }>>
 >(ACTIVE_PLUGIN_HOOK_REGISTRATIONS_KEY, () => new Map());
@@ -388,7 +388,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerCodexAppServerExtensionFactory = (
     record: PluginRecord,
-    factory: Parameters<NexisClawPluginApi["registerCodexAppServerExtensionFactory"]>[0],
+    factory: Parameters<FirstNexusPluginApi["registerCodexAppServerExtensionFactory"]>[0],
   ) => {
     if (record.origin !== "bundled") {
       pushDiagnostic({
@@ -451,8 +451,8 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerAgentToolResultMiddleware = (
     record: PluginRecord,
-    handler: Parameters<NexisClawPluginApi["registerAgentToolResultMiddleware"]>[0],
-    options: Parameters<NexisClawPluginApi["registerAgentToolResultMiddleware"]>[1],
+    handler: Parameters<FirstNexusPluginApi["registerAgentToolResultMiddleware"]>[0],
+    options: Parameters<FirstNexusPluginApi["registerAgentToolResultMiddleware"]>[1],
   ) => {
     if (record.origin !== "bundled") {
       pushDiagnostic({
@@ -525,7 +525,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerTool = (
     record: PluginRecord,
-    tool: AnyAgentTool | NexisClawPluginToolFactory,
+    tool: AnyAgentTool | FirstNexusPluginToolFactory,
     opts?: { name?: string; names?: string[]; optional?: boolean },
   ) => {
     if (pluginsWithChannelRegistrationConflict.has(record.id)) {
@@ -543,8 +543,8 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     }
     const names = [...(opts?.names ?? []), ...(opts?.name ? [opts.name] : [])];
     const optional = opts?.optional === true;
-    const factory: NexisClawPluginToolFactory =
-      typeof tool === "function" ? tool : (_ctx: NexisClawPluginToolContext) => tool;
+    const factory: FirstNexusPluginToolFactory =
+      typeof tool === "function" ? tool : (_ctx: FirstNexusPluginToolContext) => tool;
 
     if (typeof tool !== "function") {
       names.push(tool.name);
@@ -583,8 +583,8 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     record: PluginRecord,
     events: string | string[],
     handler: Parameters<typeof registerInternalHook>[1],
-    opts: NexisClawPluginHookOptions | undefined,
-    config: NexisClawPluginApi["config"],
+    opts: FirstNexusPluginHookOptions | undefined,
+    config: FirstNexusPluginApi["config"],
     pluginConfig: unknown,
   ) => {
     const eventList = Array.isArray(events) ? events : [events];
@@ -613,7 +613,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
             ...entry.hook,
             name: hookName,
             description,
-            source: "NexisClaw-plugin",
+            source: "FirstNexus-plugin",
             pluginId: record.id,
           },
           metadata: {
@@ -625,7 +625,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
           hook: {
             name: hookName,
             description,
-            source: "NexisClaw-plugin",
+            source: "FirstNexus-plugin",
             pluginId: record.id,
             filePath: record.source,
             baseDir: path.dirname(record.source),
@@ -723,7 +723,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     return `${plugin} (${source})`;
   };
 
-  const registerHttpRoute = (record: PluginRecord, params: NexisClawPluginHttpRouteParams) => {
+  const registerHttpRoute = (record: PluginRecord, params: FirstNexusPluginHttpRouteParams) => {
     const normalizedPath = normalizePluginHttpPath(params.path);
     if (!normalizedPath) {
       pushDiagnostic({
@@ -819,7 +819,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerHostedMediaResolver = (
     record: PluginRecord,
-    resolver: NexisClawPluginHostedMediaResolver,
+    resolver: FirstNexusPluginHostedMediaResolver,
   ) => {
     if (typeof resolver !== "function") {
       pushDiagnostic({
@@ -841,13 +841,13 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerChannel = (
     record: PluginRecord,
-    registration: NexisClawPluginChannelRegistration | ChannelPlugin,
+    registration: FirstNexusPluginChannelRegistration | ChannelPlugin,
     mode: PluginRegistrationMode = "full",
   ) => {
     const registrationCapabilities = resolvePluginRegistrationCapabilities(mode);
     const normalized =
-      typeof (registration as NexisClawPluginChannelRegistration).plugin === "object"
-        ? (registration as NexisClawPluginChannelRegistration)
+      typeof (registration as FirstNexusPluginChannelRegistration).plugin === "object"
+        ? (registration as FirstNexusPluginChannelRegistration)
         : { plugin: registration as ChannelPlugin };
     const plugin = normalizeRegisteredChannelPlugin({
       pluginId: record.id,
@@ -1265,11 +1265,11 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerCli = (
     record: PluginRecord,
-    registrar: NexisClawPluginCliRegistrar,
+    registrar: FirstNexusPluginCliRegistrar,
     opts?: {
       parentPath?: string[];
       commands?: string[];
-      descriptors?: NexisClawPluginCliCommandDescriptor[];
+      descriptors?: FirstNexusPluginCliCommandDescriptor[];
     },
   ) => {
     const normalizeCommandRoot = (raw: string, source: "command" | "descriptor") => {
@@ -1304,7 +1304,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
           : null;
       })
       .filter(
-        (descriptor): descriptor is NexisClawPluginCliCommandDescriptor => descriptor !== null,
+        (descriptor): descriptor is FirstNexusPluginCliCommandDescriptor => descriptor !== null,
       );
     const commands = [
       ...(opts?.commands ?? []),
@@ -1361,10 +1361,13 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     NODE_SYSTEM_NOTIFY_COMMAND,
   ]);
 
-  const registerReload = (record: PluginRecord, registration: NexisClawPluginReloadRegistration) => {
+  const registerReload = (
+    record: PluginRecord,
+    registration: FirstNexusPluginReloadRegistration,
+  ) => {
     const normalize = (values?: string[]) =>
       (values ?? []).map((value) => value.trim()).filter(Boolean);
-    const normalized: NexisClawPluginReloadRegistration = {
+    const normalized: FirstNexusPluginReloadRegistration = {
       restartPrefixes: normalize(registration.restartPrefixes),
       hotPrefixes: normalize(registration.hotPrefixes),
       noopPrefixes: normalize(registration.noopPrefixes),
@@ -1394,7 +1397,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerNodeHostCommand = (
     record: PluginRecord,
-    nodeCommand: NexisClawPluginNodeHostCommand,
+    nodeCommand: FirstNexusPluginNodeHostCommand,
   ) => {
     const command = nodeCommand.command.trim();
     if (!command) {
@@ -1441,7 +1444,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerNodeInvokePolicy = (
     record: PluginRecord,
-    policy: NexisClawPluginNodeInvokePolicy,
+    policy: FirstNexusPluginNodeInvokePolicy,
     pluginConfig?: Record<string, unknown>,
   ) => {
     const commands = Array.isArray(policy.commands)
@@ -1492,7 +1495,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerSecurityAuditCollector = (
     record: PluginRecord,
-    collector: NexisClawPluginSecurityAuditCollector,
+    collector: FirstNexusPluginSecurityAuditCollector,
   ) => {
     registry.securityAuditCollectors ??= [];
     registry.securityAuditCollectors.push({
@@ -1504,7 +1507,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     });
   };
 
-  const registerService = (record: PluginRecord, service: NexisClawPluginService) => {
+  const registerService = (record: PluginRecord, service: FirstNexusPluginService) => {
     const id = service.id.trim();
     if (!id) {
       return;
@@ -1538,7 +1541,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
 
   const registerGatewayDiscoveryService = (
     record: PluginRecord,
-    service: NexisClawGatewayDiscoveryService,
+    service: FirstNexusGatewayDiscoveryService,
   ) => {
     const id = service.id.trim();
     if (!id) {
@@ -1567,7 +1570,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
     });
   };
 
-  const registerCommand = (record: PluginRecord, command: NexisClawPluginCommandDefinition) => {
+  const registerCommand = (record: PluginRecord, command: FirstNexusPluginCommandDefinition) => {
     const name = command.name.trim();
     if (!name) {
       pushDiagnostic({
@@ -2415,12 +2418,12 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
   const createApi = (
     record: PluginRecord,
     params: {
-      config: NexisClawPluginApi["config"];
+      config: FirstNexusPluginApi["config"];
       pluginConfig?: Record<string, unknown>;
       hookPolicy?: PluginTypedHookPolicy;
       registrationMode?: PluginRegistrationMode;
     },
-  ): NexisClawPluginApi => {
+  ): FirstNexusPluginApi => {
     const registrationMode = params.registrationMode ?? "full";
     const registrationCapabilities = resolvePluginRegistrationCapabilities(registrationMode);
     pluginRuntimeRecordById.set(record.id, record);
@@ -2575,12 +2578,12 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
                 }
               },
               registerCompactionProvider: (
-                provider: Parameters<NexisClawPluginApi["registerCompactionProvider"]>[0],
+                provider: Parameters<FirstNexusPluginApi["registerCompactionProvider"]>[0],
               ) => {
                 const id = normalizeOptionalString(
                   (
                     provider as Partial<
-                      Parameters<NexisClawPluginApi["registerCompactionProvider"]>[0]
+                      Parameters<FirstNexusPluginApi["registerCompactionProvider"]>[0]
                     > | null
                   )?.id,
                 );
@@ -2639,7 +2642,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
                   });
                 }
                 return enqueuePluginNextTurnInjection({
-                  cfg: registryParams.runtime.config.current() as NexisClawConfig,
+                  cfg: registryParams.runtime.config.current() as FirstNexusConfig,
                   pluginId: record.id,
                   pluginName: record.name,
                   injection,
@@ -2696,7 +2699,7 @@ export function createPluginRegistry(registryParams: PluginRegistryParams) {
                     return { ok: false, error: "plugin is not loaded" };
                   }
                   const runtimeConfig =
-                    (registryParams.runtime.config?.current?.() as NexisClawConfig | undefined) ??
+                    (registryParams.runtime.config?.current?.() as FirstNexusConfig | undefined) ??
                     params.config;
                   return await sendPluginSessionAttachment({
                     ...attachment,

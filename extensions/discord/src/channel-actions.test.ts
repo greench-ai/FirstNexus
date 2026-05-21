@@ -1,6 +1,6 @@
-import type { ChannelMessageActionContext } from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { withEnv } from "NexisClaw/plugin-sdk/test-env";
+import type { ChannelMessageActionContext } from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { withEnv } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it, vi } from "vitest";
 
 const handleDiscordMessageActionMock = vi.hoisted(() =>
@@ -23,7 +23,7 @@ describe("discordMessageActions", () => {
               enabled: true,
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
       });
 
       expect(discovery).toEqual({
@@ -49,7 +49,7 @@ describe("discordMessageActions", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(discovery?.capabilities).toEqual(["presentation"]);
@@ -97,7 +97,7 @@ describe("discordMessageActions", () => {
             },
           },
         },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
     });
 
     expect(discovery?.capabilities).toEqual(["presentation"]);
@@ -159,7 +159,7 @@ describe("discordMessageActions", () => {
             },
           },
         },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       accountId: "ops",
     });
 
@@ -220,7 +220,7 @@ describe("discordMessageActions", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     const defaultDiscovery = discordMessageActions.describeMessageTool?.({
       cfg,
@@ -312,7 +312,7 @@ describe("discordMessageActions", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(discovery?.actions).toContain("send");
@@ -330,7 +330,7 @@ describe("discordMessageActions", () => {
             token: "Bot token-main",
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
     expect(discovery?.schema).toBeUndefined();
   });
@@ -375,7 +375,7 @@ describe("discordMessageActions", () => {
       ctx: {
         channel: "discord",
         action: "send",
-        cfg: {} as NexisClawConfig,
+        cfg: {} as FirstNexusConfig,
         params: {
           components: {
             text: "Choose",
@@ -419,7 +419,7 @@ describe("discordMessageActions", () => {
       ctx: {
         channel: "discord",
         action: "send",
-        cfg: {} as NexisClawConfig,
+        cfg: {} as FirstNexusConfig,
         params: {
           components: () => [],
         },
@@ -438,7 +438,7 @@ describe("discordMessageActions", () => {
           token: "Bot token-main",
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const toolContext: ChannelMessageActionContext["toolContext"] = {
       currentChannelProvider: "discord",
     };

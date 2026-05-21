@@ -62,7 +62,7 @@ function createHost() {
     connectGeneration: 0,
     connected: false,
     tab: "chat",
-    assistantName: "NexisClaw",
+    assistantName: "FirstNexus",
     assistantAvatar: null,
     assistantAgentId: null,
     serverVersion: null,

@@ -37,7 +37,10 @@ describe("assertNotRoot", () => {
 
   it("does not exit when uid is 0 and NEXISCLAW_CLI_CONTAINER_BYPASS=1 with container hint", () => {
     process.getuid = () => 0;
-    assertNotRoot({ NEXISCLAW_CLI_CONTAINER_BYPASS: "1", NEXISCLAW_CONTAINER_HINT: "my-container" });
+    assertNotRoot({
+      NEXISCLAW_CLI_CONTAINER_BYPASS: "1",
+      NEXISCLAW_CONTAINER_HINT: "my-container",
+    });
     expect(exitSpy).not.toHaveBeenCalled();
   });
 
@@ -92,6 +95,6 @@ describe("assertNotRoot", () => {
     assertNotRoot({});
     const output = stderrSpy.mock.calls.map((c) => String(c[0])).join("");
     expect(output).toContain("service user");
-    expect(output).toContain("sudo -u <service-user> -H NexisClaw");
+    expect(output).toContain("sudo -u <service-user> -H FirstNexus");
   });
 });

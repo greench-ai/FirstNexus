@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/azure-speech",
+  "name": "@FirstNexus/azure-speech",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw Azure Speech plugin",
+  "description": "FirstNexus Azure Speech plugin",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

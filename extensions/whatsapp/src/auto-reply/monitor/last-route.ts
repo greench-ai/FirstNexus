@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { MsgContext } from "NexisClaw/plugin-sdk/reply-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { MsgContext } from "FirstNexus/plugin-sdk/reply-runtime";
 import { formatError } from "../../session.js";
 import { resolveStorePath, updateLastRoute } from "../config.runtime.js";
 
@@ -15,7 +15,7 @@ export function trackBackgroundTask(
 }
 
 export function updateLastRouteInBackground(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   backgroundTasks: Set<Promise<unknown>>;
   storeAgentId: string;
   sessionKey: string;

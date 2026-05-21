@@ -1,6 +1,6 @@
-import { formatInboundFromLabel as formatInboundFromLabelShared } from "NexisClaw/plugin-sdk/channel-inbound";
-import { resolveThreadSessionKeys as resolveThreadSessionKeysShared } from "NexisClaw/plugin-sdk/routing";
-import { rawDataToString } from "NexisClaw/plugin-sdk/webhook-ingress";
+import { formatInboundFromLabel as formatInboundFromLabelShared } from "FirstNexus/plugin-sdk/channel-inbound";
+import { resolveThreadSessionKeys as resolveThreadSessionKeysShared } from "FirstNexus/plugin-sdk/routing";
+import { rawDataToString } from "FirstNexus/plugin-sdk/webhook-ingress";
 
 export { rawDataToString };
 

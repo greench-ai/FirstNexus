@@ -246,7 +246,7 @@ describe("buildExportSessionReply", () => {
     expect(html).not.toContain("{{SESSION_DATA}}");
     expect(html).not.toContain("{{MARKED_JS}}");
     expect(html).not.toContain("{{HIGHLIGHT_JS}}");
-    expect(html).not.toContain("data-NexisClaw-export-placeholder");
+    expect(html).not.toContain("data-FirstNexus-export-placeholder");
     expect(html).toContain(
       Buffer.from(
         JSON.stringify({
@@ -271,11 +271,11 @@ describe("buildExportSessionReply", () => {
 
     const expectedBase = path.join(
       "/tmp/workspace",
-      "NexisClaw-session-session--2026-05-05T10-11-12.html",
+      "FirstNexus-session-session--2026-05-05T10-11-12.html",
     );
     const expectedSuffix = path.join(
       "/tmp/workspace",
-      "NexisClaw-session-session--2026-05-05T10-11-12-2.html",
+      "FirstNexus-session-session--2026-05-05T10-11-12-2.html",
     );
     expect(writeFilePath(0)).toBe(expectedBase);
     expect(writeFileArg(0, 2)).toEqual({
@@ -283,18 +283,18 @@ describe("buildExportSessionReply", () => {
       flag: "wx",
     });
     expect(writeFilePath(1)).toBe(expectedSuffix);
-    expect(reply.text).toContain("📄 File: NexisClaw-session-session--2026-05-05T10-11-12-2.html");
+    expect(reply.text).toContain("📄 File: FirstNexus-session-session--2026-05-05T10-11-12-2.html");
   });
 
   it("preserves replacement text with dollar sequences", async () => {
     hoisted.exportHtmlTemplateContents.set(
       "template.html",
       [
-        '<style data-NexisClaw-export-placeholder="CSS"></style>',
-        '<script id="session-data" type="application/json" data-NexisClaw-export-placeholder="SESSION_DATA"></script>',
-        '<script data-NexisClaw-export-placeholder="MARKED_JS"></script>',
-        '<script data-NexisClaw-export-placeholder="HIGHLIGHT_JS"></script>',
-        '<script data-NexisClaw-export-placeholder="JS"></script>',
+        '<style data-FirstNexus-export-placeholder="CSS"></style>',
+        '<script id="session-data" type="application/json" data-FirstNexus-export-placeholder="SESSION_DATA"></script>',
+        '<script data-FirstNexus-export-placeholder="MARKED_JS"></script>',
+        '<script data-FirstNexus-export-placeholder="HIGHLIGHT_JS"></script>',
+        '<script data-FirstNexus-export-placeholder="JS"></script>',
       ].join(""),
     );
     hoisted.exportHtmlTemplateContents.set("template.css", "/* {{THEME_VARS}} */$&$1");

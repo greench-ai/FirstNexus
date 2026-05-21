@@ -1,5 +1,5 @@
 import type { WebClient } from "@slack/web-api";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const resolveSlackMedia = vi.fn();
@@ -239,7 +239,7 @@ describe("downloadSlackFile", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const result = await downloadSlackFile("F123", {
       cfg,

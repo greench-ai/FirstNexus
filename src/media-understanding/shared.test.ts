@@ -205,8 +205,8 @@ describe("resolveProviderHttpRequestConfig", () => {
     expect(resolved.allowPrivateNetwork).toBe(false);
     expect(resolved.headers.get("authorization")).toBe("Bearer override");
     expect(resolved.headers.get("x-default")).toBe("1");
-    expect(resolved.headers.get("user-agent")).toBe(`NexisClaw/${VERSION}`);
-    expect(resolved.headers.get("originator")).toBe("NexisClaw");
+    expect(resolved.headers.get("user-agent")).toBe(`FirstNexus/${VERSION}`);
+    expect(resolved.headers.get("originator")).toBe("FirstNexus");
     expect(resolved.headers.get("version")).toBe(VERSION);
   });
 

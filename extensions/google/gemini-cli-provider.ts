@@ -1,11 +1,11 @@
 import type {
-  NexisClawPluginApi,
+  FirstNexusPluginApi,
   ProviderAuthContext,
   ProviderFetchUsageSnapshotContext,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import { buildOauthProviderAuthResult } from "NexisClaw/plugin-sdk/provider-auth-result";
-import type { ProviderPlugin } from "NexisClaw/plugin-sdk/provider-model-shared";
-import { fetchGeminiUsage } from "NexisClaw/plugin-sdk/provider-usage";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import { buildOauthProviderAuthResult } from "FirstNexus/plugin-sdk/provider-auth-result";
+import type { ProviderPlugin } from "FirstNexus/plugin-sdk/provider-model-shared";
+import { fetchGeminiUsage } from "FirstNexus/plugin-sdk/provider-usage";
 import { formatGoogleOauthApiKey, parseGoogleUsageToken } from "./oauth-token-shared.js";
 import { GOOGLE_GEMINI_PROVIDER_HOOKS } from "./provider-hooks.js";
 import { isModernGoogleModel, resolveGoogleGeminiForwardCompatModel } from "./provider-models.js";
@@ -136,6 +136,6 @@ export function buildGoogleGeminiCliProvider(): ProviderPlugin {
   };
 }
 
-export function registerGoogleGeminiCliProvider(api: NexisClawPluginApi) {
+export function registerGoogleGeminiCliProvider(api: FirstNexusPluginApi) {
   api.registerProvider(buildGoogleGeminiCliProvider());
 }

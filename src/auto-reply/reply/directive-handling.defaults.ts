@@ -3,9 +3,9 @@ import {
   type ModelAliasIndex,
   resolveDefaultModelForAgent,
 } from "../../agents/model-selection.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
-export function resolveDefaultModel(params: { cfg: NexisClawConfig; agentId?: string }): {
+export function resolveDefaultModel(params: { cfg: FirstNexusConfig; agentId?: string }): {
   defaultProvider: string;
   defaultModel: string;
   aliasIndex: ModelAliasIndex;

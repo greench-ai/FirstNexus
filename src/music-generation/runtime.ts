@@ -1,6 +1,6 @@
 import type { FallbackAttempt } from "../agents/model-fallback.types.js";
 import { resolveAgentModelTimeoutMsValue } from "../config/model-input.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import {
   buildMediaGenerationNormalizationMetadata,
@@ -28,7 +28,7 @@ export type MusicGenerationRuntimeDeps = {
 export type { GenerateMusicParams, GenerateMusicRuntimeResult } from "./runtime-types.js";
 
 export function listRuntimeMusicGenerationProviders(
-  params?: { config?: NexisClawConfig },
+  params?: { config?: FirstNexusConfig },
   deps: MusicGenerationRuntimeDeps = {},
 ) {
   return (deps.listProviders ?? listMusicGenerationProviders)(params?.config);

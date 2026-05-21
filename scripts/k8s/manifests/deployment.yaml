@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: NexisClaw
+  name: FirstNexus
   labels:
-    app: NexisClaw
+    app: FirstNexus
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: NexisClaw
+      app: FirstNexus
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: NexisClaw
+        app: FirstNexus
     spec:
       automountServiceAccountToken: false
       securityContext:
@@ -29,9 +29,9 @@ spec:
             - sh
             - -c
             - |
-              cp /config/NexisClaw.json /home/node/.NexisClaw/NexisClaw.json
-              mkdir -p /home/node/.NexisClaw/workspace
-              cp /config/AGENTS.md /home/node/.NexisClaw/workspace/AGENTS.md
+              cp /config/FirstNexus.json /home/node/.FirstNexus/FirstNexus.json
+              mkdir -p /home/node/.FirstNexus/workspace
+              cp /config/AGENTS.md /home/node/.FirstNexus/workspace/AGENTS.md
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -43,13 +43,13 @@ spec:
               memory: 64Mi
               cpu: 100m
           volumeMounts:
-            - name: NexisClaw-home
-              mountPath: /home/node/.NexisClaw
+            - name: FirstNexus-home
+              mountPath: /home/node/.FirstNexus
             - name: config
               mountPath: /config
       containers:
         - name: gateway
-          image: ghcr.io/NexisClaw/NexisClaw:slim
+          image: ghcr.io/FirstNexus/FirstNexus:slim
           imagePullPolicy: IfNotPresent
           command:
             - node
@@ -64,36 +64,36 @@ spec:
             - name: HOME
               value: /home/node
             - name: NEXISCLAW_CONFIG_DIR
-              value: /home/node/.NexisClaw
+              value: /home/node/.FirstNexus
             - name: NODE_ENV
               value: production
             - name: NEXISCLAW_GATEWAY_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: NexisClaw-secrets
+                  name: FirstNexus-secrets
                   key: NEXISCLAW_GATEWAY_TOKEN
             - name: ANTHROPIC_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: NexisClaw-secrets
+                  name: FirstNexus-secrets
                   key: ANTHROPIC_API_KEY
                   optional: true
             - name: OPENAI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: NexisClaw-secrets
+                  name: FirstNexus-secrets
                   key: OPENAI_API_KEY
                   optional: true
             - name: GEMINI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: NexisClaw-secrets
+                  name: FirstNexus-secrets
                   key: GEMINI_API_KEY
                   optional: true
             - name: OPENROUTER_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: NexisClaw-secrets
+                  name: FirstNexus-secrets
                   key: OPENROUTER_API_KEY
                   optional: true
           resources:
@@ -122,8 +122,8 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
           volumeMounts:
-            - name: NexisClaw-home
-              mountPath: /home/node/.NexisClaw
+            - name: FirstNexus-home
+              mountPath: /home/node/.FirstNexus
             - name: tmp-volume
               mountPath: /tmp
           securityContext:
@@ -136,11 +136,11 @@ spec:
               drop:
                 - ALL
       volumes:
-        - name: NexisClaw-home
+        - name: FirstNexus-home
           persistentVolumeClaim:
-            claimName: NexisClaw-home-pvc
+            claimName: FirstNexus-home-pvc
         - name: config
           configMap:
-            name: NexisClaw-config
+            name: FirstNexus-config
         - name: tmp-volume
           emptyDir: {}

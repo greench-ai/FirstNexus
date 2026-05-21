@@ -1,1 +1,1 @@
-export { getReplyFromConfig } from "NexisClaw/plugin-sdk/reply-runtime";
+export { getReplyFromConfig } from "FirstNexus/plugin-sdk/reply-runtime";

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
   markdownToText,
@@ -10,16 +10,16 @@ import {
   withSelfHostedWebToolsEndpoint,
   withStrictWebToolsEndpoint,
   writeCache,
-} from "NexisClaw/plugin-sdk/provider-web-fetch";
-import { normalizeSecretInput } from "NexisClaw/plugin-sdk/secret-input";
-import { wrapExternalContent, wrapWebContent } from "NexisClaw/plugin-sdk/security-runtime";
+} from "FirstNexus/plugin-sdk/provider-web-fetch";
+import { normalizeSecretInput } from "FirstNexus/plugin-sdk/secret-input";
+import { wrapExternalContent, wrapWebContent } from "FirstNexus/plugin-sdk/security-runtime";
 import {
   SsrFBlockedError,
   isBlockedHostnameOrIp,
   isPrivateIpAddress,
   resolvePinnedHostnameWithPolicy,
   type LookupFn,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   DEFAULT_FIRECRAWL_BASE_URL,
   resolveFirecrawlApiKey,
@@ -62,7 +62,7 @@ type FirecrawlSearchItem = {
 };
 
 export type FirecrawlSearchParams = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   query: string;
   count?: number;
   timeoutSeconds?: number;
@@ -72,7 +72,7 @@ export type FirecrawlSearchParams = {
 };
 
 export type FirecrawlScrapeParams = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   url: string;
   extractMode: "markdown" | "text";
   maxChars?: number;

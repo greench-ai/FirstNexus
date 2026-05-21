@@ -53,7 +53,7 @@ function messageText(content: unknown): string {
 }
 
 async function verifyRuntimeContextTranscriptShape(root: string) {
-  const sessionFile = path.join(root, ".NexisClaw", "agents", "main", "sessions", "runtime.jsonl");
+  const sessionFile = path.join(root, ".FirstNexus", "agents", "main", "sessions", "runtime.jsonl");
   await fs.mkdir(path.dirname(sessionFile), { recursive: true });
   const sessionManager = SessionManager.open(sessionFile);
   const effectivePrompt = [
@@ -102,7 +102,7 @@ async function verifyRuntimeContextTranscriptShape(root: string) {
   const entries = await readJsonl(sessionFile);
   const customEntry = entries.find((entry) => entry.type === "custom_message");
   assert(customEntry, "hidden runtime custom message was not persisted");
-  assert(customEntry.customType === "NexisClaw.runtime-context", "unexpected custom message type");
+  assert(customEntry.customType === "FirstNexus.runtime-context", "unexpected custom message type");
   assert(customEntry.display === false, "runtime custom message should be hidden");
   assert(
     customEntry.content?.includes("secret docker context"),
@@ -190,8 +190,8 @@ async function seedBrokenSession(stateDir: string): Promise<string> {
 }
 
 async function verifyDoctorRepair(root: string) {
-  const stateDir = path.join(root, ".NexisClaw");
-  const configPath = path.join(stateDir, "NexisClaw.json");
+  const stateDir = path.join(root, ".FirstNexus");
+  const configPath = path.join(stateDir, "FirstNexus.json");
   const sessionFile = await seedBrokenSession(stateDir);
   await fs.mkdir(path.dirname(configPath), { recursive: true });
   await fs.writeFile(configPath, JSON.stringify({ plugins: { enabled: false } }, null, 2));
@@ -243,10 +243,10 @@ async function verifyDoctorRepair(root: string) {
 }
 
 async function main() {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-session-runtime-context-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-session-runtime-context-"));
   process.env.HOME = root;
-  process.env.NEXISCLAW_STATE_DIR = path.join(root, ".NexisClaw");
-  process.env.NEXISCLAW_CONFIG_PATH = path.join(process.env.NEXISCLAW_STATE_DIR, "NexisClaw.json");
+  process.env.NEXISCLAW_STATE_DIR = path.join(root, ".FirstNexus");
+  process.env.NEXISCLAW_CONFIG_PATH = path.join(process.env.NEXISCLAW_STATE_DIR, "FirstNexus.json");
   try {
     await verifyRuntimeContextTranscriptShape(root);
     await verifyDoctorRepair(root);

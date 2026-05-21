@@ -23,22 +23,22 @@ const execFileAsync = promisify(execFile);
 const PACKAGE_SCAN_CONCURRENCY = 12;
 
 const REQUIRED_REVIEWED_PUBLISHABLE_CRITICAL_FINDINGS = new Set([
-  "@NexisClaw/acpx:dangerous-exec:src/codex-auth-bridge.ts",
-  "@NexisClaw/acpx:dangerous-exec:src/runtime-internals/mcp-proxy.mjs",
-  "@NexisClaw/codex:dangerous-exec:src/app-server/transport-stdio.ts",
-  "@NexisClaw/google-meet:dangerous-exec:src/node-host.ts",
-  "@NexisClaw/google-meet:dangerous-exec:src/realtime.ts",
-  "@NexisClaw/matrix:dangerous-exec:src/matrix/deps.ts",
-  "@NexisClaw/voice-call:dangerous-exec:src/tunnel.ts",
-  "@NexisClaw/voice-call:dangerous-exec:src/webhook/tailscale.ts",
+  "@FirstNexus/acpx:dangerous-exec:src/codex-auth-bridge.ts",
+  "@FirstNexus/acpx:dangerous-exec:src/runtime-internals/mcp-proxy.mjs",
+  "@FirstNexus/codex:dangerous-exec:src/app-server/transport-stdio.ts",
+  "@FirstNexus/google-meet:dangerous-exec:src/node-host.ts",
+  "@FirstNexus/google-meet:dangerous-exec:src/realtime.ts",
+  "@FirstNexus/matrix:dangerous-exec:src/matrix/deps.ts",
+  "@FirstNexus/voice-call:dangerous-exec:src/tunnel.ts",
+  "@FirstNexus/voice-call:dangerous-exec:src/webhook/tailscale.ts",
 ]);
 
 const OPTIONAL_REVIEWED_PUBLISHABLE_DIST_CRITICAL_FINDINGS = new Set([
-  "@NexisClaw/acpx:dangerous-exec:dist/mcp-proxy.mjs",
-  "@NexisClaw/acpx:dangerous-exec:dist/service-<hash>.js",
-  "@NexisClaw/codex:dangerous-exec:dist/client-<hash>.js",
-  "@NexisClaw/google-meet:dangerous-exec:dist/index.js",
-  "@NexisClaw/voice-call:dangerous-exec:dist/runtime-entry-<hash>.js",
+  "@FirstNexus/acpx:dangerous-exec:dist/mcp-proxy.mjs",
+  "@FirstNexus/acpx:dangerous-exec:dist/service-<hash>.js",
+  "@FirstNexus/codex:dangerous-exec:dist/client-<hash>.js",
+  "@FirstNexus/google-meet:dangerous-exec:dist/index.js",
+  "@FirstNexus/voice-call:dangerous-exec:dist/runtime-entry-<hash>.js",
 ]);
 
 const tempDirs: string[] = [];
@@ -101,7 +101,7 @@ function stageScannerRelevantPackedFiles(
   packageDir: string,
   packedFiles: readonly string[],
 ): string {
-  const stageDir = mkdtempSync(join(tmpdir(), "NexisClaw-plugin-npm-scan-"));
+  const stageDir = mkdtempSync(join(tmpdir(), "FirstNexus-plugin-npm-scan-"));
   tempDirs.push(stageDir);
 
   for (const packedPath of packedFiles) {
@@ -126,14 +126,14 @@ function collectPublishablePluginPackages(): PublishablePluginPackage[] {
       const packageJsonPath = join(packageDir, "package.json");
       let packageJson: {
         name?: unknown;
-        NexisClaw?: { release?: { publishToNpm?: unknown } };
+        FirstNexus?: { release?: { publishToNpm?: unknown } };
       };
       try {
         packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8")) as typeof packageJson;
       } catch {
         return [];
       }
-      if (packageJson.NexisClaw?.release?.publishToNpm !== true) {
+      if (packageJson.FirstNexus?.release?.publishToNpm !== true) {
         return [];
       }
       if (typeof packageJson.name !== "string" || !packageJson.name.trim()) {

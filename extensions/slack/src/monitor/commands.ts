@@ -1,5 +1,5 @@
-import type { SlackSlashCommandConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { SlackSlashCommandConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 /**
  * Strip Slack mentions (<@U123>, <@U123|name>) so command detection works on
@@ -20,9 +20,9 @@ export function resolveSlackSlashCommandConfig(
   raw?: SlackSlashCommandConfig,
 ): Required<SlackSlashCommandConfig> {
   const normalizedName = normalizeSlackSlashCommandName(
-    normalizeOptionalString(raw?.name) ?? "NexisClaw",
+    normalizeOptionalString(raw?.name) ?? "FirstNexus",
   );
-  const name = normalizedName || "NexisClaw";
+  const name = normalizedName || "FirstNexus";
   return {
     enabled: raw?.enabled === true,
     name,

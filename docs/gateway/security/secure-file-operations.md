@@ -1,17 +1,17 @@
 ---
-summary: "How NexisClaw handles local file access safely, and why the optional fs-safe Python helper is off by default"
+summary: "How FirstNexus handles local file access safely, and why the optional fs-safe Python helper is off by default"
 read_when:
   - Changing file access, archive extraction, workspace storage, or plugin filesystem helpers
 title: "Secure file operations"
 ---
 
-NexisClaw uses [`@NexisClaw/fs-safe`](https://github.com/NexisClaw/fs-safe) for security-sensitive local file operations: root-bounded reads/writes, atomic replacement, archive extraction, temp workspaces, JSON state, and secret-file handling.
+FirstNexus uses [`@FirstNexus/fs-safe`](https://github.com/FirstNexus/fs-safe) for security-sensitive local file operations: root-bounded reads/writes, atomic replacement, archive extraction, temp workspaces, JSON state, and secret-file handling.
 
-The goal is a consistent **library guardrail** for trusted NexisClaw code that receives untrusted path names. It is not a sandbox. Host filesystem permissions, OS users, containers, and the agent/tool policy still define the real blast radius.
+The goal is a consistent **library guardrail** for trusted FirstNexus code that receives untrusted path names. It is not a sandbox. Host filesystem permissions, OS users, containers, and the agent/tool policy still define the real blast radius.
 
 ## Default: no Python helper
 
-NexisClaw defaults the fs-safe POSIX Python helper to **off**.
+FirstNexus defaults the fs-safe POSIX Python helper to **off**.
 
 Why:
 
@@ -19,10 +19,10 @@ Why:
 - many installs do not need the extra parent-directory mutation hardening;
 - disabling Python keeps package/runtime behavior more predictable across desktop, Docker, CI, and bundled app environments.
 
-NexisClaw only changes the default. If you explicitly set a mode, fs-safe honors it:
+FirstNexus only changes the default. If you explicitly set a mode, fs-safe honors it:
 
 ```bash
-# Default NexisClaw behavior: Node-only fs-safe fallbacks.
+# Default FirstNexus behavior: Node-only fs-safe fallbacks.
 NEXISCLAW_FS_SAFE_PYTHON_MODE=off
 
 # Opt into the helper when available, falling back if unavailable.
@@ -39,7 +39,7 @@ The generic fs-safe names also work: `FS_SAFE_PYTHON_MODE` and `FS_SAFE_PYTHON`.
 
 ## What stays protected without Python
 
-With the helper off, NexisClaw still uses fs-safe's Node paths for:
+With the helper off, FirstNexus still uses fs-safe's Node paths for:
 
 - rejecting relative-path escapes such as `..`, absolute paths, and path separators where only names are allowed;
 - resolving operations through a trusted root handle instead of ad-hoc `path.resolve(...).startsWith(...)` checks;
@@ -49,13 +49,13 @@ With the helper off, NexisClaw still uses fs-safe's Node paths for:
 - byte limits for reads and archive extraction;
 - private modes for secrets and state files where the API requires them.
 
-These protections cover the normal NexisClaw threat model: trusted gateway code handling untrusted model/plugin/channel path input inside a single trusted operator boundary.
+These protections cover the normal FirstNexus threat model: trusted gateway code handling untrusted model/plugin/channel path input inside a single trusted operator boundary.
 
 ## What Python adds
 
 On POSIX, fs-safe's optional helper keeps one persistent Python process and uses fd-relative filesystem operations for parent-directory mutations such as rename, remove, mkdir, stat/list, and some write paths.
 
-That narrows same-UID race windows where another process can swap a parent directory between validation and mutation. It is defense in depth for hosts where untrusted local processes can modify the same directories NexisClaw is operating in.
+That narrows same-UID race windows where another process can swap a parent directory between validation and mutation. It is defense in depth for hosts where untrusted local processes can modify the same directories FirstNexus is operating in.
 
 If your deployment has that risk and Python is guaranteed to exist, use:
 
@@ -67,10 +67,10 @@ Use `require` rather than `auto` when the helper is part of your security postur
 
 ## Plugin and core guidance
 
-- Plugin-facing file access should go through `NexisClaw/plugin-sdk/*` helpers, not raw `fs`, when a path comes from a message, model output, config, or plugin input.
-- Core code should use the local fs-safe wrappers under `src/infra/*` so NexisClaw's process policy is applied consistently.
+- Plugin-facing file access should go through `FirstNexus/plugin-sdk/*` helpers, not raw `fs`, when a path comes from a message, model output, config, or plugin input.
+- Core code should use the local fs-safe wrappers under `src/infra/*` so FirstNexus's process policy is applied consistently.
 - Archive extraction should use the fs-safe archive helpers with explicit size, entry-count, link, and destination limits.
-- Secrets should use NexisClaw secret helpers or fs-safe secret/private-state helpers; do not hand-roll mode checks around `fs.writeFile`.
+- Secrets should use FirstNexus secret helpers or fs-safe secret/private-state helpers; do not hand-roll mode checks around `fs.writeFile`.
 - If you need hostile local-user isolation, do not rely on fs-safe alone. Run separate gateways under separate OS users/hosts or use sandboxing.
 
 Related: [Security](/gateway/security), [Sandboxing](/gateway/sandboxing), [Exec approvals](/tools/exec-approvals), [Secrets](/gateway/secrets).

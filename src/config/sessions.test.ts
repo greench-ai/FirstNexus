@@ -29,7 +29,7 @@ describe("sessions", () => {
   };
 
   beforeAll(async () => {
-    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-sessions-suite-"));
+    fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-sessions-suite-"));
   });
 
   afterAll(async () => {
@@ -158,11 +158,11 @@ describe("sessions", () => {
       buildGroupDisplayName({
         provider: "discord",
         groupChannel: "#general",
-        space: "friends-of-NexisClaw",
+        space: "friends-of-FirstNexus",
         id: "123",
         key: "discord:group:123",
       }),
-    ).toBe("discord:friends-of-NexisClaw#general");
+    ).toBe("discord:friends-of-FirstNexus#general");
   });
 
   const resolveSessionKeyCases = [
@@ -721,7 +721,7 @@ describe("sessions", () => {
   });
 
   it("resolveSessionFilePathOptions keeps explicit agentId alongside absolute store path", () => {
-    const storePath = "/tmp/NexisClaw/agents/main/sessions/sessions.json";
+    const storePath = "/tmp/FirstNexus/agents/main/sessions/sessions.json";
     const resolved = resolveSessionFilePathOptions({
       agentId: "bot2",
       storePath,

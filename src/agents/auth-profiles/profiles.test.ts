@@ -123,7 +123,7 @@ function expectOAuthCredentialFields(
   return credential;
 }
 
-function expectNexisClawCredentialsOAuthRef(
+function expectFirstNexusCredentialsOAuthRef(
   credential: Record<string, unknown>,
   provider: string,
 ): void {
@@ -132,14 +132,14 @@ function expectNexisClawCredentialsOAuthRef(
     throw new Error("Expected OAuth credential ref");
   }
   const ref = oauthRef as Record<string, unknown>;
-  expect(ref.source).toBe("NexisClaw-credentials");
+  expect(ref.source).toBe("FirstNexus-credentials");
   expect(ref.provider).toBe(provider);
   expectOAuthProfileRefId(ref.id);
 }
 
 describe("promoteAuthProfileInOrder", () => {
   it("omits inline openai-codex oauth secrets from persisted auth profile files", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-metadata-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-metadata-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     process.env.NEXISCLAW_STATE_DIR = stateDir;
@@ -173,7 +173,7 @@ describe("promoteAuthProfileInOrder", () => {
       };
       const credential = persisted.profiles[profileId];
 
-      expectNexisClawCredentialsOAuthRef(
+      expectFirstNexusCredentialsOAuthRef(
         expectOAuthCredentialFields(credential, {
           provider: "openai-codex",
           expires,
@@ -215,7 +215,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("requires the external oauth profile secret key to recover persisted token material", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-keyed-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-keyed-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     const previousSecretKey = process.env.NEXISCLAW_AUTH_PROFILE_SECRET_KEY;
@@ -282,7 +282,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("does not create fallback oauth key files under the Vitest NODE_ENV test harness", () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-test-key-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-test-key-"));
     const stateDir = path.join(rootDir, "state");
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const homeDir = path.join(rootDir, "home");
@@ -379,7 +379,9 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("does not use the hardcoded oauth key for NODE_ENV test outside the harness", () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-node-env-test-"));
+    const rootDir = fs.mkdtempSync(
+      path.join(os.tmpdir(), "FirstNexus-auth-profile-node-env-test-"),
+    );
     const stateDir = path.join(rootDir, "state");
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const homeDir = path.join(rootDir, "home");
@@ -477,7 +479,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("persists production oauth profiles on non-macOS without an env secret key", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-prod-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-prod-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const homeDir = path.join(path.dirname(stateDir), "home");
     const configDir = path.join(path.dirname(stateDir), "external-config");
@@ -571,9 +573,9 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("keeps fallback oauth key material outside an overlapping state tree", () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-overlap-"));
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-overlap-"));
     const configDir = path.join(rootDir, "config");
-    const stateDir = path.join(configDir, "NexisClaw");
+    const stateDir = path.join(configDir, "FirstNexus");
     const homeDir = path.join(rootDir, "home");
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
@@ -612,7 +614,7 @@ describe("promoteAuthProfileInOrder", () => {
 
       const keyPaths = findFilesNamed(rootDir, "auth-profile-secret-key");
       expect(keyPaths).toEqual([
-        path.join(homeDir, ".NexisClaw-auth-profile-secrets", "auth-profile-secret-key"),
+        path.join(homeDir, ".FirstNexus-auth-profile-secrets", "auth-profile-secret-key"),
       ]);
       expect(keyPaths.every((keyPath) => !isPathInsideOrEqual(stateDir, keyPath))).toBe(true);
       const keyValues = keyPaths.map((keyPath) => fs.readFileSync(keyPath, "utf8").trim());
@@ -663,7 +665,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("adopts an atomically-created fallback oauth key when another writer wins creation", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-key-race-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-key-race-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const homeDir = path.join(path.dirname(stateDir), "home");
     const configDir = path.join(path.dirname(stateDir), "external-config");
@@ -780,7 +782,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("preserves access-only openai-codex oauth credentials when persisting refs", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-access-only-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-access-only-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     process.env.NEXISCLAW_STATE_DIR = stateDir;
@@ -808,7 +810,7 @@ describe("promoteAuthProfileInOrder", () => {
         profiles: Record<string, Record<string, unknown>>;
       };
       const credential = persisted.profiles[profileId];
-      expectNexisClawCredentialsOAuthRef(
+      expectFirstNexusCredentialsOAuthRef(
         expectOAuthCredentialFields(credential, {
           provider: "openai-codex",
           expires,
@@ -838,7 +840,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("removes detached openai-codex oauth secrets when profiles are deleted", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-delete-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-delete-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     process.env.NEXISCLAW_STATE_DIR = stateDir;
@@ -894,7 +896,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("regenerates openai-codex oauth refs for copied profile save targets", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-copy-ref-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-copy-ref-"));
     const mainAgentDir = path.join(stateDir, "agents", "main", "agent");
     const copiedAgentDir = path.join(stateDir, "agents", "copied", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
@@ -979,7 +981,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("does not rewrite inline openai-codex oauth secrets from read-only lookup paths", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-readonly-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-readonly-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     const previousReadOnly = process.env.NEXISCLAW_AUTH_STORE_READONLY;
@@ -1046,7 +1048,7 @@ describe("promoteAuthProfileInOrder", () => {
 
   it("does not repair legacy openai-codex oauth sidecars from read-only lookup paths", () => {
     const stateDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), "NexisClaw-auth-profile-readonly-sidecar-"),
+      path.join(os.tmpdir(), "FirstNexus-auth-profile-readonly-sidecar-"),
     );
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
@@ -1124,7 +1126,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("rewrites existing inline openai-codex oauth secrets during runtime load", () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-profile-rewrite-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-profile-rewrite-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     process.env.NEXISCLAW_STATE_DIR = stateDir;
@@ -1174,7 +1176,7 @@ describe("promoteAuthProfileInOrder", () => {
         order?: Record<string, string[]>;
       };
       const credential = persisted.profiles[profileId];
-      expectNexisClawCredentialsOAuthRef(
+      expectFirstNexusCredentialsOAuthRef(
         expectOAuthCredentialFields(credential, {
           provider: "openai-codex",
           expires,
@@ -1213,7 +1215,7 @@ describe("promoteAuthProfileInOrder", () => {
 
   it("does not rewrite inline openai-codex oauth secrets while the auth store lock is held", () => {
     const stateDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), "NexisClaw-auth-profile-locked-rewrite-"),
+      path.join(os.tmpdir(), "FirstNexus-auth-profile-locked-rewrite-"),
     );
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
@@ -1279,7 +1281,7 @@ describe("promoteAuthProfileInOrder", () => {
   });
 
   it("moves a relogin profile to the front of an existing per-agent provider order", async () => {
-    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-auth-order-promote-"));
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-auth-order-promote-"));
     const agentDir = path.join(stateDir, "agents", "main", "agent");
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
     process.env.NEXISCLAW_STATE_DIR = stateDir;

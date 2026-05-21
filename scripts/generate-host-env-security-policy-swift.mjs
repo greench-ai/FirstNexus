@@ -21,7 +21,7 @@ const outputPath = path.join(
   "apps",
   "macos",
   "Sources",
-  "NexisClaw",
+  "FirstNexus",
   "HostEnvSecurityPolicy.generated.swift",
 );
 

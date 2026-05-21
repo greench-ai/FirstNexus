@@ -1,13 +1,13 @@
 import {
   attachChannelToResult,
   type ChannelOutboundAdapter,
-} from "NexisClaw/plugin-sdk/channel-send-result";
+} from "FirstNexus/plugin-sdk/channel-send-result";
 import {
   resolvePayloadMediaUrls,
   sendPayloadMediaSequenceOrFallback,
   sendTextMediaPayload,
-} from "NexisClaw/plugin-sdk/reply-payload";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/reply-payload";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { normalizeDiscordApprovalPayload } from "./outbound-approval.js";
 import {
   resolveDiscordComponentSpec,

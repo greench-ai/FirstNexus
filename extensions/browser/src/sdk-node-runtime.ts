@@ -10,19 +10,19 @@ export {
   resolveGatewayAuth,
   resolveNodeCommandAllowlist,
   safeParseJson,
-} from "NexisClaw/plugin-sdk/gateway-runtime";
+} from "FirstNexus/plugin-sdk/gateway-runtime";
 export type {
   GatewayRequestHandlers,
   GatewayRpcOpts,
   NodeSession,
-} from "NexisClaw/plugin-sdk/gateway-runtime";
-export { runCommandWithRuntime } from "NexisClaw/plugin-sdk/cli-runtime";
-export type { NexisClawPluginService } from "NexisClaw/plugin-sdk/plugin-entry";
+} from "FirstNexus/plugin-sdk/gateway-runtime";
+export { runCommandWithRuntime } from "FirstNexus/plugin-sdk/cli-runtime";
+export type { FirstNexusPluginService } from "FirstNexus/plugin-sdk/plugin-entry";
 export {
   startLazyPluginServiceModule,
   type LazyPluginServiceHandle,
-} from "NexisClaw/plugin-sdk/plugin-runtime";
-export { defaultRuntime } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/plugin-runtime";
+export { defaultRuntime } from "FirstNexus/plugin-sdk/runtime-env";
 
 export async function withTimeout<T>(
   work: (signal: AbortSignal | undefined) => Promise<T>,

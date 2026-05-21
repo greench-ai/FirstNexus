@@ -6,7 +6,7 @@ const resolveLsofCommandSyncMock = vi.hoisted(() => vi.fn());
 const resolveGatewayPortMock = vi.hoisted(() => vi.fn());
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeChildProcessSpawnSync } = await import("NexisClaw/plugin-sdk/test-node-mocks");
+  const { mockNodeChildProcessSpawnSync } = await import("FirstNexus/plugin-sdk/test-node-mocks");
   return mockNodeChildProcessSpawnSync(spawnSyncMock);
 });
 
@@ -25,7 +25,7 @@ vi.mock("../config/paths.js", async () => {
 let __testing: typeof import("./restart-stale-pids.js").__testing;
 let cleanStaleGatewayProcessesSync: typeof import("./restart-stale-pids.js").cleanStaleGatewayProcessesSync;
 let findGatewayPidsOnPortSync: typeof import("./restart-stale-pids.js").findGatewayPidsOnPortSync;
-let triggerNexisClawRestart: typeof import("./restart.js").triggerNexisClawRestart;
+let triggerFirstNexusRestart: typeof import("./restart.js").triggerFirstNexusRestart;
 
 let currentTimeMs = 0;
 const envSnapshot = captureFullEnv();
@@ -34,7 +34,7 @@ const originalPlatformDescriptor = Object.getOwnPropertyDescriptor(process, "pla
 beforeAll(async () => {
   ({ __testing, cleanStaleGatewayProcessesSync, findGatewayPidsOnPortSync } =
     await import("./restart-stale-pids.js"));
-  ({ triggerNexisClawRestart } = await import("./restart.js"));
+  ({ triggerFirstNexusRestart } = await import("./restart.js"));
 });
 
 beforeEach(() => {
@@ -80,7 +80,7 @@ function requireFirstSpawnSyncCall(): [unknown, unknown, unknown] {
 }
 
 describe.runIf(process.platform !== "win32")("findGatewayPidsOnPortSync", () => {
-  it("parses lsof output and filters non-NexisClaw/current processes", () => {
+  it("parses lsof output and filters non-FirstNexus/current processes", () => {
     const gatewayPidA = process.pid + 1000;
     const gatewayPidB = process.pid + 2000;
     const foreignPid = process.pid + 3000;
@@ -89,13 +89,13 @@ describe.runIf(process.platform !== "win32")("findGatewayPidsOnPortSync", () => 
       status: 0,
       stdout: [
         `p${process.pid}`,
-        "cNexisClaw",
+        "cFirstNexus",
         `p${gatewayPidA}`,
-        "cNexisClaw-gateway",
+        "cFirstNexus-gateway",
         `p${foreignPid}`,
         "cnode",
         `p${gatewayPidB}`,
-        "cNexisClaw",
+        "cFirstNexus",
       ].join("\n"),
     });
 
@@ -137,7 +137,7 @@ describe.runIf(process.platform !== "win32")("cleanStaleGatewayProcessesSync", (
       .mockReturnValueOnce({
         error: undefined,
         status: 0,
-        stdout: [`p${stalePidA}`, "cNexisClaw", `p${stalePidB}`, "cNexisClaw-gateway"].join("\n"),
+        stdout: [`p${stalePidA}`, "cFirstNexus", `p${stalePidB}`, "cFirstNexus-gateway"].join("\n"),
       })
       .mockReturnValue({
         error: undefined,
@@ -162,7 +162,7 @@ describe.runIf(process.platform !== "win32")("cleanStaleGatewayProcessesSync", (
       .mockReturnValueOnce({
         error: undefined,
         status: 0,
-        stdout: [`p${stalePid}`, "cNexisClaw"].join("\n"),
+        stdout: [`p${stalePid}`, "cFirstNexus"].join("\n"),
       })
       .mockReturnValue({
         error: undefined,
@@ -202,7 +202,7 @@ describe.runIf(process.platform !== "win32")("cleanStaleGatewayProcessesSync", (
   });
 });
 
-describe("triggerNexisClawRestart", () => {
+describe("triggerFirstNexusRestart", () => {
   it("does not kickstart after bootstrap registers an unloaded LaunchAgent", () => {
     setPlatform("darwin");
     delete process.env.VITEST;
@@ -223,14 +223,14 @@ describe("triggerNexisClawRestart", () => {
       return { error: undefined, status: 1, stdout: "" };
     });
 
-    const result = triggerNexisClawRestart();
+    const result = triggerFirstNexusRestart();
 
     expect(result).toEqual({
       ok: true,
       method: "launchctl",
       tried: [
-        `launchctl kickstart -k gui/${uid}/ai.NexisClaw.gateway`,
-        `launchctl bootstrap gui/${uid} /Users/test/Library/LaunchAgents/ai.NexisClaw.gateway.plist`,
+        `launchctl kickstart -k gui/${uid}/ai.FirstNexus.gateway`,
+        `launchctl bootstrap gui/${uid} /Users/test/Library/LaunchAgents/ai.FirstNexus.gateway.plist`,
       ],
     });
   });
@@ -258,15 +258,15 @@ describe("triggerNexisClawRestart", () => {
       return { error: undefined, status: 1, stdout: "" };
     });
 
-    const result = triggerNexisClawRestart();
+    const result = triggerFirstNexusRestart();
 
     expect(result).toEqual({
       ok: true,
       method: "launchctl",
       tried: [
-        `launchctl kickstart -k gui/${uid}/ai.NexisClaw.gateway`,
-        `launchctl bootstrap gui/${uid} /Users/test/Library/LaunchAgents/ai.NexisClaw.gateway.plist`,
-        `launchctl kickstart gui/${uid}/ai.NexisClaw.gateway`,
+        `launchctl kickstart -k gui/${uid}/ai.FirstNexus.gateway`,
+        `launchctl bootstrap gui/${uid} /Users/test/Library/LaunchAgents/ai.FirstNexus.gateway.plist`,
+        `launchctl kickstart gui/${uid}/ai.FirstNexus.gateway`,
       ],
     });
   });

@@ -1,4 +1,4 @@
 export {
   buildSecretInputSchema,
   normalizeResolvedSecretInputString,
-} from "NexisClaw/plugin-sdk/secret-input";
+} from "FirstNexus/plugin-sdk/secret-input";

@@ -1,37 +1,37 @@
-import { mergeAllowlist, summarizeMapping } from "NexisClaw/plugin-sdk/allow-from";
+import { mergeAllowlist, summarizeMapping } from "FirstNexus/plugin-sdk/allow-from";
 import {
   implicitMentionKindWhen,
   resolveInboundMentionDecision,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import { resolveStableChannelMessageIngress } from "NexisClaw/plugin-sdk/channel-ingress-runtime";
-import { createChannelPairingController } from "NexisClaw/plugin-sdk/channel-pairing";
-import type { MarkdownTableMode, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { KeyedAsyncQueue } from "NexisClaw/plugin-sdk/core";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { createDeferred } from "NexisClaw/plugin-sdk/extension-shared";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import { resolveStableChannelMessageIngress } from "FirstNexus/plugin-sdk/channel-ingress-runtime";
+import { createChannelPairingController } from "FirstNexus/plugin-sdk/channel-pairing";
+import type { MarkdownTableMode, FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { KeyedAsyncQueue } from "FirstNexus/plugin-sdk/core";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { createDeferred } from "FirstNexus/plugin-sdk/extension-shared";
 import {
   DEFAULT_GROUP_HISTORY_LIMIT,
   type HistoryEntry,
   buildPendingHistoryContextFromMap,
   clearHistoryEntriesIfEnabled,
   recordPendingHistoryEntryIfEnabled,
-} from "NexisClaw/plugin-sdk/reply-history";
+} from "FirstNexus/plugin-sdk/reply-history";
 import {
   deliverTextOrMediaReply,
   resolveSendableOutboundReplyParts,
   type OutboundReplyPayload,
-} from "NexisClaw/plugin-sdk/reply-payload";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime";
+} from "FirstNexus/plugin-sdk/reply-payload";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime";
 import {
   resolveDefaultGroupPolicy,
   resolveOpenProviderRuntimeGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeStringEntries,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   buildZalouserGroupCandidates,
   findZalouserGroupEntry,
@@ -55,7 +55,7 @@ import {
 
 export type ZalouserMonitorOptions = {
   account: ResolvedZalouserAccount;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   runtime: RuntimeEnv;
   abortSignal: AbortSignal;
   statusSink?: (patch: { lastInboundAt?: number; lastOutboundAt?: number }) => void;
@@ -134,7 +134,7 @@ function resolveInboundQueueKey(message: ZaloInboundMessage): string {
   return `direct:${senderId || threadId}`;
 }
 
-function resolveZalouserDmSessionScope(config: NexisClawConfig) {
+function resolveZalouserDmSessionScope(config: FirstNexusConfig) {
   const configured = config.session?.dmScope;
   return configured === "main" || !configured ? "per-channel-peer" : configured;
 }
@@ -175,7 +175,7 @@ function senderScopedZalouserGroupPolicy(params: {
 
 function resolveZalouserInboundSessionKey(params: {
   core: ZalouserCoreRuntime;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   route: { agentId: string; accountId: string; sessionKey: string };
   storePath: string;
   isGroup: boolean;
@@ -267,7 +267,7 @@ async function sendZalouserDeliveryAcks(params: {
 async function processMessage(
   message: ZaloInboundMessage,
   account: ResolvedZalouserAccount,
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   core: ZalouserCoreRuntime,
   runtime: RuntimeEnv,
   historyState: ZalouserGroupHistoryState,
@@ -764,7 +764,7 @@ async function deliverZalouserReply(params: {
   isGroup: boolean;
   runtime: RuntimeEnv;
   core: ZalouserCoreRuntime;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   accountId?: string;
   tableMode?: MarkdownTableMode;
 }): Promise<{ visibleReplySent: boolean }> {
@@ -1030,7 +1030,7 @@ export const __testing = {
   processMessage: async (params: {
     message: ZaloInboundMessage;
     account: ResolvedZalouserAccount;
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     runtime: RuntimeEnv;
     historyState?: {
       historyLimit?: number;

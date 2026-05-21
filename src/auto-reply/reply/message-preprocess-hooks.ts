@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { fireAndForgetHook } from "../../hooks/fire-and-forget.js";
 import { createInternalHookEvent, triggerInternalHook } from "../../hooks/internal-hooks.js";
 import {
@@ -11,7 +11,7 @@ import type { FinalizedMsgContext } from "../templating.js";
 
 export function emitPreAgentMessageHooks(params: {
   ctx: FinalizedMsgContext;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   isFastTestEnv: boolean;
 }): void {
   if (params.isFastTestEnv) {

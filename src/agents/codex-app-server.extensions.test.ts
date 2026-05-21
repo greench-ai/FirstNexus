@@ -7,7 +7,7 @@ import {
 } from "../plugin-sdk/agent-harness.js";
 import { listAgentToolResultMiddlewares } from "../plugins/agent-tool-result-middleware.js";
 import { listCodexAppServerExtensionFactories } from "../plugins/codex-app-server-extension-factory.js";
-import { loadNexisClawPlugins } from "../plugins/loader.js";
+import { loadFirstNexusPlugins } from "../plugins/loader.js";
 import {
   cleanupTempPluginTestEnvironment,
   createTempPluginDir,
@@ -30,12 +30,12 @@ function findDiagnostic(
 }
 
 function createTempDir(): string {
-  return createTempPluginDir(tempDirs, "NexisClaw-codex-ext-");
+  return createTempPluginDir(tempDirs, "FirstNexus-codex-ext-");
 }
 
 function createBundledTempDir(): string {
   delete process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS;
-  return createTempPluginDir(tempDirs, "NexisClaw-codex-ext-", {
+  return createTempPluginDir(tempDirs, "FirstNexus-codex-ext-", {
     parentDir: path.join(process.cwd(), "dist-runtime", "extensions"),
   });
 }
@@ -83,14 +83,14 @@ describe("agent tool result middleware", () => {
       onlyPluginIds: ["tool-result-middleware"],
     };
 
-    loadNexisClawPlugins(options);
+    loadFirstNexusPlugins(options);
     expect(listAgentToolResultMiddlewares("codex")).toHaveLength(1);
     expect(listAgentToolResultMiddlewares("pi")).toHaveLength(0);
 
     resetActivePluginRegistryForTest();
     expect(listAgentToolResultMiddlewares("codex")).toHaveLength(0);
 
-    loadNexisClawPlugins(options);
+    loadFirstNexusPlugins(options);
     const runner = createAgentToolResultMiddlewareRunner({ runtime: "codex" });
     const result = await runner.applyToolResultMiddleware({
       threadId: "thread-1",
@@ -122,7 +122,7 @@ describe("agent tool result middleware", () => {
 } };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       onlyPluginIds: ["tool-result-middleware"],
       config: {
         plugins: {
@@ -161,7 +161,7 @@ describe("agent tool result middleware", () => {
 } };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       workspaceDir: tmp,
       onlyPluginIds: ["tool-result-middleware"],
       config: {
@@ -201,7 +201,7 @@ export default { id: "tool-result-middleware", register(api) {
 } };`,
     });
 
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       onlyPluginIds: ["tool-result-middleware"],
       config: {
         plugins: {
@@ -305,13 +305,13 @@ describe("Codex app-server extension factories", () => {
       onlyPluginIds: ["codex-ext"],
     };
 
-    loadNexisClawPlugins(options);
+    loadFirstNexusPlugins(options);
     expect(listCodexAppServerExtensionFactories()).toHaveLength(1);
 
     resetActivePluginRegistryForTest();
     expect(listCodexAppServerExtensionFactories()).toHaveLength(0);
 
-    loadNexisClawPlugins(options);
+    loadFirstNexusPlugins(options);
     const runner = createCodexAppServerToolResultExtensionRunner({});
     const result = await runner.applyToolResultExtensions({
       threadId: "thread-1",
@@ -342,7 +342,7 @@ describe("Codex app-server extension factories", () => {
 } };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       workspaceDir: tmp,
       onlyPluginIds: ["codex-ext"],
       config: {
@@ -375,7 +375,7 @@ describe("Codex app-server extension factories", () => {
 } };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       onlyPluginIds: ["codex-ext"],
       config: {
         plugins: {
@@ -415,7 +415,7 @@ describe("Codex app-server extension factories", () => {
 } };`,
     });
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       onlyPluginIds: ["codex-ext"],
       config: {
         plugins: {

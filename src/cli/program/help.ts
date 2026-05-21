@@ -22,23 +22,26 @@ const ROOT_COMMANDS_HINT =
   "Hint: commands suffixed with * have subcommands. Run <command> --help for details.";
 
 const EXAMPLES = [
-  ["NexisClaw onboard", "Run guided setup for a local Gateway, workspace, auth, and channels."],
-  ["NexisClaw setup", "Create the baseline config, workspace, and session folders."],
-  ["NexisClaw configure", "Change models, Gateway, channels, plugins, skills, and health checks."],
-  ["NexisClaw status", "Check Gateway, channel, model, and recent-session status."],
-  ["NexisClaw doctor --fix", "Repair common config, service, plugin, and channel problems."],
-  ["NexisClaw channels add", "Add or update a chat channel account with guided prompts."],
-  ["NexisClaw channels status", "See connected messaging accounts and login state."],
-  ["NexisClaw --dev gateway", "Run a dev Gateway (isolated state/config) on ws://127.0.0.1:19001."],
-  ["NexisClaw gateway run --force", "Start the Gateway and replace anything bound to its port."],
-  ["NexisClaw models status", "Show model/provider auth health before running agents."],
-  ["NexisClaw plugins list", "Inspect enabled, disabled, and installed plugins."],
+  ["FirstNexus onboard", "Run guided setup for a local Gateway, workspace, auth, and channels."],
+  ["FirstNexus setup", "Create the baseline config, workspace, and session folders."],
+  ["FirstNexus configure", "Change models, Gateway, channels, plugins, skills, and health checks."],
+  ["FirstNexus status", "Check Gateway, channel, model, and recent-session status."],
+  ["FirstNexus doctor --fix", "Repair common config, service, plugin, and channel problems."],
+  ["FirstNexus channels add", "Add or update a chat channel account with guided prompts."],
+  ["FirstNexus channels status", "See connected messaging accounts and login state."],
   [
-    'NexisClaw agent --to +15555550123 --message "Run summary" --deliver',
+    "FirstNexus --dev gateway",
+    "Run a dev Gateway (isolated state/config) on ws://127.0.0.1:19001.",
+  ],
+  ["FirstNexus gateway run --force", "Start the Gateway and replace anything bound to its port."],
+  ["FirstNexus models status", "Show model/provider auth health before running agents."],
+  ["FirstNexus plugins list", "Inspect enabled, disabled, and installed plugins."],
+  [
+    'FirstNexus agent --to +15555550123 --message "Run summary" --deliver',
     "Run one agent turn through the Gateway and optionally deliver the reply.",
   ],
   [
-    'NexisClaw message send --channel telegram --target @mychat --message "Hi"',
+    'FirstNexus message send --channel telegram --target @mychat --message "Hi"',
     "Send via your Telegram bot.",
   ],
 ] as const;
@@ -54,11 +57,11 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
     )
     .option(
       "--dev",
-      "Dev profile: isolate state under ~/.NexisClaw-dev, default gateway port 19001, and shift derived ports (browser/canvas)",
+      "Dev profile: isolate state under ~/.FirstNexus-dev, default gateway port 19001, and shift derived ports (browser/canvas)",
     )
     .option(
       "--profile <name>",
-      "Use a named profile (isolates NEXISCLAW_STATE_DIR/NEXISCLAW_CONFIG_PATH under ~/.NexisClaw-<name>)",
+      "Use a named profile (isolates NEXISCLAW_STATE_DIR/NEXISCLAW_CONFIG_PATH under ~/.FirstNexus-<name>)",
     )
     .option(
       "--log-level <level>",
@@ -115,7 +118,7 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
   ) {
     const commit = resolveCommitHash({ moduleUrl: import.meta.url });
     console.log(
-      commit ? `NexisClaw ${ctx.programVersion} (${commit})` : `NexisClaw ${ctx.programVersion}`,
+      commit ? `FirstNexus ${ctx.programVersion} (${commit})` : `FirstNexus ${ctx.programVersion}`,
     );
     process.exit(0);
   }
@@ -137,7 +140,7 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
     if (command !== program) {
       return "";
     }
-    const docs = formatDocsLink("/cli", "docs.NexisClaw.ai/cli");
+    const docs = formatDocsLink("/cli", "docs.FirstNexus.ai/cli");
     return `\n${theme.heading("Examples:")}\n${fmtExamples}\n\n${theme.muted("Docs:")} ${docs}\n`;
   });
 }

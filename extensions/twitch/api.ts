@@ -12,7 +12,7 @@ export {
   type ChannelResolveKind,
   type ChannelResolveResult,
   type ChannelStatusAdapter,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type OutboundDeliveryResult,
   type RuntimeEnv,
   type WizardPrompter,

@@ -11,14 +11,14 @@ NEXISCLAW_DOCKER_LIVE_AUTH_FILES_ALL=(
   .gemini/settings.json
 )
 
-NexisClaw_live_trim() {
+FirstNexus_live_trim() {
   local value="${1:-}"
   value="${value#"${value%%[![:space:]]*}"}"
   value="${value%"${value##*[![:space:]]}"}"
   printf '%s' "$value"
 }
 
-NexisClaw_live_truthy() {
+FirstNexus_live_truthy() {
   case "${1:-}" in
     1 | true | TRUE | yes | YES | on | ON)
       return 0
@@ -29,16 +29,16 @@ NexisClaw_live_truthy() {
   esac
 }
 
-NexisClaw_live_is_ci() {
-  NexisClaw_live_truthy "${CI:-}" || NexisClaw_live_truthy "${GITHUB_ACTIONS:-}"
+FirstNexus_live_is_ci() {
+  FirstNexus_live_truthy "${CI:-}" || FirstNexus_live_truthy "${GITHUB_ACTIONS:-}"
 }
 
-NexisClaw_live_default_profile_file() {
+FirstNexus_live_default_profile_file() {
   if [[ -n "${NEXISCLAW_PROFILE_FILE:-}" ]]; then
     printf '%s\n' "$NEXISCLAW_PROFILE_FILE"
     return 0
   fi
-  local testbox_profile="$HOME/.NexisClaw-testbox-live.profile"
+  local testbox_profile="$HOME/.FirstNexus-testbox-live.profile"
   if [[ -f "$testbox_profile" ]]; then
     printf '%s\n' "$testbox_profile"
     return 0
@@ -46,9 +46,9 @@ NexisClaw_live_default_profile_file() {
   printf '%s\n' "$HOME/.profile"
 }
 
-NexisClaw_live_validate_relative_home_path() {
+FirstNexus_live_validate_relative_home_path() {
   local value
-  value="$(NexisClaw_live_trim "${1:-}")"
+  value="$(FirstNexus_live_trim "${1:-}")"
   [[ -n "$value" ]] || {
     echo "ERROR: empty auth path." >&2
     return 1
@@ -62,20 +62,20 @@ NexisClaw_live_validate_relative_home_path() {
   printf '%s' "$value"
 }
 
-NexisClaw_live_normalize_auth_dir() {
+FirstNexus_live_normalize_auth_dir() {
   local value
-  value="$(NexisClaw_live_trim "${1:-}")"
+  value="$(FirstNexus_live_trim "${1:-}")"
   [[ -n "$value" ]] || return 1
   if [[ "$value" != .* ]]; then
     value=".$value"
   fi
-  value="$(NexisClaw_live_validate_relative_home_path "$value")" || return 1
+  value="$(FirstNexus_live_validate_relative_home_path "$value")" || return 1
   printf '%s' "$value"
 }
 
-NexisClaw_live_should_include_auth_dir_for_provider() {
+FirstNexus_live_should_include_auth_dir_for_provider() {
   local provider
-  provider="$(NexisClaw_live_trim "${1:-}")"
+  provider="$(FirstNexus_live_trim "${1:-}")"
   case "$provider" in
     droid | factory | factory-droid)
       printf '%s\n' ".factory"
@@ -89,9 +89,9 @@ NexisClaw_live_should_include_auth_dir_for_provider() {
   esac
 }
 
-NexisClaw_live_should_include_auth_file_for_provider() {
+FirstNexus_live_should_include_auth_file_for_provider() {
   local provider
-  provider="$(NexisClaw_live_trim "${1:-}")"
+  provider="$(FirstNexus_live_trim "${1:-}")"
   case "$provider" in
     codex-cli | openai-codex)
       printf '%s\n' ".codex/auth.json"
@@ -106,21 +106,21 @@ NexisClaw_live_should_include_auth_file_for_provider() {
   esac
 }
 
-NexisClaw_live_collect_auth_dirs_from_csv() {
+FirstNexus_live_collect_auth_dirs_from_csv() {
   local raw="${1:-}"
   local token normalized
-  [[ -n "$(NexisClaw_live_trim "$raw")" ]] || return 0
+  [[ -n "$(FirstNexus_live_trim "$raw")" ]] || return 0
   IFS=',' read -r -a tokens <<<"$raw"
   for token in "${tokens[@]}"; do
     while IFS= read -r normalized; do
       printf '%s\n' "$normalized"
-    done < <(NexisClaw_live_should_include_auth_dir_for_provider "$token")
+    done < <(FirstNexus_live_should_include_auth_dir_for_provider "$token")
   done | awk 'NF && !seen[$0]++'
 }
 
-NexisClaw_live_collect_auth_dirs_from_override() {
+FirstNexus_live_collect_auth_dirs_from_override() {
   local raw token normalized
-  raw="$(NexisClaw_live_trim "${NEXISCLAW_DOCKER_AUTH_DIRS:-}")"
+  raw="$(FirstNexus_live_trim "${NEXISCLAW_DOCKER_AUTH_DIRS:-}")"
   [[ -n "$raw" ]] || return 1
   case "$raw" in
     all)
@@ -133,34 +133,34 @@ NexisClaw_live_collect_auth_dirs_from_override() {
   esac
   IFS=',' read -r -a tokens <<<"$raw"
   for token in "${tokens[@]}"; do
-    normalized="$(NexisClaw_live_normalize_auth_dir "$token")" || continue
+    normalized="$(FirstNexus_live_normalize_auth_dir "$token")" || continue
     printf '%s\n' "$normalized"
   done | awk '!seen[$0]++'
   return 0
 }
 
-NexisClaw_live_collect_auth_dirs() {
-  if NexisClaw_live_collect_auth_dirs_from_override; then
+FirstNexus_live_collect_auth_dirs() {
+  if FirstNexus_live_collect_auth_dirs_from_override; then
     return 0
   fi
   printf '%s\n' "${NEXISCLAW_DOCKER_LIVE_AUTH_ALL[@]}"
 }
 
-NexisClaw_live_collect_auth_files_from_csv() {
+FirstNexus_live_collect_auth_files_from_csv() {
   local raw="${1:-}"
   local token normalized
-  [[ -n "$(NexisClaw_live_trim "$raw")" ]] || return 0
+  [[ -n "$(FirstNexus_live_trim "$raw")" ]] || return 0
   IFS=',' read -r -a tokens <<<"$raw"
   for token in "${tokens[@]}"; do
     while IFS= read -r normalized; do
       printf '%s\n' "$normalized"
-    done < <(NexisClaw_live_should_include_auth_file_for_provider "$token")
+    done < <(FirstNexus_live_should_include_auth_file_for_provider "$token")
   done | awk 'NF && !seen[$0]++'
 }
 
-NexisClaw_live_collect_auth_files_from_override() {
+FirstNexus_live_collect_auth_files_from_override() {
   local raw
-  raw="$(NexisClaw_live_trim "${NEXISCLAW_DOCKER_AUTH_DIRS:-}")"
+  raw="$(FirstNexus_live_trim "${NEXISCLAW_DOCKER_AUTH_DIRS:-}")"
   [[ -n "$raw" ]] || return 1
   case "$raw" in
     all)
@@ -174,14 +174,14 @@ NexisClaw_live_collect_auth_files_from_override() {
   return 0
 }
 
-NexisClaw_live_collect_auth_files() {
-  if NexisClaw_live_collect_auth_files_from_override; then
+FirstNexus_live_collect_auth_files() {
+  if FirstNexus_live_collect_auth_files_from_override; then
     return 0
   fi
   printf '%s\n' "${NEXISCLAW_DOCKER_LIVE_AUTH_FILES_ALL[@]}"
 }
 
-NexisClaw_live_join_csv() {
+FirstNexus_live_join_csv() {
   local first=1 value
   for value in "$@"; do
     [[ -n "$value" ]] || continue
@@ -194,7 +194,7 @@ NexisClaw_live_join_csv() {
   done
 }
 
-NexisClaw_live_append_array() {
+FirstNexus_live_append_array() {
   local target_array="${1:?target array required}"
   local source_array="${2:?source array required}"
   local count
@@ -206,7 +206,7 @@ NexisClaw_live_append_array() {
   eval "$target_array+=(\"\${$source_array[@]}\")"
 }
 
-NexisClaw_live_stage_auth_into_home() {
+FirstNexus_live_stage_auth_into_home() {
   local dest_home="${1:?destination home directory required}"
   shift
 
@@ -225,7 +225,7 @@ NexisClaw_live_stage_auth_into_home() {
         ;;
     esac
 
-    relative_path="$(NexisClaw_live_validate_relative_home_path "$1")" || return 1
+    relative_path="$(FirstNexus_live_validate_relative_home_path "$1")" || return 1
     source_path="$HOME/$relative_path"
     dest_path="$dest_home/$relative_path"
 

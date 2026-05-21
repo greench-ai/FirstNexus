@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   autoMigrateLegacyMatrixState,
   autoPrepareLegacyMatrixCrypto,
@@ -43,7 +43,7 @@ async function runBestEffortMatrixMigrationStep(params: {
 }
 
 export async function runMatrixStartupMaintenance(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   log: MatrixStartupLogger;
   trigger?: string;

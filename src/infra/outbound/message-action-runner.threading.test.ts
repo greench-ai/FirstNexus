@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import {
   prepareOutboundMirrorRoute,
   resolveAndApplyOutboundReplyToId,
@@ -27,7 +27,7 @@ const workspaceConfig = {
       botToken: "xoxb-test",
     },
   },
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 const forumConfig = {
   channels: {
@@ -35,7 +35,7 @@ const forumConfig = {
       botToken: "forum-test",
     },
   },
-} as NexisClawConfig;
+} as FirstNexusConfig;
 
 const defaultForumToolContext = {
   currentChannelId: "forum:123",

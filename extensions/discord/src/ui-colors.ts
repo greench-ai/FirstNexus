@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { inspectDiscordAccount } from "./account-inspect.js";
 
 const DEFAULT_DISCORD_ACCENT_COLOR = "#5865F2";
 
 type ResolveDiscordAccentColorParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 };
 

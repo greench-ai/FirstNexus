@@ -30,25 +30,25 @@ describe("waitForever", () => {
 
 describe("shouldSkipRespawnForArgv", () => {
   it.each([
-    { argv: ["node", "NexisClaw", "--help"] },
-    { argv: ["node", "NexisClaw", "-V"] },
-    { argv: ["node", "NexisClaw", "tui"] },
-    { argv: ["node", "NexisClaw", "terminal"] },
-    { argv: ["node", "NexisClaw", "chat"] },
-    { argv: ["node", "NexisClaw", "gateway"] },
-    { argv: ["node", "NexisClaw", "gateway", "--port", "14720", "--bind", "loopback"] },
-    { argv: ["node", "NexisClaw", "gateway", "run", "--port=14720", "--bind", "loopback"] },
+    { argv: ["node", "FirstNexus", "--help"] },
+    { argv: ["node", "FirstNexus", "-V"] },
+    { argv: ["node", "FirstNexus", "tui"] },
+    { argv: ["node", "FirstNexus", "terminal"] },
+    { argv: ["node", "FirstNexus", "chat"] },
+    { argv: ["node", "FirstNexus", "gateway"] },
+    { argv: ["node", "FirstNexus", "gateway", "--port", "14720", "--bind", "loopback"] },
+    { argv: ["node", "FirstNexus", "gateway", "run", "--port=14720", "--bind", "loopback"] },
     {
-      argv: ["node", "NexisClaw", "--profile", "server", "gateway", "run", "--allow-unconfigured"],
+      argv: ["node", "FirstNexus", "--profile", "server", "gateway", "run", "--allow-unconfigured"],
     },
   ] as const)("skips respawn for argv %j", ({ argv }) => {
     expect(shouldSkipRespawnForArgv([...argv]), argv.join(" ")).toBe(true);
   });
 
   it.each([
-    { argv: ["node", "NexisClaw", "status"] },
-    { argv: ["node", "NexisClaw", "gateway", "status"] },
-    { argv: ["node", "NexisClaw", "gateway", "call", "health"] },
+    { argv: ["node", "FirstNexus", "status"] },
+    { argv: ["node", "FirstNexus", "gateway", "status"] },
+    { argv: ["node", "FirstNexus", "gateway", "call", "health"] },
   ] as const)("keeps respawn path for argv %j", ({ argv }) => {
     expect(shouldSkipRespawnForArgv([...argv]), argv.join(" ")).toBe(false);
   });
@@ -56,18 +56,18 @@ describe("shouldSkipRespawnForArgv", () => {
 
 describe("shouldSkipStartupEnvironmentRespawnForArgv", () => {
   it.each([
-    { argv: ["node", "NexisClaw", "--help"] },
-    { argv: ["node", "NexisClaw", "gateway"] },
-    { argv: ["node", "NexisClaw", "gateway", "run", "--port=14720"] },
+    { argv: ["node", "FirstNexus", "--help"] },
+    { argv: ["node", "FirstNexus", "gateway"] },
+    { argv: ["node", "FirstNexus", "gateway", "run", "--port=14720"] },
   ] as const)("skips startup env respawn for argv %j", ({ argv }) => {
     expect(shouldSkipStartupEnvironmentRespawnForArgv([...argv]), argv.join(" ")).toBe(true);
   });
 
   it.each([
-    { argv: ["node", "NexisClaw", "tui"] },
-    { argv: ["node", "NexisClaw", "terminal"] },
-    { argv: ["node", "NexisClaw", "chat"] },
-    { argv: ["node", "NexisClaw", "status"] },
+    { argv: ["node", "FirstNexus", "tui"] },
+    { argv: ["node", "FirstNexus", "terminal"] },
+    { argv: ["node", "FirstNexus", "chat"] },
+    { argv: ["node", "FirstNexus", "status"] },
   ] as const)("allows startup env respawn for argv %j", ({ argv }) => {
     expect(shouldSkipStartupEnvironmentRespawnForArgv([...argv]), argv.join(" ")).toBe(false);
   });
@@ -79,10 +79,12 @@ describe("dns cli", () => {
     try {
       const program = new Command();
       registerDnsCli(program);
-      await program.parseAsync(["dns", "setup", "--domain", "NexisClaw.internal"], { from: "user" });
+      await program.parseAsync(["dns", "setup", "--domain", "FirstNexus.internal"], {
+        from: "user",
+      });
       const output = log.mock.calls.map((call) => call.join(" ")).join("\\n");
       expect(output).toContain("DNS setup");
-      expect(output).toContain("NexisClaw.internal");
+      expect(output).toContain("FirstNexus.internal");
     } finally {
       log.mockRestore();
     }

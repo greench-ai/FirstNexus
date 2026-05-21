@@ -4,24 +4,24 @@ import {
   type MessageReceipt,
   type MessageReceiptPartKind,
   type MessageReceiptSourceResult,
-} from "NexisClaw/plugin-sdk/channel-message";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { withTrustedEnvProxyGuardedFetchMode } from "NexisClaw/plugin-sdk/fetch-runtime";
-import { resolveMarkdownTableMode } from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
+} from "FirstNexus/plugin-sdk/channel-message";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { withTrustedEnvProxyGuardedFetchMode } from "FirstNexus/plugin-sdk/fetch-runtime";
+import { resolveMarkdownTableMode } from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
 import {
   chunkMarkdownTextWithMode,
   isSilentReplyText,
   resolveChunkMode,
   resolveTextChunkLimit,
-} from "NexisClaw/plugin-sdk/reply-chunking";
-import { resolveTextChunksWithFallback } from "NexisClaw/plugin-sdk/reply-payload";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/reply-chunking";
+import { resolveTextChunksWithFallback } from "FirstNexus/plugin-sdk/reply-payload";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { SlackTokenSource } from "./accounts.js";
 import { resolveSlackAccount } from "./accounts.js";
 import { buildSlackBlocksFallbackText } from "./blocks-fallback.js";
@@ -90,7 +90,7 @@ type SlackBasePostMessagePayload = SlackPostThreadPayload & {
 };
 
 type SlackSendOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   token?: string;
   accountId?: string;
   mediaUrl?: string;
@@ -658,7 +658,7 @@ export async function sendMessageSlack(
 async function sendMessageSlackQueued(params: {
   trimmedMessage: string;
   opts: SlackSendOpts;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ReturnType<typeof resolveSlackAccount>;
   token: string;
   recipient: SlackRecipient;
@@ -674,7 +674,7 @@ async function sendMessageSlackQueued(params: {
 async function sendMessageSlackQueuedInner(params: {
   trimmedMessage: string;
   opts: SlackSendOpts;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ReturnType<typeof resolveSlackAccount>;
   token: string;
   recipient: SlackRecipient;

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# One-time host setup for rootless NexisClaw in Podman. Uses the current
+# One-time host setup for rootless FirstNexus in Podman. Uses the current
 # non-root user throughout, builds or pulls the image into that user's Podman
-# store, writes config under ~/.NexisClaw by default, and uses the repo-local
-# launch script at ./scripts/run-NexisClaw-podman.sh.
+# store, writes config under ~/.FirstNexus by default, and uses the repo-local
+# launch script at ./scripts/run-FirstNexus-podman.sh.
 #
 # Usage: ./scripts/podman/setup.sh [--quadlet|--container]
 #   --quadlet   Install a Podman Quadlet as the current user's systemd service
@@ -10,21 +10,21 @@
 #   Or set NEXISCLAW_PODMAN_QUADLET=1 (or 0) to choose without a flag.
 #
 # After this, start the gateway manually:
-#   ./scripts/run-NexisClaw-podman.sh launch
-#   ./scripts/run-NexisClaw-podman.sh launch setup
+#   ./scripts/run-FirstNexus-podman.sh launch
+#   ./scripts/run-FirstNexus-podman.sh launch setup
 # Or, if you used --quadlet:
-#   systemctl --user start NexisClaw.service
+#   systemctl --user start FirstNexus.service
 set -euo pipefail
 
 REPO_PATH="${NEXISCLAW_REPO_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
-RUN_SCRIPT_SRC="$REPO_PATH/scripts/run-NexisClaw-podman.sh"
-QUADLET_TEMPLATE="$REPO_PATH/scripts/podman/NexisClaw.container.in"
+RUN_SCRIPT_SRC="$REPO_PATH/scripts/run-FirstNexus-podman.sh"
+QUADLET_TEMPLATE="$REPO_PATH/scripts/podman/FirstNexus.container.in"
 NEXISCLAW_USER="$(id -un)"
 NEXISCLAW_HOME="${HOME:-}"
 NEXISCLAW_CONFIG_DIR="${NEXISCLAW_CONFIG_DIR:-}"
 NEXISCLAW_WORKSPACE_DIR="${NEXISCLAW_WORKSPACE_DIR:-}"
-NEXISCLAW_IMAGE="${NEXISCLAW_PODMAN_IMAGE:-${NEXISCLAW_IMAGE:-NexisClaw:local}}"
-NEXISCLAW_CONTAINER_NAME="${NEXISCLAW_PODMAN_CONTAINER:-NexisClaw}"
+NEXISCLAW_IMAGE="${NEXISCLAW_PODMAN_IMAGE:-${NEXISCLAW_IMAGE:-FirstNexus:local}}"
+NEXISCLAW_CONTAINER_NAME="${NEXISCLAW_PODMAN_CONTAINER:-FirstNexus}"
 PLATFORM_NAME="$(uname -s 2>/dev/null || echo unknown)"
 HOST_GATEWAY_PORT="${NEXISCLAW_PODMAN_GATEWAY_HOST_PORT:-${NEXISCLAW_GATEWAY_PORT:-19500}}"
 QUADLET_GATEWAY_PORT="19500"
@@ -324,7 +324,7 @@ if is_root; then
   echo "Run scripts/podman/setup.sh as your normal user so Podman stays rootless." >&2
   exit 1
 fi
-if [[ "$NEXISCLAW_IMAGE" == "NexisClaw:local" ]] && [[ ! -f "$REPO_PATH/Dockerfile" ]]; then
+if [[ "$NEXISCLAW_IMAGE" == "FirstNexus:local" ]] && [[ ! -f "$REPO_PATH/Dockerfile" ]]; then
   echo "Dockerfile not found at $REPO_PATH. Set NEXISCLAW_REPO_PATH to the repo root." >&2
   exit 1
 fi
@@ -341,7 +341,7 @@ if [[ -z "$NEXISCLAW_HOME" ]]; then
   exit 1
 fi
 if [[ -z "$NEXISCLAW_CONFIG_DIR" ]]; then
-  NEXISCLAW_CONFIG_DIR="$NEXISCLAW_HOME/.NexisClaw"
+  NEXISCLAW_CONFIG_DIR="$NEXISCLAW_HOME/.FirstNexus"
 fi
 if [[ -z "$NEXISCLAW_WORKSPACE_DIR" ]]; then
   NEXISCLAW_WORKSPACE_DIR="$NEXISCLAW_CONFIG_DIR/workspace"
@@ -369,7 +369,7 @@ if [[ -n "${NEXISCLAW_INSTALL_BROWSER:-}" ]]; then
   BUILD_ARGS+=(--build-arg "NEXISCLAW_INSTALL_BROWSER=${NEXISCLAW_INSTALL_BROWSER}")
 fi
 
-if [[ "$NEXISCLAW_IMAGE" == "NexisClaw:local" ]]; then
+if [[ "$NEXISCLAW_IMAGE" == "FirstNexus:local" ]]; then
   echo "Building image $NEXISCLAW_IMAGE ..."
   podman build -t "$NEXISCLAW_IMAGE" -f "$REPO_PATH/Dockerfile" "${BUILD_ARGS[@]+"${BUILD_ARGS[@]}"}" "$REPO_PATH"
 else
@@ -395,7 +395,7 @@ fi
 upsert_env_var "$ENV_FILE" "NEXISCLAW_PODMAN_CONTAINER" "$NEXISCLAW_CONTAINER_NAME"
 upsert_env_var "$ENV_FILE" "NEXISCLAW_PODMAN_IMAGE" "$NEXISCLAW_IMAGE"
 
-CONFIG_JSON="$NEXISCLAW_CONFIG_DIR/NexisClaw.json"
+CONFIG_JSON="$NEXISCLAW_CONFIG_DIR/FirstNexus.json"
 if [[ ! -f "$CONFIG_JSON" ]]; then
   (
     umask 077
@@ -419,7 +419,7 @@ seed_local_control_ui_origins "$CONFIG_JSON" "$SEED_GATEWAY_PORT"
 
 if [[ "$INSTALL_QUADLET" == true ]]; then
   QUADLET_DIR="$NEXISCLAW_HOME/.config/containers/systemd"
-  QUADLET_DST="$QUADLET_DIR/NexisClaw.container"
+  QUADLET_DST="$QUADLET_DIR/FirstNexus.container"
   echo "Installing Quadlet to $QUADLET_DST ..."
   mkdir -p "$QUADLET_DIR"
   ensure_safe_existing_dir "quadlet directory" "$QUADLET_DIR"
@@ -438,11 +438,11 @@ if [[ "$INSTALL_QUADLET" == true ]]; then
 
   if command -v systemctl >/dev/null 2>&1; then
     echo "Reloading and starting user service..."
-    if systemctl --user daemon-reload && systemctl --user start NexisClaw.service; then
+    if systemctl --user daemon-reload && systemctl --user start FirstNexus.service; then
       echo "Quadlet installed and service started."
     else
       echo "Quadlet installed, but automatic start failed." >&2
-      echo "Try: systemctl --user daemon-reload && systemctl --user start NexisClaw.service" >&2
+      echo "Try: systemctl --user daemon-reload && systemctl --user start FirstNexus.service" >&2
       if command -v loginctl >/dev/null 2>&1; then
         echo "For boot persistence on headless hosts, you may also need: sudo loginctl enable-linger $(whoami)" >&2
       fi
@@ -456,6 +456,6 @@ fi
 
 echo
 echo "Next:"
-echo "  ./scripts/run-NexisClaw-podman.sh launch"
-echo "  ./scripts/run-NexisClaw-podman.sh launch setup"
-echo "  NexisClaw --container $NEXISCLAW_CONTAINER_NAME dashboard --no-open"
+echo "  ./scripts/run-FirstNexus-podman.sh launch"
+echo "  ./scripts/run-FirstNexus-podman.sh launch setup"
+echo "  FirstNexus --container $NEXISCLAW_CONTAINER_NAME dashboard --no-open"

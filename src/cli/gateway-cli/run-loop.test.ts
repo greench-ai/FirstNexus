@@ -667,7 +667,7 @@ describe("runGatewayLoop", () => {
     peekGatewaySigusr1RestartReason.mockReturnValue(undefined);
     try {
       setPlatform("darwin");
-      process.env.LAUNCH_JOB_LABEL = "ai.NexisClaw.gateway";
+      process.env.LAUNCH_JOB_LABEL = "ai.FirstNexus.gateway";
       restartGatewayProcessWithFreshPid.mockReturnValueOnce({
         mode: "supervised",
       });

@@ -1,5 +1,5 @@
-import { resolveSendableOutboundReplyParts } from "NexisClaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
+import { resolveSendableOutboundReplyParts } from "FirstNexus/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
 import type { LineChannelData } from "./types.js";
 
 export type LineDurableReplyOptions = {

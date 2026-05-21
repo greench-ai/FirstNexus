@@ -25,19 +25,19 @@ function resolveCredentialRole(env: NodeJS.ProcessEnv) {
   return env.NEXISCLAW_NPM_TELEGRAM_CREDENTIAL_ROLE ?? env.NEXISCLAW_QA_CREDENTIAL_ROLE;
 }
 
-async function resolveTrustedNexisClawCommand(rawCommand: string) {
+async function resolveTrustedFirstNexusCommand(rawCommand: string) {
   if (!path.isAbsolute(rawCommand)) {
     throw new Error("NEXISCLAW_NPM_TELEGRAM_SUT_COMMAND must be an absolute path.");
   }
   const commandName = path.basename(rawCommand);
-  if (commandName !== "NexisClaw" && commandName !== "NexisClaw.cmd") {
+  if (commandName !== "FirstNexus" && commandName !== "FirstNexus.cmd") {
     throw new Error(
-      `NEXISCLAW_NPM_TELEGRAM_SUT_COMMAND must point to NexisClaw; got: ${commandName}`,
+      `NEXISCLAW_NPM_TELEGRAM_SUT_COMMAND must point to FirstNexus; got: ${commandName}`,
     );
   }
   const npmPrefix = process.env.NPM_CONFIG_PREFIX?.trim();
   if (!npmPrefix) {
-    throw new Error("Missing NPM_CONFIG_PREFIX for installed NexisClaw command validation.");
+    throw new Error("Missing NPM_CONFIG_PREFIX for installed FirstNexus command validation.");
   }
   const [realCommand, realPrefix] = await Promise.all([
     fs.realpath(rawCommand),
@@ -52,11 +52,11 @@ async function resolveTrustedNexisClawCommand(rawCommand: string) {
 async function main() {
   const { runTelegramQaLive } =
     await import("../../extensions/qa-lab/src/live-transports/telegram/telegram-live.runtime.ts");
-  const rawSutNexisClawCommand = process.env.NEXISCLAW_NPM_TELEGRAM_SUT_COMMAND?.trim();
-  if (!rawSutNexisClawCommand) {
+  const rawSutFirstNexusCommand = process.env.NEXISCLAW_NPM_TELEGRAM_SUT_COMMAND?.trim();
+  if (!rawSutFirstNexusCommand) {
     throw new Error("Missing NEXISCLAW_NPM_TELEGRAM_SUT_COMMAND.");
   }
-  const sutNexisClawCommand = await resolveTrustedNexisClawCommand(rawSutNexisClawCommand);
+  const sutFirstNexusCommand = await resolveTrustedFirstNexusCommand(rawSutFirstNexusCommand);
 
   const repoRoot = path.resolve(process.env.NEXISCLAW_NPM_TELEGRAM_REPO_ROOT ?? process.cwd());
   const outputDir =
@@ -65,7 +65,7 @@ async function main() {
   const result = await runTelegramQaLive({
     repoRoot,
     outputDir,
-    sutNexisClawCommand,
+    sutFirstNexusCommand,
     preflightInstalledOnboarding: true,
     providerMode: process.env.NEXISCLAW_NPM_TELEGRAM_PROVIDER_MODE,
     primaryModel: process.env.NEXISCLAW_NPM_TELEGRAM_MODEL,

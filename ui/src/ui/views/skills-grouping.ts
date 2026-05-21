@@ -7,10 +7,10 @@ export type SkillGroup = {
 };
 
 const SKILL_SOURCE_GROUPS: Array<{ id: string; label: string; sources: string[] }> = [
-  { id: "workspace", label: "Workspace Skills", sources: ["NexisClaw-workspace"] },
-  { id: "built-in", label: "Built-in Skills", sources: ["NexisClaw-bundled"] },
-  { id: "installed", label: "Installed Skills", sources: ["NexisClaw-managed"] },
-  { id: "extra", label: "Extra Skills", sources: ["NexisClaw-extra"] },
+  { id: "workspace", label: "Workspace Skills", sources: ["FirstNexus-workspace"] },
+  { id: "built-in", label: "Built-in Skills", sources: ["FirstNexus-bundled"] },
+  { id: "installed", label: "Installed Skills", sources: ["FirstNexus-managed"] },
+  { id: "extra", label: "Extra Skills", sources: ["FirstNexus-extra"] },
 ];
 
 export function groupSkills(skills: SkillStatusEntry[]): SkillGroup[] {

@@ -9,9 +9,9 @@ vi.mock("./client-adapter.js", () => ({
   signalRpcRequest: (...args: unknown[]) => signalRpcRequestMock(...args),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/media-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/media-runtime")>(
-    "NexisClaw/plugin-sdk/media-runtime",
+vi.mock("FirstNexus/plugin-sdk/media-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/media-runtime")>(
+    "FirstNexus/plugin-sdk/media-runtime",
   );
   return {
     ...actual,

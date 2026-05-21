@@ -122,7 +122,7 @@ describe("subagent registry persistence", () => {
     persisted: Record<string, unknown>,
     opts?: { seedChildSessions?: boolean },
   ) => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-subagent-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
     const registryPath = path.join(tempStateDir, "subagents", "runs.json");
     await fs.mkdir(path.dirname(registryPath), { recursive: true });
@@ -228,7 +228,7 @@ describe("subagent registry persistence", () => {
   });
 
   it("persists completed subagent timing into the child session entry", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-subagent-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
 
     const now = Date.now();
@@ -265,7 +265,7 @@ describe("subagent registry persistence", () => {
   });
 
   it("skips cleanup when cleanupHandled was persisted", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-subagent-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
 
     const registryPath = path.join(tempStateDir, "subagents", "runs.json");
@@ -407,7 +407,7 @@ describe("subagent registry persistence", () => {
   });
 
   it("returns empty maps for unchanged invalid persisted registry snapshots", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-subagent-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
     const registryPath = path.join(tempStateDir, "subagents", "runs.json");
     await fs.mkdir(path.dirname(registryPath), { recursive: true });
@@ -454,7 +454,7 @@ describe("subagent registry persistence", () => {
     });
 
     resetSubagentRegistryForTests({ persist: false });
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-subagent-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
 
     vi.mocked(callGateway).mockResolvedValueOnce({
@@ -731,7 +731,7 @@ describe("subagent registry persistence", () => {
   });
 
   it("removes attachments when pruning orphaned restored runs", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-subagent-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
     const attachmentsRootDir = path.join(tempStateDir, "attachments");
     const attachmentsDir = path.join(attachmentsRootDir, "ghost");
@@ -863,7 +863,7 @@ describe("subagent registry persistence", () => {
   });
 
   it("resume guard prunes orphan runs before announce retry", async () => {
-    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-subagent-"));
+    tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-subagent-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
     const runId = "run-orphan-resume-guard";
     const childSessionKey = "agent:main:subagent:ghost-resume";
@@ -902,6 +902,6 @@ describe("subagent registry persistence", () => {
   it("uses isolated temp state when NEXISCLAW_STATE_DIR is unset in tests", () => {
     delete process.env.NEXISCLAW_STATE_DIR;
     const registryPath = resolveSubagentRegistryPath();
-    expect(registryPath).toContain(path.join(os.tmpdir(), "NexisClaw-test-state"));
+    expect(registryPath).toContain(path.join(os.tmpdir(), "FirstNexus-test-state"));
   });
 });

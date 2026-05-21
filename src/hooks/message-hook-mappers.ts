@@ -1,6 +1,6 @@
 import type { FinalizedMsgContext } from "../auto-reply/templating.js";
 import { getChannelPlugin, normalizeChannelId } from "../channels/plugins/index.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   freezeDiagnosticTraceContext,
   type DiagnosticTraceContext,
@@ -44,7 +44,7 @@ export type CanonicalInboundMessageHookContext = {
   provider?: string;
   surface?: string;
   threadId?: string | number;
-  // `mediaPath(s)` are files NexisClaw has already staged locally. `mediaUrl(s)`
+  // `mediaPath(s)` are files FirstNexus has already staged locally. `mediaUrl(s)`
   // are provider/media-server references that may not exist on this host.
   mediaPath?: string;
   mediaUrl?: string;
@@ -435,8 +435,8 @@ export function toInternalMessageReceivedContext(
 
 export function toInternalMessageTranscribedContext(
   canonical: CanonicalInboundMessageHookContext,
-  cfg: NexisClawConfig,
-): MessageTranscribedHookContext & { cfg: NexisClawConfig } {
+  cfg: FirstNexusConfig,
+): MessageTranscribedHookContext & { cfg: FirstNexusConfig } {
   const shared = toInternalInboundMessageHookContextBase(canonical);
   return {
     ...shared,
@@ -447,8 +447,8 @@ export function toInternalMessageTranscribedContext(
 
 export function toInternalMessagePreprocessedContext(
   canonical: CanonicalInboundMessageHookContext,
-  cfg: NexisClawConfig,
-): MessagePreprocessedHookContext & { cfg: NexisClawConfig } {
+  cfg: FirstNexusConfig,
+): MessagePreprocessedHookContext & { cfg: FirstNexusConfig } {
   const shared = toInternalInboundMessageHookContextBase(canonical);
   return {
     ...shared,

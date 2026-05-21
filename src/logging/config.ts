@@ -2,9 +2,9 @@ import fs from "node:fs";
 import JSON5 from "json5";
 import { getCommandPathWithRootOptions } from "../cli/argv.js";
 import { resolveConfigPath } from "../config/paths.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
-type LoggingConfig = NexisClawConfig["logging"];
+type LoggingConfig = FirstNexusConfig["logging"];
 
 let cachedLoggingConfig:
   | {

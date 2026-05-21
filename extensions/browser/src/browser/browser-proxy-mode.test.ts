@@ -34,7 +34,7 @@ describe("browser proxy mode", () => {
     expect(
       resolveBrowserNavigationProxyMode({
         resolved,
-        profile: { driver: "NexisClaw", cdpIsLoopback: true },
+        profile: { driver: "FirstNexus", cdpIsLoopback: true },
       }),
     ).toBe("explicit-browser-proxy");
     expect(
@@ -46,7 +46,7 @@ describe("browser proxy mode", () => {
     expect(
       resolveBrowserNavigationProxyMode({
         resolved,
-        profile: { driver: "NexisClaw", cdpIsLoopback: false },
+        profile: { driver: "FirstNexus", cdpIsLoopback: false },
       }),
     ).toBe("direct");
   });

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveConfiguredCapabilityProvider } from "../plugin-sdk/provider-selection-runtime.js";
 import type { RealtimeVoiceProviderPlugin } from "../plugins/types.js";
 import { getRealtimeVoiceProvider, listRealtimeVoiceProviders } from "./provider-registry.js";
@@ -13,8 +13,8 @@ export type ResolveConfiguredRealtimeVoiceProviderParams = {
   configuredProviderId?: string;
   providerConfigs?: Record<string, Record<string, unknown> | undefined>;
   providerConfigOverrides?: Record<string, unknown>;
-  cfg?: NexisClawConfig;
-  cfgForResolve?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
+  cfgForResolve?: FirstNexusConfig;
   providers?: RealtimeVoiceProviderPlugin[];
   defaultModel?: string;
   noRegisteredProviderMessage?: string;
@@ -23,7 +23,7 @@ export type ResolveConfiguredRealtimeVoiceProviderParams = {
 export function resolveConfiguredRealtimeVoiceProvider(
   params: ResolveConfiguredRealtimeVoiceProviderParams,
 ): ResolvedRealtimeVoiceProvider {
-  const cfgForResolve = params.cfgForResolve ?? params.cfg ?? ({} as NexisClawConfig);
+  const cfgForResolve = params.cfgForResolve ?? params.cfg ?? ({} as FirstNexusConfig);
   const providers = params.providers ?? listRealtimeVoiceProviders(params.cfg);
   const resolution = resolveConfiguredCapabilityProvider({
     configuredProviderId: params.configuredProviderId,

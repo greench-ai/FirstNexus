@@ -18,7 +18,7 @@ const tempDirs: string[] = [];
 function makeTempDir(): string {
   const trustedRoot = path.resolve("dist-runtime", "extensions");
   fs.mkdirSync(trustedRoot, { recursive: true });
-  const dir = fs.mkdtempSync(path.join(trustedRoot, ".NexisClaw-plugin-prefer-over-"));
+  const dir = fs.mkdtempSync(path.join(trustedRoot, ".FirstNexus-plugin-prefer-over-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -29,7 +29,7 @@ function writeBundledChannelPackage(rootDir: string, channelId: string): void {
   fs.writeFileSync(
     path.join(pluginDir, "package.json"),
     JSON.stringify({
-      NexisClaw: {
+      FirstNexus: {
         channel: {
           id: channelId,
           label: "Cache Drift",
@@ -42,7 +42,7 @@ function writeBundledChannelPackage(rootDir: string, channelId: string): void {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginDir, "NexisClaw.plugin.json"),
+    path.join(pluginDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: channelId,
       configSchema: { type: "object" },

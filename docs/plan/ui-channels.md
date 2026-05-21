@@ -146,7 +146,7 @@ type ChannelOutboundAdapter = {
   deliveryCapabilities?: ChannelDeliveryCapabilities;
 
   pinDeliveredMessage?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string | null;
     to: string;
     threadId?: string | number | null;

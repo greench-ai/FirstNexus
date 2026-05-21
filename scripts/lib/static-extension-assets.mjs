@@ -50,7 +50,7 @@ function listDistExtensionPackageDirs(rootDir, fsImpl) {
 }
 
 function readPackageStaticAssetEntries(packageJson) {
-  const entries = packageJson.NexisClaw?.build?.staticAssets;
+  const entries = packageJson.FirstNexus?.build?.staticAssets;
   return Array.isArray(entries) ? entries : [];
 }
 

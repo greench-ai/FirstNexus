@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.js";
+import type { FirstNexusConfig } from "../../config/types.js";
 import { probeGateway } from "../../gateway/probe.js";
 import {
   discoverGatewayBeacons,
@@ -25,7 +25,7 @@ export type GatewayStatusProbedTarget = {
 };
 
 export async function runGatewayStatusProbePass(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   opts: {
     token?: string;
     password?: string;

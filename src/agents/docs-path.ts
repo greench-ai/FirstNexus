@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import { resolveNexisClawPackageRoot } from "../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRoot } from "../infra/FirstNexus-root.js";
 
-export const NEXISCLAW_DOCS_URL = "https://docs.NexisClaw.ai";
-export const NEXISCLAW_SOURCE_URL = "https://github.com/NexisClaw/NexisClaw";
+export const NEXISCLAW_DOCS_URL = "https://docs.FirstNexus.ai";
+export const NEXISCLAW_SOURCE_URL = "https://github.com/FirstNexus/FirstNexus";
 
-type ResolveNexisClawReferencePathParams = {
+type ResolveFirstNexusReferencePathParams = {
   workspaceDir?: string;
   argv1?: string;
   cwd?: string;
@@ -20,7 +20,7 @@ function isGitCheckout(rootDir: string): boolean {
   return fs.existsSync(path.join(rootDir, ".git"));
 }
 
-export async function resolveNexisClawDocsPath(params: {
+export async function resolveFirstNexusDocsPath(params: {
   workspaceDir?: string;
   argv1?: string;
   cwd?: string;
@@ -34,7 +34,7 @@ export async function resolveNexisClawDocsPath(params: {
     }
   }
 
-  const packageRoot = await resolveNexisClawPackageRoot({
+  const packageRoot = await resolveFirstNexusPackageRoot({
     cwd: params.cwd,
     argv1: params.argv1,
     moduleUrl: params.moduleUrl,
@@ -47,10 +47,10 @@ export async function resolveNexisClawDocsPath(params: {
   return isUsableDocsDir(packageDocs) ? packageDocs : null;
 }
 
-export async function resolveNexisClawSourcePath(
-  params: ResolveNexisClawReferencePathParams,
+export async function resolveFirstNexusSourcePath(
+  params: ResolveFirstNexusReferencePathParams,
 ): Promise<string | null> {
-  const packageRoot = await resolveNexisClawPackageRoot({
+  const packageRoot = await resolveFirstNexusPackageRoot({
     cwd: params.cwd,
     argv1: params.argv1,
     moduleUrl: params.moduleUrl,
@@ -61,15 +61,15 @@ export async function resolveNexisClawSourcePath(
   return packageRoot;
 }
 
-export async function resolveNexisClawReferencePaths(
-  params: ResolveNexisClawReferencePathParams,
+export async function resolveFirstNexusReferencePaths(
+  params: ResolveFirstNexusReferencePathParams,
 ): Promise<{
   docsPath: string | null;
   sourcePath: string | null;
 }> {
   const [docsPath, sourcePath] = await Promise.all([
-    resolveNexisClawDocsPath(params),
-    resolveNexisClawSourcePath(params),
+    resolveFirstNexusDocsPath(params),
+    resolveFirstNexusSourcePath(params),
   ]);
   return { docsPath, sourcePath };
 }

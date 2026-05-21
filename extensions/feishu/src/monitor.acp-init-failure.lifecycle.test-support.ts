@@ -1,5 +1,5 @@
 import "./lifecycle.test-support.js";
-import { createRuntimeEnv } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+import { createRuntimeEnv } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ClawdbotConfig } from "../runtime-api.js";
 import {
@@ -79,7 +79,7 @@ describe("Feishu ACP-init failure lifecycle", () => {
     resetFeishuLifecycleTestMocks();
     _handlers = {};
     lastRuntime = createRuntimeEnv();
-    setFeishuLifecycleStateDir("NexisClaw-feishu-acp-failure");
+    setFeishuLifecycleStateDir("FirstNexus-feishu-acp-failure");
 
     resolveBoundConversationMock.mockReturnValue(null);
     resolveAgentRouteMock.mockReturnValue({

@@ -1,10 +1,10 @@
 {
-  "name": "@NexisClaw/codex",
+  "name": "@FirstNexus/codex",
   "version": "2026.5.12-beta.1",
-  "description": "NexisClaw Codex harness and model provider plugin",
+  "description": "FirstNexus Codex harness and model provider plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexisClaw/NexisClaw"
+    "url": "https://github.com/FirstNexus/FirstNexus"
   },
   "type": "module",
   "dependencies": {
@@ -15,14 +15,14 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "npmSpec": "@NexisClaw/codex",
+      "npmSpec": "@FirstNexus/codex",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.5.1-beta.1"
     },
@@ -30,7 +30,7 @@
       "pluginApi": ">=2026.5.12-beta.1"
     },
     "build": {
-      "NexisClawVersion": "2026.5.12-beta.1"
+      "FirstNexusVersion": "2026.5.12-beta.1"
     },
     "release": {
       "publishToClawHub": true,

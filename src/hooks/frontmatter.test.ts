@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   parseFrontmatter,
-  resolveNexisClawMetadata,
+  resolveFirstNexusMetadata,
   resolveHookInvocationPolicy,
 } from "./frontmatter.js";
-import type { NexisClawHookMetadata } from "./types.js";
+import type { FirstNexusHookMetadata } from "./types.js";
 
 function requireString(value: string | undefined, label: string): string {
   if (typeof value !== "string") {
@@ -13,9 +13,11 @@ function requireString(value: string | undefined, label: string): string {
   return value;
 }
 
-function requireNexisClawMetadata(metadata: NexisClawHookMetadata | undefined): NexisClawHookMetadata {
+function requireFirstNexusMetadata(
+  metadata: FirstNexusHookMetadata | undefined,
+): FirstNexusHookMetadata {
   if (!metadata) {
-    throw new Error("expected NexisClaw metadata");
+    throw new Error("expected FirstNexus metadata");
   }
   return metadata;
 }
@@ -56,7 +58,7 @@ name: session-memory
 description: "Save session context"
 metadata:
   {
-    "NexisClaw": {
+    "FirstNexus": {
       "emoji": "💾",
       "events": ["command:new"]
     }
@@ -72,8 +74,8 @@ metadata:
 
     // Verify the metadata is valid JSON
     const parsed = JSON.parse(metadata);
-    expect(parsed.NexisClaw.emoji).toBe("💾");
-    expect(parsed.NexisClaw.events).toEqual(["command:new"]);
+    expect(parsed.FirstNexus.emoji).toBe("💾");
+    expect(parsed.FirstNexus.events).toEqual(["command:new"]);
   });
 
   it("parses multi-line metadata with complex nested structure", () => {
@@ -82,7 +84,7 @@ name: command-logger
 description: "Log all command events"
 metadata:
   {
-    "NexisClaw":
+    "FirstNexus":
       {
         "emoji": "📝",
         "events": ["command"],
@@ -96,21 +98,21 @@ metadata:
     expect(result.name).toBe("command-logger");
 
     const parsed = JSON.parse(requireString(result.metadata, "command-logger metadata"));
-    expect(parsed.NexisClaw.emoji).toBe("📝");
-    expect(parsed.NexisClaw.events).toEqual(["command"]);
-    expect(parsed.NexisClaw.requires.config).toEqual(["workspace.dir"]);
-    expect(parsed.NexisClaw.install[0].kind).toBe("bundled");
+    expect(parsed.FirstNexus.emoji).toBe("📝");
+    expect(parsed.FirstNexus.events).toEqual(["command"]);
+    expect(parsed.FirstNexus.requires.config).toEqual(["workspace.dir"]);
+    expect(parsed.FirstNexus.install[0].kind).toBe("bundled");
   });
 
   it("handles single-line metadata (inline JSON)", () => {
     const content = `---
 name: simple-hook
-metadata: {"NexisClaw": {"events": ["test"]}}
+metadata: {"FirstNexus": {"events": ["test"]}}
 ---
 `;
     const result = parseFrontmatter(content);
     expect(result.name).toBe("simple-hook");
-    expect(result.metadata).toBe('{"NexisClaw": {"events": ["test"]}}');
+    expect(result.metadata).toBe('{"FirstNexus": {"events": ["test"]}}');
   });
 
   it("handles mixed single-line and multi-line values", () => {
@@ -120,7 +122,7 @@ description: "A hook with mixed values"
 homepage: https://example.com
 metadata:
   {
-    "NexisClaw": {
+    "FirstNexus": {
       "events": ["command:new"]
     }
   }
@@ -161,12 +163,12 @@ description: 'single-quoted'
   });
 });
 
-describe("resolveNexisClawMetadata", () => {
-  it("extracts NexisClaw metadata from parsed frontmatter", () => {
+describe("resolveFirstNexusMetadata", () => {
+  it("extracts FirstNexus metadata from parsed frontmatter", () => {
     const frontmatter = {
       name: "test-hook",
       metadata: JSON.stringify({
-        NexisClaw: {
+        FirstNexus: {
           emoji: "🔥",
           events: ["command:new", "command:reset"],
           requires: {
@@ -177,25 +179,25 @@ describe("resolveNexisClawMetadata", () => {
       }),
     };
 
-    const result = resolveNexisClawMetadata(frontmatter);
-    const NexisClaw = requireNexisClawMetadata(result);
-    expect(NexisClaw.emoji).toBe("🔥");
-    expect(NexisClaw.events).toEqual(["command:new", "command:reset"]);
-    expect(NexisClaw.requires?.config).toEqual(["workspace.dir"]);
-    expect(NexisClaw.requires?.bins).toEqual(["git"]);
+    const result = resolveFirstNexusMetadata(frontmatter);
+    const FirstNexus = requireFirstNexusMetadata(result);
+    expect(FirstNexus.emoji).toBe("🔥");
+    expect(FirstNexus.events).toEqual(["command:new", "command:reset"]);
+    expect(FirstNexus.requires?.config).toEqual(["workspace.dir"]);
+    expect(FirstNexus.requires?.bins).toEqual(["git"]);
   });
 
   it("returns undefined when metadata is missing", () => {
     const frontmatter = { name: "no-metadata" };
-    const result = resolveNexisClawMetadata(frontmatter);
+    const result = resolveFirstNexusMetadata(frontmatter);
     expect(result).toBeUndefined();
   });
 
-  it("returns undefined when NexisClaw key is missing", () => {
+  it("returns undefined when FirstNexus key is missing", () => {
     const frontmatter = {
       metadata: JSON.stringify({ other: "data" }),
     };
-    const result = resolveNexisClawMetadata(frontmatter);
+    const result = resolveFirstNexusMetadata(frontmatter);
     expect(result).toBeUndefined();
   });
 
@@ -203,41 +205,41 @@ describe("resolveNexisClawMetadata", () => {
     const frontmatter = {
       metadata: "not valid json {",
     };
-    const result = resolveNexisClawMetadata(frontmatter);
+    const result = resolveFirstNexusMetadata(frontmatter);
     expect(result).toBeUndefined();
   });
 
   it("handles install specs", () => {
     const frontmatter = {
       metadata: JSON.stringify({
-        NexisClaw: {
+        FirstNexus: {
           events: ["command"],
           install: [
-            { id: "bundled", kind: "bundled", label: "Bundled with NexisClaw" },
-            { id: "npm", kind: "npm", package: "@NexisClaw/hook" },
+            { id: "bundled", kind: "bundled", label: "Bundled with FirstNexus" },
+            { id: "npm", kind: "npm", package: "@FirstNexus/hook" },
           ],
         },
       }),
     };
 
-    const result = resolveNexisClawMetadata(frontmatter);
+    const result = resolveFirstNexusMetadata(frontmatter);
     expect(result?.install).toHaveLength(2);
     expect(result?.install?.[0].kind).toBe("bundled");
     expect(result?.install?.[1].kind).toBe("npm");
-    expect(result?.install?.[1].package).toBe("@NexisClaw/hook");
+    expect(result?.install?.[1].package).toBe("@FirstNexus/hook");
   });
 
   it("handles os restrictions", () => {
     const frontmatter = {
       metadata: JSON.stringify({
-        NexisClaw: {
+        FirstNexus: {
           events: ["command"],
           os: ["darwin", "linux"],
         },
       }),
     };
 
-    const result = resolveNexisClawMetadata(frontmatter);
+    const result = resolveFirstNexusMetadata(frontmatter);
     expect(result?.os).toEqual(["darwin", "linux"]);
   });
 
@@ -246,15 +248,15 @@ describe("resolveNexisClawMetadata", () => {
     const content = `---
 name: session-memory
 description: "Save session context to memory when /new or /reset command is issued"
-homepage: https://docs.NexisClaw.ai/automation/hooks#session-memory
+homepage: https://docs.FirstNexus.ai/automation/hooks#session-memory
 metadata:
   {
-    "NexisClaw":
+    "FirstNexus":
       {
         "emoji": "💾",
         "events": ["command:new", "command:reset"],
         "requires": { "config": ["workspace.dir"] },
-        "install": [{ "id": "bundled", "kind": "bundled", "label": "Bundled with NexisClaw" }],
+        "install": [{ "id": "bundled", "kind": "bundled", "label": "Bundled with FirstNexus" }],
       },
   }
 ---
@@ -268,27 +270,27 @@ metadata:
       '"command:reset"',
     );
 
-    const NexisClaw = requireNexisClawMetadata(resolveNexisClawMetadata(frontmatter));
-    expect(NexisClaw.emoji).toBe("💾");
-    expect(NexisClaw.events).toEqual(["command:new", "command:reset"]);
-    expect(NexisClaw.requires?.config).toEqual(["workspace.dir"]);
-    expect(NexisClaw.install?.[0].kind).toBe("bundled");
+    const FirstNexus = requireFirstNexusMetadata(resolveFirstNexusMetadata(frontmatter));
+    expect(FirstNexus.emoji).toBe("💾");
+    expect(FirstNexus.events).toEqual(["command:new", "command:reset"]);
+    expect(FirstNexus.requires?.config).toEqual(["workspace.dir"]);
+    expect(FirstNexus.install?.[0].kind).toBe("bundled");
   });
 
   it("parses YAML metadata map", () => {
     const content = `---
 name: yaml-metadata
 metadata:
-  NexisClaw:
+  FirstNexus:
     emoji: disk
     events:
       - command:new
 ---
 `;
     const frontmatter = parseFrontmatter(content);
-    const NexisClaw = resolveNexisClawMetadata(frontmatter);
-    expect(NexisClaw?.emoji).toBe("disk");
-    expect(NexisClaw?.events).toEqual(["command:new"]);
+    const FirstNexus = resolveFirstNexusMetadata(frontmatter);
+    expect(FirstNexus?.emoji).toBe("disk");
+    expect(FirstNexus?.events).toEqual(["command:new"]);
   });
 });
 

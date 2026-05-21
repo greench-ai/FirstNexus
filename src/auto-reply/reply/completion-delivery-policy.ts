@@ -1,5 +1,5 @@
 import { normalizeChatType, type ChatType } from "../../channels/chat-type.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { deriveSessionChatType } from "../../sessions/session-chat-type.js";
 import type { DeliveryContext } from "../../utils/delivery-context.types.js";
 import { resolveSourceReplyDeliveryMode } from "./source-reply-delivery-mode.js";
@@ -38,7 +38,7 @@ export function resolveCompletionChatType(params: {
 }
 
 export function completionRequiresMessageToolDelivery(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   requesterSessionKey?: string | null;
   targetRequesterSessionKey?: string | null;
   requesterEntry?: CompletionDeliverySessionEntry;

@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { isLiveTestEnabled } from "../agents/live-test-helpers.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { extractFirstTextBlock } from "../shared/chat-message-content.js";
 import { GatewayClient } from "./client.js";
 import {
@@ -47,7 +47,7 @@ async function writeLiveGatewayConfig(params: {
   token: string;
   workspace: string;
 }): Promise<void> {
-  const cfg: NexisClawConfig = {
+  const cfg: FirstNexusConfig = {
     gateway: {
       mode: "local",
       port: params.port,
@@ -181,7 +181,9 @@ describeLive("gateway live trajectory export", () => {
       const { startGatewayServer } = await import("./server.js");
 
       const previousEnv = snapshotEnv();
-      const tempDir = await fs.mkdtemp(path.join(process.cwd(), ".tmp-NexisClaw-trajectory-live-"));
+      const tempDir = await fs.mkdtemp(
+        path.join(process.cwd(), ".tmp-FirstNexus-trajectory-live-"),
+      );
       cleanup.push(async () => {
         restoreEnv(previousEnv);
         clearRuntimeConfigSnapshot();
@@ -191,7 +193,7 @@ describeLive("gateway live trajectory export", () => {
       const stateDir = path.join(tempDir, "state");
       const trajectoryDir = path.join(tempDir, "runtime-traces");
       const { workspaceDir } = await createBootstrapWorkspace(tempDir);
-      const configPath = path.join(tempDir, "NexisClaw.json");
+      const configPath = path.join(tempDir, "FirstNexus.json");
       const token = `test-${randomUUID()}`;
       const port = await getFreeGatewayPort();
       const modelKey = process.env.NEXISCLAW_LIVE_CODEX_HARNESS_MODEL ?? DEFAULT_CODEX_MODEL;
@@ -251,7 +253,7 @@ describeLive("gateway live trajectory export", () => {
       logLiveStep("runtime-traces", { trajectoryDir, files: trajectoryFiles });
       expect(trajectoryFiles.length).toBeGreaterThan(0);
 
-      const bundleDir = path.join(workspaceDir, ".NexisClaw", "trajectory-exports", "bundle");
+      const bundleDir = path.join(workspaceDir, ".FirstNexus", "trajectory-exports", "bundle");
       const beforeExport = new Set(await listDirectoryNames(tempDir));
       const exportRunId = `chat-export-${randomUUID()}`;
       logLiveStep("export:start", { bundleDir, exportRunId });

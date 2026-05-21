@@ -1,5 +1,5 @@
-import { resolveHumanDelayConfig } from "NexisClaw/plugin-sdk/agent-runtime";
-import { logTypingFailure } from "NexisClaw/plugin-sdk/channel-feedback";
+import { resolveHumanDelayConfig } from "FirstNexus/plugin-sdk/agent-runtime";
+import { logTypingFailure } from "FirstNexus/plugin-sdk/channel-feedback";
 import {
   buildMentionRegexes,
   createChannelInboundDebouncer,
@@ -9,38 +9,41 @@ import {
   resolveInboundMentionDecision,
   resolveEnvelopeFormatOptions,
   shouldDebounceTextInbound,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import { logInboundDrop } from "NexisClaw/plugin-sdk/channel-inbound";
-import { createChannelMessageReplyPipeline } from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import { logInboundDrop } from "FirstNexus/plugin-sdk/channel-inbound";
+import { createChannelMessageReplyPipeline } from "FirstNexus/plugin-sdk/channel-message";
 import {
   resolveChannelGroupPolicy,
   resolveChannelGroupRequireMention,
-} from "NexisClaw/plugin-sdk/channel-policy";
-import { hasControlCommand } from "NexisClaw/plugin-sdk/command-auth-native";
-import { recordInboundSession } from "NexisClaw/plugin-sdk/conversation-runtime";
+} from "FirstNexus/plugin-sdk/channel-policy";
+import { hasControlCommand } from "FirstNexus/plugin-sdk/command-auth-native";
+import { recordInboundSession } from "FirstNexus/plugin-sdk/conversation-runtime";
 import {
   createInternalHookEvent,
   fireAndForgetHook,
   toInternalMessageReceivedContext,
   triggerInternalHook,
-} from "NexisClaw/plugin-sdk/hook-runtime";
-import { runInboundReplyTurn } from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
-import { kindFromMime } from "NexisClaw/plugin-sdk/media-runtime";
+} from "FirstNexus/plugin-sdk/hook-runtime";
+import { runInboundReplyTurn } from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
+import { kindFromMime } from "FirstNexus/plugin-sdk/media-runtime";
 import {
   buildPendingHistoryContextFromMap,
   recordPendingHistoryEntryIfEnabled,
-} from "NexisClaw/plugin-sdk/reply-history";
-import { dispatchInboundMessage } from "NexisClaw/plugin-sdk/reply-runtime";
-import { finalizeInboundContext } from "NexisClaw/plugin-sdk/reply-runtime";
-import { createReplyDispatcherWithTyping } from "NexisClaw/plugin-sdk/reply-runtime";
-import { settleReplyDispatcher } from "NexisClaw/plugin-sdk/reply-runtime";
-import { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { danger, logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "NexisClaw/plugin-sdk/security-runtime";
-import { readSessionUpdatedAt, resolveStorePath } from "NexisClaw/plugin-sdk/session-store-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { enqueueSystemEvent } from "NexisClaw/plugin-sdk/system-event-runtime";
-import { normalizeE164 } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/reply-history";
+import { dispatchInboundMessage } from "FirstNexus/plugin-sdk/reply-runtime";
+import { finalizeInboundContext } from "FirstNexus/plugin-sdk/reply-runtime";
+import { createReplyDispatcherWithTyping } from "FirstNexus/plugin-sdk/reply-runtime";
+import { settleReplyDispatcher } from "FirstNexus/plugin-sdk/reply-runtime";
+import { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { danger, logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "FirstNexus/plugin-sdk/security-runtime";
+import {
+  readSessionUpdatedAt,
+  resolveStorePath,
+} from "FirstNexus/plugin-sdk/session-store-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { enqueueSystemEvent } from "FirstNexus/plugin-sdk/system-event-runtime";
+import { normalizeE164 } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import {
   formatSignalPairingIdLine,
   formatSignalSenderDisplay,

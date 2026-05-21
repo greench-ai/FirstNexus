@@ -6,7 +6,7 @@ import {
   resetConfigRuntimeState,
   setRuntimeConfigSnapshot,
 } from "../config/config.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { clearSecretsRuntimeSnapshot } from "../secrets/runtime.js";
 
 function withStableOwnerDisplaySecretForTest(cfg: unknown): unknown {
@@ -25,7 +25,7 @@ function withStableOwnerDisplaySecretForTest(cfg: unknown): unknown {
     ...record,
     commands: {
       ...commands,
-      ownerDisplaySecret: "NexisClaw-test-owner-display-secret",
+      ownerDisplaySecret: "FirstNexus-test-owner-display-secret",
     },
   };
 }
@@ -37,9 +37,9 @@ export async function withTempConfig(params: {
 }): Promise<void> {
   const prevConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
 
-  const testConfig = withStableOwnerDisplaySecretForTest(params.cfg) as NexisClawConfig;
-  const dir = await mkdtemp(path.join(os.tmpdir(), params.prefix ?? "NexisClaw-test-config-"));
-  const configPath = path.join(dir, "NexisClaw.json");
+  const testConfig = withStableOwnerDisplaySecretForTest(params.cfg) as FirstNexusConfig;
+  const dir = await mkdtemp(path.join(os.tmpdir(), params.prefix ?? "FirstNexus-test-config-"));
+  const configPath = path.join(dir, "FirstNexus.json");
 
   process.env.NEXISCLAW_CONFIG_PATH = configPath;
 

@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/comfy-provider",
+  "name": "@FirstNexus/comfy-provider",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw ComfyUI provider plugin",
+  "description": "FirstNexus ComfyUI provider plugin",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

@@ -5,11 +5,11 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-mcp-channels-e2e" NEXISCLAW_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-mcp-channels-e2e" NEXISCLAW_IMAGE)"
 PORT="18789"
 TOKEN="mcp-e2e-$(date +%s)-$$"
-CONTAINER_NAME="NexisClaw-mcp-e2e-$$"
-CLIENT_LOG="$(mktemp -t NexisClaw-mcp-client-log.XXXXXX)"
+CONTAINER_NAME="FirstNexus-mcp-e2e-$$"
+CLIENT_LOG="$(mktemp -t FirstNexus-mcp-client-log.XXXXXX)"
 
 cleanup() {
   docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
@@ -38,21 +38,21 @@ docker_e2e_run_with_harness \
   -e "NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS=1" \
   "$IMAGE_NAME" \
   bash -lc "set -euo pipefail
-    source scripts/lib/NexisClaw-e2e-instance.sh
-    NexisClaw_e2e_eval_test_state_from_b64 \"\${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}\"
-    entry=\"\$(NexisClaw_e2e_resolve_entrypoint)\"
+    source scripts/lib/FirstNexus-e2e-instance.sh
+    FirstNexus_e2e_eval_test_state_from_b64 \"\${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}\"
+    entry=\"\$(FirstNexus_e2e_resolve_entrypoint)\"
     mock_port=44081
     export NEXISCLAW_DOCKER_OPENAI_BASE_URL=\"http://127.0.0.1:\$mock_port/v1\"
-    mock_pid=\"\$(NexisClaw_e2e_start_mock_openai \"\$mock_port\" /tmp/mcp-channels-mock-openai.log)\"
+    mock_pid=\"\$(FirstNexus_e2e_start_mock_openai \"\$mock_port\" /tmp/mcp-channels-mock-openai.log)\"
     gateway_pid=
     cleanup_inner() {
-      NexisClaw_e2e_stop_process \"\${gateway_pid:-}\"
-      NexisClaw_e2e_stop_process \"\${mock_pid:-}\"
+      FirstNexus_e2e_stop_process \"\${gateway_pid:-}\"
+      FirstNexus_e2e_stop_process \"\${mock_pid:-}\"
     }
     dump_gateway_log_on_error() {
       status=\$?
       if [ \"\$status\" -ne 0 ]; then
-        NexisClaw_e2e_dump_logs \
+        FirstNexus_e2e_dump_logs \
           /tmp/mcp-channels-gateway.log \
           /tmp/mcp-channels-seed.log \
           /tmp/mcp-channels-mock-openai.log
@@ -62,10 +62,10 @@ docker_e2e_run_with_harness \
     }
     trap cleanup_inner EXIT
     trap dump_gateway_log_on_error ERR
-    NexisClaw_e2e_wait_mock_openai \"\$mock_port\"
+    FirstNexus_e2e_wait_mock_openai \"\$mock_port\"
     tsx scripts/e2e/mcp-channels-seed.ts >/tmp/mcp-channels-seed.log
-    gateway_pid=\"\$(NexisClaw_e2e_start_gateway \"\$entry\" $PORT /tmp/mcp-channels-gateway.log)\"
-    NexisClaw_e2e_wait_gateway_ready \"\$gateway_pid\" /tmp/mcp-channels-gateway.log 480
+    gateway_pid=\"\$(FirstNexus_e2e_start_gateway \"\$entry\" $PORT /tmp/mcp-channels-gateway.log)\"
+    FirstNexus_e2e_wait_gateway_ready \"\$gateway_pid\" /tmp/mcp-channels-gateway.log 480
     tsx scripts/e2e/mcp-channels-docker-client.ts
   " >"$CLIENT_LOG" 2>&1
 status=${PIPESTATUS[0]}

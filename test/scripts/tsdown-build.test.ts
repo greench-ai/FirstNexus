@@ -92,7 +92,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("prunes stale hashed root chunk files but keeps stable aliases and nested assets", async () => {
-    const rootDir = createTempDir("NexisClaw-tsdown-build-");
+    const rootDir = createTempDir("FirstNexus-tsdown-build-");
     const distDir = path.join(rootDir, "dist");
     const distRuntimeDir = path.join(rootDir, "dist-runtime");
     await fsPromises.mkdir(path.join(distDir, "control-ui"), { recursive: true });
@@ -128,7 +128,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("cleans tsdown output roots before using tsdown --no-clean", async () => {
-    const rootDir = createTempDir("NexisClaw-tsdown-clean-");
+    const rootDir = createTempDir("FirstNexus-tsdown-clean-");
     const distFile = path.join(rootDir, "dist", "stale.js");
     const pluginGeneratedFile = path.join(rootDir, "dist", "extensions", "telegram", "index.js");
     const distRuntimeFile = path.join(rootDir, "dist-runtime", "stale.js");
@@ -151,7 +151,7 @@ describe("resolveTsdownBuildInvocation", () => {
   });
 
   it("prunes untracked generated declaration files that shadow source entries", async () => {
-    const rootDir = createTempDir("NexisClaw-tsdown-source-dts-");
+    const rootDir = createTempDir("FirstNexus-tsdown-source-dts-");
     const signalDir = path.join(rootDir, "extensions", "signal");
     const signalSrcDir = path.join(signalDir, "src");
     await fsPromises.mkdir(signalSrcDir, { recursive: true });

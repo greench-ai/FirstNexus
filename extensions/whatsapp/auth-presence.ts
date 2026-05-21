@@ -1,17 +1,17 @@
 import fs from "node:fs";
 import path from "node:path";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
-import { resolveUserPath } from "NexisClaw/plugin-sdk/account-resolution";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveOAuthDir } from "NexisClaw/plugin-sdk/state-paths";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
+import { resolveUserPath } from "FirstNexus/plugin-sdk/account-resolution";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveOAuthDir } from "FirstNexus/plugin-sdk/state-paths";
 import { hasWebCredsSync } from "./src/creds-files.js";
 
 type WhatsAppAuthPresenceParams =
   | {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       env?: NodeJS.ProcessEnv;
     }
-  | NexisClawConfig;
+  | FirstNexusConfig;
 
 function addAccountAuthDirs(
   authDirs: Set<string>,
@@ -28,7 +28,7 @@ function addAccountAuthDirs(
 }
 
 function listWhatsAppAuthDirs(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): readonly string[] {
   const oauthDir = resolveOAuthDir(env);

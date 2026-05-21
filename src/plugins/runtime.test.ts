@@ -232,7 +232,7 @@ describe("setActivePluginRegistry", () => {
         id: "runtime-plugin",
         name: "Runtime Plugin",
         source: "/tmp/runtime",
-        format: "NexisClaw",
+        format: "FirstNexus",
         configSchema: true,
       }),
     );

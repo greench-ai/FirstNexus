@@ -1,5 +1,5 @@
 import type { TSchema } from "typebox";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { defaultRuntime } from "../../runtime.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
@@ -18,7 +18,7 @@ import type {
 } from "./types.public.js";
 
 export type ChannelMessageActionDiscoveryInput = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   channel?: string | null;
   currentChannelProvider?: string | null;
   currentChannelId?: string | null;
@@ -33,7 +33,7 @@ export type ChannelMessageActionDiscoveryInput = {
 };
 
 type ChannelMessageActionDiscoveryParams = ChannelMessageActionDiscoveryInput & {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 };
 
 type ChannelMessageToolMediaSourceParamKeyInput = ChannelMessageActionDiscoveryParams & {
@@ -53,7 +53,7 @@ export function createMessageActionDiscoveryContext(
     params.channel ?? params.currentChannelProvider,
   );
   return {
-    cfg: params.cfg ?? ({} as NexisClawConfig),
+    cfg: params.cfg ?? ({} as FirstNexusConfig),
     currentChannelId: params.currentChannelId,
     currentChannelProvider,
     currentThreadTs: params.currentThreadTs,
@@ -216,7 +216,7 @@ export function resolveMessageActionDiscoveryForPlugin(params: {
   };
 }
 
-export function listChannelMessageActions(cfg: NexisClawConfig): ChannelMessageActionName[] {
+export function listChannelMessageActions(cfg: FirstNexusConfig): ChannelMessageActionName[] {
   const actions = new Set<ChannelMessageActionName>(["send", "broadcast"]);
   for (const plugin of listChannelPlugins()) {
     for (const action of resolveMessageActionDiscoveryForPlugin({
@@ -273,7 +273,7 @@ export function listCrossChannelSchemaSupportedMessageActions(
   return resolved.actions.filter((action) => !schemaBlockedActions.has(action));
 }
 
-export function listChannelMessageCapabilities(cfg: NexisClawConfig): ChannelMessageCapability[] {
+export function listChannelMessageCapabilities(cfg: FirstNexusConfig): ChannelMessageCapability[] {
   const capabilities = new Set<ChannelMessageCapability>();
   for (const plugin of listChannelPlugins()) {
     for (const capability of resolveMessageActionDiscoveryForPlugin({
@@ -386,7 +386,7 @@ export function resolveChannelMessageToolMediaSourceParamKeys(
 }
 
 export function channelSupportsMessageCapability(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   capability: ChannelMessageCapability,
 ): boolean {
   return listChannelMessageCapabilities(cfg).includes(capability);

@@ -1,5 +1,5 @@
-import type { GroupPolicy } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveOpenProviderRuntimeGroupPolicy } from "NexisClaw/plugin-sdk/runtime-group-policy";
+import type { GroupPolicy } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveOpenProviderRuntimeGroupPolicy } from "FirstNexus/plugin-sdk/runtime-group-policy";
 
 const ZALO_ALLOW_FROM_PREFIX_RE = /^(zalo|zl):/i;
 

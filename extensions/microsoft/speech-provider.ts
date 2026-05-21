@@ -1,27 +1,27 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import { isVoiceCompatibleAudio } from "FirstNexus/plugin-sdk/media-runtime";
+import { assertOkOrThrowProviderError } from "FirstNexus/plugin-sdk/provider-http";
+import {
+  captureHttpExchange,
+  isDebugProxyGlobalFetchPatchInstalled,
+} from "FirstNexus/plugin-sdk/proxy-capture";
+import type {
+  SpeechProviderConfig,
+  SpeechProviderPlugin,
+  SpeechVoiceOption,
+} from "FirstNexus/plugin-sdk/speech";
+import { asBoolean, asFiniteNumber, asObject, trimToUndefined } from "FirstNexus/plugin-sdk/speech";
+import {
+  fetchWithSsrFGuard,
+  ssrfPolicyFromHttpBaseUrlAllowedHostname,
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { tempWorkspace, resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 import {
   CHROMIUM_FULL_VERSION,
   TRUSTED_CLIENT_TOKEN,
   generateSecMsGecToken,
 } from "node-edge-tts/dist/drm.js";
-import { isVoiceCompatibleAudio } from "NexisClaw/plugin-sdk/media-runtime";
-import { assertOkOrThrowProviderError } from "NexisClaw/plugin-sdk/provider-http";
-import {
-  captureHttpExchange,
-  isDebugProxyGlobalFetchPatchInstalled,
-} from "NexisClaw/plugin-sdk/proxy-capture";
-import type {
-  SpeechProviderConfig,
-  SpeechProviderPlugin,
-  SpeechVoiceOption,
-} from "NexisClaw/plugin-sdk/speech";
-import { asBoolean, asFiniteNumber, asObject, trimToUndefined } from "NexisClaw/plugin-sdk/speech";
-import {
-  fetchWithSsrFGuard,
-  ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { tempWorkspace, resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
 import { edgeTTS, inferEdgeExtension } from "./tts.js";
 
 const DEFAULT_EDGE_VOICE = "en-US-MichelleNeural";
@@ -237,7 +237,7 @@ export function buildMicrosoftSpeechProvider(): SpeechProviderPlugin {
     synthesize: async (req) => {
       const config = readMicrosoftProviderConfig(req.providerConfig);
       const temp = await tempWorkspace({
-        rootDir: resolvePreferredNexisClawTmpDir(),
+        rootDir: resolvePreferredFirstNexusTmpDir(),
         prefix: "tts-microsoft-",
       });
       const tempDir = temp.dir;

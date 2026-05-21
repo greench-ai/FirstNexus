@@ -7,7 +7,7 @@ import {
 import type { CurrentTurnPromptContext } from "./params.js";
 export { NEXISCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE };
 
-const NEXISCLAW_RUNTIME_EVENT_USER_PROMPT = "Continue the NexisClaw runtime event.";
+const NEXISCLAW_RUNTIME_EVENT_USER_PROMPT = "Continue the FirstNexus runtime event.";
 
 type RuntimeContextSession = {
   sendCustomMessage: (
@@ -123,7 +123,7 @@ export async function queueRuntimeContextForNextTurn(params: {
       customType: NEXISCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE,
       content: runtimeContext,
       display: false,
-      details: { source: "NexisClaw-runtime-context" },
+      details: { source: "FirstNexus-runtime-context" },
     },
     { deliverAs: "nextTurn" },
   );

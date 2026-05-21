@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { MsgContext } from "../templating.js";
 import type { InlineDirectives } from "./directive-handling.parse.js";
 import { stripMentions, stripStructuralPrefixes } from "./mentions.js";
@@ -7,7 +7,7 @@ export function isDirectiveOnly(params: {
   directives: InlineDirectives;
   cleanedBody: string;
   ctx: MsgContext;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   isGroup: boolean;
 }): boolean {

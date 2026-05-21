@@ -11,10 +11,13 @@ export {
   type DiagnosticEventMetadata,
   type DiagnosticEventPayload,
   type DiagnosticTraceContext,
-} from "NexisClaw/plugin-sdk/diagnostic-runtime";
-export { emptyPluginConfigSchema, type NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
+} from "FirstNexus/plugin-sdk/diagnostic-runtime";
+export {
+  emptyPluginConfigSchema,
+  type FirstNexusPluginApi,
+} from "FirstNexus/plugin-sdk/plugin-entry";
 export type {
-  NexisClawPluginService,
-  NexisClawPluginServiceContext,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-export { redactSensitiveText } from "NexisClaw/plugin-sdk/security-runtime";
+  FirstNexusPluginService,
+  FirstNexusPluginServiceContext,
+} from "FirstNexus/plugin-sdk/plugin-entry";
+export { redactSensitiveText } from "FirstNexus/plugin-sdk/security-runtime";

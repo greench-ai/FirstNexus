@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizePluginsConfig, resolveEffectivePluginActivationState } from "./config-state.js";
 import { isPluginEnabledByDefaultForPlatform } from "./default-enablement.js";
 import type { PluginManifestRecord } from "./manifest-registry.js";
@@ -70,7 +70,7 @@ export function resolveManifestOwnerBasePolicyBlock(params: {
 export function isActivatedManifestOwner(params: {
   plugin: OwnerPlugin;
   normalizedConfig: NormalizedPluginsConfig;
-  rootConfig?: NexisClawConfig;
+  rootConfig?: FirstNexusConfig;
 }): boolean {
   return resolveEffectivePluginActivationState({
     id: params.plugin.id,

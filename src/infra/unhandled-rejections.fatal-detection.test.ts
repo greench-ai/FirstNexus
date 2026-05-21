@@ -100,7 +100,7 @@ describe("installUnhandledRejectionHandler - fatal detection", () => {
 
       expectConsoleLogWithMessage(
         consoleErrorSpy,
-        "[NexisClaw] FATAL unhandled rejection:",
+        "[FirstNexus] FATAL unhandled rejection:",
         "Out of memory",
       );
     });
@@ -137,7 +137,7 @@ describe("installUnhandledRejectionHandler - fatal detection", () => {
 
       expectConsoleLogWithMessage(
         consoleErrorSpy,
-        "[NexisClaw] CONFIGURATION ERROR - requires fix:",
+        "[FirstNexus] CONFIGURATION ERROR - requires fix:",
         "Invalid config",
       );
     });
@@ -181,7 +181,7 @@ describe("installUnhandledRejectionHandler - fatal detection", () => {
 
       expectConsoleLogWithMessage(
         consoleWarnSpy,
-        "[NexisClaw] Non-fatal unhandled rejection (continuing):",
+        "[FirstNexus] Non-fatal unhandled rejection (continuing):",
         "fetch failed",
       );
     });
@@ -205,7 +205,7 @@ describe("installUnhandledRejectionHandler - fatal detection", () => {
 
       expectConsoleLogWithMessage(
         consoleWarnSpy,
-        "[NexisClaw] Non-fatal unhandled rejection (continuing):",
+        "[FirstNexus] Non-fatal unhandled rejection (continuing):",
         "unable to open database file",
       );
     });
@@ -216,7 +216,7 @@ describe("installUnhandledRejectionHandler - fatal detection", () => {
       expectExitCodeFromUnhandled(genericErr, [1], "unhandled rejection");
       expectConsoleLogWithMessage(
         consoleErrorSpy,
-        "[NexisClaw] Unhandled promise rejection:",
+        "[FirstNexus] Unhandled promise rejection:",
         "Something went wrong",
       );
     });
@@ -239,7 +239,7 @@ describe("installUnhandledRejectionHandler - fatal detection", () => {
       expectExitCodeFromUnhandled(abortErr, []);
       expectConsoleLogWithMessage(
         consoleWarnSpy,
-        "[NexisClaw] Suppressed AbortError:",
+        "[FirstNexus] Suppressed AbortError:",
         "This operation was aborted",
       );
     });

@@ -1,11 +1,11 @@
 import {
   getChannelStreamingConfigObject,
   resolveChannelStreamingNativeTransport,
-} from "NexisClaw/plugin-sdk/channel-streaming";
+} from "FirstNexus/plugin-sdk/channel-streaming";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export type StreamingMode = "off" | "partial" | "block" | "progress";
 export type SlackLegacyDraftStreamMode = "replace" | "status_final" | "append";

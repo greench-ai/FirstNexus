@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "../api.js";
+import type { FirstNexusConfig } from "../api.js";
 import type { ResolvedMemoryWikiConfig } from "./config.js";
 import { getMemoryWikiPage, searchMemoryWiki } from "./query.js";
 
 export function createWikiCorpusSupplement(params: {
   config: ResolvedMemoryWikiConfig;
-  appConfig?: NexisClawConfig;
+  appConfig?: FirstNexusConfig;
 }) {
   return {
     search: async (input: { query: string; maxResults?: number; agentSessionKey?: string }) =>

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { installProcessWarningFilter, shouldIgnoreWarning } from "./warning-filter.js";
 
-const warningFilterKey = Symbol.for("NexisClaw.warning-filter");
+const warningFilterKey = Symbol.for("FirstNexus.warning-filter");
 const baseEmitWarning = process.emitWarning.bind(process);
 
 function resetWarningFilterInstallState(): void {

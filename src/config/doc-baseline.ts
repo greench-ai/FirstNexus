@@ -3,7 +3,7 @@ import fsSync from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveNexisClawPackageRootSync } from "../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRootSync } from "../infra/FirstNexus-root.js";
 import { replaceFileAtomicSync } from "../infra/replace-file.js";
 import type { ConfigSchemaResponse } from "./schema.js";
 import { schemaHasChildren } from "./schema.shared.js";
@@ -107,7 +107,7 @@ function logConfigDocBaselineDebug(message: string): void {
 }
 
 function resolveRepoRoot(): string {
-  const fromPackage = resolveNexisClawPackageRootSync({
+  const fromPackage = resolveFirstNexusPackageRootSync({
     cwd: path.dirname(fileURLToPath(import.meta.url)),
     moduleUrl: import.meta.url,
   });
@@ -360,7 +360,7 @@ async function loadBundledConfigSchemaResponse(): Promise<ConfigSchemaResponse> 
   const env = {
     ...process.env,
     HOME: os.tmpdir(),
-    NEXISCLAW_STATE_DIR: path.join(os.tmpdir(), "NexisClaw-config-doc-baseline-state"),
+    NEXISCLAW_STATE_DIR: path.join(os.tmpdir(), "FirstNexus-config-doc-baseline-state"),
     NEXISCLAW_BUNDLED_PLUGINS_DIR: path.join(repoRoot, "extensions"),
   };
 

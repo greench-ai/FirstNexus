@@ -166,12 +166,12 @@ function mapManagerResolutionFailure(
 const DEFAULT_TIMEOUT_MS = 20 * 60_000;
 const MAX_LOG_CHARS = 8000;
 const PREFLIGHT_MAX_COMMITS = 10;
-const DEFAULT_PACKAGE_NAME = "NexisClaw";
+const DEFAULT_PACKAGE_NAME = "FirstNexus";
 const CORE_PACKAGE_NAMES = new Set([DEFAULT_PACKAGE_NAME]);
 const UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE_ENV =
   "NEXISCLAW_UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE";
 const PREFLIGHT_TEMP_PREFIX =
-  process.platform === "win32" ? "ocu-pf-" : "NexisClaw-update-preflight-";
+  process.platform === "win32" ? "ocu-pf-" : "FirstNexus-update-preflight-";
 const PREFLIGHT_WORKTREE_DIRNAME = process.platform === "win32" ? "wt" : "worktree";
 const PREFLIGHT_CLEANUP_TIMEOUT_MS = 60_000;
 const WINDOWS_PREFLIGHT_BASE_DIR = "ocu";
@@ -422,7 +422,7 @@ async function runStep(opts: RunStepOptions): Promise<UpdateStepResult> {
 }
 
 function normalizeTag(tag?: string) {
-  return normalizePackageTagInput(tag, ["NexisClaw", DEFAULT_PACKAGE_NAME]) ?? "latest";
+  return normalizePackageTagInput(tag, ["FirstNexus", DEFAULT_PACKAGE_NAME]) ?? "latest";
 }
 
 function normalizeDevTargetRef(value?: string | null): string | null {
@@ -589,7 +589,7 @@ function normalizeFallbackFailureReason(stepName: string): NonNullable<UpdateRun
     case "global install verify":
     case "global install swap":
       return "global-install-failed";
-    case "NexisClaw doctor":
+    case "FirstNexus doctor":
       return "doctor-failed";
     case "ui:build (post-doctor repair)":
       return "ui-build-failed";
@@ -726,7 +726,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
       status: "error",
       mode: "unknown",
       root: gitRoot,
-      reason: "not-NexisClaw-root",
+      reason: "not-FirstNexus-root",
       steps: [],
       durationMs: Date.now() - startedAt,
     };
@@ -1271,14 +1271,14 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
         };
       }
 
-      const doctorEntry = path.join(gitRoot, "NexisClaw.mjs");
+      const doctorEntry = path.join(gitRoot, "FirstNexus.mjs");
       const doctorEntryExists = await fs
         .stat(doctorEntry)
         .then(() => true)
         .catch(() => false);
       if (!doctorEntryExists) {
         steps.push({
-          name: "NexisClaw doctor entry",
+          name: "FirstNexus doctor entry",
           command: `verify ${doctorEntry}`,
           cwd: gitRoot,
           durationMs: 0,
@@ -1301,7 +1301,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
       const doctorNodePath = await resolveStableNodePath(process.execPath);
       const doctorArgv = [doctorNodePath, doctorEntry, "doctor", "--non-interactive", "--fix"];
       const doctorStep = await runStep(
-        step("NexisClaw doctor", doctorArgv, gitRoot, {
+        step("FirstNexus doctor", doctorArgv, gitRoot, {
           NEXISCLAW_UPDATE_IN_PROGRESS: "1",
           [UPDATE_PARENT_SUPPORTS_DOCTOR_CONFIG_WRITE_ENV]: "1",
         }),
@@ -1404,7 +1404,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
     return {
       status: "error",
       mode: "unknown",
-      reason: "not-NexisClaw-root",
+      reason: "not-FirstNexus-root",
       steps: [],
       durationMs: Date.now() - startedAt,
     };
@@ -1458,7 +1458,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
         const doctorNodePath = await resolveStableNodePath(process.execPath);
         return await runStep({
           runCommand,
-          name: "NexisClaw doctor",
+          name: "FirstNexus doctor",
           argv: [doctorNodePath, doctorEntry, "doctor", "--non-interactive", "--fix"],
           cwd: verifiedPackageRoot,
           timeoutMs,

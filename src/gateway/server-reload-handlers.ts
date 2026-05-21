@@ -4,7 +4,7 @@ import { getActiveEmbeddedRunCount } from "../agents/pi-embedded-runner/run-stat
 import { getTotalPendingReplies } from "../auto-reply/reply/dispatcher-registry.js";
 import type { CliDeps } from "../cli/deps.types.js";
 import { isRestartEnabled } from "../config/commands.flags.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import type { HeartbeatRunner } from "../infra/heartbeat-runner.js";
 import { resetDirectoryCache } from "../infra/outbound/target-resolver.js";
@@ -99,7 +99,7 @@ type GatewayReloadHandlerParams = {
   startChannel: (name: ChannelKind) => Promise<void>;
   stopChannel: (name: ChannelKind) => Promise<void>;
   reloadPlugins: (params: {
-    nextConfig: NexisClawConfig;
+    nextConfig: FirstNexusConfig;
     changedPaths: readonly string[];
     beforeReplace: (channels: ReadonlySet<ChannelKind>) => Promise<void>;
   }) => Promise<GatewayPluginReloadResult>;
@@ -111,7 +111,7 @@ type GatewayReloadHandlerParams = {
   logChannels: { info: (msg: string) => void; error: (msg: string) => void };
   logCron: { error: (msg: string) => void };
   logReload: GatewayReloadLog;
-  createHealthMonitor: (config: NexisClawConfig) => ChannelHealthMonitor | null;
+  createHealthMonitor: (config: FirstNexusConfig) => ChannelHealthMonitor | null;
   onCronRestart?: () => void;
 };
 
@@ -120,8 +120,8 @@ type ManagedGatewayConfigReloaderParams = Omit<
   "createHealthMonitor" | "logReload"
 > & {
   minimalTestGateway: boolean;
-  initialConfig: NexisClawConfig;
-  initialCompareConfig?: NexisClawConfig;
+  initialConfig: FirstNexusConfig;
+  initialCompareConfig?: FirstNexusConfig;
   initialInternalWriteHash: string | null;
   watchPath: string;
   readSnapshot: typeof import("../config/config.js").readConfigFileSnapshot;
@@ -132,7 +132,7 @@ type ManagedGatewayConfigReloaderParams = Omit<
   };
   channelManager: GatewayChannelManager;
   activateRuntimeSecrets: ActivateRuntimeSecrets;
-  resolveSharedGatewaySessionGenerationForConfig: (config: NexisClawConfig) => string | undefined;
+  resolveSharedGatewaySessionGenerationForConfig: (config: FirstNexusConfig) => string | undefined;
   sharedGatewaySessionGenerationState: SharedGatewaySessionGenerationState;
   clients: Iterable<SharedGatewayAuthClient>;
 };
@@ -189,7 +189,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
   };
   const waitForActiveWorkBeforeChannelReload = async (
     channels: Iterable<ChannelKind>,
-    nextConfig: NexisClawConfig,
+    nextConfig: FirstNexusConfig,
   ) => {
     const initial = getActiveCounts();
     if (initial.totalActive <= 0) {
@@ -237,7 +237,7 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
     }
   };
 
-  const applyHotReload = async (plan: GatewayReloadPlan, nextConfig: NexisClawConfig) => {
+  const applyHotReload = async (plan: GatewayReloadPlan, nextConfig: FirstNexusConfig) => {
     setGatewaySigusr1RestartPolicy({ allowExternal: isRestartEnabled(nextConfig) });
     const state = params.getState();
     const nextState = { ...state };
@@ -389,7 +389,10 @@ export function createGatewayReloadHandlers(params: GatewayReloadHandlerParams) 
 
   let restartPending = false;
 
-  const requestGatewayRestart = (plan: GatewayReloadPlan, nextConfig: NexisClawConfig): boolean => {
+  const requestGatewayRestart = (
+    plan: GatewayReloadPlan,
+    nextConfig: FirstNexusConfig,
+  ): boolean => {
     setGatewaySigusr1RestartPolicy({ allowExternal: isRestartEnabled(nextConfig) });
     const reasons = plan.restartReasons.length
       ? plan.restartReasons.join(", ")

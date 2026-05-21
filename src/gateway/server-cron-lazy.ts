@@ -1,11 +1,11 @@
 import type { CliDeps } from "../cli/deps.types.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { CronServiceContract } from "../cron/service-contract.js";
 import { resolveCronStorePath } from "../cron/store.js";
 import type { GatewayCronState } from "./server-cron.js";
 
 type LazyGatewayCronParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   deps: CliDeps;
   broadcast: (event: string, payload: unknown, opts?: { dropIfSlow?: boolean }) => void;
 };

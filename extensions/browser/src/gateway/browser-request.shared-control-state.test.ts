@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getFreePort } from "../browser/test-port.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 
 const mocks = vi.hoisted(() => ({
-  runtimeConfig: {} as NexisClawConfig,
-  runtimeSourceConfig: null as NexisClawConfig | null,
+  runtimeConfig: {} as FirstNexusConfig,
+  runtimeSourceConfig: null as FirstNexusConfig | null,
   ensureBrowserControlAuth: vi.fn(async () => ({ auth: {} })),
   resolveBrowserControlAuth: vi.fn(() => ({})),
   shouldAutoGenerateBrowserAuth: vi.fn(() => false),
@@ -40,11 +40,11 @@ vi.mock("../browser/chrome.js", () => ({
   formatChromeCdpDiagnostic: vi.fn(() => "not reachable"),
   isChromeCdpReady: mocks.isChromeCdpReady,
   isChromeReachable: mocks.isChromeReachable,
-  launchNexisClawChrome: vi.fn(async () => {
+  launchFirstNexusChrome: vi.fn(async () => {
     throw new Error("launch should not be needed for status");
   }),
-  resolveNexisClawUserDataDir: vi.fn(() => "/tmp/NexisClaw-browser"),
-  stopNexisClawChrome: vi.fn(async () => {}),
+  resolveFirstNexusUserDataDir: vi.fn(() => "/tmp/FirstNexus-browser"),
+  stopFirstNexusChrome: vi.fn(async () => {}),
 }));
 
 vi.mock("../browser/pw-ai-state.js", () => ({
@@ -61,19 +61,19 @@ function browserConfig(params: {
   executablePath?: string;
   headless?: boolean;
   noSandbox?: boolean;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   return {
     gateway: {
       port: params.gatewayPort,
     },
     browser: {
       enabled: true,
-      defaultProfile: "NexisClaw",
+      defaultProfile: "FirstNexus",
       ...(params.executablePath ? { executablePath: params.executablePath } : {}),
       ...(typeof params.headless === "boolean" ? { headless: params.headless } : {}),
       ...(typeof params.noSandbox === "boolean" ? { noSandbox: params.noSandbox } : {}),
       profiles: {
-        NexisClaw: {
+        FirstNexus: {
           cdpPort: params.gatewayPort + 11,
           color: "#FF4500",
         },
@@ -88,7 +88,7 @@ async function browserRequestStatus(): Promise<unknown> {
     params: {
       method: "GET",
       path: "/",
-      query: { profile: "NexisClaw" },
+      query: { profile: "FirstNexus" },
     },
     respond: respond as never,
     context: {

@@ -12,9 +12,9 @@ export {
   resolveMemoryFtsState,
   resolveMemoryVectorState,
   type Tone,
-} from "NexisClaw/plugin-sdk/memory-core-host-status";
-export { checkQmdBinaryAvailability } from "NexisClaw/plugin-sdk/memory-core-host-engine-qmd";
-export { hasConfiguredMemorySecretInput } from "NexisClaw/plugin-sdk/memory-core-host-secret";
+} from "FirstNexus/plugin-sdk/memory-core-host-status";
+export { checkQmdBinaryAvailability } from "FirstNexus/plugin-sdk/memory-core-host-engine-qmd";
+export { hasConfiguredMemorySecretInput } from "FirstNexus/plugin-sdk/memory-core-host-secret";
 export { auditDreamingArtifacts, repairDreamingArtifacts } from "./src/dreaming-repair.js";
 export {
   auditShortTermPromotionArtifacts,

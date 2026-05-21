@@ -1,12 +1,12 @@
-import { isPrivateNetworkOptInEnabled } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { isPrivateNetworkOptInEnabled } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveMattermostAccount } from "./accounts.js";
 import {
   createMattermostClient,
   fetchMattermostUser,
   normalizeMattermostBaseUrl,
 } from "./client.js";
-import type { NexisClawConfig } from "./runtime-api.js";
+import type { FirstNexusConfig } from "./runtime-api.js";
 
 export type MattermostOpaqueTargetResolution = {
   kind: "user" | "channel";
@@ -52,7 +52,7 @@ export function parseMattermostApiStatus(err: unknown): number | undefined {
 
 export async function resolveMattermostOpaqueTarget(params: {
   input: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   accountId?: string | null;
   token?: string;
   baseUrl?: string;

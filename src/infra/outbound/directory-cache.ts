@@ -1,5 +1,5 @@
 import type { ChannelDirectoryEntryKind, ChannelId } from "../../channels/plugins/types.public.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 
 type CacheEntry<T> = {
   value: T;
@@ -21,7 +21,7 @@ export function buildDirectoryCacheKey(key: DirectoryCacheKey): string {
 
 export class DirectoryCache<T> {
   private readonly cache = new Map<string, CacheEntry<T>>();
-  private lastConfigRef: NexisClawConfig | null = null;
+  private lastConfigRef: FirstNexusConfig | null = null;
   private readonly maxSize: number;
 
   constructor(
@@ -31,7 +31,7 @@ export class DirectoryCache<T> {
     this.maxSize = Math.max(1, Math.floor(maxSize));
   }
 
-  get(key: string, cfg: NexisClawConfig): T | undefined {
+  get(key: string, cfg: FirstNexusConfig): T | undefined {
     this.resetIfConfigChanged(cfg);
     this.pruneExpired(Date.now());
     const entry = this.cache.get(key);
@@ -41,7 +41,7 @@ export class DirectoryCache<T> {
     return entry.value;
   }
 
-  set(key: string, value: T, cfg: NexisClawConfig): void {
+  set(key: string, value: T, cfg: FirstNexusConfig): void {
     this.resetIfConfigChanged(cfg);
     const now = Date.now();
     this.pruneExpired(now);
@@ -61,14 +61,14 @@ export class DirectoryCache<T> {
     }
   }
 
-  clear(cfg?: NexisClawConfig): void {
+  clear(cfg?: FirstNexusConfig): void {
     this.cache.clear();
     if (cfg) {
       this.lastConfigRef = cfg;
     }
   }
 
-  private resetIfConfigChanged(cfg: NexisClawConfig): void {
+  private resetIfConfigChanged(cfg: FirstNexusConfig): void {
     if (this.lastConfigRef && this.lastConfigRef !== cfg) {
       this.cache.clear();
     }

@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/microsoft-foundry",
+  "name": "@FirstNexus/microsoft-foundry",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw Microsoft Foundry provider plugin",
+  "description": "FirstNexus Microsoft Foundry provider plugin",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

@@ -21,7 +21,7 @@ import { isNixMode } from "../config/paths.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
 import { applyConfigOverrides } from "../config/runtime-overrides.js";
 import { resolveMainSessionKey } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   isDiagnosticsEnabled,
   setDiagnosticsEnabledForProcess,
@@ -31,7 +31,7 @@ import {
   isDiagnosticsTimelineEnabled,
 } from "../infra/diagnostics-timeline.js";
 import { isTruthyEnvValue, isVitestRuntimeEnv, logAcceptedEnvOption } from "../infra/env.js";
-import { ensureNexisClawCliOnPath } from "../infra/path-env.js";
+import { ensureFirstNexusCliOnPath } from "../infra/path-env.js";
 import { setGatewaySigusr1RestartPolicy, setPreRestartDeferralCheck } from "../infra/restart.js";
 import { enqueueSystemEvent } from "../infra/system-events.js";
 import type { VoiceWakeRoutingConfig } from "../infra/voicewake-routing.js";
@@ -96,7 +96,7 @@ export async function __resetModelCatalogCacheForTest(): Promise<void> {
   await resetModelCatalogCacheForTest();
 }
 
-ensureNexisClawCliOnPath();
+ensureFirstNexusCliOnPath();
 
 const MAX_MEDIA_TTL_HOURS = 24 * 7;
 const POST_READY_MAINTENANCE_DELAY_MS = 250;
@@ -199,7 +199,7 @@ const gatewayRuntime = runtimeForLogger(log);
 
 function createGatewayStartupTrace() {
   const logEnabled = isTruthyEnvValue(process.env.NEXISCLAW_GATEWAY_STARTUP_TRACE);
-  let timelineConfig: NexisClawConfig | undefined;
+  let timelineConfig: FirstNexusConfig | undefined;
   let eventLoopDelay: ReturnType<typeof monitorEventLoopDelay> | undefined;
   const timelineOptions = () => ({
     ...(timelineConfig ? { config: timelineConfig } : {}),
@@ -294,7 +294,7 @@ function createGatewayStartupTrace() {
     }
   };
   return {
-    setConfig(config: NexisClawConfig) {
+    setConfig(config: FirstNexusConfig) {
       timelineConfig = config;
       ensureEventLoopDelay();
     },
@@ -397,12 +397,12 @@ function formatRuntimeGatewayAuthTokenWarning(): string {
   const base =
     "Gateway auth token was missing. Generated a runtime token for this startup without changing config; restart will generate a different token.";
   if (!isNixMode) {
-    return `${base} Persist one with \`NexisClaw config set gateway.auth.mode token\` and \`NexisClaw config set gateway.auth.token <token>\`.`;
+    return `${base} Persist one with \`FirstNexus config set gateway.auth.mode token\` and \`FirstNexus config set gateway.auth.token <token>\`.`;
   }
   return [
     base,
-    "In Nix mode, set gateway.auth.token in your Nix-managed NexisClaw config and rebuild.",
-    "For the first-party Nix flow, see https://github.com/NexisClaw/nix-NexisClaw#quick-start and https://docs.NexisClaw.ai/install/nix.",
+    "In Nix mode, set gateway.auth.token in your Nix-managed FirstNexus config and rebuild.",
+    "For the first-party Nix flow, see https://github.com/FirstNexus/nix-FirstNexus#quick-start and https://docs.FirstNexus.ai/install/nix.",
   ].join(" ");
 }
 
@@ -498,7 +498,7 @@ export type GatewayServerOptions = {
   startupStartedAt?: number;
   /**
    * Config snapshot already read by the CLI gateway preflight. Passing it avoids
-   * reparsing NexisClaw.json during server startup.
+   * reparsing FirstNexus.json during server startup.
    */
   startupConfigSnapshotRead?: ReadConfigFileSnapshotWithPluginMetadataResult;
 };
@@ -556,7 +556,7 @@ export async function startGatewayServer(
   const emitSecretsStateEvent = (
     code: "SECRETS_RELOADER_DEGRADED" | "SECRETS_RELOADER_RECOVERED",
     message: string,
-    cfg: NexisClawConfig,
+    cfg: FirstNexusConfig,
   ) => {
     enqueueSystemEvent(`[${code}] ${message}`, {
       sessionKey: resolveMainSessionKey(cfg),
@@ -570,7 +570,7 @@ export async function startGatewayServer(
     emitStateEvent: emitSecretsStateEvent,
   });
 
-  let cfgAtStart: NexisClawConfig;
+  let cfgAtStart: FirstNexusConfig;
   let startupInternalWriteHash: string | null = null;
   let startupLastGoodSnapshot = configSnapshot;
   const startupActivationSourceConfig = configSnapshot.sourceConfig;
@@ -718,7 +718,7 @@ export async function startGatewayServer(
       env: process.env,
       tailscaleMode,
     });
-  const resolveSharedGatewaySessionGenerationForConfig = (config: NexisClawConfig) =>
+  const resolveSharedGatewaySessionGenerationForConfig = (config: FirstNexusConfig) =>
     resolveSharedGatewaySessionGeneration(
       resolveGatewayAuth({
         authConfig: config.gateway?.auth,
@@ -1131,7 +1131,7 @@ export async function startGatewayServer(
         ]),
       );
     const reloadAttachedGatewayPlugins = async (params: {
-      nextConfig: NexisClawConfig;
+      nextConfig: FirstNexusConfig;
       changedPaths: readonly string[];
       beforeReplace: (channels: ReadonlySet<ChannelId>) => Promise<void>;
     }): Promise<GatewayPluginReloadResult> => {
@@ -1254,7 +1254,7 @@ export async function startGatewayServer(
       nodeUnsubscribeAll,
       hasConnectedTalkNode: hasTalkNodeConnected,
       clients,
-      enforceSharedGatewayAuthGenerationForConfigWrite: (nextConfig: NexisClawConfig) => {
+      enforceSharedGatewayAuthGenerationForConfigWrite: (nextConfig: FirstNexusConfig) => {
         enforceSharedGatewaySessionGenerationForConfigWrite({
           state: sharedGatewaySessionGenerationState,
           nextConfig,

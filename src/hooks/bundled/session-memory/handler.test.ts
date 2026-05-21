@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../../config/config.js";
+import type { FirstNexusConfig } from "../../../config/config.js";
 import { writeWorkspaceFile } from "../../../test-helpers/workspace.js";
 import { withEnvAsync } from "../../../test-utils/env.js";
 import { createHookEvent } from "../../hooks.js";
@@ -32,7 +32,7 @@ async function createCaseWorkspace(prefix = "case"): Promise<string> {
 
 beforeAll(async () => {
   ({ default: handler, flushSessionMemoryWritesForTest } = await import("./handler.js"));
-  suiteWorkspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-session-memory-"));
+  suiteWorkspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-session-memory-"));
 });
 
 afterAll(async () => {
@@ -70,7 +70,7 @@ function createMockSessionContent(
 async function runNewWithPreviousSessionEntry(params: {
   tempDir: string;
   previousSessionEntry: { sessionId: string; sessionFile?: string };
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   action?: "new" | "reset";
   sessionKey?: string;
   workspaceDirOverride?: string;
@@ -85,7 +85,7 @@ async function runNewWithPreviousSessionEntry(params: {
         params.cfg ??
         ({
           agents: { defaults: { workspace: params.tempDir } },
-        } satisfies NexisClawConfig),
+        } satisfies FirstNexusConfig),
       previousSessionEntry: params.previousSessionEntry,
       ...(params.workspaceDirOverride ? { workspaceDir: params.workspaceDirOverride } : {}),
     },
@@ -106,7 +106,7 @@ async function runNewWithPreviousSessionEntry(params: {
 
 async function runNewWithPreviousSession(params: {
   sessionContent: string;
-  cfg?: (tempDir: string) => NexisClawConfig;
+  cfg?: (tempDir: string) => FirstNexusConfig;
   action?: "new" | "reset";
 }): Promise<{ tempDir: string; files: string[]; memoryContent: string }> {
   const tempDir = await createCaseWorkspace("workspace");
@@ -123,7 +123,7 @@ async function runNewWithPreviousSession(params: {
     params.cfg?.(tempDir) ??
     ({
       agents: { defaults: { workspace: tempDir } },
-    } satisfies NexisClawConfig);
+    } satisfies FirstNexusConfig);
 
   const { files, memoryContent } = await runNewWithPreviousSessionEntry({
     tempDir,
@@ -326,7 +326,7 @@ describe("session-memory hook", () => {
                   },
                 },
               },
-            }) satisfies NexisClawConfig,
+            }) satisfies FirstNexusConfig,
         });
         expectDatedMemoryFile(files, "simple-math");
       },
@@ -379,7 +379,7 @@ describe("session-memory hook", () => {
                 },
               },
             },
-          } satisfies NexisClawConfig,
+          } satisfies FirstNexusConfig,
           previousSessionEntry: {
             sessionId: "test-123",
             sessionFile,
@@ -490,7 +490,7 @@ describe("session-memory hook", () => {
           defaults: { workspace: mainWorkspace },
           list: [{ id: "navi", workspace: naviWorkspace }],
         },
-      } satisfies NexisClawConfig,
+      } satisfies FirstNexusConfig,
       sessionKey: "agent:main:main",
       workspaceDirOverride: naviWorkspace,
       previousSessionEntry: {
@@ -785,7 +785,7 @@ describe("session-memory hook", () => {
           defaults: { workspace: defaultWorkspace },
           list: [{ id: "custom-agent", workspace: customAgentWorkspace }],
         },
-      } satisfies NexisClawConfig,
+      } satisfies FirstNexusConfig,
       sessionKey: "agent:main:main",
       workspaceDirOverride: customAgentWorkspace,
       previousSessionEntry: {

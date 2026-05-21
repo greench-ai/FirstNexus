@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs NexisClaw from a prepared package tarball, installs @NexisClaw/codex
+# Installs FirstNexus from a prepared package tarball, installs @FirstNexus/codex
 # from the real npm registry, and verifies a live Codex app-server turn.
 set -euo pipefail
 
@@ -7,11 +7,11 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-codex-npm-plugin-live-e2e" NEXISCLAW_CODEX_NPM_PLUGIN_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-codex-npm-plugin-live-e2e" NEXISCLAW_CODEX_NPM_PLUGIN_E2E_IMAGE)"
 DOCKER_TARGET="${NEXISCLAW_CODEX_NPM_PLUGIN_DOCKER_TARGET:-bare}"
 HOST_BUILD="${NEXISCLAW_CODEX_NPM_PLUGIN_HOST_BUILD:-1}"
 PACKAGE_TGZ="${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}"
-PROFILE_FILE="${NEXISCLAW_CODEX_NPM_PLUGIN_PROFILE_FILE:-${NEXISCLAW_TESTBOX_PROFILE_FILE:-$HOME/.NexisClaw-testbox-live.profile}}"
+PROFILE_FILE="${NEXISCLAW_CODEX_NPM_PLUGIN_PROFILE_FILE:-${NEXISCLAW_TESTBOX_PROFILE_FILE:-$HOME/.FirstNexus-testbox-live.profile}}"
 
 docker_e2e_build_or_reuse "$IMAGE_NAME" codex-npm-plugin-live "$ROOT_DIR/scripts/e2e/Dockerfile" "$ROOT_DIR" "$DOCKER_TARGET"
 
@@ -51,7 +51,7 @@ if ! docker_e2e_run_with_harness \
   -e NEXISCLAW_CODEX_NPM_PLUGIN_ALLOW_BETA_COMPAT_DIAGNOSTICS="${NEXISCLAW_CODEX_NPM_PLUGIN_ALLOW_BETA_COMPAT_DIAGNOSTICS:-0}" \
   -e NEXISCLAW_CODEX_NPM_PLUGIN_FORCE_UNSAFE_INSTALL="${NEXISCLAW_CODEX_NPM_PLUGIN_FORCE_UNSAFE_INSTALL:-0}" \
   -e NEXISCLAW_CODEX_NPM_PLUGIN_MODEL="${NEXISCLAW_CODEX_NPM_PLUGIN_MODEL:-codex/gpt-5.4}" \
-  -e NEXISCLAW_CODEX_NPM_PLUGIN_SPEC="${NEXISCLAW_CODEX_NPM_PLUGIN_SPEC:-npm:@NexisClaw/codex}" \
+  -e NEXISCLAW_CODEX_NPM_PLUGIN_SPEC="${NEXISCLAW_CODEX_NPM_PLUGIN_SPEC:-npm:@FirstNexus/codex}" \
   -e OPENAI_API_KEY \
   -e OPENAI_BASE_URL \
   -e "NEXISCLAW_TEST_STATE_SCRIPT_B64=$NEXISCLAW_TEST_STATE_SCRIPT_B64" \
@@ -60,8 +60,8 @@ if ! docker_e2e_run_with_harness \
   -i "$IMAGE_NAME" bash -s >"$run_log" 2>&1 <<'EOF'; then
 set -euo pipefail
 
-source scripts/lib/NexisClaw-e2e-instance.sh
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+source scripts/lib/FirstNexus-e2e-instance.sh
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 export NPM_CONFIG_PREFIX="$HOME/.npm-global"
 export npm_config_prefix="$NPM_CONFIG_PREFIX"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
@@ -99,38 +99,38 @@ fi
 dump_debug_logs() {
   local status="$1"
   echo "Codex npm plugin live scenario failed with exit code $status" >&2
-  NexisClaw_e2e_dump_logs \
-    /tmp/NexisClaw-install.log \
-    /tmp/NexisClaw-codex-plugin-install.log \
-    /tmp/NexisClaw-codex-plugin-enable.log \
-    /tmp/NexisClaw-codex-plugins-list.json \
-    /tmp/NexisClaw-codex-plugin-inspect.json \
-    /tmp/NexisClaw-codex-preflight.log \
-    /tmp/NexisClaw-codex-agent.json \
-    /tmp/NexisClaw-codex-agent.err \
-    /tmp/NexisClaw-codex-plugin-uninstall.log \
-    /tmp/NexisClaw-codex-plugins-list-after-uninstall.json \
-    /tmp/NexisClaw-codex-agent-after-uninstall.json \
-    /tmp/NexisClaw-codex-agent-after-uninstall.err
+  FirstNexus_e2e_dump_logs \
+    /tmp/FirstNexus-install.log \
+    /tmp/FirstNexus-codex-plugin-install.log \
+    /tmp/FirstNexus-codex-plugin-enable.log \
+    /tmp/FirstNexus-codex-plugins-list.json \
+    /tmp/FirstNexus-codex-plugin-inspect.json \
+    /tmp/FirstNexus-codex-preflight.log \
+    /tmp/FirstNexus-codex-agent.json \
+    /tmp/FirstNexus-codex-agent.err \
+    /tmp/FirstNexus-codex-plugin-uninstall.log \
+    /tmp/FirstNexus-codex-plugins-list-after-uninstall.json \
+    /tmp/FirstNexus-codex-agent-after-uninstall.json \
+    /tmp/FirstNexus-codex-agent-after-uninstall.err
 }
 trap 'status=$?; dump_debug_logs "$status"; exit "$status"' ERR
 
 mkdir -p "$NPM_CONFIG_PREFIX" "$XDG_CACHE_HOME" "$NPM_CONFIG_CACHE"
 chmod 700 "$XDG_CACHE_HOME" "$NPM_CONFIG_CACHE" || true
 
-NexisClaw_e2e_install_package /tmp/NexisClaw-install.log
-command -v NexisClaw >/dev/null
+FirstNexus_e2e_install_package /tmp/FirstNexus-install.log
+command -v FirstNexus >/dev/null
 
 echo "Installing Codex plugin from npm: $CODEX_PLUGIN_SPEC"
-NexisClaw plugins install "$CODEX_PLUGIN_SPEC" "${PLUGIN_INSTALL_FLAGS[@]}" >/tmp/NexisClaw-codex-plugin-install.log 2>&1
+FirstNexus plugins install "$CODEX_PLUGIN_SPEC" "${PLUGIN_INSTALL_FLAGS[@]}" >/tmp/FirstNexus-codex-plugin-install.log 2>&1
 
 node scripts/e2e/lib/codex-npm-plugin-live/assertions.mjs configure "$MODEL_REF"
 
 echo "Enabling Codex plugin..."
-NexisClaw plugins enable codex >/tmp/NexisClaw-codex-plugin-enable.log 2>&1
+FirstNexus plugins enable codex >/tmp/FirstNexus-codex-plugin-enable.log 2>&1
 
-NexisClaw plugins list --json >/tmp/NexisClaw-codex-plugins-list.json
-NexisClaw plugins inspect codex --runtime --json >/tmp/NexisClaw-codex-plugin-inspect.json
+FirstNexus plugins list --json >/tmp/FirstNexus-codex-plugins-list.json
+FirstNexus plugins inspect codex --runtime --json >/tmp/FirstNexus-codex-plugin-inspect.json
 node scripts/e2e/lib/codex-npm-plugin-live/assertions.mjs assert-plugin "$CODEX_PLUGIN_SPEC"
 node scripts/e2e/lib/codex-npm-plugin-live/assertions.mjs assert-npm-deps
 
@@ -142,35 +142,35 @@ echo "Running Codex CLI preflight via managed npm dependency..."
   --json \
   --color never \
   --skip-git-repo-check \
-  "Reply exactly: ${SUCCESS_MARKER}-PREFLIGHT" >/tmp/NexisClaw-codex-preflight.log 2>&1
+  "Reply exactly: ${SUCCESS_MARKER}-PREFLIGHT" >/tmp/FirstNexus-codex-preflight.log 2>&1
 node scripts/e2e/lib/codex-npm-plugin-live/assertions.mjs assert-preflight "${SUCCESS_MARKER}-PREFLIGHT"
 
-echo "Running NexisClaw local agent turn through npm-installed Codex plugin..."
-NexisClaw agent --local \
+echo "Running FirstNexus local agent turn through npm-installed Codex plugin..."
+FirstNexus agent --local \
   --agent main \
   --session-id "$SESSION_ID" \
   --model "$MODEL_REF" \
   --message "Reply exactly: $SUCCESS_MARKER" \
   --thinking low \
   --timeout 420 \
-  --json >/tmp/NexisClaw-codex-agent.json 2>/tmp/NexisClaw-codex-agent.err
+  --json >/tmp/FirstNexus-codex-agent.json 2>/tmp/FirstNexus-codex-agent.err
 
 node scripts/e2e/lib/codex-npm-plugin-live/assertions.mjs assert-agent-turn "$SUCCESS_MARKER" "$SESSION_ID" "$MODEL_REF"
 
 echo "Uninstalling Codex plugin and verifying the configured harness now fails..."
-NexisClaw plugins uninstall codex --force >/tmp/NexisClaw-codex-plugin-uninstall.log 2>&1
-NexisClaw plugins list --json >/tmp/NexisClaw-codex-plugins-list-after-uninstall.json
+FirstNexus plugins uninstall codex --force >/tmp/FirstNexus-codex-plugin-uninstall.log 2>&1
+FirstNexus plugins list --json >/tmp/FirstNexus-codex-plugins-list-after-uninstall.json
 node scripts/e2e/lib/codex-npm-plugin-live/assertions.mjs assert-uninstalled
 
 set +e
-NexisClaw agent --local \
+FirstNexus agent --local \
   --agent main \
   --session-id "${SESSION_ID}-after-uninstall" \
   --model "$MODEL_REF" \
   --message "Reply exactly: ${SUCCESS_MARKER}-AFTER-UNINSTALL" \
   --thinking low \
   --timeout 120 \
-  --json >/tmp/NexisClaw-codex-agent-after-uninstall.json 2>/tmp/NexisClaw-codex-agent-after-uninstall.err
+  --json >/tmp/FirstNexus-codex-agent-after-uninstall.json 2>/tmp/FirstNexus-codex-agent-after-uninstall.err
 after_uninstall_status=$?
 set -e
 node scripts/e2e/lib/codex-npm-plugin-live/assertions.mjs assert-agent-error "$after_uninstall_status"

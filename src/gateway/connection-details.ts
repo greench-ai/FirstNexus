@@ -1,5 +1,5 @@
 import { resolveConfigPath, resolveGatewayPort } from "../config/paths.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 import { isSecureWebSocketUrl } from "./net.js";
 
@@ -12,14 +12,14 @@ export type GatewayConnectionDetails = {
 };
 
 type GatewayConnectionDetailResolvers = {
-  getRuntimeConfig?: () => NexisClawConfig;
+  getRuntimeConfig?: () => FirstNexusConfig;
   resolveConfigPath?: (env: NodeJS.ProcessEnv) => string;
-  resolveGatewayPort?: (cfg?: NexisClawConfig, env?: NodeJS.ProcessEnv) => number;
+  resolveGatewayPort?: (cfg?: FirstNexusConfig, env?: NodeJS.ProcessEnv) => number;
 };
 
 export function buildGatewayConnectionDetailsWithResolvers(
   options: {
-    config?: NexisClawConfig;
+    config?: FirstNexusConfig;
     url?: string;
     configPath?: string;
     urlSource?: "cli" | "env";
@@ -80,8 +80,8 @@ export function buildGatewayConnectionDetailsWithResolvers(
         allowPrivateWs
           ? undefined
           : "Break-glass (trusted private networks only): set NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS=1",
-        "Doctor: NexisClaw doctor --fix",
-        "Docs: https://docs.NexisClaw.ai/gateway/remote",
+        "Doctor: FirstNexus doctor --fix",
+        "Docs: https://docs.FirstNexus.ai/gateway/remote",
       ].join("\n"),
     );
   }

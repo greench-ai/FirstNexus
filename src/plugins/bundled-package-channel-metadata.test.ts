@@ -42,8 +42,8 @@ describe("bundled package channel metadata", () => {
     const root = makeTempRepoRoot(tempDirs, "bpcm-");
     const extensionsRoot = path.join(root, "dist", "extensions");
     writeJsonFile(path.join(extensionsRoot, "matrix", "package.json"), {
-      name: "@NexisClaw/matrix",
-      NexisClaw: {
+      name: "@FirstNexus/matrix",
+      FirstNexus: {
         channel: {
           id: "matrix",
           label: "Matrix",
@@ -57,7 +57,7 @@ describe("bundled package channel metadata", () => {
         },
       },
     });
-    writeJsonFile(path.join(extensionsRoot, "matrix", "NexisClaw.plugin.json"), {
+    writeJsonFile(path.join(extensionsRoot, "matrix", "FirstNexus.plugin.json"), {
       id: "matrix",
       configSchema: { type: "object" },
       channels: ["matrix"],
@@ -86,15 +86,15 @@ describe("bundled package channel metadata", () => {
     useBundledPluginsDir(extensionsRoot);
 
     writeJsonFile(packagePath, {
-      name: "@NexisClaw/matrix",
-      NexisClaw: {
+      name: "@FirstNexus/matrix",
+      FirstNexus: {
         channel: {
           id: "matrix",
           label: "Before",
         },
       },
     });
-    writeJsonFile(path.join(extensionsRoot, "matrix", "NexisClaw.plugin.json"), {
+    writeJsonFile(path.join(extensionsRoot, "matrix", "FirstNexus.plugin.json"), {
       id: "matrix",
       configSchema: { type: "object" },
       channels: ["matrix"],
@@ -107,8 +107,8 @@ describe("bundled package channel metadata", () => {
     expect(findBundledPackageChannelMetadata("matrix")?.label).toBe("Before");
 
     writeJsonFile(packagePath, {
-      name: "@NexisClaw/matrix",
-      NexisClaw: {
+      name: "@FirstNexus/matrix",
+      FirstNexus: {
         channel: {
           id: "matrix",
           label: "After",

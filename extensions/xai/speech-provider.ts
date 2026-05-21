@@ -1,4 +1,4 @@
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
 import {
   asFiniteNumber,
   trimToUndefined,
@@ -7,8 +7,8 @@ import {
   type SpeechProviderOverrides,
   type SpeechProviderPlugin,
   type SpeechSynthesisTarget,
-} from "NexisClaw/plugin-sdk/speech";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/speech";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   isValidXaiTtsVoice,
   normalizeXaiLanguageCode,

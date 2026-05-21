@@ -14,7 +14,7 @@ export function resetPluginAutoEnableTestState(): void {
 }
 
 export function makeTempDir(): string {
-  return makeTrackedTempDir("NexisClaw-plugin-auto-enable", tempDirs);
+  return makeTrackedTempDir("FirstNexus-plugin-auto-enable", tempDirs);
 }
 
 export function makeIsolatedEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
@@ -63,7 +63,7 @@ export function makeRegistry(
       origin: plugin.origin ?? "config",
       rootDir: `/fake/${plugin.id}`,
       source: `/fake/${plugin.id}/index.js`,
-      manifestPath: `/fake/${plugin.id}/NexisClaw.plugin.json`,
+      manifestPath: `/fake/${plugin.id}/FirstNexus.plugin.json`,
     })),
     diagnostics: [],
   };

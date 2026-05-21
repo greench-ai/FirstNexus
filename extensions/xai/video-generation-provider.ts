@@ -1,6 +1,6 @@
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
-import { isProviderApiKeyConfigured } from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
+import { isProviderApiKeyConfigured } from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   createProviderOperationDeadline,
@@ -9,13 +9,13 @@ import {
   resolveProviderOperationTimeoutMs,
   resolveProviderHttpRequestConfig,
   waitProviderOperationPollInterval,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type {
   GeneratedVideoAsset,
   VideoGenerationProvider,
   VideoGenerationRequest,
-} from "NexisClaw/plugin-sdk/video-generation";
+} from "FirstNexus/plugin-sdk/video-generation";
 
 const DEFAULT_XAI_VIDEO_BASE_URL = "https://api.x.ai/v1";
 const DEFAULT_XAI_VIDEO_MODEL = "grok-imagine-video";

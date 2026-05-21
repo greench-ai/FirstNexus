@@ -6,7 +6,7 @@ export function createSharedCoreVitestConfig(env?: Record<string, string | undef
     dir: "src",
     env,
     exclude: getUnitFastTestFiles(),
-    includeNexisClawRuntimeSetup: false,
+    includeFirstNexusRuntimeSetup: false,
     name: "shared-core",
     passWithNoTests: true,
   });

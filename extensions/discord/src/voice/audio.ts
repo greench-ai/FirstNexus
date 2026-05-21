@@ -1,10 +1,10 @@
 import fs from "node:fs/promises";
 import { createRequire } from "node:module";
 import type { Readable } from "node:stream";
-import { resamplePcm } from "NexisClaw/plugin-sdk/realtime-voice";
-import { logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { tempWorkspace, resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import { resamplePcm } from "FirstNexus/plugin-sdk/realtime-voice";
+import { logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { tempWorkspace, resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 
 const require = createRequire(import.meta.url);
 
@@ -228,7 +228,7 @@ export async function writeVoiceWavFile(
   pcm: Buffer,
 ): Promise<{ path: string; durationSeconds: number }> {
   const workspace = await tempWorkspace({
-    rootDir: resolvePreferredNexisClawTmpDir(),
+    rootDir: resolvePreferredFirstNexusTmpDir(),
     prefix: "discord-voice-",
   });
   const wav = buildWavBuffer(pcm);

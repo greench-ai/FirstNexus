@@ -1131,21 +1131,21 @@ function normalizeCommandBaseName(token: string | undefined): string {
   return base.replace(/\.(?:cmd|exe)$/u, "");
 }
 
-function stripNexisClawPackageRunner(argv: string[]): string[] {
+function stripFirstNexusPackageRunner(argv: string[]): string[] {
   const commandName = normalizeCommandBaseName(argv[0]);
-  if (commandName === "NexisClaw") {
+  if (commandName === "FirstNexus") {
     return argv;
   }
   if (
     (commandName === "pnpm" || commandName === "npm" || commandName === "yarn") &&
-    normalizeCommandBaseName(argv[1]) === "NexisClaw"
+    normalizeCommandBaseName(argv[1]) === "FirstNexus"
   ) {
     return argv.slice(1);
   }
   if (
     (commandName === "pnpm" || commandName === "npm" || commandName === "yarn") &&
     (argv[1] === "exec" || argv[1] === "dlx" || argv[1] === "run") &&
-    normalizeCommandBaseName(argv[2]) === "NexisClaw"
+    normalizeCommandBaseName(argv[2]) === "FirstNexus"
   ) {
     return argv.slice(2);
   }
@@ -1165,23 +1165,23 @@ function stripNexisClawPackageRunner(argv: string[]): string[] {
         idx += 1;
       }
     }
-    if (normalizeCommandBaseName(argv[idx]) === "NexisClaw") {
+    if (normalizeCommandBaseName(argv[idx]) === "FirstNexus") {
       return argv.slice(idx);
     }
   }
   return argv;
 }
 
-function parseNexisClawChannelsLoginShellCommand(raw: string): boolean {
+function parseFirstNexusChannelsLoginShellCommand(raw: string): boolean {
   const argv = splitShellArgs(raw);
   if (!argv) {
     return false;
   }
-  const NexisClawArgv = stripNexisClawPackageRunner(argv);
+  const FirstNexusArgv = stripFirstNexusPackageRunner(argv);
   return (
-    normalizeCommandBaseName(NexisClawArgv[0]) === "NexisClaw" &&
-    (NexisClawArgv[1] === "channels" || NexisClawArgv[1] === "channel") &&
-    NexisClawArgv[2] === "login"
+    normalizeCommandBaseName(FirstNexusArgv[0]) === "FirstNexus" &&
+    (FirstNexusArgv[1] === "channels" || FirstNexusArgv[1] === "channel") &&
+    FirstNexusArgv[2] === "login"
   );
 }
 
@@ -1207,11 +1207,11 @@ function rejectUnsafeControlShellCommand(command: string): void {
         ].join(" "),
       );
     }
-    if (parseNexisClawChannelsLoginShellCommand(candidate)) {
+    if (parseFirstNexusChannelsLoginShellCommand(candidate)) {
       throw new Error(
         [
-          "exec cannot run interactive NexisClaw channel login commands.",
-          "Run `NexisClaw channels login` in a terminal on the gateway host, or use the channel-specific login agent tool when available (for WhatsApp: `whatsapp_login`).",
+          "exec cannot run interactive FirstNexus channel login commands.",
+          "Run `FirstNexus channels login` in a terminal on the gateway host, or use the channel-specific login agent tool when available (for WhatsApp: `whatsapp_login`).",
         ].join(" "),
       );
     }
@@ -1737,6 +1737,6 @@ export function createExecTool(
 export const execTool = createExecTool();
 
 export const __testing = {
-  parseNexisClawChannelsLoginShellCommand,
+  parseFirstNexusChannelsLoginShellCommand,
   validateScriptFileForShellBleed,
 };

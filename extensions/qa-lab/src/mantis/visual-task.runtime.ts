@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { pathExists, writeExternalFileWithinRoot } from "NexisClaw/plugin-sdk/security-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { pathExists, writeExternalFileWithinRoot } from "FirstNexus/plugin-sdk/security-runtime";
 import { ensureRepoBoundDirectory, resolveRepoRelativeOutputDir } from "../cli-paths.js";
 import {
   type CommandRunner,
@@ -258,7 +258,7 @@ function buildVisualDriverArgs(params: {
   const args = [
     "--dir",
     params.repoRoot,
-    "NexisClaw",
+    "FirstNexus",
     "qa",
     "mantis",
     "visual-driver",
@@ -396,7 +396,7 @@ function evaluateVisualExpectation(text: string | undefined, expectText: string 
 function browserLaunchScript() {
   return [
     'browser="${BROWSER:-${CHROME_BIN:-google-chrome}}"',
-    'profile="${TMPDIR:-/tmp}/NexisClaw-mantis-visual-chrome-profile"',
+    'profile="${TMPDIR:-/tmp}/FirstNexus-mantis-visual-chrome-profile"',
     'mkdir -p "$profile"',
     'exec "$browser" --user-data-dir="$profile" --no-first-run --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --window-size=1280,900 --window-position=0,0 "$0"',
   ].join("; ");
@@ -538,7 +538,7 @@ export async function runMantisVisualDriver(
     let visionText: string | undefined;
     if (visionMode === "image-describe") {
       const imageArgs = [
-        "NexisClaw",
+        "FirstNexus",
         "infer",
         "image",
         "describe",

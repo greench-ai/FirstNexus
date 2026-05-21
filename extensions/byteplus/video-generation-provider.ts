@@ -1,6 +1,6 @@
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
-import { isProviderApiKeyConfigured } from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
+import { isProviderApiKeyConfigured } from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   createProviderOperationDeadline,
@@ -9,13 +9,13 @@ import {
   resolveProviderOperationTimeoutMs,
   resolveProviderHttpRequestConfig,
   waitProviderOperationPollInterval,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type {
   GeneratedVideoAsset,
   VideoGenerationProvider,
   VideoGenerationRequest,
-} from "NexisClaw/plugin-sdk/video-generation";
+} from "FirstNexus/plugin-sdk/video-generation";
 import { BYTEPLUS_BASE_URL } from "./models.js";
 
 const DEFAULT_BYTEPLUS_VIDEO_MODEL = "seedance-1-0-lite-t2v-250428";

@@ -1,4 +1,4 @@
-import { REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ } from "NexisClaw/plugin-sdk/realtime-voice";
+import { REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ } from "FirstNexus/plugin-sdk/realtime-voice";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildGoogleRealtimeVoiceProvider } from "./realtime-voice-provider.js";
 
@@ -214,8 +214,8 @@ describe("buildGoogleRealtimeVoiceProvider", () => {
         },
         {
           type: "function",
-          name: "NexisClaw_agent_consult",
-          description: "Ask NexisClaw",
+          name: "FirstNexus_agent_consult",
+          description: "Ask FirstNexus",
           parameters: {
             type: "object",
             properties: {
@@ -284,8 +284,8 @@ describe("buildGoogleRealtimeVoiceProvider", () => {
       },
       required: ["query"],
     });
-    expect(declarations[1]?.name).toBe("NexisClaw_agent_consult");
-    expect(declarations[1]?.description).toBe("Ask NexisClaw");
+    expect(declarations[1]?.name).toBe("FirstNexus_agent_consult");
+    expect(declarations[1]?.description).toBe("Ask FirstNexus");
     expect(declarations[1]?.parametersJsonSchema).toEqual({
       type: "object",
       properties: {
@@ -326,8 +326,8 @@ describe("buildGoogleRealtimeVoiceProvider", () => {
       tools: [
         {
           type: "function",
-          name: "NexisClaw_agent_consult",
-          description: "Ask NexisClaw",
+          name: "FirstNexus_agent_consult",
+          description: "Ask FirstNexus",
           parameters: {
             type: "object",
             properties: {
@@ -365,7 +365,7 @@ describe("buildGoogleRealtimeVoiceProvider", () => {
       "Puck",
     );
     expect(liveConstraints?.config?.tools?.[0]?.functionDeclarations?.[0]?.name).toBe(
-      "NexisClaw_agent_consult",
+      "FirstNexus_agent_consult",
     );
     expect(liveConstraints?.config?.tools?.[0]?.functionDeclarations?.[0]?.behavior).toBe(
       "NON_BLOCKING",
@@ -759,7 +759,7 @@ describe("buildGoogleRealtimeVoiceProvider", () => {
       setupComplete: { sessionId: "session-1" },
       toolCall: {
         functionCalls: [
-          { id: "consult-call", name: "NexisClaw_agent_consult", args: { prompt: "hi" } },
+          { id: "consult-call", name: "FirstNexus_agent_consult", args: { prompt: "hi" } },
         ],
       },
     });
@@ -775,7 +775,7 @@ describe("buildGoogleRealtimeVoiceProvider", () => {
       functionResponses: [
         {
           id: "consult-call",
-          name: "NexisClaw_agent_consult",
+          name: "FirstNexus_agent_consult",
           scheduling: "WHEN_IDLE",
           willContinue: true,
           response: { status: "working", message: "Tell the participant you are checking." },
@@ -786,7 +786,7 @@ describe("buildGoogleRealtimeVoiceProvider", () => {
       functionResponses: [
         {
           id: "consult-call",
-          name: "NexisClaw_agent_consult",
+          name: "FirstNexus_agent_consult",
           scheduling: "WHEN_IDLE",
           response: { text: "The meeting starts at 3." },
         },

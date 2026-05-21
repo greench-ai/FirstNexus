@@ -21,27 +21,27 @@ function normalizeLowercaseStringOrEmpty(value) {
   return typeof value === "string" ? value.toLowerCase() : "";
 }
 
-function hasTrustedNexisClawRootIndicator(packageRoot, packageJson) {
+function hasTrustedFirstNexusRootIndicator(packageRoot, packageJson) {
   const packageExports = packageJson?.exports ?? {};
   if (!Object.prototype.hasOwnProperty.call(packageExports, "./plugin-sdk")) {
     return false;
   }
   const hasCliEntryExport = Object.prototype.hasOwnProperty.call(packageExports, "./cli-entry");
-  const hasNexisClawBin =
+  const hasFirstNexusBin =
     (typeof packageJson?.bin === "string" &&
-      normalizeLowercaseStringOrEmpty(packageJson.bin).includes("NexisClaw")) ||
+      normalizeLowercaseStringOrEmpty(packageJson.bin).includes("FirstNexus")) ||
     (typeof packageJson?.bin === "object" &&
       packageJson.bin !== null &&
-      typeof packageJson.bin.NexisClaw === "string");
-  const hasNexisClawEntrypoint = fs.existsSync(path.join(packageRoot, "NexisClaw.mjs"));
-  return hasCliEntryExport || hasNexisClawBin || hasNexisClawEntrypoint;
+      typeof packageJson.bin.FirstNexus === "string");
+  const hasFirstNexusEntrypoint = fs.existsSync(path.join(packageRoot, "FirstNexus.mjs"));
+  return hasCliEntryExport || hasFirstNexusBin || hasFirstNexusEntrypoint;
 }
 
-function findNexisClawPackageRoot(startDir) {
+function findFirstNexusPackageRoot(startDir) {
   let cursor = path.resolve(startDir);
   for (let i = 0; i < 12; i += 1) {
     const pkg = readPackageJson(cursor);
-    if (pkg?.name === "NexisClaw" && hasTrustedNexisClawRootIndicator(cursor, pkg)) {
+    if (pkg?.name === "FirstNexus" && hasTrustedFirstNexusRootIndicator(cursor, pkg)) {
       return { packageRoot: cursor, packageJson: pkg };
     }
     const parent = path.dirname(cursor);
@@ -78,7 +78,7 @@ function resolveBundledPluginRuntimeModulePath(moduleUrl, params) {
     }
   }
 
-  const location = findNexisClawPackageRoot(moduleDir);
+  const location = findFirstNexusPackageRoot(moduleDir);
   if (location) {
     const { packageRoot } = location;
     const packageCandidates = [

@@ -1,12 +1,12 @@
 ---
-summary: "Use StepFun models with NexisClaw"
+summary: "Use StepFun models with FirstNexus"
 read_when:
-  - You want StepFun models in NexisClaw
+  - You want StepFun models in FirstNexus
   - You need StepFun setup guidance
 title: "StepFun"
 ---
 
-NexisClaw includes a bundled StepFun provider plugin with two provider ids:
+FirstNexus includes a bundled StepFun provider plugin with two provider ids:
 
 - `stepfun` for the standard endpoint
 - `stepfun-plan` for the Step Plan endpoint
@@ -56,24 +56,24 @@ Choose your provider surface and follow the setup steps.
       </Step>
       <Step title="Run onboarding">
         ```bash
-        NexisClaw onboard --auth-choice stepfun-standard-api-key-intl
+        FirstNexus onboard --auth-choice stepfun-standard-api-key-intl
         ```
 
         Or for the China endpoint:
 
         ```bash
-        NexisClaw onboard --auth-choice stepfun-standard-api-key-cn
+        FirstNexus onboard --auth-choice stepfun-standard-api-key-cn
         ```
       </Step>
       <Step title="Non-interactive alternative">
         ```bash
-        NexisClaw onboard --auth-choice stepfun-standard-api-key-intl \
+        FirstNexus onboard --auth-choice stepfun-standard-api-key-intl \
           --stepfun-api-key "$STEPFUN_API_KEY"
         ```
       </Step>
       <Step title="Verify models are available">
         ```bash
-        NexisClaw models list --provider stepfun
+        FirstNexus models list --provider stepfun
         ```
       </Step>
     </Steps>
@@ -96,24 +96,24 @@ Choose your provider surface and follow the setup steps.
       </Step>
       <Step title="Run onboarding">
         ```bash
-        NexisClaw onboard --auth-choice stepfun-plan-api-key-intl
+        FirstNexus onboard --auth-choice stepfun-plan-api-key-intl
         ```
 
         Or for the China endpoint:
 
         ```bash
-        NexisClaw onboard --auth-choice stepfun-plan-api-key-cn
+        FirstNexus onboard --auth-choice stepfun-plan-api-key-cn
         ```
       </Step>
       <Step title="Non-interactive alternative">
         ```bash
-        NexisClaw onboard --auth-choice stepfun-plan-api-key-intl \
+        FirstNexus onboard --auth-choice stepfun-plan-api-key-intl \
           --stepfun-api-key "$STEPFUN_API_KEY"
         ```
       </Step>
       <Step title="Verify models are available">
         ```bash
-        NexisClaw models list --provider stepfun-plan
+        FirstNexus models list --provider stepfun-plan
         ```
       </Step>
     </Steps>
@@ -199,10 +199,10 @@ Choose your provider surface and follow the setup steps.
   </Accordion>
 
   <Accordion title="Notes">
-    - The provider is bundled with NexisClaw, so there is no separate plugin install step.
+    - The provider is bundled with FirstNexus, so there is no separate plugin install step.
     - `step-3.5-flash-2603` is currently exposed only on `stepfun-plan`.
     - A single auth flow writes region-matched profiles for both `stepfun` and `stepfun-plan`, so both surfaces can be discovered together.
-    - Use `NexisClaw models list` and `NexisClaw models set <provider/model>` to inspect or switch models.
+    - Use `FirstNexus models list` and `FirstNexus models set <provider/model>` to inspect or switch models.
 
   </Accordion>
 </AccordionGroup>

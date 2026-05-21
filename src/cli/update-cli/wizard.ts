@@ -24,7 +24,7 @@ import { updateCommand } from "./update-command.js";
 export async function updateWizardCommand(opts: UpdateWizardOptions = {}): Promise<void> {
   if (!process.stdin.isTTY) {
     defaultRuntime.error(
-      "Update wizard requires a TTY. Use `NexisClaw update --channel <stable|beta|dev>` instead.",
+      "Update wizard requires a TTY. Use `FirstNexus update --channel <stable|beta|dev>` instead.",
     );
     defaultRuntime.exit(1);
     return;
@@ -107,7 +107,7 @@ export async function updateWizardCommand(opts: UpdateWizardOptions = {}): Promi
         const empty = await isEmptyDir(gitDir);
         if (!empty) {
           defaultRuntime.error(
-            `NEXISCLAW_GIT_DIR points at a non-git directory: ${gitDir}. Set NEXISCLAW_GIT_DIR to an empty folder or an NexisClaw checkout.`,
+            `NEXISCLAW_GIT_DIR points at a non-git directory: ${gitDir}. Set NEXISCLAW_GIT_DIR to an empty folder or an FirstNexus checkout.`,
           );
           defaultRuntime.exit(1);
           return;

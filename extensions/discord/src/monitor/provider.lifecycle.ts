@@ -1,9 +1,9 @@
 import {
   createConnectedChannelStatusPatch,
   createTransportActivityStatusPatch,
-} from "NexisClaw/plugin-sdk/gateway-runtime";
-import { danger } from "NexisClaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/gateway-runtime";
+import { danger } from "FirstNexus/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import { attachDiscordGatewayLogging } from "../gateway-logging.js";
 import { getDiscordGatewayEmitter, waitForDiscordGatewayStop } from "../monitor.gateway.js";
 import type { DiscordVoiceManager } from "../voice/manager.js";

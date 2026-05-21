@@ -1,22 +1,22 @@
 {
-  "name": "@NexisClaw/migrate-claude",
+  "name": "@FirstNexus/migrate-claude",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "Claude to NexisClaw migration provider",
+  "description": "Claude to FirstNexus migration provider",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*",
-    "NexisClaw": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*",
+    "FirstNexus": "workspace:*"
   },
   "peerDependencies": {
-    "NexisClaw": ">=2026.5.12-beta.1"
+    "FirstNexus": ">=2026.5.12-beta.1"
   },
   "peerDependenciesMeta": {
-    "NexisClaw": {
+    "FirstNexus": {
       "optional": true
     }
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

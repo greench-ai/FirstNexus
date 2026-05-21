@@ -3,13 +3,13 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { formatCliCommand } from "../cli/command-format.js";
 import { resolveStateDir } from "../config/paths.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { runCommandWithTimeout } from "../process/exec.js";
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
 import { VERSION } from "../version.js";
 import { isTruthyEnvValue } from "./env.js";
+import { resolveFirstNexusPackageRoot } from "./FirstNexus-root.js";
 import { writeJson } from "./json-files.js";
-import { resolveNexisClawPackageRoot } from "./NexisClaw-root.js";
 import { normalizeUpdateChannel, DEFAULT_PACKAGE_CHANNEL } from "./update-channels.js";
 import { compareSemverStrings, resolveNpmChannelTag, checkUpdateStatus } from "./update-check.js";
 
@@ -78,7 +78,7 @@ function shouldSkipCheck(allowInTests: boolean): boolean {
   return false;
 }
 
-function resolveAutoUpdatePolicy(cfg: NexisClawConfig): AutoUpdatePolicy {
+function resolveAutoUpdatePolicy(cfg: FirstNexusConfig): AutoUpdatePolicy {
   const auto = cfg.update?.auto;
   const stableDelayHours =
     typeof auto?.stableDelayHours === "number" && Number.isFinite(auto.stableDelayHours)
@@ -101,7 +101,7 @@ function resolveAutoUpdatePolicy(cfg: NexisClawConfig): AutoUpdatePolicy {
   };
 }
 
-function resolveCheckIntervalMs(cfg: NexisClawConfig): number {
+function resolveCheckIntervalMs(cfg: FirstNexusConfig): number {
   const channel = normalizeUpdateChannel(cfg.update?.channel) ?? DEFAULT_PACKAGE_CHANNEL;
   const auto = resolveAutoUpdatePolicy(cfg);
   if (!auto.enabled) {
@@ -267,7 +267,7 @@ async function runAutoUpdateCommand(params: {
     }
   }
   if (argv.length === 0) {
-    argv.push("NexisClaw", ...baseArgs);
+    argv.push("FirstNexus", ...baseArgs);
   }
 
   try {
@@ -300,7 +300,7 @@ function clearAutoState(nextState: UpdateCheckState): void {
 }
 
 export async function runGatewayUpdateCheck(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   log: { info: (msg: string, meta?: Record<string, unknown>) => void };
   isNixMode: boolean;
   allowInTests?: boolean;
@@ -350,7 +350,7 @@ export async function runGatewayUpdateCheck(params: {
     }
   }
 
-  const root = await resolveNexisClawPackageRoot({
+  const root = await resolveFirstNexusPackageRoot({
     moduleUrl: import.meta.url,
     argv1: process.argv[1],
     cwd: process.cwd(),
@@ -406,7 +406,7 @@ export async function runGatewayUpdateCheck(params: {
       state.lastNotifiedVersion !== resolved.version || state.lastNotifiedTag !== tag;
     if (shouldRunUpdateHints && shouldNotify) {
       params.log.info(
-        `update available (${tag}): v${resolved.version} (current v${VERSION}). Run: ${formatCliCommand("NexisClaw update")}`,
+        `update available (${tag}): v${resolved.version} (current v${VERSION}). Run: ${formatCliCommand("FirstNexus update")}`,
       );
       nextState.lastNotifiedVersion = resolved.version;
       nextState.lastNotifiedTag = tag;
@@ -498,7 +498,7 @@ export async function runGatewayUpdateCheck(params: {
 }
 
 export function scheduleGatewayUpdateCheck(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   log: { info: (msg: string, meta?: Record<string, unknown>) => void };
   isNixMode: boolean;
   onUpdateAvailableChange?: (updateAvailable: UpdateAvailable | null) => void;

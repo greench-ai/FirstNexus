@@ -1,18 +1,18 @@
 import { ChannelType } from "discord-api-types/v10";
-import type { NativeCommandSpec } from "NexisClaw/plugin-sdk/command-auth";
-import { resolveDirectStatusReplyForSession } from "NexisClaw/plugin-sdk/command-status-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { NativeCommandSpec } from "FirstNexus/plugin-sdk/command-auth";
+import { resolveDirectStatusReplyForSession } from "FirstNexus/plugin-sdk/command-status-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   clearPluginCommands,
   executePluginCommand,
   matchPluginCommand,
   registerPluginCommand,
-} from "NexisClaw/plugin-sdk/plugin-runtime";
+} from "FirstNexus/plugin-sdk/plugin-runtime";
 import {
   createTestRegistry,
   setActivePluginRegistry,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { dispatchReplyWithDispatcher } from "NexisClaw/plugin-sdk/reply-dispatch-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { dispatchReplyWithDispatcher } from "FirstNexus/plugin-sdk/reply-dispatch-runtime";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { defineThrowingDiscordChannelGetter } from "../test-support/partial-channel.js";
 import { resolveDiscordNativeInteractionRouteState } from "./native-command-route.js";
@@ -31,14 +31,14 @@ const runtimeModuleMocks = vi.hoisted(() => ({
   resolveDirectStatusReplyForSession: vi.fn(),
 }));
 
-function createConfig(): NexisClawConfig {
+function createConfig(): FirstNexusConfig {
   return {
     channels: {
       discord: {
         dm: { enabled: true, policy: "open", allowFrom: ["*"] },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function createConfiguredAcpBinding(params: {
@@ -104,7 +104,7 @@ function createConfiguredAcpCase(params: {
           agentId: params.agentId,
         }),
       ],
-    } as NexisClawConfig,
+    } as FirstNexusConfig,
     interaction: createInteraction({
       channelType: params.channelType,
       channelId: params.channelId,
@@ -114,7 +114,7 @@ function createConfiguredAcpCase(params: {
   };
 }
 
-async function createNativeCommand(cfg: NexisClawConfig, commandSpec: NativeCommandSpec) {
+async function createNativeCommand(cfg: FirstNexusConfig, commandSpec: NativeCommandSpec) {
   return createDiscordNativeCommand({
     command: commandSpec,
     cfg,
@@ -264,7 +264,7 @@ function expectNoFollowUpContent(interaction: MockCommandInteraction, content: s
   expect(matched).toBe(false);
 }
 
-async function createPluginCommand(params: { cfg: NexisClawConfig; name: string }) {
+async function createPluginCommand(params: { cfg: FirstNexusConfig; name: string }) {
   return createDiscordNativeCommand({
     command: {
       name: params.name,
@@ -317,7 +317,7 @@ function registerScopedPairPlugin(
 }
 
 async function expectPairCommandReply(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   commandName: string;
   interaction: MockCommandInteraction;
   expectedRegisteredName?: string;
@@ -350,7 +350,7 @@ async function expectPairCommandReply(params: {
   expect(params.interaction.reply).not.toHaveBeenCalled();
 }
 
-async function createStatusCommand(cfg: NexisClawConfig) {
+async function createStatusCommand(cfg: FirstNexusConfig) {
   return await createNativeCommand(cfg, {
     name: "status",
     description: "Status",
@@ -369,7 +369,7 @@ function createDispatchSpy() {
 }
 
 async function expectBoundStatusCommandDirectReply(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   interaction: MockCommandInteraction;
   expectedPattern: RegExp;
 }) {
@@ -431,10 +431,10 @@ describe("Discord native plugin command dispatch", () => {
       text: "status reply",
     });
     discordNativeCommandTesting.setMatchPluginCommand(
-      runtimeModuleMocks.matchPluginCommand as typeof import("NexisClaw/plugin-sdk/plugin-runtime").matchPluginCommand,
+      runtimeModuleMocks.matchPluginCommand as typeof import("FirstNexus/plugin-sdk/plugin-runtime").matchPluginCommand,
     );
     discordNativeCommandTesting.setExecutePluginCommand(
-      runtimeModuleMocks.executePluginCommand as typeof import("NexisClaw/plugin-sdk/plugin-runtime").executePluginCommand,
+      runtimeModuleMocks.executePluginCommand as typeof import("FirstNexus/plugin-sdk/plugin-runtime").executePluginCommand,
     );
     discordNativeCommandTesting.setDispatchReplyWithDispatcher(
       runtimeModuleMocks.dispatchReplyWithDispatcher as typeof dispatchReplyWithDispatcher,
@@ -483,7 +483,7 @@ describe("Discord native plugin command dispatch", () => {
           dm: { enabled: true, policy: "open", allowFrom: ["user:owner"] },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const interaction = createInteraction();
     interaction.options.getString.mockReturnValue("now");
     const handler = registerScopedPairPlugin();
@@ -508,7 +508,7 @@ describe("Discord native plugin command dispatch", () => {
           dm: { enabled: true, policy: "open", allowFrom: ["*"] },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const interaction = createInteraction({ userId: "123456789012345678" });
     interaction.options.getString.mockReturnValue("now");
     const handler = registerScopedPairPlugin();
@@ -559,7 +559,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const commandSpec: NativeCommandSpec = {
       name: "pair",
       description: "Pair",
@@ -621,7 +621,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const commandSpec: NativeCommandSpec = {
       name: "pair",
       description: "Pair",
@@ -681,7 +681,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const commandSpec: NativeCommandSpec = {
       name: "pair",
       description: "Pair",
@@ -738,7 +738,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const interaction = createInteraction({
       channelType: ChannelType.GroupDM,
       channelId: "blocked-group",
@@ -893,7 +893,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const commandSpec: NativeCommandSpec = {
       name: "cron_jobs",
       description: "List cron jobs",
@@ -961,7 +961,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const commandSpec: NativeCommandSpec = {
       name: "cron_jobs",
       description: "List cron jobs",
@@ -1067,7 +1067,7 @@ describe("Discord native plugin command dispatch", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const interaction = createInteraction({
       channelType: ChannelType.GuildText,
       channelId,

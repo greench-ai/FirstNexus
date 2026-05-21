@@ -1,18 +1,18 @@
 import { describe, expect, it, vi } from "vitest";
 import { NEXISCLAW_ACPX_LEASE_ID_ARG, NEXISCLAW_GATEWAY_INSTANCE_ID_ARG } from "./process-lease.js";
 import {
-  cleanupNexisClawOwnedAcpxProcessTree,
-  isNexisClawOwnedAcpxProcessCommand,
-  reapStaleNexisClawOwnedAcpxOrphans,
+  cleanupFirstNexusOwnedAcpxProcessTree,
+  isFirstNexusOwnedAcpxProcessCommand,
+  reapStaleFirstNexusOwnedAcpxOrphans,
   type AcpxProcessInfo,
 } from "./process-reaper.js";
 
-const WRAPPER_ROOT = "/tmp/NexisClaw-state/acpx";
+const WRAPPER_ROOT = "/tmp/FirstNexus-state/acpx";
 const CODEX_WRAPPER_COMMAND = `node ${WRAPPER_ROOT}/codex-acp-wrapper.mjs`;
 const CODEX_WRAPPER_COMMAND_WITH_LEASE = `${CODEX_WRAPPER_COMMAND} ${NEXISCLAW_ACPX_LEASE_ID_ARG} lease-1 ${NEXISCLAW_GATEWAY_INSTANCE_ID_ARG} gateway-1`;
 const CLAUDE_WRAPPER_COMMAND = `node ${WRAPPER_ROOT}/claude-agent-acp-wrapper.mjs`;
 const PLUGIN_DEPS_CODEX_COMMAND =
-  "node /tmp/NexisClaw/plugin-runtime-deps/node_modules/@zed-industries/codex-acp/bin/codex-acp.js";
+  "node /tmp/FirstNexus/plugin-runtime-deps/node_modules/@zed-industries/codex-acp/bin/codex-acp.js";
 
 function cleanupDeps(processes: AcpxProcessInfo[]) {
   const killed: Array<{ pid: number; signal: NodeJS.Signals }> = [];
@@ -45,28 +45,28 @@ function collectMatching<T, U>(
 describe("process reaper", () => {
   it("recognizes generated Codex and Claude wrappers only under the configured root", () => {
     expect(
-      isNexisClawOwnedAcpxProcessCommand({
+      isFirstNexusOwnedAcpxProcessCommand({
         command: CODEX_WRAPPER_COMMAND,
         wrapperRoot: WRAPPER_ROOT,
       }),
     ).toBe(true);
     expect(
-      isNexisClawOwnedAcpxProcessCommand({
+      isFirstNexusOwnedAcpxProcessCommand({
         command: CLAUDE_WRAPPER_COMMAND,
         wrapperRoot: WRAPPER_ROOT,
       }),
     ).toBe(true);
     expect(
-      isNexisClawOwnedAcpxProcessCommand({
+      isFirstNexusOwnedAcpxProcessCommand({
         command: "node /tmp/other/codex-acp-wrapper.mjs",
         wrapperRoot: WRAPPER_ROOT,
       }),
     ).toBe(false);
   });
 
-  it("recognizes NexisClaw plugin-runtime-deps ACP adapter children", () => {
-    expect(isNexisClawOwnedAcpxProcessCommand({ command: PLUGIN_DEPS_CODEX_COMMAND })).toBe(true);
-    expect(isNexisClawOwnedAcpxProcessCommand({ command: "npx @zed-industries/codex-acp" })).toBe(
+  it("recognizes FirstNexus plugin-runtime-deps ACP adapter children", () => {
+    expect(isFirstNexusOwnedAcpxProcessCommand({ command: PLUGIN_DEPS_CODEX_COMMAND })).toBe(true);
+    expect(isFirstNexusOwnedAcpxProcessCommand({ command: "npx @zed-industries/codex-acp" })).toBe(
       false,
     );
   });
@@ -78,7 +78,7 @@ describe("process reaper", () => {
       { pid: 102, ppid: 101, command: "node child.js" },
     ]);
 
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: 100,
       rootCommand: CODEX_WRAPPER_COMMAND,
       wrapperRoot: WRAPPER_ROOT,
@@ -97,7 +97,7 @@ describe("process reaper", () => {
   it("allows wrapper-root verification when stored wrapper commands are shell-quoted", async () => {
     const { deps, killed } = cleanupDeps([{ pid: 110, ppid: 1, command: CODEX_WRAPPER_COMMAND }]);
 
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: 110,
       rootCommand: `"/usr/local/bin/node" "${WRAPPER_ROOT}/codex-acp-wrapper.mjs"`,
       wrapperRoot: WRAPPER_ROOT,
@@ -113,7 +113,7 @@ describe("process reaper", () => {
       { pid: 112, ppid: 1, command: CODEX_WRAPPER_COMMAND_WITH_LEASE },
     ]);
 
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: 112,
       rootCommand: CODEX_WRAPPER_COMMAND,
       expectedLeaseId: "lease-1",
@@ -135,7 +135,7 @@ describe("process reaper", () => {
       },
     ]);
 
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: 113,
       rootCommand: CODEX_WRAPPER_COMMAND,
       expectedLeaseId: "lease-1",
@@ -147,14 +147,14 @@ describe("process reaper", () => {
     expect(result).toEqual({
       inspectedPids: [113],
       terminatedPids: [],
-      skippedReason: "not-NexisClaw-owned",
+      skippedReason: "not-FirstNexus-owned",
     });
     expect(killed).toStrictEqual([]);
   });
 
   it("skips recorded pid cleanup when process listing is unavailable", async () => {
     const killed: Array<{ pid: number; signal: NodeJS.Signals }> = [];
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: 200,
       rootCommand: CODEX_WRAPPER_COMMAND,
       wrapperRoot: WRAPPER_ROOT,
@@ -177,10 +177,10 @@ describe("process reaper", () => {
     expect(killed).toStrictEqual([]);
   });
 
-  it("does not kill a reused pid when the live command is not NexisClaw-owned", async () => {
+  it("does not kill a reused pid when the live command is not FirstNexus-owned", async () => {
     const { deps, killed } = cleanupDeps([{ pid: 250, ppid: 1, command: "node unrelated.js" }]);
 
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: 250,
       rootCommand: CODEX_WRAPPER_COMMAND,
       wrapperRoot: WRAPPER_ROOT,
@@ -190,7 +190,7 @@ describe("process reaper", () => {
     expect(result).toEqual({
       inspectedPids: [250],
       terminatedPids: [],
-      skippedReason: "not-NexisClaw-owned",
+      skippedReason: "not-FirstNexus-owned",
     });
     expect(killed).toStrictEqual([]);
   });
@@ -204,7 +204,7 @@ describe("process reaper", () => {
       },
     ]);
 
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: 260,
       rootCommand: CODEX_WRAPPER_COMMAND,
       wrapperRoot: WRAPPER_ROOT,
@@ -214,7 +214,7 @@ describe("process reaper", () => {
     expect(result).toEqual({
       inspectedPids: [260],
       terminatedPids: [],
-      skippedReason: "not-NexisClaw-owned",
+      skippedReason: "not-FirstNexus-owned",
     });
     expect(killed).toStrictEqual([]);
   });
@@ -222,18 +222,18 @@ describe("process reaper", () => {
   it("skips non-owned recorded process trees", async () => {
     const { deps, killed } = cleanupDeps([{ pid: 300, ppid: 1, command: "node server.js" }]);
 
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: 300,
       rootCommand: "node server.js",
       wrapperRoot: WRAPPER_ROOT,
       deps,
     });
 
-    expect(result.skippedReason).toBe("not-NexisClaw-owned");
+    expect(result.skippedReason).toBe("not-FirstNexus-owned");
     expect(killed).toStrictEqual([]);
   });
 
-  it("reaps stale NexisClaw-owned wrapper and adapter orphans on startup", async () => {
+  it("reaps stale FirstNexus-owned wrapper and adapter orphans on startup", async () => {
     const { deps, killed } = cleanupDeps([
       { pid: 400, ppid: 1, command: CODEX_WRAPPER_COMMAND },
       { pid: 401, ppid: 400, command: PLUGIN_DEPS_CODEX_COMMAND },
@@ -244,7 +244,7 @@ describe("process reaper", () => {
       { pid: 406, ppid: 1, command: "node /tmp/other/codex-acp-wrapper.mjs" },
     ]);
 
-    const result = await reapStaleNexisClawOwnedAcpxOrphans({
+    const result = await reapStaleFirstNexusOwnedAcpxOrphans({
       wrapperRoot: WRAPPER_ROOT,
       deps,
     });
@@ -261,7 +261,7 @@ describe("process reaper", () => {
   });
 
   it("keeps startup scans quiet when process listing is unavailable", async () => {
-    const result = await reapStaleNexisClawOwnedAcpxOrphans({
+    const result = await reapStaleFirstNexusOwnedAcpxOrphans({
       wrapperRoot: WRAPPER_ROOT,
       deps: {
         listProcesses: vi.fn(async () => {

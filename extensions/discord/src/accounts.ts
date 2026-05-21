@@ -2,18 +2,18 @@ import {
   createAccountActionGate,
   createAccountListHelpers,
   resolveMergedAccountConfig,
-} from "NexisClaw/plugin-sdk/account-helpers";
-import { normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
+} from "FirstNexus/plugin-sdk/account-helpers";
+import { normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
 import {
   mapAllowFromEntries,
   normalizeChannelDmPolicy,
   resolveChannelDmAllowFrom,
   resolveChannelDmPolicy,
   type ChannelDmPolicy,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
-import { resolveAccountEntry } from "NexisClaw/plugin-sdk/routing";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import type { DiscordAccountConfig, DiscordActionConfig, NexisClawConfig } from "./runtime-api.js";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
+import { resolveAccountEntry } from "FirstNexus/plugin-sdk/routing";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import type { DiscordAccountConfig, DiscordActionConfig, FirstNexusConfig } from "./runtime-api.js";
 import { selectDiscordRuntimeConfig } from "./runtime-config.js";
 import { resolveDiscordToken, type DiscordCredentialStatus } from "./token.js";
 
@@ -32,14 +32,14 @@ export const listDiscordAccountIds = listAccountIds;
 export const resolveDefaultDiscordAccountId = resolveDefaultAccountId;
 
 export function resolveDiscordAccountConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   accountId: string,
 ): DiscordAccountConfig | undefined {
   return resolveAccountEntry(cfg.channels?.discord?.accounts, accountId);
 }
 
 export function mergeDiscordAccountConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   accountId: string,
 ): DiscordAccountConfig {
   return resolveMergedAccountConfig<DiscordAccountConfig>({
@@ -52,7 +52,7 @@ export function mergeDiscordAccountConfig(
 }
 
 export function resolveDiscordAccountAllowFrom(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): string[] | undefined {
   const accountId = normalizeAccountId(
@@ -69,7 +69,7 @@ export function resolveDiscordAccountAllowFrom(params: {
 }
 
 export function resolveDiscordAccountDmPolicy(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): ChannelDmPolicy | undefined {
   const accountId = normalizeAccountId(
@@ -86,7 +86,7 @@ export function resolveDiscordAccountDmPolicy(params: {
 }
 
 export function createDiscordActionGate(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): (key: keyof DiscordActionConfig, defaultValue?: boolean) => boolean {
   const accountId = normalizeAccountId(
@@ -99,7 +99,7 @@ export function createDiscordActionGate(params: {
 }
 
 export function resolveDiscordAccount(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): ResolvedDiscordAccount {
   const cfg = selectDiscordRuntimeConfig(params.cfg);
@@ -121,7 +121,7 @@ export function resolveDiscordAccount(params: {
 }
 
 export function resolveDiscordMaxLinesPerMessage(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig?: DiscordAccountConfig | null;
   accountId?: string | null;
 }): number | undefined {
@@ -135,7 +135,7 @@ export function resolveDiscordMaxLinesPerMessage(params: {
 }
 
 function resolveDiscordAccountTokenOwner(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   token: string;
 }): string | undefined {
   const token = params.token.trim();
@@ -163,7 +163,7 @@ function resolveDiscordAccountTokenOwner(params: {
 }
 
 function resolveDiscordDuplicateTokenOwner(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedDiscordAccount;
 }): string | undefined {
   const owner = resolveDiscordAccountTokenOwner({
@@ -175,14 +175,14 @@ function resolveDiscordDuplicateTokenOwner(params: {
 
 export function isDiscordAccountEnabledForRuntime(
   account: ResolvedDiscordAccount,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): boolean {
   return account.enabled && !resolveDiscordDuplicateTokenOwner({ cfg, account });
 }
 
 export function resolveDiscordAccountDisabledReason(
   account: ResolvedDiscordAccount,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): string {
   if (!account.enabled) {
     return "disabled";
@@ -191,7 +191,7 @@ export function resolveDiscordAccountDisabledReason(
   return owner ? `duplicate bot token; using account "${owner}"` : "disabled";
 }
 
-export function listEnabledDiscordAccounts(cfg: NexisClawConfig): ResolvedDiscordAccount[] {
+export function listEnabledDiscordAccounts(cfg: FirstNexusConfig): ResolvedDiscordAccount[] {
   return listDiscordAccountIds(cfg)
     .map((accountId) => resolveDiscordAccount({ cfg, accountId }))
     .filter((account) => isDiscordAccountEnabledForRuntime(account, cfg));

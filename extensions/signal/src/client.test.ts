@@ -3,9 +3,9 @@ import { once } from "node:events";
 import http, { type IncomingMessage, type ServerResponse } from "node:http";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
-vi.mock("NexisClaw/plugin-sdk/core", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/core")>(
-    "NexisClaw/plugin-sdk/core",
+vi.mock("FirstNexus/plugin-sdk/core", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/core")>(
+    "FirstNexus/plugin-sdk/core",
   );
   return {
     ...actual,

@@ -165,7 +165,7 @@ function assertUpdate(channel) {
 }
 
 function assertConfigChannel(channel) {
-  const config = readJson(path.join(process.env.HOME, ".NexisClaw", "NexisClaw.json"));
+  const config = readJson(path.join(process.env.HOME, ".FirstNexus", "FirstNexus.json"));
   if (config.update?.channel === channel) {
     return;
   }
@@ -189,10 +189,10 @@ function assertStatusKind(kind) {
 
 switch (command) {
   case "prepare-git-fixture":
-    prepareGitFixture(args[0] ?? "/tmp/NexisClaw-git");
+    prepareGitFixture(args[0] ?? "/tmp/FirstNexus-git");
     break;
   case "write-control-ui":
-    writeControlUi(args[0] ?? "/tmp/NexisClaw-git");
+    writeControlUi(args[0] ?? "/tmp/FirstNexus-git");
     break;
   case "assert-update":
     assertUpdate(args[0]);

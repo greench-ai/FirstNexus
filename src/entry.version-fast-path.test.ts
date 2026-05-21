@@ -32,14 +32,14 @@ describe("entry root version fast path", () => {
     }));
 
     expect(
-      tryHandleRootVersionFastPath(["node", "NexisClaw", "--version"], {
+      tryHandleRootVersionFastPath(["node", "FirstNexus", "--version"], {
         output,
         exit,
         resolveVersion,
       }),
     ).toBe(true);
     await flushVersionFastPath();
-    expect(output).toHaveBeenCalledWith("NexisClaw 9.9.9-test (abc1234)");
+    expect(output).toHaveBeenCalledWith("FirstNexus 9.9.9-test (abc1234)");
     expect(exit).toHaveBeenCalledWith(0);
 
     output.mockClear();
@@ -50,20 +50,20 @@ describe("entry root version fast path", () => {
     });
 
     expect(
-      tryHandleRootVersionFastPath(["node", "NexisClaw", "--version"], {
+      tryHandleRootVersionFastPath(["node", "FirstNexus", "--version"], {
         output,
         exit,
         resolveVersion,
       }),
     ).toBe(true);
     await flushVersionFastPath();
-    expect(output).toHaveBeenCalledWith("NexisClaw 9.9.9-test");
+    expect(output).toHaveBeenCalledWith("FirstNexus 9.9.9-test");
     expect(exit).toHaveBeenCalledWith(0);
 
     output.mockClear();
     exit.mockClear();
     expect(
-      tryHandleRootVersionFastPath(["node", "NexisClaw", "--container", "demo", "--version"], {
+      tryHandleRootVersionFastPath(["node", "FirstNexus", "--container", "demo", "--version"], {
         output,
         exit,
         resolveVersion,
@@ -74,7 +74,7 @@ describe("entry root version fast path", () => {
     expect(exit).not.toHaveBeenCalled();
 
     expect(
-      tryHandleRootVersionFastPath(["node", "NexisClaw", "--version"], {
+      tryHandleRootVersionFastPath(["node", "FirstNexus", "--version"], {
         env: { NEXISCLAW_CONTAINER: "demo" },
         output,
         exit,

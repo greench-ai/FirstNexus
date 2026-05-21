@@ -2,22 +2,22 @@ export type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
   ChannelGatewayContext,
-} from "NexisClaw/plugin-sdk/channel-contract";
-export type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-export type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-export type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime";
-export type { PluginRuntime } from "NexisClaw/plugin-sdk/runtime-store";
+} from "FirstNexus/plugin-sdk/channel-contract";
+export type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+export type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+export type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime";
+export type { PluginRuntime } from "FirstNexus/plugin-sdk/runtime-store";
 export {
   buildChannelConfigSchema,
   buildChannelOutboundSessionRoute,
   createChatChannelPlugin,
   defineChannelPluginEntry,
-} from "NexisClaw/plugin-sdk/channel-core";
-export { jsonResult, readStringParam } from "NexisClaw/plugin-sdk/channel-actions";
-export { getChatChannelMeta } from "NexisClaw/plugin-sdk/channel-plugin-common";
+} from "FirstNexus/plugin-sdk/channel-core";
+export { jsonResult, readStringParam } from "FirstNexus/plugin-sdk/channel-actions";
+export { getChatChannelMeta } from "FirstNexus/plugin-sdk/channel-plugin-common";
 export {
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "NexisClaw/plugin-sdk/status-helpers";
-export { createPluginRuntimeStore } from "NexisClaw/plugin-sdk/runtime-store";
-export { createChannelMessageReplyPipeline } from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/status-helpers";
+export { createPluginRuntimeStore } from "FirstNexus/plugin-sdk/runtime-store";
+export { createChannelMessageReplyPipeline } from "FirstNexus/plugin-sdk/channel-message";

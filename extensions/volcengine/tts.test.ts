@@ -6,7 +6,7 @@ const { fetchWithSsrFGuardMock } = vi.hoisted(() => ({
   fetchWithSsrFGuardMock: vi.fn(),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: fetchWithSsrFGuardMock,
 }));
 
@@ -169,7 +169,7 @@ describe("Volcengine speech provider", () => {
           "X-Api-App-Key": "aGjiRDfUWi",
         },
         body: JSON.stringify({
-          user: { uid: "NexisClaw" },
+          user: { uid: "FirstNexus" },
           req_params: {
             text: "hello",
             speaker: "zh_male_aojiao_mars_bigtts",

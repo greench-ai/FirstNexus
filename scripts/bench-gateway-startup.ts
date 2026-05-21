@@ -213,7 +213,7 @@ function parseOptions(): CliOptions {
 }
 
 function printUsage(): void {
-  console.log(`NexisClaw Gateway startup benchmark
+  console.log(`FirstNexus Gateway startup benchmark
 
 Usage:
   pnpm test:startup:gateway -- [options]
@@ -446,7 +446,7 @@ function writePluginFixtures(root: string, count: number, activationOnStartup?: 
     const entry = path.join(pluginDir, "index.cjs");
     writeFileSync(entry, `module.exports = { id: ${JSON.stringify(id)}, register() {} };\n`);
     writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       `${JSON.stringify(
         {
           id,
@@ -480,7 +480,7 @@ function writeConfig(root: string, benchCase: GatewayBenchCase): string {
         : {}),
     },
   };
-  const configPath = path.join(root, "NexisClaw.json");
+  const configPath = path.join(root, "FirstNexus.json");
   writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`);
   return configPath;
 }
@@ -494,12 +494,12 @@ function sanitizedEnv(
     CI: process.env.CI ?? "1",
     HOME: root,
     LANG: process.env.LANG ?? "en_US.UTF-8",
-    LOGNAME: process.env.LOGNAME ?? "NexisClaw-bench",
+    LOGNAME: process.env.LOGNAME ?? "FirstNexus-bench",
     NO_COLOR: "1",
     PATH: process.env.PATH,
     SHELL: process.env.SHELL,
     TMPDIR: process.env.TMPDIR,
-    USER: process.env.USER ?? "NexisClaw-bench",
+    USER: process.env.USER ?? "FirstNexus-bench",
     npm_config_update_notifier: "false",
     NEXISCLAW_CONFIG: configPath,
     NEXISCLAW_CONFIG_PATH: configPath,
@@ -679,7 +679,7 @@ async function runGatewaySample(options: {
   sampleIndex: number;
   timeoutMs: number;
 }): Promise<GatewaySample> {
-  const root = mkdtempSync(path.join(tmpdir(), "NexisClaw-gateway-bench-"));
+  const root = mkdtempSync(path.join(tmpdir(), "FirstNexus-gateway-bench-"));
   const port = await getFreePort();
   const configPath = writeConfig(root, options.benchCase);
   const env = sanitizedEnv(root, configPath, options.benchCase);
@@ -699,7 +699,7 @@ async function runGatewaySample(options: {
           "--cpu-prof-dir",
           options.cpuProfDir,
           "--cpu-prof-name",
-          `NexisClaw-gateway-${options.benchCase.id}-${options.sampleIndex}-${Date.now()}.cpuprofile`,
+          `FirstNexus-gateway-${options.benchCase.id}-${options.sampleIndex}-${Date.now()}.cpuprofile`,
         ]
       : []),
     options.entry,

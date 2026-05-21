@@ -1,7 +1,7 @@
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalStringifiedId,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { inspectMatrixDirectRooms, persistMatrixDirectRoomMapping } from "../direct-management.js";
 import { isStrictDirectRoom } from "../direct-room.js";
 import type { MatrixClient } from "../sdk.js";

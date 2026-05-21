@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import {
   computeBackoff,
@@ -10,7 +10,7 @@ import {
 } from "./reconnect.js";
 
 describe("web reconnect helpers", () => {
-  const cfg: NexisClawConfig = {};
+  const cfg: FirstNexusConfig = {};
 
   it("resolves sane reconnect defaults with clamps", () => {
     const policy = resolveReconnectPolicy(cfg, {

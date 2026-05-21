@@ -107,7 +107,7 @@ describe("Slack live QA runtime helpers", () => {
   });
 
   it("writes artifacts when Convex credential acquisition fails", async () => {
-    const outputDir = await fs.mkdtemp(path.join(tmpdir(), "NexisClaw-slack-qa-"));
+    const outputDir = await fs.mkdtemp(path.join(tmpdir(), "FirstNexus-slack-qa-"));
     const result = await runSlackQaLive({
       credentialRole: "ci",
       credentialSource: "convex",

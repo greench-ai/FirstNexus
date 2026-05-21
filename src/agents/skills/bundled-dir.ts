@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { resolveNexisClawPackageRootSync } from "../../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRootSync } from "../../infra/FirstNexus-root.js";
 
 function looksLikeSkillsDir(dir: string): boolean {
   try {
@@ -59,7 +59,7 @@ export function resolveBundledSkillsDir(
     const moduleDir = path.dirname(fileURLToPath(moduleUrl));
     const argv1 = opts.argv1 ?? process.argv[1];
     const cwd = opts.cwd ?? process.cwd();
-    const packageRoot = resolveNexisClawPackageRootSync({
+    const packageRoot = resolveFirstNexusPackageRootSync({
       argv1,
       moduleUrl,
       cwd,

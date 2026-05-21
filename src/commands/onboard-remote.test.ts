@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import type { GatewayBonjourBeacon } from "../infra/bonjour-discovery.js";
 import { captureEnv } from "../test-utils/env.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
@@ -65,7 +65,7 @@ describe("promptRemoteGatewayConfig", () => {
     selectResponses: Partial<Record<string, string>>;
     confirm: boolean;
   }) {
-    const cfg = {} as NexisClawConfig;
+    const cfg = {} as FirstNexusConfig;
     const prompter = createPrompter({
       confirm: vi.fn(async () => params.confirm),
       select: createSelectPrompter(params.selectResponses),
@@ -170,7 +170,7 @@ describe("promptRemoteGatewayConfig", () => {
       text,
     });
 
-    const next = await promptRemoteGatewayConfig({} as NexisClawConfig, prompter);
+    const next = await promptRemoteGatewayConfig({} as FirstNexusConfig, prompter);
 
     expect(next.gateway?.mode).toBe("remote");
     expect(next.gateway?.remote?.url).toBe(manualUrl);
@@ -269,7 +269,7 @@ describe("promptRemoteGatewayConfig", () => {
       text,
     });
 
-    const next = await promptRemoteGatewayConfig({} as NexisClawConfig, prompter);
+    const next = await promptRemoteGatewayConfig({} as FirstNexusConfig, prompter);
 
     expect(next.gateway?.remote?.url).toBe("ws://127.0.0.1:18789");
     expect(vi.mocked(select).mock.calls.map(([params]) => params.message)).not.toContain(
@@ -306,9 +306,9 @@ describe("promptRemoteGatewayConfig", () => {
     process.env.NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS = "1";
     const text: WizardPrompter["text"] = vi.fn(async (params) => {
       if (params.message === "Gateway WebSocket URL") {
-        expect(params.validate?.("ws://NexisClaw-gateway.ai:18789")).toBeUndefined();
+        expect(params.validate?.("ws://FirstNexus-gateway.ai:18789")).toBeUndefined();
         expect(params.validate?.("ws://1.1.1.1:18789")).toBe(INSECURE_WS_URL_MESSAGE);
-        return "ws://NexisClaw-gateway.ai:18789";
+        return "ws://FirstNexus-gateway.ai:18789";
       }
       return "";
     }) as WizardPrompter["text"];
@@ -320,7 +320,7 @@ describe("promptRemoteGatewayConfig", () => {
     });
 
     expect(next.gateway?.mode).toBe("remote");
-    expect(next.gateway?.remote?.url).toBe("ws://NexisClaw-gateway.ai:18789");
+    expect(next.gateway?.remote?.url).toBe("ws://FirstNexus-gateway.ai:18789");
   });
 
   it("supports storing remote auth as an external env secret ref", async () => {
@@ -348,7 +348,7 @@ describe("promptRemoteGatewayConfig", () => {
       return (params.options[0]?.value ?? "") as never;
     });
 
-    const cfg = {} as NexisClawConfig;
+    const cfg = {} as FirstNexusConfig;
     const prompter = createPrompter({
       confirm: vi.fn(async () => false),
       select,
@@ -393,7 +393,7 @@ describe("promptRemoteGatewayConfig", () => {
 
     const cfg = {
       gateway: { remote: { token: "preexisting-remote-token" } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const prompter = createPrompter({ confirm, select, text });
 
     const next = await promptRemoteGatewayConfig(cfg, prompter);
@@ -431,7 +431,7 @@ describe("promptRemoteGatewayConfig", () => {
 
     const cfg = {
       gateway: { remote: { password: "preexisting-remote-password" } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const prompter = createPrompter({ confirm, select, text });
 
     const next = await promptRemoteGatewayConfig(cfg, prompter);

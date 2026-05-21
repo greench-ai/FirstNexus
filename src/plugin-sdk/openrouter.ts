@@ -1,10 +1,10 @@
 // Manual facade. Keep loader boundary explicit.
-import type { ModelProviderConfig, NexisClawConfig } from "../config/types.js";
+import type { ModelProviderConfig, FirstNexusConfig } from "../config/types.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
 
 type FacadeModule = {
-  applyOpenrouterConfig: (cfg: NexisClawConfig) => NexisClawConfig;
-  applyOpenrouterProviderConfig: (cfg: NexisClawConfig) => NexisClawConfig;
+  applyOpenrouterConfig: (cfg: FirstNexusConfig) => FirstNexusConfig;
+  applyOpenrouterProviderConfig: (cfg: FirstNexusConfig) => FirstNexusConfig;
   buildOpenrouterProvider: () => ModelProviderConfig;
   OPENROUTER_DEFAULT_MODEL_REF: string;
 };

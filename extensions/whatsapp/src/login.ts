@@ -1,8 +1,8 @@
-import { formatCliCommand } from "NexisClaw/plugin-sdk/cli-runtime";
-import { logInfo } from "NexisClaw/plugin-sdk/logging-core";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
-import { danger, success } from "NexisClaw/plugin-sdk/runtime-env";
-import { defaultRuntime, type RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+import { formatCliCommand } from "FirstNexus/plugin-sdk/cli-runtime";
+import { logInfo } from "FirstNexus/plugin-sdk/logging-core";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
+import { danger, success } from "FirstNexus/plugin-sdk/runtime-env";
+import { defaultRuntime, type RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import { resolveWhatsAppAccount } from "./accounts.js";
 import { restoreCredsFromBackupIfNeeded } from "./auth-store.js";
 import { closeWaSocketSoon, waitForWhatsAppLoginResult } from "./connection-controller.js";
@@ -66,7 +66,7 @@ export async function loginWeb(
     if (result.outcome === "logged-out") {
       runtime.error(
         danger(
-          `WhatsApp reported the session is logged out. Cleared cached web session; please rerun ${formatCliCommand("NexisClaw channels login")} and scan the QR again.`,
+          `WhatsApp reported the session is logged out. Cleared cached web session; please rerun ${formatCliCommand("FirstNexus channels login")} and scan the QR again.`,
         ),
       );
       throw new Error("Session logged out; cache cleared. Re-run login.", {

@@ -46,7 +46,10 @@ describe("oauth paths", () => {
 describe("gateway port resolution", () => {
   it("prefers numeric env values over config", () => {
     expect(
-      resolveGatewayPort({ gateway: { port: 19002 } }, envWith({ NEXISCLAW_GATEWAY_PORT: "19001" })),
+      resolveGatewayPort(
+        { gateway: { port: 19002 } },
+        envWith({ NEXISCLAW_GATEWAY_PORT: "19001" }),
+      ),
     ).toBe(19001);
   });
 
@@ -96,23 +99,23 @@ describe("gateway port resolution", () => {
   });
 
   it("falls back to the default port when env is invalid and config is unset", () => {
-    expect(resolveGatewayPort({}, envWith({ NEXISCLAW_GATEWAY_PORT: "127.0.0.1:not-a-port" }))).toBe(
-      DEFAULT_GATEWAY_PORT,
-    );
+    expect(
+      resolveGatewayPort({}, envWith({ NEXISCLAW_GATEWAY_PORT: "127.0.0.1:not-a-port" })),
+    ).toBe(DEFAULT_GATEWAY_PORT);
   });
 });
 
 describe("state + config path candidates", () => {
-  function expectNexisClawHomeDefaults(env: NodeJS.ProcessEnv): void {
+  function expectFirstNexusHomeDefaults(env: NodeJS.ProcessEnv): void {
     const configuredHome = env.NEXISCLAW_HOME;
     if (!configuredHome) {
       throw new Error("NEXISCLAW_HOME must be set for this assertion helper");
     }
     const resolvedHome = path.resolve(configuredHome);
-    expect(resolveStateDir(env)).toBe(path.join(resolvedHome, ".NexisClaw"));
+    expect(resolveStateDir(env)).toBe(path.join(resolvedHome, ".FirstNexus"));
 
     const candidates = resolveDefaultConfigCandidates(env);
-    expect(candidates[0]).toBe(path.join(resolvedHome, ".NexisClaw", "NexisClaw.json"));
+    expect(candidates[0]).toBe(path.join(resolvedHome, ".FirstNexus", "FirstNexus.json"));
   }
 
   it("uses NEXISCLAW_STATE_DIR when set", () => {
@@ -125,17 +128,17 @@ describe("state + config path candidates", () => {
 
   it("uses NEXISCLAW_HOME for default state/config locations", () => {
     const env = {
-      NEXISCLAW_HOME: "/srv/NexisClaw-home",
+      NEXISCLAW_HOME: "/srv/FirstNexus-home",
     } as NodeJS.ProcessEnv;
-    expectNexisClawHomeDefaults(env);
+    expectFirstNexusHomeDefaults(env);
   });
 
   it("prefers NEXISCLAW_HOME over HOME for default state/config locations", () => {
     const env = {
-      NEXISCLAW_HOME: "/srv/NexisClaw-home",
+      NEXISCLAW_HOME: "/srv/FirstNexus-home",
       HOME: "/home/other",
     } as NodeJS.ProcessEnv;
-    expectNexisClawHomeDefaults(env);
+    expectFirstNexusHomeDefaults(env);
   });
 
   it("orders default config candidates in a stable order", () => {
@@ -143,25 +146,25 @@ describe("state + config path candidates", () => {
     const resolvedHome = path.resolve(home);
     const candidates = resolveDefaultConfigCandidates({} as NodeJS.ProcessEnv, () => home);
     const expected = [
-      path.join(resolvedHome, ".NexisClaw", "NexisClaw.json"),
-      path.join(resolvedHome, ".NexisClaw", "clawdbot.json"),
-      path.join(resolvedHome, ".clawdbot", "NexisClaw.json"),
+      path.join(resolvedHome, ".FirstNexus", "FirstNexus.json"),
+      path.join(resolvedHome, ".FirstNexus", "clawdbot.json"),
+      path.join(resolvedHome, ".clawdbot", "FirstNexus.json"),
       path.join(resolvedHome, ".clawdbot", "clawdbot.json"),
     ];
     expect(candidates).toEqual(expected);
   });
 
-  it("prefers ~/.NexisClaw when it exists and legacy dir is missing", async () => {
-    await withTempDir({ prefix: "NexisClaw-state-" }, async (root) => {
-      const newDir = path.join(root, ".NexisClaw");
+  it("prefers ~/.FirstNexus when it exists and legacy dir is missing", async () => {
+    await withTempDir({ prefix: "FirstNexus-state-" }, async (root) => {
+      const newDir = path.join(root, ".FirstNexus");
       await fs.mkdir(newDir, { recursive: true });
       const resolved = resolveStateDir({} as NodeJS.ProcessEnv, () => root);
       expect(resolved).toBe(newDir);
     });
   });
 
-  it("falls back to existing legacy state dir when ~/.NexisClaw is missing", async () => {
-    await withTempDir({ prefix: "NexisClaw-state-legacy-" }, async (root) => {
+  it("falls back to existing legacy state dir when ~/.FirstNexus is missing", async () => {
+    await withTempDir({ prefix: "FirstNexus-state-legacy-" }, async (root) => {
       const legacyDir = path.join(root, ".clawdbot");
       await fs.mkdir(legacyDir, { recursive: true });
       const resolved = resolveStateDir({} as NodeJS.ProcessEnv, () => root);
@@ -170,10 +173,10 @@ describe("state + config path candidates", () => {
   });
 
   it("CONFIG_PATH prefers existing config when present", async () => {
-    await withTempDir({ prefix: "NexisClaw-config-" }, async (root) => {
-      const legacyDir = path.join(root, ".NexisClaw");
+    await withTempDir({ prefix: "FirstNexus-config-" }, async (root) => {
+      const legacyDir = path.join(root, ".FirstNexus");
       await fs.mkdir(legacyDir, { recursive: true });
-      const legacyPath = path.join(legacyDir, "NexisClaw.json");
+      const legacyPath = path.join(legacyDir, "FirstNexus.json");
       await fs.writeFile(legacyPath, "{}", "utf-8");
 
       const resolved = resolveConfigPathCandidate({} as NodeJS.ProcessEnv, () => root);
@@ -182,16 +185,16 @@ describe("state + config path candidates", () => {
   });
 
   it("respects state dir overrides when config is missing", async () => {
-    await withTempDir({ prefix: "NexisClaw-config-override-" }, async (root) => {
-      const legacyDir = path.join(root, ".NexisClaw");
+    await withTempDir({ prefix: "FirstNexus-config-override-" }, async (root) => {
+      const legacyDir = path.join(root, ".FirstNexus");
       await fs.mkdir(legacyDir, { recursive: true });
-      const legacyConfig = path.join(legacyDir, "NexisClaw.json");
+      const legacyConfig = path.join(legacyDir, "FirstNexus.json");
       await fs.writeFile(legacyConfig, "{}", "utf-8");
 
       const overrideDir = path.join(root, "override");
       const env = { NEXISCLAW_STATE_DIR: overrideDir } as NodeJS.ProcessEnv;
       const resolved = resolveConfigPath(env, overrideDir, () => root);
-      expect(resolved).toBe(path.join(overrideDir, "NexisClaw.json"));
+      expect(resolved).toBe(path.join(overrideDir, "FirstNexus.json"));
     });
   });
 });
@@ -217,8 +220,8 @@ describe("resolveIncludeRoots", () => {
   });
 
   it("expands a leading tilde in each entry using the resolved home dir", () => {
-    const env = envWith({ NEXISCLAW_INCLUDE_ROOTS: "~/share/NexisClaw" });
-    expect(resolveIncludeRoots(env, () => HOME)).toEqual([path.join(HOME, "share", "NexisClaw")]);
+    const env = envWith({ NEXISCLAW_INCLUDE_ROOTS: "~/share/FirstNexus" });
+    expect(resolveIncludeRoots(env, () => HOME)).toEqual([path.join(HOME, "share", "FirstNexus")]);
   });
 
   it("drops empty entries and preserves de-duplicated order for repeated roots", () => {

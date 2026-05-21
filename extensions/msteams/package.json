@@ -1,10 +1,10 @@
 {
-  "name": "@NexisClaw/msteams",
+  "name": "@FirstNexus/msteams",
   "version": "2026.5.12-beta.1",
-  "description": "NexisClaw Microsoft Teams channel plugin",
+  "description": "FirstNexus Microsoft Teams channel plugin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexisClaw/NexisClaw"
+    "url": "https://github.com/FirstNexus/FirstNexus"
   },
   "type": "module",
   "dependencies": {
@@ -17,19 +17,19 @@
     "typebox": "1.1.38"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*",
+    "@FirstNexus/plugin-sdk": "workspace:*",
     "@types/jsonwebtoken": "9.0.10",
-    "NexisClaw": "workspace:*"
+    "FirstNexus": "workspace:*"
   },
   "peerDependencies": {
-    "NexisClaw": ">=2026.5.12-beta.1"
+    "FirstNexus": ">=2026.5.12-beta.1"
   },
   "peerDependenciesMeta": {
-    "NexisClaw": {
+    "FirstNexus": {
       "optional": true
     }
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
@@ -53,7 +53,7 @@
       }
     },
     "install": {
-      "npmSpec": "@NexisClaw/msteams",
+      "npmSpec": "@FirstNexus/msteams",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10"
     },
@@ -61,7 +61,7 @@
       "pluginApi": ">=2026.5.12-beta.1"
     },
     "build": {
-      "NexisClawVersion": "2026.5.12-beta.1"
+      "FirstNexusVersion": "2026.5.12-beta.1"
     },
     "release": {
       "publishToClawHub": true,

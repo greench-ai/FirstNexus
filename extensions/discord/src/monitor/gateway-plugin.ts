@@ -1,14 +1,14 @@
 import { randomUUID } from "node:crypto";
 import { Agent as HttpsAgent } from "node:https";
-import * as httpsProxyAgent from "https-proxy-agent";
-import type { DiscordAccountConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { DiscordAccountConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   captureWsEvent,
   resolveEffectiveDebugProxyUrl,
   resolveDebugProxySettings,
-} from "NexisClaw/plugin-sdk/proxy-capture";
-import { danger } from "NexisClaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/proxy-capture";
+import { danger } from "FirstNexus/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import * as httpsProxyAgent from "https-proxy-agent";
 import * as ws from "ws";
 import * as discordGateway from "../internal/gateway.js";
 import { createDiscordDnsLookup } from "../network-config.js";
@@ -70,7 +70,7 @@ function hasGatewaySocketStarted(plugin: discordGateway.GatewayPlugin): boolean 
 }
 
 type ResolveDiscordGatewayIntentsParams = {
-  intentsConfig?: import("NexisClaw/plugin-sdk/config-contracts").DiscordIntentsConfig;
+  intentsConfig?: import("FirstNexus/plugin-sdk/config-contracts").DiscordIntentsConfig;
   voiceEnabled?: boolean;
 };
 
@@ -110,7 +110,7 @@ function createGatewayPlugin(params: {
   runtime?: RuntimeEnv;
   testing?: GatewayPluginTestingOptions;
 }): discordGateway.GatewayPlugin {
-  class NexisClawGatewayPlugin extends discordGateway.GatewayPlugin {
+  class FirstNexusGatewayPlugin extends discordGateway.GatewayPlugin {
     private gatewayInfoUsedFallback = false;
 
     constructor() {
@@ -227,7 +227,7 @@ function createGatewayPlugin(params: {
     }
   }
 
-  return new NexisClawGatewayPlugin();
+  return new FirstNexusGatewayPlugin();
 }
 
 function createDiscordGatewayMetadataFetch(debugCaptureEnabled: boolean): DiscordGatewayFetch {
@@ -290,7 +290,7 @@ export function createDiscordGatewayPlugin(params: {
     options: {
       reconnect: { maxAttempts: 50 },
       intents,
-      // NexisClaw registers its own async interaction listener.
+      // FirstNexus registers its own async interaction listener.
       autoInteractions: false,
     },
     gatewayInfoTimeoutMs,

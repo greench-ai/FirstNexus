@@ -1,3 +1,3 @@
-export type { NexisClawConfig as ClawdbotConfig } from "NexisClaw/plugin-sdk/config-contracts";
-export type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime";
-export { createChannelPairingController } from "NexisClaw/plugin-sdk/channel-pairing";
+export type { FirstNexusConfig as ClawdbotConfig } from "FirstNexus/plugin-sdk/config-contracts";
+export type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime";
+export { createChannelPairingController } from "FirstNexus/plugin-sdk/channel-pairing";

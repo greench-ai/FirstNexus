@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { resolveAuthProfileMetadata } from "./identity.js";
 import type { AuthProfileStore } from "./types.js";
 
 export function resolveAuthProfileDisplayLabel(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   store: AuthProfileStore;
   profileId: string;
 }): string {

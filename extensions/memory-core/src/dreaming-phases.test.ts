@@ -1,14 +1,14 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { RequestScopedSubagentRuntimeError } from "NexisClaw/plugin-sdk/error-runtime";
-import { resolveSessionTranscriptsDirForAgent } from "NexisClaw/plugin-sdk/memory-core-host-runtime-core";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { RequestScopedSubagentRuntimeError } from "FirstNexus/plugin-sdk/error-runtime";
+import { resolveSessionTranscriptsDirForAgent } from "FirstNexus/plugin-sdk/memory-core-host-runtime-core";
 import {
   resolveMemoryCorePluginConfig,
   resolveMemoryLightDreamingConfig,
   resolveMemoryRemDreamingConfig,
-} from "NexisClaw/plugin-sdk/memory-core-host-status";
+} from "FirstNexus/plugin-sdk/memory-core-host-status";
 import { describe, expect, it, vi } from "vitest";
 import {
   __testing,
@@ -29,7 +29,7 @@ const DREAMING_TEST_BASE_TIME = new Date("2026-04-05T10:00:00.000Z");
 const DREAMING_TEST_DAY = "2026-04-05";
 const EMPTY_SESSION_CONTENT_HASH =
   "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070";
-const LIGHT_DREAMING_TEST_CONFIG: NexisClawConfig = {
+const LIGHT_DREAMING_TEST_CONFIG: FirstNexusConfig = {
   plugins: {
     entries: {
       "memory-core": {
@@ -115,7 +115,7 @@ function requireFirstIngestionEntry(sessionIngestion: {
 }
 
 function createHarness(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   workspaceDir?: string,
   subagent?: Parameters<typeof __testing.runPhaseIfTriggered>[0]["subagent"],
 ) {
@@ -222,7 +222,7 @@ async function writeDailyNote(workspaceDir: string, lines: string[]): Promise<vo
 }
 
 async function createDreamingWorkspace(): Promise<string> {
-  const workspaceDir = await createTempWorkspace("NexisClaw-dreaming-phases-");
+  const workspaceDir = await createTempWorkspace("FirstNexus-dreaming-phases-");
   await fs.mkdir(path.join(workspaceDir, "memory"), { recursive: true });
   return workspaceDir;
 }
@@ -238,7 +238,7 @@ async function triggerLightDreaming(
 ): Promise<void> {
   setDreamingTestTime(offsetMinutes);
   await beforeAgentReply(
-    { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+    { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
     { trigger: "heartbeat", workspaceDir },
   );
 }
@@ -263,7 +263,7 @@ describe("memory-core dreaming phases", () => {
       "- Move backups to S3 Glacier.",
       "- Keep retention at 365 days.",
     ]);
-    const testConfig: NexisClawConfig = {
+    const testConfig: FirstNexusConfig = {
       ...LIGHT_DREAMING_TEST_CONFIG,
       agents: {
         defaults: {
@@ -327,7 +327,7 @@ describe("memory-core dreaming phases", () => {
       "- Move backups to S3 Glacier.",
       "- Keep retention at 365 days.",
     ]);
-    const testConfig: NexisClawConfig = {
+    const testConfig: FirstNexusConfig = {
       ...LIGHT_DREAMING_TEST_CONFIG,
       agents: {
         defaults: {
@@ -445,12 +445,12 @@ describe("memory-core dreaming phases", () => {
         {
           cleanedBody: [
             "System: rotate logs",
-            "System: __NexisClaw_memory_core_light_sleep__",
+            "System: __FirstNexus_memory_core_light_sleep__",
             "",
             "A scheduled reminder has been triggered. The reminder content is:",
             "",
             "rotate logs",
-            "__NexisClaw_memory_core_light_sleep__",
+            "__FirstNexus_memory_core_light_sleep__",
             "",
             "Handle this reminder internally. Do not relay it to the user unless explicitly requested.",
           ].join("\n"),
@@ -476,16 +476,16 @@ describe("memory-core dreaming phases", () => {
         "- Move backups to S3 Glacier.",
         "",
         "## Light Sleep",
-        "<!-- NexisClaw:dreaming:light:start -->",
+        "<!-- FirstNexus:dreaming:light:start -->",
         "- Candidate: Old staged summary.",
         "",
         "## Ops",
         "- Rotate access keys.",
         "",
         "## Light Sleep",
-        "<!-- NexisClaw:dreaming:light:start -->",
+        "<!-- FirstNexus:dreaming:light:start -->",
         "- Candidate: Fresh staged summary.",
-        "<!-- NexisClaw:dreaming:light:end -->",
+        "<!-- FirstNexus:dreaming:light:end -->",
       ]);
 
       const { beforeAgentReply } = createLightDreamingHarness(workspaceDir);
@@ -537,11 +537,11 @@ describe("memory-core dreaming phases", () => {
     const readSpy = vi.spyOn(fs, "readFile");
     try {
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     } finally {
@@ -923,7 +923,7 @@ describe("memory-core dreaming phases", () => {
       [
         JSON.stringify({
           type: "custom",
-          customType: "NexisClaw:bootstrap-context:full",
+          customType: "FirstNexus:bootstrap-context:full",
           data: {
             runId: "dreaming-narrative-light-1775894400455",
             sessionId: "dream-session-1",
@@ -985,7 +985,7 @@ describe("memory-core dreaming phases", () => {
 
     try {
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     } finally {
@@ -1095,7 +1095,7 @@ describe("memory-core dreaming phases", () => {
 
     try {
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     } finally {
@@ -1202,7 +1202,7 @@ describe("memory-core dreaming phases", () => {
 
     try {
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     } finally {
@@ -1315,7 +1315,7 @@ describe("memory-core dreaming phases", () => {
     vi.setSystemTime(new Date("2026-04-16T19:00:00.000Z"));
     try {
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     } finally {
@@ -1464,7 +1464,7 @@ describe("memory-core dreaming phases", () => {
     vi.setSystemTime(new Date("2026-04-16T19:00:00.000Z"));
     try {
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     } finally {
@@ -1531,7 +1531,7 @@ describe("memory-core dreaming phases", () => {
       [
         JSON.stringify({
           type: "custom",
-          customType: "NexisClaw:bootstrap-context:full",
+          customType: "FirstNexus:bootstrap-context:full",
           data: {
             runId: "dreaming-narrative-light-1775894400455",
             sessionId: "dream-session-1",
@@ -1585,13 +1585,13 @@ describe("memory-core dreaming phases", () => {
 
     try {
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
 
       const readFileSpy = vi.spyOn(fs, "readFile");
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
 
@@ -2340,7 +2340,7 @@ describe("memory-core dreaming phases", () => {
     await withDreamingTestClock(async () => {
       setDreamingTestTime(10);
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_rem_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_rem_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     });
@@ -2555,7 +2555,7 @@ describe("memory-core dreaming phases", () => {
 
       setDreamingTestTime(5);
       await beforeAgentReply(
-        { cleanedBody: "__NexisClaw_memory_core_rem_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_rem_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     });
@@ -2584,7 +2584,7 @@ describe("memory-core dreaming phases", () => {
       "utf-8",
     );
 
-    const configForTest: NexisClawConfig = {
+    const configForTest: FirstNexusConfig = {
       plugins: {
         entries: {
           "memory-core": {
@@ -2611,7 +2611,7 @@ describe("memory-core dreaming phases", () => {
     await withDreamingTestClock(async () => {
       vi.setSystemTime(new Date(day1Ms));
       await reply1(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     });
@@ -2631,7 +2631,7 @@ describe("memory-core dreaming phases", () => {
     await withDreamingTestClock(async () => {
       vi.setSystemTime(new Date(day2Ms));
       await reply2(
-        { cleanedBody: "__NexisClaw_memory_core_light_sleep__" },
+        { cleanedBody: "__FirstNexus_memory_core_light_sleep__" },
         { trigger: "heartbeat", workspaceDir },
       );
     });

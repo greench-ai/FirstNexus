@@ -1,5 +1,5 @@
 ---
-summary: "Adds Hugging Face model provider support to NexisClaw."
+summary: "Adds Hugging Face model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the huggingface plugin
 title: "Hugging Face plugin"
@@ -7,12 +7,12 @@ title: "Hugging Face plugin"
 
 # Hugging Face plugin
 
-Adds Hugging Face model provider support to NexisClaw.
+Adds Hugging Face model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/huggingface-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/huggingface-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

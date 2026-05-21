@@ -7,14 +7,14 @@ import {
 } from "./qa-runtime.test-helpers.js";
 
 const loadBundledPluginPublicSurfaceModuleSync = vi.hoisted(() => vi.fn());
-const resolveNexisClawPackageRootSync = vi.hoisted(() => vi.fn());
+const resolveFirstNexusPackageRootSync = vi.hoisted(() => vi.fn());
 
 vi.mock("./facade-runtime.js", () => ({
   loadBundledPluginPublicSurfaceModuleSync,
 }));
 
-vi.mock("../infra/NexisClaw-root.js", () => ({
-  resolveNexisClawPackageRootSync,
+vi.mock("../infra/FirstNexus-root.js", () => ({
+  resolveFirstNexusPackageRootSync,
 }));
 
 describe("plugin-sdk qa-runtime", () => {
@@ -23,7 +23,7 @@ describe("plugin-sdk qa-runtime", () => {
 
   beforeEach(() => {
     loadBundledPluginPublicSurfaceModuleSync.mockReset();
-    resolveNexisClawPackageRootSync.mockReset().mockReturnValue(null);
+    resolveFirstNexusPackageRootSync.mockReset().mockReturnValue(null);
     delete process.env.NEXISCLAW_ENABLE_PRIVATE_QA_CLI;
   });
 
@@ -52,7 +52,7 @@ describe("plugin-sdk qa-runtime", () => {
       tempDirs,
       importRuntime: () => import("./qa-runtime.js"),
       loadBundledPluginPublicSurfaceModuleSync,
-      resolveNexisClawPackageRootSync,
+      resolveFirstNexusPackageRootSync,
     });
   });
 

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 import { createRunningTaskRun } from "./task-executor.js";
 import {
   createFlowRecord,
@@ -24,10 +24,10 @@ const ORIGINAL_STATE_DIR = process.env.NEXISCLAW_STATE_DIR;
 async function withTaskFlowMaintenanceStateDir(
   run: (root: string) => Promise<void>,
 ): Promise<void> {
-  await withNexisClawTestState(
+  await withFirstNexusTestState(
     {
       layout: "state-only",
-      prefix: "NexisClaw-task-flow-maintenance-",
+      prefix: "FirstNexus-task-flow-maintenance-",
     },
     async (state) => {
       resetTaskRegistryDeliveryRuntimeForTests();

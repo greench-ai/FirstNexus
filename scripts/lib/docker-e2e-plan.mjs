@@ -14,8 +14,8 @@ import {
 export { DEFAULT_LIVE_RETRIES };
 export { normalizeReleaseProfile };
 
-export const DEFAULT_E2E_BARE_IMAGE = "NexisClaw-docker-e2e-bare:local";
-export const DEFAULT_E2E_FUNCTIONAL_IMAGE = "NexisClaw-docker-e2e-functional:local";
+export const DEFAULT_E2E_BARE_IMAGE = "FirstNexus-docker-e2e-bare:local";
+export const DEFAULT_E2E_FUNCTIONAL_IMAGE = "FirstNexus-docker-e2e-functional:local";
 export const DEFAULT_E2E_IMAGE = DEFAULT_E2E_FUNCTIONAL_IMAGE;
 export const DEFAULT_PARALLELISM = 10;
 export const DEFAULT_PROFILE = "all";
@@ -66,7 +66,7 @@ function shellQuote(value) {
 function sanitizeLaneNameSuffix(value) {
   return (
     String(value)
-      .replace(/^NexisClaw@/u, "")
+      .replace(/^FirstNexus@/u, "")
       .replace(/[^A-Za-z0-9._-]+/g, "-")
       .replace(/^-+|-+$/g, "") || "baseline"
   );
@@ -93,16 +93,16 @@ export function normalizeUpgradeSurvivorBaselineSpec(raw) {
   if (!value) {
     return undefined;
   }
-  const spec = value.startsWith("NexisClaw@") ? value : `NexisClaw@${value}`;
+  const spec = value.startsWith("FirstNexus@") ? value : `FirstNexus@${value}`;
   if (
-    !/^NexisClaw@(?:alpha|beta|latest|[0-9]{4}\.[0-9]+\.[0-9]+(?:-(?:[0-9]+|alpha\.[0-9]+|beta\.[0-9]+))?)$/u.test(
+    !/^FirstNexus@(?:alpha|beta|latest|[0-9]{4}\.[0-9]+\.[0-9]+(?:-(?:[0-9]+|alpha\.[0-9]+|beta\.[0-9]+))?)$/u.test(
       spec,
     )
   ) {
     throw new Error(
       `invalid published upgrade survivor baseline: ${JSON.stringify(
         value,
-      )}. Expected NexisClaw@latest, NexisClaw@beta, NexisClaw@alpha, or NexisClaw@YYYY.M.D.`,
+      )}. Expected FirstNexus@latest, FirstNexus@beta, FirstNexus@alpha, or FirstNexus@YYYY.M.D.`,
     );
   }
   return spec;
@@ -155,7 +155,7 @@ function parseUpgradeSurvivorScenarios(raw) {
 }
 
 function parsePublishedReleaseVersion(spec) {
-  const match = /^NexisClaw@([0-9]{4})\.([0-9]+)\.([0-9]+)/u.exec(String(spec ?? ""));
+  const match = /^FirstNexus@([0-9]{4})\.([0-9]+)\.([0-9]+)/u.exec(String(spec ?? ""));
   if (!match) {
     return null;
   }
@@ -309,7 +309,7 @@ export function lanesNeedE2eImageKind(poolLanes, kind) {
   return poolLanes.some((poolLane) => poolLane.e2eImageKind === kind);
 }
 
-export function lanesNeedNexisClawPackage(poolLanes) {
+export function lanesNeedFirstNexusPackage(poolLanes) {
   return poolLanes.some((poolLane) => poolLane.e2eImageKind);
 }
 
@@ -376,7 +376,7 @@ function buildPlanJson(params) {
       e2eImage: imageKinds.length > 0,
       functionalImage: imageKinds.includes("functional"),
       liveImage: scheduledLanes.some((poolLane) => poolLane.needsLiveImage),
-      package: lanesNeedNexisClawPackage(scheduledLanes),
+      package: lanesNeedFirstNexusPackage(scheduledLanes),
     },
     profile: params.profile,
     releaseProfile: params.releaseProfile,

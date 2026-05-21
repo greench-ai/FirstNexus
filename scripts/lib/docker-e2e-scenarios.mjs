@@ -167,7 +167,7 @@ export const mainLanes = [
     "live-gateway",
     liveDockerScriptCommand(
       "test-live-gateway-models-docker.sh",
-      "NEXISCLAW_IMAGE=NexisClaw:local-live-gateway NEXISCLAW_DOCKER_BUILD_EXTENSIONS=matrix NEXISCLAW_LIVE_GATEWAY_PROVIDERS=claude-cli,codex-cli,google-gemini-cli",
+      "NEXISCLAW_IMAGE=FirstNexus:local-live-gateway NEXISCLAW_DOCKER_BUILD_EXTENSIONS=matrix NEXISCLAW_LIVE_GATEWAY_PROVIDERS=claude-cli,codex-cli,google-gemini-cli",
       { skipBuild: false },
     ),
     {
@@ -247,9 +247,13 @@ export const mainLanes = [
     stateScenario: "empty",
     weight: 3,
   }),
-  lane("pi-bundle-mcp-tools", "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:pi-bundle-mcp-tools", {
-    stateScenario: "empty",
-  }),
+  lane(
+    "pi-bundle-mcp-tools",
+    "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:pi-bundle-mcp-tools",
+    {
+      stateScenario: "empty",
+    },
+  ),
   lane("crestodian-rescue", "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:crestodian-rescue", {
     stateScenario: "empty",
   }),
@@ -310,11 +314,15 @@ export const mainLanes = [
     stateScenario: "empty",
     weight: 6,
   }),
-  lane("kitchen-sink-plugin", "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:kitchen-sink-plugin", {
-    resources: ["npm"],
-    stateScenario: "empty",
-    weight: 3,
-  }),
+  lane(
+    "kitchen-sink-plugin",
+    "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:kitchen-sink-plugin",
+    {
+      resources: ["npm"],
+      stateScenario: "empty",
+      weight: 3,
+    },
+  ),
   ...bundledPluginInstallUninstallLanes,
   lane(
     "plugins-offline",
@@ -548,7 +556,7 @@ const releasePathBundledChannelLanes = [
 const releasePathPackageInstallOpenAiLanes = [
   npmLane(
     "install-e2e-openai",
-    "NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=openai NEXISCLAW_INSTALL_E2E_IMAGE=NexisClaw-install-e2e-openai:local NEXISCLAW_INSTALL_E2E_AGENT_TOOL_SMOKE=0 NEXISCLAW_INSTALL_E2E_OPENAI_MODEL=openai/gpt-5.4-mini NEXISCLAW_INSTALL_E2E_AGENT_TURN_TIMEOUT_SECONDS=120 NEXISCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS=120 pnpm test:install:e2e",
+    "NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=openai NEXISCLAW_INSTALL_E2E_IMAGE=FirstNexus-install-e2e-openai:local NEXISCLAW_INSTALL_E2E_AGENT_TOOL_SMOKE=0 NEXISCLAW_INSTALL_E2E_OPENAI_MODEL=openai/gpt-5.4-mini NEXISCLAW_INSTALL_E2E_AGENT_TURN_TIMEOUT_SECONDS=120 NEXISCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS=120 pnpm test:install:e2e",
     {
       resources: ["service"],
       timeoutMs: 15 * 60 * 1000,
@@ -567,7 +575,7 @@ const releasePathPackageInstallOpenAiLanes = [
 const releasePathPackageInstallAnthropicLanes = [
   npmLane(
     "install-e2e-anthropic",
-    "NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=anthropic NEXISCLAW_INSTALL_E2E_IMAGE=NexisClaw-install-e2e-anthropic:local pnpm test:install:e2e",
+    "NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=anthropic NEXISCLAW_INSTALL_E2E_IMAGE=FirstNexus-install-e2e-anthropic:local pnpm test:install:e2e",
     {
       resources: ["service"],
       weight: 3,
@@ -639,7 +647,10 @@ const primaryReleasePathChunks = {
       stateScenario: "empty",
       weight: 2,
     }),
-    serviceLane("gateway-network", "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:gateway-network"),
+    serviceLane(
+      "gateway-network",
+      "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:gateway-network",
+    ),
     serviceLane("config-reload", "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:config-reload", {
       stateScenario: "empty",
     }),
@@ -647,9 +658,13 @@ const primaryReleasePathChunks = {
       "session-runtime-context",
       "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:session-runtime-context",
     ),
-    lane("commitments-safety", "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:commitments-safety", {
-      stateScenario: "empty",
-    }),
+    lane(
+      "commitments-safety",
+      "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:commitments-safety",
+      {
+        stateScenario: "empty",
+      },
+    ),
     lane(
       "pi-bundle-mcp-tools",
       "NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:pi-bundle-mcp-tools",

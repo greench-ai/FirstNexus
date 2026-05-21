@@ -7,11 +7,11 @@ type TestMock<TArgs extends unknown[] = unknown[], TResult = unknown> = Mock<
 export const loadConfigMock: TestMock = vi.fn();
 export const resolveGatewayPortMock: TestMock = vi.fn();
 export const resolveStateDirMock: TestMock<[NodeJS.ProcessEnv], string> = vi.fn(
-  (env: NodeJS.ProcessEnv) => env.NEXISCLAW_STATE_DIR ?? "/tmp/NexisClaw",
+  (env: NodeJS.ProcessEnv) => env.NEXISCLAW_STATE_DIR ?? "/tmp/FirstNexus",
 );
 export const resolveConfigPathMock: TestMock<[NodeJS.ProcessEnv, string], string> = vi.fn(
   (env: NodeJS.ProcessEnv, stateDir: string) =>
-    env.NEXISCLAW_CONFIG_PATH ?? `${stateDir}/NexisClaw.json`,
+    env.NEXISCLAW_CONFIG_PATH ?? `${stateDir}/FirstNexus.json`,
 );
 export const pickPrimaryTailnetIPv4Mock: TestMock = vi.fn();
 export const pickPrimaryLanIPv4Mock: TestMock = vi.fn();

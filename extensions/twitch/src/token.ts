@@ -13,8 +13,8 @@ import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   resolveNormalizedAccountEntry,
-} from "NexisClaw/plugin-sdk/account-resolution";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/account-resolution";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
 export type TwitchTokenSource = "env" | "config" | "none";
 
@@ -48,12 +48,12 @@ function normalizeTwitchToken(raw?: string | null): string | undefined {
  * The getAccountConfig function handles merging base-level config with accounts.default,
  * so this logic works for both simplified and multi-account patterns.
  *
- * @param cfg - NexisClaw config
+ * @param cfg - FirstNexus config
  * @param opts - Options including accountId and optional envToken override
  * @returns Token resolution with source
  */
 export function resolveTwitchToken(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
   opts: { accountId?: string | null; envToken?: string | null } = {},
 ): TwitchTokenResolution {
   const accountId = normalizeAccountId(opts.accountId);

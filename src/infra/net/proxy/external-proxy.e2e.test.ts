@@ -9,7 +9,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { WebSocketServer } from "ws";
 import { withTempDir } from "../../../test-helpers/temp-dir.js";
 import { resolveSystemBin } from "../../resolve-system-bin.js";
-import { resolvePreferredNexisClawTmpDir } from "../../tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../../tmp-FirstNexus-dir.js";
 
 const CHILD_PROCESS_TIMEOUT_MS = process.env.CI ? 45_000 : 15_000;
 const PROBE_TIMEOUT_MS = process.env.CI ? 15_000 : 5_000;
@@ -47,7 +47,7 @@ function createDiscordTlsFixture(dir: string): DiscordTlsFixture {
       "-days",
       "1",
       "-subj",
-      "/CN=NexisClaw Proxy Test CA",
+      "/CN=FirstNexus Proxy Test CA",
     ],
     { stdio: "ignore" },
   );
@@ -103,8 +103,8 @@ async function withDiscordTlsFixture<T>(
 ): Promise<T> {
   return await withTempDir(
     {
-      prefix: "NexisClaw-discord-tls-",
-      parentDir: resolvePreferredNexisClawTmpDir(),
+      prefix: "FirstNexus-discord-tls-",
+      parentDir: resolvePreferredFirstNexusTmpDir(),
     },
     async (dir) => {
       return await run(createDiscordTlsFixture(dir));

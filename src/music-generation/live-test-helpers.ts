@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import {
   parseLiveCsvFilter,
   parseProviderModelMap,
@@ -18,7 +18,7 @@ export function parseCsvFilter(raw?: string): Set<string> | null {
   return parseLiveCsvFilter(raw);
 }
 
-export function resolveConfiguredLiveMusicModels(cfg: NexisClawConfig): Map<string, string> {
+export function resolveConfiguredLiveMusicModels(cfg: FirstNexusConfig): Map<string, string> {
   return resolveConfiguredLiveProviderModels(cfg.agents?.defaults?.musicGenerationModel);
 }
 

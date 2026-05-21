@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   hasAvailableCodexAuth,
   isCodexNativeSearchEligibleModel,
@@ -17,7 +17,7 @@ export {
 } from "./codex-native-web-search.shared.js";
 
 export function isCodexNativeWebSearchRelevant(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   agentId?: string;
   agentDir?: string;
 }): boolean {

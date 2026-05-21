@@ -34,7 +34,9 @@ export default defineConfig({
     silent: !verboseE2E,
     setupFiles: [
       ...new Set(
-        [...(baseTest.setupFiles ?? []), "test/setup-NexisClaw-runtime.ts"].map(resolveRepoRootPath),
+        [...(baseTest.setupFiles ?? []), "test/setup-FirstNexus-runtime.ts"].map(
+          resolveRepoRootPath,
+        ),
       ),
     ],
     include: [

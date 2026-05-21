@@ -67,27 +67,30 @@ type GuardedSource = {
 const SAME_CHANNEL_SDK_GUARDS: GuardedSource[] = [
   {
     path: bundledPluginFile("discord", "src/shared.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/discord["']/, /plugin-sdk-internal\/discord/],
+    forbiddenPatterns: [/["']FirstNexus\/plugin-sdk\/discord["']/, /plugin-sdk-internal\/discord/],
   },
   {
     path: bundledPluginFile("slack", "src/shared.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/slack["']/, /plugin-sdk-internal\/slack/],
+    forbiddenPatterns: [/["']FirstNexus\/plugin-sdk\/slack["']/, /plugin-sdk-internal\/slack/],
   },
   {
     path: bundledPluginFile("telegram", "src/shared.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/telegram["']/, /plugin-sdk-internal\/telegram/],
+    forbiddenPatterns: [
+      /["']FirstNexus\/plugin-sdk\/telegram["']/,
+      /plugin-sdk-internal\/telegram/,
+    ],
   },
   {
     path: bundledPluginFile("telegram", "src/account-inspect.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/account-resolution["']/],
+    forbiddenPatterns: [/["']FirstNexus\/plugin-sdk\/account-resolution["']/],
   },
   {
     path: bundledPluginFile("telegram", "src/accounts.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/account-resolution["']/],
+    forbiddenPatterns: [/["']FirstNexus\/plugin-sdk\/account-resolution["']/],
   },
   {
     path: bundledPluginFile("telegram", "src/token.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/account-resolution["']/],
+    forbiddenPatterns: [/["']FirstNexus\/plugin-sdk\/account-resolution["']/],
   },
   {
     path: bundledPluginFile("telegram", "src/channel.ts"),
@@ -127,19 +130,25 @@ const SAME_CHANNEL_SDK_GUARDS: GuardedSource[] = [
   },
   {
     path: bundledPluginFile("imessage", "src/shared.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/imessage["']/, /plugin-sdk-internal\/imessage/],
+    forbiddenPatterns: [
+      /["']FirstNexus\/plugin-sdk\/imessage["']/,
+      /plugin-sdk-internal\/imessage/,
+    ],
   },
   {
     path: bundledPluginFile("whatsapp", "src/shared.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/whatsapp["']/, /plugin-sdk-internal\/whatsapp/],
+    forbiddenPatterns: [
+      /["']FirstNexus\/plugin-sdk\/whatsapp["']/,
+      /plugin-sdk-internal\/whatsapp/,
+    ],
   },
   {
     path: bundledPluginFile("signal", "src/shared.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/signal["']/, /plugin-sdk-internal\/signal/],
+    forbiddenPatterns: [/["']FirstNexus\/plugin-sdk\/signal["']/, /plugin-sdk-internal\/signal/],
   },
   {
     path: bundledPluginFile("signal", "src/runtime-api.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/signal["']/, /plugin-sdk-internal\/signal/],
+    forbiddenPatterns: [/["']FirstNexus\/plugin-sdk\/signal["']/, /plugin-sdk-internal\/signal/],
   },
 ];
 
@@ -189,7 +198,7 @@ const SETUP_BARREL_GUARDS: GuardedSource[] = [
 const CHANNEL_CONFIG_SCHEMA_GUARDS: GuardedSource[] = [
   {
     path: bundledPluginFile("tlon", "src/config-schema.ts"),
-    forbiddenPatterns: [/["']NexisClaw\/plugin-sdk\/core["']/],
+    forbiddenPatterns: [/["']FirstNexus\/plugin-sdk\/core["']/],
   },
 ];
 
@@ -490,10 +499,10 @@ function expectNoCrossPluginSdkFacadeImports(file: string, imports: string[]): v
     return;
   }
   for (const specifier of imports) {
-    if (!specifier.startsWith("NexisClaw/plugin-sdk/")) {
+    if (!specifier.startsWith("FirstNexus/plugin-sdk/")) {
       continue;
     }
-    const targetSubpath = specifier.slice("NexisClaw/plugin-sdk/".length);
+    const targetSubpath = specifier.slice("FirstNexus/plugin-sdk/".length);
     const targetExtensionId =
       BUNDLED_EXTENSION_IDS.find(
         (extensionId) =>
@@ -561,11 +570,11 @@ describe("channel import guardrails", () => {
   it("keeps bundled extension source files off root and compat plugin-sdk imports", () => {
     for (const file of collectExtensionSourceFiles()) {
       const text = readSource(file);
-      expect(text, `${file} should not import NexisClaw/plugin-sdk root`).not.toMatch(
-        /["']NexisClaw\/plugin-sdk["']/,
+      expect(text, `${file} should not import FirstNexus/plugin-sdk root`).not.toMatch(
+        /["']FirstNexus\/plugin-sdk["']/,
       );
-      expect(text, `${file} should not import NexisClaw/plugin-sdk/compat`).not.toMatch(
-        /["']NexisClaw\/plugin-sdk\/compat["']/,
+      expect(text, `${file} should not import FirstNexus/plugin-sdk/compat`).not.toMatch(
+        /["']FirstNexus\/plugin-sdk\/compat["']/,
       );
     }
   });
@@ -641,7 +650,7 @@ describe("channel import guardrails", () => {
         expect(
           text,
           `${normalized} should import ${extensionId} helpers via the local api barrel`,
-        ).not.toMatch(new RegExp(`["']NexisClaw/plugin-sdk/${extensionId}(?:["'/])`, "u"));
+        ).not.toMatch(new RegExp(`["']FirstNexus/plugin-sdk/${extensionId}(?:["'/])`, "u"));
       }
     }
   });

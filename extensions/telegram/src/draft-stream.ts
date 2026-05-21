@@ -1,9 +1,9 @@
-import type { Bot } from "grammy";
 import {
   createFinalizableDraftStreamControlsForState,
   takeMessageIdAfterStop,
-} from "NexisClaw/plugin-sdk/channel-lifecycle";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+} from "FirstNexus/plugin-sdk/channel-lifecycle";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import type { Bot } from "grammy";
 import { buildTelegramThreadParams, type TelegramThreadSpec } from "./bot/helpers.js";
 import { isSafeToRetrySendError, isTelegramClientRejection } from "./network-errors.js";
 import { normalizeTelegramReplyToMessageId } from "./outbound-params.js";

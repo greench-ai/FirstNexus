@@ -1,15 +1,15 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   resolveThreadBindingIdleTimeoutMs,
   resolveThreadBindingMaxAgeMs,
   resolveThreadBindingsEnabled,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { normalizeAccountId } from "NexisClaw/plugin-sdk/routing";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { normalizeAccountId } from "FirstNexus/plugin-sdk/routing";
 
 export { resolveThreadBindingsEnabled };
 
 export function resolveDiscordThreadBindingIdleTimeoutMs(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
 }): number {
   const accountId = normalizeAccountId(params.accountId);
@@ -22,7 +22,7 @@ export function resolveDiscordThreadBindingIdleTimeoutMs(params: {
 }
 
 export function resolveDiscordThreadBindingMaxAgeMs(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
 }): number {
   const accountId = normalizeAccountId(params.accountId);

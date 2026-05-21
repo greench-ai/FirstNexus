@@ -6,7 +6,7 @@ import { resolveSessionTranscriptPath, resolveStorePath } from "../../config/ses
 import { resolveSessionKey } from "../../config/sessions/session-key.js";
 import { loadSessionStore } from "../../config/sessions/store.js";
 import type { SessionEntry, SessionScope } from "../../config/sessions/types.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
@@ -18,10 +18,10 @@ import type { CommandContext } from "./commands-types.js";
 import { stripMentions, stripStructuralPrefixes } from "./mentions.js";
 import type { SessionInitResult } from "./session.js";
 
-const COMPLETE_REPLY_CONFIG_SYMBOL = Symbol.for("NexisClaw.reply.complete-config");
-const FULL_REPLY_RUNTIME_SYMBOL = Symbol.for("NexisClaw.reply.full-runtime");
+const COMPLETE_REPLY_CONFIG_SYMBOL = Symbol.for("FirstNexus.reply.complete-config");
+const FULL_REPLY_RUNTIME_SYMBOL = Symbol.for("FirstNexus.reply.full-runtime");
 
-type ReplyConfigWithMarker = NexisClawConfig & {
+type ReplyConfigWithMarker = FirstNexusConfig & {
   [COMPLETE_REPLY_CONFIG_SYMBOL]?: true;
   [FULL_REPLY_RUNTIME_SYMBOL]?: true;
 };
@@ -57,7 +57,7 @@ function markReplyConfigRuntimeMode(
   });
 }
 
-export function markCompleteReplyConfig<T extends NexisClawConfig>(
+export function markCompleteReplyConfig<T extends FirstNexusConfig>(
   config: T,
   options?: { runtimeMode?: "fast" | "full" },
 ): T {
@@ -70,15 +70,15 @@ export function markCompleteReplyConfig<T extends NexisClawConfig>(
   return config;
 }
 
-export function withFastReplyConfig<T extends NexisClawConfig>(config: T): T {
+export function withFastReplyConfig<T extends FirstNexusConfig>(config: T): T {
   return markCompleteReplyConfig(config, { runtimeMode: "fast" });
 }
 
-export function withFullRuntimeReplyConfig<T extends NexisClawConfig>(config: T): T {
+export function withFullRuntimeReplyConfig<T extends FirstNexusConfig>(config: T): T {
   return markCompleteReplyConfig(config, { runtimeMode: "full" });
 }
 
-function isCompleteReplyConfig(config: unknown): config is NexisClawConfig {
+function isCompleteReplyConfig(config: unknown): config is FirstNexusConfig {
   return Boolean(
     config &&
     typeof config === "object" &&
@@ -95,10 +95,10 @@ function usesFullReplyRuntime(config: unknown): boolean {
 }
 
 export function resolveGetReplyConfig(params: {
-  getRuntimeConfig: () => NexisClawConfig;
+  getRuntimeConfig: () => FirstNexusConfig;
   isFastTestEnv: boolean;
-  configOverride?: NexisClawConfig;
-}): NexisClawConfig {
+  configOverride?: FirstNexusConfig;
+}): FirstNexusConfig {
   const { configOverride } = params;
   if (configOverride == null) {
     return params.getRuntimeConfig();
@@ -114,12 +114,12 @@ export function resolveGetReplyConfig(params: {
   if (isCompleteReplyConfig(configOverride)) {
     return configOverride;
   }
-  return applyMergePatch(params.getRuntimeConfig(), configOverride) as NexisClawConfig;
+  return applyMergePatch(params.getRuntimeConfig(), configOverride) as FirstNexusConfig;
 }
 
 export function shouldUseReplyFastTestBootstrap(params: {
   isFastTestEnv: boolean;
-  configOverride?: NexisClawConfig;
+  configOverride?: FirstNexusConfig;
 }): boolean {
   return (
     params.isFastTestEnv &&
@@ -129,7 +129,7 @@ export function shouldUseReplyFastTestBootstrap(params: {
 }
 
 export function shouldUseReplyFastTestRuntime(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   isFastTestEnv: boolean;
 }): boolean {
   return (
@@ -157,7 +157,7 @@ export function shouldUseReplyFastDirectiveExecution(params: {
 
 export function buildFastReplyCommandContext(params: {
   ctx: MsgContext;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   sessionKey?: string;
   isGroup: boolean;
@@ -192,7 +192,7 @@ export function buildFastReplyCommandContext(params: {
 }
 
 export function shouldHandleFastReplyTextCommands(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   commandSource?: string;
 }): boolean {
   return params.commandSource === "native" || params.cfg.commands?.text !== false;
@@ -200,7 +200,7 @@ export function shouldHandleFastReplyTextCommands(params: {
 
 export function initFastReplySessionState(params: {
   ctx: MsgContext;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   commandAuthorized: boolean;
   workspaceDir: string;

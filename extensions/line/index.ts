@@ -1,13 +1,13 @@
 import {
   defineBundledChannelEntry,
-  type NexisClawPluginApi,
-} from "NexisClaw/plugin-sdk/channel-entry-contract";
+  type FirstNexusPluginApi,
+} from "FirstNexus/plugin-sdk/channel-entry-contract";
 
-type RegisteredLineCardCommand = Parameters<NexisClawPluginApi["registerCommand"]>[0];
+type RegisteredLineCardCommand = Parameters<FirstNexusPluginApi["registerCommand"]>[0];
 
 let lineCardCommandPromise: Promise<RegisteredLineCardCommand> | null = null;
 
-async function loadLineCardCommand(api: NexisClawPluginApi): Promise<RegisteredLineCardCommand> {
+async function loadLineCardCommand(api: FirstNexusPluginApi): Promise<RegisteredLineCardCommand> {
   lineCardCommandPromise ??= (async () => {
     let registered: RegisteredLineCardCommand | null = null;
     const { registerLineCardCommand } = await import("./src/card-command.js");

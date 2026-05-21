@@ -1,7 +1,7 @@
 import {
   createPatchedAccountSetupAdapter,
   createSetupInputPresenceValidator,
-} from "NexisClaw/plugin-sdk/setup-runtime";
+} from "FirstNexus/plugin-sdk/setup-runtime";
 
 const channel = "googlechat" as const;
 

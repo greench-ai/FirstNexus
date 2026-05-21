@@ -1,7 +1,7 @@
 import { getAgentRuntimeCommandSecretTargetIds } from "../cli/command-secret-targets.js";
 import { getRuntimeConfig, readConfigFileSnapshotForWrite } from "../config/io.js";
 import { setRuntimeConfigSnapshot } from "../config/runtime-snapshot.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isSecretRef } from "../config/types.secrets.js";
 import type { RuntimeEnv } from "../runtime.js";
 
@@ -9,9 +9,9 @@ export async function resolveAgentRuntimeConfig(
   runtime: RuntimeEnv,
   params?: { runtimeTargetsChannelSecrets?: boolean },
 ): Promise<{
-  loadedRaw: NexisClawConfig;
-  sourceConfig: NexisClawConfig;
-  cfg: NexisClawConfig;
+  loadedRaw: FirstNexusConfig;
+  sourceConfig: FirstNexusConfig;
+  cfg: FirstNexusConfig;
 }> {
   const loadedRaw = getRuntimeConfig();
   const sourceConfig = await (async () => {
@@ -61,7 +61,7 @@ function hasNestedSecretRef(value: unknown): boolean {
 }
 
 function hasAgentRuntimeSecretRefs(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   includeChannelTargets: boolean;
 }): boolean {
   const { config } = params;

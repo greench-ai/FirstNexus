@@ -1,16 +1,16 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   normalizeWebhookPath,
   resolveRequestClientIp,
   type FixedWindowRateLimiter,
-} from "NexisClaw/plugin-sdk/webhook-ingress";
-import type { WebhookInFlightLimiter } from "NexisClaw/plugin-sdk/webhook-request-guards";
-import { readJsonWebhookBodyOrReject } from "NexisClaw/plugin-sdk/webhook-request-guards";
+} from "FirstNexus/plugin-sdk/webhook-ingress";
+import type { WebhookInFlightLimiter } from "FirstNexus/plugin-sdk/webhook-request-guards";
+import { readJsonWebhookBodyOrReject } from "FirstNexus/plugin-sdk/webhook-request-guards";
 import {
   resolveWebhookTargetWithAuthOrReject,
   withResolvedWebhookRequestPipeline,
-} from "NexisClaw/plugin-sdk/webhook-targets";
+} from "FirstNexus/plugin-sdk/webhook-targets";
 import { verifyGoogleChatRequest } from "./auth.js";
 import type { WebhookTarget } from "./monitor-types.js";
 import type {

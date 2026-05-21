@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { tryReadJsonSync } from "../infra/json-files.js";
 import { replaceFileAtomicSync } from "../infra/replace-file.js";
 import { isRecord } from "../utils.js";
@@ -12,7 +12,7 @@ import { resolveEnvApiKey } from "./model-auth-env.js";
 import type { PiCredentialMap } from "./pi-auth-credentials.js";
 
 export type PiDiscoveryAuthLookupOptions = {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 };

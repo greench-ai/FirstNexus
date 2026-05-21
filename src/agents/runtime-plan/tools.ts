@@ -1,6 +1,6 @@
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import type { TSchema } from "typebox";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { ProviderRuntimeModel } from "../../plugins/provider-runtime-model.types.js";
 import {
   logProviderToolSchemaDiagnostics,
@@ -12,7 +12,7 @@ type AgentRuntimeToolPolicyParams<TSchemaType extends TSchema = TSchema, TResult
   runtimePlan?: AgentRuntimePlan;
   tools: AgentTool<TSchemaType, TResult>[];
   provider: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   modelId?: string;

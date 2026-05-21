@@ -202,7 +202,7 @@ describe("runDaemonRestart health checks", () => {
     repairLoadedGatewayServiceForStart.mockReset();
 
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "--port", "18789"],
+      programArguments: ["FirstNexus", "gateway", "--port", "18789"],
       environment: {},
     });
     service.restart.mockResolvedValue({ outcome: "completed" });
@@ -428,8 +428,8 @@ describe("runDaemonRestart health checks", () => {
     const error = await expectRestartError(runDaemonRestart({ json: true }));
     expect(error.message).toBe("Gateway restart timed out after 60s waiting for health checks.");
     expect(error.hints).toEqual([
-      formatCliCommand("NexisClaw gateway status --deep"),
-      formatCliCommand("NexisClaw doctor"),
+      formatCliCommand("FirstNexus gateway status --deep"),
+      formatCliCommand("FirstNexus doctor"),
     ]);
     expect(terminateStaleGatewayPids).not.toHaveBeenCalled();
     expect(renderRestartDiagnostics).toHaveBeenCalledTimes(1);
@@ -478,8 +478,8 @@ describe("runDaemonRestart health checks", () => {
       "Gateway restart failed after 13s: service stayed stopped and health checks never came up.",
     );
     expect(error.hints).toEqual([
-      formatCliCommand("NexisClaw gateway status --deep"),
-      formatCliCommand("NexisClaw doctor"),
+      formatCliCommand("FirstNexus gateway status --deep"),
+      formatCliCommand("FirstNexus doctor"),
     ]);
     expect(terminateStaleGatewayPids).not.toHaveBeenCalled();
     expect(renderRestartDiagnostics).toHaveBeenCalledTimes(1);

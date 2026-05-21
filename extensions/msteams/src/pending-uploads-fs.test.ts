@@ -17,7 +17,7 @@ import { msteamsRuntimeStub } from "./test-runtime.js";
 const createdTempDirs: string[] = [];
 
 async function makeTempStateDir(): Promise<string> {
-  const dir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "NexisClaw-msteams-pending-"));
+  const dir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "FirstNexus-msteams-pending-"));
   createdTempDirs.push(dir);
   return dir;
 }

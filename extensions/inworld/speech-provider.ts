@@ -1,11 +1,11 @@
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
   SpeechProviderOverrides,
   SpeechProviderPlugin,
-} from "NexisClaw/plugin-sdk/speech-core";
-import { asFiniteNumber, asObject, trimToUndefined } from "NexisClaw/plugin-sdk/speech-core";
+} from "FirstNexus/plugin-sdk/speech-core";
+import { asFiniteNumber, asObject, trimToUndefined } from "FirstNexus/plugin-sdk/speech-core";
 import {
   DEFAULT_INWORLD_MODEL_ID,
   DEFAULT_INWORLD_VOICE_ID,

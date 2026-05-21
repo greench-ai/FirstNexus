@@ -20,7 +20,7 @@ describe("resolveOAuthRefreshLockPath", () => {
   let stateDir = "";
 
   beforeEach(async () => {
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-auth-lock-path-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-auth-lock-path-"));
     process.env.NEXISCLAW_STATE_DIR = stateDir;
   });
 
@@ -128,7 +128,7 @@ describe("resolveOAuthRefreshLockPath fuzz", () => {
   let stateDir = "";
 
   beforeEach(async () => {
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-auth-lock-path-fuzz-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-auth-lock-path-fuzz-"));
     process.env.NEXISCLAW_STATE_DIR = stateDir;
   });
 

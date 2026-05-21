@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
-export function makeQqbotSecretRefConfig(): NexisClawConfig {
+export function makeQqbotSecretRefConfig(): FirstNexusConfig {
   return {
     channels: {
       qqbot: {
@@ -12,10 +12,10 @@ export function makeQqbotSecretRefConfig(): NexisClawConfig {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
-export function makeQqbotDefaultAccountConfig(): NexisClawConfig {
+export function makeQqbotDefaultAccountConfig(): FirstNexusConfig {
   return {
     channels: {
       qqbot: {
@@ -25,5 +25,5 @@ export function makeQqbotDefaultAccountConfig(): NexisClawConfig {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }

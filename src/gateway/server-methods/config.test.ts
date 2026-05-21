@@ -5,7 +5,7 @@ import { createConfigHandlerHarness } from "./config.test-helpers.js";
 const execFileMock = vi.hoisted(() => vi.fn());
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeBuiltinModule } = await import("NexisClaw/plugin-sdk/test-node-mocks");
+  const { mockNodeBuiltinModule } = await import("FirstNexus/plugin-sdk/test-node-mocks");
   return mockNodeBuiltinModule(
     () => vi.importActual<typeof import("node:child_process")>("node:child_process"),
     {
@@ -26,16 +26,16 @@ function invokeExecFileCallback(args: unknown[], error: Error | null) {
 
 describe("resolveConfigOpenCommand", () => {
   it("uses open on macOS", () => {
-    expect(resolveConfigOpenCommand("/tmp/NexisClaw.json", "darwin")).toEqual({
+    expect(resolveConfigOpenCommand("/tmp/FirstNexus.json", "darwin")).toEqual({
       command: "open",
-      args: ["/tmp/NexisClaw.json"],
+      args: ["/tmp/FirstNexus.json"],
     });
   });
 
   it("uses xdg-open on Linux", () => {
-    expect(resolveConfigOpenCommand("/tmp/NexisClaw.json", "linux")).toEqual({
+    expect(resolveConfigOpenCommand("/tmp/FirstNexus.json", "linux")).toEqual({
       command: "xdg-open",
-      args: ["/tmp/NexisClaw.json"],
+      args: ["/tmp/FirstNexus.json"],
     });
   });
 

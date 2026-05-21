@@ -3,24 +3,24 @@ import { ChannelType } from "../internal/discord.js";
 
 const loadConfigMock = vi.hoisted(() => vi.fn());
 
-vi.mock("NexisClaw/plugin-sdk/runtime-config-snapshot", async () => {
+vi.mock("FirstNexus/plugin-sdk/runtime-config-snapshot", async () => {
   const actual = await vi.importActual<
-    typeof import("NexisClaw/plugin-sdk/runtime-config-snapshot")
-  >("NexisClaw/plugin-sdk/runtime-config-snapshot");
+    typeof import("FirstNexus/plugin-sdk/runtime-config-snapshot")
+  >("FirstNexus/plugin-sdk/runtime-config-snapshot");
   return {
     ...actual,
     getRuntimeConfig: () => loadConfigMock(),
   };
 });
 
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   getSessionBindingService,
   registerSessionBindingAdapter,
   type SessionBindingBindInput,
   type SessionBindingRecord,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { __testing as sessionBindingTesting } from "NexisClaw/plugin-sdk/conversation-runtime";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { __testing as sessionBindingTesting } from "FirstNexus/plugin-sdk/conversation-runtime";
 import { preflightDiscordMessage } from "./message-handler.preflight.js";
 import {
   createDiscordMessage,
@@ -49,7 +49,7 @@ const baseCfg = {
       },
     },
   },
-} satisfies NexisClawConfig;
+} satisfies FirstNexusConfig;
 
 function createDmClient(channelId: string): DiscordClient {
   return {

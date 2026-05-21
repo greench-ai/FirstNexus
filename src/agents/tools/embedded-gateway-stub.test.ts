@@ -7,7 +7,7 @@ const runtime = vi.hoisted(() => ({
   resolveSessionAgentId: vi.fn(() => "main"),
   loadSessionEntry: vi.fn(() => ({
     cfg: {},
-    storePath: "/tmp/NexisClaw-sessions.json",
+    storePath: "/tmp/FirstNexus-sessions.json",
     entry: { sessionId: "sess-main" },
   })),
   resolveSessionModelRef: vi.fn(() => ({ provider: "openai" })),
@@ -93,7 +93,7 @@ describe("embedded gateway stub", () => {
     });
     expect(runtime.readSessionMessagesAsync).toHaveBeenCalledWith(
       "sess-main",
-      "/tmp/NexisClaw-sessions.json",
+      "/tmp/FirstNexus-sessions.json",
       undefined,
       {
         mode: "recent",
@@ -123,7 +123,7 @@ describe("embedded gateway stub", () => {
     });
     expect(runtime.readSessionMessagesAsync).toHaveBeenCalledWith(
       "sess-main",
-      "/tmp/NexisClaw-sessions.json",
+      "/tmp/FirstNexus-sessions.json",
       undefined,
       {
         mode: "recent",

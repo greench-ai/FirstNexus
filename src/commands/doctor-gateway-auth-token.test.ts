@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { withTempHome, writeStateDirDotEnv } from "../config/test-helpers.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import {
@@ -18,7 +18,7 @@ describe("resolveGatewayAuthTokenForService", () => {
             token: "config-token",
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {} as NodeJS.ProcessEnv,
     );
 
@@ -42,7 +42,7 @@ describe("resolveGatewayAuthTokenForService", () => {
             default: { source: "env" },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {
         CUSTOM_GATEWAY_TOKEN: "resolved-token",
       } as NodeJS.ProcessEnv,
@@ -64,7 +64,7 @@ describe("resolveGatewayAuthTokenForService", () => {
             default: { source: "env" },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {
         CUSTOM_GATEWAY_TOKEN: "resolved-token",
       } as NodeJS.ProcessEnv,
@@ -90,7 +90,7 @@ describe("resolveGatewayAuthTokenForService", () => {
             default: { source: "env" },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {
         NEXISCLAW_GATEWAY_TOKEN: "env-fallback-token",
       } as NodeJS.ProcessEnv,
@@ -116,7 +116,7 @@ describe("resolveGatewayAuthTokenForService", () => {
             default: { source: "env" },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {
         CUSTOM_GATEWAY_TOKEN: "   ",
         NEXISCLAW_GATEWAY_TOKEN: "env-fallback-token",
@@ -143,7 +143,7 @@ describe("resolveGatewayAuthTokenForService", () => {
             default: { source: "env" },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {} as NodeJS.ProcessEnv,
     );
 
@@ -163,7 +163,7 @@ describe("shouldRequireGatewayTokenForInstall", () => {
             mode: "token",
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {} as NodeJS.ProcessEnv,
     );
     expect(required).toBe(true);
@@ -177,7 +177,7 @@ describe("shouldRequireGatewayTokenForInstall", () => {
             mode: "password",
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {} as NodeJS.ProcessEnv,
     );
     expect(required).toBe(false);
@@ -193,7 +193,7 @@ describe("shouldRequireGatewayTokenForInstall", () => {
             gateway: {
               auth: {},
             },
-          } as NexisClawConfig,
+          } as FirstNexusConfig,
           process.env,
         );
         expect(required).toBe(true);
@@ -218,7 +218,7 @@ describe("shouldRequireGatewayTokenForInstall", () => {
             default: { source: "env" },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {} as NodeJS.ProcessEnv,
     );
     expect(required).toBe(false);
@@ -235,7 +235,7 @@ describe("shouldRequireGatewayTokenForInstall", () => {
             NEXISCLAW_GATEWAY_PASSWORD: "configured-password", // pragma: allowlist secret
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {} as NodeJS.ProcessEnv,
     );
     expect(required).toBe(false);
@@ -252,7 +252,7 @@ describe("shouldRequireGatewayTokenForInstall", () => {
           gateway: {
             auth: {},
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         process.env,
       );
       expect(required).toBe(false);
@@ -265,7 +265,7 @@ describe("shouldRequireGatewayTokenForInstall", () => {
         gateway: {
           auth: {},
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       {} as NodeJS.ProcessEnv,
     );
     expect(required).toBe(true);

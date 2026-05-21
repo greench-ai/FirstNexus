@@ -74,13 +74,13 @@ export function collectPluginNpmPublishedRuntimeErrors(params) {
   const errors = [];
   const extensionsResult = readPackageStringList(
     packageLabel,
-    "NexisClaw.extensions",
-    packageJson.NexisClaw?.extensions,
+    "FirstNexus.extensions",
+    packageJson.FirstNexus?.extensions,
   );
   const runtimeExtensionsResult = readPackageStringList(
     packageLabel,
-    "NexisClaw.runtimeExtensions",
-    packageJson.NexisClaw?.runtimeExtensions,
+    "FirstNexus.runtimeExtensions",
+    packageJson.FirstNexus?.runtimeExtensions,
   );
   errors.push(...extensionsResult.errors, ...runtimeExtensionsResult.errors);
   if (errors.length > 0) {
@@ -95,7 +95,7 @@ export function collectPluginNpmPublishedRuntimeErrors(params) {
 
   if (runtimeExtensions.length > 0 && runtimeExtensions.length !== extensions.length) {
     errors.push(
-      `${packageLabel} package.json NexisClaw.runtimeExtensions length (${runtimeExtensions.length}) must match NexisClaw.extensions length (${extensions.length})`,
+      `${packageLabel} package.json FirstNexus.runtimeExtensions length (${runtimeExtensions.length}) must match FirstNexus.extensions length (${extensions.length})`,
     );
     return errors;
   }
@@ -191,7 +191,7 @@ function readPackedPackage(tarballPath, extractDir) {
 }
 
 export async function verifyPublishedPluginRuntime(spec) {
-  const workingDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-plugin-npm-runtime."));
+  const workingDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-plugin-npm-runtime."));
   try {
     const tarballPath = await packPublishedPackage(spec, workingDir);
     const extractDir = path.join(workingDir, "extract");

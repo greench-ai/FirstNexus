@@ -682,7 +682,7 @@ describe("channels command", () => {
       patterns: [
         /Warnings:/,
         /Message Content Intent is disabled/i,
-        /Run: (?:NexisClaw|NexisClaw)( --profile isolated)? doctor/,
+        /Run: (?:FirstNexus|FirstNexus)( --profile isolated)? doctor/,
       ],
     },
     {
@@ -736,11 +736,11 @@ describe("channels command", () => {
           accountId: "default",
           enabled: true,
           configured: true,
-          probe: { ok: true, bot: { username: "NexisClaw_bot" } },
+          probe: { ok: true, bot: { username: "FirstNexus_bot" } },
         },
       ],
     });
-    expect(joined).toMatch(/bot:@NexisClaw_bot/);
+    expect(joined).toMatch(/bot:@FirstNexus_bot/);
   });
 
   it("surfaces Telegram group membership audit issues in channels status output", () => {

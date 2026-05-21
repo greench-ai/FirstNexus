@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isPathInside } from "../infra/path-guards.js";
 import { normalizeAgentId } from "../routing/session-key.js";
 import { lowercasePreservingWhitespace } from "../shared/string-coerce.js";
@@ -29,7 +29,7 @@ function workspacePathsOverlap(left: string, right: string): boolean {
 }
 
 export function findOverlappingWorkspaceAgentIds(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   agentId: string,
   workspaceDir: string,
 ): string[] {

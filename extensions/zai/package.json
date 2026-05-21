@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/zai-provider",
+  "name": "@FirstNexus/zai-provider",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw Z.AI provider plugin",
+  "description": "FirstNexus Z.AI provider plugin",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

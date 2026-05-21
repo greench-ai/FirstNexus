@@ -16,7 +16,7 @@ const previousEnv = {
 };
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-acpx-codex-auth-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-acpx-codex-auth-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -98,7 +98,7 @@ afterEach(async () => {
 });
 
 describe("prepareAcpxCodexAuthConfig", () => {
-  it("installs an isolated Codex ACP wrapper without synthesizing auth from canonical NexisClaw OAuth", async () => {
+  it("installs an isolated Codex ACP wrapper without synthesizing auth from canonical FirstNexus OAuth", async () => {
     const root = await makeTempDir();
     const agentDir = path.join(root, "agent");
     const stateDir = path.join(root, "state");
@@ -296,9 +296,9 @@ describe("prepareAcpxCodexAuthConfig", () => {
       process.execPath,
       [
         generated.wrapperPath,
-        "--NexisClaw-acpx-lease-id",
+        "--FirstNexus-acpx-lease-id",
         "lease-1",
-        "--NexisClaw-gateway-instance-id",
+        "--FirstNexus-gateway-instance-id",
         "gateway-1",
       ],
       {

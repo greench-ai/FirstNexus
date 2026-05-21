@@ -1,5 +1,5 @@
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   withBundledPluginAllowlistCompat,
   withBundledPluginEnablementCompat,
@@ -26,10 +26,10 @@ export type PluginActivationBundledCompatMode = {
 };
 
 export type PluginActivationInputs = {
-  rawConfig?: NexisClawConfig;
-  config?: NexisClawConfig;
+  rawConfig?: FirstNexusConfig;
+  config?: FirstNexusConfig;
   normalized: NormalizedPluginsConfig;
-  activationSourceConfig?: NexisClawConfig;
+  activationSourceConfig?: FirstNexusConfig;
   activationSource: PluginActivationConfigSource;
   autoEnabledReasons: Record<string, string[]>;
 };
@@ -54,8 +54,8 @@ export type BundledPluginCompatibleLoadValues = Pick<
 >;
 
 type BundledPluginCompatibleActivationParams = {
-  rawConfig?: NexisClawConfig;
-  resolvedConfig?: NexisClawConfig;
+  rawConfig?: FirstNexusConfig;
+  resolvedConfig?: FirstNexusConfig;
   autoEnabledReasons?: Record<string, string[]>;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
@@ -63,7 +63,7 @@ type BundledPluginCompatibleActivationParams = {
   applyAutoEnable?: boolean;
   compatMode: PluginActivationBundledCompatMode;
   resolveCompatPluginIds: (params: {
-    config?: NexisClawConfig;
+    config?: FirstNexusConfig;
     workspaceDir?: string;
     env?: NodeJS.ProcessEnv;
     onlyPluginIds?: readonly string[];
@@ -71,11 +71,11 @@ type BundledPluginCompatibleActivationParams = {
 };
 
 export function withActivatedPluginIds(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   pluginIds: readonly string[];
   overrideGlobalDisable?: boolean;
   overrideExplicitDisable?: boolean;
-}): NexisClawConfig | undefined {
+}): FirstNexusConfig | undefined {
   if (params.pluginIds.length === 0) {
     return params.config;
   }
@@ -117,10 +117,10 @@ export function withActivatedPluginIds(params: {
 }
 
 export function applyPluginCompatibilityOverrides(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   compat?: PluginActivationCompatConfig;
   env: NodeJS.ProcessEnv;
-}): NexisClawConfig | undefined {
+}): FirstNexusConfig | undefined {
   const allowlistCompat = params.compat?.allowlistPluginIds?.length
     ? withBundledPluginAllowlistCompat({
         config: params.config,
@@ -172,7 +172,7 @@ function createBundledPluginCompatConfig(params: {
 }
 
 function applyPluginAutoEnableForActivation(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   workspaceDir?: string;
 }) {
@@ -201,8 +201,8 @@ function applyPluginAutoEnableForActivation(params: {
 }
 
 export function resolvePluginActivationSnapshot(params: {
-  rawConfig?: NexisClawConfig;
-  resolvedConfig?: NexisClawConfig;
+  rawConfig?: FirstNexusConfig;
+  resolvedConfig?: FirstNexusConfig;
   autoEnabledReasons?: Record<string, string[]>;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
@@ -236,8 +236,8 @@ export function resolvePluginActivationSnapshot(params: {
 }
 
 export function resolvePluginActivationInputs(params: {
-  rawConfig?: NexisClawConfig;
-  resolvedConfig?: NexisClawConfig;
+  rawConfig?: FirstNexusConfig;
+  resolvedConfig?: FirstNexusConfig;
   autoEnabledReasons?: Record<string, string[]>;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;

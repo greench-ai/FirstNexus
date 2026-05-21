@@ -1,6 +1,6 @@
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ensureNexisClawCliOnPath } from "./path-env.js";
+import { ensureFirstNexusCliOnPath } from "./path-env.js";
 
 const state = vi.hoisted(() => ({
   dirs: new Set<string>(),
@@ -44,7 +44,7 @@ vi.mock("./env.js", () => ({
   isTruthyEnvValue: (value?: string) => value === "1" || value === "true",
 }));
 
-describe("ensureNexisClawCliOnPath", () => {
+describe("ensureFirstNexusCliOnPath", () => {
   const envKeys = [
     "PATH",
     "NEXISCLAW_PATH_BOOTSTRAPPED",
@@ -78,9 +78,9 @@ describe("ensureNexisClawCliOnPath", () => {
   });
 
   function setupAppCliRoot(name: string) {
-    const tmp = abs(`/tmp/NexisClaw-path/${name}`);
+    const tmp = abs(`/tmp/FirstNexus-path/${name}`);
     const appBinDir = path.join(tmp, "AppBin");
-    const appCli = path.join(appBinDir, "NexisClaw");
+    const appCli = path.join(appBinDir, "FirstNexus");
     setDir(tmp);
     setDir(appBinDir);
     setExe(appCli);
@@ -94,7 +94,7 @@ describe("ensureNexisClawCliOnPath", () => {
     platform: NodeJS.Platform;
     allowProjectLocalBin?: boolean;
   }) {
-    ensureNexisClawCliOnPath(params);
+    ensureFirstNexusCliOnPath(params);
     return (process.env.PATH ?? "").split(path.delimiter);
   }
 
@@ -118,7 +118,7 @@ describe("ensureNexisClawCliOnPath", () => {
     }
   }
 
-  it("prepends the bundled app bin dir when a sibling NexisClaw exists", () => {
+  it("prepends the bundled app bin dir when a sibling FirstNexus exists", () => {
     const { tmp, appBinDir, appCli } = setupAppCliRoot("case-bundled");
     resetBootstrapEnv();
 
@@ -132,7 +132,7 @@ describe("ensureNexisClawCliOnPath", () => {
   });
 
   it("keeps the current runtime directory ahead of system PATH hardening", () => {
-    const tmp = abs("/tmp/NexisClaw-path/case-runtime-dir");
+    const tmp = abs("/tmp/FirstNexus-path/case-runtime-dir");
     const nodeBinDir = path.join(tmp, "node-bin");
     const nodeExec = path.join(nodeBinDir, "node");
     setDir(tmp);
@@ -154,7 +154,7 @@ describe("ensureNexisClawCliOnPath", () => {
   it("is idempotent", () => {
     process.env.PATH = "/bin";
     process.env.NEXISCLAW_PATH_BOOTSTRAPPED = "1";
-    ensureNexisClawCliOnPath({
+    ensureFirstNexusCliOnPath({
       execPath: "/tmp/does-not-matter",
       cwd: "/tmp",
       homeDir: "/tmp",
@@ -198,7 +198,7 @@ describe("ensureNexisClawCliOnPath", () => {
     ({ envValue, allowProjectLocalBin }) => {
       const { tmp, appCli } = setupAppCliRoot("case-project-local");
       const localBinDir = path.join(tmp, "node_modules", ".bin");
-      const localCli = path.join(localBinDir, "NexisClaw");
+      const localCli = path.join(localBinDir, "FirstNexus");
       setDir(path.join(tmp, "node_modules"));
       setDir(localBinDir);
       setExe(localCli);
@@ -317,7 +317,7 @@ describe("ensureNexisClawCliOnPath", () => {
     {
       name: "appends Linuxbrew dirs after system dirs",
       setup: () => {
-        const tmp = abs("/tmp/NexisClaw-path/case-linuxbrew");
+        const tmp = abs("/tmp/FirstNexus-path/case-linuxbrew");
         const execDir = path.join(tmp, "exec");
         setDir(tmp);
         setDir(execDir);

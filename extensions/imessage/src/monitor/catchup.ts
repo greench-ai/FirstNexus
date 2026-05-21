@@ -1,8 +1,11 @@
 import { createHash } from "node:crypto";
 import path from "node:path";
-import { readJsonFileWithFallback, writeJsonFileAtomically } from "NexisClaw/plugin-sdk/json-store";
-import { resolveStateDir } from "NexisClaw/plugin-sdk/state-paths";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import {
+  readJsonFileWithFallback,
+  writeJsonFileAtomically,
+} from "FirstNexus/plugin-sdk/json-store";
+import { resolveStateDir } from "FirstNexus/plugin-sdk/state-paths";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 
 // iMessage inbound catchup. When the gateway is offline (crash, restart, mac
 // sleep, machine off), `imsg watch` resumes from current state and ignores
@@ -14,7 +17,7 @@ import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path"
 // `dispatch` callback so `evaluateIMessageInbound` + `dispatchInboundMessage`
 // runs unchanged on replayed rows.
 //
-// See https://github.com/NexisClaw/NexisClaw/issues/78649 for design discussion.
+// See https://github.com/FirstNexus/FirstNexus/issues/78649 for design discussion.
 
 const DEFAULT_MAX_AGE_MINUTES = 120;
 const MAX_MAX_AGE_MINUTES = 12 * 60;
@@ -99,8 +102,8 @@ function resolveStateDirFromEnv(env: NodeJS.ProcessEnv = process.env): string {
   // the tmpdir-path-guard test that flags dynamic template-literal suffixes
   // on os.tmpdir() paths stays green.
   if (env.VITEST || env.NODE_ENV === "test") {
-    const name = "NexisClaw-vitest-" + process.pid;
-    return path.join(resolvePreferredNexisClawTmpDir(), name);
+    const name = "FirstNexus-vitest-" + process.pid;
+    return path.join(resolvePreferredFirstNexusTmpDir(), name);
   }
   return resolveStateDir(env);
 }
@@ -132,10 +135,10 @@ function sanitizeFailureRetriesInput(raw: unknown): Record<string, number> {
 }
 
 /**
- * Cursor file path: `<NexisClawStateDir>/imessage/catchup/<safePrefix>__<sha256[:12]>.json`.
- * `NexisClawStateDir` resolves through `NEXISCLAW_STATE_DIR` (or the plugin-sdk default,
- * `~/.NexisClaw`). On a default install the cursor lands at
- * `~/.NexisClaw/imessage/catchup/<safePrefix>__<sha256[:12]>.json`.
+ * Cursor file path: `<FirstNexusStateDir>/imessage/catchup/<safePrefix>__<sha256[:12]>.json`.
+ * `FirstNexusStateDir` resolves through `NEXISCLAW_STATE_DIR` (or the plugin-sdk default,
+ * `~/.FirstNexus`). On a default install the cursor lands at
+ * `~/.FirstNexus/imessage/catchup/<safePrefix>__<sha256[:12]>.json`.
  */
 export async function loadIMessageCatchupCursor(
   accountId: string,

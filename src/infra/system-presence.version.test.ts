@@ -1,5 +1,5 @@
 import os from "node:os";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { withEnvAsync } from "../test-utils/env.js";
 import { VERSION as runtimeVersion } from "../version.js";

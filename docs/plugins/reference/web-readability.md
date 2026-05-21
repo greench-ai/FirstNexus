@@ -11,8 +11,8 @@ Extract readable article content from local HTML web fetch responses.
 
 ## Distribution
 
-- Package: `@NexisClaw/web-readability-plugin`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/web-readability-plugin`
+- Install route: included in FirstNexus
 
 ## Surface
 

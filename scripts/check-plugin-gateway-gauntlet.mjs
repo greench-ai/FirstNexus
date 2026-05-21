@@ -234,7 +234,7 @@ function pnpmCommand() {
   return process.platform === "win32" ? "pnpm.cmd" : "pnpm";
 }
 
-function NexisClawCommand(repoRoot, args) {
+function FirstNexusCommand(repoRoot, args) {
   return {
     command: process.execPath,
     args: [path.join(repoRoot, "dist", "entry.js"), ...args],
@@ -276,7 +276,7 @@ function createIsolatedEnv(repoRoot, runRoot) {
     XDG_CACHE_HOME: path.join(home, ".cache"),
     XDG_DATA_HOME: path.join(home, ".local", "share"),
     NEXISCLAW_STATE_DIR: stateDir,
-    NEXISCLAW_CONFIG_PATH: path.join(stateDir, "NexisClaw.json"),
+    NEXISCLAW_CONFIG_PATH: path.join(stateDir, "FirstNexus.json"),
     NEXISCLAW_LOG_DIR: path.join(runRoot, "logs"),
     NEXISCLAW_QA_SUITE_PROGRESS: process.env.NEXISCLAW_QA_SUITE_PROGRESS ?? "1",
     PATH: process.env.PATH,
@@ -404,7 +404,7 @@ function runPluginLifecycle(params) {
           cwd: params.repoRoot,
           env: params.env,
           logDir: path.join(params.outputDir, "logs", "lifecycle"),
-          ...NexisClawCommand(params.repoRoot, ["plugins", ...args]),
+          ...FirstNexusCommand(params.repoRoot, ["plugins", ...args]),
           label: `${plugin.id}-${phase}`,
           phase: `lifecycle:${phase}`,
           pluginId: plugin.id,
@@ -425,7 +425,7 @@ function runSlashHelpProbes(params) {
           cwd: params.repoRoot,
           env: params.env,
           logDir: path.join(params.outputDir, "logs", "slash-help"),
-          ...NexisClawCommand(params.repoRoot, [command, "--help"]),
+          ...FirstNexusCommand(params.repoRoot, [command, "--help"]),
           label: `${plugin.id}-slash-${alias.name}`,
           phase: "slash:help",
           pluginId: plugin.id,
@@ -494,7 +494,7 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
   const repoRoot = path.resolve(options.repoRoot);
   fs.mkdirSync(options.outputDir, { recursive: true });
-  const runRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-plugin-gauntlet-"));
+  const runRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-plugin-gauntlet-"));
   const env = createIsolatedEnv(repoRoot, runRoot);
   const matrix = discoverBundledPluginManifests(repoRoot);
   const selectedPlugins = selectPluginEntries(matrix, {

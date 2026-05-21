@@ -181,10 +181,10 @@ describeLaunchdIntegration("launchd integration", () => {
 
   beforeAll(async () => {
     const testId = randomUUID().slice(0, 8);
-    homeDir = await fs.mkdtemp(path.join(os.tmpdir(), `NexisClaw-launchd-int-${testId}-`));
+    homeDir = await fs.mkdtemp(path.join(os.tmpdir(), `FirstNexus-launchd-int-${testId}-`));
     env = {
       HOME: homeDir,
-      NEXISCLAW_LAUNCHD_LABEL: `ai.NexisClaw.launchd-int-${testId}`,
+      NEXISCLAW_LAUNCHD_LABEL: `ai.FirstNexus.launchd-int-${testId}`,
       NEXISCLAW_LOG_PREFIX: `gateway-launchd-int-${testId}`,
     };
   });

@@ -1,8 +1,8 @@
-import { createChannelPairingChallengeIssuer } from "NexisClaw/plugin-sdk/channel-pairing";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { upsertChannelPairingRequest } from "NexisClaw/plugin-sdk/conversation-runtime";
-import { defaultRuntime } from "NexisClaw/plugin-sdk/runtime-env";
-import { warnMissingProviderGroupPolicyFallbackOnce } from "NexisClaw/plugin-sdk/runtime-group-policy";
+import { createChannelPairingChallengeIssuer } from "FirstNexus/plugin-sdk/channel-pairing";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { upsertChannelPairingRequest } from "FirstNexus/plugin-sdk/conversation-runtime";
+import { defaultRuntime } from "FirstNexus/plugin-sdk/runtime-env";
+import { warnMissingProviderGroupPolicyFallbackOnce } from "FirstNexus/plugin-sdk/runtime-group-policy";
 import { resolveWhatsAppInboundPolicy, resolveWhatsAppIngressAccess } from "../inbound-policy.js";
 
 export type InboundAccessControlResult = {
@@ -22,7 +22,7 @@ function logWhatsAppVerbose(enabled: boolean | undefined, message: string) {
 }
 
 export async function checkInboundAccessControl(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   from: string;
   selfE164: string | null;

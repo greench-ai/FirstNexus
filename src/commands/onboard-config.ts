@@ -1,15 +1,15 @@
 import { setConfigValueAtPath } from "../config/config-paths.js";
 import type { DmScope } from "../config/types.base.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ToolProfileId } from "../config/types.tools.js";
 
 export const ONBOARDING_DEFAULT_DM_SCOPE: DmScope = "per-channel-peer";
 export const ONBOARDING_DEFAULT_TOOLS_PROFILE: ToolProfileId = "coding";
 
 export function applyLocalSetupWorkspaceConfig(
-  baseConfig: NexisClawConfig,
+  baseConfig: FirstNexusConfig,
   workspaceDir: string,
-): NexisClawConfig {
+): FirstNexusConfig {
   return {
     ...baseConfig,
     agents: {
@@ -34,7 +34,7 @@ export function applyLocalSetupWorkspaceConfig(
   };
 }
 
-export function applySkipBootstrapConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applySkipBootstrapConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   const next = structuredClone(cfg);
   setConfigValueAtPath(
     next as Record<string, unknown>,

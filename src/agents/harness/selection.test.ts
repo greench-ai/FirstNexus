@@ -1,6 +1,6 @@
 import type { Api, Model } from "@earendil-works/pi-ai";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import type {
   EmbeddedRunAttemptParams,
   EmbeddedRunAttemptResult,
@@ -40,7 +40,7 @@ afterEach(() => {
   }
 });
 
-function createAttemptParams(config?: NexisClawConfig): EmbeddedRunAttemptParams {
+function createAttemptParams(config?: FirstNexusConfig): EmbeddedRunAttemptParams {
   return {
     prompt: "hello",
     sessionId: "session-1",
@@ -114,7 +114,7 @@ function registerSuccessfulCodexHarness(): void {
   );
 }
 
-function providerRuntimeConfig(provider: string, runtime: string): NexisClawConfig {
+function providerRuntimeConfig(provider: string, runtime: string): FirstNexusConfig {
   return {
     models: {
       providers: {
@@ -125,14 +125,14 @@ function providerRuntimeConfig(provider: string, runtime: string): NexisClawConf
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function agentModelRuntimeConfig(
   modelRef: string,
   runtime: string,
   agentId?: string,
-): NexisClawConfig {
+): FirstNexusConfig {
   if (agentId) {
     return {
       agents: {
@@ -141,7 +141,7 @@ function agentModelRuntimeConfig(
           { id: agentId, models: { [modelRef]: { agentRuntime: { id: runtime } } } },
         ],
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
   }
   return {
     agents: {
@@ -151,7 +151,7 @@ function agentModelRuntimeConfig(
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 describe("runAgentHarnessAttempt", () => {
@@ -377,7 +377,7 @@ describe("selectAgentHarness", () => {
           agentRuntime: { id: "codex" },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(
       selectAgentHarness({
@@ -390,7 +390,7 @@ describe("selectAgentHarness", () => {
 
   it("ignores legacy agent CLI runtime aliases for OpenAI agent model runs", async () => {
     registerSuccessfulCodexHarness();
-    const config: NexisClawConfig = {
+    const config: FirstNexusConfig = {
       agents: {
         defaults: {
           agentRuntime: { id: "claude-cli" },

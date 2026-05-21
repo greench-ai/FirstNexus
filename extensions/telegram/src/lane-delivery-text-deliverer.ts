@@ -1,9 +1,9 @@
 import {
   createPreviewMessageReceipt,
   type MessageReceipt,
-} from "NexisClaw/plugin-sdk/channel-message";
-import { resolveSendableOutboundReplyParts } from "NexisClaw/plugin-sdk/reply-payload";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
+} from "FirstNexus/plugin-sdk/channel-message";
+import { resolveSendableOutboundReplyParts } from "FirstNexus/plugin-sdk/reply-payload";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
 import type { TelegramInlineButtons } from "./button-types.js";
 import type { TelegramDraftStream } from "./draft-stream.js";
 

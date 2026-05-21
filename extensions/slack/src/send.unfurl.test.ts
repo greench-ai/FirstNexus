@@ -1,5 +1,5 @@
 import type { WebClient } from "@slack/web-api";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
 import { sendMessageSlack } from "./send.js";
 
@@ -19,7 +19,7 @@ function createSlackSendTestClient(): SlackUnfurlTestClient {
   } as unknown as SlackUnfurlTestClient;
 }
 
-function slackConfig(slack: NonNullable<NexisClawConfig["channels"]>["slack"]): NexisClawConfig {
+function slackConfig(slack: NonNullable<FirstNexusConfig["channels"]>["slack"]): FirstNexusConfig {
   return { channels: { slack } };
 }
 
@@ -140,7 +140,7 @@ describe("sendMessageSlack unfurl controls", () => {
       }),
       client,
       identity: {
-        username: "NexisClaw",
+        username: "FirstNexus",
       },
     });
 

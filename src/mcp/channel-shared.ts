@@ -136,8 +136,8 @@ export { toText };
 export function resolveMessageId(entry: Record<string, unknown>): string | undefined {
   return (
     toText(entry.id) ??
-    (entry.__NexisClaw && typeof entry.__NexisClaw === "object"
-      ? toText((entry.__NexisClaw as { id?: unknown }).id)
+    (entry.__FirstNexus && typeof entry.__FirstNexus === "object"
+      ? toText((entry.__FirstNexus as { id?: unknown }).id)
       : undefined)
   );
 }

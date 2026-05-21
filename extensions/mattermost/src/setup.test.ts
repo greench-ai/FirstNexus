@@ -1,19 +1,19 @@
-import { createTestPluginApi } from "NexisClaw/plugin-sdk/plugin-test-api";
+import { createTestPluginApi } from "FirstNexus/plugin-sdk/plugin-test-api";
 import {
   createSetupWizardAdapter,
   createQueuedWizardPrompter,
   runSetupWizardConfigure,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/setup";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/setup";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig, NexisClawPluginApi } from "../runtime-api.js";
+import type { FirstNexusConfig, FirstNexusPluginApi } from "../runtime-api.js";
 
 const resolveMattermostAccount = vi.hoisted(() => vi.fn());
 const normalizeMattermostBaseUrl = vi.hoisted(() => vi.fn((value: string | undefined) => value));
 const hasConfiguredSecretInput = vi.hoisted(() => vi.fn((value: unknown) => Boolean(value)));
 
 vi.mock("./setup.accounts.runtime.js", () => ({
-  listMattermostAccountIds: vi.fn((cfg: NexisClawConfig) => {
+  listMattermostAccountIds: vi.fn((cfg: FirstNexusConfig) => {
     const accounts = cfg.channels?.mattermost?.accounts;
     const ids = accounts ? Object.keys(accounts) : [];
     return ids.length > 0 ? ids : [DEFAULT_ACCOUNT_ID];
@@ -47,15 +47,15 @@ vi.mock("./setup.secret-input.runtime.js", () => ({
 }));
 
 function createApi(
-  registrationMode: NexisClawPluginApi["registrationMode"],
+  registrationMode: FirstNexusPluginApi["registrationMode"],
   registerHttpRoute = vi.fn(),
-): NexisClawPluginApi {
+): FirstNexusPluginApi {
   return createTestPluginApi({
     id: "mattermost",
     name: "Mattermost",
     source: "test",
     config: {},
-    runtime: {} as NexisClawPluginApi["runtime"],
+    runtime: {} as FirstNexusPluginApi["runtime"],
     registrationMode,
     registerHttpRoute,
   });
@@ -73,7 +73,7 @@ describe("mattermost setup", () => {
     ({ isMattermostConfigured, resolveMattermostAccountWithSecrets, mattermostSetupAdapter } =
       await import("./setup-core.js"));
     plugin = {
-      register(api: NexisClawPluginApi) {
+      register(api: FirstNexusPluginApi) {
         if (api.registrationMode === "full") {
           api.registerHttpRoute({
             path: "/api/channels/mattermost/command",
@@ -265,7 +265,7 @@ describe("mattermost setup", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(configured).toBe(true);
@@ -290,7 +290,7 @@ describe("mattermost setup", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       accountId: undefined,
     });
 
@@ -304,7 +304,7 @@ describe("mattermost setup", () => {
           channels: {
             mattermost: {},
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         accountId: "default",
       } as never),
     ).toBe(true);
@@ -322,7 +322,7 @@ describe("mattermost setup", () => {
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         accountId: "default",
       } as never),
     ).toBe(false);
@@ -334,14 +334,14 @@ describe("mattermost setup", () => {
 
     expect(
       mattermostSetupWizard.envShortcut?.isAvailable?.({
-        cfg: { channels: { mattermost: {} } } as NexisClawConfig,
+        cfg: { channels: { mattermost: {} } } as FirstNexusConfig,
         accountId: "default",
       } as never),
     ).toBe(true);
 
     expect(
       mattermostSetupWizard.envShortcut?.isAvailable?.({
-        cfg: { channels: { mattermost: {} } } as NexisClawConfig,
+        cfg: { channels: { mattermost: {} } } as FirstNexusConfig,
         accountId: "work",
       } as never),
     ).toBe(false);
@@ -350,7 +350,7 @@ describe("mattermost setup", () => {
   it("keeps env shortcut as a no-op patch for the selected account", () => {
     expect(
       mattermostSetupWizard.envShortcut?.apply?.({
-        cfg: { channels: { mattermost: { enabled: false } } } as NexisClawConfig,
+        cfg: { channels: { mattermost: { enabled: false } } } as FirstNexusConfig,
         accountId: "default",
       } as never),
     ).toEqual({
@@ -383,7 +383,7 @@ describe("mattermost setup", () => {
 
     const result = await runSetupWizardConfigure({
       configure: adapter.configure,
-      cfg: { channels: { mattermost: {} } } as NexisClawConfig,
+      cfg: { channels: { mattermost: {} } } as FirstNexusConfig,
       prompter: queued.prompter,
       options: { secretInputMode: "plaintext" as const },
     });

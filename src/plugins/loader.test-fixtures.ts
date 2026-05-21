@@ -3,12 +3,12 @@ import os from "node:os";
 import path from "node:path";
 import { resetDiagnosticEventsForTest } from "../infra/diagnostic-events.js";
 import { withEnv } from "../test-utils/env.js";
-import { clearPluginLoaderCache, loadNexisClawPlugins } from "./loader.js";
+import { clearPluginLoaderCache, loadFirstNexusPlugins } from "./loader.js";
 import { resetPluginRuntimeStateForTest } from "./runtime.js";
 
 export type TempPlugin = { dir: string; file: string; id: string };
-export type PluginLoadConfig = NonNullable<Parameters<typeof loadNexisClawPlugins>[0]>["config"];
-export type PluginRegistry = ReturnType<typeof loadNexisClawPlugins>;
+export type PluginLoadConfig = NonNullable<Parameters<typeof loadFirstNexusPlugins>[0]>["config"];
+export type PluginRegistry = ReturnType<typeof loadFirstNexusPlugins>;
 
 function chmodSafeDir(dir: string) {
   if (process.platform === "win32") {
@@ -28,7 +28,7 @@ export function mkdirSafe(dir: string) {
   chmodSafeDir(dir);
 }
 
-const fixtureRoot = mkdtempSafe(path.join(os.tmpdir(), "NexisClaw-plugin-"));
+const fixtureRoot = mkdtempSafe(path.join(os.tmpdir(), "FirstNexus-plugin-"));
 let tempDirIndex = 0;
 const prevBundledDir = process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR;
 const prevDisableBundledPlugins = process.env.NEXISCLAW_DISABLE_BUNDLED_PLUGINS;
@@ -88,7 +88,7 @@ export function writePlugin(params: {
   const file = path.join(dir, filename);
   fs.writeFileSync(file, params.body, "utf-8");
   fs.writeFileSync(
-    path.join(dir, "NexisClaw.plugin.json"),
+    path.join(dir, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id: params.id,
@@ -116,10 +116,10 @@ export function loadBundleFixture(params: {
   useNoBundledPlugins();
   const workspaceDir = makeTempDir();
   const stateDir = makeTempDir();
-  const bundleRoot = path.join(workspaceDir, ".NexisClaw", "extensions", params.pluginId);
+  const bundleRoot = path.join(workspaceDir, ".FirstNexus", "extensions", params.pluginId);
   params.build(bundleRoot);
   return withEnv({ NEXISCLAW_STATE_DIR: stateDir, ...params.env }, () =>
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       workspaceDir,
       onlyPluginIds: params.onlyPluginIds ?? [params.pluginId],
       config: {

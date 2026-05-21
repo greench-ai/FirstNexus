@@ -44,9 +44,9 @@ describe("plugin-sdk qa-runner-runtime linked plugin smoke", () => {
   });
 
   it("loads an activated qa runner from a linked plugin path without a bundled install fallback", async () => {
-    const stateDir = makeTempDir("NexisClaw-qa-runner-state-");
+    const stateDir = makeTempDir("FirstNexus-qa-runner-state-");
     const pluginDir = path.join(stateDir, "extensions", "qa-linked");
-    const configPath = path.join(stateDir, "NexisClaw.json");
+    const configPath = path.join(stateDir, "FirstNexus.json");
 
     fs.writeFileSync(
       configPath,
@@ -59,7 +59,7 @@ describe("plugin-sdk qa-runner-runtime linked plugin smoke", () => {
 
     fs.mkdirSync(pluginDir, { recursive: true });
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "qa-linked",
         qaRunners: [
@@ -79,12 +79,12 @@ describe("plugin-sdk qa-runner-runtime linked plugin smoke", () => {
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: "@NexisClaw/qa-linked",
+        name: "@FirstNexus/qa-linked",
         type: "module",
-        NexisClaw: {
+        FirstNexus: {
           extensions: ["./index.js"],
           install: {
-            npmSpec: "@NexisClaw/qa-linked",
+            npmSpec: "@FirstNexus/qa-linked",
           },
         },
       }),

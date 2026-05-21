@@ -128,7 +128,7 @@ export function resolveConfigDir(
   if (configPath) {
     return path.dirname(resolveUserPath(configPath, env, homedir));
   }
-  const newDir = path.join(resolveRequiredHomeDir(env, homedir), ".NexisClaw");
+  const newDir = path.join(resolveRequiredHomeDir(env, homedir), ".FirstNexus");
   try {
     const hasNew = fs.existsSync(newDir);
     if (hasNew) {

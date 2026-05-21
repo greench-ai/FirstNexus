@@ -6,11 +6,12 @@ import { createSuiteTempRootTracker } from "../test-helpers/temp-dir.js";
 import { captureEnv } from "../test-utils/env.js";
 import type { UpdateCheckResult } from "./update-check.js";
 
-vi.mock("./NexisClaw-root.js", async () => {
-  const actual = await vi.importActual<typeof import("./NexisClaw-root.js")>("./NexisClaw-root.js");
+vi.mock("./FirstNexus-root.js", async () => {
+  const actual =
+    await vi.importActual<typeof import("./FirstNexus-root.js")>("./FirstNexus-root.js");
   return {
     ...actual,
-    resolveNexisClawPackageRoot: vi.fn(),
+    resolveFirstNexusPackageRoot: vi.fn(),
   };
 });
 
@@ -45,11 +46,11 @@ vi.mock("../process/exec.js", () => ({
 }));
 
 describe("update-startup", () => {
-  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "NexisClaw-update-check-suite-" });
+  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "FirstNexus-update-check-suite-" });
   let tempDir: string;
   let envSnapshot: ReturnType<typeof captureEnv>;
 
-  let resolveNexisClawPackageRoot: (typeof import("./NexisClaw-root.js"))["resolveNexisClawPackageRoot"];
+  let resolveFirstNexusPackageRoot: (typeof import("./FirstNexus-root.js"))["resolveFirstNexusPackageRoot"];
   let checkUpdateStatus: (typeof import("./update-check.js"))["checkUpdateStatus"];
   let resolveNpmChannelTag: (typeof import("./update-check.js"))["resolveNpmChannelTag"];
   let runCommandWithTimeout: (typeof import("../process/exec.js"))["runCommandWithTimeout"];
@@ -90,7 +91,7 @@ describe("update-startup", () => {
 
     // Perf: load mocked modules once (after timers/env are set up).
     if (!loaded) {
-      ({ resolveNexisClawPackageRoot } = await import("./NexisClaw-root.js"));
+      ({ resolveFirstNexusPackageRoot } = await import("./FirstNexus-root.js"));
       ({ checkUpdateStatus, resolveNpmChannelTag } = await import("./update-check.js"));
       ({ runCommandWithTimeout } = await import("../process/exec.js"));
       ({
@@ -101,7 +102,7 @@ describe("update-startup", () => {
       } = await import("./update-startup.js"));
       loaded = true;
     }
-    vi.mocked(resolveNexisClawPackageRoot).mockClear();
+    vi.mocked(resolveFirstNexusPackageRoot).mockClear();
     vi.mocked(checkUpdateStatus).mockClear();
     vi.mocked(resolveNpmChannelTag).mockClear();
     vi.mocked(runCommandWithTimeout).mockClear();
@@ -124,9 +125,9 @@ describe("update-startup", () => {
   }
 
   function mockPackageInstallStatus() {
-    vi.mocked(resolveNexisClawPackageRoot).mockResolvedValue("/opt/NexisClaw");
+    vi.mocked(resolveFirstNexusPackageRoot).mockResolvedValue("/opt/FirstNexus");
     vi.mocked(checkUpdateStatus).mockResolvedValue({
-      root: "/opt/NexisClaw",
+      root: "/opt/FirstNexus",
       installKind: "package",
       packageManager: "npm",
     } satisfies UpdateCheckResult);
@@ -235,7 +236,7 @@ describe("update-startup", () => {
     const { log, parsed } = await runUpdateCheckAndReadState(channel);
 
     expect(log.info).toHaveBeenCalledWith(
-      `update available (latest): v2.0.0 (current v1.0.0). Run: ${formatCliCommand("NexisClaw update")}`,
+      `update available (latest): v2.0.0 (current v1.0.0). Run: ${formatCliCommand("FirstNexus update")}`,
     );
     expect(parsed.lastNotifiedVersion).toBe("2.0.0");
     expect(parsed.lastAvailableVersion).toBe("2.0.0");
@@ -360,7 +361,7 @@ describe("update-startup", () => {
     expect(runAutoUpdate).toHaveBeenCalledWith({
       channel: "stable",
       timeoutMs: 45 * 60 * 1000,
-      root: "/opt/NexisClaw",
+      root: "/opt/FirstNexus",
     });
   });
 
@@ -377,7 +378,7 @@ describe("update-startup", () => {
     expect(runAutoUpdate).toHaveBeenCalledWith({
       channel: "beta",
       timeoutMs: 45 * 60 * 1000,
-      root: "/opt/NexisClaw",
+      root: "/opt/FirstNexus",
     });
   });
 
@@ -433,7 +434,7 @@ describe("update-startup", () => {
     });
 
     const originalArgv = process.argv.slice();
-    process.argv = [process.execPath, "/opt/NexisClaw/dist/entry.js"];
+    process.argv = [process.execPath, "/opt/FirstNexus/dist/entry.js"];
     try {
       await runAutoUpdateCheckWithDefaults({
         cfg: createBetaAutoUpdateConfig(),
@@ -446,7 +447,7 @@ describe("update-startup", () => {
     const [argv, options] = requireFirstRunCommandCall();
     expect(argv).toEqual([
       process.execPath,
-      "/opt/NexisClaw/dist/entry.js",
+      "/opt/FirstNexus/dist/entry.js",
       "update",
       "--yes",
       "--channel",

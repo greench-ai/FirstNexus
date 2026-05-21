@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolvePluginConfigObject } from "NexisClaw/plugin-sdk/plugin-config-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolvePluginConfigObject } from "FirstNexus/plugin-sdk/plugin-config-runtime";
 import {
   definePluginEntry,
   type ProviderCatalogContext,
@@ -9,7 +9,7 @@ import {
   type ProviderAuthMethodNonInteractiveContext,
   type UnifiedModelCatalogEntry,
   type UnifiedModelCatalogProviderContext,
-} from "NexisClaw/plugin-sdk/plugin-entry";
+} from "FirstNexus/plugin-sdk/plugin-entry";
 import {
   applyAuthProfileConfig,
   coerceSecretRef,
@@ -18,9 +18,9 @@ import {
   normalizeOptionalSecretInput,
   resolveDefaultSecretProviderAlias,
   upsertAuthProfileWithLock,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { getCachedLiveCatalogValue } from "NexisClaw/plugin-sdk/provider-catalog-shared";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { getCachedLiveCatalogValue } from "FirstNexus/plugin-sdk/provider-catalog-shared";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveFirstGithubToken } from "./auth.js";
 import { githubCopilotMemoryEmbeddingProviderAdapter } from "./embeddings.js";
 import {
@@ -46,7 +46,7 @@ async function loadGithubCopilotRuntime() {
   return await import("./register.runtime.js");
 }
 
-function applyCopilotDefaultModel(cfg: NexisClawConfig): NexisClawConfig {
+function applyCopilotDefaultModel(cfg: FirstNexusConfig): FirstNexusConfig {
   const defaults = cfg.agents?.defaults;
   const existingModel = defaults?.model;
   const existingPrimary =
@@ -188,7 +188,7 @@ async function resolveCopilotNonInteractiveToken(
 
 async function runGitHubCopilotNonInteractiveAuth(
   ctx: ProviderAuthMethodNonInteractiveContext,
-): Promise<NexisClawConfig | null> {
+): Promise<FirstNexusConfig | null> {
   const opts = ctx.opts as Record<string, unknown> | undefined;
   const flagValue = normalizeOptionalSecretInput(opts?.githubCopilotToken);
   const resolved = await resolveCopilotNonInteractiveToken(ctx, flagValue);
@@ -256,7 +256,7 @@ export default definePluginEntry({
   register(api) {
     const startupPluginConfig = (api.pluginConfig ?? {}) as GithubCopilotPluginConfig;
 
-    function resolveCurrentPluginConfig(config?: NexisClawConfig): GithubCopilotPluginConfig {
+    function resolveCurrentPluginConfig(config?: FirstNexusConfig): GithubCopilotPluginConfig {
       const runtimePluginConfig = resolvePluginConfigObject(config, "github-copilot");
       if (runtimePluginConfig) {
         return runtimePluginConfig as GithubCopilotPluginConfig;

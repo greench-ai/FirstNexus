@@ -37,7 +37,7 @@ export function createWizardPrompter(
 }
 
 export async function setupAuthTestEnv(
-  prefix = "NexisClaw-auth-",
+  prefix = "FirstNexus-auth-",
   options?: { agentSubdir?: string },
 ): Promise<{
   stateDir: string;
@@ -74,7 +74,7 @@ export function createAuthTestLifecycle(envKeys: string[]): AuthTestLifecycle {
   };
 }
 
-export function requireNexisClawAgentDir(): string {
+export function requireFirstNexusAgentDir(): string {
   const agentDir = process.env.NEXISCLAW_AGENT_DIR;
   if (!agentDir) {
     throw new Error("NEXISCLAW_AGENT_DIR not set");

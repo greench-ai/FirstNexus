@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import type { ProviderPlugin } from "NexisClaw/plugin-sdk/provider-model-shared";
+import type { ProviderPlugin } from "FirstNexus/plugin-sdk/provider-model-shared";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { createWizardPrompter as buildWizardPrompter } from "../../test/helpers/wizard-prompter.js";
 import { DEFAULT_BOOTSTRAP_FILENAME } from "../agents/workspace.js";
@@ -118,7 +118,7 @@ const resolveGatewayPort = vi.hoisted(() =>
 );
 const readConfigFileSnapshot = vi.hoisted(() =>
   vi.fn(async () => ({
-    path: "/tmp/.NexisClaw/NexisClaw.json",
+    path: "/tmp/.FirstNexus/FirstNexus.json",
     exists: false,
     raw: null as string | null,
     parsed: {},
@@ -265,7 +265,7 @@ vi.mock("../config/config.js", () => ({
 }));
 
 vi.mock("../commands/onboard-helpers.js", () => ({
-  DEFAULT_WORKSPACE: "/tmp/NexisClaw-workspace",
+  DEFAULT_WORKSPACE: "/tmp/FirstNexus-workspace",
   applyWizardMetadata: (cfg: unknown) => cfg,
   summarizeExistingConfig: () => "summary",
   handleReset: async () => {},
@@ -353,7 +353,7 @@ describe("runSetupWizard", () => {
   let suiteCase = 0;
 
   beforeAll(async () => {
-    suiteRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-onboard-suite-"));
+    suiteRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-onboard-suite-"));
   });
 
   afterAll(async () => {
@@ -371,7 +371,7 @@ describe("runSetupWizard", () => {
   it("skips provider entries without an id during preferred-provider lookup", async () => {
     setupChannels.mockClear();
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.NexisClaw/NexisClaw.json",
+      path: "/tmp/.FirstNexus/FirstNexus.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -434,7 +434,7 @@ describe("runSetupWizard", () => {
 
   it("exits when config is invalid", async () => {
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.NexisClaw/NexisClaw.json",
+      path: "/tmp/.FirstNexus/FirstNexus.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -866,7 +866,7 @@ describe("runSetupWizard", () => {
       },
     ]);
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.NexisClaw/NexisClaw.json",
+      path: "/tmp/.FirstNexus/FirstNexus.json",
       exists: true,
       raw: "{}",
       parsed: {},
@@ -921,7 +921,7 @@ describe("runSetupWizard", () => {
     process.env.NEXISCLAW_GATEWAY_PASSWORD = "gateway-ref-password"; // pragma: allowlist secret
     probeGatewayReachable.mockClear();
     readConfigFileSnapshot.mockResolvedValueOnce({
-      path: "/tmp/.NexisClaw/NexisClaw.json",
+      path: "/tmp/.FirstNexus/FirstNexus.json",
       exists: true,
       raw: "{}",
       parsed: {},

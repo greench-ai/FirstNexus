@@ -12,7 +12,7 @@ export type {
   ImageGenerationResult,
   ImageGenerationSourceImage,
 } from "../image-generation/types.js";
-export type { NexisClawConfig } from "../config/types.NexisClaw.js";
+export type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export { describeFailoverError, isFailoverError } from "../agents/failover-error.js";
 export {

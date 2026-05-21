@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs a prepared NexisClaw npm tarball in Docker, runs OpenAI onboarding,
+# Installs a prepared FirstNexus npm tarball in Docker, runs OpenAI onboarding,
 # and verifies the Codex plugin plus @openai/codex dependency are downloaded on demand.
 set -euo pipefail
 
@@ -7,7 +7,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-e2e-image.sh"
 source "$ROOT_DIR/scripts/lib/docker-e2e-package.sh"
 
-IMAGE_NAME="$(docker_e2e_resolve_image "NexisClaw-codex-on-demand-e2e" NEXISCLAW_CODEX_ON_DEMAND_E2E_IMAGE)"
+IMAGE_NAME="$(docker_e2e_resolve_image "FirstNexus-codex-on-demand-e2e" NEXISCLAW_CODEX_ON_DEMAND_E2E_IMAGE)"
 DOCKER_TARGET="${NEXISCLAW_CODEX_ON_DEMAND_DOCKER_TARGET:-bare}"
 HOST_BUILD="${NEXISCLAW_CODEX_ON_DEMAND_HOST_BUILD:-1}"
 PACKAGE_TGZ="${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}"
@@ -40,38 +40,38 @@ if ! docker_e2e_run_with_harness \
   -i "$IMAGE_NAME" bash -s >"$run_log" 2>&1 <<'EOF'; then
 set -euo pipefail
 
-source scripts/lib/NexisClaw-e2e-instance.sh
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+source scripts/lib/FirstNexus-e2e-instance.sh
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 export NPM_CONFIG_PREFIX="$HOME/.npm-global"
 export npm_config_prefix="$NPM_CONFIG_PREFIX"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export NPM_CONFIG_CACHE="${NPM_CONFIG_CACHE:-$XDG_CACHE_HOME/npm}"
 export npm_config_cache="$NPM_CONFIG_CACHE"
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
-export OPENAI_API_KEY="sk-NexisClaw-codex-on-demand-e2e"
+export OPENAI_API_KEY="sk-FirstNexus-codex-on-demand-e2e"
 
 dump_debug_logs() {
   local status="$1"
   echo "Codex on-demand scenario failed with exit code $status" >&2
-  NexisClaw_e2e_dump_logs \
-    /tmp/NexisClaw-install.log \
-    /tmp/NexisClaw-onboard.json \
-    /tmp/NexisClaw-plugins-list.json \
-    /tmp/NexisClaw-codex-inspect.json
+  FirstNexus_e2e_dump_logs \
+    /tmp/FirstNexus-install.log \
+    /tmp/FirstNexus-onboard.json \
+    /tmp/FirstNexus-plugins-list.json \
+    /tmp/FirstNexus-codex-inspect.json
 }
 trap 'status=$?; dump_debug_logs "$status"; exit "$status"' ERR
 
 mkdir -p "$NPM_CONFIG_PREFIX" "$XDG_CACHE_HOME" "$NPM_CONFIG_CACHE"
 chmod 700 "$XDG_CACHE_HOME" "$NPM_CONFIG_CACHE" || true
 
-NexisClaw_e2e_install_package /tmp/NexisClaw-install.log
-command -v NexisClaw >/dev/null
+FirstNexus_e2e_install_package /tmp/FirstNexus-install.log
+command -v FirstNexus >/dev/null
 
-NexisClaw_e2e_assert_dep_absent "@NexisClaw/codex" "$HOME/.NexisClaw" "$NPM_CONFIG_PREFIX"
-NexisClaw_e2e_assert_dep_absent "@openai/codex" "$HOME/.NexisClaw" "$NPM_CONFIG_PREFIX"
+FirstNexus_e2e_assert_dep_absent "@FirstNexus/codex" "$HOME/.FirstNexus" "$NPM_CONFIG_PREFIX"
+FirstNexus_e2e_assert_dep_absent "@openai/codex" "$HOME/.FirstNexus" "$NPM_CONFIG_PREFIX"
 
 echo "Running non-interactive OpenAI onboarding; Codex should install on demand..."
-NexisClaw onboard --non-interactive --accept-risk \
+FirstNexus onboard --non-interactive --accept-risk \
   --mode local \
   --auth-choice openai-api-key \
   --secret-input-mode ref \
@@ -80,10 +80,10 @@ NexisClaw onboard --non-interactive --accept-risk \
   --skip-channels \
   --skip-skills \
   --skip-health \
-  --json >/tmp/NexisClaw-onboard.json
+  --json >/tmp/FirstNexus-onboard.json
 
-NexisClaw plugins list --json >/tmp/NexisClaw-plugins-list.json
-NexisClaw plugins inspect codex --runtime --json >/tmp/NexisClaw-codex-inspect.json
+FirstNexus plugins list --json >/tmp/FirstNexus-plugins-list.json
+FirstNexus plugins inspect codex --runtime --json >/tmp/FirstNexus-codex-inspect.json
 node scripts/e2e/lib/codex-on-demand/assertions.mjs
 
 echo "Codex on-demand Docker E2E passed"

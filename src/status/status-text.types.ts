@@ -5,11 +5,11 @@ import type {
   VerboseLevel,
 } from "../auto-reply/thinking.js";
 import type { SessionEntry, SessionScope } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { MediaUnderstandingDecision } from "../media-understanding/types.js";
 
 export type BuildStatusTextParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionEntry?: SessionEntry;
   sessionKey: string;
   parentSessionKey?: string;

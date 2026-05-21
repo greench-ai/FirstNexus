@@ -3,7 +3,7 @@ import path from "node:path";
 import { resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { resolveStateDir } from "../config/paths.js";
 import type { SessionScope } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeAgentId, normalizeMainKey } from "../routing/session-key.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 
@@ -26,7 +26,7 @@ function listExistingAgentIdsFromDisk(): string[] {
   }
 }
 
-function listConfiguredAgentIds(cfg: NexisClawConfig): string[] {
+function listConfiguredAgentIds(cfg: FirstNexusConfig): string[] {
   const ids = new Set<string>();
   const defaultId = normalizeAgentId(resolveDefaultAgentId(cfg));
   ids.add(defaultId);
@@ -48,7 +48,7 @@ function listConfiguredAgentIds(cfg: NexisClawConfig): string[] {
     : sorted;
 }
 
-export function listGatewayAgentsBasic(cfg: NexisClawConfig): {
+export function listGatewayAgentsBasic(cfg: FirstNexusConfig): {
   defaultId: string;
   mainKey: string;
   scope: SessionScope;

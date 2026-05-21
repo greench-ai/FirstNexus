@@ -50,7 +50,7 @@ export function resolveComparableTargetForLoadedChannel(params: {
   return resolveRouteTargetForLoadedChannel(params);
 }
 
-/** @deprecated Use `channelRouteTargetsMatchExact` from `NexisClaw/plugin-sdk/channel-route`. */
+/** @deprecated Use `channelRouteTargetsMatchExact` from `FirstNexus/plugin-sdk/channel-route`. */
 export function comparableChannelTargetsMatch(params: {
   left?: ChannelRouteParsedTarget | null;
   right?: ChannelRouteParsedTarget | null;
@@ -58,7 +58,7 @@ export function comparableChannelTargetsMatch(params: {
   return channelRouteTargetsMatchExact(params);
 }
 
-/** @deprecated Use `channelRouteTargetsShareConversation` from `NexisClaw/plugin-sdk/channel-route`. */
+/** @deprecated Use `channelRouteTargetsShareConversation` from `FirstNexus/plugin-sdk/channel-route`. */
 export function comparableChannelTargetsShareRoute(params: {
   left?: ChannelRouteParsedTarget | null;
   right?: ChannelRouteParsedTarget | null;

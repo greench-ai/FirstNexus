@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 const DTMF_PATTERN = /^[0-9*#wWpP,]+$/;
 

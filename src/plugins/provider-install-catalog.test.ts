@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-type LoadNexisClawProviderIndex =
-  typeof import("../model-catalog/index.js").loadNexisClawProviderIndex;
+type LoadFirstNexusProviderIndex =
+  typeof import("../model-catalog/index.js").loadFirstNexusProviderIndex;
 type LoadPluginRegistrySnapshot = typeof import("./plugin-registry.js").loadPluginRegistrySnapshot;
 type ResolveManifestProviderAuthChoices =
   typeof import("./provider-auth-choices.js").resolveManifestProviderAuthChoices;
 type ListOfficialExternalProviderCatalogEntries =
   typeof import("./official-external-plugin-catalog.js").listOfficialExternalProviderCatalogEntries;
 
-const loadNexisClawProviderIndex = vi.hoisted(() =>
-  vi.fn<LoadNexisClawProviderIndex>(() => ({ version: 1, providers: {} })),
+const loadFirstNexusProviderIndex = vi.hoisted(() =>
+  vi.fn<LoadFirstNexusProviderIndex>(() => ({ version: 1, providers: {} })),
 );
 vi.mock("../model-catalog/index.js", async () => {
   const actual = await vi.importActual<typeof import("../model-catalog/index.js")>(
@@ -17,7 +17,7 @@ vi.mock("../model-catalog/index.js", async () => {
   );
   return {
     ...actual,
-    loadNexisClawProviderIndex,
+    loadFirstNexusProviderIndex,
   };
 });
 
@@ -66,7 +66,7 @@ import {
 describe("provider install catalog", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    loadNexisClawProviderIndex.mockReturnValue({ version: 1, providers: {} });
+    loadFirstNexusProviderIndex.mockReturnValue({ version: 1, providers: {} });
     loadPluginRegistrySnapshot.mockReturnValue({
       version: 1,
       hostContractVersion: "test",
@@ -95,7 +95,7 @@ describe("provider install catalog", () => {
         {
           pluginId: "openai",
           origin: "bundled",
-          manifestPath: "/repo/extensions/openai/NexisClaw.plugin.json",
+          manifestPath: "/repo/extensions/openai/FirstNexus.plugin.json",
           manifestHash: "hash",
           rootDir: "/repo/extensions/openai",
           enabled: true,
@@ -106,12 +106,12 @@ describe("provider install catalog", () => {
             agentHarnesses: [],
           },
           compat: [],
-          packageName: "@NexisClaw/openai",
+          packageName: "@FirstNexus/openai",
           packageInstall: {
             defaultChoice: "npm",
             npm: {
-              spec: "@NexisClaw/openai@1.2.3",
-              packageName: "@NexisClaw/openai",
+              spec: "@FirstNexus/openai@1.2.3",
+              packageName: "@FirstNexus/openai",
               selector: "1.2.3",
               selectorKind: "exact-version",
               exactVersion: true,
@@ -151,7 +151,7 @@ describe("provider install catalog", () => {
         label: "OpenAI",
         origin: "bundled",
         install: {
-          npmSpec: "@NexisClaw/openai@1.2.3",
+          npmSpec: "@FirstNexus/openai@1.2.3",
           localPath: "extensions/openai",
           defaultChoice: "npm",
           expectedIntegrity: "sha512-openai",
@@ -159,8 +159,8 @@ describe("provider install catalog", () => {
         installSource: {
           defaultChoice: "npm",
           npm: {
-            spec: "@NexisClaw/openai@1.2.3",
-            packageName: "@NexisClaw/openai",
+            spec: "@FirstNexus/openai@1.2.3",
+            packageName: "@FirstNexus/openai",
             selector: "1.2.3",
             selectorKind: "exact-version",
             exactVersion: true,
@@ -187,8 +187,8 @@ describe("provider install catalog", () => {
       installRecords: {
         vllm: {
           source: "npm",
-          spec: "@NexisClaw/vllm",
-          resolvedSpec: "@NexisClaw/vllm@2.0.0",
+          spec: "@FirstNexus/vllm",
+          resolvedSpec: "@FirstNexus/vllm@2.0.0",
           integrity: "sha512-vllm",
         },
       },
@@ -196,9 +196,9 @@ describe("provider install catalog", () => {
         {
           pluginId: "vllm",
           origin: "global",
-          manifestPath: "/Users/test/.NexisClaw/plugins/vllm/NexisClaw.plugin.json",
+          manifestPath: "/Users/test/.FirstNexus/plugins/vllm/FirstNexus.plugin.json",
           manifestHash: "hash",
-          rootDir: "/Users/test/.NexisClaw/plugins/vllm",
+          rootDir: "/Users/test/.FirstNexus/plugins/vllm",
           enabled: true,
           startup: {
             sidecar: false,
@@ -207,11 +207,11 @@ describe("provider install catalog", () => {
             agentHarnesses: [],
           },
           compat: [],
-          packageName: "@NexisClaw/vllm",
+          packageName: "@FirstNexus/vllm",
           packageInstall: {
             npm: {
-              spec: "@NexisClaw/vllm-fork@1.0.0",
-              packageName: "@NexisClaw/vllm-fork",
+              spec: "@FirstNexus/vllm-fork@1.0.0",
+              packageName: "@FirstNexus/vllm-fork",
               selector: "1.0.0",
               selectorKind: "exact-version",
               exactVersion: true,
@@ -245,15 +245,15 @@ describe("provider install catalog", () => {
       label: "vLLM",
       origin: "global",
       install: {
-        npmSpec: "@NexisClaw/vllm@2.0.0",
+        npmSpec: "@FirstNexus/vllm@2.0.0",
         expectedIntegrity: "sha512-vllm",
         defaultChoice: "npm",
       },
       installSource: {
         defaultChoice: "npm",
         npm: {
-          spec: "@NexisClaw/vllm@2.0.0",
-          packageName: "@NexisClaw/vllm",
+          spec: "@FirstNexus/vllm@2.0.0",
+          packageName: "@FirstNexus/vllm",
           selector: "2.0.0",
           selectorKind: "exact-version",
           exactVersion: true,
@@ -276,18 +276,18 @@ describe("provider install catalog", () => {
       installRecords: {
         vllm: {
           source: "clawhub",
-          spec: "clawhub:NexisClaw/vllm@2026.5.2",
+          spec: "clawhub:FirstNexus/vllm@2026.5.2",
           integrity: "sha256-clawpack",
-          clawhubPackage: "NexisClaw/vllm",
+          clawhubPackage: "FirstNexus/vllm",
         },
       },
       plugins: [
         {
           pluginId: "vllm",
           origin: "global",
-          manifestPath: "/Users/test/.NexisClaw/plugins/vllm/NexisClaw.plugin.json",
+          manifestPath: "/Users/test/.FirstNexus/plugins/vllm/FirstNexus.plugin.json",
           manifestHash: "hash",
-          rootDir: "/Users/test/.NexisClaw/plugins/vllm",
+          rootDir: "/Users/test/.FirstNexus/plugins/vllm",
           enabled: true,
           startup: {
             sidecar: false,
@@ -296,11 +296,11 @@ describe("provider install catalog", () => {
             agentHarnesses: [],
           },
           compat: [],
-          packageName: "@NexisClaw/vllm",
+          packageName: "@FirstNexus/vllm",
           packageInstall: {
             npm: {
-              spec: "@NexisClaw/vllm-fork@1.0.0",
-              packageName: "@NexisClaw/vllm-fork",
+              spec: "@FirstNexus/vllm-fork@1.0.0",
+              packageName: "@FirstNexus/vllm-fork",
               selector: "1.0.0",
               selectorKind: "exact-version",
               exactVersion: true,
@@ -334,14 +334,14 @@ describe("provider install catalog", () => {
       label: "vLLM",
       origin: "global",
       install: {
-        clawhubSpec: "clawhub:NexisClaw/vllm@2026.5.2",
+        clawhubSpec: "clawhub:FirstNexus/vllm@2026.5.2",
         defaultChoice: "clawhub",
       },
       installSource: {
         defaultChoice: "clawhub",
         clawhub: {
-          spec: "clawhub:NexisClaw/vllm@2026.5.2",
-          packageName: "NexisClaw/vllm",
+          spec: "clawhub:FirstNexus/vllm@2026.5.2",
+          packageName: "FirstNexus/vllm",
           version: "2026.5.2",
           exactVersion: true,
         },
@@ -363,9 +363,9 @@ describe("provider install catalog", () => {
         {
           pluginId: "demo-provider",
           origin: "global",
-          manifestPath: "/Users/test/.NexisClaw/plugins/demo-provider/NexisClaw.plugin.json",
+          manifestPath: "/Users/test/.FirstNexus/plugins/demo-provider/FirstNexus.plugin.json",
           manifestHash: "hash",
-          rootDir: "/Users/test/.NexisClaw/plugins/demo-provider",
+          rootDir: "/Users/test/.FirstNexus/plugins/demo-provider",
           enabled: true,
           startup: {
             sidecar: false,
@@ -417,7 +417,7 @@ describe("provider install catalog", () => {
         {
           pluginId: "demo-provider",
           origin: "workspace",
-          manifestPath: "/repo/extensions/demo-provider/NexisClaw.plugin.json",
+          manifestPath: "/repo/extensions/demo-provider/FirstNexus.plugin.json",
           manifestHash: "hash",
           rootDir: "/repo/extensions/demo-provider",
           enabled: false,
@@ -461,7 +461,7 @@ describe("provider install catalog", () => {
   });
 
   it("surfaces provider-index install metadata when the provider plugin is not installed", () => {
-    loadNexisClawProviderIndex.mockReturnValue({
+    loadFirstNexusProviderIndex.mockReturnValue({
       version: 1,
       providers: {
         moonshot: {
@@ -469,9 +469,9 @@ describe("provider install catalog", () => {
           name: "Moonshot AI",
           plugin: {
             id: "moonshot",
-            package: "@NexisClaw/plugin-moonshot",
+            package: "@FirstNexus/plugin-moonshot",
             install: {
-              npmSpec: "@NexisClaw/plugin-moonshot@1.2.3",
+              npmSpec: "@FirstNexus/plugin-moonshot@1.2.3",
               defaultChoice: "npm",
               expectedIntegrity: "sha512-moonshot",
             },
@@ -502,15 +502,15 @@ describe("provider install catalog", () => {
       label: "Moonshot AI",
       origin: "bundled",
       install: {
-        npmSpec: "@NexisClaw/plugin-moonshot@1.2.3",
+        npmSpec: "@FirstNexus/plugin-moonshot@1.2.3",
         defaultChoice: "npm",
         expectedIntegrity: "sha512-moonshot",
       },
       installSource: {
         defaultChoice: "npm",
         npm: {
-          spec: "@NexisClaw/plugin-moonshot@1.2.3",
-          packageName: "@NexisClaw/plugin-moonshot",
+          spec: "@FirstNexus/plugin-moonshot@1.2.3",
+          packageName: "@FirstNexus/plugin-moonshot",
           selector: "1.2.3",
           selectorKind: "exact-version",
           exactVersion: true,
@@ -525,10 +525,10 @@ describe("provider install catalog", () => {
   it("surfaces official external provider install metadata when the provider plugin is not installed", () => {
     listOfficialExternalProviderCatalogEntries.mockReturnValue([
       {
-        name: "@NexisClaw/codex",
+        name: "@FirstNexus/codex",
         source: "official",
         kind: "provider",
-        NexisClaw: {
+        FirstNexus: {
           plugin: { id: "codex", label: "Codex" },
           providers: [
             {
@@ -548,7 +548,7 @@ describe("provider install catalog", () => {
             },
           ],
           install: {
-            npmSpec: "@NexisClaw/codex",
+            npmSpec: "@FirstNexus/codex",
             defaultChoice: "npm",
           },
         },
@@ -568,14 +568,14 @@ describe("provider install catalog", () => {
       label: "Codex",
       origin: "bundled",
       install: {
-        npmSpec: "@NexisClaw/codex",
+        npmSpec: "@FirstNexus/codex",
         defaultChoice: "npm",
       },
       installSource: {
         defaultChoice: "npm",
         npm: {
-          spec: "@NexisClaw/codex",
-          packageName: "@NexisClaw/codex",
+          spec: "@FirstNexus/codex",
+          packageName: "@FirstNexus/codex",
           selectorKind: "none",
           exactVersion: false,
           pinState: "floating-without-integrity",
@@ -586,7 +586,7 @@ describe("provider install catalog", () => {
   });
 
   it("surfaces provider-index ClawHub install metadata as the preferred source", () => {
-    loadNexisClawProviderIndex.mockReturnValue({
+    loadFirstNexusProviderIndex.mockReturnValue({
       version: 1,
       providers: {
         moonshot: {
@@ -594,10 +594,10 @@ describe("provider install catalog", () => {
           name: "Moonshot AI",
           plugin: {
             id: "moonshot",
-            package: "@NexisClaw/plugin-moonshot",
+            package: "@FirstNexus/plugin-moonshot",
             install: {
-              clawhubSpec: "clawhub:NexisClaw/moonshot@2026.5.2",
-              npmSpec: "@NexisClaw/plugin-moonshot@2026.5.2",
+              clawhubSpec: "clawhub:FirstNexus/moonshot@2026.5.2",
+              npmSpec: "@FirstNexus/plugin-moonshot@2026.5.2",
               defaultChoice: "clawhub",
               expectedIntegrity: "sha512-moonshot",
             },
@@ -626,22 +626,22 @@ describe("provider install catalog", () => {
       label: "Moonshot AI",
       origin: "bundled",
       install: {
-        clawhubSpec: "clawhub:NexisClaw/moonshot@2026.5.2",
-        npmSpec: "@NexisClaw/plugin-moonshot@2026.5.2",
+        clawhubSpec: "clawhub:FirstNexus/moonshot@2026.5.2",
+        npmSpec: "@FirstNexus/plugin-moonshot@2026.5.2",
         defaultChoice: "clawhub",
         expectedIntegrity: "sha512-moonshot",
       },
       installSource: {
         defaultChoice: "clawhub",
         clawhub: {
-          spec: "clawhub:NexisClaw/moonshot@2026.5.2",
-          packageName: "NexisClaw/moonshot",
+          spec: "clawhub:FirstNexus/moonshot@2026.5.2",
+          packageName: "FirstNexus/moonshot",
           version: "2026.5.2",
           exactVersion: true,
         },
         npm: {
-          spec: "@NexisClaw/plugin-moonshot@2026.5.2",
-          packageName: "@NexisClaw/plugin-moonshot",
+          spec: "@FirstNexus/plugin-moonshot@2026.5.2",
+          packageName: "@FirstNexus/plugin-moonshot",
           selector: "2026.5.2",
           selectorKind: "exact-version",
           exactVersion: true,
@@ -666,7 +666,7 @@ describe("provider install catalog", () => {
         {
           pluginId: "moonshot",
           origin: "bundled",
-          manifestPath: "/repo/extensions/moonshot/NexisClaw.plugin.json",
+          manifestPath: "/repo/extensions/moonshot/FirstNexus.plugin.json",
           manifestHash: "hash",
           rootDir: "/repo/extensions/moonshot",
           enabled: true,
@@ -681,7 +681,7 @@ describe("provider install catalog", () => {
       ],
       diagnostics: [],
     });
-    loadNexisClawProviderIndex.mockReturnValue({
+    loadFirstNexusProviderIndex.mockReturnValue({
       version: 1,
       providers: {
         moonshot: {
@@ -689,9 +689,9 @@ describe("provider install catalog", () => {
           name: "Moonshot AI",
           plugin: {
             id: "moonshot",
-            package: "@NexisClaw/plugin-moonshot",
+            package: "@FirstNexus/plugin-moonshot",
             install: {
-              npmSpec: "@NexisClaw/plugin-moonshot@1.2.3",
+              npmSpec: "@FirstNexus/plugin-moonshot@1.2.3",
               expectedIntegrity: "sha512-moonshot",
             },
           },
@@ -722,7 +722,7 @@ describe("provider install catalog", () => {
         {
           pluginId: "moonshot",
           origin: "bundled",
-          manifestPath: "/repo/extensions/moonshot/NexisClaw.plugin.json",
+          manifestPath: "/repo/extensions/moonshot/FirstNexus.plugin.json",
           manifestHash: "hash",
           rootDir: "/repo/extensions/moonshot",
           enabled: true,
@@ -737,7 +737,7 @@ describe("provider install catalog", () => {
       ],
       diagnostics: [],
     });
-    loadNexisClawProviderIndex.mockReturnValue({
+    loadFirstNexusProviderIndex.mockReturnValue({
       version: 1,
       providers: {
         groq: {
@@ -745,9 +745,9 @@ describe("provider install catalog", () => {
           name: "Groq",
           plugin: {
             id: "groq",
-            package: "@NexisClaw/plugin-groq",
+            package: "@FirstNexus/plugin-groq",
             install: {
-              npmSpec: "@NexisClaw/plugin-groq@1.0.0",
+              npmSpec: "@FirstNexus/plugin-groq@1.0.0",
               defaultChoice: "npm",
             },
           },
@@ -764,10 +764,10 @@ describe("provider install catalog", () => {
           name: "Moonshot AI",
           plugin: {
             id: "moonshot",
-            package: "@NexisClaw/plugin-moonshot",
+            package: "@FirstNexus/plugin-moonshot",
             install: {
-              clawhubSpec: "clawhub:NexisClaw/moonshot@2026.5.2",
-              npmSpec: "@NexisClaw/plugin-moonshot@2026.5.2",
+              clawhubSpec: "clawhub:FirstNexus/moonshot@2026.5.2",
+              npmSpec: "@FirstNexus/plugin-moonshot@2026.5.2",
               defaultChoice: "clawhub",
             },
           },
@@ -784,10 +784,10 @@ describe("provider install catalog", () => {
           name: "vLLM",
           plugin: {
             id: "vllm",
-            package: "@NexisClaw/plugin-vllm",
+            package: "@FirstNexus/plugin-vllm",
             install: {
-              clawhubSpec: "clawhub:NexisClaw/vllm@2026.5.2",
-              npmSpec: "@NexisClaw/plugin-vllm@2026.5.2",
+              clawhubSpec: "clawhub:FirstNexus/vllm@2026.5.2",
+              npmSpec: "@FirstNexus/plugin-vllm@2026.5.2",
               defaultChoice: "clawhub",
             },
           },
@@ -815,21 +815,21 @@ describe("provider install catalog", () => {
       label: "vLLM",
       origin: "bundled",
       install: {
-        clawhubSpec: "clawhub:NexisClaw/vllm@2026.5.2",
-        npmSpec: "@NexisClaw/plugin-vllm@2026.5.2",
+        clawhubSpec: "clawhub:FirstNexus/vllm@2026.5.2",
+        npmSpec: "@FirstNexus/plugin-vllm@2026.5.2",
         defaultChoice: "clawhub",
       },
       installSource: {
         defaultChoice: "clawhub",
         clawhub: {
-          spec: "clawhub:NexisClaw/vllm@2026.5.2",
-          packageName: "NexisClaw/vllm",
+          spec: "clawhub:FirstNexus/vllm@2026.5.2",
+          packageName: "FirstNexus/vllm",
           version: "2026.5.2",
           exactVersion: true,
         },
         npm: {
-          spec: "@NexisClaw/plugin-vllm@2026.5.2",
-          packageName: "@NexisClaw/plugin-vllm",
+          spec: "@FirstNexus/plugin-vllm@2026.5.2",
+          packageName: "@FirstNexus/plugin-vllm",
           selector: "2026.5.2",
           selectorKind: "exact-version",
           exactVersion: true,

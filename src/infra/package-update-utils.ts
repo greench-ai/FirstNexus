@@ -53,14 +53,14 @@ export function readInstalledPackagePeerDependencies(dir: string): Record<string
   );
 }
 
-export function installedPackageNeedsNexisClawPeerLinkRepair(dir: string): boolean {
+export function installedPackageNeedsFirstNexusPeerLinkRepair(dir: string): boolean {
   const peerDependencies = readInstalledPackagePeerDependencies(dir);
-  if (!Object.hasOwn(peerDependencies, "NexisClaw")) {
+  if (!Object.hasOwn(peerDependencies, "FirstNexus")) {
     return false;
   }
 
   try {
-    fsSync.statSync(path.join(dir, "node_modules", "NexisClaw"));
+    fsSync.statSync(path.join(dir, "node_modules", "FirstNexus"));
     return false;
   } catch (error) {
     const code = (error as NodeJS.ErrnoException | undefined)?.code;

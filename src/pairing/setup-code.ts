@@ -1,6 +1,6 @@
 import os from "node:os";
 import { resolveGatewayPort } from "../config/paths.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { normalizeSecretInputString, resolveSecretInputRef } from "../config/types.secrets.js";
 import { materializeGatewayAuthSecretRefs } from "../gateway/auth-config-utils.js";
 import { assertExplicitGatewayAuthModeWhenBothConfigured } from "../gateway/auth-mode-policy.js";
@@ -198,7 +198,7 @@ function parseNormalizedGatewayUrl(raw: string): string | null {
 }
 
 function resolveScheme(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   opts?: {
     forceSecure?: boolean;
   },
@@ -242,7 +242,7 @@ function pickTailnetIPv4(
 }
 
 function resolvePairingSetupAuthLabel(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   env: NodeJS.ProcessEnv,
 ): ResolveAuthLabelResult {
   const mode = cfg.gateway?.auth?.mode;
@@ -285,7 +285,7 @@ function resolvePairingSetupAuthLabel(
 }
 
 async function resolveGatewayUrl(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   opts: {
     env: NodeJS.ProcessEnv;
     publicUrl?: string;
@@ -354,7 +354,7 @@ export function encodePairingSetupCode(payload: PairingSetupPayload): string {
 }
 
 export async function resolvePairingSetupFromConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   options: ResolvePairingSetupOptions = {},
 ): Promise<PairingSetupResolution> {
   assertExplicitGatewayAuthModeWhenBothConfigured(cfg);

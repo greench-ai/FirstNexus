@@ -1,23 +1,23 @@
 import type { webhook } from "@line/bot-sdk";
-import { recordChannelActivity } from "NexisClaw/plugin-sdk/channel-activity-runtime";
+import { recordChannelActivity } from "FirstNexus/plugin-sdk/channel-activity-runtime";
 import {
   formatInboundEnvelope,
   formatLocationText,
   resolveInboundSessionEnvelopeContext,
   toLocationContext,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   ensureConfiguredBindingRouteReady,
   resolvePinnedMainDmOwnerFromAllowlist,
   resolveConfiguredBindingRoute,
   resolveRuntimeConversationBindingRoute,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { finalizeInboundContext } from "NexisClaw/plugin-sdk/reply-dispatch-runtime";
-import type { HistoryEntry } from "NexisClaw/plugin-sdk/reply-history";
-import { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { finalizeInboundContext } from "FirstNexus/plugin-sdk/reply-dispatch-runtime";
+import type { HistoryEntry } from "FirstNexus/plugin-sdk/reply-history";
+import { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { normalizeAllowFrom } from "./bot-access.js";
 import { resolveLineGroupConfigEntry } from "./group-keys.js";
 import type { ResolvedLineAccount } from "./types.js";
@@ -35,7 +35,7 @@ interface MediaRef {
 interface BuildLineMessageContextParams {
   event: MessageEvent;
   allMedia: MediaRef[];
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedLineAccount;
   commandAuthorized: boolean;
   groupHistories?: Map<string, HistoryEntry[]>;
@@ -86,7 +86,7 @@ function buildPeerId(source: EventSource): string {
 
 async function resolveLineInboundRoute(params: {
   source: EventSource;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedLineAccount;
 }): Promise<{
   userId?: string;
@@ -275,7 +275,7 @@ function resolveLineAddresses(params: {
 }
 
 async function finalizeLineInboundContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedLineAccount;
   event: MessageEvent | PostbackEvent;
   route: LineRouteInfo;
@@ -516,7 +516,7 @@ export async function buildLineMessageContext(params: BuildLineMessageContextPar
 
 export async function buildLinePostbackContext(params: {
   event: PostbackEvent;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   account: ResolvedLineAccount;
   commandAuthorized: boolean;
 }) {

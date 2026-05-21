@@ -126,19 +126,19 @@ describe("loadSettings default gateway URL derivation", () => {
       host: "gateway.example:8443",
       pathname: "/ignored/path",
     });
-    setControlUiBasePath(" /NexisClaw/ ");
+    setControlUiBasePath(" /FirstNexus/ ");
 
-    expect(loadSettings().gatewayUrl).toBe(expectedGatewayUrl("/NexisClaw"));
+    expect(loadSettings().gatewayUrl).toBe(expectedGatewayUrl("/FirstNexus"));
   });
 
   it("infers base path from nested pathname when configured base path is not set", () => {
     setTestLocation({
       protocol: "http:",
       host: "gateway.example:18789",
-      pathname: "/apps/NexisClaw/chat",
+      pathname: "/apps/FirstNexus/chat",
     });
 
-    expect(loadSettings().gatewayUrl).toBe(expectedGatewayUrl("/apps/NexisClaw"));
+    expect(loadSettings().gatewayUrl).toBe(expectedGatewayUrl("/apps/FirstNexus"));
   });
 
   it("skips node sessionStorage accessors that warn without a storage file", () => {
@@ -169,23 +169,23 @@ describe("loadSettings default gateway URL derivation", () => {
       host: "gateway.example:8443",
       pathname: "/",
     });
-    sessionStorage.setItem("NexisClaw.control.token.v1", "legacy-session-token");
+    sessionStorage.setItem("FirstNexus.control.token.v1", "legacy-session-token");
     localStorage.setItem(
-      "NexisClaw.control.settings.v1",
+      "FirstNexus.control.settings.v1",
       JSON.stringify({
-        gatewayUrl: "wss://gateway.example:8443/NexisClaw",
+        gatewayUrl: "wss://gateway.example:8443/FirstNexus",
         token: "persisted-token",
         sessionKey: "agent",
       }),
     );
 
     const settings = loadSettings();
-    expect(settings.gatewayUrl).toBe("wss://gateway.example:8443/NexisClaw");
+    expect(settings.gatewayUrl).toBe("wss://gateway.example:8443/FirstNexus");
     expect(settings.token).toBe("");
     expect(settings.sessionKey).toBe("agent");
-    const scopedKey = "NexisClaw.control.settings.v1:wss://gateway.example:8443/NexisClaw";
+    const scopedKey = "FirstNexus.control.settings.v1:wss://gateway.example:8443/FirstNexus";
     expect(JSON.parse(localStorage.getItem(scopedKey) ?? "{}")).toEqual({
-      gatewayUrl: "wss://gateway.example:8443/NexisClaw",
+      gatewayUrl: "wss://gateway.example:8443/FirstNexus",
       theme: "claw",
       themeMode: "system",
       chatFocusMode: false,
@@ -197,7 +197,7 @@ describe("loadSettings default gateway URL derivation", () => {
       navGroupsCollapsed: {},
       borderRadius: 50,
       sessionsByGateway: {
-        "wss://gateway.example:8443/NexisClaw": {
+        "wss://gateway.example:8443/FirstNexus": {
           sessionKey: "agent",
           lastActiveSessionKey: "agent",
         },
@@ -312,7 +312,7 @@ describe("loadSettings default gateway URL derivation", () => {
     expect(settings.gatewayUrl).toBe(gwUrl);
     expect(settings.token).toBe("memory-only-token");
 
-    const scopedKey = `NexisClaw.control.settings.v1:${gwUrl}`;
+    const scopedKey = `FirstNexus.control.settings.v1:${gwUrl}`;
     expect(JSON.parse(localStorage.getItem(scopedKey) ?? "{}")).toEqual({
       gatewayUrl: gwUrl,
       theme: "claw",
@@ -405,7 +405,7 @@ describe("loadSettings default gateway URL derivation", () => {
       borderRadius: 50,
     });
 
-    const scopedKey = `NexisClaw.control.settings.v1:${gwUrl}`;
+    const scopedKey = `FirstNexus.control.settings.v1:${gwUrl}`;
     const persisted = JSON.parse(localStorage.getItem(scopedKey) ?? "{}") as Record<
       string,
       unknown
@@ -457,7 +457,7 @@ describe("loadSettings default gateway URL derivation", () => {
 
     const gwUrl = expectedGatewayUrl("");
     localStorage.setItem(
-      `NexisClaw.control.settings.v1:${gwUrl}`,
+      `FirstNexus.control.settings.v1:${gwUrl}`,
       JSON.stringify({
         gatewayUrl: gwUrl,
         theme: "custom",
@@ -531,7 +531,7 @@ describe("loadSettings default gateway URL derivation", () => {
     });
 
     const gwUrl = expectedGatewayUrl("");
-    const scopedKey = `NexisClaw.control.settings.v1:wss://gateway.example:8443`;
+    const scopedKey = `FirstNexus.control.settings.v1:wss://gateway.example:8443`;
 
     // Pre-seed sessionsByGateway with 11 stale gateway entries so the next
     // saveSettings call pushes the total to 12 and triggers the cap (10).
@@ -594,7 +594,7 @@ describe("loadSettings default gateway URL derivation", () => {
       name: "Buns",
       avatar: "🦞",
     });
-    expect(JSON.parse(localStorage.getItem("NexisClaw.control.user.v1") ?? "{}")).toEqual({
+    expect(JSON.parse(localStorage.getItem("FirstNexus.control.user.v1") ?? "{}")).toEqual({
       name: "Buns",
       avatar: "🦞",
     });
@@ -602,7 +602,7 @@ describe("loadSettings default gateway URL derivation", () => {
 
   it("normalizes invalid local user identity values on load", () => {
     localStorage.setItem(
-      "NexisClaw.control.user.v1",
+      "FirstNexus.control.user.v1",
       JSON.stringify({
         name: "  ",
         avatar: "https://example.com/avatar.png",
@@ -623,6 +623,6 @@ describe("loadSettings default gateway URL derivation", () => {
       name: null,
       avatar: null,
     });
-    expect(localStorage.getItem("NexisClaw.control.user.v1")).toBeNull();
+    expect(localStorage.getItem("FirstNexus.control.user.v1")).toBeNull();
   });
 });

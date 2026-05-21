@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   resolveMemorySlotDecisionShared,
   resolvePluginActivationDecisionShared,
@@ -23,7 +23,7 @@ export type PluginActivationState = PluginActivationStateLike;
 export type NormalizedPluginsConfig = SharedNormalizedPluginsConfig;
 
 export function normalizePluginsConfigWithResolver(
-  config?: NexisClawConfig["plugins"],
+  config?: FirstNexusConfig["plugins"],
   normalizePluginId: NormalizePluginId = identityNormalizePluginId,
 ): NormalizedPluginsConfig {
   return normalizePluginsConfigWithResolverShared(config, normalizePluginId);
@@ -33,10 +33,10 @@ export function resolvePluginActivationState(params: {
   id: string;
   origin: PluginOrigin;
   config: NormalizedPluginsConfig;
-  rootConfig?: NexisClawConfig;
+  rootConfig?: FirstNexusConfig;
   enabledByDefault?: boolean;
   sourceConfig?: NormalizedPluginsConfig;
-  sourceRootConfig?: NexisClawConfig;
+  sourceRootConfig?: FirstNexusConfig;
   autoEnabledReason?: string;
 }): PluginActivationState {
   return toPluginActivationState(
@@ -58,10 +58,10 @@ type PolicyEffectiveActivationParams = {
   id: string;
   origin: PluginOrigin;
   config: NormalizedPluginsConfig;
-  rootConfig?: NexisClawConfig;
+  rootConfig?: FirstNexusConfig;
   enabledByDefault?: boolean;
   sourceConfig?: NormalizedPluginsConfig;
-  sourceRootConfig?: NexisClawConfig;
+  sourceRootConfig?: FirstNexusConfig;
   autoEnabledReason?: string;
 };
 

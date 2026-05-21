@@ -1,5 +1,5 @@
-import { createScopedDmSecurityResolver } from "NexisClaw/plugin-sdk/channel-config-helpers";
-import type { NexisClawConfig } from "../runtime-api.js";
+import { createScopedDmSecurityResolver } from "FirstNexus/plugin-sdk/channel-config-helpers";
+import type { FirstNexusConfig } from "../runtime-api.js";
 import {
   listZalouserAccountIds,
   resolveDefaultZalouserAccountId,
@@ -23,7 +23,7 @@ export const zalouserSetupPlugin = {
   config: {
     listAccountIds: (cfg: unknown) => listZalouserAccountIds(cfg as never),
     defaultAccountId: (cfg: unknown) => resolveDefaultZalouserAccountId(cfg as never),
-    resolveAccount: (cfg: NexisClawConfig, accountId?: string | null) =>
+    resolveAccount: (cfg: FirstNexusConfig, accountId?: string | null) =>
       resolveZalouserAccountSync({ cfg, accountId }),
   },
   security: {

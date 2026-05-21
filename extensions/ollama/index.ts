@@ -1,23 +1,23 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolvePluginConfigObject } from "NexisClaw/plugin-sdk/plugin-config-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolvePluginConfigObject } from "FirstNexus/plugin-sdk/plugin-config-runtime";
 import {
   definePluginEntry,
-  type NexisClawPluginApi,
+  type FirstNexusPluginApi,
   type ProviderAuthContext,
   type ProviderAuthMethodNonInteractiveContext,
   type ProviderAuthResult,
   type ProviderCatalogContext,
   type ProviderRuntimeModel,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import { buildApiKeyCredential } from "NexisClaw/plugin-sdk/provider-auth";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import { buildApiKeyCredential } from "FirstNexus/plugin-sdk/provider-auth";
 import type {
   ModelDefinitionConfig,
   ModelProviderConfig,
-} from "NexisClaw/plugin-sdk/provider-model-shared";
+} from "FirstNexus/plugin-sdk/provider-model-shared";
 import {
   buildOpenAICompatibleReplayPolicy,
   OPENAI_COMPATIBLE_REPLAY_HOOKS,
-} from "NexisClaw/plugin-sdk/provider-model-shared";
+} from "FirstNexus/plugin-sdk/provider-model-shared";
 import {
   OLLAMA_DEFAULT_BASE_URL,
   buildOllamaModelDefinition,
@@ -131,14 +131,14 @@ export default definePluginEntry({
   id: "ollama",
   name: "Ollama Provider",
   description: "Bundled Ollama provider plugin",
-  register(api: NexisClawPluginApi) {
+  register(api: FirstNexusPluginApi) {
     if (api.registrationMode === "full") {
       void checkWsl2CrashLoopRisk(api.logger);
     }
     api.registerMemoryEmbeddingProvider(ollamaMemoryEmbeddingProviderAdapter);
     api.registerMediaUnderstandingProvider(ollamaMediaUnderstandingProvider);
     const startupPluginConfig = (api.pluginConfig ?? {}) as OllamaPluginConfig;
-    const resolveCurrentPluginConfig = (config?: NexisClawConfig): OllamaPluginConfig => {
+    const resolveCurrentPluginConfig = (config?: FirstNexusConfig): OllamaPluginConfig => {
       const runtimePluginConfig = resolvePluginConfigObject(config, "ollama");
       if (runtimePluginConfig) {
         return runtimePluginConfig as OllamaPluginConfig;
@@ -319,8 +319,8 @@ export default definePluginEntry({
       },
       buildUnknownModelHint: () =>
         "Ollama requires authentication to be registered as a provider. " +
-        'Set OLLAMA_API_KEY="ollama-local" (any value works) or run "NexisClaw configure". ' +
-        "See: https://docs.NexisClaw.ai/providers/ollama",
+        'Set OLLAMA_API_KEY="ollama-local" (any value works) or run "FirstNexus configure". ' +
+        "See: https://docs.FirstNexus.ai/providers/ollama",
     });
   },
 });

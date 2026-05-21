@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { SsrFPolicy } from "../infra/net/ssrf.js";
 import { fetchOk, normalizeCdpHttpBaseForJsonEndpoints } from "./cdp.helpers.js";
 import { appendCdpPath } from "./cdp.js";

@@ -1,11 +1,11 @@
 import { getBootstrapChannelSecrets } from "../channels/plugins/bootstrap-registry.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginOrigin } from "../plugins/plugin-origin.types.js";
 import { loadChannelSecretContractApi } from "./channel-contract-api.js";
 import { type ResolverContext, type SecretDefaults } from "./runtime-shared.js";
 
 export function collectChannelConfigAssignments(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   defaults: SecretDefaults | undefined;
   context: ResolverContext;
   loadablePluginOrigins?: ReadonlyMap<string, PluginOrigin>;

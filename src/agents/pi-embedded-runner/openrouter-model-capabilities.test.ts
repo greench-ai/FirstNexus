@@ -1,11 +1,11 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 async function withOpenRouterStateDir(run: (stateDir: string) => Promise<void>) {
-  const stateDir = mkdtempSync(join(tmpdir(), "NexisClaw-openrouter-capabilities-"));
+  const stateDir = mkdtempSync(join(tmpdir(), "FirstNexus-openrouter-capabilities-"));
   process.env.NEXISCLAW_STATE_DIR = stateDir;
   for (const key of [
     "ALL_PROXY",

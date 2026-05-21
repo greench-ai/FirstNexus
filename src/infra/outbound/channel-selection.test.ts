@@ -39,10 +39,10 @@ vi.mock("../../plugins/official-external-plugin-repair-hints.js", () => ({
           pluginId: channelId,
           channelId,
           label: channelId === "whatsapp" ? "WhatsApp" : "Feishu",
-          installSpec: `@NexisClaw/${channelId}`,
-          installCommand: `NexisClaw plugins install @NexisClaw/${channelId}`,
-          doctorFixCommand: "NexisClaw doctor --fix",
-          repairHint: `Install the official external plugin with: NexisClaw plugins install @NexisClaw/${channelId}, or run: NexisClaw doctor --fix.`,
+          installSpec: `@FirstNexus/${channelId}`,
+          installCommand: `FirstNexus plugins install @FirstNexus/${channelId}`,
+          doctorFixCommand: "FirstNexus doctor --fix",
+          repairHint: `Install the official external plugin with: FirstNexus plugins install @FirstNexus/${channelId}, or run: FirstNexus doctor --fix.`,
         }
       : null,
 }));
@@ -267,12 +267,12 @@ describe("resolveMessageChannelSelection", () => {
         channel: "feishu",
       },
       expectedMessage:
-        "Channel is unavailable: feishu. Install the official external plugin with: NexisClaw plugins install @NexisClaw/feishu, or run: NexisClaw doctor --fix.",
+        "Channel is unavailable: feishu. Install the official external plugin with: FirstNexus plugins install @FirstNexus/feishu, or run: FirstNexus doctor --fix.",
     },
     {
       params: { cfg: {} as never },
       expectedMessage:
-        "Channel is required (no configured channels detected). Run NexisClaw channels add to configure one",
+        "Channel is required (no configured channels detected). Run FirstNexus channels add to configure one",
     },
     {
       setup: () => {
@@ -281,7 +281,7 @@ describe("resolveMessageChannelSelection", () => {
       },
       params: { cfg: { channels: { whatsapp: { enabled: true } } } as never },
       expectedMessage:
-        "Channel is required (no available channels detected). Configured official external channel WhatsApp is missing its plugin. Install the official external plugin with: NexisClaw plugins install @NexisClaw/whatsapp, or run: NexisClaw doctor --fix.",
+        "Channel is required (no available channels detected). Configured official external channel WhatsApp is missing its plugin. Install the official external plugin with: FirstNexus plugins install @FirstNexus/whatsapp, or run: FirstNexus doctor --fix.",
     },
     {
       setup: () => {
@@ -294,7 +294,7 @@ describe("resolveMessageChannelSelection", () => {
       },
       params: { cfg: { channels: { whatsapp: { enabled: true } } } as never },
       expectedMessage:
-        "Channel is required (no configured channels detected). Run NexisClaw channels add to configure one",
+        "Channel is required (no configured channels detected). Run FirstNexus channels add to configure one",
     },
     {
       setup: () => {

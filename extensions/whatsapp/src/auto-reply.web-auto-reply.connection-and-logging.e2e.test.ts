@@ -2,10 +2,10 @@ import "./test-helpers.js";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { escapeRegExp, formatEnvelopeTimestamp } from "NexisClaw/plugin-sdk/channel-test-helpers";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { setLoggerOverride } from "NexisClaw/plugin-sdk/runtime-env";
-import { withEnvAsync } from "NexisClaw/plugin-sdk/test-env";
+import { escapeRegExp, formatEnvelopeTimestamp } from "FirstNexus/plugin-sdk/channel-test-helpers";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { setLoggerOverride } from "FirstNexus/plugin-sdk/runtime-env";
+import { withEnvAsync } from "FirstNexus/plugin-sdk/test-env";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { getActiveWebListener } from "./active-listener.js";
 import { WhatsAppAuthUnstableError, resolveWebCredsPath } from "./auth-store.js";
@@ -764,7 +764,7 @@ describe("web auto-reply connection", () => {
           },
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     await monitorWebChannel(
       false,
@@ -796,7 +796,7 @@ describe("web auto-reply connection", () => {
           },
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     await monitorWebChannel(
       false,
@@ -832,7 +832,7 @@ describe("web auto-reply connection", () => {
           },
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
     setRuntimeConfigSourceSnapshotMock(null);
 
     await monitorWebChannel(
@@ -911,11 +911,13 @@ describe("web auto-reply connection", () => {
         const firstPattern = escapeRegExp(firstTimestamp);
         const secondPattern = escapeRegExp(secondTimestamp);
         expect(firstArgs.Body).toMatch(
-          new RegExp(`\\[WhatsApp \\+1 (\\+\\d+[smhd] )?${firstPattern}\\] \\[NexisClaw\\] first`),
+          new RegExp(`\\[WhatsApp \\+1 (\\+\\d+[smhd] )?${firstPattern}\\] \\[FirstNexus\\] first`),
         );
         expect(firstArgs.Body).not.toContain("second");
         expect(secondArgs.Body).toMatch(
-          new RegExp(`\\[WhatsApp \\+1 (\\+\\d+[smhd] )?${secondPattern}\\] \\[NexisClaw\\] second`),
+          new RegExp(
+            `\\[WhatsApp \\+1 (\\+\\d+[smhd] )?${secondPattern}\\] \\[FirstNexus\\] second`,
+          ),
         );
         expect(secondArgs.Body).not.toContain("first");
         expect(process.getMaxListeners?.()).toBeGreaterThanOrEqual(50);
@@ -929,7 +931,7 @@ describe("web auto-reply connection", () => {
 
   it("emits heartbeat logs with connection metadata", async () => {
     vi.useFakeTimers();
-    const logPath = `/tmp/NexisClaw-heartbeat-${crypto.randomUUID()}.log`;
+    const logPath = `/tmp/FirstNexus-heartbeat-${crypto.randomUUID()}.log`;
     setLoggerOverride({ level: "trace", file: logPath });
 
     const runtime = {
@@ -971,7 +973,7 @@ describe("web auto-reply connection", () => {
   });
 
   it("logs outbound replies to file", async () => {
-    const logPath = `/tmp/NexisClaw-log-test-${crypto.randomUUID()}.log`;
+    const logPath = `/tmp/FirstNexus-log-test-${crypto.randomUUID()}.log`;
     setLoggerOverride({ level: "trace", file: logPath });
 
     const capture = createWebListenerFactoryCapture();
@@ -1021,7 +1023,7 @@ describe("web auto-reply connection", () => {
       return { text: "final reply" };
     });
 
-    const mockConfig: NexisClawConfig = {
+    const mockConfig: FirstNexusConfig = {
       channels: { whatsapp: { allowFrom: ["*"] } },
     };
 

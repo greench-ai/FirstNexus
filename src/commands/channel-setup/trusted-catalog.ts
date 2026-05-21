@@ -4,10 +4,13 @@ import {
   type ChannelPluginCatalogEntry,
 } from "../../channels/plugins/catalog.js";
 import { applyPluginAutoEnable } from "../../config/plugin-auto-enable.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { normalizePluginsConfig, resolveEnableState } from "../../plugins/config-state.js";
 
-function resolveEffectiveTrustConfig(cfg: NexisClawConfig, env?: NodeJS.ProcessEnv): NexisClawConfig {
+function resolveEffectiveTrustConfig(
+  cfg: FirstNexusConfig,
+  env?: NodeJS.ProcessEnv,
+): FirstNexusConfig {
   return applyPluginAutoEnable({
     config: cfg,
     env: env ?? process.env,
@@ -16,7 +19,7 @@ function resolveEffectiveTrustConfig(cfg: NexisClawConfig, env?: NodeJS.ProcessE
 
 function isTrustedWorkspaceChannelCatalogEntry(
   entry: ChannelPluginCatalogEntry | undefined,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   env?: NodeJS.ProcessEnv,
 ): boolean {
   if (entry?.origin !== "workspace") {
@@ -36,7 +39,7 @@ function isTrustedWorkspaceChannelCatalogEntry(
 export function getTrustedChannelPluginCatalogEntry(
   channelId: string,
   params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     workspaceDir?: string;
     env?: NodeJS.ProcessEnv;
   },
@@ -55,7 +58,7 @@ export function getTrustedChannelPluginCatalogEntry(
 
 function listChannelPluginCatalogEntriesWithTrustedFallback(
   params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     workspaceDir?: string;
     env?: NodeJS.ProcessEnv;
   },
@@ -80,7 +83,7 @@ function listChannelPluginCatalogEntriesWithTrustedFallback(
 }
 
 export function listTrustedChannelPluginCatalogEntries(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): ChannelPluginCatalogEntry[] {
@@ -88,7 +91,7 @@ export function listTrustedChannelPluginCatalogEntries(params: {
 }
 
 export function listSetupDiscoveryChannelPluginCatalogEntries(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 }): ChannelPluginCatalogEntry[] {

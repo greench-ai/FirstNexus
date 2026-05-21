@@ -2,7 +2,7 @@ import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
   normalizeOptionalStringifiedId,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveDiscordDirectoryUserId } from "./directory-cache.js";
 
 type DiscordMentionAliasesConfig = Record<string, string>;

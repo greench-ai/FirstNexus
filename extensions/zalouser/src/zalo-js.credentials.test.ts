@@ -11,7 +11,7 @@ import {
 } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { withEnvAsync } from "NexisClaw/plugin-sdk/test-env";
+import { withEnvAsync } from "FirstNexus/plugin-sdk/test-env";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { API, Credentials, LoginQRCallbackEvent } from "./zca-client.js";
 import { LoginQRCallbackEventType } from "./zca-constants.js";
@@ -101,7 +101,7 @@ describe("zalouser credential persistence", () => {
   });
 
   it("persists the final API cookie jar after QR login", async () => {
-    const stateDir = await mkdtemp(path.join(os.tmpdir(), "NexisClaw-zalouser-credentials-"));
+    const stateDir = await mkdtemp(path.join(os.tmpdir(), "FirstNexus-zalouser-credentials-"));
     const profile = "qr-refresh";
     const callbackCookie = [{ key: "zpsid", value: "callback", domain: "chat.zalo.me" }];
     const refreshedCookie = [{ key: "zpsid", value: "refreshed", domain: "chat.zalo.me" }];
@@ -158,7 +158,7 @@ describe("zalouser credential persistence", () => {
   });
 
   it("rewrites restored sessions with cookies refreshed by zca-js login", async () => {
-    const stateDir = await mkdtemp(path.join(os.tmpdir(), "NexisClaw-zalouser-credentials-"));
+    const stateDir = await mkdtemp(path.join(os.tmpdir(), "FirstNexus-zalouser-credentials-"));
     const profile = "restore-refresh";
     const storedCookie = [{ key: "zpsid", value: "stored", domain: "chat.zalo.me" }];
     const refreshedCookie = [{ key: "zpsid", value: "refreshed", domain: "chat.zalo.me" }];
@@ -208,7 +208,7 @@ describe("zalouser credential persistence", () => {
   });
 
   it("persists cookie changes after a successful API call", async () => {
-    const stateDir = await mkdtemp(path.join(os.tmpdir(), "NexisClaw-zalouser-credentials-"));
+    const stateDir = await mkdtemp(path.join(os.tmpdir(), "FirstNexus-zalouser-credentials-"));
     const profile = "api-refresh";
     const storedCookie: unknown[] = [{ key: "zpsid", value: "stored", domain: "chat.zalo.me" }];
     const loginCookie: unknown[] = [{ key: "zpsid", value: "login", domain: "chat.zalo.me" }];
@@ -273,7 +273,7 @@ describe("zalouser credential persistence", () => {
   });
 
   it("does not rewrite credentials when the live cookie jar only reorders cookies", async () => {
-    const stateDir = await mkdtemp(path.join(os.tmpdir(), "NexisClaw-zalouser-credentials-"));
+    const stateDir = await mkdtemp(path.join(os.tmpdir(), "FirstNexus-zalouser-credentials-"));
     const profile = "api-stable";
     const cookieA: unknown[] = [
       { key: "zpsid", value: "same", domain: "chat.zalo.me" },
@@ -331,7 +331,7 @@ describe("zalouser credential persistence", () => {
   }
 
   it("keeps reaction sends non-throwing when session restore fails", async () => {
-    const stateDir = await mkdtemp(path.join(os.tmpdir(), "NexisClaw-zalouser-credentials-"));
+    const stateDir = await mkdtemp(path.join(os.tmpdir(), "FirstNexus-zalouser-credentials-"));
 
     try {
       await withEnvAsync({ NEXISCLAW_STATE_DIR: stateDir }, async () => {
@@ -350,7 +350,7 @@ describe("zalouser credential persistence", () => {
   });
 
   it("keeps link sends non-throwing when session restore fails", async () => {
-    const stateDir = await mkdtemp(path.join(os.tmpdir(), "NexisClaw-zalouser-credentials-"));
+    const stateDir = await mkdtemp(path.join(os.tmpdir(), "FirstNexus-zalouser-credentials-"));
 
     try {
       await withEnvAsync({ NEXISCLAW_STATE_DIR: stateDir }, async () => {
@@ -367,7 +367,7 @@ describe("zalouser credential persistence", () => {
   it.skipIf(process.platform === "win32")(
     "writes credentials with private permissions",
     async () => {
-      const stateDir = await mkdtemp(path.join(os.tmpdir(), "NexisClaw-zalouser-credentials-"));
+      const stateDir = await mkdtemp(path.join(os.tmpdir(), "FirstNexus-zalouser-credentials-"));
       const profile = "private-mode";
       const api = createMockApi({
         imei: "api-imei",
@@ -414,7 +414,7 @@ describe("zalouser credential persistence", () => {
   it.skipIf(process.platform === "win32")(
     "refuses to write credentials through a symlinked file",
     async () => {
-      const stateDir = await mkdtemp(path.join(os.tmpdir(), "NexisClaw-zalouser-credentials-"));
+      const stateDir = await mkdtemp(path.join(os.tmpdir(), "FirstNexus-zalouser-credentials-"));
       const profile = "symlink-target";
       const filePath = credentialPath(stateDir, profile);
       const targetPath = path.join(stateDir, "outside.json");

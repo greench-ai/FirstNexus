@@ -2,8 +2,8 @@ import {
   logAckFailure,
   removeAckReactionHandleAfterReply,
   type AckReactionHandle,
-} from "NexisClaw/plugin-sdk/channel-feedback";
-import { recordInboundSession } from "NexisClaw/plugin-sdk/conversation-runtime";
+} from "FirstNexus/plugin-sdk/channel-feedback";
+import { recordInboundSession } from "FirstNexus/plugin-sdk/conversation-runtime";
 import {
   createInternalHookEvent,
   deriveInboundMessageHookContext,
@@ -12,10 +12,10 @@ import {
   toPluginMessageContext,
   toPluginMessageReceivedEvent,
   triggerInternalHook,
-} from "NexisClaw/plugin-sdk/hook-runtime";
-import { runInboundReplyTurn } from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
-import { getGlobalHookRunner } from "NexisClaw/plugin-sdk/plugin-runtime";
-import { resolveBatchedReplyThreadingPolicy } from "NexisClaw/plugin-sdk/reply-reference";
+} from "FirstNexus/plugin-sdk/hook-runtime";
+import { runInboundReplyTurn } from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
+import { getGlobalHookRunner } from "FirstNexus/plugin-sdk/plugin-runtime";
+import { resolveBatchedReplyThreadingPolicy } from "FirstNexus/plugin-sdk/reply-reference";
 import { getPrimaryIdentityId, getSelfIdentity, getSenderIdentity } from "../../identity.js";
 import {
   resolveWhatsAppCommandAuthorized,

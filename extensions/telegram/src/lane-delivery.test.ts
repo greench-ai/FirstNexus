@@ -1,4 +1,4 @@
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
 import { describe, expect, it, vi } from "vitest";
 import { createTestDraftStream } from "./draft-stream.test-helpers.js";
 import {

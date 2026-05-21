@@ -1,8 +1,8 @@
-import { resolveCommandAuthorizedFromAuthorizers } from "NexisClaw/plugin-sdk/command-auth-native";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { resolveOpenProviderRuntimeGroupPolicy } from "NexisClaw/plugin-sdk/runtime-group-policy";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { resolveCommandAuthorizedFromAuthorizers } from "FirstNexus/plugin-sdk/command-auth-native";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { resolveOpenProviderRuntimeGroupPolicy } from "FirstNexus/plugin-sdk/runtime-group-policy";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveDiscordAccountAllowFrom, resolveDiscordAccountDmPolicy } from "../accounts.js";
 import type { AutocompleteInteraction } from "../internal/discord.js";
 import {
@@ -21,7 +21,7 @@ import { resolveDiscordNativeInteractionChannelContext } from "./native-interact
 import { resolveDiscordSenderIdentity } from "./sender-identity.js";
 
 export function resolveDiscordNativeCommandAllowlistAccess(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   sender: { id: string; name?: string; tag?: string };
   chatType: "direct" | "group" | "thread" | "channel";
@@ -64,7 +64,7 @@ export function resolveDiscordNativeCommandAllowlistAccess(params: {
 }
 
 export async function resolveDiscordGuildNativeCommandAuthorized(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   discordConfig: DiscordConfig;
   useAccessGroups: boolean;
@@ -154,7 +154,7 @@ export function resolveDiscordNativeGroupDmAccess(params: {
 
 export async function resolveDiscordNativeAutocompleteAuthorized(params: {
   interaction: AutocompleteInteraction;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordConfig;
   accountId: string;
 }): Promise<boolean> {

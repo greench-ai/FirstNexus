@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanupTempDirs, makeTempDir } from "./helpers/temp-dir.js";
 import { installTestEnv } from "./test-env.js";
@@ -31,7 +31,7 @@ function writeFile(targetPath: string, content: string): void {
 }
 
 function createTempHome(): string {
-  return makeTempDir(tempDirs, "NexisClaw-test-env-real-home-");
+  return makeTempDir(tempDirs, "FirstNexus-test-env-real-home-");
 }
 
 function requireRecord(
@@ -74,19 +74,19 @@ describe("installTestEnv", () => {
     const priorIsolatedHome = createTempHome();
     writeFile(path.join(realHome, ".profile"), "export TEST_PROFILE_ONLY=from-profile\n");
     writeFile(
-      path.join(realHome, "custom-NexisClaw.json5"),
+      path.join(realHome, "custom-FirstNexus.json5"),
       `{
         // Preserve provider config, strip host-bound paths.
         agents: {
           defaults: {
             workspace: "/Users/peter/Projects",
-            agentDir: "/Users/peter/.NexisClaw/agents/main/agent",
+            agentDir: "/Users/peter/.FirstNexus/agents/main/agent",
           },
           list: [
             {
               id: "dev",
               workspace: "/Users/peter/dev-workspace",
-              agentDir: "/Users/peter/.NexisClaw/agents/dev/agent",
+              agentDir: "/Users/peter/.FirstNexus/agents/dev/agent",
             },
           ],
         },
@@ -113,13 +113,13 @@ describe("installTestEnv", () => {
         },
       }`,
     );
-    writeFile(path.join(realHome, ".NexisClaw", "credentials", "token.txt"), "secret\n");
+    writeFile(path.join(realHome, ".FirstNexus", "credentials", "token.txt"), "secret\n");
     writeFile(
-      path.join(realHome, ".NexisClaw", "external-plugins", "glueclaw", "NexisClaw.plugin.json"),
+      path.join(realHome, ".FirstNexus", "external-plugins", "glueclaw", "FirstNexus.plugin.json"),
       '{"id":"glueclaw"}\n',
     );
     writeFile(
-      path.join(realHome, ".NexisClaw", "agents", "main", "agent", "auth-profiles.json"),
+      path.join(realHome, ".FirstNexus", "agents", "main", "agent", "auth-profiles.json"),
       JSON.stringify({ version: 1, profiles: { default: { provider: "openai" } } }, null, 2),
     );
     writeFile(path.join(realHome, ".claude", ".credentials.json"), '{"accessToken":"token"}\n');
@@ -136,9 +136,9 @@ describe("installTestEnv", () => {
     process.env.USERPROFILE = realHome;
     process.env.NEXISCLAW_LIVE_TEST = "1";
     process.env.NEXISCLAW_LIVE_TEST_QUIET = "1";
-    process.env.NEXISCLAW_CONFIG_PATH = "~/custom-NexisClaw.json5";
+    process.env.NEXISCLAW_CONFIG_PATH = "~/custom-FirstNexus.json5";
     process.env.NEXISCLAW_TEST_HOME = priorIsolatedHome;
-    process.env.NEXISCLAW_STATE_DIR = path.join(priorIsolatedHome, ".NexisClaw");
+    process.env.NEXISCLAW_STATE_DIR = path.join(priorIsolatedHome, ".FirstNexus");
 
     const testEnv = installTestEnv();
     cleanupFns.push(testEnv.cleanup);
@@ -148,7 +148,7 @@ describe("installTestEnv", () => {
     expect(process.env.NEXISCLAW_TEST_HOME).toBe(testEnv.tempHome);
     expect(process.env.TEST_PROFILE_ONLY).toBe("from-profile");
 
-    const copiedConfigPath = path.join(testEnv.tempHome, ".NexisClaw", "NexisClaw.json");
+    const copiedConfigPath = path.join(testEnv.tempHome, ".FirstNexus", "FirstNexus.json");
     const copiedConfig = JSON.parse(fs.readFileSync(copiedConfigPath, "utf8")) as {
       agents?: {
         defaults?: Record<string, unknown>;
@@ -186,22 +186,22 @@ describe("installTestEnv", () => {
     });
 
     expect(
-      fs.existsSync(path.join(testEnv.tempHome, ".NexisClaw", "credentials", "token.txt")),
+      fs.existsSync(path.join(testEnv.tempHome, ".FirstNexus", "credentials", "token.txt")),
     ).toBe(true);
     expect(
       fs.existsSync(
         path.join(
           testEnv.tempHome,
-          ".NexisClaw",
+          ".FirstNexus",
           "external-plugins",
           "glueclaw",
-          "NexisClaw.plugin.json",
+          "FirstNexus.plugin.json",
         ),
       ),
     ).toBe(true);
     expect(
       fs.existsSync(
-        path.join(testEnv.tempHome, ".NexisClaw", "agents", "main", "agent", "auth-profiles.json"),
+        path.join(testEnv.tempHome, ".FirstNexus", "agents", "main", "agent", "auth-profiles.json"),
       ),
     ).toBe(true);
     expect(fs.existsSync(path.join(testEnv.tempHome, ".claude", ".credentials.json"))).toBe(true);

@@ -1,11 +1,11 @@
-import { isProviderApiKeyConfigured } from "NexisClaw/plugin-sdk/provider-auth";
+import { isProviderApiKeyConfigured } from "FirstNexus/plugin-sdk/provider-auth";
 import {
   assertOkOrThrowHttpError,
   createProviderOperationDeadline,
   postJsonRequest,
   resolveProviderOperationTimeoutMs,
-} from "NexisClaw/plugin-sdk/provider-http";
-import type { VideoGenerationProvider } from "NexisClaw/plugin-sdk/video-generation";
+} from "FirstNexus/plugin-sdk/provider-http";
+import type { VideoGenerationProvider } from "FirstNexus/plugin-sdk/video-generation";
 import {
   DEFAULT_VYDRA_VIDEO_MODEL,
   downloadVydraAsset,

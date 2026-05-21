@@ -11,8 +11,8 @@ Experimental Canvas control and A2UI rendering surfaces for paired nodes.
 
 ## Distribution
 
-- Package: `@NexisClaw/canvas-plugin`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/canvas-plugin`
+- Install route: included in FirstNexus
 
 ## Surface
 

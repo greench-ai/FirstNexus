@@ -3,7 +3,7 @@ import {
   resolveMainSessionKey,
 } from "../../config/sessions/main-session.js";
 import type { SessionAcpMeta } from "../../config/sessions/types.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   normalizeAgentId,
   normalizeMainKey,
@@ -52,7 +52,7 @@ function normalizeSessionKey(sessionKey: string): string {
 }
 
 export function canonicalizeAcpSessionKey(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
 }): string {
   const normalized = normalizeSessionKey(params.sessionKey);
@@ -105,7 +105,7 @@ export function createUnsupportedControlError(params: {
   );
 }
 
-export function resolveRuntimeIdleTtlMs(cfg: NexisClawConfig): number {
+export function resolveRuntimeIdleTtlMs(cfg: FirstNexusConfig): number {
   const ttlMinutes = cfg.acp?.runtime?.ttlMinutes;
   if (typeof ttlMinutes !== "number" || !Number.isFinite(ttlMinutes) || ttlMinutes <= 0) {
     return 0;

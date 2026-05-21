@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: NexisClaw
+  name: FirstNexus
   labels:
-    app: NexisClaw
+    app: FirstNexus
 spec:
   type: ClusterIP
   selector:
-    app: NexisClaw
+    app: FirstNexus
   ports:
     - name: gateway
       port: 18789

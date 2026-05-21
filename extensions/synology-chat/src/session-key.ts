@@ -1,4 +1,4 @@
-import { buildAgentSessionKey } from "NexisClaw/plugin-sdk/routing";
+import { buildAgentSessionKey } from "FirstNexus/plugin-sdk/routing";
 
 const CHANNEL_ID = "synology-chat";
 

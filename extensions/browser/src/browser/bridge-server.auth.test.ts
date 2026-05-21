@@ -70,10 +70,10 @@ describe("startBrowserBridgeServer auth", () => {
     await expectAuthFlow({ authToken: "secret-token" }, { Authorization: "Bearer secret-token" });
   });
 
-  it("accepts x-NexisClaw-password when authPassword is set", async () => {
+  it("accepts x-FirstNexus-password when authPassword is set", async () => {
     await expectAuthFlow(
       { authPassword: "secret-password" },
-      { "x-NexisClaw-password": "secret-password" },
+      { "x-FirstNexus-password": "secret-password" },
     );
   });
 

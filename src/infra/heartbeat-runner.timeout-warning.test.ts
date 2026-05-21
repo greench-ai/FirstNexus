@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 
-function createHeartbeatConfig(every: string): NexisClawConfig {
+function createHeartbeatConfig(every: string): FirstNexusConfig {
   return {
     agents: {
       defaults: { heartbeat: { every } },
       list: [{ id: "main", heartbeat: { every } }],
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 describe("startHeartbeatRunner timeout overflow warnings", () => {

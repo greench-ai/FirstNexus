@@ -16,9 +16,9 @@ type LoginOpenAICodexOAuth = (params: unknown) => Promise<{
   email?: string;
 } | null>;
 type EnsureAuthProfileStore =
-  typeof import("NexisClaw/plugin-sdk/provider-auth").ensureAuthProfileStore;
+  typeof import("FirstNexus/plugin-sdk/provider-auth").ensureAuthProfileStore;
 type ListProfilesForProvider =
-  typeof import("NexisClaw/plugin-sdk/provider-auth").listProfilesForProvider;
+  typeof import("FirstNexus/plugin-sdk/provider-auth").listProfilesForProvider;
 
 const ensureAuthProfileStoreMock = vi.hoisted(() => vi.fn<EnsureAuthProfileStore>());
 const listProfilesForProviderMock = vi.hoisted(() => vi.fn<ListProfilesForProvider>());
@@ -110,9 +110,9 @@ function buildOpenAICodexOAuthResult(params: {
 
 function installSharedAuthProfileStoreHooks(state: { authStore: AuthProfileStore }) {
   beforeEach(() => {
-    vi.doMock("NexisClaw/plugin-sdk/provider-auth", async () => {
-      const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/provider-auth")>(
-        "NexisClaw/plugin-sdk/provider-auth",
+    vi.doMock("FirstNexus/plugin-sdk/provider-auth", async () => {
+      const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/provider-auth")>(
+        "FirstNexus/plugin-sdk/provider-auth",
       );
       return {
         ...actual,

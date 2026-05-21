@@ -26,9 +26,9 @@ describe("parallels npm update smoke", () => {
     const script = readFileSync(SCRIPT_PATH, "utf8");
 
     expect(script).toContain("--beta-validation [target]");
-    expect(script).toContain("resolveNexisClawRegistryVersion");
+    expect(script).toContain("resolveFirstNexusRegistryVersion");
     expect(script).toContain("this.options.updateTarget = version");
-    expect(script).toContain("this.options.freshTargetSpec = `NexisClaw@${version}`");
+    expect(script).toContain("this.options.freshTargetSpec = `FirstNexus@${version}`");
     expect(script).toContain("runFreshTargetInstalls");
     expect(script).toContain("freshTargetStatus");
   });
@@ -68,18 +68,18 @@ describe("parallels npm update smoke", () => {
     expect(script).toContain("scrub_future_plugin_entries");
     expect(script).toContain("delete plugins.entries.feishu");
     expect(script).toContain("delete plugins.entries.whatsapp");
-    expect(script).toContain("Remove-FuturePluginEntries\nStop-NexisClawGatewayProcesses");
-    expect(script).toContain("scrub_future_plugin_entries\nstop_NexisClaw_gateway_processes");
+    expect(script).toContain("Remove-FuturePluginEntries\nStop-FirstNexusGatewayProcesses");
+    expect(script).toContain("scrub_future_plugin_entries\nstop_FirstNexus_gateway_processes");
     expect(script).toContain("Invoke-WithScopedEnv @{ NEXISCLAW_DISABLE_BUNDLED_PLUGINS = '1'");
     expect(script).toContain(
-      "NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1 /opt/homebrew/bin/NexisClaw update --tag",
+      "NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1 /opt/homebrew/bin/FirstNexus update --tag",
     );
-    expect(script).toContain("NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1 NexisClaw update --tag");
+    expect(script).toContain("NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1 FirstNexus update --tag");
     expect(script).toContain(
-      "NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1 /opt/homebrew/bin/NexisClaw gateway stop",
+      "NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1 /opt/homebrew/bin/FirstNexus gateway stop",
     );
     expect(script).toContain(
-      "NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1 NEXISCLAW_ALLOW_ROOT=1 NexisClaw gateway stop",
+      "NEXISCLAW_DISABLE_BUNDLED_PLUGINS=1 NEXISCLAW_ALLOW_ROOT=1 FirstNexus gateway stop",
     );
   });
 
@@ -90,11 +90,11 @@ describe("parallels npm update smoke", () => {
       updateTarget: "2026.5.3-beta.2",
     });
 
-    const updateIndex = script.indexOf("Invoke-NexisClaw update --tag");
+    const updateIndex = script.indexOf("Invoke-FirstNexus update --tag");
     const scopedIndex = script.indexOf("Invoke-WithScopedEnv @{ NEXISCLAW_DISABLE_BUNDLED_PLUGINS");
-    const versionIndex = script.indexOf("Invoke-NexisClaw --version", scopedIndex);
-    const restartIndex = script.indexOf("Invoke-NexisClaw gateway restart");
-    const agentIndex = script.indexOf("Invoke-NexisClaw agent --local");
+    const versionIndex = script.indexOf("Invoke-FirstNexus --version", scopedIndex);
+    const restartIndex = script.indexOf("Invoke-FirstNexus gateway restart");
+    const agentIndex = script.indexOf("Invoke-FirstNexus agent --local");
 
     expect(updateIndex).toBeGreaterThanOrEqual(0);
     expect(scopedIndex).toBeGreaterThanOrEqual(0);
@@ -124,13 +124,13 @@ describe("parallels npm update smoke", () => {
     expect(staleImportLine).toContain("$updateText -match 'ERR_MODULE_NOT_FOUND'");
     expect(staleImportLine).toContain(`$updateText -match '${staleImportPattern}'`);
     expect(staleImportPattern).toBe(
-      String.raw`node_modules\\NexisClaw\\dist\\[^\\]+-[A-Za-z0-9_-]+\.js`,
+      String.raw`node_modules\\FirstNexus\\dist\\[^\\]+-[A-Za-z0-9_-]+\.js`,
     );
-    expect(staleImportPattern).not.toContain("node_modules\\NexisClaw\\dist\\");
+    expect(staleImportPattern).not.toContain("node_modules\\FirstNexus\\dist\\");
     expect(staleImportPattern.match(/\\\\/g)).toHaveLength(4);
-    const representativeUpdateFailure = String.raw`Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\runner\AppData\Roaming\npm\node_modules\NexisClaw\dist\main-a1_B2.js' imported from C:\Users\runner\AppData\Roaming\npm\node_modules\NexisClaw\dist\cli.js`;
+    const representativeUpdateFailure = String.raw`Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\runner\AppData\Roaming\npm\node_modules\FirstNexus\dist\main-a1_B2.js' imported from C:\Users\runner\AppData\Roaming\npm\node_modules\FirstNexus\dist\cli.js`;
     const generatedRegex = new RegExp(staleImportPattern);
     expect(generatedRegex.test(representativeUpdateFailure)).toBe(true);
-    expect(generatedRegex.test(String.raw`node_modules\NexisClaw\dist\main.js`)).toBe(false);
+    expect(generatedRegex.test(String.raw`node_modules\FirstNexus\dist\main.js`)).toBe(false);
   });
 });

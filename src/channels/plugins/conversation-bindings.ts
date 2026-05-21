@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { getChannelPlugin } from "./registry.js";
 import type { ChannelId } from "./types.public.js";
 
 export async function createChannelConversationBindingManager(params: {
   channelId: ChannelId;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): Promise<{ stop: () => void | Promise<void> } | null> {
   const createManager = getChannelPlugin(params.channelId)?.conversationBindings?.createManager;

@@ -1,6 +1,6 @@
 // Shared MCP-channel Docker E2E harness helpers.
 // The mounted test harness imports packaged dist modules so bridge assertions run
-// against the NexisClaw npm tarball installed in the functional image.
+// against the FirstNexus npm tarball installed in the functional image.
 import { randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import process from "node:process";
@@ -249,7 +249,7 @@ async function connectGatewayOnce(params: {
       minProtocol: PROTOCOL_VERSION,
       maxProtocol: PROTOCOL_VERSION,
       client: {
-        id: "NexisClaw-tui",
+        id: "FirstNexus-tui",
         displayName: "docker-mcp-channels",
         version: "1.0.0",
         platform: process.platform,
@@ -306,14 +306,14 @@ export async function connectMcpClient(params: {
   gatewayUrl: string;
   gatewayToken: string;
 }): Promise<McpClientHandle> {
-  const tokenDir = "/tmp/NexisClaw-mcp-client";
+  const tokenDir = "/tmp/FirstNexus-mcp-client";
   const tokenFile = `${tokenDir}/gateway.token`;
   mkdirSync(tokenDir, { recursive: true });
   writeFileSync(tokenFile, `${params.gatewayToken}\n`, { encoding: "utf8", mode: 0o600 });
   const transport = new StdioClientTransport({
     command: "node",
     args: [
-      "/app/NexisClaw.mjs",
+      "/app/FirstNexus.mjs",
       "mcp",
       "serve",
       "--url",
@@ -327,12 +327,12 @@ export async function connectMcpClient(params: {
     env: {
       ...process.env,
       NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS: "1",
-      NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-mcp-client",
+      NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-mcp-client",
     },
     stderr: "pipe",
   });
   transport.stderr?.on("data", (chunk) => {
-    process.stderr.write(`[NexisClaw mcp] ${String(chunk)}`);
+    process.stderr.write(`[FirstNexus mcp] ${String(chunk)}`);
   });
   const rawMessages: unknown[] = [];
   // The MCP stdio transport here exposes a writable onmessage callback at

@@ -144,10 +144,10 @@ function createState(capacity = DEFAULT_DIAGNOSTIC_STABILITY_CAPACITY): Diagnost
 
 function getDiagnosticStabilityState(): DiagnosticStabilityState {
   const globalStore = globalThis as typeof globalThis & {
-    __NexisClawDiagnosticStabilityState?: DiagnosticStabilityState;
+    __FirstNexusDiagnosticStabilityState?: DiagnosticStabilityState;
   };
-  globalStore.__NexisClawDiagnosticStabilityState ??= createState();
-  return globalStore.__NexisClawDiagnosticStabilityState;
+  globalStore.__FirstNexusDiagnosticStabilityState ??= createState();
+  return globalStore.__FirstNexusDiagnosticStabilityState;
 }
 
 function copyMemory(memory: DiagnosticMemoryUsage): DiagnosticMemoryUsage {
@@ -708,7 +708,7 @@ export function resetDiagnosticStabilityRecorderForTest(): void {
   state.unsubscribe?.();
   const next = createState(state.capacity);
   const globalStore = globalThis as typeof globalThis & {
-    __NexisClawDiagnosticStabilityState?: DiagnosticStabilityState;
+    __FirstNexusDiagnosticStabilityState?: DiagnosticStabilityState;
   };
-  globalStore.__NexisClawDiagnosticStabilityState = next;
+  globalStore.__FirstNexusDiagnosticStabilityState = next;
 }

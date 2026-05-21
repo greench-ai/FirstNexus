@@ -6,7 +6,7 @@ import {
   type HeartbeatToolResponse,
 } from "../auto-reply/heartbeat-tool-response.js";
 import { markReplyPayloadForSourceSuppressionDelivery } from "../auto-reply/types.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { runHeartbeatOnce, type HeartbeatDeps } from "./heartbeat-runner.js";
 import { installHeartbeatRunnerTestRuntime } from "./heartbeat-runner.test-harness.js";
 import {
@@ -29,7 +29,7 @@ describe("runHeartbeatOnce heartbeat response tool", () => {
     visibleReplies?: "automatic" | "message_tool";
     agentRuntimeId?: string;
     model?: string;
-  }): NexisClawConfig {
+  }): FirstNexusConfig {
     return {
       agents: {
         defaults: {
@@ -48,7 +48,7 @@ describe("runHeartbeatOnce heartbeat response tool", () => {
         },
       },
       session: { store: params.storePath },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
   }
 
   function createDeps(params: {
@@ -65,7 +65,7 @@ describe("runHeartbeatOnce heartbeat response tool", () => {
 
   function expectTelegramSend(
     sendTelegram: ReturnType<typeof vi.fn>,
-    params: { text: string; cfg: NexisClawConfig },
+    params: { text: string; cfg: FirstNexusConfig },
   ) {
     expect(sendTelegram).toHaveBeenCalledTimes(1);
     expect(sendTelegram.mock.calls).toEqual([
@@ -140,7 +140,7 @@ describe("runHeartbeatOnce heartbeat response tool", () => {
       beforeSeed?: (params: {
         tmpDir: string;
         storePath: string;
-        cfg: NexisClawConfig;
+        cfg: FirstNexusConfig;
       }) => Promise<void>;
     } = {},
   ) {

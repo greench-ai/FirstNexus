@@ -45,7 +45,7 @@ export async function resolveCodexAppServerProtocolSource(repoRoot: string): Pro
   throw new Error(
     [
       "Codex app-server protocol schema not found.",
-      "Set NEXISCLAW_CODEX_REPO to a checkout of openai/codex, or keep a sibling `codex` checkout next to the primary NexisClaw checkout.",
+      "Set NEXISCLAW_CODEX_REPO to a checkout of openai/codex, or keep a sibling `codex` checkout next to the primary FirstNexus checkout.",
       `Checked: ${checked.join(", ") || "<none>"}`,
     ].join("\n"),
   );

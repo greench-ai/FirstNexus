@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../../../config/config.js";
+import type { FirstNexusConfig } from "../../../config/config.js";
 import {
   __testing as sessionBindingTesting,
   getSessionBindingService,
@@ -20,7 +20,7 @@ import {
 
 const baseCfg = {
   session: { mainKey: "main", scope: "per-sender" },
-} satisfies NexisClawConfig;
+} satisfies FirstNexusConfig;
 
 function parseTelegramChatIdForTest(raw?: string | null): string | undefined {
   const trimmed = raw?.trim().replace(/^telegram:/i, "");

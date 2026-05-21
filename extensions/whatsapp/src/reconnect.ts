@@ -1,11 +1,11 @@
 import { randomUUID } from "node:crypto";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   computeBackoff,
   sleepWithAbort,
   type BackoffPolicy,
-} from "NexisClaw/plugin-sdk/runtime-env";
-import { clamp } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/runtime-env";
+import { clamp } from "FirstNexus/plugin-sdk/text-utility-runtime";
 
 export type ReconnectPolicy = BackoffPolicy & {
   maxAttempts: number;
@@ -20,7 +20,7 @@ export const DEFAULT_RECONNECT_POLICY: ReconnectPolicy = {
   maxAttempts: 12,
 };
 
-export function resolveHeartbeatSeconds(cfg: NexisClawConfig, overrideSeconds?: number): number {
+export function resolveHeartbeatSeconds(cfg: FirstNexusConfig, overrideSeconds?: number): number {
   const candidate = overrideSeconds ?? cfg.web?.heartbeatSeconds;
   if (typeof candidate === "number" && candidate > 0) {
     return candidate;
@@ -29,7 +29,7 @@ export function resolveHeartbeatSeconds(cfg: NexisClawConfig, overrideSeconds?: 
 }
 
 export function resolveReconnectPolicy(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   overrides?: Partial<ReconnectPolicy>,
 ): ReconnectPolicy {
   const reconnectOverrides = cfg.web?.reconnect ?? {};

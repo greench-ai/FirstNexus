@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { clearPluginCommands, registerPluginCommand } from "NexisClaw/plugin-sdk/plugin-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { clearPluginCommands, registerPluginCommand } from "FirstNexus/plugin-sdk/plugin-runtime";
 import { afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 let registerTelegramNativeCommands: typeof import("./bot-native-commands.js").registerTelegramNativeCommands;
-let setActivePluginRegistry: typeof import("NexisClaw/plugin-sdk/plugin-test-runtime").setActivePluginRegistry;
+let setActivePluginRegistry: typeof import("FirstNexus/plugin-sdk/plugin-test-runtime").setActivePluginRegistry;
 let createCommandBot: typeof import("./bot-native-commands.menu-test-support.js").createCommandBot;
 let createNativeCommandTestParams: typeof import("./bot-native-commands.menu-test-support.js").createNativeCommandTestParams;
 let createPrivateCommandContext: typeof import("./bot-native-commands.menu-test-support.js").createPrivateCommandContext;
@@ -149,7 +149,7 @@ function mockCall(mock: { mock: { calls: unknown[][] } }, index: number): unknow
 
 describe("registerTelegramNativeCommands real plugin registry", () => {
   beforeAll(async () => {
-    ({ setActivePluginRegistry } = await import("NexisClaw/plugin-sdk/plugin-test-runtime"));
+    ({ setActivePluginRegistry } = await import("FirstNexus/plugin-sdk/plugin-test-runtime"));
     ({ registerTelegramNativeCommands } = await import("./bot-native-commands.js"));
     ({
       createCommandBot,
@@ -260,7 +260,7 @@ describe("registerTelegramNativeCommands real plugin registry", () => {
 
     registerTelegramNativeCommands({
       ...createNativeCommandTestParams({
-        commands: { allowFrom: { telegram: ["999"] } } as NexisClawConfig["commands"],
+        commands: { allowFrom: { telegram: ["999"] } } as FirstNexusConfig["commands"],
       }),
       bot,
       allowFrom: ["999"],

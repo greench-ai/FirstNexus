@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
 export type WhatsAppSocketTimingOptions = {
   keepAliveIntervalMs?: number;
@@ -17,7 +17,7 @@ function positiveInteger(value: number | undefined): number | undefined {
 }
 
 export function resolveWhatsAppSocketTiming(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   overrides?: WhatsAppSocketTimingOptions,
 ): Required<WhatsAppSocketTimingOptions> {
   const configured = cfg.web?.whatsapp;

@@ -276,7 +276,7 @@ function auditGatewayToken(
   issues.push({
     code: SERVICE_AUDIT_CODES.gatewayTokenEmbedded,
     message: "Gateway service embeds NEXISCLAW_GATEWAY_TOKEN and should be reinstalled.",
-    detail: "Run `NexisClaw gateway install --force` to remove embedded service token.",
+    detail: "Run `FirstNexus gateway install --force` to remove embedded service token.",
     level: "recommended",
   });
   const expectedToken = normalizeOptionalString(expectedGatewayToken);
@@ -286,7 +286,7 @@ function auditGatewayToken(
   issues.push({
     code: SERVICE_AUDIT_CODES.gatewayTokenMismatch,
     message:
-      "Gateway service NEXISCLAW_GATEWAY_TOKEN does not match gateway.auth.token in NexisClaw.json",
+      "Gateway service NEXISCLAW_GATEWAY_TOKEN does not match gateway.auth.token in FirstNexus.json",
     detail: "service token is stale",
     level: "recommended",
   });
@@ -537,7 +537,7 @@ export function checkTokenDrift(params: {
       code: SERVICE_AUDIT_CODES.gatewayTokenDrift,
       message:
         "Config token differs from service token. The daemon will use the old token after restart.",
-      detail: "Run `NexisClaw gateway install --force` to sync the token.",
+      detail: "Run `FirstNexus gateway install --force` to sync the token.",
       level: "recommended",
     };
   }

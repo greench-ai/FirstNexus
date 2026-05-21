@@ -1,4 +1,4 @@
-import type { TelegramNetworkConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { TelegramNetworkConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
 export type TelegramGroupMembershipAuditEntry = {
   chatId: string;

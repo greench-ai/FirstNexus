@@ -19,7 +19,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-installed-plugin-index-store", tempDirs);
+  return makeTrackedTempDir("FirstNexus-installed-plugin-index-store", tempDirs);
 }
 
 function createIndex(overrides: Partial<InstalledPluginIndex> = {}): InstalledPluginIndex {
@@ -34,7 +34,7 @@ function createIndex(overrides: Partial<InstalledPluginIndex> = {}): InstalledPl
     plugins: [
       {
         pluginId: "demo",
-        manifestPath: "/plugins/demo/NexisClaw.plugin.json",
+        manifestPath: "/plugins/demo/FirstNexus.plugin.json",
         manifestHash: "manifest-hash",
         rootDir: "/plugins/demo",
         origin: "global",
@@ -62,7 +62,7 @@ function createCandidate(rootDir: string, options: { id?: string } = {}): Plugin
     "utf8",
   );
   fs.writeFileSync(
-    path.join(rootDir, "NexisClaw.plugin.json"),
+    path.join(rootDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id,
       name: id === "demo" ? "Demo" : "Next Demo",
@@ -281,7 +281,7 @@ describe("installed plugin index persistence", () => {
     expectPluginFields(policyInspect.current, "demo", { enabled: false });
 
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "demo",
         name: "Demo",
@@ -344,7 +344,7 @@ describe("installed plugin index persistence", () => {
       env,
     });
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "demo",
         name: "Demo",

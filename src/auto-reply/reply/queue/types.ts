@@ -3,7 +3,7 @@ import type { CurrentTurnPromptContext } from "../../../agents/pi-embedded-runne
 import type { SkillSnapshot } from "../../../agents/skills.js";
 import type { SilentReplyPromptMode } from "../../../agents/system-prompt.types.js";
 import type { SessionEntry } from "../../../config/sessions.js";
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import type { PromptImageOrderEntry } from "../../../media/prompt-image-order.js";
 import type { InputProvenance } from "../../../sessions/input-provenance.js";
 import type { SourceReplyDeliveryMode } from "../../get-reply-options.types.js";
@@ -71,7 +71,7 @@ export type FollowupRun = {
     traceAuthorized?: boolean;
     sessionFile: string;
     workspaceDir: string;
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     skillsSnapshot?: SkillSnapshot;
     provider: string;
     model: string;
@@ -105,7 +105,7 @@ export type FollowupRun = {
 };
 
 export type ResolveQueueSettingsParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channel?: string;
   sessionEntry?: SessionEntry;
   inlineMode?: QueueMode;

@@ -1,33 +1,33 @@
-import { type Bot, GrammyError, InputFile } from "grammy";
-import type { ReplyToMode } from "NexisClaw/plugin-sdk/config-contracts";
-import type { MarkdownTableMode } from "NexisClaw/plugin-sdk/config-contracts";
-import { fireAndForgetHook } from "NexisClaw/plugin-sdk/hook-runtime";
-import { createInternalHookEvent, triggerInternalHook } from "NexisClaw/plugin-sdk/hook-runtime";
+import type { ReplyToMode } from "FirstNexus/plugin-sdk/config-contracts";
+import type { MarkdownTableMode } from "FirstNexus/plugin-sdk/config-contracts";
+import { fireAndForgetHook } from "FirstNexus/plugin-sdk/hook-runtime";
+import { createInternalHookEvent, triggerInternalHook } from "FirstNexus/plugin-sdk/hook-runtime";
 import {
   buildCanonicalSentMessageHookContext,
   toInternalMessageSentContext,
   toPluginMessageContext,
   toPluginMessageSentEvent,
-} from "NexisClaw/plugin-sdk/hook-runtime";
-import type { ReplyPayloadDelivery } from "NexisClaw/plugin-sdk/interactive-runtime";
+} from "FirstNexus/plugin-sdk/hook-runtime";
+import type { ReplyPayloadDelivery } from "FirstNexus/plugin-sdk/interactive-runtime";
 import {
   buildOutboundMediaLoadOptions,
   isGifMedia,
   kindFromMime,
   probeVideoDimensions,
-} from "NexisClaw/plugin-sdk/media-runtime";
+} from "FirstNexus/plugin-sdk/media-runtime";
 import {
   createOutboundPayloadPlan,
   projectOutboundPayloadPlanForDelivery,
-} from "NexisClaw/plugin-sdk/outbound-runtime";
-import { getGlobalHookRunner } from "NexisClaw/plugin-sdk/plugin-runtime";
-import { chunkMarkdownTextWithMode, type ChunkMode } from "NexisClaw/plugin-sdk/reply-chunking";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-payload";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { danger, logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { loadWebMedia } from "NexisClaw/plugin-sdk/web-media";
+} from "FirstNexus/plugin-sdk/outbound-runtime";
+import { getGlobalHookRunner } from "FirstNexus/plugin-sdk/plugin-runtime";
+import { chunkMarkdownTextWithMode, type ChunkMode } from "FirstNexus/plugin-sdk/reply-chunking";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-payload";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { danger, logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { loadWebMedia } from "FirstNexus/plugin-sdk/web-media";
+import { type Bot, GrammyError, InputFile } from "grammy";
 import { resolveTelegramInlineButtons, type TelegramInlineButtons } from "../button-types.js";
 import { splitTelegramCaption } from "../caption.js";
 import {
@@ -668,7 +668,7 @@ export function emitTelegramMessageSentHooks(params: EmitMessageSentHookParams):
 
 export async function deliverReplies(params: {
   replies: ReplyPayload[];
-  cfg?: import("NexisClaw/plugin-sdk/config-contracts").NexisClawConfig;
+  cfg?: import("FirstNexus/plugin-sdk/config-contracts").FirstNexusConfig;
   chatId: string;
   accountId?: string;
   sessionKeyForInternalHooks?: string;

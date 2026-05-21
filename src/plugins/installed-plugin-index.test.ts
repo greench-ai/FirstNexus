@@ -18,7 +18,7 @@ import {
 } from "./installed-plugin-index.js";
 import { recordPluginInstall } from "./installs.js";
 import type { PluginManifestRecord } from "./manifest-registry.js";
-import type { NexisClawPackageManifest } from "./manifest.js";
+import type { FirstNexusPackageManifest } from "./manifest.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
 vi.unmock("../version.js");
@@ -30,11 +30,11 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-installed-plugin-index", tempDirs);
+  return makeTrackedTempDir("FirstNexus-installed-plugin-index", tempDirs);
 }
 
 function writePluginManifest(rootDir: string, manifest: Record<string, unknown>) {
-  fs.writeFileSync(path.join(rootDir, "NexisClaw.plugin.json"), JSON.stringify(manifest), "utf-8");
+  fs.writeFileSync(path.join(rootDir, "FirstNexus.plugin.json"), JSON.stringify(manifest), "utf-8");
 }
 
 function writePackageJson(rootDir: string, packageJson: Record<string, unknown>) {
@@ -102,7 +102,7 @@ function createPluginCandidate(params: {
   packageName?: string;
   packageVersion?: string;
   packageDir?: string;
-  packageManifest?: NexisClawPackageManifest;
+  packageManifest?: FirstNexusPackageManifest;
   format?: PluginCandidate["format"];
   bundleFormat?: PluginCandidate["bundleFormat"];
 }): PluginCandidate {
@@ -326,7 +326,7 @@ describe("installed plugin index", () => {
   it("tolerates stale manifest records without normalized channels", () => {
     const rootDir = makeTempDir();
     writeRuntimeEntry(rootDir);
-    const manifestPath = path.join(rootDir, "NexisClaw.plugin.json");
+    const manifestPath = path.join(rootDir, "FirstNexus.plugin.json");
 
     const records = buildInstalledPluginIndexRecords({
       candidates: [createPluginCandidate({ rootDir })],

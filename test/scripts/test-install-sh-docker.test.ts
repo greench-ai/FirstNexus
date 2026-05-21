@@ -7,8 +7,8 @@ const SMOKE_RUNNER_PATH = "scripts/docker/install-sh-smoke/run.sh";
 const BUN_GLOBAL_SMOKE_PATH = "scripts/e2e/bun-global-install-smoke.sh";
 const BUN_GLOBAL_ASSERTIONS_PATH = "scripts/e2e/lib/bun-global-install/assertions.mjs";
 const INSTALL_SMOKE_WORKFLOW_PATH = ".github/workflows/install-smoke.yml";
-const RELEASE_CHECKS_WORKFLOW_PATH = ".github/workflows/NexisClaw-release-checks.yml";
-const LIVE_E2E_WORKFLOW_PATH = ".github/workflows/NexisClaw-live-and-e2e-checks-reusable.yml";
+const RELEASE_CHECKS_WORKFLOW_PATH = ".github/workflows/FirstNexus-release-checks.yml";
+const LIVE_E2E_WORKFLOW_PATH = ".github/workflows/FirstNexus-live-and-e2e-checks-reusable.yml";
 
 describe("test-install-sh-docker", () => {
   it("defaults local Apple Silicon smoke runs to native arm64 while keeping CI on amd64", () => {
@@ -92,7 +92,9 @@ describe("test-install-sh-docker", () => {
 
     expect(script).toContain('export NEXISCLAW_INSTALL_BROWSER="${NEXISCLAW_INSTALL_BROWSER:-}"');
     expect(script).toContain("NEXISCLAW_INSTALL_BROWSER \\");
-    expect(script).toContain('--build-arg "NEXISCLAW_INSTALL_BROWSER=${NEXISCLAW_INSTALL_BROWSER}"');
+    expect(script).toContain(
+      '--build-arg "NEXISCLAW_INSTALL_BROWSER=${NEXISCLAW_INSTALL_BROWSER}"',
+    );
   });
 
   it("allows repository branch history and release tags for secret-backed Docker release checks", () => {
@@ -102,7 +104,7 @@ describe("test-install-sh-docker", () => {
     expect(workflow).toContain('git rev-parse --verify "${INPUT_REF}^{commit}"');
     expect(workflow).toContain("repository-branch-history");
     expect(workflow).toContain("git tag --points-at \"$selected_sha\" | grep -Eq '^v'");
-    expect(workflow).toContain("reachable from an NexisClaw branch or release tag");
+    expect(workflow).toContain("reachable from an FirstNexus branch or release tag");
   });
 
   it("prints package size audits for release smoke tarballs", () => {
@@ -129,7 +131,7 @@ describe("test-install-sh-docker", () => {
     expect(script).toContain("node --import tsx scripts/write-package-dist-inventory.ts");
     expect(script).toContain('node scripts/check-package-dist-imports.mjs "$ROOT_DIR"');
     expect(script).toContain("quiet_npm pack --ignore-scripts");
-    expect(script).toContain("node scripts/check-NexisClaw-package-tarball.mjs");
+    expect(script).toContain("node scripts/check-FirstNexus-package-tarball.mjs");
   });
 });
 
@@ -149,7 +151,7 @@ describe("install-sh smoke runner", () => {
     expect(script).toContain("==> Still running");
     expect(script).toContain("print_install_audit");
     expect(script).toContain('install -g "$@"');
-    expect(script).toContain("NexisClaw update --tag");
+    expect(script).toContain("FirstNexus update --tag");
     expect(script).toContain("is_self_swapped_package_process_exit");
     expect(script).toContain("legacy updater process exited after self-swap");
     expect(script).toContain("parseFirstJsonObject");

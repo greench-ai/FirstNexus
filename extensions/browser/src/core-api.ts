@@ -106,10 +106,10 @@ export {
 } from "./sdk-node-runtime.js";
 export { createSubsystemLogger, wrapExternalContent } from "./sdk-security-runtime.js";
 export type { AnyAgentTool, NodeListNode } from "./sdk-setup-tools.js";
-export type { NexisClawConfig } from "./sdk-config.js";
+export type { FirstNexusConfig } from "./sdk-config.js";
 export type {
   GatewayRequestHandlers,
   GatewayRpcOpts,
   NodeSession,
-  NexisClawPluginService,
+  FirstNexusPluginService,
 } from "./sdk-node-runtime.js";

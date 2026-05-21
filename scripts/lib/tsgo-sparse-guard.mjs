@@ -15,7 +15,7 @@ const CORE_SPARSE_ROOTS = ["packages", "ui/src"];
 
 const CORE_PROD_REQUIRED_PATHS = [
   {
-    path: "apps/shared/NexisClawKit/Sources/NexisClawKit/Resources/tool-display.json",
+    path: "apps/shared/FirstNexusKit/Sources/FirstNexusKit/Resources/tool-display.json",
     whenPresent: "ui/src/ui/tool-display.ts",
   },
   {

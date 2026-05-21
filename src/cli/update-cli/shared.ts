@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { resolveNexisClawPackageRoot } from "../../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRoot } from "../../infra/FirstNexus-root.js";
 import { readPackageName, readPackageVersion } from "../../infra/package-json.js";
 import { normalizePackageTagInput } from "../../infra/package-tag.js";
 import { trimLogTail } from "../../infra/restart-sentinel.js";
@@ -55,14 +55,14 @@ export function parseTimeoutMsOrExit(timeout?: string): number | undefined | nul
   return timeoutMs;
 }
 
-const NEXISCLAW_REPO_URL = "https://github.com/NexisClaw/NexisClaw.git";
+const NEXISCLAW_REPO_URL = "https://github.com/FirstNexus/FirstNexus.git";
 const MAX_LOG_CHARS = 8000;
 
-export const DEFAULT_PACKAGE_NAME = "NexisClaw";
+export const DEFAULT_PACKAGE_NAME = "FirstNexus";
 const CORE_PACKAGE_NAMES = new Set([DEFAULT_PACKAGE_NAME]);
 
 export function normalizeTag(value?: string | null): string | null {
-  return normalizePackageTagInput(value, ["NexisClaw", DEFAULT_PACKAGE_NAME]);
+  return normalizePackageTagInput(value, ["FirstNexus", DEFAULT_PACKAGE_NAME]);
 }
 
 function normalizeVersionTag(tag: string): string | null {
@@ -125,9 +125,9 @@ export function resolveGitInstallDir(): string {
 function resolveDefaultGitDir(): string {
   const home = os.homedir();
   if (home.startsWith("/")) {
-    return path.posix.join(home, "NexisClaw");
+    return path.posix.join(home, "FirstNexus");
   }
-  return path.join(home, "NexisClaw");
+  return path.join(home, "FirstNexus");
 }
 
 export function resolveNodeRunner(): string {
@@ -140,7 +140,7 @@ export function resolveNodeRunner(): string {
 
 export async function resolveUpdateRoot(): Promise<string> {
   return (
-    (await resolveNexisClawPackageRoot({
+    (await resolveFirstNexusPackageRoot({
       moduleUrl: import.meta.url,
       argv1: process.argv[1],
       cwd: process.cwd(),
@@ -216,7 +216,7 @@ export async function ensureGitCheckout(params: {
     const empty = await isEmptyDir(params.dir);
     if (!empty) {
       throw new Error(
-        `NEXISCLAW_GIT_DIR points at a non-git directory: ${params.dir}. Set NEXISCLAW_GIT_DIR to an empty folder or an NexisClaw checkout.`,
+        `NEXISCLAW_GIT_DIR points at a non-git directory: ${params.dir}. Set NEXISCLAW_GIT_DIR to an empty folder or an FirstNexus checkout.`,
       );
     }
 
@@ -261,10 +261,10 @@ export async function resolveGlobalManager(params: {
 
 const COMPLETION_CACHE_WRITE_TIMEOUT_MS = 30_000;
 const COMPLETION_CACHE_MANUAL_REFRESH_HINT =
-  "Shell tab-completion may be stale; refresh manually with: NexisClaw completion --write-state";
+  "Shell tab-completion may be stale; refresh manually with: FirstNexus completion --write-state";
 
 export async function tryWriteCompletionCache(root: string, jsonMode: boolean): Promise<void> {
-  const binPath = path.join(root, "NexisClaw.mjs");
+  const binPath = path.join(root, "FirstNexus.mjs");
   if (!(await pathExists(binPath))) {
     return;
   }

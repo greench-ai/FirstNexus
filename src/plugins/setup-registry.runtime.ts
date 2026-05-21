@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 import { normalizeProviderId } from "../agents/provider-id.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { getCurrentPluginMetadataSnapshot } from "./current-plugin-metadata-snapshot.js";
 import { isInstalledPluginEnabled } from "./installed-plugin-index.js";
 import {
@@ -23,7 +23,7 @@ type SetupCliBackendRuntimeEntry = {
 
 type SetupCliBackendRuntimeLookupParams = {
   backend: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
 };

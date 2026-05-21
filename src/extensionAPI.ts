@@ -1,7 +1,7 @@
 /**
  * @deprecated Legacy compat surface for plugins that still import
- * NexisClaw/extension-api. Use the injected plugin runtime or focused
- * NexisClaw/plugin-sdk subpaths instead.
+ * FirstNexus/extension-api. Use the injected plugin runtime or focused
+ * FirstNexus/plugin-sdk subpaths instead.
  */
 
 const shouldWarnExtensionApiImport =
@@ -11,11 +11,11 @@ const shouldWarnExtensionApiImport =
 
 if (shouldWarnExtensionApiImport) {
   process.emitWarning(
-    "NexisClaw/extension-api is deprecated. Migrate to api.runtime.agent.* or focused NexisClaw/plugin-sdk/<subpath> imports. See https://docs.NexisClaw.ai/plugins/sdk-migration",
+    "FirstNexus/extension-api is deprecated. Migrate to api.runtime.agent.* or focused FirstNexus/plugin-sdk/<subpath> imports. See https://docs.FirstNexus.ai/plugins/sdk-migration",
     {
       code: "NEXISCLAW_EXTENSION_API_DEPRECATED",
       detail:
-        "This compatibility bridge is temporary. Bundled plugins should use the injected plugin runtime instead of importing host-side agent helpers directly. Migration guide: https://docs.NexisClaw.ai/plugins/sdk-migration",
+        "This compatibility bridge is temporary. Bundled plugins should use the injected plugin runtime instead of importing host-side agent helpers directly. Migration guide: https://docs.FirstNexus.ai/plugins/sdk-migration",
     },
   );
 }

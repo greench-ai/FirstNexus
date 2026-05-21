@@ -1,5 +1,5 @@
-import { createProviderApiKeyAuthMethod } from "NexisClaw/plugin-sdk/provider-auth-api-key";
-import type { ProviderPlugin } from "NexisClaw/plugin-sdk/provider-model-shared";
+import { createProviderApiKeyAuthMethod } from "FirstNexus/plugin-sdk/provider-auth-api-key";
+import type { ProviderPlugin } from "FirstNexus/plugin-sdk/provider-model-shared";
 import { applyFalConfig, FAL_DEFAULT_IMAGE_MODEL_REF } from "./onboard.js";
 
 const PROVIDER_ID = "fal";

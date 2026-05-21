@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { resolveStateDir } from "../../../config/paths.js";
-import { resolveNexisClawPackageRootSync } from "../../../infra/NexisClaw-root.js";
+import { resolveFirstNexusPackageRootSync } from "../../../infra/FirstNexus-root.js";
 import { resolveConfigDir, resolveUserPath } from "../../../utils.js";
 import { removeStalePluginRuntimeSymlinks } from "./plugin-runtime-symlinks.js";
 
@@ -37,18 +37,18 @@ async function pathExists(targetPath: string): Promise<boolean> {
 
 function isRuntimeDependencyMarkerName(name: string): boolean {
   return (
-    name === ".NexisClaw-runtime-deps.json" ||
-    name === ".NexisClaw-runtime-deps-stamp.json" ||
-    name.startsWith(".NexisClaw-runtime-deps-")
+    name === ".FirstNexus-runtime-deps.json" ||
+    name === ".FirstNexus-runtime-deps-stamp.json" ||
+    name.startsWith(".FirstNexus-runtime-deps-")
   );
 }
 
 function isLegacyDependencyDebrisName(name: string): boolean {
   return (
     isRuntimeDependencyMarkerName(name) ||
-    name === ".NexisClaw-pnpm-store" ||
-    name === ".NexisClaw-install-backups" ||
-    name.startsWith(".NexisClaw-install-stage-")
+    name === ".FirstNexus-pnpm-store" ||
+    name === ".FirstNexus-install-backups" ||
+    name.startsWith(".FirstNexus-install-stage-")
   );
 }
 
@@ -89,7 +89,7 @@ async function collectLegacyPluginDependencyTargets(
 ): Promise<string[]> {
   const packageRoot =
     options.packageRoot ??
-    resolveNexisClawPackageRootSync({
+    resolveFirstNexusPackageRootSync({
       argv1: process.argv[1],
       moduleUrl: import.meta.url,
       cwd: process.cwd(),
@@ -125,7 +125,7 @@ export async function cleanupLegacyPluginDependencyState(params: {
   const warnings: string[] = [];
   const packageRoot =
     params.packageRoot ??
-    resolveNexisClawPackageRootSync({
+    resolveFirstNexusPackageRootSync({
       argv1: process.argv[1],
       moduleUrl: import.meta.url,
       cwd: process.cwd(),

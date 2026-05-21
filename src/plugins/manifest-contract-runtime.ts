@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   hasManifestContractValue,
   listAvailableManifestContractPlugins,
@@ -16,7 +16,7 @@ const DEMAND_ONLY_CONTRACT_LOOKUP_OPTIONS = {
 } as const;
 
 export function resolveManifestContractRuntimePluginResolution(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   contract: PluginManifestContractListKey;
   value?: string;
 }): ManifestContractRuntimePluginResolution {

@@ -1,18 +1,18 @@
 import { parseFrontmatterBlock } from "../markdown/frontmatter.js";
 import {
-  applyNexisClawManifestInstallCommonFields,
+  applyFirstNexusManifestInstallCommonFields,
   getFrontmatterString,
   normalizeStringList,
-  parseNexisClawManifestInstallBase,
+  parseFirstNexusManifestInstallBase,
   parseFrontmatterBool,
-  resolveNexisClawManifestBlock,
-  resolveNexisClawManifestInstall,
-  resolveNexisClawManifestOs,
-  resolveNexisClawManifestRequires,
+  resolveFirstNexusManifestBlock,
+  resolveFirstNexusManifestInstall,
+  resolveFirstNexusManifestOs,
+  resolveFirstNexusManifestRequires,
 } from "../shared/frontmatter.js";
 import { readStringValue } from "../shared/string-coerce.js";
 import type {
-  NexisClawHookMetadata,
+  FirstNexusHookMetadata,
   HookEntry,
   HookInstallSpec,
   HookInvocationPolicy,
@@ -24,12 +24,12 @@ export function parseFrontmatter(content: string): ParsedHookFrontmatter {
 }
 
 function parseInstallSpec(input: unknown): HookInstallSpec | undefined {
-  const parsed = parseNexisClawManifestInstallBase(input, ["bundled", "npm", "git"]);
+  const parsed = parseFirstNexusManifestInstallBase(input, ["bundled", "npm", "git"]);
   if (!parsed) {
     return undefined;
   }
   const { raw } = parsed;
-  const spec = applyNexisClawManifestInstallCommonFields<HookInstallSpec>(
+  const spec = applyFirstNexusManifestInstallCommonFields<HookInstallSpec>(
     {
       kind: parsed.kind as HookInstallSpec["kind"],
     },
@@ -45,16 +45,16 @@ function parseInstallSpec(input: unknown): HookInstallSpec | undefined {
   return spec;
 }
 
-export function resolveNexisClawMetadata(
+export function resolveFirstNexusMetadata(
   frontmatter: ParsedHookFrontmatter,
-): NexisClawHookMetadata | undefined {
-  const metadataObj = resolveNexisClawManifestBlock({ frontmatter });
+): FirstNexusHookMetadata | undefined {
+  const metadataObj = resolveFirstNexusManifestBlock({ frontmatter });
   if (!metadataObj) {
     return undefined;
   }
-  const requires = resolveNexisClawManifestRequires(metadataObj);
-  const install = resolveNexisClawManifestInstall(metadataObj, parseInstallSpec);
-  const osRaw = resolveNexisClawManifestOs(metadataObj);
+  const requires = resolveFirstNexusManifestRequires(metadataObj);
+  const install = resolveFirstNexusManifestInstall(metadataObj, parseInstallSpec);
+  const osRaw = resolveFirstNexusManifestOs(metadataObj);
   const eventsRaw = normalizeStringList(metadataObj.events);
   return {
     always: typeof metadataObj.always === "boolean" ? metadataObj.always : undefined,

@@ -3,8 +3,8 @@ import {
   stripChannelTargetPrefix,
   stripTargetKindPrefix,
   type ChannelOutboundSessionRouteParams,
-} from "NexisClaw/plugin-sdk/channel-core";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-core";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export function resolveMSTeamsOutboundSessionRoute(params: ChannelOutboundSessionRouteParams) {
   let trimmed = stripChannelTargetPrefix(params.target, "msteams", "teams");

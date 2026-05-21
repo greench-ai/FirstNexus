@@ -12,7 +12,7 @@ import {
 const tempDirs = createTrackedTempDirs();
 
 async function makeTempDir(): Promise<string> {
-  return await tempDirs.make("NexisClaw-push-apns-auth-test-");
+  return await tempDirs.make("FirstNexus-push-apns-auth-test-");
 }
 
 afterEach(async () => {
@@ -128,7 +128,7 @@ describe("push APNs auth and helper coverage", () => {
           nodeId: "ios-node-direct",
           transport: "direct",
           token: "ABCD1234ABCD1234ABCD1234ABCD1234",
-          topic: "ai.NexisClaw.ios",
+          topic: "ai.FirstNexus.ios",
           environment: "sandbox",
           updatedAtMs: 1,
         },
@@ -144,7 +144,7 @@ describe("push APNs auth and helper coverage", () => {
           relayHandle: "relay-handle-123",
           sendGrant: "send-grant-123",
           installationId: "install-123",
-          topic: "ai.NexisClaw.ios",
+          topic: "ai.FirstNexus.ios",
           environment: "production",
           distribution: "official",
           updatedAtMs: 1,
@@ -159,7 +159,7 @@ describe("push APNs auth and helper coverage", () => {
           nodeId: "ios-node-direct",
           transport: "direct",
           token: "ABCD1234ABCD1234ABCD1234ABCD1234",
-          topic: "ai.NexisClaw.ios",
+          topic: "ai.FirstNexus.ios",
           environment: "sandbox",
           updatedAtMs: 1,
         },

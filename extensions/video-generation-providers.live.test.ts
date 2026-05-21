@@ -1,13 +1,13 @@
 import {
   resolveApiKeyForProvider,
   resolveDefaultAgentDir,
-} from "NexisClaw/plugin-sdk/agent-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/agent-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
 import {
   DEFAULT_LIVE_VIDEO_MODELS,
   canRunBufferBackedImageToVideoLiveLane,
@@ -33,14 +33,14 @@ import {
   resolveConfiguredLiveVideoModels,
   resolveLiveVideoAuthStore,
   resolveLiveVideoResolution,
-} from "NexisClaw/plugin-sdk/test-env";
+} from "FirstNexus/plugin-sdk/test-env";
 import type {
   GeneratedVideoAsset,
   VideoGenerationMode,
   VideoGenerationModeCapabilities,
   VideoGenerationProvider,
   VideoGenerationRequest,
-} from "NexisClaw/plugin-sdk/test-env";
+} from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import alibabaPlugin from "./alibaba/index.js";
 import byteplusPlugin from "./byteplus/index.js";
@@ -59,7 +59,8 @@ import xaiPlugin from "./xai/index.js";
 
 const LIVE = isLiveTestEnabled();
 const REQUIRE_PROFILE_KEYS =
-  isLiveProfileKeyModeEnabled() || isTruthyEnvValue(process.env.NEXISCLAW_LIVE_REQUIRE_PROFILE_KEYS);
+  isLiveProfileKeyModeEnabled() ||
+  isTruthyEnvValue(process.env.NEXISCLAW_LIVE_REQUIRE_PROFILE_KEYS);
 const describeLive = LIVE ? describe : describe.skip;
 const providerFilter = parseCsvFilter(process.env.NEXISCLAW_LIVE_VIDEO_GENERATION_PROVIDERS);
 const defaultSkippedProviders = providerFilter
@@ -149,7 +150,7 @@ function readPositiveIntegerEnv(raw: string | undefined, fallback: number): numb
   return Number.isFinite(value) && value > 0 ? value : fallback;
 }
 
-function withPluginsEnabled(cfg: NexisClawConfig): NexisClawConfig {
+function withPluginsEnabled(cfg: FirstNexusConfig): FirstNexusConfig {
   return {
     ...cfg,
     plugins: {

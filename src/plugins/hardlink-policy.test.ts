@@ -37,12 +37,12 @@ describe("plugin hardlink policy", () => {
   it.runIf(process.platform !== "win32")(
     "does not reject hardlinked external plugin files when Nix mode loads from the Nix store",
     () => {
-      expect(isNixStorePluginRoot("/nix/store/abc-NexisClaw-plugin")).toBe(true);
-      expect(isNixStorePluginRoot("/tmp/nix/store/abc-NexisClaw-plugin")).toBe(false);
+      expect(isNixStorePluginRoot("/nix/store/abc-FirstNexus-plugin")).toBe(true);
+      expect(isNixStorePluginRoot("/tmp/nix/store/abc-FirstNexus-plugin")).toBe(false);
       expect(
         shouldRejectHardlinkedPluginFiles({
           origin: "config",
-          rootDir: "/nix/store/abc-NexisClaw-plugin",
+          rootDir: "/nix/store/abc-FirstNexus-plugin",
           env: nixEnv,
         }),
       ).toBe(false);

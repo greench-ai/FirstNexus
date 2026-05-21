@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   normalizeSecretInputString,
   resolveSecretInputRef,
@@ -6,10 +6,10 @@ import {
 } from "../config/types.secrets.js";
 import { resolveSecretRefString } from "./resolve.js";
 
-type SecretDefaults = NonNullable<NexisClawConfig["secrets"]>["defaults"];
+type SecretDefaults = NonNullable<FirstNexusConfig["secrets"]>["defaults"];
 
 export async function resolveSecretInputString(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   value: unknown;
   env: NodeJS.ProcessEnv;
   defaults?: SecretDefaults;

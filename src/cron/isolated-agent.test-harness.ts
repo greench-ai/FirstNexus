@@ -1,11 +1,11 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempHome as withTempHomeBase } from "NexisClaw/plugin-sdk/test-env";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import { withTempHome as withTempHomeBase } from "FirstNexus/plugin-sdk/test-env";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { CronJob } from "./types.js";
 
 export async function withTempCronHome<T>(fn: (home: string) => Promise<T>): Promise<T> {
-  return withTempHomeBase(fn, { prefix: "NexisClaw-cron-" });
+  return withTempHomeBase(fn, { prefix: "FirstNexus-cron-" });
 }
 
 export async function writeSessionStore(
@@ -25,7 +25,7 @@ export async function writeSessionStoreEntries(
   home: string,
   entries: Record<string, Record<string, unknown>>,
 ): Promise<string> {
-  const dir = path.join(home, ".NexisClaw", "sessions");
+  const dir = path.join(home, ".FirstNexus", "sessions");
   await fs.mkdir(dir, { recursive: true });
   const storePath = path.join(dir, "sessions.json");
   await fs.writeFile(storePath, JSON.stringify(entries, null, 2), "utf-8");
@@ -35,17 +35,17 @@ export async function writeSessionStoreEntries(
 export function makeCfg(
   home: string,
   storePath: string,
-  overrides: Partial<NexisClawConfig> = {},
-): NexisClawConfig {
-  const base: NexisClawConfig = {
+  overrides: Partial<FirstNexusConfig> = {},
+): FirstNexusConfig {
+  const base: FirstNexusConfig = {
     agents: {
       defaults: {
         model: "anthropic/claude-opus-4-6",
-        workspace: path.join(home, "NexisClaw"),
+        workspace: path.join(home, "FirstNexus"),
       },
     },
     session: { store: storePath, mainKey: "main" },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
   return { ...base, ...overrides };
 }
 

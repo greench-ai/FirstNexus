@@ -1,22 +1,22 @@
 ---
-summary: "NexisClaw is a multi-channel gateway for AI agents that runs on any OS."
+summary: "FirstNexus is a multi-channel gateway for AI agents that runs on any OS."
 read_when:
-  - Introducing NexisClaw to newcomers
-title: "NexisClaw"
+  - Introducing FirstNexus to newcomers
+title: "FirstNexus"
 ---
 
-# NexisClaw 🦞
+# FirstNexus 🦞
 
 <p align="center">
     <img
-        src="/assets/NexisClaw-logo-text-dark.png"
-        alt="NexisClaw"
+        src="/assets/FirstNexus-logo-text-dark.png"
+        alt="FirstNexus"
         width="500"
         class="dark:hidden"
     />
     <img
-        src="/assets/NexisClaw-logo-text.png"
-        alt="NexisClaw"
+        src="/assets/FirstNexus-logo-text.png"
+        alt="FirstNexus"
         width="500"
         class="hidden dark:block"
     />
@@ -31,19 +31,19 @@ title: "NexisClaw"
 
 <Columns>
   <Card title="Get Started" href="/start/getting-started" icon="rocket">
-    Install NexisClaw and bring up the Gateway in minutes.
+    Install FirstNexus and bring up the Gateway in minutes.
   </Card>
   <Card title="Run Onboarding" href="/start/wizard" icon="sparkles">
-    Guided setup with `NexisClaw onboard` and pairing flows.
+    Guided setup with `FirstNexus onboard` and pairing flows.
   </Card>
   <Card title="Open the Control UI" href="/web/control-ui" icon="layout-dashboard">
     Launch the browser dashboard for chat, config, and sessions.
   </Card>
 </Columns>
 
-## What is NexisClaw?
+## What is FirstNexus?
 
-NexisClaw is a **self-hosted gateway** that connects your favorite chat apps and channel surfaces — built-in channels plus bundled or external channel plugins such as Discord, Google Chat, iMessage, Matrix, Microsoft Teams, Signal, Slack, Telegram, WhatsApp, Zalo, and more — to AI coding agents like Pi. You run a single Gateway process on your own machine (or a server), and it becomes the bridge between your messaging apps and an always-available AI assistant.
+FirstNexus is a **self-hosted gateway** that connects your favorite chat apps and channel surfaces — built-in channels plus bundled or external channel plugins such as Discord, Google Chat, iMessage, Matrix, Microsoft Teams, Signal, Slack, Telegram, WhatsApp, Zalo, and more — to AI coding agents like Pi. You run a single Gateway process on your own machine (or a server), and it becomes the bridge between your messaging apps and an always-available AI assistant.
 
 **Who is it for?** Developers and power users who want a personal AI assistant they can message from anywhere — without giving up control of their data or relying on a hosted service.
 
@@ -96,21 +96,21 @@ The Gateway is the single source of truth for sessions, routing, and channel con
 ## Quick start
 
 <Steps>
-  <Step title="Install NexisClaw">
+  <Step title="Install FirstNexus">
     ```bash
-    npm install -g NexisClaw@latest
+    npm install -g FirstNexus@latest
     ```
   </Step>
   <Step title="Onboard and install the service">
     ```bash
-    NexisClaw onboard --install-daemon
+    FirstNexus onboard --install-daemon
     ```
   </Step>
   <Step title="Chat">
     Open the Control UI in your browser and send a message:
 
     ```bash
-    NexisClaw dashboard
+    FirstNexus dashboard
     ```
 
     Or connect a channel ([Telegram](/channels/telegram) is fastest) and chat from your phone.
@@ -128,14 +128,14 @@ Open the browser Control UI after the Gateway starts.
 - Remote access: [Web surfaces](/web) and [Tailscale](/gateway/tailscale)
 
 <p align="center">
-  <img src="/whatsapp-NexisClaw.jpg" alt="NexisClaw" width="420" />
+  <img src="/whatsapp-FirstNexus.jpg" alt="FirstNexus" width="420" />
 </p>
 
 ## Configuration (optional)
 
-Config lives at `~/.NexisClaw/NexisClaw.json`.
+Config lives at `~/.FirstNexus/FirstNexus.json`.
 
-- If you **do nothing**, NexisClaw uses the bundled Pi binary in RPC mode with per-sender sessions.
+- If you **do nothing**, FirstNexus uses the bundled Pi binary in RPC mode with per-sender sessions.
 - If you want to lock it down, start with `channels.whatsapp.allowFrom` and (for groups) mention rules.
 
 Example:
@@ -148,7 +148,7 @@ Example:
       groups: { "*": { requireMention: true } },
     },
   },
-  messages: { groupChat: { mentionPatterns: ["@NexisClaw"] } },
+  messages: { groupChat: { mentionPatterns: ["@FirstNexus"] } },
 }
 ```
 

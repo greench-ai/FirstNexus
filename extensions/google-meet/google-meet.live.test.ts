@@ -1,4 +1,4 @@
-import { isLiveTestEnabled } from "NexisClaw/plugin-sdk/test-env";
+import { isLiveTestEnabled } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it } from "vitest";
 import { buildGoogleMeetExportManifest, googleMeetExportFileNames } from "./src/cli.js";
 import {

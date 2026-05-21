@@ -92,10 +92,10 @@ describe("Mantis Telegram Desktop proof workflow", () => {
     }
   });
 
-  it("uses the NexisClaw Mantis mention as the comment trigger", () => {
+  it("uses the FirstNexus Mantis mention as the comment trigger", () => {
     const workflow = readFileSync(WORKFLOW, "utf8");
-    expect(workflow).toContain("@NexisClaw-mantis");
-    expect(workflow).toContain("/NexisClaw-mantis");
+    expect(workflow).toContain("@FirstNexus-mantis");
+    expect(workflow).toContain("/FirstNexus-mantis");
     expect(workflow).toContain("mantis: telegram-visible-proof");
     expect(workflow).not.toContain("@Mantis");
     expect(workflow).not.toContain("@mantis");
@@ -113,7 +113,7 @@ describe("Mantis Telegram Desktop proof workflow", () => {
   it("installs local proof tools before the Codex agent runs", () => {
     const install = workflowStep("Install local proof tools");
     expect(install.run).toContain("test -f scripts/e2e/telegram-user-driver.py");
-    expect(install.run).toContain("/usr/local/bin/NexisClaw-telegram-user-crabbox-proof");
+    expect(install.run).toContain("/usr/local/bin/FirstNexus-telegram-user-crabbox-proof");
     expect(install.run).toContain(
       'exec node --import tsx "${GITHUB_WORKSPACE}/scripts/e2e/telegram-user-crabbox-proof.ts" "$@"',
     );
@@ -128,7 +128,7 @@ describe("Mantis Telegram Desktop proof workflow", () => {
       "${{ github.workspace }}/scripts/e2e/telegram-user-driver.py",
     );
     expect(agent.env?.NEXISCLAW_TELEGRAM_USER_PROOF_CMD).toBe(
-      "/usr/local/bin/NexisClaw-telegram-user-crabbox-proof",
+      "/usr/local/bin/FirstNexus-telegram-user-crabbox-proof",
     );
     expect(agent.env?.NEXISCLAW_TELEGRAM_USER_CRABBOX_BIN).toBe("/usr/local/bin/crabbox");
     expect(agent.env?.CRABBOX_COORDINATOR).toContain(

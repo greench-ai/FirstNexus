@@ -1,8 +1,8 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshot,
-} from "NexisClaw/plugin-sdk/runtime-config-snapshot";
+} from "FirstNexus/plugin-sdk/runtime-config-snapshot";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   createDiscordActionGate,
@@ -280,7 +280,7 @@ describe("resolveDiscordAccount runtime config selection", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
     const runtimeCfg = {
       channels: {
         discord: {
@@ -293,7 +293,7 @@ describe("resolveDiscordAccount runtime config selection", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     setRuntimeConfigSnapshot(runtimeCfg, sourceCfg);
 
     const resolved = resolveDiscordAccount({ cfg: sourceCfg });
@@ -313,7 +313,7 @@ describe("resolveDiscordAccount runtime config selection", () => {
             token: { source: "env", provider: "default", id: "DISCORD_BOT_TOKEN" },
           },
         },
-      } as unknown as NexisClawConfig,
+      } as unknown as FirstNexusConfig,
       accountId: "default",
     });
 

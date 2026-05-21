@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   hasBundledChannelPackageState,
   listBundledChannelIdsForPackageState,
@@ -10,7 +10,7 @@ export function listBundledChannelIdsWithPersistedAuthState(): string[] {
 
 export function hasBundledChannelPersistedAuthState(params: {
   channelId: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
 }): boolean {
   return hasBundledChannelPackageState({

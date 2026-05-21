@@ -4,12 +4,12 @@ import {
   normalizeAccountId,
   resolveAccountWithDefaultFallback,
   resolveMergedAccountConfig,
-} from "NexisClaw/plugin-sdk/account-core";
-import { tryReadSecretFileSync } from "NexisClaw/plugin-sdk/secret-file-runtime";
+} from "FirstNexus/plugin-sdk/account-core";
+import { tryReadSecretFileSync } from "FirstNexus/plugin-sdk/secret-file-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { normalizeResolvedSecretInputString } from "./secret-input.js";
 import type { CoreConfig, NextcloudTalkAccountConfig } from "./types.js";
 

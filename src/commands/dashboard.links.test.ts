@@ -56,7 +56,7 @@ function expectNoLogWith(text: string): void {
 
 function mockSnapshot(token: unknown = "abc") {
   readConfigFileSnapshotMock.mockResolvedValue({
-    path: "/tmp/NexisClaw.json",
+    path: "/tmp/FirstNexus.json",
     exists: true,
     raw: "{}",
     parsed: {},
@@ -106,7 +106,7 @@ describe("dashboardCommand", () => {
     expect(copyToClipboardMock).toHaveBeenCalledWith("http://127.0.0.1:18789/#token=abc123");
     expect(openUrlMock).toHaveBeenCalledWith("http://127.0.0.1:18789/#token=abc123");
     expect(runtime.log).toHaveBeenCalledWith(
-      "Opened in your browser. Keep that tab to control NexisClaw.",
+      "Opened in your browser. Keep that tab to control FirstNexus.",
     );
   });
 

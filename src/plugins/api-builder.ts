@@ -1,7 +1,7 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
-import { attachPluginApiFacades, type NexisClawPluginApiWithoutFacades } from "./api-facades.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
+import { attachPluginApiFacades, type FirstNexusPluginApiWithoutFacades } from "./api-facades.js";
 import type { PluginRuntime } from "./runtime/types.js";
-import type { NexisClawPluginApi, PluginLogger } from "./types.js";
+import type { FirstNexusPluginApi, PluginLogger } from "./types.js";
 
 export type BuildPluginApiParams = {
   id: string;
@@ -10,15 +10,15 @@ export type BuildPluginApiParams = {
   description?: string;
   source: string;
   rootDir?: string;
-  registrationMode: NexisClawPluginApi["registrationMode"];
-  config: NexisClawConfig;
+  registrationMode: FirstNexusPluginApi["registrationMode"];
+  config: FirstNexusConfig;
   pluginConfig?: Record<string, unknown>;
   runtime: PluginRuntime;
   logger: PluginLogger;
   resolvePath: (input: string) => string;
   handlers?: Partial<
     Pick<
-      NexisClawPluginApi,
+      FirstNexusPluginApi,
       | "registerTool"
       | "registerHook"
       | "registerHttpRoute"
@@ -85,99 +85,103 @@ export type BuildPluginApiParams = {
   >;
 };
 
-const noopRegisterTool: NexisClawPluginApi["registerTool"] = () => {};
-const noopRegisterHook: NexisClawPluginApi["registerHook"] = () => {};
-const noopRegisterHttpRoute: NexisClawPluginApi["registerHttpRoute"] = () => {};
-const noopRegisterHostedMediaResolver: NexisClawPluginApi["registerHostedMediaResolver"] = () => {};
-const noopRegisterChannel: NexisClawPluginApi["registerChannel"] = () => {};
-const noopRegisterGatewayMethod: NexisClawPluginApi["registerGatewayMethod"] = () => {};
-const noopRegisterCli: NexisClawPluginApi["registerCli"] = () => {};
-const noopRegisterReload: NexisClawPluginApi["registerReload"] = () => {};
-const noopRegisterNodeHostCommand: NexisClawPluginApi["registerNodeHostCommand"] = () => {};
-const noopRegisterNodeInvokePolicy: NexisClawPluginApi["registerNodeInvokePolicy"] = () => {};
-const noopRegisterSecurityAuditCollector: NexisClawPluginApi["registerSecurityAuditCollector"] =
+const noopRegisterTool: FirstNexusPluginApi["registerTool"] = () => {};
+const noopRegisterHook: FirstNexusPluginApi["registerHook"] = () => {};
+const noopRegisterHttpRoute: FirstNexusPluginApi["registerHttpRoute"] = () => {};
+const noopRegisterHostedMediaResolver: FirstNexusPluginApi["registerHostedMediaResolver"] =
   () => {};
-const noopRegisterService: NexisClawPluginApi["registerService"] = () => {};
-const noopRegisterGatewayDiscoveryService: NexisClawPluginApi["registerGatewayDiscoveryService"] =
+const noopRegisterChannel: FirstNexusPluginApi["registerChannel"] = () => {};
+const noopRegisterGatewayMethod: FirstNexusPluginApi["registerGatewayMethod"] = () => {};
+const noopRegisterCli: FirstNexusPluginApi["registerCli"] = () => {};
+const noopRegisterReload: FirstNexusPluginApi["registerReload"] = () => {};
+const noopRegisterNodeHostCommand: FirstNexusPluginApi["registerNodeHostCommand"] = () => {};
+const noopRegisterNodeInvokePolicy: FirstNexusPluginApi["registerNodeInvokePolicy"] = () => {};
+const noopRegisterSecurityAuditCollector: FirstNexusPluginApi["registerSecurityAuditCollector"] =
   () => {};
-const noopRegisterCliBackend: NexisClawPluginApi["registerCliBackend"] = () => {};
-const noopRegisterTextTransforms: NexisClawPluginApi["registerTextTransforms"] = () => {};
-const noopRegisterConfigMigration: NexisClawPluginApi["registerConfigMigration"] = () => {};
-const noopRegisterMigrationProvider: NexisClawPluginApi["registerMigrationProvider"] = () => {};
-const noopRegisterAutoEnableProbe: NexisClawPluginApi["registerAutoEnableProbe"] = () => {};
-const noopRegisterProvider: NexisClawPluginApi["registerProvider"] = () => {};
-const noopRegisterModelCatalogProvider: NexisClawPluginApi["registerModelCatalogProvider"] =
+const noopRegisterService: FirstNexusPluginApi["registerService"] = () => {};
+const noopRegisterGatewayDiscoveryService: FirstNexusPluginApi["registerGatewayDiscoveryService"] =
   () => {};
-const noopRegisterSpeechProvider: NexisClawPluginApi["registerSpeechProvider"] = () => {};
-const noopRegisterRealtimeTranscriptionProvider: NexisClawPluginApi["registerRealtimeTranscriptionProvider"] =
+const noopRegisterCliBackend: FirstNexusPluginApi["registerCliBackend"] = () => {};
+const noopRegisterTextTransforms: FirstNexusPluginApi["registerTextTransforms"] = () => {};
+const noopRegisterConfigMigration: FirstNexusPluginApi["registerConfigMigration"] = () => {};
+const noopRegisterMigrationProvider: FirstNexusPluginApi["registerMigrationProvider"] = () => {};
+const noopRegisterAutoEnableProbe: FirstNexusPluginApi["registerAutoEnableProbe"] = () => {};
+const noopRegisterProvider: FirstNexusPluginApi["registerProvider"] = () => {};
+const noopRegisterModelCatalogProvider: FirstNexusPluginApi["registerModelCatalogProvider"] =
   () => {};
-const noopRegisterRealtimeVoiceProvider: NexisClawPluginApi["registerRealtimeVoiceProvider"] =
+const noopRegisterSpeechProvider: FirstNexusPluginApi["registerSpeechProvider"] = () => {};
+const noopRegisterRealtimeTranscriptionProvider: FirstNexusPluginApi["registerRealtimeTranscriptionProvider"] =
   () => {};
-const noopRegisterMediaUnderstandingProvider: NexisClawPluginApi["registerMediaUnderstandingProvider"] =
+const noopRegisterRealtimeVoiceProvider: FirstNexusPluginApi["registerRealtimeVoiceProvider"] =
   () => {};
-const noopRegisterImageGenerationProvider: NexisClawPluginApi["registerImageGenerationProvider"] =
+const noopRegisterMediaUnderstandingProvider: FirstNexusPluginApi["registerMediaUnderstandingProvider"] =
   () => {};
-const noopRegisterVideoGenerationProvider: NexisClawPluginApi["registerVideoGenerationProvider"] =
+const noopRegisterImageGenerationProvider: FirstNexusPluginApi["registerImageGenerationProvider"] =
   () => {};
-const noopRegisterMusicGenerationProvider: NexisClawPluginApi["registerMusicGenerationProvider"] =
+const noopRegisterVideoGenerationProvider: FirstNexusPluginApi["registerVideoGenerationProvider"] =
   () => {};
-const noopRegisterWebFetchProvider: NexisClawPluginApi["registerWebFetchProvider"] = () => {};
-const noopRegisterWebSearchProvider: NexisClawPluginApi["registerWebSearchProvider"] = () => {};
-const noopRegisterInteractiveHandler: NexisClawPluginApi["registerInteractiveHandler"] = () => {};
-const noopOnConversationBindingResolved: NexisClawPluginApi["onConversationBindingResolved"] =
+const noopRegisterMusicGenerationProvider: FirstNexusPluginApi["registerMusicGenerationProvider"] =
   () => {};
-const noopRegisterCommand: NexisClawPluginApi["registerCommand"] = () => {};
-const noopRegisterContextEngine: NexisClawPluginApi["registerContextEngine"] = () => {};
-const noopRegisterCompactionProvider: NexisClawPluginApi["registerCompactionProvider"] = () => {};
-const noopRegisterAgentHarness: NexisClawPluginApi["registerAgentHarness"] = () => {};
-const noopRegisterCodexAppServerExtensionFactory: NexisClawPluginApi["registerCodexAppServerExtensionFactory"] =
+const noopRegisterWebFetchProvider: FirstNexusPluginApi["registerWebFetchProvider"] = () => {};
+const noopRegisterWebSearchProvider: FirstNexusPluginApi["registerWebSearchProvider"] = () => {};
+const noopRegisterInteractiveHandler: FirstNexusPluginApi["registerInteractiveHandler"] = () => {};
+const noopOnConversationBindingResolved: FirstNexusPluginApi["onConversationBindingResolved"] =
   () => {};
-const noopRegisterAgentToolResultMiddleware: NexisClawPluginApi["registerAgentToolResultMiddleware"] =
+const noopRegisterCommand: FirstNexusPluginApi["registerCommand"] = () => {};
+const noopRegisterContextEngine: FirstNexusPluginApi["registerContextEngine"] = () => {};
+const noopRegisterCompactionProvider: FirstNexusPluginApi["registerCompactionProvider"] = () => {};
+const noopRegisterAgentHarness: FirstNexusPluginApi["registerAgentHarness"] = () => {};
+const noopRegisterCodexAppServerExtensionFactory: FirstNexusPluginApi["registerCodexAppServerExtensionFactory"] =
   () => {};
-const noopRegisterSessionExtension: NexisClawPluginApi["registerSessionExtension"] = () => {};
-const noopEnqueueNextTurnInjection: NexisClawPluginApi["enqueueNextTurnInjection"] = async (
+const noopRegisterAgentToolResultMiddleware: FirstNexusPluginApi["registerAgentToolResultMiddleware"] =
+  () => {};
+const noopRegisterSessionExtension: FirstNexusPluginApi["registerSessionExtension"] = () => {};
+const noopEnqueueNextTurnInjection: FirstNexusPluginApi["enqueueNextTurnInjection"] = async (
   injection,
 ) => ({ enqueued: false, id: "", sessionKey: injection.sessionKey });
-const noopRegisterTrustedToolPolicy: NexisClawPluginApi["registerTrustedToolPolicy"] = () => {};
-const noopRegisterToolMetadata: NexisClawPluginApi["registerToolMetadata"] = () => {};
-const noopRegisterControlUiDescriptor: NexisClawPluginApi["registerControlUiDescriptor"] = () => {};
-const noopRegisterRuntimeLifecycle: NexisClawPluginApi["registerRuntimeLifecycle"] = () => {};
-const noopRegisterAgentEventSubscription: NexisClawPluginApi["registerAgentEventSubscription"] =
+const noopRegisterTrustedToolPolicy: FirstNexusPluginApi["registerTrustedToolPolicy"] = () => {};
+const noopRegisterToolMetadata: FirstNexusPluginApi["registerToolMetadata"] = () => {};
+const noopRegisterControlUiDescriptor: FirstNexusPluginApi["registerControlUiDescriptor"] =
   () => {};
-const noopEmitAgentEvent: NexisClawPluginApi["emitAgentEvent"] = () => ({
+const noopRegisterRuntimeLifecycle: FirstNexusPluginApi["registerRuntimeLifecycle"] = () => {};
+const noopRegisterAgentEventSubscription: FirstNexusPluginApi["registerAgentEventSubscription"] =
+  () => {};
+const noopEmitAgentEvent: FirstNexusPluginApi["emitAgentEvent"] = () => ({
   emitted: false,
   reason: "not wired",
 });
-const noopSetRunContext: NexisClawPluginApi["setRunContext"] = () => false;
-const noopGetRunContext: NexisClawPluginApi["getRunContext"] = () => undefined;
-const noopClearRunContext: NexisClawPluginApi["clearRunContext"] = () => {};
-const noopRegisterSessionSchedulerJob: NexisClawPluginApi["registerSessionSchedulerJob"] = () =>
+const noopSetRunContext: FirstNexusPluginApi["setRunContext"] = () => false;
+const noopGetRunContext: FirstNexusPluginApi["getRunContext"] = () => undefined;
+const noopClearRunContext: FirstNexusPluginApi["clearRunContext"] = () => {};
+const noopRegisterSessionSchedulerJob: FirstNexusPluginApi["registerSessionSchedulerJob"] = () =>
   undefined;
-const noopRegisterSessionAction: NexisClawPluginApi["registerSessionAction"] = () => {};
-const noopSendSessionAttachment: NexisClawPluginApi["sendSessionAttachment"] = async () => ({
+const noopRegisterSessionAction: FirstNexusPluginApi["registerSessionAction"] = () => {};
+const noopSendSessionAttachment: FirstNexusPluginApi["sendSessionAttachment"] = async () => ({
   ok: false,
   error: "not wired",
 });
-const noopScheduleSessionTurn: NexisClawPluginApi["scheduleSessionTurn"] = async () => undefined;
-const noopUnscheduleSessionTurnsByTag: NexisClawPluginApi["unscheduleSessionTurnsByTag"] =
+const noopScheduleSessionTurn: FirstNexusPluginApi["scheduleSessionTurn"] = async () => undefined;
+const noopUnscheduleSessionTurnsByTag: FirstNexusPluginApi["unscheduleSessionTurnsByTag"] =
   async () => ({ removed: 0, failed: 0 });
-const noopRegisterDetachedTaskRuntime: NexisClawPluginApi["registerDetachedTaskRuntime"] = () => {};
-const noopRegisterMemoryCapability: NexisClawPluginApi["registerMemoryCapability"] = () => {};
-const noopRegisterMemoryPromptSection: NexisClawPluginApi["registerMemoryPromptSection"] = () => {};
-const noopRegisterMemoryPromptSupplement: NexisClawPluginApi["registerMemoryPromptSupplement"] =
+const noopRegisterDetachedTaskRuntime: FirstNexusPluginApi["registerDetachedTaskRuntime"] =
   () => {};
-const noopRegisterMemoryCorpusSupplement: NexisClawPluginApi["registerMemoryCorpusSupplement"] =
+const noopRegisterMemoryCapability: FirstNexusPluginApi["registerMemoryCapability"] = () => {};
+const noopRegisterMemoryPromptSection: FirstNexusPluginApi["registerMemoryPromptSection"] =
   () => {};
-const noopRegisterMemoryFlushPlan: NexisClawPluginApi["registerMemoryFlushPlan"] = () => {};
-const noopRegisterMemoryRuntime: NexisClawPluginApi["registerMemoryRuntime"] = () => {};
-const noopRegisterMemoryEmbeddingProvider: NexisClawPluginApi["registerMemoryEmbeddingProvider"] =
+const noopRegisterMemoryPromptSupplement: FirstNexusPluginApi["registerMemoryPromptSupplement"] =
   () => {};
-const noopOn: NexisClawPluginApi["on"] = () => {};
+const noopRegisterMemoryCorpusSupplement: FirstNexusPluginApi["registerMemoryCorpusSupplement"] =
+  () => {};
+const noopRegisterMemoryFlushPlan: FirstNexusPluginApi["registerMemoryFlushPlan"] = () => {};
+const noopRegisterMemoryRuntime: FirstNexusPluginApi["registerMemoryRuntime"] = () => {};
+const noopRegisterMemoryEmbeddingProvider: FirstNexusPluginApi["registerMemoryEmbeddingProvider"] =
+  () => {};
+const noopOn: FirstNexusPluginApi["on"] = () => {};
 
-export function buildPluginApi(params: BuildPluginApiParams): NexisClawPluginApi {
+export function buildPluginApi(params: BuildPluginApiParams): FirstNexusPluginApi {
   const handlers = params.handlers ?? {};
   const registerCli = handlers.registerCli ?? noopRegisterCli;
-  const api: NexisClawPluginApiWithoutFacades = {
+  const api: FirstNexusPluginApiWithoutFacades = {
     id: params.id,
     name: params.name,
     version: params.version,

@@ -49,7 +49,7 @@ const errors = collectPackageDistImportErrors({
 });
 
 if (errors.length > 0) {
-  fail(`NexisClaw package dist import closure failed:\n${errors.join("\n")}`);
+  fail(`FirstNexus package dist import closure failed:\n${errors.join("\n")}`);
 }
 
-console.log("NexisClaw package dist import closure passed.");
+console.log("FirstNexus package dist import closure passed.");

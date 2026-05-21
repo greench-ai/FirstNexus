@@ -9,7 +9,7 @@ import type { ChannelId } from "../channels/plugins/types.public.js";
 import { inspectReadOnlyChannelAccount } from "../channels/read-only-account-inspect.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { isDangerousNameMatchingEnabled } from "../config/dangerous-name-matching.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import type { SecurityAuditFinding, SecurityAuditSeverity } from "./audit.types.js";
 
@@ -52,7 +52,7 @@ function dedupeFindings(findings: SecurityAuditFinding[]): SecurityAuditFinding[
 }
 
 function hasExplicitProviderAccountConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   provider: string,
   accountId: string,
 ): boolean {
@@ -78,8 +78,8 @@ function formatChannelAccountNote(params: {
 }
 
 export async function collectChannelSecurityFindings(params: {
-  cfg: NexisClawConfig;
-  sourceConfig?: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  sourceConfig?: FirstNexusConfig;
   plugins: ChannelPlugin[];
 }): Promise<SecurityAuditFinding[]> {
   const findings: SecurityAuditFinding[] = [];
@@ -87,7 +87,7 @@ export async function collectChannelSecurityFindings(params: {
 
   const inspectChannelAccount = async (
     plugin: (typeof params.plugins)[number],
-    cfg: NexisClawConfig,
+    cfg: FirstNexusConfig,
     accountId: string,
   ) => {
     if (plugin.config.inspectAccount) {
@@ -253,7 +253,7 @@ export async function collectChannelSecurityFindings(params: {
           "Multiple DM senders currently share the main session, which can leak context across users.",
         remediation:
           "Run: " +
-          formatCliCommand('NexisClaw config set session.dmScope "per-channel-peer"') +
+          formatCliCommand('FirstNexus config set session.dmScope "per-channel-peer"') +
           ' (or "per-account-channel-peer" for multi-account channels) to isolate DM sessions per sender.',
       });
     }

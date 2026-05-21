@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source scripts/lib/NexisClaw-e2e-instance.sh
+source scripts/lib/FirstNexus-e2e-instance.sh
 source scripts/lib/docker-e2e-logs.sh
 
-NEXISCLAW_ENTRY="$(NexisClaw_e2e_resolve_entrypoint)"
+NEXISCLAW_ENTRY="$(FirstNexus_e2e_resolve_entrypoint)"
 export NEXISCLAW_ENTRY
 
-NexisClaw_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
+FirstNexus_e2e_eval_test_state_from_b64 "${NEXISCLAW_TEST_STATE_SCRIPT_B64:?missing NEXISCLAW_TEST_STATE_SCRIPT_B64}"
 
 run_expect_failure() {
   local label="$1"
@@ -120,7 +120,7 @@ if [[ "$KITCHEN_SINK_SCENARIOS" == *"clawhub:"* ]]; then
       echo "Ignoring ambient ClawHub URL for fixture-mode kitchen-sink E2E; set NEXISCLAW_KITCHEN_SINK_LIVE_CLAWHUB=1 for live ClawHub."
     fi
     unset NEXISCLAW_CLAWHUB_URL CLAWHUB_URL
-    clawhub_fixture_dir="$(mktemp -d "/tmp/NexisClaw-kitchen-sink-clawhub.XXXXXX")"
+    clawhub_fixture_dir="$(mktemp -d "/tmp/FirstNexus-kitchen-sink-clawhub.XXXXXX")"
     start_kitchen_sink_clawhub_fixture_server "$clawhub_fixture_dir"
   fi
 fi

@@ -113,7 +113,7 @@ describe("clawhub helpers", () => {
     expect(satisfiesPluginApiRange("invalid", "^1.2.0")).toBe(false);
   });
 
-  it("treats NexisClaw CalVer correction versions as stable plugin API hosts", () => {
+  it("treats FirstNexus CalVer correction versions as stable plugin API hosts", () => {
     expect(satisfiesPluginApiRange("2026.5.3-1", ">=2026.5.3")).toBe(true);
     expect(satisfiesPluginApiRange("2026.5.3-2", ">=2026.5.3")).toBe(true);
     expect(satisfiesPluginApiRange("2026.5.3-beta.1", ">=2026.5.3")).toBe(false);
@@ -149,7 +149,7 @@ describe("clawhub helpers", () => {
 
   it("checks min gateway versions with loose host labels", () => {
     expect(satisfiesGatewayMinimum("2026.3.22", "2026.3.0")).toBe(true);
-    expect(satisfiesGatewayMinimum("NexisClaw 2026.3.22", "2026.3.0")).toBe(true);
+    expect(satisfiesGatewayMinimum("FirstNexus 2026.3.22", "2026.3.0")).toBe(true);
     expect(satisfiesGatewayMinimum("2026.2.9", "2026.3.0")).toBe(false);
     expect(satisfiesGatewayMinimum("unknown", "2026.3.0")).toBe(false);
   });
@@ -173,7 +173,7 @@ describe("clawhub helpers", () => {
   });
 
   it("resolves ClawHub auth token from config.json", async () => {
-    await withTempDir({ prefix: "NexisClaw-clawhub-config-" }, async (configRoot) => {
+    await withTempDir({ prefix: "FirstNexus-clawhub-config-" }, async (configRoot) => {
       const configPath = path.join(configRoot, "clawhub", "config.json");
       process.env.NEXISCLAW_CLAWHUB_CONFIG_PATH = configPath;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
@@ -184,7 +184,7 @@ describe("clawhub helpers", () => {
   });
 
   it("resolves ClawHub auth token from the legacy config path override", async () => {
-    await withTempDir({ prefix: "NexisClaw-clawdhub-config-" }, async (configRoot) => {
+    await withTempDir({ prefix: "FirstNexus-clawdhub-config-" }, async (configRoot) => {
       const configPath = path.join(configRoot, "config.json");
       process.env.CLAWDHUB_CONFIG_PATH = configPath;
       await fs.writeFile(configPath, JSON.stringify({ token: "legacy-token-123" }), "utf8");
@@ -196,7 +196,7 @@ describe("clawhub helpers", () => {
   it.runIf(process.platform === "darwin")(
     "resolves ClawHub auth token from the macOS Application Support path",
     async () => {
-      await withTempDir({ prefix: "NexisClaw-clawhub-home-" }, async (fakeHome) => {
+      await withTempDir({ prefix: "FirstNexus-clawhub-home-" }, async (fakeHome) => {
         const configPath = path.join(
           fakeHome,
           "Library",
@@ -220,8 +220,8 @@ describe("clawhub helpers", () => {
   it.runIf(process.platform === "darwin")(
     "falls back to XDG_CONFIG_HOME on macOS when Application Support has no config",
     async () => {
-      await withTempDir({ prefix: "NexisClaw-clawhub-home-" }, async (fakeHome) => {
-        await withTempDir({ prefix: "NexisClaw-clawhub-xdg-" }, async (xdgRoot) => {
+      await withTempDir({ prefix: "FirstNexus-clawhub-home-" }, async (fakeHome) => {
+        await withTempDir({ prefix: "FirstNexus-clawhub-xdg-" }, async (xdgRoot) => {
           const configPath = path.join(xdgRoot, "clawhub", "config.json");
           const homedirSpy = vi.spyOn(os, "homedir").mockReturnValue(fakeHome);
           process.env.XDG_CONFIG_HOME = xdgRoot;
@@ -257,12 +257,12 @@ describe("clawhub helpers", () => {
     let requestedUrl = "";
     await expect(
       fetchClawHubPackageReadiness({
-        name: "@NexisClaw/diagnostics-otel",
+        name: "@FirstNexus/diagnostics-otel",
         fetchImpl: async (input) => {
           requestedUrl = input instanceof Request ? input.url : String(input);
           return new Response(
             JSON.stringify({
-              package: { name: "@NexisClaw/diagnostics-otel", isOfficial: true },
+              package: { name: "@FirstNexus/diagnostics-otel", isOfficial: true },
               phase: "legacy-zip-only",
               blockers: [],
             }),
@@ -271,12 +271,12 @@ describe("clawhub helpers", () => {
         },
       }),
     ).resolves.toEqual({
-      package: { name: "@NexisClaw/diagnostics-otel", isOfficial: true },
+      package: { name: "@FirstNexus/diagnostics-otel", isOfficial: true },
       phase: "legacy-zip-only",
       blockers: [],
     });
     expect(new URL(requestedUrl).pathname).toBe(
-      "/api/v1/packages/%40NexisClaw%2Fdiagnostics-otel/readiness",
+      "/api/v1/packages/%40FirstNexus%2Fdiagnostics-otel/readiness",
     );
   });
 
@@ -284,7 +284,7 @@ describe("clawhub helpers", () => {
     let requestedUrl = "";
     await expect(
       fetchClawHubPackageArtifact({
-        name: "@NexisClaw/diagnostics-otel",
+        name: "@FirstNexus/diagnostics-otel",
         version: "2026.3.22",
         fetchImpl: async (input) => {
           requestedUrl = input instanceof Request ? input.url : String(input);
@@ -293,7 +293,7 @@ describe("clawhub helpers", () => {
               artifact: {
                 source: "clawhub",
                 artifactKind: "npm-pack",
-                packageName: "@NexisClaw/diagnostics-otel",
+                packageName: "@FirstNexus/diagnostics-otel",
                 version: "2026.3.22",
                 downloadUrl: "https://clawhub.ai/api/v1/clawpacks/abc",
                 npmIntegrity: "sha512-demo",
@@ -308,7 +308,7 @@ describe("clawhub helpers", () => {
       artifact: {
         source: "clawhub",
         artifactKind: "npm-pack",
-        packageName: "@NexisClaw/diagnostics-otel",
+        packageName: "@FirstNexus/diagnostics-otel",
         version: "2026.3.22",
         downloadUrl: "https://clawhub.ai/api/v1/clawpacks/abc",
         npmIntegrity: "sha512-demo",
@@ -316,7 +316,7 @@ describe("clawhub helpers", () => {
       },
     });
     expect(new URL(requestedUrl).pathname).toBe(
-      "/api/v1/packages/%40NexisClaw%2Fdiagnostics-otel/versions/2026.3.22/artifact",
+      "/api/v1/packages/%40FirstNexus%2Fdiagnostics-otel/versions/2026.3.22/artifact",
     );
   });
 
@@ -324,7 +324,7 @@ describe("clawhub helpers", () => {
     let requestedUrl = "";
     await expect(
       fetchClawHubPackageSecurity({
-        name: "@NexisClaw/diagnostics-otel",
+        name: "@FirstNexus/diagnostics-otel",
         version: "2026.3.22",
         fetchImpl: async (input) => {
           requestedUrl = input instanceof Request ? input.url : String(input);
@@ -350,7 +350,7 @@ describe("clawhub helpers", () => {
       moderationState: "approved",
     });
     expect(new URL(requestedUrl).pathname).toBe(
-      "/api/v1/packages/%40NexisClaw%2Fdiagnostics-otel/versions/2026.3.22/security",
+      "/api/v1/packages/%40FirstNexus%2Fdiagnostics-otel/versions/2026.3.22/security",
     );
   });
 
@@ -434,7 +434,10 @@ describe("clawhub helpers", () => {
   });
 
   it("annotates 429 errors with the reset hint and a sign-in hint when unauthenticated", async () => {
-    process.env.NEXISCLAW_CLAWHUB_CONFIG_PATH = path.join(os.tmpdir(), "NexisClaw-no-clawhub-config");
+    process.env.NEXISCLAW_CLAWHUB_CONFIG_PATH = path.join(
+      os.tmpdir(),
+      "FirstNexus-no-clawhub-config",
+    );
     await expect(
       searchClawHubSkills({
         query: "calendar",
@@ -452,7 +455,10 @@ describe("clawhub helpers", () => {
   });
 
   it("degrades gracefully on 429 when the response carries no rate-limit headers", async () => {
-    process.env.NEXISCLAW_CLAWHUB_CONFIG_PATH = path.join(os.tmpdir(), "NexisClaw-no-clawhub-config");
+    process.env.NEXISCLAW_CLAWHUB_CONFIG_PATH = path.join(
+      os.tmpdir(),
+      "FirstNexus-no-clawhub-config",
+    );
     await expect(
       searchClawHubSkills({
         query: "calendar",

@@ -202,7 +202,7 @@ describe("buildWorkspaceSkillStatus", () => {
   });
 
   it("classifies a mixed broken skill pack without flattening visibility reasons", () => {
-    const missingBin = "NexisClaw-test-definitely-missing-skill-bin";
+    const missingBin = "FirstNexus-test-definitely-missing-skill-bin";
     const report = buildWorkspaceSkillStatus("/tmp/ws", {
       agentId: "specialist",
       config: {
@@ -240,7 +240,7 @@ describe("buildWorkspaceSkillStatus", () => {
             install: [
               {
                 kind: "node",
-                package: "@NexisClaw/missing-skill-bin",
+                package: "@FirstNexus/missing-skill-bin",
                 bins: [missingBin],
               },
             ],
@@ -266,7 +266,7 @@ describe("buildWorkspaceSkillStatus", () => {
         }),
         createEntry("agent-filtered"),
         createEntry("disabled"),
-        createEntry("bundled-blocked", { source: "NexisClaw-bundled" }),
+        createEntry("bundled-blocked", { source: "FirstNexus-bundled" }),
       ],
     });
 
@@ -302,7 +302,7 @@ describe("buildWorkspaceSkillStatus", () => {
       {
         kind: "node",
         id: "node-0",
-        label: "Install @NexisClaw/missing-skill-bin (pnpm)",
+        label: "Install @FirstNexus/missing-skill-bin (pnpm)",
         bins: [missingBin],
       },
     ]);

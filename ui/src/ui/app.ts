@@ -149,7 +149,7 @@ function resolveOnboardingMode(): boolean {
   return normalized === "1" || normalized === "true" || normalized === "yes" || normalized === "on";
 }
 
-export class NexisClawApp extends LitElement {
+export class FirstNexusApp extends LitElement {
   readonly i18nController = new I18nController(this);
   clientInstanceId = generateUUID();
   connectGeneration = 0;
@@ -1048,7 +1048,7 @@ export class NexisClawApp extends LitElement {
           }
         },
         onTranscript: (entry) => {
-          this.realtimeTalkTranscript = `${entry.role === "user" ? "You" : "NexisClaw"}: ${entry.text}`;
+          this.realtimeTalkTranscript = `${entry.role === "user" ? "You" : "FirstNexus"}: ${entry.text}`;
         },
       },
       this.buildRealtimeTalkLaunchOptions(),
@@ -1290,6 +1290,6 @@ export class NexisClawApp extends LitElement {
   }
 }
 
-if (!customElements.get("nexisclaw-app")) {
-  customElements.define("nexisclaw-app", NexisClawApp);
+if (!customElements.get("firstnexus-app")) {
+  customElements.define("firstnexus-app", FirstNexusApp);
 }

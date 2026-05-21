@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$ROOT_DIR/scripts/lib/docker-build.sh"
 COMPOSE_FILE="$ROOT_DIR/docker-compose.yml"
 EXTRA_COMPOSE_FILE="$ROOT_DIR/docker-compose.extra.yml"
-IMAGE_NAME="${NEXISCLAW_IMAGE:-NexisClaw:local}"
+IMAGE_NAME="${NEXISCLAW_IMAGE:-FirstNexus:local}"
 EXTRA_MOUNTS="${NEXISCLAW_EXTRA_MOUNTS:-}"
 HOME_VOLUME_NAME="${NEXISCLAW_HOME_VOLUME:-}"
 RAW_SANDBOX_SETTING="${NEXISCLAW_SANDBOX:-}"
@@ -43,7 +43,7 @@ is_truthy_value() {
 }
 
 read_config_gateway_token() {
-  local config_path="$NEXISCLAW_CONFIG_DIR/NexisClaw.json"
+  local config_path="$NEXISCLAW_CONFIG_DIR/FirstNexus.json"
   if [[ ! -f "$config_path" ]]; then
     return 0
   fi
@@ -145,11 +145,11 @@ run_prestart_gateway() {
 }
 
 run_prestart_cli() {
-  # During setup, avoid the shared-network NexisClaw-cli service because it
+  # During setup, avoid the shared-network FirstNexus-cli service because it
   # requires the gateway container's network namespace to already exist. That
   # creates a circular dependency for config writes that are needed before the
   # gateway can start cleanly.
-  run_prestart_gateway --entrypoint node NexisClaw-gateway \
+  run_prestart_gateway --entrypoint node FirstNexus-gateway \
     dist/index.js "$@"
 }
 
@@ -173,7 +173,7 @@ run_runtime_cli() {
     *) fail "Unknown runtime CLI deps mode: $deps_mode" ;;
   esac
 
-  docker compose "${compose_args[@]}" "${run_args[@]}" NexisClaw-cli "$@"
+  docker compose "${compose_args[@]}" "${run_args[@]}" FirstNexus-cli "$@"
 }
 
 contains_disallowed_chars() {
@@ -238,9 +238,9 @@ if is_truthy_value "$RAW_SKIP_ONBOARDING"; then
   SKIP_ONBOARDING="1"
 fi
 
-NEXISCLAW_CONFIG_DIR="${NEXISCLAW_CONFIG_DIR:-$HOME/.NexisClaw}"
-NEXISCLAW_WORKSPACE_DIR="${NEXISCLAW_WORKSPACE_DIR:-$HOME/.NexisClaw/workspace}"
-NEXISCLAW_AUTH_PROFILE_SECRET_DIR="${NEXISCLAW_AUTH_PROFILE_SECRET_DIR:-$HOME/.NexisClaw-auth-profile-secrets}"
+NEXISCLAW_CONFIG_DIR="${NEXISCLAW_CONFIG_DIR:-$HOME/.FirstNexus}"
+NEXISCLAW_WORKSPACE_DIR="${NEXISCLAW_WORKSPACE_DIR:-$HOME/.FirstNexus/workspace}"
+NEXISCLAW_AUTH_PROFILE_SECRET_DIR="${NEXISCLAW_AUTH_PROFILE_SECRET_DIR:-$HOME/.FirstNexus-auth-profile-secrets}"
 
 validate_mount_path_value "NEXISCLAW_CONFIG_DIR" "$NEXISCLAW_CONFIG_DIR"
 validate_mount_path_value "NEXISCLAW_WORKSPACE_DIR" "$NEXISCLAW_WORKSPACE_DIR"
@@ -318,7 +318,7 @@ if [[ -z "${NEXISCLAW_GATEWAY_TOKEN:-}" ]]; then
   EXISTING_CONFIG_TOKEN="$(read_config_gateway_token || true)"
   if [[ -n "$EXISTING_CONFIG_TOKEN" ]]; then
     NEXISCLAW_GATEWAY_TOKEN="$EXISTING_CONFIG_TOKEN"
-    echo "Reusing gateway token from $NEXISCLAW_CONFIG_DIR/NexisClaw.json"
+    echo "Reusing gateway token from $NEXISCLAW_CONFIG_DIR/FirstNexus.json"
   else
     DOTENV_GATEWAY_TOKEN="$(read_env_gateway_token "$ROOT_DIR/.env" || true)"
     if [[ -n "$DOTENV_GATEWAY_TOKEN" ]]; then
@@ -351,15 +351,15 @@ write_extra_compose() {
 
   cat >"$EXTRA_COMPOSE_FILE" <<'YAML'
 services:
-  NexisClaw-gateway:
+  FirstNexus-gateway:
     volumes:
 YAML
 
   if [[ -n "$home_volume" ]]; then
     gateway_home_mount="${home_volume}:/home/node"
-    gateway_config_mount="${NEXISCLAW_CONFIG_DIR}:/home/node/.NexisClaw"
-    gateway_workspace_mount="${NEXISCLAW_WORKSPACE_DIR}:/home/node/.NexisClaw/workspace"
-    gateway_auth_profile_secret_mount="${NEXISCLAW_AUTH_PROFILE_SECRET_DIR}:/home/node/.config/NexisClaw"
+    gateway_config_mount="${NEXISCLAW_CONFIG_DIR}:/home/node/.FirstNexus"
+    gateway_workspace_mount="${NEXISCLAW_WORKSPACE_DIR}:/home/node/.FirstNexus/workspace"
+    gateway_auth_profile_secret_mount="${NEXISCLAW_AUTH_PROFILE_SECRET_DIR}:/home/node/.config/FirstNexus"
     validate_mount_spec "$gateway_home_mount"
     validate_mount_spec "$gateway_config_mount"
     validate_mount_spec "$gateway_workspace_mount"
@@ -376,7 +376,7 @@ YAML
   done
 
   cat >>"$EXTRA_COMPOSE_FILE" <<'YAML'
-  NexisClaw-cli:
+  FirstNexus-cli:
     volumes:
 YAML
 
@@ -510,7 +510,7 @@ upsert_env "$ENV_FILE" \
   NEXISCLAW_OTEL_PRELOADED \
   NEXISCLAW_SKIP_ONBOARDING
 
-if [[ "$IMAGE_NAME" == "NexisClaw:local" ]]; then
+if [[ "$IMAGE_NAME" == "FirstNexus:local" ]]; then
   echo "==> Building Docker image: $IMAGE_NAME"
   run_docker_build \
     --build-arg "NEXISCLAW_DOCKER_APT_PACKAGES=${NEXISCLAW_DOCKER_APT_PACKAGES}" \
@@ -538,12 +538,12 @@ echo "==> Fixing data-directory permissions"
 # Use -xdev to restrict chown to the config-dir mount only — without it,
 # the recursive chown would cross into the workspace bind mount and rewrite
 # ownership of all user project files on Linux hosts.
-# After fixing the config dir, only the NexisClaw metadata subdirectory
-# (.NexisClaw/) inside the workspace gets chowned, not the user's project files.
-run_prestart_gateway --user root --entrypoint sh NexisClaw-gateway -c \
-  'find /home/node/.NexisClaw -xdev -exec chown node:node {} +; \
-   find /home/node/.config/NexisClaw -xdev -exec chown node:node {} +; \
-   [ -d /home/node/.NexisClaw/workspace/.NexisClaw ] && chown -R node:node /home/node/.NexisClaw/workspace/.NexisClaw || true'
+# After fixing the config dir, only the FirstNexus metadata subdirectory
+# (.FirstNexus/) inside the workspace gets chowned, not the user's project files.
+run_prestart_gateway --user root --entrypoint sh FirstNexus-gateway -c \
+  'find /home/node/.FirstNexus -xdev -exec chown node:node {} +; \
+   find /home/node/.config/FirstNexus -xdev -exec chown node:node {} +; \
+   [ -d /home/node/.FirstNexus/workspace/.FirstNexus ] && chown -R node:node /home/node/.FirstNexus/workspace/.FirstNexus || true'
 
 echo ""
 if [[ -n "$SKIP_ONBOARDING" ]]; then
@@ -574,16 +574,16 @@ sync_gateway_config
 echo ""
 echo "==> Provider setup (optional)"
 echo "WhatsApp (QR):"
-echo "  ${COMPOSE_HINT} run --rm NexisClaw-cli channels login"
+echo "  ${COMPOSE_HINT} run --rm FirstNexus-cli channels login"
 echo "Telegram (bot token):"
-echo "  ${COMPOSE_HINT} run --rm NexisClaw-cli channels add --channel telegram --token <token>"
+echo "  ${COMPOSE_HINT} run --rm FirstNexus-cli channels add --channel telegram --token <token>"
 echo "Discord (bot token):"
-echo "  ${COMPOSE_HINT} run --rm NexisClaw-cli channels add --channel discord --token <token>"
-echo "Docs: https://docs.NexisClaw.ai/channels"
+echo "  ${COMPOSE_HINT} run --rm FirstNexus-cli channels add --channel discord --token <token>"
+echo "Docs: https://docs.FirstNexus.ai/channels"
 
 echo ""
 echo "==> Starting gateway"
-docker compose "${COMPOSE_ARGS[@]}" up -d NexisClaw-gateway
+docker compose "${COMPOSE_ARGS[@]}" up -d FirstNexus-gateway
 
 # --- Sandbox setup (opt-in via NEXISCLAW_SANDBOX=1) ---
 if [[ -n "$SANDBOX_ENABLED" ]]; then
@@ -592,9 +592,9 @@ if [[ -n "$SANDBOX_ENABLED" ]]; then
 
   sandbox_dockerfile="$ROOT_DIR/scripts/docker/sandbox/Dockerfile"
   if [[ -f "$sandbox_dockerfile" ]]; then
-    echo "Building sandbox image: NexisClaw-sandbox:bookworm-slim"
+    echo "Building sandbox image: FirstNexus-sandbox:bookworm-slim"
     run_docker_build \
-      -t "NexisClaw-sandbox:bookworm-slim" \
+      -t "FirstNexus-sandbox:bookworm-slim" \
       -f "$sandbox_dockerfile" \
       "$ROOT_DIR"
   else
@@ -606,10 +606,10 @@ if [[ -n "$SANDBOX_ENABLED" ]]; then
   # Defense-in-depth: verify Docker CLI in the running image before enabling
   # sandbox. This avoids claiming sandbox is enabled when the image cannot
   # launch sandbox containers.
-  if ! docker compose "${COMPOSE_ARGS[@]}" run --rm --entrypoint docker NexisClaw-gateway --version >/dev/null 2>&1; then
+  if ! docker compose "${COMPOSE_ARGS[@]}" run --rm --entrypoint docker FirstNexus-gateway --version >/dev/null 2>&1; then
     echo "WARNING: Docker CLI not found inside the container image." >&2
     echo "  Sandbox requires Docker CLI. Rebuild with --build-arg NEXISCLAW_INSTALL_DOCKER_CLI=1" >&2
-    echo "  or use a local build (NEXISCLAW_IMAGE=NexisClaw:local). Skipping sandbox setup." >&2
+    echo "  or use a local build (NEXISCLAW_IMAGE=FirstNexus:local). Skipping sandbox setup." >&2
     SANDBOX_ENABLED=""
   fi
 fi
@@ -623,7 +623,7 @@ if [[ -n "$SANDBOX_ENABLED" ]]; then
     SANDBOX_COMPOSE_FILE="$ROOT_DIR/docker-compose.sandbox.yml"
     cat >"$SANDBOX_COMPOSE_FILE" <<YAML
 services:
-  NexisClaw-gateway:
+  FirstNexus-gateway:
     volumes:
       - ${DOCKER_SOCKET_PATH}:/var/run/docker.sock
 YAML
@@ -643,7 +643,7 @@ YAML
 fi
 
 if [[ -n "$SANDBOX_ENABLED" ]]; then
-  # Enable sandbox in NexisClaw config.
+  # Enable sandbox in FirstNexus config.
   sandbox_config_ok=true
   if ! run_runtime_cli current no-deps \
     config set agents.defaults.sandbox.mode "non-main" >/dev/null; then
@@ -663,9 +663,9 @@ if [[ -n "$SANDBOX_ENABLED" ]]; then
 
   if [[ "$sandbox_config_ok" == true ]]; then
     echo "Sandbox enabled: mode=non-main, scope=agent, workspaceAccess=none"
-    echo "Docs: https://docs.NexisClaw.ai/gateway/sandboxing"
+    echo "Docs: https://docs.FirstNexus.ai/gateway/sandboxing"
     # Restart gateway with sandbox compose overlay to pick up socket mount + config.
-    docker compose "${COMPOSE_ARGS[@]}" up -d NexisClaw-gateway
+    docker compose "${COMPOSE_ARGS[@]}" up -d FirstNexus-gateway
   else
     echo "WARNING: Sandbox config was partially applied. Check errors above." >&2
     echo "  Skipping gateway restart to avoid exposing Docker socket without a full sandbox policy." >&2
@@ -679,7 +679,7 @@ if [[ -n "$SANDBOX_ENABLED" ]]; then
       rm -f "$SANDBOX_COMPOSE_FILE"
     fi
     # Ensure gateway service definition is reset without sandbox overlay mount.
-    docker compose "${BASE_COMPOSE_ARGS[@]}" up -d --force-recreate NexisClaw-gateway
+    docker compose "${BASE_COMPOSE_ARGS[@]}" up -d --force-recreate FirstNexus-gateway
   fi
 else
   # Keep reruns deterministic: if sandbox is not active for this run, reset
@@ -702,5 +702,5 @@ echo "Workspace: $NEXISCLAW_WORKSPACE_DIR"
 echo "Token: $NEXISCLAW_GATEWAY_TOKEN"
 echo ""
 echo "Commands:"
-echo "  ${COMPOSE_HINT} logs -f NexisClaw-gateway"
-echo "  ${COMPOSE_HINT} exec NexisClaw-gateway node dist/index.js health --token \"$NEXISCLAW_GATEWAY_TOKEN\""
+echo "  ${COMPOSE_HINT} logs -f FirstNexus-gateway"
+echo "  ${COMPOSE_HINT} exec FirstNexus-gateway node dist/index.js health --token \"$NEXISCLAW_GATEWAY_TOKEN\""

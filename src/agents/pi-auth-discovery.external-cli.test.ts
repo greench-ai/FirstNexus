@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 const storeMocks = vi.hoisted(() => ({
   ensureAuthProfileStore: vi.fn(() => ({ version: 1, profiles: {} })),
@@ -47,19 +47,19 @@ describe("resolvePiCredentialsForDiscovery external CLI scoping", () => {
   });
 
   it("threads scoped external CLI discovery into writable auth store loading", () => {
-    const cfg = {} as NexisClawConfig;
+    const cfg = {} as FirstNexusConfig;
     const externalCli = externalCliDiscoveryForProviders({
       cfg,
       providers: ["fireworks"],
     });
 
-    resolvePiCredentialsForDiscovery("/tmp/NexisClaw-agent", {
+    resolvePiCredentialsForDiscovery("/tmp/FirstNexus-agent", {
       config: cfg,
       env: {},
       externalCli,
     });
 
-    expect(storeMocks.ensureAuthProfileStore).toHaveBeenCalledWith("/tmp/NexisClaw-agent", {
+    expect(storeMocks.ensureAuthProfileStore).toHaveBeenCalledWith("/tmp/FirstNexus-agent", {
       allowKeychainPrompt: false,
       config: cfg,
       externalCli,
@@ -68,36 +68,39 @@ describe("resolvePiCredentialsForDiscovery external CLI scoping", () => {
   });
 
   it("preserves scoped external CLI discovery for read-only auth store loading", () => {
-    const cfg = {} as NexisClawConfig;
+    const cfg = {} as FirstNexusConfig;
     const externalCli = externalCliDiscoveryForProviders({
       cfg,
       providers: ["fireworks"],
     });
 
-    resolvePiCredentialsForDiscovery("/tmp/NexisClaw-agent", {
+    resolvePiCredentialsForDiscovery("/tmp/FirstNexus-agent", {
       config: cfg,
       env: {},
       externalCli,
       readOnly: true,
     });
 
-    expect(storeMocks.loadAuthProfileStoreForRuntime).toHaveBeenCalledWith("/tmp/NexisClaw-agent", {
-      allowKeychainPrompt: false,
-      config: cfg,
-      externalCli,
-      readOnly: true,
-    });
+    expect(storeMocks.loadAuthProfileStoreForRuntime).toHaveBeenCalledWith(
+      "/tmp/FirstNexus-agent",
+      {
+        allowKeychainPrompt: false,
+        config: cfg,
+        externalCli,
+        readOnly: true,
+      },
+    );
   });
 
   it("can skip runtime external auth overlays and scope synthetic auth discovery", () => {
-    resolvePiCredentialsForDiscovery("/tmp/NexisClaw-agent", {
+    resolvePiCredentialsForDiscovery("/tmp/FirstNexus-agent", {
       env: {},
       skipExternalAuthProfiles: true,
       syntheticAuthProviderRefs: ["fireworks"],
     });
 
     expect(storeMocks.ensureAuthProfileStoreWithoutExternalProfiles).toHaveBeenCalledWith(
-      "/tmp/NexisClaw-agent",
+      "/tmp/FirstNexus-agent",
       {
         allowKeychainPrompt: false,
       },

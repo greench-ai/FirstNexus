@@ -4,7 +4,7 @@
 // emitted declaration surface stays stable for package-boundary consumers.
 
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type {
   GeneratedVideoAsset as CoreGeneratedVideoAsset,
   VideoGenerationAssetRole as CoreVideoGenerationAssetRole,
@@ -63,14 +63,14 @@ export type VideoGenerationSourceAsset = {
 };
 
 export type VideoGenerationProviderConfiguredContext = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentDir?: string;
 };
 
 export type VideoGenerationModelCapabilitiesContext = {
   provider: string;
   model: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentDir?: string;
   authStore?: AuthProfileStore;
   timeoutMs?: number;
@@ -80,7 +80,7 @@ export type VideoGenerationRequest = {
   provider: string;
   model: string;
   prompt: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentDir?: string;
   authStore?: AuthProfileStore;
   timeoutMs?: number;

@@ -52,7 +52,7 @@ export async function runWindowsBackgroundPowerShell(
   const append = options.append;
   const safeLabel = options.label.replaceAll(/[^A-Za-z0-9_-]/g, "-");
   const nonce = `${safeLabel}-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
-  const fileBase = `NexisClaw-parallels-${nonce}`;
+  const fileBase = `FirstNexus-parallels-${nonce}`;
   const pathsScript = `$base = Join-Path $env:TEMP ${psSingleQuote(fileBase)}
 $scriptPath = "$base.ps1"
 $logPath = "$base.log"
@@ -280,7 +280,7 @@ export class LinuxGuest {
   }
 
   bash(script: string): string {
-    const scriptPath = `/tmp/NexisClaw-parallels-${process.pid}-${Date.now()}.sh`;
+    const scriptPath = `/tmp/FirstNexus-parallels-${process.pid}-${Date.now()}.sh`;
     const write = run(
       "prlctl",
       [
@@ -364,7 +364,7 @@ export class MacosGuest {
   }
 
   sh(script: string, env: Record<string, string> = {}): string {
-    const scriptPath = `/tmp/NexisClaw-parallels-${process.pid}-${Date.now()}.sh`;
+    const scriptPath = `/tmp/FirstNexus-parallels-${process.pid}-${Date.now()}.sh`;
     this.exec(["/bin/dd", `of=${scriptPath}`, "bs=1048576"], {
       input: `umask 022\n${script}`,
     });
@@ -400,7 +400,7 @@ export class WindowsGuest {
   }
 
   powershell(script: string, options: GuestExecOptions = {}): string {
-    const scriptName = `NexisClaw-parallels-${process.pid}-${Date.now()}.ps1`;
+    const scriptName = `FirstNexus-parallels-${process.pid}-${Date.now()}.ps1`;
     const writeScript = `$scriptPath = Join-Path $env:TEMP ${JSON.stringify(scriptName)}
 [System.IO.File]::WriteAllText($scriptPath, [Console]::In.ReadToEnd(), [System.Text.UTF8Encoding]::new($false))`;
     const write = run(

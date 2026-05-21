@@ -1,5 +1,5 @@
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { normalizeE164 } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { normalizeE164 } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { looksLikeUuid } from "./uuid.js";
 
 export type SignalSender =

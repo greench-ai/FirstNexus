@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { BUNDLED_PLUGIN_ROOT_DIR } from "NexisClaw/plugin-sdk/test-fixtures";
+import { BUNDLED_PLUGIN_ROOT_DIR } from "FirstNexus/plugin-sdk/test-fixtures";
 import { describe, expect, it } from "vitest";
 import YAML from "yaml";
 
@@ -168,7 +168,7 @@ describe("Dockerfile", () => {
       'Example: docker build --build-arg NEXISCLAW_EXTENSIONS="diagnostics-otel,matrix" .',
     );
     expect(dockerfile).toContain(
-      "RUN --mount=type=cache,id=NexisClaw-pnpm-store,target=/root/.local/share/pnpm/store,sharing=locked \\",
+      "RUN --mount=type=cache,id=FirstNexus-pnpm-store,target=/root/.local/share/pnpm/store,sharing=locked \\",
     );
     expect(dockerfile).toContain("COPY --from=workspace-deps /out/packages/ ./packages/");
     expect(dockerfile).toContain(
@@ -270,11 +270,11 @@ describe("Dockerfile", () => {
     );
   });
 
-  it("pre-creates the NexisClaw home before switching to the node user", async () => {
+  it("pre-creates the FirstNexus home before switching to the node user", async () => {
     const dockerfile = await readFile(dockerfilePath, "utf8");
     const runtimeStageIndex = dockerfile.lastIndexOf("FROM base-runtime");
     const stateDirIndex = dockerfile.indexOf(
-      "RUN install -d -m 0700 -o node -g node /home/node/.NexisClaw && \\",
+      "RUN install -d -m 0700 -o node -g node /home/node/.FirstNexus && \\",
       runtimeStageIndex,
     );
     const userIndex = dockerfile.indexOf("USER node", runtimeStageIndex);
@@ -284,9 +284,9 @@ describe("Dockerfile", () => {
     expect(userIndex).toBeGreaterThan(-1);
     expect(stateDirIndex).toBeGreaterThan(runtimeStageIndex);
     expect(stateDirIndex).toBeLessThan(userIndex);
-    expect(dockerfile).not.toContain("mkdir -p /home/node/.NexisClaw");
+    expect(dockerfile).not.toContain("mkdir -p /home/node/.FirstNexus");
     expect(dockerfile).toContain(
-      "stat -c '%U:%G %a' /home/node/.NexisClaw | grep -qx 'node:node 700'",
+      "stat -c '%U:%G %a' /home/node/.FirstNexus | grep -qx 'node:node 700'",
     );
   });
 });

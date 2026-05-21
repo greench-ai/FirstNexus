@@ -638,7 +638,7 @@ describe("clearAuthProfileCooldown", () => {
 });
 
 describe("markAuthProfileFailure — active windows do not extend on retry", () => {
-  // Regression for https://github.com/NexisClaw/NexisClaw/issues/23516
+  // Regression for https://github.com/FirstNexus/FirstNexus/issues/23516
   // When all providers are at saturation backoff (60 min) and retries fire every 30 min,
   // each retry was resetting cooldownUntil to now+60m, preventing recovery.
   type WindowStats = ProfileUsageStats;
@@ -882,8 +882,8 @@ describe("markAuthProfileFailure — WHAM-aware Codex cooldowns", () => {
     const headers = init.headers as Record<string, string>;
     expect(headers.Authorization).toBe("Bearer codex-access-token");
     expect(headers["ChatGPT-Account-Id"]).toBe("acct_test_123");
-    expect(headers.originator).toBe("NexisClaw");
-    expect(headers["User-Agent"]).toMatch(/^NexisClaw\//);
+    expect(headers.originator).toBe("FirstNexus");
+    expect(headers["User-Agent"]).toMatch(/^FirstNexus\//);
     const stats = store.usageStats?.["openai-codex:default"];
     if (exactBlocked) {
       expect(stats?.blockedUntil).toBe(now + expectedMs);

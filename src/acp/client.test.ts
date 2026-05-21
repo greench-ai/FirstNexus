@@ -68,7 +68,7 @@ function makePermissionRequest(
 }
 
 const tempDirs = createTrackedTempDirs();
-const createTempDir = () => tempDirs.make("NexisClaw-acp-client-test-");
+const createTempDir = () => tempDirs.make("FirstNexus-acp-client-test-");
 
 afterEach(async () => {
   await tempDirs.cleanup();
@@ -78,12 +78,12 @@ describe("resolveAcpClientSpawnEnv", () => {
   it("sets NEXISCLAW_SHELL marker and preserves existing env values", () => {
     const env = resolveAcpClientSpawnEnv({
       PATH: "/usr/bin",
-      USER: "NexisClaw",
+      USER: "FirstNexus",
     });
 
     expect(env.NEXISCLAW_SHELL).toBe("acp-client");
     expect(env.PATH).toBe("/usr/bin");
-    expect(env.USER).toBe("NexisClaw");
+    expect(env.USER).toBe("FirstNexus");
   });
 
   it("overrides pre-existing NEXISCLAW_SHELL to acp-client", () => {
@@ -141,7 +141,7 @@ describe("resolveAcpClientSpawnEnv", () => {
     expect(env.OPENAI_API_KEY).toBeUndefined();
   });
 
-  it("strips provider auth env vars for the default NexisClaw bridge", () => {
+  it("strips provider auth env vars for the default FirstNexus bridge", () => {
     const stripKeys = new Set(["OPENAI_API_KEY", "GITHUB_TOKEN", "HF_TOKEN"]);
     const env = resolveAcpClientSpawnEnv(
       {
@@ -199,9 +199,9 @@ describe("shouldStripProviderAuthEnvVarsForAcpServer", () => {
     expect(shouldStripProviderAuthEnvVarsForAcpServer()).toBe(true);
     expect(
       shouldStripProviderAuthEnvVarsForAcpServer({
-        serverCommand: "NexisClaw",
+        serverCommand: "FirstNexus",
         serverArgs: ["acp"],
-        defaultServerCommand: "NexisClaw",
+        defaultServerCommand: "FirstNexus",
         defaultServerArgs: ["acp"],
       }),
     ).toBe(true);
@@ -212,7 +212,7 @@ describe("shouldStripProviderAuthEnvVarsForAcpServer", () => {
       shouldStripProviderAuthEnvVarsForAcpServer({
         serverCommand: "custom-acp-server",
         serverArgs: ["serve"],
-        defaultServerCommand: "NexisClaw",
+        defaultServerCommand: "FirstNexus",
         defaultServerArgs: ["acp"],
       }),
     ).toBe(false);
@@ -259,7 +259,7 @@ describe("buildAcpClientStripKeys", () => {
 describe("resolveAcpClientSpawnInvocation", () => {
   it("keeps non-windows invocation unchanged", () => {
     const resolved = resolveAcpClientSpawnInvocation(
-      { serverCommand: "NexisClaw", serverArgs: ["acp", "--verbose"] },
+      { serverCommand: "FirstNexus", serverArgs: ["acp", "--verbose"] },
       {
         platform: "darwin",
         env: {},
@@ -267,7 +267,7 @@ describe("resolveAcpClientSpawnInvocation", () => {
       },
     );
     expect(resolved).toEqual({
-      command: "NexisClaw",
+      command: "FirstNexus",
       args: ["acp", "--verbose"],
       shell: undefined,
       windowsHide: undefined,
@@ -276,11 +276,11 @@ describe("resolveAcpClientSpawnInvocation", () => {
 
   it("unwraps .cmd shim entrypoint on windows", async () => {
     const dir = await createTempDir();
-    const scriptPath = path.join(dir, "NexisClaw", "dist", "entry.js");
-    const shimPath = path.join(dir, "NexisClaw.cmd");
+    const scriptPath = path.join(dir, "FirstNexus", "dist", "entry.js");
+    const shimPath = path.join(dir, "FirstNexus.cmd");
     await mkdir(path.dirname(scriptPath), { recursive: true });
     await writeFile(scriptPath, "console.log('ok')\n", "utf8");
-    await writeFile(shimPath, `@ECHO off\r\n"%~dp0\\NexisClaw\\dist\\entry.js" %*\r\n`, "utf8");
+    await writeFile(shimPath, `@ECHO off\r\n"%~dp0\\FirstNexus\\dist\\entry.js" %*\r\n`, "utf8");
 
     const resolved = resolveAcpClientSpawnInvocation(
       { serverCommand: shimPath, serverArgs: ["acp", "--verbose"] },
@@ -298,7 +298,7 @@ describe("resolveAcpClientSpawnInvocation", () => {
 
   it("fails closed for unresolved wrappers on windows", async () => {
     const dir = await createTempDir();
-    const shimPath = path.join(dir, "NexisClaw.cmd");
+    const shimPath = path.join(dir, "FirstNexus.cmd");
     await writeFile(shimPath, "@ECHO off\r\necho wrapper\r\n", "utf8");
 
     expect(() =>
@@ -533,7 +533,7 @@ describe("resolvePermissionRequest", () => {
           rawInput: { path: "docs/security.md" },
         },
       },
-      cwd: "/tmp/NexisClaw-acp-cwd",
+      cwd: "/tmp/FirstNexus-acp-cwd",
     });
   });
 
@@ -544,10 +544,10 @@ describe("resolvePermissionRequest", () => {
           toolCallId: "tool-read-inside-cwd-file-url",
           title: "read: ignored-by-raw-input",
           status: "pending",
-          rawInput: { path: "file:///tmp/NexisClaw-acp-cwd/docs/security.md" },
+          rawInput: { path: "file:///tmp/FirstNexus-acp-cwd/docs/security.md" },
         },
       },
-      cwd: "/tmp/NexisClaw-acp-cwd",
+      cwd: "/tmp/FirstNexus-acp-cwd",
     });
   });
 
@@ -562,7 +562,7 @@ describe("resolvePermissionRequest", () => {
           rawInput: { path: "../.ssh/id_rsa" },
         },
       }),
-      { prompt, log: () => {}, cwd: "/tmp/NexisClaw-acp-cwd/workspace" },
+      { prompt, log: () => {}, cwd: "/tmp/FirstNexus-acp-cwd/workspace" },
     );
     expect(prompt).toHaveBeenCalledTimes(1);
     expect(prompt).toHaveBeenCalledWith("read", "read: ignored-by-raw-input");

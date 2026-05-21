@@ -8,10 +8,10 @@ import {
   type SilentReplyRewriteShape,
 } from "../shared/silent-reply-policy.js";
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
-import type { NexisClawConfig } from "./types.NexisClaw.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 
 type ResolveSilentReplyParams = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   sessionKey?: string;
   surface?: string;
   conversationType?: SilentReplyConversationType;

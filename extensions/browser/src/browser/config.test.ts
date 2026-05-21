@@ -49,15 +49,15 @@ describe("browser config", () => {
     expect(resolved.cdpHost).toBe("127.0.0.1");
     expect(resolved.cdpProtocol).toBe("http");
     const profile = resolveProfile(resolved, resolved.defaultProfile);
-    expect(profile?.name).toBe("NexisClaw");
-    expect(profile?.driver).toBe("NexisClaw");
+    expect(profile?.name).toBe("FirstNexus");
+    expect(profile?.driver).toBe("FirstNexus");
     expect(profile?.cdpPort).toBe(18800);
     expect(profile?.cdpUrl).toBe("http://127.0.0.1:18800");
 
-    const NexisClaw = resolveProfile(resolved, "NexisClaw");
-    expect(NexisClaw?.driver).toBe("NexisClaw");
-    expect(NexisClaw?.cdpPort).toBe(18800);
-    expect(NexisClaw?.cdpUrl).toBe("http://127.0.0.1:18800");
+    const FirstNexus = resolveProfile(resolved, "FirstNexus");
+    expect(FirstNexus?.driver).toBe("FirstNexus");
+    expect(FirstNexus?.cdpPort).toBe(18800);
+    expect(FirstNexus?.cdpUrl).toBe("http://127.0.0.1:18800");
     const user = resolveProfile(resolved, "user");
     expect(user?.driver).toBe("existing-session");
     expect(user?.cdpPort).toBe(0);
@@ -82,9 +82,9 @@ describe("browser config", () => {
       expect(resolved.controlPort).toBe(19003);
       expect(resolveProfile(resolved, "chrome-relay")).toBe(null);
 
-      const NexisClaw = resolveProfile(resolved, "NexisClaw");
-      expect(NexisClaw?.cdpPort).toBe(19012);
-      expect(NexisClaw?.cdpUrl).toBe("http://127.0.0.1:19012");
+      const FirstNexus = resolveProfile(resolved, "FirstNexus");
+      expect(FirstNexus?.cdpPort).toBe(19012);
+      expect(FirstNexus?.cdpUrl).toBe("http://127.0.0.1:19012");
     });
   });
 
@@ -94,9 +94,9 @@ describe("browser config", () => {
       expect(resolved.controlPort).toBe(19013);
       expect(resolveProfile(resolved, "chrome-relay")).toBe(null);
 
-      const NexisClaw = resolveProfile(resolved, "NexisClaw");
-      expect(NexisClaw?.cdpPort).toBe(19022);
-      expect(NexisClaw?.cdpUrl).toBe("http://127.0.0.1:19022");
+      const FirstNexus = resolveProfile(resolved, "FirstNexus");
+      expect(FirstNexus?.cdpPort).toBe(19022);
+      expect(FirstNexus?.cdpUrl).toBe("http://127.0.0.1:19022");
     });
   });
 
@@ -104,10 +104,10 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpPortRangeStart: 19000,
     });
-    const NexisClaw = resolveProfile(resolved, "NexisClaw");
+    const FirstNexus = resolveProfile(resolved, "FirstNexus");
     expect(resolved.cdpPortRangeStart).toBe(19000);
-    expect(NexisClaw?.cdpPort).toBe(19000);
-    expect(NexisClaw?.cdpUrl).toBe("http://127.0.0.1:19000");
+    expect(FirstNexus?.cdpPort).toBe(19000);
+    expect(FirstNexus?.cdpUrl).toBe("http://127.0.0.1:19000");
   });
 
   it("rejects cdpPortRangeStart values that overflow the CDP range window", () => {
@@ -235,7 +235,7 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpUrl: "http://example.com:9222",
     });
-    const profile = resolveProfile(resolved, "NexisClaw");
+    const profile = resolveProfile(resolved, "FirstNexus");
     expect(profile?.cdpIsLoopback).toBe(false);
   });
 
@@ -243,7 +243,7 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpUrl: "http://example.com:9222",
     });
-    const profile = resolveProfile(resolved, "NexisClaw");
+    const profile = resolveProfile(resolved, "FirstNexus");
     expect(profile?.cdpPort).toBe(9222);
     expect(profile?.cdpUrl).toBe("http://example.com:9222");
     expect(profile?.cdpIsLoopback).toBe(false);
@@ -331,7 +331,7 @@ describe("browser config", () => {
 
     it("falls back to headless for local managed Linux profiles without display", () => {
       const resolved = resolveBrowserConfig({});
-      const profile = resolveProfile(resolved, "NexisClaw")!;
+      const profile = resolveProfile(resolved, "FirstNexus")!;
 
       expect(
         resolveManagedBrowserHeadlessMode(resolved, profile, {
@@ -361,10 +361,10 @@ describe("browser config", () => {
       const resolved = resolveBrowserConfig({
         headless: true,
         profiles: {
-          NexisClaw: { cdpPort: 18800, color: "#FF4500", headless: false },
+          FirstNexus: { cdpPort: 18800, color: "#FF4500", headless: false },
         },
       });
-      const profile = resolveProfile(resolved, "NexisClaw")!;
+      const profile = resolveProfile(resolved, "FirstNexus")!;
 
       expect(
         resolveManagedBrowserHeadlessMode(resolved, profile, {
@@ -376,7 +376,7 @@ describe("browser config", () => {
 
     it("lets explicit global headless=false beat the Linux no-display fallback", () => {
       const resolved = resolveBrowserConfig({ headless: false });
-      const profile = resolveProfile(resolved, "NexisClaw")!;
+      const profile = resolveProfile(resolved, "FirstNexus")!;
 
       expect(
         resolveManagedBrowserHeadlessMode(resolved, profile, {
@@ -389,10 +389,10 @@ describe("browser config", () => {
     it("lets NEXISCLAW_BROWSER_HEADLESS override profile/global config", () => {
       const resolved = resolveBrowserConfig({
         profiles: {
-          NexisClaw: { cdpPort: 18800, color: "#FF4500", headless: false },
+          FirstNexus: { cdpPort: 18800, color: "#FF4500", headless: false },
         },
       });
-      const profile = resolveProfile(resolved, "NexisClaw")!;
+      const profile = resolveProfile(resolved, "FirstNexus")!;
 
       expect(
         resolveManagedBrowserHeadlessMode(resolved, profile, {
@@ -406,10 +406,10 @@ describe("browser config", () => {
       const resolved = resolveBrowserConfig({
         headless: false,
         profiles: {
-          NexisClaw: { cdpPort: 18800, color: "#FF4500", headless: false },
+          FirstNexus: { cdpPort: 18800, color: "#FF4500", headless: false },
         },
       });
-      const profile = resolveProfile(resolved, "NexisClaw")!;
+      const profile = resolveProfile(resolved, "FirstNexus")!;
 
       expect(
         resolveManagedBrowserHeadlessMode(resolved, profile, {
@@ -422,7 +422,7 @@ describe("browser config", () => {
 
     it("returns an actionable error only when headed mode is explicitly selected", () => {
       const defaultResolved = resolveBrowserConfig({});
-      const defaultProfile = resolveProfile(defaultResolved, "NexisClaw")!;
+      const defaultProfile = resolveProfile(defaultResolved, "FirstNexus")!;
       expect(
         getManagedBrowserMissingDisplayError(defaultResolved, defaultProfile, {
           platform: "linux",
@@ -432,16 +432,16 @@ describe("browser config", () => {
 
       const profileResolved = resolveBrowserConfig({
         profiles: {
-          NexisClaw: { cdpPort: 18800, color: "#FF4500", headless: false },
+          FirstNexus: { cdpPort: 18800, color: "#FF4500", headless: false },
         },
       });
-      const profile = resolveProfile(profileResolved, "NexisClaw")!;
+      const profile = resolveProfile(profileResolved, "FirstNexus")!;
       expect(
         getManagedBrowserMissingDisplayError(profileResolved, profile, {
           platform: "linux",
           env: noDisplayEnv,
         }),
-      ).toContain("browser.profiles.NexisClaw.headless=false");
+      ).toContain("browser.profiles.FirstNexus.headless=false");
     });
   });
 
@@ -534,7 +534,7 @@ describe("browser config", () => {
     const resolved = resolveBrowserConfig({
       cdpUrl: "wss://connect.browserbase.com?apiKey=test-key",
     });
-    const profile = resolveProfile(resolved, "NexisClaw");
+    const profile = resolveProfile(resolved, "FirstNexus");
     expect(profile?.cdpUrl).toBe("wss://connect.browserbase.com/?apiKey=test-key");
     expect(profile?.cdpHost).toBe("connect.browserbase.com");
     expect(profile?.cdpPort).toBe(443);
@@ -795,7 +795,7 @@ describe("browser config", () => {
     const existingSession = resolveProfile(resolved, "chrome-live")!;
     expect(getBrowserProfileCapabilities(existingSession).usesChromeMcp).toBe(true);
 
-    const managed = resolveProfile(resolved, "NexisClaw")!;
+    const managed = resolveProfile(resolved, "FirstNexus")!;
     expect(getBrowserProfileCapabilities(managed).usesChromeMcp).toBe(false);
 
     const work = resolveProfile(resolved, "work")!;
@@ -803,34 +803,34 @@ describe("browser config", () => {
   });
 
   describe("default profile preference", () => {
-    it("defaults to NexisClaw profile when defaultProfile is not configured", () => {
+    it("defaults to FirstNexus profile when defaultProfile is not configured", () => {
       const resolved = resolveBrowserConfig({
         headless: false,
         noSandbox: false,
       });
-      expect(resolved.defaultProfile).toBe("NexisClaw");
+      expect(resolved.defaultProfile).toBe("FirstNexus");
     });
 
-    it("keeps NexisClaw default when headless=true", () => {
+    it("keeps FirstNexus default when headless=true", () => {
       const resolved = resolveBrowserConfig({
         headless: true,
       });
-      expect(resolved.defaultProfile).toBe("NexisClaw");
+      expect(resolved.defaultProfile).toBe("FirstNexus");
     });
 
-    it("keeps NexisClaw default when noSandbox=true", () => {
+    it("keeps FirstNexus default when noSandbox=true", () => {
       const resolved = resolveBrowserConfig({
         noSandbox: true,
       });
-      expect(resolved.defaultProfile).toBe("NexisClaw");
+      expect(resolved.defaultProfile).toBe("FirstNexus");
     });
 
-    it("keeps NexisClaw default when both headless and noSandbox are true", () => {
+    it("keeps FirstNexus default when both headless and noSandbox are true", () => {
       const resolved = resolveBrowserConfig({
         headless: true,
         noSandbox: true,
       });
-      expect(resolved.defaultProfile).toBe("NexisClaw");
+      expect(resolved.defaultProfile).toBe("FirstNexus");
     });
 
     it("explicit defaultProfile config overrides defaults in headless mode", () => {

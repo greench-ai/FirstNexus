@@ -5,8 +5,8 @@ import { SANDBOX_MOUNT_FORMAT_VERSION } from "./workspace-mounts.js";
 
 function createDockerConfig(overrides?: Partial<SandboxDockerConfig>): SandboxDockerConfig {
   return {
-    image: "NexisClaw-sandbox:test",
-    containerPrefix: "NexisClaw-sbx-",
+    image: "FirstNexus-sandbox:test",
+    containerPrefix: "FirstNexus-sbx-",
     workdir: "/workspace",
     readOnlyRoot: true,
     tmpfs: ["/tmp", "/var/tmp", "/run"],

@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 
 const PACKAGE_ACCEPTANCE_WORKFLOW = ".github/workflows/package-acceptance.yml";
-const LIVE_E2E_WORKFLOW = ".github/workflows/NexisClaw-live-and-e2e-checks-reusable.yml";
+const LIVE_E2E_WORKFLOW = ".github/workflows/FirstNexus-live-and-e2e-checks-reusable.yml";
 const NPM_TELEGRAM_WORKFLOW = ".github/workflows/npm-telegram-beta-e2e.yml";
 const PACKAGE_JSON = "package.json";
-const RELEASE_CHECKS_WORKFLOW = ".github/workflows/NexisClaw-release-checks.yml";
-const RELEASE_PUBLISH_WORKFLOW = ".github/workflows/NexisClaw-release-publish.yml";
+const RELEASE_CHECKS_WORKFLOW = ".github/workflows/FirstNexus-release-checks.yml";
+const RELEASE_PUBLISH_WORKFLOW = ".github/workflows/FirstNexus-release-publish.yml";
 const FULL_RELEASE_VALIDATION_WORKFLOW = ".github/workflows/full-release-validation.yml";
 const QA_LIVE_TRANSPORTS_WORKFLOW = ".github/workflows/qa-live-transports-convex.yml";
 const UPDATE_MIGRATION_WORKFLOW = ".github/workflows/update-migration.yml";
@@ -78,13 +78,13 @@ describe("package acceptance workflow", () => {
     expect(workflow).toContain("- ref");
     expect(workflow).toContain("- url");
     expect(workflow).toContain("- artifact");
-    expect(workflow).toContain("scripts/resolve-NexisClaw-package-candidate.mjs");
+    expect(workflow).toContain("scripts/resolve-FirstNexus-package-candidate.mjs");
     expect(workflow).toContain('--package-ref "$PACKAGE_REF"');
     expect(workflow).toContain('gh run download "$ARTIFACT_RUN_ID"');
     expect(workflow).toContain("name: ${{ env.PACKAGE_ARTIFACT_NAME }}");
     expect(workflow).toContain("pull-requests: read");
     expect(workflow).toContain(
-      "uses: ./.github/workflows/NexisClaw-live-and-e2e-checks-reusable.yml",
+      "uses: ./.github/workflows/FirstNexus-live-and-e2e-checks-reusable.yml",
     );
     expect(workflow).toContain(
       "ref: ${{ needs.resolve_package.outputs.package_source_sha || inputs.workflow_ref }}",
@@ -126,7 +126,7 @@ describe("package acceptance workflow", () => {
     expect(workflow).toContain("telegram_scenarios:");
     expect(workflow).toContain("scenario: ${{ inputs.telegram_scenarios }}");
     expect(workflow).toContain(
-      "package_label: NexisClaw@${{ needs.resolve_package.outputs.package_version }}",
+      "package_label: FirstNexus@${{ needs.resolve_package.outputs.package_version }}",
     );
     expect(npmTelegramWorkflow).toContain("package_artifact_run_id:");
     expect(npmTelegramWorkflow).toContain("Download package-under-test artifact from release run");
@@ -178,7 +178,7 @@ describe("package acceptance workflow", () => {
       "source: ${{ (needs.resolve_target.outputs.package_acceptance_package_spec != '' || needs.resolve_target.outputs.release_package_spec != '') && 'npm' || 'artifact' }}",
     );
     expect(releaseChecksWorkflow).toContain(
-      "package_spec: ${{ needs.resolve_target.outputs.package_acceptance_package_spec || needs.resolve_target.outputs.release_package_spec || 'NexisClaw@beta' }}",
+      "package_spec: ${{ needs.resolve_target.outputs.package_acceptance_package_spec || needs.resolve_target.outputs.release_package_spec || 'FirstNexus@beta' }}",
     );
   });
 
@@ -223,8 +223,8 @@ describe("package artifact reuse", () => {
     expect(workflow).toContain(
       "NEXISCLAW_UPGRADE_SURVIVOR_SCENARIOS: ${{ inputs.published_upgrade_survivor_scenarios }}",
     );
-    expect(workflow).toContain("Download current-run NexisClaw Docker E2E package");
-    expect(workflow).toContain("Download previous-run NexisClaw Docker E2E package");
+    expect(workflow).toContain("Download current-run FirstNexus Docker E2E package");
+    expect(workflow).toContain("Download previous-run FirstNexus Docker E2E package");
     expect(workflow).toContain("inputs.package_artifact_name != ''");
     expect(workflow).toContain(
       'bare_image="${PROVIDED_BARE_IMAGE:-ghcr.io/${repository}-docker-e2e-bare:${image_tag}}"',
@@ -283,10 +283,10 @@ describe("package artifact reuse", () => {
     expect(publishedUpgradeSurvivor).toContain("write_update_restart_service_secretref_env");
     expect(publishedUpgradeSurvivor).toContain("GATEWAY_AUTH_TOKEN_REF=%s");
     expect(publishedUpgradeSurvivor).toContain(
-      "env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD NexisClaw",
+      "env -u NEXISCLAW_GATEWAY_TOKEN -u NEXISCLAW_GATEWAY_PASSWORD FirstNexus",
     );
     expect(publishedUpgradeSurvivor).toContain("phase prepare-update-restart-probe");
-    expect(publishedUpgradeSurvivor).toContain("NexisClaw@(alpha|beta|latest|");
+    expect(publishedUpgradeSurvivor).toContain("FirstNexus@(alpha|beta|latest|");
     expect(publishedUpgradeSurvivor).toContain("plugin_deps_cleanup_plugin_dirs");
     expect(publishedUpgradeSurvivor).toContain('"$(package_root)/extensions/$plugin"');
     expect(publishedUpgradeSurvivor).toContain("probe_gateway_endpoint");
@@ -296,7 +296,7 @@ describe("package artifact reuse", () => {
     expect(publishedUpgradeSurvivor.indexOf("phase seed-source-only-plugin-shadow")).toBeLessThan(
       publishedUpgradeSurvivor.indexOf("phase assert-baseline"),
     );
-    expect(publishedUpgradeSurvivor).toContain('"id": "opik-NexisClaw"');
+    expect(publishedUpgradeSurvivor).toContain('"id": "opik-FirstNexus"');
     expect(publishedUpgradeSurvivor).toContain('"configSchema": {');
     expect(publishedUpgradeSurvivor).toContain(
       "Legacy plugin dependency debris was already removed before doctor",
@@ -446,7 +446,9 @@ describe("package artifact reuse", () => {
     expect(workflow).toMatch(
       /validate_live_media_provider_suites:[\s\S]*?runs-on: blacksmith-8vcpu-ubuntu-2404/u,
     );
-    expect(workflow).toContain("image: ghcr.io/NexisClaw/NexisClaw-live-media-runner:ubuntu-24.04");
+    expect(workflow).toContain(
+      "image: ghcr.io/FirstNexus/FirstNexus-live-media-runner:ubuntu-24.04",
+    );
     expect(workflow).toContain("ffmpeg -version | head -1");
     expect(workflow).toContain("ffprobe -version | head -1");
     expect(workflow).toContain("suite_id: native-live-extensions-media-audio");
@@ -534,7 +536,7 @@ describe("package artifact reuse", () => {
         '-e NEXISCLAW_LIVE_DOCKER_SCRIPTS_DIR="${DOCKER_TRUSTED_HARNESS_CONTAINER_DIR}/scripts"',
       );
       expect(script).toContain(
-        "NexisClaw_live_append_array DOCKER_RUN_ARGS DOCKER_TRUSTED_HARNESS_MOUNT",
+        "FirstNexus_live_append_array DOCKER_RUN_ARGS DOCKER_TRUSTED_HARNESS_MOUNT",
       );
     }
     expect(build).toContain('ROOT_DIR="${NEXISCLAW_LIVE_DOCKER_REPO_ROOT:-$SCRIPT_ROOT_DIR}"');
@@ -576,7 +578,7 @@ describe("package artifact reuse", () => {
       "source: ${{ (needs.resolve_target.outputs.package_acceptance_package_spec != '' || needs.resolve_target.outputs.release_package_spec != '') && 'npm' || 'artifact' }}",
     );
     expect(workflow).toContain(
-      "package_spec: ${{ needs.resolve_target.outputs.package_acceptance_package_spec || needs.resolve_target.outputs.release_package_spec || 'NexisClaw@beta' }}",
+      "package_spec: ${{ needs.resolve_target.outputs.package_acceptance_package_spec || needs.resolve_target.outputs.release_package_spec || 'FirstNexus@beta' }}",
     );
     expect(workflow).toContain(".artifacts/docker-e2e-package/package-candidate.json");
     expect(workflow).toContain(
@@ -633,11 +635,11 @@ describe("package artifact reuse", () => {
 
     expect(releaseWorkflow).toContain("matrix_args=(");
     expect(releaseWorkflow).toContain(
-      'pnpm NexisClaw qa matrix --help 2>/dev/null | grep -F -q -- "--fail-fast"',
+      'pnpm FirstNexus qa matrix --help 2>/dev/null | grep -F -q -- "--fail-fast"',
     );
     expect(releaseWorkflow).toContain("matrix_args+=(--fail-fast)");
     expect(releaseWorkflow).toContain(
-      'pnpm NexisClaw qa matrix --output-dir "${attempt_output_dir}" "${matrix_args[@]}"',
+      'pnpm FirstNexus qa matrix --output-dir "${attempt_output_dir}" "${matrix_args[@]}"',
     );
     expect(releaseWorkflow).toContain(
       'echo "Matrix live lane failed on attempt ${attempt}; retrying once..." >&2',
@@ -646,7 +648,7 @@ describe("package artifact reuse", () => {
       'echo "Telegram live lane failed on attempt ${attempt}; retrying once..." >&2',
     );
     expect(qaWorkflow).toContain(
-      'pnpm NexisClaw qa matrix --help 2>/dev/null | grep -F -q -- "--fail-fast"',
+      'pnpm FirstNexus qa matrix --help 2>/dev/null | grep -F -q -- "--fail-fast"',
     );
   });
 
@@ -710,7 +712,7 @@ describe("package artifact reuse", () => {
     expectTextToIncludeAll(
       workflowStep(preparePackageJob, "Resolve release package artifact").run,
       [
-        "scripts/resolve-NexisClaw-package-candidate.mjs",
+        "scripts/resolve-FirstNexus-package-candidate.mjs",
         "--source ref",
         '--package-ref "$PACKAGE_REF"',
         "release-package-under-test",
@@ -734,7 +736,7 @@ describe("package artifact reuse", () => {
     expectTextToIncludeAll(dispatchStep.run, [
       'gh workflow run npm-telegram-beta-e2e.yml --ref "$CHILD_WORKFLOW_REF" "${args[@]}"',
       '-f harness_ref="$TARGET_SHA"',
-      'args=(-f package_spec="${PACKAGE_SPEC:-NexisClaw@beta}"',
+      'args=(-f package_spec="${PACKAGE_SPEC:-FirstNexus@beta}"',
       'if [[ -z "${PACKAGE_SPEC// }" ]]; then',
       '-f package_artifact_name="$PACKAGE_ARTIFACT_NAME"',
       '-f package_artifact_run_id="${GITHUB_RUN_ID}"',
@@ -810,7 +812,7 @@ describe("package artifact reuse", () => {
     });
     expectTextToIncludeAll(validateStep.run, [
       'if [[ -z "${PACKAGE_ARTIFACT_NAME// }" ]]; then',
-      "package_spec must be NexisClaw@alpha",
+      "package_spec must be FirstNexus@alpha",
     ]);
     expectTextToIncludeAll(runStep.run, [
       'export NEXISCLAW_NPM_TELEGRAM_PACKAGE_TGZ="${package_tgzs[0]}"',
@@ -860,11 +862,11 @@ describe("package artifact reuse", () => {
 
   it("keeps release publish creation compatible with gh api and prerelease notes", () => {
     const workflow = readFileSync(RELEASE_PUBLISH_WORKFLOW, "utf8");
-    const npmWorkflow = readFileSync(".github/workflows/NexisClaw-npm-release.yml", "utf8");
+    const npmWorkflow = readFileSync(".github/workflows/FirstNexus-npm-release.yml", "utf8");
 
     expect(workflow).toContain("timeout-minutes: 60");
-    expect(workflow).toContain("Download NexisClaw npm preflight manifest");
-    expect(workflow).toContain("Validate NexisClaw npm preflight manifest");
+    expect(workflow).toContain("Download FirstNexus npm preflight manifest");
+    expect(workflow).toContain("Validate FirstNexus npm preflight manifest");
     expect(workflow).toContain("preflight-manifest.json");
     expect(npmWorkflow).toContain("preflight-manifest.json");
     expect(npmWorkflow).toContain("tarballSha256");
@@ -894,23 +896,25 @@ describe("package artifact reuse", () => {
     expect(clawHubWorkflow).toContain("max-parallel: 32");
     expect(releaseWorkflow).toContain("Plugin npm run ID");
     expect(releaseWorkflow).toContain("Plugin ClawHub run ID");
-    expect(releaseWorkflow).toContain("NexisClaw npm run ID");
+    expect(releaseWorkflow).toContain("FirstNexus npm run ID");
     expect(releaseWorkflow).toContain("finished with ${conclusion} in ${duration_label}");
   });
 
   it("keeps release workflow setup and timeout budgets bounded", () => {
     const fullRelease = readWorkflow(FULL_RELEASE_VALIDATION_WORKFLOW);
     const releaseChecks = readWorkflow(RELEASE_CHECKS_WORKFLOW);
-    const crossOs = readWorkflow(".github/workflows/NexisClaw-cross-os-release-checks-reusable.yml");
+    const crossOs = readWorkflow(
+      ".github/workflows/FirstNexus-cross-os-release-checks-reusable.yml",
+    );
     const liveE2e = readWorkflow(LIVE_E2E_WORKFLOW);
     const releaseWorkflowPaths = [
       FULL_RELEASE_VALIDATION_WORKFLOW,
       RELEASE_CHECKS_WORKFLOW,
-      ".github/workflows/NexisClaw-cross-os-release-checks-reusable.yml",
+      ".github/workflows/FirstNexus-cross-os-release-checks-reusable.yml",
       LIVE_E2E_WORKFLOW,
       NPM_TELEGRAM_WORKFLOW,
-      ".github/workflows/NexisClaw-release-publish.yml",
-      ".github/workflows/NexisClaw-npm-release.yml",
+      ".github/workflows/FirstNexus-release-publish.yml",
+      ".github/workflows/FirstNexus-npm-release.yml",
       ".github/workflows/macos-release.yml",
       ".github/workflows/plugin-clawhub-release.yml",
       PACKAGE_ACCEPTANCE_WORKFLOW,

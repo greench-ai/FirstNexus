@@ -1,7 +1,7 @@
 import {
   createEnvPatchedAccountSetupAdapter,
   type ChannelSetupAdapter,
-} from "NexisClaw/plugin-sdk/setup-runtime";
+} from "FirstNexus/plugin-sdk/setup-runtime";
 
 const channel = "discord" as const;
 

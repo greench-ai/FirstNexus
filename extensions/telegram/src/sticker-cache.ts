@@ -1,19 +1,19 @@
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/agent-runtime";
-import type { ModelCatalogEntry } from "NexisClaw/plugin-sdk/agent-runtime";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/agent-runtime";
+import type { ModelCatalogEntry } from "FirstNexus/plugin-sdk/agent-runtime";
 import {
   findModelInCatalog,
   loadModelCatalog,
   modelSupportsVision,
-} from "NexisClaw/plugin-sdk/agent-runtime";
-import { resolveDefaultModelForAgent } from "NexisClaw/plugin-sdk/agent-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveAutoImageModel } from "NexisClaw/plugin-sdk/media-runtime";
+} from "FirstNexus/plugin-sdk/agent-runtime";
+import { resolveDefaultModelForAgent } from "FirstNexus/plugin-sdk/agent-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveAutoImageModel } from "FirstNexus/plugin-sdk/media-runtime";
 import {
   resolveAutoMediaKeyProviders,
   resolveDefaultMediaModel,
-} from "NexisClaw/plugin-sdk/media-runtime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/media-runtime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { getTelegramRuntime } from "./runtime.js";
 export {
   cacheSticker,
@@ -29,7 +29,7 @@ const STICKER_DESCRIPTION_PROMPT =
 
 export interface DescribeStickerParams {
   imagePath: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentDir?: string;
   agentId?: string;
 }

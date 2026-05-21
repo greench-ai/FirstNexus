@@ -1,11 +1,11 @@
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
 import {
   adaptScopedAccountAccessor,
   createScopedChannelConfigAdapter,
   formatTrimmedAllowFromEntries,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
-import { createRestrictSendersChannelSecurity } from "NexisClaw/plugin-sdk/channel-policy";
-import { createChannelPluginBase } from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
+import { createRestrictSendersChannelSecurity } from "FirstNexus/plugin-sdk/channel-policy";
+import { createChannelPluginBase } from "FirstNexus/plugin-sdk/core";
 import {
   listIMessageAccountIds,
   resolveDefaultIMessageAccountId,

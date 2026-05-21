@@ -1,5 +1,5 @@
 import { normalizeConfiguredMcpServers } from "../config/mcp-config-normalize.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   loadEnabledBundleMcpConfig,
   type BundleMcpConfig,
@@ -22,10 +22,10 @@ const NEXISCLAW_TRANSPORT_TO_CLI_BUNDLE_TYPE: Record<string, string> = {
 };
 
 /**
- * User config stores NexisClaw MCP transport names, while CLI backends such as
+ * User config stores FirstNexus MCP transport names, while CLI backends such as
  * Claude Code and Gemini expect a downstream `type` field. Keep this adapter
  * out of the generic merge path because embedded Pi still consumes the raw
- * NexisClaw `transport` shape directly.
+ * FirstNexus `transport` shape directly.
  */
 export function toCliBundleMcpServerConfig(server: BundleMcpServerConfig): BundleMcpServerConfig {
   const next = { ...server } as Record<string, unknown>;
@@ -45,7 +45,7 @@ export function toCliBundleMcpServerConfig(server: BundleMcpServerConfig): Bundl
 
 export function loadMergedBundleMcpConfig(params: {
   workspaceDir: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   mapConfiguredServer?: BundleMcpServerMapper;
 }): MergedBundleMcpConfig {
   const bundleMcp = loadEnabledBundleMcpConfig({
@@ -57,7 +57,7 @@ export function loadMergedBundleMcpConfig(params: {
 
   return {
     config: {
-      // NexisClaw config is the owner-managed layer, so it overrides bundle defaults.
+      // FirstNexus config is the owner-managed layer, so it overrides bundle defaults.
       mcpServers: {
         ...bundleMcp.config.mcpServers,
         ...Object.fromEntries(

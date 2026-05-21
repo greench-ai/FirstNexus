@@ -38,7 +38,7 @@ describe("OAuth refresh in-process queue", () => {
   let caseIndex = 0;
 
   beforeAll(async () => {
-    tempRoot = await createOAuthTestTempRoot("NexisClaw-oauth-queue-");
+    tempRoot = await createOAuthTestTempRoot("FirstNexus-oauth-queue-");
   });
 
   beforeEach(async () => {

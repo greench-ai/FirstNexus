@@ -1,11 +1,11 @@
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
 import type {
   GeneratedMusicAsset,
   MusicGenerationProvider,
   MusicGenerationRequest,
-} from "NexisClaw/plugin-sdk/music-generation";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/music-generation";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveGoogleGenerativeAiApiOrigin } from "./api.js";
 import {
   createGoogleMusicGenerationProviderMetadata,

@@ -5,8 +5,8 @@ import {
   getMemoryCapabilityRegistration,
   listActiveMemoryPublicArtifacts,
   type MemoryPluginPublicArtifact,
-} from "NexisClaw/plugin-sdk/memory-host-core";
-import type { NexisClawConfig } from "../api.js";
+} from "FirstNexus/plugin-sdk/memory-host-core";
+import type { FirstNexusConfig } from "../api.js";
 import type { ResolvedMemoryWikiConfig } from "./config.js";
 import { appendMemoryWikiLog } from "./log.js";
 import {
@@ -191,8 +191,8 @@ async function writeBridgeSourcePage(params: {
           renderMarkdownFence(raw, contentLanguage),
           "",
           "## Notes",
-          "<!-- NexisClaw:human:start -->",
-          "<!-- NexisClaw:human:end -->",
+          "<!-- FirstNexus:human:start -->",
+          "<!-- FirstNexus:human:end -->",
           "",
         ].join("\n"),
       });
@@ -202,7 +202,7 @@ async function writeBridgeSourcePage(params: {
 
 export async function syncMemoryWikiBridgeSources(params: {
   config: ResolvedMemoryWikiConfig;
-  appConfig?: NexisClawConfig;
+  appConfig?: FirstNexusConfig;
 }): Promise<BridgeMemoryWikiResult> {
   await initializeMemoryWikiVault(params.config);
   if (

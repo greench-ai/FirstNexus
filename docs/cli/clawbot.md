@@ -1,24 +1,24 @@
 ---
-summary: "CLI reference for `NexisClaw clawbot` (legacy alias namespace)"
+summary: "CLI reference for `FirstNexus clawbot` (legacy alias namespace)"
 read_when:
-  - You maintain older scripts using `NexisClaw clawbot ...`
+  - You maintain older scripts using `FirstNexus clawbot ...`
   - You need migration guidance to current commands
 title: "Clawbot"
 ---
 
-# `NexisClaw clawbot`
+# `FirstNexus clawbot`
 
 Legacy alias namespace kept for backwards compatibility.
 
 Current supported alias:
 
-- `NexisClaw clawbot qr` (same behavior as [`NexisClaw qr`](/cli/qr))
+- `FirstNexus clawbot qr` (same behavior as [`FirstNexus qr`](/cli/qr))
 
 ## Migration
 
 Prefer modern top-level commands directly:
 
-- `NexisClaw clawbot qr` -> `NexisClaw qr`
+- `FirstNexus clawbot qr` -> `FirstNexus qr`
 
 ## Related
 

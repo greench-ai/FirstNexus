@@ -1,8 +1,8 @@
 import {
   installChannelSetupContractSuite,
   installChannelStatusContractSuite,
-} from "NexisClaw/plugin-sdk/channel-test-helpers";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-test-helpers";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect } from "vitest";
 import { linePlugin, lineSetupPlugin } from "../api.js";
 
@@ -12,7 +12,7 @@ describe("line setup contract", () => {
     cases: [
       {
         name: "default account stores token and secret",
-        cfg: {} as NexisClawConfig,
+        cfg: {} as FirstNexusConfig,
         input: {
           channelAccessToken: "line-token",
           channelSecret: "line-secret",
@@ -26,7 +26,7 @@ describe("line setup contract", () => {
       },
       {
         name: "non-default env setup is rejected",
-        cfg: {} as NexisClawConfig,
+        cfg: {} as FirstNexusConfig,
         accountId: "ops",
         input: {
           useEnv: true,
@@ -52,7 +52,7 @@ describe("line status contract", () => {
               channelSecret: "line-secret",
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         runtime: {
           accountId: "default",
           running: true,

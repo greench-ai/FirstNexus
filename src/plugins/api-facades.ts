@@ -1,12 +1,15 @@
-import type { NexisClawPluginApi } from "./types.js";
+import type { FirstNexusPluginApi } from "./types.js";
 
 type PluginApiFacadeFields = Pick<
-  NexisClawPluginApi,
+  FirstNexusPluginApi,
   "agent" | "lifecycle" | "runContext" | "session"
 >;
-export type NexisClawPluginApiWithoutFacades = Omit<NexisClawPluginApi, keyof PluginApiFacadeFields>;
+export type FirstNexusPluginApiWithoutFacades = Omit<
+  FirstNexusPluginApi,
+  keyof PluginApiFacadeFields
+>;
 type PluginApiFacadeSource = Pick<
-  NexisClawPluginApi,
+  FirstNexusPluginApi,
   | "clearRunContext"
   | "emitAgentEvent"
   | "enqueueNextTurnInjection"

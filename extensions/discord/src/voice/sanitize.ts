@@ -1,5 +1,5 @@
-import { stripInlineDirectiveTagsForDisplay } from "NexisClaw/plugin-sdk/text-chunking";
-import { escapeRegExp } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import { stripInlineDirectiveTagsForDisplay } from "FirstNexus/plugin-sdk/text-chunking";
+import { escapeRegExp } from "FirstNexus/plugin-sdk/text-utility-runtime";
 
 const SPEECH_EMOJI_RE =
   /(?:\p{Extended_Pictographic}(?:\uFE0F|\u200D|\p{Extended_Pictographic}|\p{Emoji_Modifier})*)+/gu;

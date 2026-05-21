@@ -1,5 +1,5 @@
 ---
-summary: "Install NexisClaw declaratively with Nix"
+summary: "Install FirstNexus declaratively with Nix"
 read_when:
   - You want reproducible, rollback-able installs
   - You're already using Nix/NixOS/Home Manager
@@ -7,10 +7,10 @@ read_when:
 title: "Nix"
 ---
 
-Install NexisClaw declaratively with **[nix-NexisClaw](https://github.com/NexisClaw/nix-NexisClaw)** - the first-party, batteries-included Home Manager module.
+Install FirstNexus declaratively with **[nix-FirstNexus](https://github.com/FirstNexus/nix-FirstNexus)** - the first-party, batteries-included Home Manager module.
 
 <Info>
-The [nix-NexisClaw](https://github.com/NexisClaw/nix-NexisClaw) repo is the source of truth for Nix installation. This page is a quick overview.
+The [nix-FirstNexus](https://github.com/FirstNexus/nix-FirstNexus) repo is the source of truth for Nix installation. This page is a quick overview.
 </Info>
 
 ## What you get
@@ -27,10 +27,10 @@ The [nix-NexisClaw](https://github.com/NexisClaw/nix-NexisClaw) repo is the sour
     If Nix is not already installed, follow the [Determinate Nix installer](https://github.com/DeterminateSystems/nix-installer) instructions.
   </Step>
   <Step title="Create a local flake">
-    Use the agent-first template from the nix-NexisClaw repo:
+    Use the agent-first template from the nix-FirstNexus repo:
     ```bash
-    mkdir -p ~/code/NexisClaw-local
-    # Copy templates/agent-first/flake.nix from the nix-NexisClaw repo
+    mkdir -p ~/code/FirstNexus-local
+    # Copy templates/agent-first/flake.nix from the nix-FirstNexus repo
     ```
   </Step>
   <Step title="Configure secrets">
@@ -46,11 +46,11 @@ The [nix-NexisClaw](https://github.com/NexisClaw/nix-NexisClaw) repo is the sour
   </Step>
 </Steps>
 
-See the [nix-NexisClaw README](https://github.com/NexisClaw/nix-NexisClaw) for full module options and examples.
+See the [nix-FirstNexus README](https://github.com/FirstNexus/nix-FirstNexus) for full module options and examples.
 
 ## Nix-mode runtime behavior
 
-When `NEXISCLAW_NIX_MODE=1` is set (automatic with nix-NexisClaw), NexisClaw enters a deterministic mode for Nix-managed installs. Other Nix packages can set the same mode; nix-NexisClaw is the first-party reference.
+When `NEXISCLAW_NIX_MODE=1` is set (automatic with nix-FirstNexus), FirstNexus enters a deterministic mode for Nix-managed installs. Other Nix packages can set the same mode; nix-FirstNexus is the first-party reference.
 
 You can also set it manually:
 
@@ -61,26 +61,26 @@ export NEXISCLAW_NIX_MODE=1
 On macOS, the GUI app does not automatically inherit shell environment variables. Enable Nix mode via defaults instead:
 
 ```bash
-defaults write ai.NexisClaw.mac NexisClaw.nixMode -bool true
+defaults write ai.FirstNexus.mac FirstNexus.nixMode -bool true
 ```
 
 ### What changes in Nix mode
 
 - Auto-install and self-mutation flows are disabled
-- `NexisClaw.json` is treated as immutable. Startup-derived defaults stay runtime-only, and config writers such as setup, onboarding, mutating `NexisClaw update`, plugin install/update/uninstall/enable, `doctor --fix`, `doctor --generate-gateway-token`, and `NexisClaw config set` refuse to edit the file.
-- Agents should edit the Nix source instead. For nix-NexisClaw, use the agent-first [Quick Start](https://github.com/NexisClaw/nix-NexisClaw#quick-start) and set config under `programs.NexisClaw.config` or `instances.<name>.config`.
+- `FirstNexus.json` is treated as immutable. Startup-derived defaults stay runtime-only, and config writers such as setup, onboarding, mutating `FirstNexus update`, plugin install/update/uninstall/enable, `doctor --fix`, `doctor --generate-gateway-token`, and `FirstNexus config set` refuse to edit the file.
+- Agents should edit the Nix source instead. For nix-FirstNexus, use the agent-first [Quick Start](https://github.com/FirstNexus/nix-FirstNexus#quick-start) and set config under `programs.FirstNexus.config` or `instances.<name>.config`.
 - Missing dependencies surface Nix-specific remediation messages
 - UI surfaces a read-only Nix mode banner
 
 ### Config and state paths
 
-NexisClaw reads JSON5 config from `NEXISCLAW_CONFIG_PATH` and stores mutable data in `NEXISCLAW_STATE_DIR`. When running under Nix, set these explicitly to Nix-managed locations so runtime state and config stay out of the immutable store.
+FirstNexus reads JSON5 config from `NEXISCLAW_CONFIG_PATH` and stores mutable data in `NEXISCLAW_STATE_DIR`. When running under Nix, set these explicitly to Nix-managed locations so runtime state and config stay out of the immutable store.
 
-| Variable               | Default                                 |
-| ---------------------- | --------------------------------------- |
+| Variable                | Default                                 |
+| ----------------------- | --------------------------------------- |
 | `NEXISCLAW_HOME`        | `HOME` / `USERPROFILE` / `os.homedir()` |
-| `NEXISCLAW_STATE_DIR`   | `~/.NexisClaw`                           |
-| `NEXISCLAW_CONFIG_PATH` | `$NEXISCLAW_STATE_DIR/NexisClaw.json`     |
+| `NEXISCLAW_STATE_DIR`   | `~/.FirstNexus`                         |
+| `NEXISCLAW_CONFIG_PATH` | `$NEXISCLAW_STATE_DIR/FirstNexus.json`  |
 
 ### Service PATH discovery
 
@@ -97,7 +97,7 @@ This applies to both macOS launchd and Linux systemd service environments.
 ## Related
 
 <CardGroup cols={2}>
-  <Card title="nix-NexisClaw" href="https://github.com/NexisClaw/nix-NexisClaw" icon="arrow-up-right-from-square">
+  <Card title="nix-FirstNexus" href="https://github.com/FirstNexus/nix-FirstNexus" icon="arrow-up-right-from-square">
     Source-of-truth Home Manager module and full setup guide.
   </Card>
   <Card title="Setup wizard" href="/start/wizard" icon="wand-magic-sparkles">

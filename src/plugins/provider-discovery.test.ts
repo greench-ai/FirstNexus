@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-provider-discovery", tempDirs);
+  return makeTrackedTempDir("FirstNexus-provider-discovery", tempDirs);
 }
 
 function hermeticEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
@@ -44,7 +44,7 @@ function createProviderContributionCandidate(params: {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(rootDir, "NexisClaw.plugin.json"),
+    path.join(rootDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: params.pluginId ?? "demo",
       configSchema: { type: "object" },

@@ -14,7 +14,7 @@ afterEach(() => {
 });
 
 function makeTempStateDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-daemon-diagnostics-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-daemon-diagnostics-"));
   tempDirs.push(dir);
   return dir;
 }

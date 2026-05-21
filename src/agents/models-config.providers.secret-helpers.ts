@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { coerceSecretRef, resolveSecretInputRef } from "../config/types.secrets.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 import { normalizeOptionalSecretInput } from "../utils/normalize-secret-input.js";
@@ -13,7 +13,7 @@ import {
 import { resolveAwsSdkEnvVarName } from "./model-auth-runtime-shared.js";
 import { resolveProviderIdForAuth } from "./provider-auth-aliases.js";
 
-type ModelsConfig = NonNullable<NexisClawConfig["models"]>;
+type ModelsConfig = NonNullable<FirstNexusConfig["models"]>;
 export type ProviderConfig = NonNullable<ModelsConfig["providers"]>[string];
 
 export type SecretDefaults = {

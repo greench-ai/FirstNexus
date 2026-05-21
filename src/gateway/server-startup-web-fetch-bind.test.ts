@@ -1,6 +1,6 @@
 import http from "node:http";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { getFreePort, installGatewayTestHooks, startGatewayServer } from "./test-helpers.js";
 
 const webFetchProviderDiscovery = vi.hoisted(() => ({
@@ -70,7 +70,7 @@ async function requestHealthz(port: number): Promise<{ status: number; body: str
   });
 }
 
-async function writeConfig(config: NexisClawConfig): Promise<void> {
+async function writeConfig(config: FirstNexusConfig): Promise<void> {
   const { writeConfigFile } = await import("../config/config.js");
   await writeConfigFile(config);
 }
@@ -101,7 +101,7 @@ describe("gateway startup web fetch config", () => {
             },
           },
         },
-      } as NexisClawConfig);
+      } as FirstNexusConfig);
 
       const port = await getFreePort();
       server = await startGatewayServer(port, {

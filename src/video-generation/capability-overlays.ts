@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveVideoGenerationModeCapabilities } from "./capabilities.js";
 import type { GenerateVideoParams } from "./runtime-types.js";
 import type {
@@ -124,7 +124,7 @@ export async function resolveProviderWithModelCapabilities(params: {
   provider: VideoGenerationProvider;
   providerId: string;
   model: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentDir?: string;
   authStore?: GenerateVideoParams["authStore"];
   timeoutMs?: number;

@@ -67,7 +67,7 @@ vi.mock("../utils/message-channel.js", () => ({
 }));
 
 async function withTaskExecutorStateDir(run: (stateDir: string) => Promise<void>): Promise<void> {
-  await withStateDirEnv("NexisClaw-task-executor-", async ({ stateDir }) => {
+  await withStateDirEnv("FirstNexus-task-executor-", async ({ stateDir }) => {
     resetDetachedTaskLifecycleRuntimeForTests();
     resetSystemEventsForTest();
     resetHeartbeatWakeStateForTests();

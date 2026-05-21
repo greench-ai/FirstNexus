@@ -41,7 +41,7 @@ function createHistoryToolWithMessage(content: string) {
 describe("sessions_history redaction", () => {
   beforeAll(async () => {
     previousConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-sessions-history-redact-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-sessions-history-redact-"));
     useLoggingConfig("redaction-off.json", { redactSensitive: "off" });
     ({ createSessionsHistoryTool } = await import("./sessions-history-tool.js"));
   });

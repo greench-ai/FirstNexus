@@ -1,6 +1,6 @@
 import { statSync } from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 import {
   createManagedTaskFlow,
   getTaskFlowById,
@@ -38,10 +38,10 @@ function createStoredFlow(): TaskFlowRecord {
 }
 
 async function withFlowRegistryTempDir<T>(run: (root: string) => Promise<T>): Promise<T> {
-  return await withNexisClawTestState(
+  return await withFirstNexusTestState(
     {
       layout: "state-only",
-      prefix: "NexisClaw-task-flow-store-",
+      prefix: "FirstNexus-task-flow-store-",
     },
     async (state) => {
       const root = state.stateDir;

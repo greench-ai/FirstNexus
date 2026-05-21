@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { NexisClawSchema } from "../../../../src/config/zod-schema.js";
+import { FirstNexusSchema } from "../../../../src/config/zod-schema.js";
 import { CONFIG_PRESETS, detectActivePreset } from "./config-presets.ts";
 
 describe("detectActivePreset", () => {
@@ -45,7 +45,7 @@ describe("detectActivePreset", () => {
     ]);
 
     for (const preset of CONFIG_PRESETS) {
-      expect(NexisClawSchema.safeParse(preset.patch).success, preset.id).toBe(true);
+      expect(FirstNexusSchema.safeParse(preset.patch).success, preset.id).toBe(true);
     }
   });
 

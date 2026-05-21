@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   ensureBrowserControlAuth,
   resolveBrowserControlAuth,
@@ -25,7 +25,7 @@ async function ensureSandboxWorkspaceLayout(params: {
   cfg: ReturnType<typeof resolveSandboxConfigForAgent>;
   agentId: string;
   rawSessionKey: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
 }): Promise<{
   agentWorkspaceDir: string;
@@ -109,7 +109,7 @@ export async function resolveSandboxDockerUser(params: {
   }
 }
 
-function resolveSandboxSession(params: { config?: NexisClawConfig; sessionKey?: string }) {
+function resolveSandboxSession(params: { config?: FirstNexusConfig; sessionKey?: string }) {
   const rawSessionKey = params.sessionKey?.trim();
   if (!rawSessionKey) {
     return null;
@@ -128,7 +128,7 @@ function resolveSandboxSession(params: { config?: NexisClawConfig; sessionKey?: 
 }
 
 export async function resolveSandboxContext(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   sessionKey?: string;
   workspaceDir?: string;
 }): Promise<SandboxContext | null> {
@@ -242,7 +242,7 @@ export async function resolveSandboxContext(params: {
 }
 
 export async function ensureSandboxWorkspaceForSession(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   sessionKey?: string;
   workspaceDir?: string;
 }): Promise<SandboxWorkspaceInfo | null> {

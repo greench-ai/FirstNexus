@@ -2,13 +2,13 @@ import {
   ensureAuthProfileStore,
   findPersistedAuthProfileCredential,
 } from "../../agents/auth-profiles/store.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
 
 export function resolveProfileOverride(params: {
   rawProfile?: string;
   provider: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentDir?: string;
 }): { profileId?: string; error?: string } {
   const raw = normalizeOptionalString(params.rawProfile);

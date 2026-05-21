@@ -1,1 +1,1 @@
-export { dispatchInboundDirectDmWithRuntime } from "NexisClaw/plugin-sdk/direct-dm";
+export { dispatchInboundDirectDmWithRuntime } from "FirstNexus/plugin-sdk/direct-dm";

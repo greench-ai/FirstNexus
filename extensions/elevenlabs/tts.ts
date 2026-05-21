@@ -1,14 +1,14 @@
-import { assertOkOrThrowProviderError } from "NexisClaw/plugin-sdk/provider-http";
+import { assertOkOrThrowProviderError } from "FirstNexus/plugin-sdk/provider-http";
 import {
   normalizeApplyTextNormalization,
   normalizeLanguageCode,
   normalizeSeed,
   requireInRange,
-} from "NexisClaw/plugin-sdk/speech";
+} from "FirstNexus/plugin-sdk/speech";
 import {
   fetchWithSsrFGuard,
   ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { isValidElevenLabsVoiceId, normalizeElevenLabsBaseUrl } from "./shared.js";
 
 function assertElevenLabsVoiceSettings(settings: {

@@ -21,7 +21,7 @@ describe("private-qa-cli", () => {
 
   it("loads the private QA CLI from a source checkout path", async () => {
     process.env.NEXISCLAW_ENABLE_PRIVATE_QA_CLI = "1";
-    const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-private-qa-source-"));
+    const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-private-qa-source-"));
     tempDirs.push(repoRoot);
     const expectedPaths = new Set([
       path.join(repoRoot, ".git"),
@@ -53,9 +53,13 @@ describe("private-qa-cli", () => {
 
   it("rejects non-source package roots even when private QA is enabled", () => {
     process.env.NEXISCLAW_ENABLE_PRIVATE_QA_CLI = "1";
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-private-qa-"));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-private-qa-"));
     tempDirs.push(root);
-    fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "NexisClaw" }), "utf8");
+    fs.writeFileSync(
+      path.join(root, "package.json"),
+      JSON.stringify({ name: "FirstNexus" }),
+      "utf8",
+    );
     const importModule = vi.fn(async () => ({}));
 
     expect(() =>
@@ -63,7 +67,7 @@ describe("private-qa-cli", () => {
         resolvePackageRootSync: () => root,
         importModule,
       }),
-    ).toThrow("Private QA CLI is only available from an NexisClaw source checkout.");
+    ).toThrow("Private QA CLI is only available from an FirstNexus source checkout.");
     expect(importModule).not.toHaveBeenCalled();
   });
 
@@ -72,7 +76,7 @@ describe("private-qa-cli", () => {
     const importModule = vi.fn(async () => ({}));
 
     expect(() => loadPrivateQaCliModule({ importModule })).toThrow(
-      "Private QA CLI is only available from an NexisClaw source checkout.",
+      "Private QA CLI is only available from an FirstNexus source checkout.",
     );
     expect(importModule).not.toHaveBeenCalled();
   });

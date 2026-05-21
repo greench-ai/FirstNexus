@@ -39,7 +39,7 @@ afterAll(() => {
 });
 
 async function openDeviceTokenWs(): Promise<WebSocket> {
-  const identityPath = path.join(os.tmpdir(), `NexisClaw-shared-auth-${process.pid}-${port}.json`);
+  const identityPath = path.join(os.tmpdir(), `FirstNexus-shared-auth-${process.pid}-${port}.json`);
   const { loadOrCreateDeviceIdentity, publicKeyRawBase64UrlFromPem } =
     await import("../infra/device-identity.js");
   const { approveDevicePairing, requestDevicePairing, rotateDeviceToken } =

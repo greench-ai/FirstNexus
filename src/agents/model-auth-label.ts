@@ -1,5 +1,5 @@
 import type { SessionEntry } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   externalCliDiscoveryForProviderAuth,
   ensureAuthProfileStore,
@@ -16,7 +16,7 @@ import { normalizeProviderId } from "./model-selection.js";
 
 export function resolveModelAuthLabel(params: {
   provider?: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   sessionEntry?: Partial<Pick<SessionEntry, "authProfileOverride">>;
   agentDir?: string;
   workspaceDir?: string;

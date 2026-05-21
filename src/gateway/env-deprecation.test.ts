@@ -1,16 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  resetLegacyNexisClawEnvWarningForTest,
-  warnLegacyNexisClawEnvVars,
+  resetLegacyFirstNexusEnvWarningForTest,
+  warnLegacyFirstNexusEnvVars,
 } from "./env-deprecation.js";
 
-describe("warnLegacyNexisClawEnvVars", () => {
+describe("warnLegacyFirstNexusEnvVars", () => {
   const originalNodeEnv = process.env.NODE_ENV;
   const originalVitest = process.env.VITEST;
   let emitWarning: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    resetLegacyNexisClawEnvWarningForTest();
+    resetLegacyFirstNexusEnvWarningForTest();
     emitWarning = vi.spyOn(process, "emitWarning").mockImplementation(() => {});
     delete process.env.NODE_ENV;
     delete process.env.VITEST;
@@ -18,13 +18,13 @@ describe("warnLegacyNexisClawEnvVars", () => {
 
   afterEach(() => {
     emitWarning.mockRestore();
-    resetLegacyNexisClawEnvWarningForTest();
+    resetLegacyFirstNexusEnvWarningForTest();
     restoreEnv("NODE_ENV", originalNodeEnv);
     restoreEnv("VITEST", originalVitest);
   });
 
   it("warns with counts and prefixes instead of secret-shaped env names", () => {
-    warnLegacyNexisClawEnvVars({
+    warnLegacyFirstNexusEnvVars({
       CLAWDBOT_GATEWAY_TOKEN: "old-token",
       MOLTBOT_GATEWAY_PASSWORD: "old-password", // pragma: allowlist secret
       "CLAWDBOT_MALICIOUS\nforged": "old-value",
@@ -48,14 +48,14 @@ describe("warnLegacyNexisClawEnvVars", () => {
   });
 
   it("does not warn for current OPENCLAW names", () => {
-    warnLegacyNexisClawEnvVars({ NEXISCLAW_GATEWAY_TOKEN: "token" });
+    warnLegacyFirstNexusEnvVars({ NEXISCLAW_GATEWAY_TOKEN: "token" });
 
     expect(emitWarning).not.toHaveBeenCalled();
   });
 
   it("warns only once after a successful emit", () => {
-    warnLegacyNexisClawEnvVars({ CLAWDBOT_GATEWAY_TOKEN: "old-token" });
-    warnLegacyNexisClawEnvVars({ MOLTBOT_GATEWAY_TOKEN: "old-token" });
+    warnLegacyFirstNexusEnvVars({ CLAWDBOT_GATEWAY_TOKEN: "old-token" });
+    warnLegacyFirstNexusEnvVars({ MOLTBOT_GATEWAY_TOKEN: "old-token" });
 
     expect(emitWarning).toHaveBeenCalledOnce();
   });
@@ -67,16 +67,16 @@ describe("warnLegacyNexisClawEnvVars", () => {
       })
       .mockImplementationOnce(() => {});
 
-    expect(() => warnLegacyNexisClawEnvVars({ CLAWDBOT_GATEWAY_TOKEN: "old-token" })).toThrow(
+    expect(() => warnLegacyFirstNexusEnvVars({ CLAWDBOT_GATEWAY_TOKEN: "old-token" })).toThrow(
       "warning sink failed",
     );
-    warnLegacyNexisClawEnvVars({ CLAWDBOT_GATEWAY_TOKEN: "old-token" });
+    warnLegacyFirstNexusEnvVars({ CLAWDBOT_GATEWAY_TOKEN: "old-token" });
 
     expect(emitWarning).toHaveBeenCalledTimes(2);
   });
 
   it("suppresses warning noise based on the passed env", () => {
-    warnLegacyNexisClawEnvVars({
+    warnLegacyFirstNexusEnvVars({
       CLAWDBOT_GATEWAY_TOKEN: "old-token",
       VITEST: "true",
     });
@@ -87,7 +87,7 @@ describe("warnLegacyNexisClawEnvVars", () => {
   it("does not let process.env test flags suppress a synthetic env", () => {
     process.env.VITEST = "true";
 
-    warnLegacyNexisClawEnvVars({ CLAWDBOT_GATEWAY_TOKEN: "old-token" });
+    warnLegacyFirstNexusEnvVars({ CLAWDBOT_GATEWAY_TOKEN: "old-token" });
 
     expect(emitWarning).toHaveBeenCalledOnce();
   });

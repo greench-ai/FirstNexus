@@ -1,18 +1,18 @@
 import type { AgentToolResult } from "@earendil-works/pi-agent-core";
-import type { AnyAgentTool } from "NexisClaw/plugin-sdk/agent-harness";
+import type { AnyAgentTool } from "FirstNexus/plugin-sdk/agent-harness";
 import {
   HEARTBEAT_RESPONSE_TOOL_NAME,
   wrapToolWithBeforeToolCallHook,
-} from "NexisClaw/plugin-sdk/agent-harness-runtime";
+} from "FirstNexus/plugin-sdk/agent-harness-runtime";
 import {
   initializeGlobalHookRunner,
   resetGlobalHookRunner,
-} from "NexisClaw/plugin-sdk/hook-runtime";
+} from "FirstNexus/plugin-sdk/hook-runtime";
 import {
   createEmptyPluginRegistry,
   createMockPluginRegistry,
   setActivePluginRegistry,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   CODEX_NEXISCLAW_DYNAMIC_TOOL_NAMESPACE,
@@ -156,7 +156,7 @@ afterEach(() => {
 });
 
 describe("createCodexDynamicToolBridge", () => {
-  it("defers NexisClaw dynamic tools behind Codex tool search by default", () => {
+  it("defers FirstNexus dynamic tools behind Codex tool search by default", () => {
     const bridge = createCodexDynamicToolBridge({
       tools: [
         createTool({ name: "web_search" }),
@@ -547,7 +547,7 @@ describe("createCodexDynamicToolBridge", () => {
   });
 
   it("keeps config out of Codex tool-result contexts", async () => {
-    const config = { session: { store: "/tmp/NexisClaw-session-store.json" } };
+    const config = { session: { store: "/tmp/FirstNexus-session-store.json" } };
     const registry = createEmptyPluginRegistry();
     const middlewareContexts: Record<string, unknown>[] = [];
     const legacyContexts: Record<string, unknown>[] = [];

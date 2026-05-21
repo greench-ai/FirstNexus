@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import {
   buildMemoryFlushPlan,
@@ -61,7 +61,7 @@ describe("buildMemoryFlushPlan", () => {
         timeFormat: "12",
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 
   it("replaces YYYY-MM-DD using user timezone and appends current time", () => {
     const plan = buildMemoryFlushPlan({

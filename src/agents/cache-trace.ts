@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import path from "node:path";
 import type { AgentMessage, StreamFn } from "@earendil-works/pi-agent-core";
 import { resolveStateDir } from "../config/paths.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveUserPath } from "../utils.js";
 import { parseBooleanValue } from "../utils/boolean.js";
 import { safeJsonStringify } from "../utils/safe-json.js";
@@ -56,7 +56,7 @@ type CacheTrace = {
 };
 
 type CacheTraceInit = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   runId?: string;
   sessionId?: string;
@@ -92,8 +92,10 @@ function resolveCacheTraceConfig(params: CacheTraceInit): CacheTraceConfig {
 
   const includeMessages =
     parseBooleanValue(env.NEXISCLAW_CACHE_TRACE_MESSAGES) ?? config?.includeMessages;
-  const includePrompt = parseBooleanValue(env.NEXISCLAW_CACHE_TRACE_PROMPT) ?? config?.includePrompt;
-  const includeSystem = parseBooleanValue(env.NEXISCLAW_CACHE_TRACE_SYSTEM) ?? config?.includeSystem;
+  const includePrompt =
+    parseBooleanValue(env.NEXISCLAW_CACHE_TRACE_PROMPT) ?? config?.includePrompt;
+  const includeSystem =
+    parseBooleanValue(env.NEXISCLAW_CACHE_TRACE_SYSTEM) ?? config?.includeSystem;
 
   return {
     enabled,

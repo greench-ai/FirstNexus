@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { redactMigrationPlan } from "NexisClaw/plugin-sdk/migration";
+import { redactMigrationPlan } from "FirstNexus/plugin-sdk/migration";
 import { afterEach, describe, expect, it } from "vitest";
 import { resolveHomePath } from "./helpers.js";
 import { buildClaudeMigrationProvider } from "./provider.js";
@@ -37,7 +37,7 @@ describe("Claude migration provider", () => {
 
   it("resolves tilde source paths against the OS home when NEXISCLAW_HOME is set", () => {
     const previous = process.env.NEXISCLAW_HOME;
-    process.env.NEXISCLAW_HOME = path.join(path.sep, "tmp", "NexisClaw-home");
+    process.env.NEXISCLAW_HOME = path.join(path.sep, "tmp", "FirstNexus-home");
     try {
       expect(resolveHomePath("~/.claude")).toBe(path.join(os.homedir(), ".claude"));
     } finally {

@@ -1,11 +1,11 @@
 ---
 name: node-connect
-description: Diagnose NexisClaw Android, iOS, or macOS node pairing, QR/setup code, route, auth, and connection failures.
+description: Diagnose FirstNexus Android, iOS, or macOS node pairing, QR/setup code, route, auth, and connection failures.
 ---
 
 # Node Connect
 
-Goal: find the one real route from node -> gateway, verify NexisClaw is advertising that route, then fix pairing/auth.
+Goal: find the one real route from node -> gateway, verify FirstNexus is advertising that route, then fix pairing/auth.
 
 ## Topology first
 
@@ -30,31 +30,31 @@ Ask for:
 - which route they intend: same machine, same LAN, Tailscale tailnet, or public URL
 - whether they used QR/setup code or manual host/port
 - the exact app text/status/error, quoted exactly if possible
-- whether `NexisClaw devices list` shows a pending pairing request
+- whether `FirstNexus devices list` shows a pending pairing request
 
 Do not guess from `can't connect`.
 
 ## Canonical checks
 
-Prefer `NexisClaw qr --json`. It uses the same setup-code payload Android scans.
+Prefer `FirstNexus qr --json`. It uses the same setup-code payload Android scans.
 
 ```bash
-NexisClaw config get gateway.mode
-NexisClaw config get gateway.bind
-NexisClaw config get gateway.tailscale.mode
-NexisClaw config get gateway.remote.url
-NexisClaw config get gateway.auth.mode
-NexisClaw config get gateway.auth.allowTailscale
-NexisClaw config get plugins.entries.device-pair.config.publicUrl
-NexisClaw qr --json
-NexisClaw devices list
-NexisClaw nodes status
+FirstNexus config get gateway.mode
+FirstNexus config get gateway.bind
+FirstNexus config get gateway.tailscale.mode
+FirstNexus config get gateway.remote.url
+FirstNexus config get gateway.auth.mode
+FirstNexus config get gateway.auth.allowTailscale
+FirstNexus config get plugins.entries.device-pair.config.publicUrl
+FirstNexus qr --json
+FirstNexus devices list
+FirstNexus nodes status
 ```
 
-If this NexisClaw instance is pointed at a remote gateway, also run:
+If this FirstNexus instance is pointed at a remote gateway, also run:
 
 ```bash
-NexisClaw qr --remote --json
+FirstNexus qr --remote --json
 ```
 
 If Tailscale is part of the story:
@@ -65,7 +65,7 @@ tailscale status --json
 
 ## Read the result, not guesses
 
-`NexisClaw qr --json` success means:
+`FirstNexus qr --json` success means:
 
 - `gatewayUrl`: this is the actual endpoint the app should use.
 - `urlSource`: this tells you which config path won.
@@ -80,7 +80,7 @@ Common good sources:
 
 ## Root-cause map
 
-If `NexisClaw qr --json` says `Gateway is only bound to loopback`:
+If `FirstNexus qr --json` says `Gateway is only bound to loopback`:
 
 - remote node cannot connect yet
 - fix the route, then generate a fresh setup code
@@ -103,8 +103,8 @@ If the app says `pairing required`:
 - approve the pending device
 
 ```bash
-NexisClaw devices list
-NexisClaw devices approve --latest
+FirstNexus devices list
+FirstNexus devices approve --latest
 ```
 
 If the app says `bootstrap token invalid or expired`:
@@ -125,7 +125,7 @@ If the app says `unauthorized`:
 - Remote setup + setup/manual uses private LAN IP: wrong.
 - Tailnet setup + gateway advertises LAN IP instead of MagicDNS / tailnet route: wrong.
 - Public URL set but QR still advertises something else: inspect `urlSource`; config is not what you think.
-- `NexisClaw devices list` shows pending requests: stop changing network config and approve first.
+- `FirstNexus devices list` shows pending requests: stop changing network config and approve first.
 
 ## Fix style
 
@@ -135,7 +135,7 @@ If there is not enough signal yet, ask for setup + exact app text instead of gue
 
 Good:
 
-- `The gateway is still loopback-only, so a node on another network can never reach it. Enable Tailscale Serve, restart the gateway, run NexisClaw qr again, rescan, then approve the pending device pairing.`
+- `The gateway is still loopback-only, so a node on another network can never reach it. Enable Tailscale Serve, restart the gateway, run FirstNexus qr again, rescan, then approve the pending device pairing.`
 
 Bad:
 

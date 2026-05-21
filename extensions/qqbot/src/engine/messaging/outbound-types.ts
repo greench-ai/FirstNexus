@@ -1,4 +1,4 @@
-import type { MessageReceipt } from "NexisClaw/plugin-sdk/channel-message";
+import type { MessageReceipt } from "FirstNexus/plugin-sdk/channel-message";
 import type { GatewayAccount } from "../types.js";
 
 export interface OutboundContext {

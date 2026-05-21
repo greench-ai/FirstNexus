@@ -1,9 +1,9 @@
-import { resolveChannelContextVisibilityMode } from "NexisClaw/plugin-sdk/context-visibility-runtime";
+import { resolveChannelContextVisibilityMode } from "FirstNexus/plugin-sdk/context-visibility-runtime";
 import {
   evaluateSupplementalContextVisibility,
   type ContextVisibilityDecision,
-} from "NexisClaw/plugin-sdk/security-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/security-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   formatSignalSenderDisplay,
   isSignalSenderAllowed,

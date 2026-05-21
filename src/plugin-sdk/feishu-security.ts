@@ -1,10 +1,10 @@
 // Manual facade. Keep loader boundary explicit.
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import type { SecurityAuditFinding } from "../security/audit.types.js";
 import { loadBundledPluginPublicSurfaceModuleSync } from "./facade-loader.js";
 
 type SecuritySurface = {
-  collectFeishuSecurityAuditFindings: (params: { cfg: NexisClawConfig }) => SecurityAuditFinding[];
+  collectFeishuSecurityAuditFindings: (params: { cfg: FirstNexusConfig }) => SecurityAuditFinding[];
 };
 
 function loadSecuritySurface(): SecuritySurface {

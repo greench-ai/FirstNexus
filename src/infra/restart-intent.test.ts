@@ -11,7 +11,7 @@ import {
 const tempDirs: string[] = [];
 
 function createIntentEnv(): NodeJS.ProcessEnv {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-restart-intent-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-restart-intent-"));
   tempDirs.push(dir);
   return {
     ...process.env,

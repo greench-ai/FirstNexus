@@ -12,11 +12,11 @@ import { runFatalErrorHooks } from "./fatal-error-hooks.js";
 type UnhandledRejectionHandler = (reason: unknown) => boolean;
 type UncaughtExceptionHandler = (error: unknown) => boolean;
 
-// Plugins resolve `NexisClaw/plugin-sdk/runtime` through their own staged
+// Plugins resolve `FirstNexus/plugin-sdk/runtime` through their own staged
 // `node_modules`, which loads a separate copy of this module. To keep registry
 // state shared across instances, anchor the handlers Set on globalThis.
-const HANDLERS_GLOBAL_KEY = Symbol.for("NexisClaw.unhandledRejection.handlers");
-const EXCEPTION_HANDLERS_GLOBAL_KEY = Symbol.for("NexisClaw.uncaughtException.handlers");
+const HANDLERS_GLOBAL_KEY = Symbol.for("FirstNexus.unhandledRejection.handlers");
+const EXCEPTION_HANDLERS_GLOBAL_KEY = Symbol.for("FirstNexus.uncaughtException.handlers");
 const handlers: Set<UnhandledRejectionHandler> = (() => {
   const g = globalThis as unknown as Record<symbol, Set<UnhandledRejectionHandler>>;
   const existing = g[HANDLERS_GLOBAL_KEY];
@@ -468,7 +468,7 @@ export function isUnhandledRejectionHandled(reason: unknown): boolean {
       }
     } catch (err) {
       console.error(
-        "[NexisClaw] Unhandled rejection handler failed:",
+        "[FirstNexus] Unhandled rejection handler failed:",
         err instanceof Error ? (err.stack ?? err.message) : err,
       );
     }
@@ -491,7 +491,7 @@ export function isUncaughtExceptionHandled(error: unknown): boolean {
       }
     } catch (err) {
       console.error(
-        "[NexisClaw] Uncaught exception handler failed:",
+        "[FirstNexus] Uncaught exception handler failed:",
         err instanceof Error ? (err.stack ?? err.message) : err,
       );
     }
@@ -502,7 +502,7 @@ export function isUncaughtExceptionHandled(error: unknown): boolean {
 export function installUnhandledRejectionHandler(): void {
   const exitWithTerminalRestore = (reason: string, error?: unknown, hookReason = reason) => {
     for (const message of runFatalErrorHooks({ reason: hookReason, error })) {
-      console.error("[NexisClaw]", message);
+      console.error("[FirstNexus]", message);
     }
     restoreTerminalState(reason, { resumeStdinIfPaused: false });
     process.exit(1);
@@ -516,31 +516,34 @@ export function installUnhandledRejectionHandler(): void {
     // AbortError is typically an intentional cancellation (e.g., during shutdown)
     // Log it but don't crash - these are expected during graceful shutdown
     if (isAbortError(reason)) {
-      console.warn("[NexisClaw] Suppressed AbortError:", formatUncaughtError(reason));
+      console.warn("[FirstNexus] Suppressed AbortError:", formatUncaughtError(reason));
       return;
     }
 
     if (isFatalError(reason)) {
-      console.error("[NexisClaw] FATAL unhandled rejection:", formatUncaughtError(reason));
+      console.error("[FirstNexus] FATAL unhandled rejection:", formatUncaughtError(reason));
       exitWithTerminalRestore("fatal unhandled rejection", reason, "fatal_unhandled_rejection");
       return;
     }
 
     if (isConfigError(reason)) {
-      console.error("[NexisClaw] CONFIGURATION ERROR - requires fix:", formatUncaughtError(reason));
+      console.error(
+        "[FirstNexus] CONFIGURATION ERROR - requires fix:",
+        formatUncaughtError(reason),
+      );
       exitWithTerminalRestore("configuration error", reason, "configuration_error");
       return;
     }
 
     if (isTransientUnhandledRejectionError(reason)) {
       console.warn(
-        "[NexisClaw] Non-fatal unhandled rejection (continuing):",
+        "[FirstNexus] Non-fatal unhandled rejection (continuing):",
         formatUncaughtError(reason),
       );
       return;
     }
 
-    console.error("[NexisClaw] Unhandled promise rejection:", formatUncaughtError(reason));
+    console.error("[FirstNexus] Unhandled promise rejection:", formatUncaughtError(reason));
     exitWithTerminalRestore("unhandled rejection", reason, "unhandled_rejection");
   });
 }

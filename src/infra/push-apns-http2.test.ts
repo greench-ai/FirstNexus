@@ -222,8 +222,8 @@ describe("connectApnsHttp2Session", () => {
     expect(fakeSession.request).toHaveBeenCalledWith({
       ":method": "POST",
       ":path": `/3/device/${"0".repeat(64)}`,
-      authorization: "bearer intentionally.invalid.NexisClaw.proxy.validation",
-      "apns-topic": "ai.NexisClaw.ios",
+      authorization: "bearer intentionally.invalid.FirstNexus.proxy.validation",
+      "apns-topic": "ai.FirstNexus.ios",
       "apns-push-type": "alert",
       "apns-priority": "10",
     });

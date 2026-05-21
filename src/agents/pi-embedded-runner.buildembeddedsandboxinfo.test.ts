@@ -8,16 +8,16 @@ function createSandboxContext(overrides?: Partial<SandboxContext>): SandboxConte
     enabled: true,
     backendId: "docker",
     sessionKey: "session:test",
-    workspaceDir: "/tmp/NexisClaw-sandbox",
-    agentWorkspaceDir: "/tmp/NexisClaw-workspace",
+    workspaceDir: "/tmp/FirstNexus-sandbox",
+    agentWorkspaceDir: "/tmp/FirstNexus-workspace",
     workspaceAccess: "none",
-    runtimeId: "NexisClaw-sbx-test",
-    runtimeLabel: "NexisClaw-sbx-test",
-    containerName: "NexisClaw-sbx-test",
+    runtimeId: "FirstNexus-sbx-test",
+    runtimeLabel: "FirstNexus-sbx-test",
+    containerName: "FirstNexus-sbx-test",
     containerWorkdir: "/workspace",
     docker: {
-      image: "NexisClaw-sandbox:bookworm-slim",
-      containerPrefix: "NexisClaw-sbx-",
+      image: "FirstNexus-sandbox:bookworm-slim",
+      containerPrefix: "FirstNexus-sbx-",
       workdir: "/workspace",
       readOnlyRoot: true,
       tmpfs: ["/tmp"],
@@ -34,7 +34,7 @@ function createSandboxContext(overrides?: Partial<SandboxContext>): SandboxConte
     browser: {
       bridgeUrl: "http://localhost:9222",
       noVncUrl: "http://localhost:6080",
-      containerName: "NexisClaw-sbx-browser-test",
+      containerName: "FirstNexus-sbx-browser-test",
     },
   } satisfies SandboxContext;
   return { ...base, ...overrides };
@@ -50,7 +50,7 @@ describe("buildEmbeddedSandboxInfo", () => {
 
     expect(buildEmbeddedSandboxInfo(sandbox)).toEqual({
       enabled: true,
-      workspaceDir: "/tmp/NexisClaw-sandbox",
+      workspaceDir: "/tmp/FirstNexus-sandbox",
       containerWorkspaceDir: "/workspace",
       workspaceAccess: "none",
       agentWorkspaceMount: undefined,
@@ -73,7 +73,7 @@ describe("buildEmbeddedSandboxInfo", () => {
       }),
     ).toEqual({
       enabled: true,
-      workspaceDir: "/tmp/NexisClaw-sandbox",
+      workspaceDir: "/tmp/FirstNexus-sandbox",
       containerWorkspaceDir: "/workspace",
       workspaceAccess: "none",
       agentWorkspaceMount: undefined,
@@ -99,7 +99,7 @@ describe("buildEmbeddedSandboxInfo", () => {
       }),
     ).toEqual({
       enabled: true,
-      workspaceDir: "/tmp/NexisClaw-sandbox",
+      workspaceDir: "/tmp/FirstNexus-sandbox",
       containerWorkspaceDir: "/workspace",
       workspaceAccess: "none",
       agentWorkspaceMount: undefined,

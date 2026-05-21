@@ -10,7 +10,7 @@ import type {
   ChannelDoctorEmptyAllowlistAccountContext,
   ChannelDoctorSequenceResult,
 } from "../../../channels/plugins/types.adapters.js";
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import { normalizeOptionalLowercaseString } from "../../../shared/string-coerce.js";
 
 type ChannelDoctorEntry = {
@@ -23,12 +23,12 @@ type ChannelDoctorPluginCandidate = {
 };
 
 type ChannelDoctorLookupContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
 };
 
 type ChannelDoctorEmptyAllowlistLookupParams = ChannelDoctorEmptyAllowlistAccountContext & {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
 };
 
 const channelDoctorFunctionKeys = new Set<keyof ChannelDoctorAdapter>([
@@ -59,7 +59,7 @@ export type ChannelDoctorEmptyAllowlistPolicyHooks = {
   ) => boolean;
 };
 
-function collectConfiguredChannelIds(cfg: NexisClawConfig): string[] {
+function collectConfiguredChannelIds(cfg: FirstNexusConfig): string[] {
   if (cfg.plugins?.enabled === false) {
     return [];
   }
@@ -90,7 +90,7 @@ function collectConfiguredChannelIds(cfg: NexisClawConfig): string[] {
     .toSorted();
 }
 
-function isChannelDoctorBlockedByConfig(channelId: string, cfg: NexisClawConfig): boolean {
+function isChannelDoctorBlockedByConfig(channelId: string, cfg: FirstNexusConfig): boolean {
   if (cfg.plugins?.enabled === false) {
     return true;
   }
@@ -286,7 +286,7 @@ export function createChannelDoctorEmptyAllowlistPolicyHooks(
 }
 
 export async function runChannelDoctorConfigSequences(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   shouldRepair: boolean;
 }): Promise<ChannelDoctorSequenceResult> {
@@ -307,7 +307,7 @@ export async function runChannelDoctorConfigSequences(params: {
 }
 
 export function collectChannelDoctorCompatibilityMutations(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   options: { env?: NodeJS.ProcessEnv } = {},
 ): ChannelDoctorConfigMutation[] {
   const channelIds = collectConfiguredChannelIds(cfg);
@@ -328,7 +328,7 @@ export function collectChannelDoctorCompatibilityMutations(
 }
 
 export async function collectChannelDoctorStaleConfigMutations(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   options: { env?: NodeJS.ProcessEnv } = {},
 ): Promise<ChannelDoctorConfigMutation[]> {
   const mutations: ChannelDoctorConfigMutation[] = [];
@@ -348,7 +348,7 @@ export async function collectChannelDoctorStaleConfigMutations(
 }
 
 export async function collectChannelDoctorPreviewWarnings(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   doctorFixCommand: string;
   env?: NodeJS.ProcessEnv;
 }): Promise<string[]> {
@@ -366,7 +366,7 @@ export async function collectChannelDoctorPreviewWarnings(params: {
 }
 
 export async function collectChannelDoctorMutableAllowlistWarnings(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
 }): Promise<string[]> {
   const warnings: string[] = [];
@@ -383,7 +383,7 @@ export async function collectChannelDoctorMutableAllowlistWarnings(params: {
 }
 
 export async function collectChannelDoctorRepairMutations(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   doctorFixCommand: string;
   env?: NodeJS.ProcessEnv;
 }): Promise<ChannelDoctorConfigMutation[]> {

@@ -1,5 +1,5 @@
 ---
-summary: "Adds the Slack channel surface for sending and receiving NexisClaw messages."
+summary: "Adds the Slack channel surface for sending and receiving FirstNexus messages."
 read_when:
   - You are installing, configuring, or auditing the slack plugin
 title: "Slack plugin"
@@ -7,12 +7,12 @@ title: "Slack plugin"
 
 # Slack plugin
 
-Adds the Slack channel surface for sending and receiving NexisClaw messages.
+Adds the Slack channel surface for sending and receiving FirstNexus messages.
 
 ## Distribution
 
-- Package: `@NexisClaw/slack`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/slack`
+- Install route: included in FirstNexus
 
 ## Surface
 

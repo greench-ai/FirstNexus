@@ -1,7 +1,7 @@
 import type { AgentMessage } from "@earendil-works/pi-agent-core";
 import type { SessionManager } from "@earendil-works/pi-coding-agent";
 import { stripInboundMetadata } from "../../auto-reply/reply/strip-inbound-meta.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { ProviderRuntimeModel } from "../../plugins/provider-runtime-model.types.js";
 import {
   sanitizeProviderReplayHistoryWithPlugin,
@@ -60,7 +60,7 @@ type ModelSnapshotEntry = {
 };
 
 type ProviderReplayHookParams = {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   provider: string;
@@ -226,7 +226,7 @@ function stripStaleAssistantUsageBeforeLatestCompaction(messages: AgentMessage[]
   return touched ? out : messages;
 }
 
-// `provider:"NexisClaw"` assistant entries written by the channel-delivery
+// `provider:"FirstNexus"` assistant entries written by the channel-delivery
 // transcript mirror (`model:"delivery-mirror"`, see config/sessions/transcript.ts)
 // and by the Gateway transcript-inject helper (`model:"gateway-injected"`, see
 // gateway/server-methods/chat-transcript-inject.ts) are user-visible transcript
@@ -275,7 +275,7 @@ function isTranscriptOnlyOpenclawAssistant(message: AgentMessage): boolean {
   const provider = (message as { provider?: unknown }).provider;
   const model = (message as { model?: unknown }).model;
   return (
-    provider === "NexisClaw" &&
+    provider === "FirstNexus" &&
     typeof model === "string" &&
     TRANSCRIPT_ONLY_NEXISCLAW_MODELS.has(model)
   );
@@ -653,7 +653,7 @@ export async function sanitizeSessionHistory(params: {
   modelId?: string;
   provider?: string;
   allowedToolNames?: Iterable<string>;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   model?: ProviderRuntimeModel;
@@ -810,7 +810,7 @@ export async function validateReplayTurns(params: {
   modelApi?: string | null;
   modelId?: string;
   provider?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   model?: ProviderRuntimeModel;

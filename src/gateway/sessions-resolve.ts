@@ -1,5 +1,5 @@
 import { loadSessionStore, updateSessionStore, type SessionEntry } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveSessionIdMatchSelection } from "../sessions/session-id-resolution.js";
 import { parseSessionLabel } from "../sessions/session-label.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
@@ -38,7 +38,7 @@ function noSessionFoundResult(key: string): SessionsResolveResult {
 
 /** Rejects sessions whose owning agent no longer exists in config (#65524). */
 function validateSessionAgentExists(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   key: string,
 ): SessionsResolveResult | null {
   const deletedAgentId = resolveDeletedAgentIdFromSessionKey(cfg, key);
@@ -55,7 +55,7 @@ function validateSessionAgentExists(
 }
 
 function isResolvedSessionKeyVisible(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   p: SessionsResolveParams;
   storePath: string;
   store: ReturnType<typeof loadSessionStore>;
@@ -89,7 +89,7 @@ function findVisibleSessionIdMatches(params: {
 }
 
 export async function resolveSessionKeyFromResolveParams(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   p: SessionsResolveParams;
 }): Promise<SessionsResolveResult> {
   const { cfg, p } = params;

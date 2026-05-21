@@ -1,16 +1,16 @@
 {
-  "name": "@NexisClaw/synology-chat",
+  "name": "@FirstNexus/synology-chat",
   "version": "2026.5.12-beta.1",
-  "description": "Synology Chat channel plugin for NexisClaw",
+  "description": "Synology Chat channel plugin for FirstNexus",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexisClaw/NexisClaw"
+    "url": "https://github.com/FirstNexus/FirstNexus"
   },
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
@@ -21,11 +21,11 @@
       "selectionLabel": "Synology Chat (Webhook)",
       "docsPath": "/channels/synology-chat",
       "docsLabel": "synology-chat",
-      "blurb": "Connect your Synology NAS Chat to NexisClaw with full agent capabilities.",
+      "blurb": "Connect your Synology NAS Chat to FirstNexus with full agent capabilities.",
       "order": 90
     },
     "install": {
-      "npmSpec": "@NexisClaw/synology-chat",
+      "npmSpec": "@FirstNexus/synology-chat",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.10"
     },
@@ -33,7 +33,7 @@
       "pluginApi": ">=2026.5.12-beta.1"
     },
     "build": {
-      "NexisClawVersion": "2026.5.12-beta.1"
+      "FirstNexusVersion": "2026.5.12-beta.1"
     },
     "release": {
       "publishToClawHub": true,

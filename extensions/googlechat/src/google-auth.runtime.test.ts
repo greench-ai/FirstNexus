@@ -28,7 +28,7 @@ const mocks = vi.hoisted(() => ({
   ),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", () => ({
   buildHostnameAllowlistPolicyFromSuffixAllowlist:
     mocks.buildHostnameAllowlistPolicyFromSuffixAllowlist,
   fetchWithSsrFGuard: mocks.fetchWithSsrFGuard,
@@ -66,7 +66,7 @@ afterEach(() => {
 });
 
 afterAll(() => {
-  vi.doUnmock("NexisClaw/plugin-sdk/ssrf-runtime");
+  vi.doUnmock("FirstNexus/plugin-sdk/ssrf-runtime");
   vi.doUnmock("gaxios");
   vi.resetModules();
 });

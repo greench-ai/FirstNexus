@@ -1,2 +1,2 @@
-export { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
-export type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/core";
+export { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
+export type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/core";

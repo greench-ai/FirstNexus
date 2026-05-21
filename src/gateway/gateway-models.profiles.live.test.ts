@@ -40,13 +40,13 @@ import { isLiveProfileKeyModeEnabled, isLiveTestEnabled } from "../agents/live-t
 import { getApiKeyForModel, resolveEnvApiKey } from "../agents/model-auth.js";
 import { normalizeProviderId } from "../agents/model-selection.js";
 import { shouldSuppressBuiltInModel } from "../agents/model-suppression.js";
-import { ensureNexisClawModelsJson } from "../agents/models-config.js";
+import { ensureFirstNexusModelsJson } from "../agents/models-config.js";
 import { isRateLimitErrorMessage } from "../agents/pi-embedded-helpers/errors.js";
 import { isBillingErrorMessage } from "../agents/pi-embedded-helpers/failover-matches.js";
 import { discoverAuthStorage, discoverModels } from "../agents/pi-model-discovery.js";
 import { STREAM_ERROR_FALLBACK_TEXT } from "../agents/stream-message-shared.js";
 import { clearRuntimeConfigSnapshot, getRuntimeConfig } from "../config/io.js";
-import type { ModelsConfig, ModelProviderConfig, NexisClawConfig } from "../config/types.js";
+import type { ModelsConfig, ModelProviderConfig, FirstNexusConfig } from "../config/types.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import { normalizeGoogleModelId } from "../plugin-sdk/google-model-id.js";
 import { resolveProviderThinkingProfile } from "../plugins/provider-runtime.js";
@@ -1500,7 +1500,7 @@ async function requestGatewayAgentText(params: {
 
 type GatewayModelSuiteParams = {
   label: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   candidates: Array<Model<Api>>;
   allowNotFoundSkip: boolean;
   extraToolProbes: boolean;
@@ -1708,7 +1708,7 @@ function resolveExplicitLiveModelCandidates(params: {
 }
 
 function resolveGatewayLiveModelThinkingLevel(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   model: Model<Api>;
   requestedLevel: string;
 }): string {
@@ -1742,10 +1742,10 @@ function resolveGatewayLiveModelThinkingLevel(params: {
 }
 
 function buildLiveGatewayConfig(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   candidates: Array<Model<Api>>;
   providerOverrides?: Record<string, ModelProviderConfig>;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   const providerOverrides = params.providerOverrides ?? {};
   const lmstudioProvider = params.cfg.models?.providers?.lmstudio;
   const baseProviders = params.cfg.models?.providers ?? {};
@@ -1786,9 +1786,9 @@ function buildLiveGatewayConfig(params: {
 }
 
 async function sanitizeAuthConfig(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentDir: string;
-}): Promise<NexisClawConfig["auth"] | undefined> {
+}): Promise<FirstNexusConfig["auth"] | undefined> {
   const auth = params.cfg.auth;
   if (!auth) {
     return auth;
@@ -1797,7 +1797,7 @@ async function sanitizeAuthConfig(params: {
     allowKeychainPrompt: false,
   });
 
-  let profiles: NonNullable<NexisClawConfig["auth"]>["profiles"] | undefined;
+  let profiles: NonNullable<FirstNexusConfig["auth"]>["profiles"] | undefined;
   if (auth.profiles) {
     profiles = {};
     for (const [profileId, profile] of Object.entries(auth.profiles)) {
@@ -1837,7 +1837,7 @@ async function sanitizeAuthConfig(params: {
 }
 
 function buildMinimaxProviderOverride(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   api: "openai-completions" | "anthropic-messages";
   baseUrl: string;
 }): ModelProviderConfig | null {
@@ -1897,7 +1897,7 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
     lastGood: hostStore.lastGood ? { ...hostStore.lastGood } : undefined,
     usageStats: hostStore.usageStats ? { ...hostStore.usageStats } : undefined,
   });
-  tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-live-state-"));
+  tempStateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-live-state-"));
   process.env.NEXISCLAW_STATE_DIR = tempStateDir;
   tempAgentDir = path.join(tempStateDir, "agents", DEFAULT_AGENT_ID, "agent");
   saveAuthProfileStore(sanitizedStore, tempAgentDir);
@@ -1910,9 +1910,9 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
 
   const workspaceDir = resolveAgentWorkspaceDir(params.cfg, agentId);
   await fs.mkdir(workspaceDir, { recursive: true });
-  await fs.mkdir(path.join(workspaceDir, ".NexisClaw"), { recursive: true });
+  await fs.mkdir(path.join(workspaceDir, ".FirstNexus"), { recursive: true });
   await fs.writeFile(
-    path.join(workspaceDir, ".NexisClaw", "workspace-state.json"),
+    path.join(workspaceDir, ".FirstNexus", "workspace-state.json"),
     `${JSON.stringify(
       {
         version: 1,
@@ -1925,11 +1925,11 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
   await fs.rm(path.join(workspaceDir, "BOOTSTRAP.md"), { force: true });
   const nonceA = randomUUID();
   const nonceB = randomUUID();
-  const toolProbePath = path.join(workspaceDir, `.NexisClaw-live-tool-probe.${nonceA}.txt`);
+  const toolProbePath = path.join(workspaceDir, `.FirstNexus-live-tool-probe.${nonceA}.txt`);
   await fs.writeFile(toolProbePath, `nonceA=${nonceA}\nnonceB=${nonceB}\n`);
 
   const agentDir = resolveDefaultAgentDir(params.cfg);
-  const sanitizedCfg: NexisClawConfig = {
+  const sanitizedCfg: FirstNexusConfig = {
     ...params.cfg,
     auth: await sanitizeAuthConfig({ cfg: params.cfg, agentDir }),
   };
@@ -1938,8 +1938,8 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
     candidates: params.candidates,
     providerOverrides: params.providerOverrides,
   });
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-live-"));
-  const tempConfigPath = path.join(tempDir, "NexisClaw.json");
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-live-"));
+  const tempConfigPath = path.join(tempDir, "FirstNexus.json");
   await fs.writeFile(tempConfigPath, `${JSON.stringify(nextCfg, null, 2)}\n`);
   process.env.NEXISCLAW_CONFIG_PATH = tempConfigPath;
 
@@ -2159,10 +2159,10 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
                   idempotencyKey: `idem-${runIdTool}-tool-${toolReadAttempt + 1}`,
                   modelKey,
                   message: strictReply
-                    ? "NexisClaw live tool probe (local, safe): " +
+                    ? "FirstNexus live tool probe (local, safe): " +
                       `use the tool named \`read\` (or \`Read\`) with JSON arguments {"path":"${toolProbePath}"}. ` +
                       `Then reply with exactly: ${nonceA} ${nonceB}. No extra text.`
-                    : "NexisClaw live tool probe (local, safe): " +
+                    : "FirstNexus live tool probe (local, safe): " +
                       `use the tool named \`read\` (or \`Read\`) with JSON arguments {"path":"${toolProbePath}"}. ` +
                       "Then reply with the two nonce values you read (include both).",
                   thinkingLevel,
@@ -2226,12 +2226,12 @@ async function runGatewayModelSuite(params: GatewayModelSuiteParams) {
                     idempotencyKey: `idem-${runIdTool}-exec-read-${execReadAttempt + 1}`,
                     modelKey,
                     message: strictReply
-                      ? "NexisClaw live tool probe (local, safe): " +
+                      ? "FirstNexus live tool probe (local, safe): " +
                         "use the tool named `exec` (or `Exec`) to run this command: " +
                         `mkdir -p "${tempDir}" && printf '%s' '${nonceC}' > "${toolWritePath}". ` +
                         `Then use the tool named \`read\` (or \`Read\`) with JSON arguments {"path":"${toolWritePath}"}. ` +
                         `Then reply with exactly: ${nonceC}. No extra text.`
-                      : "NexisClaw live tool probe (local, safe): " +
+                      : "FirstNexus live tool probe (local, safe): " +
                         "use the tool named `exec` (or `Exec`) to run this command: " +
                         `mkdir -p "${tempDir}" && printf '%s' '${nonceC}' > "${toolWritePath}". ` +
                         `Then use the tool named \`read\` (or \`Read\`) with JSON arguments {"path":"${toolWritePath}"}. ` +
@@ -2644,7 +2644,7 @@ describeLive("gateway live (dev agent, profile keys)", () => {
         const workspaceDir = resolveAgentWorkspaceDir(cfg, DEFAULT_AGENT_ID);
         logProgress("[all-models] preparing models.json");
         await withGatewayLiveSetupTimeout(
-          ensureNexisClawModelsJson(cfg, undefined, {
+          ensureFirstNexusModelsJson(cfg, undefined, {
             workspaceDir,
             ...(providerList ? { providerDiscoveryProviderIds: providerList } : {}),
             providerDiscoveryEntriesOnly: true,
@@ -2868,7 +2868,7 @@ describeLive("gateway live (dev agent, profile keys)", () => {
     process.env.NEXISCLAW_GATEWAY_TOKEN = token;
 
     const cfg = getRuntimeConfig();
-    await ensureNexisClawModelsJson(cfg);
+    await ensureFirstNexusModelsJson(cfg);
 
     const agentDir = resolveDefaultAgentDir(cfg);
     const authStorage = discoverAuthStorage(agentDir);
@@ -2899,7 +2899,7 @@ describeLive("gateway live (dev agent, profile keys)", () => {
     await fs.mkdir(workspaceDir, { recursive: true });
     const nonceA = randomUUID();
     const nonceB = randomUUID();
-    const toolProbePath = path.join(workspaceDir, `.NexisClaw-live-zai-fallback.${nonceA}.txt`);
+    const toolProbePath = path.join(workspaceDir, `.FirstNexus-live-zai-fallback.${nonceA}.txt`);
     await fs.writeFile(toolProbePath, `nonceA=${nonceA}\nnonceB=${nonceB}\n`);
 
     let server: Awaited<ReturnType<typeof startGatewayServer>> | undefined;

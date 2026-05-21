@@ -27,7 +27,7 @@ function parsePositiveInt(raw, fallback, label) {
 function sanitizeLabel(value) {
   return (
     String(value)
-      .replace(/^NexisClaw@/u, "")
+      .replace(/^FirstNexus@/u, "")
       .replace(/[^A-Za-z0-9._-]+/g, "-")
       .replace(/^-+|-+$/g, "") || "targeted"
   );

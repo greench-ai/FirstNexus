@@ -1,7 +1,7 @@
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../../agents/agent-scope.js";
 import { getRuntimeConfig } from "../../config/config.js";
 import { applyPluginAutoEnable } from "../../config/plugin-auto-enable.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { createSubsystemLogger } from "../../logging.js";
 import { resolvePluginActivationSourceConfig } from "../activation-source-config.js";
 import type { PluginLoadOptions } from "../loader.js";
@@ -11,9 +11,9 @@ import type { PluginLogger } from "../types.js";
 const log = createSubsystemLogger("plugins");
 
 export type PluginRuntimeLoadContext = {
-  rawConfig: NexisClawConfig;
-  config: NexisClawConfig;
-  activationSourceConfig: NexisClawConfig;
+  rawConfig: FirstNexusConfig;
+  config: FirstNexusConfig;
+  activationSourceConfig: FirstNexusConfig;
   autoEnabledReasons: Readonly<Record<string, string[]>>;
   workspaceDir: string | undefined;
   env: NodeJS.ProcessEnv;
@@ -26,8 +26,8 @@ export type PluginRuntimeResolvedLoadValues = Pick<
 >;
 
 export type PluginRuntimeLoadContextOptions = {
-  config?: NexisClawConfig;
-  activationSourceConfig?: NexisClawConfig;
+  config?: FirstNexusConfig;
+  activationSourceConfig?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
   logger?: PluginLogger;

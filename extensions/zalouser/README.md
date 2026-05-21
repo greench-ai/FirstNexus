@@ -1,6 +1,6 @@
-# @NexisClaw/zalouser
+# @FirstNexus/zalouser
 
-NexisClaw extension for Zalo Personal Account messaging via native `zca-js` integration.
+FirstNexus extension for Zalo Personal Account messaging via native `zca-js` integration.
 
 > **Warning:** Using Zalo automation may result in account suspension or ban. Use at your own risk. This is an unofficial integration.
 
@@ -14,7 +14,7 @@ NexisClaw extension for Zalo Personal Account messaging via native `zca-js` inte
 
 ## Prerequisites
 
-- NexisClaw Gateway
+- FirstNexus Gateway
 - Zalo mobile app (for QR login)
 
 No external `zca`, `openzca`, or `zca-cli` binary is required.
@@ -24,14 +24,14 @@ No external `zca`, `openzca`, or `zca-cli` binary is required.
 ### Option A: npm
 
 ```bash
-NexisClaw plugins install @NexisClaw/zalouser
+FirstNexus plugins install @FirstNexus/zalouser
 ```
 
 ### Option B: local source checkout
 
 ```bash
 PLUGIN_SRC=./path/to/local/zalouser-plugin
-NexisClaw plugins install "$PLUGIN_SRC"
+FirstNexus plugins install "$PLUGIN_SRC"
 cd "$PLUGIN_SRC" && pnpm install
 ```
 
@@ -42,7 +42,7 @@ Restart the Gateway after install.
 ### Login (QR)
 
 ```bash
-NexisClaw channels login --channel zalouser
+FirstNexus channels login --channel zalouser
 ```
 
 Scan the QR code with the Zalo app on your phone.
@@ -59,7 +59,7 @@ channels:
 ### Send a message
 
 ```bash
-NexisClaw message send --channel zalouser --target <threadId> --message "Hello from NexisClaw"
+FirstNexus message send --channel zalouser --target <threadId> --message "Hello from FirstNexus"
 ```
 
 ## Configuration
@@ -92,15 +92,15 @@ channels:
 ## Useful commands
 
 ```bash
-NexisClaw channels login --channel zalouser
-NexisClaw channels login --channel zalouser --account work
-NexisClaw channels status --probe
-NexisClaw channels logout --channel zalouser
+FirstNexus channels login --channel zalouser
+FirstNexus channels login --channel zalouser --account work
+FirstNexus channels status --probe
+FirstNexus channels logout --channel zalouser
 
-NexisClaw directory self --channel zalouser
-NexisClaw directory peers list --channel zalouser --query "name"
-NexisClaw directory groups list --channel zalouser --query "work"
-NexisClaw directory groups members --channel zalouser --group-id <id>
+FirstNexus directory self --channel zalouser
+FirstNexus directory peers list --channel zalouser --query "name"
+FirstNexus directory groups list --channel zalouser --query "work"
+FirstNexus directory groups members --channel zalouser --group-id <id>
 ```
 
 ## Agent tool
@@ -111,8 +111,8 @@ Available actions: `send`, `image`, `link`, `friends`, `groups`, `me`, `status`
 
 ## Troubleshooting
 
-- Login not persisted: `NexisClaw channels logout --channel zalouser && NexisClaw channels login --channel zalouser`
-- Probe status: `NexisClaw channels status --probe`
+- Login not persisted: `FirstNexus channels logout --channel zalouser && FirstNexus channels login --channel zalouser`
+- Probe status: `FirstNexus channels status --probe`
 - Name resolution issues (allowlist/groups): use numeric IDs or exact Zalo names
 
 ## Credits

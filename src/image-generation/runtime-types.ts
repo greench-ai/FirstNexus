@@ -1,6 +1,6 @@
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 import type { FallbackAttempt } from "../agents/model-fallback.types.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { SsrFPolicy } from "../infra/net/ssrf.js";
 import type {
   GeneratedImageAsset,
@@ -16,7 +16,7 @@ import type {
 } from "./types.js";
 
 export type GenerateImageParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   prompt: string;
   agentDir?: string;
   authStore?: AuthProfileStore;
@@ -48,7 +48,7 @@ export type GenerateImageRuntimeResult = {
 };
 
 export type ListRuntimeImageGenerationProvidersParams = {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 };
 
 export type RuntimeImageGenerationProvider = ImageGenerationProvider;

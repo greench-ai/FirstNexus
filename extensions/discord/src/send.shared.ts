@@ -1,20 +1,20 @@
 import { PollLayoutType } from "discord-api-types/payloads/v10";
 import type { RESTAPIPoll } from "discord-api-types/rest/v10";
 import type { APIChannel } from "discord-api-types/v10";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { buildOutboundMediaLoadOptions } from "NexisClaw/plugin-sdk/media-runtime";
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { buildOutboundMediaLoadOptions } from "FirstNexus/plugin-sdk/media-runtime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-runtime";
 import {
   normalizePollDurationHours,
   normalizePollInput,
   type OutboundMediaAccess,
   type PollInput,
-} from "NexisClaw/plugin-sdk/media-runtime";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import type { ChunkMode } from "NexisClaw/plugin-sdk/reply-chunking";
-import { resolveTextChunksWithFallback } from "NexisClaw/plugin-sdk/reply-payload";
-import type { RetryRunner } from "NexisClaw/plugin-sdk/retry-runtime";
-import { loadWebMedia } from "NexisClaw/plugin-sdk/web-media";
+} from "FirstNexus/plugin-sdk/media-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import type { ChunkMode } from "FirstNexus/plugin-sdk/reply-chunking";
+import { resolveTextChunksWithFallback } from "FirstNexus/plugin-sdk/reply-payload";
+import type { RetryRunner } from "FirstNexus/plugin-sdk/retry-runtime";
+import { loadWebMedia } from "FirstNexus/plugin-sdk/web-media";
 import { chunkDiscordTextWithMode } from "./chunk.js";
 import { createDiscordClient, resolveDiscordRest, type DiscordClientOpts } from "./client.js";
 import {
@@ -155,7 +155,7 @@ async function buildDiscordSendError(
   err: unknown,
   ctx: {
     channelId: string;
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     rest: RequestClient;
     token: string;
     hasMedia: boolean;
@@ -244,7 +244,7 @@ async function resolveChannelId(
 
 async function resolveDiscordTargetChannelId(
   raw: string,
-  opts: DiscordClientOpts & { cfg: NexisClawConfig },
+  opts: DiscordClientOpts & { cfg: FirstNexusConfig },
 ): Promise<{ channelId: string; dm?: boolean }> {
   const cfg = requireRuntimeConfig(opts.cfg, "Discord target channel resolution");
   const recipient = await parseAndResolveRecipient(raw, cfg, opts.accountId, {

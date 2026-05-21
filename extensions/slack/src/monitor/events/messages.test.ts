@@ -9,13 +9,13 @@ const { messageQueueMock, messageAllowMock } = vi.hoisted(() => ({
   messageAllowMock: vi.fn(),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/system-event-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/system-event-runtime", () => ({
   enqueueSystemEvent: (...args: unknown[]) => messageQueueMock(...args),
 }));
-vi.mock("NexisClaw/plugin-sdk/system-event-runtime.js", () => ({
+vi.mock("FirstNexus/plugin-sdk/system-event-runtime.js", () => ({
   enqueueSystemEvent: (...args: unknown[]) => messageQueueMock(...args),
 }));
-vi.mock("NexisClaw/plugin-sdk/conversation-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/conversation-runtime", () => ({
   readChannelAllowFromStore: (...args: unknown[]) => messageAllowMock(...args),
 }));
 

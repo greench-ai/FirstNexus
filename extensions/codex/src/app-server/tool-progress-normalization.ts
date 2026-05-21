@@ -2,8 +2,11 @@ import {
   inferToolMetaFromArgs,
   type EmbeddedRunAttemptParams,
   type ToolProgressDetailMode,
-} from "NexisClaw/plugin-sdk/agent-harness-runtime";
-import { redactSensitiveFieldValue, redactToolPayloadText } from "NexisClaw/plugin-sdk/logging-core";
+} from "FirstNexus/plugin-sdk/agent-harness-runtime";
+import {
+  redactSensitiveFieldValue,
+  redactToolPayloadText,
+} from "FirstNexus/plugin-sdk/logging-core";
 import {
   isJsonObject,
   type CodexDynamicToolCallParams,

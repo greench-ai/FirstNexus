@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { bundledPluginRoot } from "NexisClaw/plugin-sdk/test-fixtures";
+import { bundledPluginRoot } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   buildOfficialChannelCatalog,
@@ -16,7 +16,7 @@ type OfficialChannelCatalogEntry = ReturnType<
   typeof buildOfficialChannelCatalog
 >["entries"][number];
 type OfficialChannelInstall = NonNullable<
-  NonNullable<OfficialChannelCatalogEntry["NexisClaw"]>["install"]
+  NonNullable<OfficialChannelCatalogEntry["FirstNexus"]>["install"]
 >;
 
 function makeRepoRoot(prefix: string): string {
@@ -28,7 +28,7 @@ function writeJson(filePath: string, value: unknown): void {
 }
 
 function requireInstall(entry: OfficialChannelCatalogEntry | undefined): OfficialChannelInstall {
-  const install = entry?.NexisClaw?.install;
+  const install = entry?.FirstNexus?.install;
   if (!install) {
     throw new Error("expected official channel install config");
   }
@@ -58,9 +58,9 @@ function summarizeCatalogEntry(entry: OfficialChannelCatalogEntry) {
     name: entry.name,
     description: entry.description,
     source: entry.source,
-    plugin: entry.NexisClaw?.plugin,
-    channel: entry.NexisClaw?.channel,
-    install: entry.NexisClaw?.install,
+    plugin: entry.FirstNexus?.plugin,
+    channel: entry.FirstNexus?.channel,
+    install: entry.FirstNexus?.install,
   };
 }
 
@@ -70,12 +70,12 @@ afterEach(() => {
 
 describe("buildOfficialChannelCatalog", () => {
   it("includes publishable official channel plugins and skips non-publishable entries", () => {
-    const repoRoot = makeRepoRoot("NexisClaw-official-channel-catalog-");
+    const repoRoot = makeRepoRoot("FirstNexus-official-channel-catalog-");
     writeJson(path.join(repoRoot, "extensions", "whatsapp", "package.json"), {
-      name: "@NexisClaw/whatsapp",
+      name: "@FirstNexus/whatsapp",
       version: "2026.3.23",
-      description: "NexisClaw WhatsApp channel plugin",
-      NexisClaw: {
+      description: "FirstNexus WhatsApp channel plugin",
+      FirstNexus: {
         channel: {
           id: "whatsapp",
           label: "WhatsApp",
@@ -85,7 +85,7 @@ describe("buildOfficialChannelCatalog", () => {
           blurb: "works with your own number; recommend a separate phone + eSIM.",
         },
         install: {
-          npmSpec: "@NexisClaw/whatsapp",
+          npmSpec: "@FirstNexus/whatsapp",
           localPath: bundledPluginRoot("whatsapp"),
           defaultChoice: "npm",
         },
@@ -95,8 +95,8 @@ describe("buildOfficialChannelCatalog", () => {
       },
     });
     writeJson(path.join(repoRoot, "extensions", "local-only", "package.json"), {
-      name: "@NexisClaw/local-only",
-      NexisClaw: {
+      name: "@FirstNexus/local-only",
+      FirstNexus: {
         channel: {
           id: "local-only",
           label: "Local Only",
@@ -117,14 +117,14 @@ describe("buildOfficialChannelCatalog", () => {
 
     expect(
       summarizeCatalogEntry(
-        findCatalogEntry(entries, (entry) => entry.name === "@wecom/wecom-NexisClaw-plugin"),
+        findCatalogEntry(entries, (entry) => entry.name === "@wecom/wecom-FirstNexus-plugin"),
       ),
     ).toEqual({
-      name: "@wecom/wecom-NexisClaw-plugin",
-      description: "NexisClaw WeCom channel plugin by the Tencent WeCom team.",
+      name: "@wecom/wecom-FirstNexus-plugin",
+      description: "FirstNexus WeCom channel plugin by the Tencent WeCom team.",
       source: "external",
       plugin: {
-        id: "wecom-NexisClaw-plugin",
+        id: "wecom-FirstNexus-plugin",
         label: "WeCom",
       },
       channel: {
@@ -139,7 +139,7 @@ describe("buildOfficialChannelCatalog", () => {
         aliases: ["qywx", "wework", "enterprise-wechat"],
       },
       install: {
-        npmSpec: "@wecom/wecom-NexisClaw-plugin@2026.4.23",
+        npmSpec: "@wecom/wecom-FirstNexus-plugin@2026.4.23",
         defaultChoice: "npm",
         expectedIntegrity:
           "sha512-bnzfdIEEu1/LFvcdyjaTkyxt27w6c7dqhkPezU62OWaqmcdFsUGR3T55USK/O9pIKsNcnL1Tnu1pqKYCWHFgWQ==",
@@ -147,14 +147,14 @@ describe("buildOfficialChannelCatalog", () => {
     });
     expect(
       summarizeCatalogEntry(
-        findCatalogEntry(entries, (entry) => entry.name === "NexisClaw-plugin-yuanbao"),
+        findCatalogEntry(entries, (entry) => entry.name === "FirstNexus-plugin-yuanbao"),
       ),
     ).toEqual({
-      name: "NexisClaw-plugin-yuanbao",
-      description: "NexisClaw Yuanbao channel plugin by the Tencent Yuanbao team.",
+      name: "FirstNexus-plugin-yuanbao",
+      description: "FirstNexus Yuanbao channel plugin by the Tencent Yuanbao team.",
       source: "external",
       plugin: {
-        id: "NexisClaw-plugin-yuanbao",
+        id: "FirstNexus-plugin-yuanbao",
         label: "Yuanbao",
       },
       channel: {
@@ -169,7 +169,7 @@ describe("buildOfficialChannelCatalog", () => {
         aliases: ["yuanbao", "yb", "tencent-yuanbao", "元宝"],
       },
       install: {
-        npmSpec: "NexisClaw-plugin-yuanbao@2.13.1",
+        npmSpec: "FirstNexus-plugin-yuanbao@2.13.1",
         defaultChoice: "npm",
         expectedIntegrity:
           "sha512-lH2I9/nsmrg7l0YJJSQhOSpWMEFBAa6FwKbZcRLDFHDT2+mOZkHa44XE+8KYN4VmorlUdAxHzpZQmVr7C98IuA==",
@@ -177,11 +177,11 @@ describe("buildOfficialChannelCatalog", () => {
     });
     expect(
       summarizeCatalogEntry(
-        findCatalogEntry(entries, (entry) => entry.name === "@NexisClaw/whatsapp"),
+        findCatalogEntry(entries, (entry) => entry.name === "@FirstNexus/whatsapp"),
       ),
     ).toEqual({
-      name: "@NexisClaw/whatsapp",
-      description: "NexisClaw WhatsApp channel plugin",
+      name: "@FirstNexus/whatsapp",
+      description: "FirstNexus WhatsApp channel plugin",
       source: "official",
       plugin: undefined,
       channel: {
@@ -195,7 +195,7 @@ describe("buildOfficialChannelCatalog", () => {
         systemImage: "message",
       },
       install: {
-        npmSpec: "@NexisClaw/whatsapp",
+        npmSpec: "@FirstNexus/whatsapp",
         defaultChoice: "npm",
         minHostVersion: ">=2026.4.25",
       },
@@ -203,9 +203,9 @@ describe("buildOfficialChannelCatalog", () => {
   });
 
   it("keeps third-party official external catalog npm sources exactly pinned", () => {
-    const repoRoot = makeRepoRoot("NexisClaw-official-channel-catalog-policy-");
+    const repoRoot = makeRepoRoot("FirstNexus-official-channel-catalog-policy-");
     const entries = buildOfficialChannelCatalog({ repoRoot }).entries.filter(
-      (entry) => entry.source === "external" && !entry.name?.startsWith("@NexisClaw/"),
+      (entry) => entry.source === "external" && !entry.name?.startsWith("@FirstNexus/"),
     );
 
     expect(entries.length).toBeGreaterThan(0);
@@ -216,19 +216,19 @@ describe("buildOfficialChannelCatalog", () => {
     }
   });
 
-  it("allows official NexisClaw channel npm specs without integrity during launch", () => {
-    const repoRoot = makeRepoRoot("NexisClaw-official-channel-catalog-NexisClaw-policy-");
+  it("allows official FirstNexus channel npm specs without integrity during launch", () => {
+    const repoRoot = makeRepoRoot("FirstNexus-official-channel-catalog-FirstNexus-policy-");
     const twitch = buildOfficialChannelCatalog({ repoRoot }).entries.find(
-      (entry) => entry.NexisClaw?.channel?.id === "twitch",
+      (entry) => entry.FirstNexus?.channel?.id === "twitch",
     );
 
     expect({
       name: twitch?.name,
-      install: twitch?.NexisClaw?.install,
+      install: twitch?.FirstNexus?.install,
     }).toEqual({
-      name: "@NexisClaw/twitch",
+      name: "@FirstNexus/twitch",
       install: {
-        npmSpec: "@NexisClaw/twitch",
+        npmSpec: "@FirstNexus/twitch",
         defaultChoice: "npm",
         minHostVersion: ">=2026.4.10",
       },
@@ -239,10 +239,10 @@ describe("buildOfficialChannelCatalog", () => {
   });
 
   it("preserves ClawHub specs when generating publishable channel catalog entries", () => {
-    const repoRoot = makeRepoRoot("NexisClaw-official-channel-catalog-clawhub-");
+    const repoRoot = makeRepoRoot("FirstNexus-official-channel-catalog-clawhub-");
     writeJson(path.join(repoRoot, "extensions", "storepack-chat", "package.json"), {
-      name: "@NexisClaw/storepack-chat",
-      NexisClaw: {
+      name: "@FirstNexus/storepack-chat",
+      FirstNexus: {
         channel: {
           id: "storepack-chat",
           label: "Storepack Chat",
@@ -251,8 +251,8 @@ describe("buildOfficialChannelCatalog", () => {
           blurb: "storepack-first channel",
         },
         install: {
-          clawhubSpec: "clawhub:@NexisClaw/storepack-chat",
-          npmSpec: "@NexisClaw/storepack-chat",
+          clawhubSpec: "clawhub:@FirstNexus/storepack-chat",
+          npmSpec: "@FirstNexus/storepack-chat",
           defaultChoice: "clawhub",
         },
         release: {
@@ -262,21 +262,21 @@ describe("buildOfficialChannelCatalog", () => {
     });
 
     const entry = buildOfficialChannelCatalog({ repoRoot }).entries.find(
-      (candidate) => candidate.NexisClaw?.channel?.id === "storepack-chat",
+      (candidate) => candidate.FirstNexus?.channel?.id === "storepack-chat",
     );
 
     expect(requireInstall(entry)).toEqual({
-      clawhubSpec: "clawhub:@NexisClaw/storepack-chat",
-      npmSpec: "@NexisClaw/storepack-chat",
+      clawhubSpec: "clawhub:@FirstNexus/storepack-chat",
+      npmSpec: "@FirstNexus/storepack-chat",
       defaultChoice: "clawhub",
     });
   });
 
   it("writes the official catalog under dist", () => {
-    const repoRoot = makeRepoRoot("NexisClaw-official-channel-catalog-write-");
+    const repoRoot = makeRepoRoot("FirstNexus-official-channel-catalog-write-");
     writeJson(path.join(repoRoot, "extensions", "whatsapp", "package.json"), {
-      name: "@NexisClaw/whatsapp",
-      NexisClaw: {
+      name: "@FirstNexus/whatsapp",
+      FirstNexus: {
         channel: {
           id: "whatsapp",
           label: "WhatsApp",
@@ -285,7 +285,7 @@ describe("buildOfficialChannelCatalog", () => {
           blurb: "wa",
         },
         install: {
-          npmSpec: "@NexisClaw/whatsapp",
+          npmSpec: "@FirstNexus/whatsapp",
         },
         release: {
           publishToNpm: true,
@@ -299,19 +299,19 @@ describe("buildOfficialChannelCatalog", () => {
     expect(fs.existsSync(outputPath)).toBe(true);
     const entries = JSON.parse(fs.readFileSync(outputPath, "utf8")).entries;
     expect(entries.map((entry: { name?: string }) => entry.name)).toContain(
-      "@wecom/wecom-NexisClaw-plugin",
+      "@wecom/wecom-FirstNexus-plugin",
     );
     expect(entries.map((entry: { name?: string }) => entry.name)).toContain(
-      "NexisClaw-plugin-yuanbao",
+      "FirstNexus-plugin-yuanbao",
     );
     const whatsappEntry = findCatalogEntry(
       entries,
-      (entry: { NexisClaw?: { channel?: { id?: string } } }) =>
-        entry.NexisClaw?.channel?.id === "whatsapp",
+      (entry: { FirstNexus?: { channel?: { id?: string } } }) =>
+        entry.FirstNexus?.channel?.id === "whatsapp",
     );
     expect(summarizeCatalogEntry(whatsappEntry)).toEqual({
-      name: "@NexisClaw/whatsapp",
-      description: "NexisClaw WhatsApp channel plugin",
+      name: "@FirstNexus/whatsapp",
+      description: "FirstNexus WhatsApp channel plugin",
       source: "official",
       plugin: undefined,
       channel: {
@@ -325,14 +325,14 @@ describe("buildOfficialChannelCatalog", () => {
         systemImage: "message",
       },
       install: {
-        npmSpec: "@NexisClaw/whatsapp",
+        npmSpec: "@FirstNexus/whatsapp",
         defaultChoice: "npm",
         minHostVersion: ">=2026.4.25",
       },
     });
     const whatsappEntries = entries.filter(
-      (entry: { NexisClaw?: { channel?: { id?: string } } }) =>
-        entry.NexisClaw?.channel?.id === "whatsapp",
+      (entry: { FirstNexus?: { channel?: { id?: string } } }) =>
+        entry.FirstNexus?.channel?.id === "whatsapp",
     );
     expect(whatsappEntries).toHaveLength(1);
   });

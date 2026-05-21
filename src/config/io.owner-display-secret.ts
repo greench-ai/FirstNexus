@@ -1,15 +1,15 @@
-import type { NexisClawConfig } from "./types.NexisClaw.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 
 export type OwnerDisplaySecretRuntimeState = {
   pendingByPath: Map<string, string>;
 };
 
 export function retainGeneratedOwnerDisplaySecret(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   configPath: string;
   generatedSecret?: string;
   state: OwnerDisplaySecretRuntimeState;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   const { config, configPath, generatedSecret, state } = params;
   if (!generatedSecret) {
     state.pendingByPath.delete(configPath);

@@ -20,7 +20,7 @@ describe("exec security floor", () => {
       "NEXISCLAW_STATE_DIR",
       "SHELL",
     ]);
-    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-exec-security-floor-"));
+    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-exec-security-floor-"));
     process.env.HOME = tempRoot;
     process.env.USERPROFILE = tempRoot;
     process.env.NEXISCLAW_HOME = tempRoot;

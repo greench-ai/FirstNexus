@@ -1,9 +1,12 @@
-import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "NexisClaw/plugin-sdk/approval-handler-adapter-runtime";
-import type { ChannelRuntimeSurface } from "NexisClaw/plugin-sdk/channel-contract";
-import { registerChannelRuntimeContext } from "NexisClaw/plugin-sdk/channel-runtime-context";
-import type { NativeCommandSpec } from "NexisClaw/plugin-sdk/command-auth-native";
-import type { DiscordAccountConfig, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+import { CHANNEL_APPROVAL_NATIVE_RUNTIME_CONTEXT_CAPABILITY } from "FirstNexus/plugin-sdk/approval-handler-adapter-runtime";
+import type { ChannelRuntimeSurface } from "FirstNexus/plugin-sdk/channel-contract";
+import { registerChannelRuntimeContext } from "FirstNexus/plugin-sdk/channel-runtime-context";
+import type { NativeCommandSpec } from "FirstNexus/plugin-sdk/command-auth-native";
+import type {
+  DiscordAccountConfig,
+  FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import { isDiscordExecApprovalClientEnabled } from "../exec-approvals.js";
 import {
   type BaseCommand,
@@ -31,7 +34,7 @@ import type { ThreadBindingManager } from "./thread-bindings.types.js";
 type DiscordVoiceManager = import("../voice/manager.js").DiscordVoiceManager;
 
 export function createDiscordProviderInteractionSurface(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   discordConfig: DiscordAccountConfig;
   accountId: string;
   token: string;

@@ -1238,7 +1238,7 @@ describe("agentCommand – LiveSessionModelSwitchError retry", () => {
     await agentCommand({
       message: [
         INTERNAL_RUNTIME_CONTEXT_BEGIN,
-        "NexisClaw runtime context (internal):",
+        "FirstNexus runtime context (internal):",
         "hidden task completion event",
         INTERNAL_RUNTIME_CONTEXT_END,
       ].join("\n"),

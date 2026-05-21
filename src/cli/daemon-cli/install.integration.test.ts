@@ -49,8 +49,8 @@ describe("runDaemonInstall integration", () => {
       "NEXISCLAW_GATEWAY_TOKEN",
       "NEXISCLAW_GATEWAY_PASSWORD",
     ]);
-    tempHome = await makeTempWorkspace("NexisClaw-daemon-install-int-");
-    configPath = path.join(tempHome, "NexisClaw.json");
+    tempHome = await makeTempWorkspace("FirstNexus-daemon-install-int-");
+    configPath = path.join(tempHome, "FirstNexus.json");
     process.env.HOME = tempHome;
     process.env.NEXISCLAW_STATE_DIR = tempHome;
     process.env.NEXISCLAW_CONFIG_PATH = configPath;
@@ -107,7 +107,7 @@ describe("runDaemonInstall integration", () => {
     expect(joined).toContain("MISSING_GATEWAY_TOKEN");
   });
 
-  it("refuses service install when config was written by a newer NexisClaw", async () => {
+  it("refuses service install when config was written by a newer FirstNexus", async () => {
     await fs.writeFile(
       configPath,
       JSON.stringify(

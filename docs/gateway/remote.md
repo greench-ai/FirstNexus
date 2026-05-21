@@ -33,7 +33,7 @@ Ideal when your laptop sleeps often but you want the agent always-on.
 
 The laptop does **not** run the agent. It connects remotely:
 
-- Use the macOS app's **Remote over SSH** mode (Settings → General → NexisClaw runs).
+- Use the macOS app's **Remote over SSH** mode (Settings → General → FirstNexus runs).
 - The app opens and manages the tunnel, so WebChat and health checks just work.
 
 Runbook: [macOS remote access](/platforms/mac/remote).
@@ -73,8 +73,8 @@ ssh -N -L 18789:127.0.0.1:18789 user@host
 
 With the tunnel up:
 
-- `NexisClaw health` and `NexisClaw status --deep` now reach the remote gateway via `ws://127.0.0.1:18789`.
-- `NexisClaw gateway status`, `NexisClaw gateway health`, `NexisClaw gateway probe`, and `NexisClaw gateway call` can also target the forwarded URL via `--url` when needed.
+- `FirstNexus health` and `FirstNexus status --deep` now reach the remote gateway via `ws://127.0.0.1:18789`.
+- `FirstNexus gateway status`, `FirstNexus gateway health`, `FirstNexus gateway probe`, and `FirstNexus gateway call` can also target the forwarded URL via `--url` when needed.
 
 <Note>
 Replace `18789` with your configured `gateway.port` (or `--port` or `NEXISCLAW_GATEWAY_PORT`).
@@ -142,7 +142,7 @@ Short version: **keep the Gateway loopback-only** unless you're sure you need a 
 - **Loopback + SSH/Tailscale Serve** is the safest default (no public exposure).
 - Plaintext `ws://` is loopback-only by default. For trusted private networks,
   set `NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS=1` on the client process as
-  break-glass. There is no `NexisClaw.json` equivalent; this must be process
+  break-glass. There is no `FirstNexus.json` equivalent; this must be process
   environment for the client making the WebSocket connection.
 - **Non-loopback binds** (`lan`/`tailnet`/`custom`, or `auto` when loopback is unavailable) must use gateway auth: token, password, or an identity-aware reverse proxy with `gateway.auth.mode: "trusted-proxy"`.
 - `gateway.remote.token` / `.password` are client credential sources. They do **not** configure server auth by themselves.
@@ -189,12 +189,12 @@ ssh-copy-id -i ~/.ssh/id_rsa <REMOTE_USER>@<REMOTE_IP>
 Store the token in config so it persists across restarts:
 
 ```bash
-NexisClaw config set gateway.remote.token "<your-token>"
+FirstNexus config set gateway.remote.token "<your-token>"
 ```
 
 #### Step 4: create the LaunchAgent
 
-Save this as `~/Library/LaunchAgents/ai.NexisClaw.ssh-tunnel.plist`:
+Save this as `~/Library/LaunchAgents/ai.FirstNexus.ssh-tunnel.plist`:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -202,7 +202,7 @@ Save this as `~/Library/LaunchAgents/ai.NexisClaw.ssh-tunnel.plist`:
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>ai.NexisClaw.ssh-tunnel</string>
+    <string>ai.FirstNexus.ssh-tunnel</string>
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/ssh</string>
@@ -220,13 +220,13 @@ Save this as `~/Library/LaunchAgents/ai.NexisClaw.ssh-tunnel.plist`:
 #### Step 5: load the LaunchAgent
 
 ```bash
-launchctl bootstrap gui/$UID ~/Library/LaunchAgents/ai.NexisClaw.ssh-tunnel.plist
+launchctl bootstrap gui/$UID ~/Library/LaunchAgents/ai.FirstNexus.ssh-tunnel.plist
 ```
 
 The tunnel will start automatically at login, restart on crash, and keep the forwarded port live.
 
 <Note>
-If you have a leftover `com.NexisClaw.ssh-tunnel` LaunchAgent from an older setup, unload and delete it.
+If you have a leftover `com.FirstNexus.ssh-tunnel` LaunchAgent from an older setup, unload and delete it.
 </Note>
 
 #### Troubleshooting
@@ -241,13 +241,13 @@ lsof -i :18789
 Restart the tunnel:
 
 ```bash
-launchctl kickstart -k gui/$UID/ai.NexisClaw.ssh-tunnel
+launchctl kickstart -k gui/$UID/ai.FirstNexus.ssh-tunnel
 ```
 
 Stop the tunnel:
 
 ```bash
-launchctl bootout gui/$UID/ai.NexisClaw.ssh-tunnel
+launchctl bootout gui/$UID/ai.FirstNexus.ssh-tunnel
 ```
 
 | Config entry                         | What it does                                                 |

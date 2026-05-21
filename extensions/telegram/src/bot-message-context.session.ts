@@ -5,23 +5,23 @@ import {
   resolveEnvelopeFormatOptions,
   toLocationContext,
   type NormalizedLocation,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import { normalizeCommandBody } from "NexisClaw/plugin-sdk/command-surface";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import { normalizeCommandBody } from "FirstNexus/plugin-sdk/command-surface";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import type {
   TelegramDirectConfig,
   TelegramGroupConfig,
   TelegramTopicConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveChannelContextVisibilityMode } from "NexisClaw/plugin-sdk/context-visibility-runtime";
+} from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveChannelContextVisibilityMode } from "FirstNexus/plugin-sdk/context-visibility-runtime";
 import {
   buildPendingHistoryContextFromMap,
   type HistoryEntry,
-} from "NexisClaw/plugin-sdk/reply-history";
-import type { ResolvedAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { evaluateSupplementalContextVisibility } from "NexisClaw/plugin-sdk/security-runtime";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/reply-history";
+import type { ResolvedAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { evaluateSupplementalContextVisibility } from "FirstNexus/plugin-sdk/security-runtime";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { NormalizedAllowFrom } from "./bot-access.js";
 import { isSenderAllowed, normalizeAllowFrom } from "./bot-access.js";
 import type {
@@ -89,7 +89,7 @@ async function loadTelegramMessageContextSessionRuntime(
 }
 
 export async function resolveTelegramMessageContextStorePath(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   sessionRuntime?: TelegramMessageContextSessionRuntimeOverrides;
 }): Promise<string> {
@@ -153,7 +153,7 @@ function formatReplyChainEntry(entry: TelegramReplyChainEntry, index: number): s
 }
 
 export async function buildTelegramInboundContextPayload(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   primaryCtx: TelegramContext;
   msg: TelegramContext["message"];
   allMedia: TelegramMediaRef[];

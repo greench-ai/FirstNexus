@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { createSlackWebClient, createSlackWriteClient } from "@NexisClaw/slack/api.js";
+import { createSlackWebClient, createSlackWriteClient } from "@FirstNexus/slack/api.js";
 import type { WebClient } from "@slack/web-api";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import { z } from "zod";
 import { startQaGatewayChild } from "../../gateway-child.js";
 import { DEFAULT_QA_LIVE_PROVIDER_MODE } from "../../providers/index.js";
@@ -455,7 +455,7 @@ function findScenario(ids?: string[]) {
 }
 
 function buildSlackQaConfig(
-  baseCfg: NexisClawConfig,
+  baseCfg: FirstNexusConfig,
   params: {
     channelId: string;
     driverBotUserId: string;
@@ -464,7 +464,7 @@ function buildSlackQaConfig(
     sutAppToken: string;
     sutBotToken: string;
   },
-): NexisClawConfig {
+): FirstNexusConfig {
   const pluginAllow = [...new Set([...(baseCfg.plugins?.allow ?? []), "slack"])];
   return {
     ...baseCfg,

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { getCurrentPluginMetadataSnapshot } from "../plugins/current-plugin-metadata-snapshot.js";
 import { getActivePluginRuntimeSubagentMode } from "../plugins/runtime.js";
 import { ensureStandaloneRuntimePluginRegistryLoaded } from "../plugins/runtime/standalone-runtime-registry-loader.js";
@@ -13,7 +13,7 @@ type StartupScopedPluginSnapshot = NonNullable<
 };
 
 function resolveStartupPluginIdsFromCurrentSnapshot(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
 }): string[] | undefined {
   const snapshot = getCurrentPluginMetadataSnapshot({
@@ -28,7 +28,7 @@ function resolveStartupPluginIdsFromCurrentSnapshot(params: {
 }
 
 export function ensureRuntimePluginsLoaded(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string | null;
   allowGatewaySubagentBinding?: boolean;
 }): void {

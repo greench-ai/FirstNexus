@@ -1,12 +1,12 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
-import type { ChannelSetupAdapter } from "NexisClaw/plugin-sdk/channel-setup";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
+import type { ChannelSetupAdapter } from "FirstNexus/plugin-sdk/channel-setup";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   applyAccountNameToChannelSection,
   applySetupAccountConfigPatch,
   migrateBaseNameToDefaultAccount,
-} from "NexisClaw/plugin-sdk/setup";
-import { createSetupInputPresenceValidator } from "NexisClaw/plugin-sdk/setup-runtime";
+} from "FirstNexus/plugin-sdk/setup";
+import { createSetupInputPresenceValidator } from "FirstNexus/plugin-sdk/setup-runtime";
 import {
   resolveMattermostAccount,
   type ResolvedMattermostAccount,
@@ -22,7 +22,7 @@ export function isMattermostConfigured(account: ResolvedMattermostAccount): bool
   return tokenConfigured && Boolean(account.baseUrl);
 }
 
-export function resolveMattermostAccountWithSecrets(cfg: NexisClawConfig, accountId: string) {
+export function resolveMattermostAccountWithSecrets(cfg: FirstNexusConfig, accountId: string) {
   return resolveMattermostAccount({
     cfg,
     accountId,
@@ -31,11 +31,11 @@ export function resolveMattermostAccountWithSecrets(cfg: NexisClawConfig, accoun
 }
 
 export function applyMattermostSetupConfigPatch(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   name?: string;
   patch: Record<string, unknown>;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   const namedConfig = applyAccountNameToChannelSection({
     cfg: params.cfg,
     channelKey: channel,

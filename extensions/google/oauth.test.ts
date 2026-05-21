@@ -1,9 +1,9 @@
 import { join, parse } from "node:path";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("NexisClaw/plugin-sdk/runtime-env", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/runtime-env")>(
-    "NexisClaw/plugin-sdk/runtime-env",
+vi.mock("FirstNexus/plugin-sdk/runtime-env", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/runtime-env")>(
+    "FirstNexus/plugin-sdk/runtime-env",
   );
   return {
     ...actual,
@@ -11,9 +11,9 @@ vi.mock("NexisClaw/plugin-sdk/runtime-env", async () => {
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/ssrf-runtime")>(
-    "NexisClaw/plugin-sdk/ssrf-runtime",
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/ssrf-runtime")>(
+    "FirstNexus/plugin-sdk/ssrf-runtime",
   );
   return {
     ...actual,
@@ -34,8 +34,8 @@ vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", async () => {
 });
 
 afterAll(() => {
-  vi.doUnmock("NexisClaw/plugin-sdk/runtime-env");
-  vi.doUnmock("NexisClaw/plugin-sdk/ssrf-runtime");
+  vi.doUnmock("FirstNexus/plugin-sdk/runtime-env");
+  vi.doUnmock("FirstNexus/plugin-sdk/ssrf-runtime");
   vi.resetModules();
 });
 
@@ -620,7 +620,7 @@ describe("loginGeminiCliOAuth", () => {
   }
 
   function userInfoResponse(): Response {
-    return responseJson({ email: "lobster@NexisClaw.ai" });
+    return responseJson({ email: "lobster@FirstNexus.ai" });
   }
 
   type RecordedFetchRequest = {

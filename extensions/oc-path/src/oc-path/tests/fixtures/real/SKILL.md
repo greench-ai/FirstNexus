@@ -10,7 +10,7 @@ trigger_phrases:
   - pr
   - issue
   - workflow
-metadata: { "NexisClaw": { "emoji": "🐙", "requires": { "bins": ["gh"] } } }
+metadata: { "FirstNexus": { "emoji": "🐙", "requires": { "bins": ["gh"] } } }
 user-invocable: true
 ---
 

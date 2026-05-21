@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { matrixApprovalCapability } from "./approval-native.js";
 
 function buildConfig(
-  overrides?: Partial<NonNullable<NonNullable<NexisClawConfig["channels"]>["matrix"]>>,
-): NexisClawConfig {
+  overrides?: Partial<NonNullable<NonNullable<FirstNexusConfig["channels"]>["matrix"]>>,
+): FirstNexusConfig {
   return {
     channels: {
       matrix: {
@@ -19,7 +19,7 @@ function buildConfig(
         ...overrides,
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 describe("matrix approval capability", () => {

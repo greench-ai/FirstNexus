@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import type { probeGatewayMemoryStatus } from "../commands/doctor-gateway-health.js";
 import type { DoctorOptions, DoctorPrompter } from "../commands/doctor-prompter.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { buildGatewayConnectionDetails } from "../gateway/call.js";
 import type { RuntimeEnv } from "../runtime.js";
 import type { FlowContribution } from "./types.js";
@@ -9,7 +9,7 @@ import type { FlowContribution } from "./types.js";
 type DoctorFlowMode = "local" | "remote";
 
 type DoctorConfigResult = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   path?: string;
   shouldWriteConfig?: boolean;
   sourceConfigValid?: boolean;
@@ -22,8 +22,8 @@ type DoctorHealthFlowContext = {
   options: DoctorOptions;
   prompter: DoctorPrompter;
   configResult: DoctorConfigResult;
-  cfg: NexisClawConfig;
-  cfgForPersistence: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  cfgForPersistence: FirstNexusConfig;
   sourceConfigValid: boolean;
   configPath: string;
   env?: NodeJS.ProcessEnv;
@@ -39,7 +39,7 @@ type DoctorHealthContribution = FlowContribution & {
   run: (ctx: DoctorHealthFlowContext) => Promise<void>;
 };
 
-function resolveDoctorMode(cfg: NexisClawConfig): DoctorFlowMode {
+function resolveDoctorMode(cfg: FirstNexusConfig): DoctorFlowMode {
   return cfg.gateway?.mode === "remote" ? "remote" : "local";
 }
 
@@ -93,11 +93,11 @@ async function runGatewayConfigHealth(ctx: DoctorHealthFlowContext): Promise<voi
   if (!ctx.cfg.gateway?.mode) {
     const lines = [
       "gateway.mode is unset; gateway start will be blocked.",
-      `Fix: run ${formatCliCommand("NexisClaw configure")} and set Gateway mode (local/remote).`,
-      `Or set directly: ${formatCliCommand("NexisClaw config set gateway.mode local")}`,
+      `Fix: run ${formatCliCommand("FirstNexus configure")} and set Gateway mode (local/remote).`,
+      `Or set directly: ${formatCliCommand("FirstNexus config set gateway.mode local")}`,
     ];
     if (!fs.existsSync(ctx.configPath)) {
-      lines.push(`Missing config: run ${formatCliCommand("NexisClaw setup")} first.`);
+      lines.push(`Missing config: run ${formatCliCommand("FirstNexus setup")} first.`);
     }
     note(lines.join("\n"), "Gateway");
   }
@@ -106,8 +106,8 @@ async function runGatewayConfigHealth(ctx: DoctorHealthFlowContext): Promise<voi
       [
         "gateway.auth.token and gateway.auth.password are both configured while gateway.auth.mode is unset.",
         "Set an explicit mode to avoid ambiguous auth selection and startup/runtime failures.",
-        `Set token mode: ${formatCliCommand("NexisClaw config set gateway.auth.mode token")}`,
-        `Set password mode: ${formatCliCommand("NexisClaw config set gateway.auth.mode password")}`,
+        `Set token mode: ${formatCliCommand("FirstNexus config set gateway.auth.mode token")}`,
+        `Set password mode: ${formatCliCommand("FirstNexus config set gateway.auth.mode password")}`,
       ].join("\n"),
       "Gateway auth",
     );
@@ -607,7 +607,7 @@ async function runWriteConfigHealth(ctx: DoctorHealthFlowContext): Promise<void>
     return;
   }
   if (!ctx.prompter.shouldRepair) {
-    ctx.runtime.log(`Run "${formatCliCommand("NexisClaw doctor --fix")}" to apply changes.`);
+    ctx.runtime.log(`Run "${formatCliCommand("FirstNexus doctor --fix")}" to apply changes.`);
   }
 }
 

@@ -1,6 +1,6 @@
-import { buildManifestModelProviderConfig } from "NexisClaw/plugin-sdk/provider-catalog-shared";
-import type { ModelDefinitionConfig } from "NexisClaw/plugin-sdk/provider-model-shared";
-import manifest from "./NexisClaw.plugin.json" with { type: "json" };
+import { buildManifestModelProviderConfig } from "FirstNexus/plugin-sdk/provider-catalog-shared";
+import type { ModelDefinitionConfig } from "FirstNexus/plugin-sdk/provider-model-shared";
+import manifest from "./FirstNexus.plugin.json" with { type: "json" };
 
 const CEREBRAS_MANIFEST_CATALOG = manifest.modelCatalog.providers.cerebras;
 

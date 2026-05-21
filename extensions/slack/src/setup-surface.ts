@@ -1,18 +1,18 @@
-import { adaptScopedAccountAccessor } from "NexisClaw/plugin-sdk/channel-config-helpers";
+import { adaptScopedAccountAccessor } from "FirstNexus/plugin-sdk/channel-config-helpers";
 import {
   noteChannelLookupFailure,
   noteChannelLookupSummary,
   resolveEntriesWithOptionalToken,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   parseMentionOrPrefixedId,
   promptLegacyChannelAllowFromForAccount,
   type WizardPrompter,
-} from "NexisClaw/plugin-sdk/setup-runtime";
+} from "FirstNexus/plugin-sdk/setup-runtime";
 import type {
   ChannelSetupWizard,
   ChannelSetupWizardAllowFromEntry,
-} from "NexisClaw/plugin-sdk/setup-runtime";
-import { formatDocsLink } from "NexisClaw/plugin-sdk/setup-tools";
+} from "FirstNexus/plugin-sdk/setup-runtime";
+import { formatDocsLink } from "FirstNexus/plugin-sdk/setup-tools";
 import {
   resolveDefaultSlackAccountId,
   resolveSlackAccount,
@@ -51,10 +51,10 @@ async function resolveSlackAllowFromEntries(params: {
 }
 
 async function promptSlackAllowFrom(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   prompter: WizardPrompter;
   accountId?: string;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const parseId = (value: string) =>
     parseMentionOrPrefixedId({
       value,
@@ -102,7 +102,7 @@ async function promptSlackAllowFrom(params: {
 }
 
 async function resolveSlackGroupAllowlist(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   credentialValues: { botToken?: string };
   entries: string[];

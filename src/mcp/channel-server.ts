@@ -1,23 +1,23 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { VERSION } from "../version.js";
-import { NexisClawChannelBridge } from "./channel-bridge.js";
+import { FirstNexusChannelBridge } from "./channel-bridge.js";
 import { ClaudePermissionRequestSchema, type ClaudeChannelMode } from "./channel-shared.js";
 import { getChannelMcpCapabilities, registerChannelMcpTools } from "./channel-tools.js";
 
-export { NexisClawChannelBridge } from "./channel-bridge.js";
+export { FirstNexusChannelBridge } from "./channel-bridge.js";
 
-export type NexisClawMcpServeOptions = {
+export type FirstNexusMcpServeOptions = {
   gatewayUrl?: string;
   gatewayToken?: string;
   gatewayPassword?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   claudeChannelMode?: ClaudeChannelMode;
   verbose?: boolean;
 };
 
-async function resolveMcpConfig(config: NexisClawConfig | undefined): Promise<NexisClawConfig> {
+async function resolveMcpConfig(config: FirstNexusConfig | undefined): Promise<FirstNexusConfig> {
   if (config) {
     return config;
   }
@@ -25,9 +25,11 @@ async function resolveMcpConfig(config: NexisClawConfig | undefined): Promise<Ne
   return getRuntimeConfig();
 }
 
-export async function createNexisClawChannelMcpServer(opts: NexisClawMcpServeOptions = {}): Promise<{
+export async function createFirstNexusChannelMcpServer(
+  opts: FirstNexusMcpServeOptions = {},
+): Promise<{
   server: McpServer;
-  bridge: NexisClawChannelBridge;
+  bridge: FirstNexusChannelBridge;
   start: () => Promise<void>;
   close: () => Promise<void>;
 }> {
@@ -35,10 +37,10 @@ export async function createNexisClawChannelMcpServer(opts: NexisClawMcpServeOpt
   const claudeChannelMode = opts.claudeChannelMode ?? "auto";
   const capabilities = getChannelMcpCapabilities(claudeChannelMode);
   const server = new McpServer(
-    { name: "NexisClaw", version: VERSION },
+    { name: "FirstNexus", version: VERSION },
     capabilities ? { capabilities } : undefined,
   );
-  const bridge = new NexisClawChannelBridge(cfg, {
+  const bridge = new FirstNexusChannelBridge(cfg, {
     gatewayUrl: opts.gatewayUrl,
     gatewayToken: opts.gatewayToken,
     gatewayPassword: opts.gatewayPassword,
@@ -70,8 +72,10 @@ export async function createNexisClawChannelMcpServer(opts: NexisClawMcpServeOpt
   };
 }
 
-export async function serveNexisClawChannelMcp(opts: NexisClawMcpServeOptions = {}): Promise<void> {
-  const { server, start, close } = await createNexisClawChannelMcpServer(opts);
+export async function serveFirstNexusChannelMcp(
+  opts: FirstNexusMcpServeOptions = {},
+): Promise<void> {
+  const { server, start, close } = await createFirstNexusChannelMcpServer(opts);
   const transport = new StdioServerTransport();
 
   let shuttingDown = false;

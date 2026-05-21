@@ -55,7 +55,7 @@ describe("scripts/lib/vitest-shard-timings.mjs", () => {
   });
 
   it("persists include-pattern timing metadata", () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-shard-timings-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-shard-timings-"));
     tempDirs.push(tempDir);
     const env = {
       NEXISCLAW_TEST_PROJECTS_TIMINGS_PATH: path.join(tempDir, "timings.json"),

@@ -7,7 +7,7 @@ import {
 import { formatChannelStatusState } from "../channels/plugins/status-state.js";
 import type { ChannelPlugin } from "../channels/plugins/types.plugin.js";
 import type { ChannelAccountSnapshot } from "../channels/plugins/types.public.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { DEFAULT_ACCOUNT_ID } from "../routing/session-key.js";
 import { sanitizeForLog } from "../terminal/ansi.js";
 import { theme } from "../terminal/theme.js";
@@ -17,7 +17,7 @@ export type ChannelSummaryOptions = {
   colorize?: boolean;
   includeAllowFrom?: boolean;
   plugins?: readonly ChannelPlugin[];
-  sourceConfig?: NexisClawConfig;
+  sourceConfig?: FirstNexusConfig;
 };
 
 const DEFAULT_OPTIONS: Omit<Required<ChannelSummaryOptions>, "plugins" | "sourceConfig"> = {
@@ -44,14 +44,14 @@ const formatAccountLabel = (params: { accountId: string; name?: string }) => {
 const accountLine = (label: string, details: string[]) =>
   `  - ${label}${details.length ? ` (${details.join(", ")})` : ""}`;
 
-async function loadChannelSummaryConfig(): Promise<NexisClawConfig> {
+async function loadChannelSummaryConfig(): Promise<FirstNexusConfig> {
   const { getRuntimeConfig } = await import("../config/config.js");
   return getRuntimeConfig();
 }
 
 async function listChannelSummaryPlugins(params: {
-  cfg: NexisClawConfig;
-  sourceConfig: NexisClawConfig;
+  cfg: FirstNexusConfig;
+  sourceConfig: FirstNexusConfig;
 }): Promise<ChannelPlugin[]> {
   const { listReadOnlyChannelPluginsForConfig } = await import("../channels/plugins/read-only.js");
   return listReadOnlyChannelPluginsForConfig(params.cfg, {
@@ -63,7 +63,7 @@ async function listChannelSummaryPlugins(params: {
 const buildAccountDetails = (params: {
   entry: ChannelAccountEntry;
   plugin: ChannelPlugin;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   includeAllowFrom: boolean;
 }): string[] => {
   const details: string[] = [];
@@ -120,7 +120,7 @@ const buildAccountDetails = (params: {
 };
 
 export async function buildChannelSummary(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
   options?: ChannelSummaryOptions,
 ): Promise<string[]> {
   const effective = cfg ?? (await loadChannelSummaryConfig());

@@ -32,11 +32,11 @@ describe("qqbot storage laziness", () => {
     }
   });
 
-  it("does not create ~/.NexisClaw/qqbot from module imports or read-only probes", async () => {
+  it("does not create ~/.FirstNexus/qqbot from module imports or read-only probes", async () => {
     const homeDir = makeHome();
     await useMockHome(homeDir);
 
-    const qqbotRoot = path.join(homeDir, ".NexisClaw", "qqbot");
+    const qqbotRoot = path.join(homeDir, ".FirstNexus", "qqbot");
 
     await import("../session/session-store.js");
     await import("../session/known-users.js");
@@ -51,7 +51,7 @@ describe("qqbot storage laziness", () => {
     const homeDir = makeHome();
     await useMockHome(homeDir);
 
-    const qqbotRoot = path.join(homeDir, ".NexisClaw", "qqbot");
+    const qqbotRoot = path.join(homeDir, ".FirstNexus", "qqbot");
     const { saveCredentialBackup } = await import("../config/credential-backup.js");
 
     saveCredentialBackup("default", "123456", "secret");

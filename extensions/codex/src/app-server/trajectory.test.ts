@@ -13,7 +13,7 @@ type CodexTrajectoryRecorder = NonNullable<ReturnType<typeof createCodexTrajecto
 const tempDirs: string[] = [];
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-codex-trajectory-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-codex-trajectory-"));
   tempDirs.push(dir);
   return dir;
 }

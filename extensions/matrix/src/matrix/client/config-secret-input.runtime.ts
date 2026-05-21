@@ -1,1 +1,1 @@
-export { resolveConfiguredSecretInputString } from "NexisClaw/plugin-sdk/secret-input-runtime";
+export { resolveConfiguredSecretInputString } from "FirstNexus/plugin-sdk/secret-input-runtime";

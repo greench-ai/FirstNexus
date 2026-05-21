@@ -1,6 +1,6 @@
 /**
  * @deprecated Compatibility facade for published Lark/Zalo packages that imported
- * command authorization through `NexisClaw/plugin-sdk/zalouser`.
+ * command authorization through `FirstNexus/plugin-sdk/zalouser`.
  */
 export {
   resolveSenderCommandAuthorization,

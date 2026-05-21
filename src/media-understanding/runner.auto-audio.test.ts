@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { clearMediaUnderstandingBinaryCacheForTests, runCapability } from "./runner.js";
 import { withAudioFixture } from "./runner.test-utils.js";
@@ -38,7 +38,7 @@ function createOpenAiAudioProvider(
   });
 }
 
-function createOpenAiAudioCfg(extra?: Partial<NexisClawConfig>): NexisClawConfig {
+function createOpenAiAudioCfg(extra?: Partial<FirstNexusConfig>): FirstNexusConfig {
   return {
     models: {
       providers: {
@@ -49,7 +49,7 @@ function createOpenAiAudioCfg(extra?: Partial<NexisClawConfig>): NexisClawConfig
       },
     },
     ...extra,
-  } as unknown as NexisClawConfig;
+  } as unknown as FirstNexusConfig;
 }
 
 async function createMockExecutable(dir: string, name: string) {
@@ -60,10 +60,10 @@ async function createMockExecutable(dir: string, name: string) {
 
 async function runAutoAudioCase(params: {
   transcribeAudio: (req: AudioTranscriptionRequest) => Promise<{ text: string; model: string }>;
-  cfgExtra?: Partial<NexisClawConfig>;
+  cfgExtra?: Partial<FirstNexusConfig>;
 }) {
   let runResult: Awaited<ReturnType<typeof runCapability>> | undefined;
-  await withAudioFixture("NexisClaw-auto-audio", async ({ ctx, media, cache }) => {
+  await withAudioFixture("FirstNexus-auto-audio", async ({ ctx, media, cache }) => {
     const providerRegistry = createOpenAiAudioProvider(params.transcribeAudio);
     const cfg = createOpenAiAudioCfg(params.cfgExtra);
     runResult = await runCapability({
@@ -109,7 +109,7 @@ describe("runCapability auto audio entries", () => {
     let runResult: Awaited<ReturnType<typeof runCapability>> | undefined;
     let seenModel: string | undefined;
 
-    await withAudioFixture("NexisClaw-auto-audio-codex", async ({ ctx, media, cache }) => {
+    await withAudioFixture("FirstNexus-auto-audio-codex", async ({ ctx, media, cache }) => {
       const providerRegistry = createProviderRegistry({
         "openai-codex": {
           id: "openai-codex",
@@ -130,7 +130,7 @@ describe("runCapability auto audio entries", () => {
             },
           },
         },
-      } as unknown as NexisClawConfig;
+      } as unknown as FirstNexusConfig;
 
       runResult = await runCapability({
         capability: "audio",
@@ -157,7 +157,7 @@ describe("runCapability auto audio entries", () => {
   });
 
   it("prefers provider keys over auto-detected local whisper", async () => {
-    const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-auto-audio-bin-"));
+    const binDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-auto-audio-bin-"));
     try {
       await createMockExecutable(binDir, "whisper");
       clearMediaUnderstandingBinaryCacheForTests();
@@ -259,7 +259,7 @@ describe("runCapability auto audio entries", () => {
             },
           },
         },
-      } as Partial<NexisClawConfig>,
+      } as Partial<FirstNexusConfig>,
     });
 
     expect(requireCapabilityOutput(result, 0).text).toBe("ok");
@@ -268,7 +268,7 @@ describe("runCapability auto audio entries", () => {
   });
 
   it("uses mistral when only mistral key is configured", async () => {
-    const isolatedAgentDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-audio-agent-"));
+    const isolatedAgentDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-audio-agent-"));
     let runResult: Awaited<ReturnType<typeof runCapability>> | undefined;
     try {
       await withEnvAsync(
@@ -283,7 +283,7 @@ describe("runCapability auto audio entries", () => {
           PI_CODING_AGENT_DIR: isolatedAgentDir,
         },
         async () => {
-          await withAudioFixture("NexisClaw-auto-audio-mistral", async ({ ctx, media, cache }) => {
+          await withAudioFixture("FirstNexus-auto-audio-mistral", async ({ ctx, media, cache }) => {
             const providerRegistry = createProviderRegistry({
               openai: {
                 id: "openai",
@@ -318,7 +318,7 @@ describe("runCapability auto audio entries", () => {
                   },
                 },
               },
-            } as unknown as NexisClawConfig;
+            } as unknown as FirstNexusConfig;
 
             runResult = await runCapability({
               capability: "audio",

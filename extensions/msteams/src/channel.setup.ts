@@ -1,8 +1,8 @@
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
-import { formatAllowFromLowercase } from "NexisClaw/plugin-sdk/allow-from";
-import { createTopLevelChannelConfigAdapter } from "NexisClaw/plugin-sdk/channel-config-helpers";
-import type { ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
+import { formatAllowFromLowercase } from "FirstNexus/plugin-sdk/allow-from";
+import { createTopLevelChannelConfigAdapter } from "FirstNexus/plugin-sdk/channel-config-helpers";
+import type { ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { MSTeamsChannelConfigSchema } from "./config-schema.js";
 import { msteamsSetupAdapter } from "./setup-core.js";
 import { msteamsSetupWizard } from "./setup-surface.js";
@@ -25,7 +25,7 @@ const meta = {
   order: 60,
 } as const;
 
-const resolveMSTeamsChannelConfig = (cfg: NexisClawConfig) => ({
+const resolveMSTeamsChannelConfig = (cfg: FirstNexusConfig) => ({
   allowFrom: cfg.channels?.msteams?.allowFrom,
   defaultTo: cfg.channels?.msteams?.defaultTo,
 });

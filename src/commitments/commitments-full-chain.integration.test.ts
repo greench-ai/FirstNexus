@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { runHeartbeatOnce } from "../infra/heartbeat-runner.js";
 import { installHeartbeatRunnerTestRuntime } from "../infra/heartbeat-runner.test-harness.js";
 import {
@@ -34,7 +34,7 @@ describe("commitments full-chain integration", () => {
     await withTempHeartbeatSandbox(async ({ tmpDir, storePath, replySpy }) => {
       vi.stubEnv("NEXISCLAW_STATE_DIR", tmpDir);
       const sessionKey = "agent:main:telegram:user-155462274";
-      const cfg: NexisClawConfig = {
+      const cfg: FirstNexusConfig = {
         agents: {
           defaults: {
             workspace: tmpDir,

@@ -11,7 +11,7 @@ const NEXISCLAW_BETA_VERSION_RE =
   /^(?<year>\d{4})\.(?<month>[1-9]\d?)\.(?<day>[1-9]\d?)-beta\.(?<beta>[1-9]\d*)$/;
 const DIST_TAG_RE = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
 
-type NexisClawReleaseVersion = {
+type FirstNexusReleaseVersion = {
   channel: "alpha" | "beta" | "stable";
   dateTime: number;
   alphaNumber?: number;
@@ -90,7 +90,7 @@ function parseRegistryNpmSpecInternal(
         selector,
         selectorKind: "exact-version",
         selectorIsPrerelease:
-          Boolean(exactVersionMatch[4]) && !isNexisClawStableCorrectionVersion(selector),
+          Boolean(exactVersionMatch[4]) && !isFirstNexusStableCorrectionVersion(selector),
       },
     };
   }
@@ -126,7 +126,7 @@ export function isExactSemverVersion(value: string): boolean {
   return EXACT_SEMVER_VERSION_RE.test(value.trim());
 }
 
-function parseNexisClawReleaseVersion(value: string): NexisClawReleaseVersion | null {
+function parseFirstNexusReleaseVersion(value: string): FirstNexusReleaseVersion | null {
   const trimmed = value.trim();
   const candidates = [
     { match: NEXISCLAW_STABLE_VERSION_RE.exec(trimmed), channel: "stable" as const },
@@ -176,14 +176,14 @@ function parseNexisClawReleaseVersion(value: string): NexisClawReleaseVersion | 
   };
 }
 
-export function isNexisClawStableCorrectionVersion(value: string): boolean {
-  const parsed = parseNexisClawReleaseVersion(value);
+export function isFirstNexusStableCorrectionVersion(value: string): boolean {
+  const parsed = parseFirstNexusReleaseVersion(value);
   return parsed?.channel === "stable" && parsed.correctionNumber !== undefined;
 }
 
-export function compareNexisClawReleaseVersions(left: string, right: string): number | null {
-  const parsedLeft = parseNexisClawReleaseVersion(left);
-  const parsedRight = parseNexisClawReleaseVersion(right);
+export function compareFirstNexusReleaseVersions(left: string, right: string): number | null {
+  const parsedLeft = parseFirstNexusReleaseVersion(left);
+  const parsedRight = parseFirstNexusReleaseVersion(right);
   if (!parsedLeft || !parsedRight) {
     return null;
   }
@@ -206,7 +206,7 @@ export function compareNexisClawReleaseVersions(left: string, right: string): nu
 export function isPrereleaseSemverVersion(value: string): boolean {
   const trimmed = value.trim();
   const match = EXACT_SEMVER_VERSION_RE.exec(trimmed);
-  return Boolean(match?.[4]) && !isNexisClawStableCorrectionVersion(trimmed);
+  return Boolean(match?.[4]) && !isFirstNexusStableCorrectionVersion(trimmed);
 }
 
 export function isPrereleaseResolutionAllowed(params: {

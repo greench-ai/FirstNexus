@@ -15,7 +15,7 @@ import type { GatewayRestartHandoff } from "./restart-handoff.js";
 const tempDirs: string[] = [];
 
 function createHandoffEnv(): NodeJS.ProcessEnv {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-restart-handoff-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-restart-handoff-"));
   tempDirs.push(dir);
   return {
     ...process.env,

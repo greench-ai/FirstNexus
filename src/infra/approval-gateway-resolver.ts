@@ -1,10 +1,10 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { withOperatorApprovalsGatewayClient } from "../gateway/operator-approvals-client.js";
 import { isApprovalNotFoundError } from "./approval-errors.js";
 import type { ExecApprovalDecision } from "./exec-approvals.js";
 
 type ResolveApprovalOverGatewayParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   approvalId: string;
   decision: ExecApprovalDecision;
   senderId?: string | null;

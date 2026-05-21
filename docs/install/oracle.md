@@ -1,13 +1,13 @@
 ---
-summary: "Host NexisClaw on Oracle Cloud's Always Free ARM tier"
+summary: "Host FirstNexus on Oracle Cloud's Always Free ARM tier"
 read_when:
-  - Setting up NexisClaw on Oracle Cloud
-  - Looking for free VPS hosting for NexisClaw
-  - Want 24/7 NexisClaw on a small server
+  - Setting up FirstNexus on Oracle Cloud
+  - Looking for free VPS hosting for FirstNexus
+  - Want 24/7 FirstNexus on a small server
 title: "Oracle Cloud"
 ---
 
-Run a persistent NexisClaw Gateway on Oracle Cloud's **Always Free** ARM tier (up to 4 OCPU, 24 GB RAM, 200 GB storage) at no cost.
+Run a persistent FirstNexus Gateway on Oracle Cloud's **Always Free** ARM tier (up to 4 OCPU, 24 GB RAM, 200 GB storage) at no cost.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ Run a persistent NexisClaw Gateway on Oracle Cloud's **Always Free** ARM tier (u
     1. Log into [Oracle Cloud Console](https://cloud.oracle.com/).
     2. Navigate to **Compute > Instances > Create Instance**.
     3. Configure:
-       - **Name:** `NexisClaw`
+       - **Name:** `FirstNexus`
        - **Image:** Ubuntu 24.04 (aarch64)
        - **Shape:** `VM.Standard.A1.Flex` (Ampere ARM)
        - **OCPUs:** 2 (or up to 4)
@@ -52,7 +52,7 @@ Run a persistent NexisClaw Gateway on Oracle Cloud's **Always Free** ARM tier (u
 
   <Step title="Configure user and hostname">
     ```bash
-    sudo hostnamectl set-hostname NexisClaw
+    sudo hostnamectl set-hostname FirstNexus
     sudo passwd ubuntu
     sudo loginctl enable-linger ubuntu
     ```
@@ -64,16 +64,16 @@ Run a persistent NexisClaw Gateway on Oracle Cloud's **Always Free** ARM tier (u
   <Step title="Install Tailscale">
     ```bash
     curl -fsSL https://tailscale.com/install.sh | sh
-    sudo tailscale up --ssh --hostname=NexisClaw
+    sudo tailscale up --ssh --hostname=FirstNexus
     ```
 
-    From now on, connect via Tailscale: `ssh ubuntu@NexisClaw`.
+    From now on, connect via Tailscale: `ssh ubuntu@FirstNexus`.
 
   </Step>
 
-  <Step title="Install NexisClaw">
+  <Step title="Install FirstNexus">
     ```bash
-    curl -fsSL https://NexisClaw.ai/install.sh | bash
+    curl -fsSL https://FirstNexus.ai/install.sh | bash
     source ~/.bashrc
     ```
 
@@ -85,13 +85,13 @@ Run a persistent NexisClaw Gateway on Oracle Cloud's **Always Free** ARM tier (u
     Use token auth with Tailscale Serve for secure remote access.
 
     ```bash
-    NexisClaw config set gateway.bind loopback
-    NexisClaw config set gateway.auth.mode token
-    NexisClaw doctor --generate-gateway-token
-    NexisClaw config set gateway.tailscale.mode serve
-    NexisClaw config set gateway.trustedProxies '["127.0.0.1"]'
+    FirstNexus config set gateway.bind loopback
+    FirstNexus config set gateway.auth.mode token
+    FirstNexus doctor --generate-gateway-token
+    FirstNexus config set gateway.tailscale.mode serve
+    FirstNexus config set gateway.trustedProxies '["127.0.0.1"]'
 
-    systemctl --user restart NexisClaw-gateway.service
+    systemctl --user restart FirstNexus-gateway.service
     ```
 
     `gateway.trustedProxies=["127.0.0.1"]` here is only for the local Tailscale Serve proxy's forwarded-IP/local-client handling. It is **not** `gateway.auth.mode: "trusted-proxy"`. Diff viewer routes keep fail-closed behavior in this setup: raw `127.0.0.1` viewer requests without forwarded proxy headers can return `Diff not found`. Use `mode=file` / `mode=both` for attachments, or intentionally enable remote viewers and set `plugins.entries.diffs.config.viewerBaseUrl` (or pass a proxy `baseUrl`) if you need shareable viewer links.
@@ -112,8 +112,8 @@ Run a persistent NexisClaw Gateway on Oracle Cloud's **Always Free** ARM tier (u
 
   <Step title="Verify">
     ```bash
-    NexisClaw --version
-    systemctl --user status NexisClaw-gateway.service
+    FirstNexus --version
+    systemctl --user status FirstNexus-gateway.service
     tailscale serve status
     curl http://localhost:18789
     ```
@@ -121,7 +121,7 @@ Run a persistent NexisClaw Gateway on Oracle Cloud's **Always Free** ARM tier (u
     Access the Control UI from any device on your tailnet:
 
     ```
-    https://NexisClaw.<tailnet-name>.ts.net/
+    https://FirstNexus.<tailnet-name>.ts.net/
     ```
 
     Replace `<tailnet-name>` with your tailnet name (visible in `tailscale status`).
@@ -144,8 +144,8 @@ With the VCN locked down (only UDP 41641 open) and the Gateway bound to loopback
 
 Still recommended:
 
-- `chmod 700 ~/.NexisClaw` to restrict credential file permissions.
-- `NexisClaw security audit` for an NexisClaw-specific posture check.
+- `chmod 700 ~/.FirstNexus` to restrict credential file permissions.
+- `FirstNexus security audit` for an FirstNexus-specific posture check.
 - Regular `sudo apt update && sudo apt upgrade` for OS patches.
 - Review devices in the [Tailscale admin console](https://login.tailscale.com/admin) periodically.
 
@@ -164,7 +164,7 @@ sudo systemctl disable --now ssh
 
 ## ARM notes
 
-The Always Free tier is ARM (`aarch64`). Most NexisClaw features work fine; a small number of native binaries need ARM builds:
+The Always Free tier is ARM (`aarch64`). Most FirstNexus features work fine; a small number of native binaries need ARM builds:
 
 - Node.js, Telegram, WhatsApp (Baileys): pure JavaScript, no issues.
 - Most npm packages with native code: pre-built `linux-arm64` artifacts available.
@@ -174,15 +174,15 @@ Verify the architecture with `uname -m` (should print `aarch64`). For binaries w
 
 ## Persistence and backups
 
-NexisClaw state lives under:
+FirstNexus state lives under:
 
-- `~/.NexisClaw/` — `NexisClaw.json`, per-agent `auth-profiles.json`, channel/provider state, and session data.
-- `~/.NexisClaw/workspace/` — the agent workspace (SOUL.md, memory, artifacts).
+- `~/.FirstNexus/` — `FirstNexus.json`, per-agent `auth-profiles.json`, channel/provider state, and session data.
+- `~/.FirstNexus/workspace/` — the agent workspace (SOUL.md, memory, artifacts).
 
 These survive reboots. To take a portable snapshot:
 
 ```bash
-NexisClaw backup create
+FirstNexus backup create
 ```
 
 ## Fallback: SSH tunnel
@@ -190,7 +190,7 @@ NexisClaw backup create
 If Tailscale Serve is not working, use an SSH tunnel from your local machine:
 
 ```bash
-ssh -L 18789:127.0.0.1:18789 ubuntu@NexisClaw
+ssh -L 18789:127.0.0.1:18789 ubuntu@FirstNexus
 ```
 
 Then open `http://localhost:18789`.
@@ -199,9 +199,9 @@ Then open `http://localhost:18789`.
 
 **Instance creation fails ("Out of capacity")** -- Free tier ARM instances are popular. Try a different availability domain or retry during off-peak hours.
 
-**Tailscale will not connect** -- Run `sudo tailscale up --ssh --hostname=NexisClaw --reset` to re-authenticate.
+**Tailscale will not connect** -- Run `sudo tailscale up --ssh --hostname=FirstNexus --reset` to re-authenticate.
 
-**Gateway will not start** -- Run `NexisClaw doctor --non-interactive` and check logs with `journalctl --user -u NexisClaw-gateway.service -n 50`.
+**Gateway will not start** -- Run `FirstNexus doctor --non-interactive` and check logs with `journalctl --user -u FirstNexus-gateway.service -n 50`.
 
 **ARM binary issues** -- Most npm packages work on ARM64. For native binaries, look for `linux-arm64` or `aarch64` releases. Verify architecture with `uname -m`.
 
@@ -209,7 +209,7 @@ Then open `http://localhost:18789`.
 
 - [Channels](/channels) -- connect Telegram, WhatsApp, Discord, and more
 - [Gateway configuration](/gateway/configuration) -- all config options
-- [Updating](/install/updating) -- keep NexisClaw up to date
+- [Updating](/install/updating) -- keep FirstNexus up to date
 
 ## Related
 

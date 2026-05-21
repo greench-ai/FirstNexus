@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import { configureChannelAccessWithAllowlist } from "./setup-group-access-configure.js";
 import type { ChannelAccessPolicy } from "./setup-group-access.js";
 
@@ -13,13 +13,13 @@ function createPrompter(params: { confirm: boolean; policy?: ChannelAccessPolicy
 }
 
 async function runConfigureChannelAccess<TResolved>(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   prompter: ReturnType<typeof createPrompter>;
   label?: string;
   placeholder?: string;
-  setPolicy: (cfg: NexisClawConfig, policy: ChannelAccessPolicy) => NexisClawConfig;
-  resolveAllowlist: (params: { cfg: NexisClawConfig; entries: string[] }) => Promise<TResolved>;
-  applyAllowlist: (params: { cfg: NexisClawConfig; resolved: TResolved }) => NexisClawConfig;
+  setPolicy: (cfg: FirstNexusConfig, policy: ChannelAccessPolicy) => FirstNexusConfig;
+  resolveAllowlist: (params: { cfg: FirstNexusConfig; entries: string[] }) => Promise<TResolved>;
+  applyAllowlist: (params: { cfg: FirstNexusConfig; resolved: TResolved }) => FirstNexusConfig;
 }) {
   return await configureChannelAccessWithAllowlist({
     cfg: params.cfg,
@@ -37,11 +37,11 @@ async function runConfigureChannelAccess<TResolved>(params: {
 
 describe("configureChannelAccessWithAllowlist", () => {
   it("returns input config when user skips access configuration", async () => {
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const prompter = createPrompter({ confirm: false });
-    const setPolicy = vi.fn((next: NexisClawConfig) => next);
+    const setPolicy = vi.fn((next: FirstNexusConfig) => next);
     const resolveAllowlist = vi.fn(async () => [] as string[]);
-    const applyAllowlist = vi.fn((params: { cfg: NexisClawConfig }) => params.cfg);
+    const applyAllowlist = vi.fn((params: { cfg: FirstNexusConfig }) => params.cfg);
 
     const next = await runConfigureChannelAccess({
       cfg,
@@ -58,19 +58,19 @@ describe("configureChannelAccessWithAllowlist", () => {
   });
 
   it("applies non-allowlist policy directly", async () => {
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const prompter = createPrompter({
       confirm: true,
       policy: "open",
     });
     const setPolicy = vi.fn(
-      (next: NexisClawConfig, policy: ChannelAccessPolicy): NexisClawConfig => ({
+      (next: FirstNexusConfig, policy: ChannelAccessPolicy): FirstNexusConfig => ({
         ...next,
         channels: { discord: { groupPolicy: policy } },
       }),
     );
     const resolveAllowlist = vi.fn(async () => ["ignored"]);
-    const applyAllowlist = vi.fn((params: { cfg: NexisClawConfig }) => params.cfg);
+    const applyAllowlist = vi.fn((params: { cfg: FirstNexusConfig }) => params.cfg);
 
     const next = await runConfigureChannelAccess({
       cfg,
@@ -89,19 +89,19 @@ describe("configureChannelAccessWithAllowlist", () => {
   });
 
   it("supports allowlist policies without prompting for entries", async () => {
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const prompter = createPrompter({
       confirm: true,
       policy: "allowlist",
     });
     const setPolicy = vi.fn(
-      (next: NexisClawConfig, policy: ChannelAccessPolicy): NexisClawConfig => ({
+      (next: FirstNexusConfig, policy: ChannelAccessPolicy): FirstNexusConfig => ({
         ...next,
         channels: { twitch: { groupPolicy: policy } },
       }),
     );
     const resolveAllowlist = vi.fn(async () => ["ignored"]);
-    const applyAllowlist = vi.fn((params: { cfg: NexisClawConfig }) => params.cfg);
+    const applyAllowlist = vi.fn((params: { cfg: FirstNexusConfig }) => params.cfg);
 
     const next = await configureChannelAccessWithAllowlist({
       cfg,
@@ -123,27 +123,29 @@ describe("configureChannelAccessWithAllowlist", () => {
   });
 
   it("resolves allowlist entries and applies them after forcing allowlist policy", async () => {
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const prompter = createPrompter({
       confirm: true,
       policy: "allowlist",
       text: "#general, #support",
     });
     const calls: string[] = [];
-    const setPolicy = vi.fn((next: NexisClawConfig, policy: ChannelAccessPolicy): NexisClawConfig => {
-      calls.push("setPolicy");
-      return {
-        ...next,
-        channels: { slack: { groupPolicy: policy } },
-      };
-    });
-    const resolveAllowlist = vi.fn(async (params: { cfg: NexisClawConfig; entries: string[] }) => {
+    const setPolicy = vi.fn(
+      (next: FirstNexusConfig, policy: ChannelAccessPolicy): FirstNexusConfig => {
+        calls.push("setPolicy");
+        return {
+          ...next,
+          channels: { slack: { groupPolicy: policy } },
+        };
+      },
+    );
+    const resolveAllowlist = vi.fn(async (params: { cfg: FirstNexusConfig; entries: string[] }) => {
       calls.push("resolve");
       expect(params.cfg).toBe(cfg);
       expect(params.entries).toEqual(["#general", "#support"]);
       return ["C1", "C2"];
     });
-    const applyAllowlist = vi.fn((params: { cfg: NexisClawConfig; resolved: string[] }) => {
+    const applyAllowlist = vi.fn((params: { cfg: FirstNexusConfig; resolved: string[] }) => {
       calls.push("apply");
       expect(params.cfg.channels?.slack?.groupPolicy).toBe("allowlist");
       return {

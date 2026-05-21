@@ -1,9 +1,9 @@
-import { bundledPluginFile } from "NexisClaw/plugin-sdk/test-fixtures";
+import { bundledPluginFile } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it } from "vitest";
 import { createPatternFileHelper } from "./helpers/pattern-file.js";
 import { loadIncludePatternsFromEnv } from "./vitest/vitest.extensions.config.ts";
 
-const patternFiles = createPatternFileHelper("NexisClaw-vitest-extensions-config-");
+const patternFiles = createPatternFileHelper("FirstNexus-vitest-extensions-config-");
 
 afterEach(() => {
   patternFiles.cleanup();

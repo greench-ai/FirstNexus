@@ -243,7 +243,7 @@ async function runLocalRuntimePlanner(
 }
 
 async function createTempPlannerDir(): Promise<string> {
-  return await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-crestodian-planner-"));
+  return await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-crestodian-planner-"));
 }
 
 async function removeTempPlannerDir(dir: string): Promise<void> {

@@ -1,7 +1,7 @@
 ---
-summary: "Use Vydra image, video, and speech in NexisClaw"
+summary: "Use Vydra image, video, and speech in FirstNexus"
 read_when:
-  - You want Vydra media generation in NexisClaw
+  - You want Vydra media generation in FirstNexus
   - You need Vydra API key setup guidance
 title: "Vydra"
 ---
@@ -12,7 +12,7 @@ The bundled Vydra plugin adds:
 - Video generation via `vydra/veo3` and `vydra/kling`
 - Speech synthesis via Vydra's ElevenLabs-backed TTS route
 
-NexisClaw uses the same `VYDRA_API_KEY` for all three capabilities.
+FirstNexus uses the same `VYDRA_API_KEY` for all three capabilities.
 
 | Property        | Value                                                                     |
 | --------------- | ------------------------------------------------------------------------- |
@@ -33,7 +33,7 @@ NexisClaw uses the same `VYDRA_API_KEY` for all three capabilities.
 <Steps>
   <Step title="Run interactive onboarding">
     ```bash
-    NexisClaw onboard --auth-choice vydra-api-key
+    FirstNexus onboard --auth-choice vydra-api-key
     ```
 
     Or set the env var directly:
@@ -70,7 +70,7 @@ NexisClaw uses the same `VYDRA_API_KEY` for all three capabilities.
     }
     ```
 
-    Current bundled support is text-to-image only. Vydra's hosted edit routes expect remote image URLs, and NexisClaw does not add a Vydra-specific upload bridge in the bundled plugin yet.
+    Current bundled support is text-to-image only. Vydra's hosted edit routes expect remote image URLs, and FirstNexus does not add a Vydra-specific upload bridge in the bundled plugin yet.
 
     <Note>
     See [Image Generation](/tools/image-generation) for shared tool parameters, provider selection, and failover behavior.

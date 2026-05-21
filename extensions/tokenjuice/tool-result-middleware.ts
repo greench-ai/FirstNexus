@@ -2,20 +2,20 @@ import process from "node:process";
 import type {
   AgentToolResultMiddleware,
   AgentToolResultMiddlewareEvent,
-  NexisClawAgentToolResult,
-} from "NexisClaw/plugin-sdk/agent-harness";
-import { createTokenjuiceNexisClawEmbeddedExtension } from "./runtime-api.js";
+  FirstNexusAgentToolResult,
+} from "FirstNexus/plugin-sdk/agent-harness";
+import { createTokenjuiceFirstNexusEmbeddedExtension } from "./runtime-api.js";
 
 type TokenjuiceToolResultHandler = (
   event: {
     toolName: string;
     input: Record<string, unknown>;
-    content: NexisClawAgentToolResult["content"];
+    content: FirstNexusAgentToolResult["content"];
     details: unknown;
     isError?: boolean;
   },
   ctx: { cwd: string },
-) => Promise<Partial<NexisClawAgentToolResult> | void> | Partial<NexisClawAgentToolResult> | void;
+) => Promise<Partial<FirstNexusAgentToolResult> | void> | Partial<FirstNexusAgentToolResult> | void;
 
 function readCwd(event: AgentToolResultMiddlewareEvent): string {
   if (event.cwd?.trim()) {
@@ -30,7 +30,7 @@ function readCwd(event: AgentToolResultMiddlewareEvent): string {
 
 export function createTokenjuiceAgentToolResultMiddleware(): AgentToolResultMiddleware {
   const handlers: TokenjuiceToolResultHandler[] = [];
-  createTokenjuiceNexisClawEmbeddedExtension()({
+  createTokenjuiceFirstNexusEmbeddedExtension()({
     on(event, handler) {
       if (event === "tool_result") {
         handlers.push(handler as TokenjuiceToolResultHandler);

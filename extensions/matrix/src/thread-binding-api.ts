@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveMatrixTargetIdentity } from "./matrix/target-ids.js";
 
 export const defaultTopLevelPlacement = "child" as const;

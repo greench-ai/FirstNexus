@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { NexisClawSchema } from "./zod-schema.js";
+import { FirstNexusSchema } from "./zod-schema.js";
 
-describe("NexisClawSchema logging levels", () => {
+describe("FirstNexusSchema logging levels", () => {
   it("accepts valid logging level values for level and consoleLevel", () => {
-    const result = NexisClawSchema.safeParse({
+    const result = FirstNexusSchema.safeParse({
       logging: {
         level: "debug",
         consoleLevel: "warn",
@@ -14,12 +14,12 @@ describe("NexisClawSchema logging levels", () => {
   });
 
   it("rejects invalid logging level values", () => {
-    const invalidLevel = NexisClawSchema.safeParse({
+    const invalidLevel = FirstNexusSchema.safeParse({
       logging: {
         level: "loud",
       },
     });
-    const invalidConsoleLevel = NexisClawSchema.safeParse({
+    const invalidConsoleLevel = FirstNexusSchema.safeParse({
       logging: {
         consoleLevel: "verbose",
       },

@@ -268,9 +268,9 @@ function summarizeKnownExec(words: string[]): string {
     return `run ${bin} ${script}`;
   }
 
-  if (bin === "NexisClaw") {
+  if (bin === "FirstNexus") {
     const sub = firstPositional(words, 1);
-    return sub ? `run NexisClaw ${sub}` : "run NexisClaw";
+    return sub ? `run FirstNexus ${sub}` : "run FirstNexus";
   }
 
   const arg = firstPositional(words, 1);
@@ -315,10 +315,10 @@ function classifyWorkspacePath(
     if (!segment) {
       continue;
     }
-    if (segment === ".NexisClaw" && segments[index + 1] === "workspace") {
+    if (segment === ".FirstNexus" && segments[index + 1] === "workspace") {
       return "agent";
     }
-    if (segment === ".NexisClaw" && segments[index + 1] === "sandboxes") {
+    if (segment === ".FirstNexus" && segments[index + 1] === "sandboxes") {
       return "sandbox";
     }
     if (/[-_]workspace$/i.test(segment) && segment.toLowerCase() !== "workspace") {
@@ -400,7 +400,7 @@ const KNOWN_SUMMARY_PREFIXES = [
   "run build",
   "start app",
   "run lint",
-  "run NexisClaw",
+  "run FirstNexus",
   "run node script",
   "run node ",
   "run python",

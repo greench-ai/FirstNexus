@@ -1,4 +1,4 @@
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const buildVllmProviderMock = vi.hoisted(() => vi.fn());
@@ -33,7 +33,7 @@ vi.mock("./api.js", () => ({
   buildVllmProvider: (...args: unknown[]) => buildVllmProviderMock(...args),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-setup", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-setup", () => ({
   discoverOpenAICompatibleSelfHostedProvider: (
     params: DiscoverOpenAICompatibleSelfHostedProviderParams,
   ) => discoverOpenAICompatibleSelfHostedProviderMock(params),
@@ -75,7 +75,7 @@ describe("vllm provider discovery contract", () => {
       registerProvider: (registeredProvider) => {
         provider = registeredProvider as RegisteredVllmProvider;
       },
-    } as NexisClawPluginApi);
+    } as FirstNexusPluginApi);
     expect(provider?.id).toBe("vllm");
     expect(provider?.catalog?.order).toBe("late");
     const catalog = provider?.catalog;

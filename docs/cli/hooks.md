@@ -1,16 +1,16 @@
 ---
-summary: "CLI reference for `NexisClaw hooks` (agent hooks)"
+summary: "CLI reference for `FirstNexus hooks` (agent hooks)"
 read_when:
   - You want to manage agent hooks
   - You want to inspect hook availability or enable workspace hooks
 title: "Hooks"
 ---
 
-# `NexisClaw hooks`
+# `FirstNexus hooks`
 
 Manage agent hooks (event-driven automations for commands like `/new`, `/reset`, and gateway startup).
 
-Running `NexisClaw hooks` with no subcommand is equivalent to `NexisClaw hooks list`.
+Running `FirstNexus hooks` with no subcommand is equivalent to `FirstNexus hooks list`.
 
 Related:
 
@@ -20,7 +20,7 @@ Related:
 ## List all hooks
 
 ```bash
-NexisClaw hooks list
+FirstNexus hooks list
 ```
 
 List all discovered hooks from workspace, managed, extra, and bundled directories.
@@ -47,7 +47,7 @@ Ready:
 **Example (verbose):**
 
 ```bash
-NexisClaw hooks list --verbose
+FirstNexus hooks list --verbose
 ```
 
 Shows missing requirements for ineligible hooks.
@@ -55,7 +55,7 @@ Shows missing requirements for ineligible hooks.
 **Example (JSON):**
 
 ```bash
-NexisClaw hooks list --json
+FirstNexus hooks list --json
 ```
 
 Returns structured JSON for programmatic use.
@@ -63,7 +63,7 @@ Returns structured JSON for programmatic use.
 ## Get hook information
 
 ```bash
-NexisClaw hooks info <name>
+FirstNexus hooks info <name>
 ```
 
 Show detailed information about a specific hook.
@@ -79,7 +79,7 @@ Show detailed information about a specific hook.
 **Example:**
 
 ```bash
-NexisClaw hooks info session-memory
+FirstNexus hooks info session-memory
 ```
 
 **Output:**
@@ -90,10 +90,10 @@ NexisClaw hooks info session-memory
 Save session context to memory when /new or /reset command is issued
 
 Details:
-  Source: NexisClaw-bundled
-  Path: /path/to/NexisClaw/hooks/bundled/session-memory/HOOK.md
-  Handler: /path/to/NexisClaw/hooks/bundled/session-memory/handler.ts
-  Homepage: https://docs.NexisClaw.ai/automation/hooks#session-memory
+  Source: FirstNexus-bundled
+  Path: /path/to/FirstNexus/hooks/bundled/session-memory/HOOK.md
+  Handler: /path/to/FirstNexus/hooks/bundled/session-memory/handler.ts
+  Homepage: https://docs.FirstNexus.ai/automation/hooks#session-memory
   Events: command:new, command:reset
 
 Requirements:
@@ -103,7 +103,7 @@ Requirements:
 ## Check hooks eligibility
 
 ```bash
-NexisClaw hooks check
+FirstNexus hooks check
 ```
 
 Show summary of hook eligibility status (how many are ready vs. not ready).
@@ -125,12 +125,12 @@ Not ready: 0
 ## Enable a Hook
 
 ```bash
-NexisClaw hooks enable <name>
+FirstNexus hooks enable <name>
 ```
 
-Enable a specific hook by adding it to your config (`~/.NexisClaw/NexisClaw.json` by default).
+Enable a specific hook by adding it to your config (`~/.FirstNexus/FirstNexus.json` by default).
 
-**Note:** Workspace hooks are disabled by default until enabled here or in config. Hooks managed by plugins show `plugin:<id>` in `NexisClaw hooks list` and can't be enabled/disabled here. Enable/disable the plugin instead.
+**Note:** Workspace hooks are disabled by default until enabled here or in config. Hooks managed by plugins show `plugin:<id>` in `FirstNexus hooks list` and can't be enabled/disabled here. Enable/disable the plugin instead.
 
 **Arguments:**
 
@@ -139,7 +139,7 @@ Enable a specific hook by adding it to your config (`~/.NexisClaw/NexisClaw.json
 **Example:**
 
 ```bash
-NexisClaw hooks enable session-memory
+FirstNexus hooks enable session-memory
 ```
 
 **Output:**
@@ -164,7 +164,7 @@ the Gateway will load it.
 ## Disable a Hook
 
 ```bash
-NexisClaw hooks disable <name>
+FirstNexus hooks disable <name>
 ```
 
 Disable a specific hook by updating your config.
@@ -176,7 +176,7 @@ Disable a specific hook by updating your config.
 **Example:**
 
 ```bash
-NexisClaw hooks disable command-logger
+FirstNexus hooks disable command-logger
 ```
 
 **Output:**
@@ -191,22 +191,22 @@ NexisClaw hooks disable command-logger
 
 ## Notes
 
-- `NexisClaw hooks list --json`, `info --json`, and `check --json` write structured JSON directly to stdout.
+- `FirstNexus hooks list --json`, `info --json`, and `check --json` write structured JSON directly to stdout.
 - Plugin-managed hooks cannot be enabled or disabled here; enable or disable the owning plugin instead.
 
 ## Install hook packs
 
 ```bash
-NexisClaw plugins install <package>        # npm by default
-NexisClaw plugins install npm:<package>    # npm only
-NexisClaw plugins install <package> --pin  # pin version
-NexisClaw plugins install <path>           # local path
+FirstNexus plugins install <package>        # npm by default
+FirstNexus plugins install npm:<package>    # npm only
+FirstNexus plugins install <package> --pin  # pin version
+FirstNexus plugins install <path>           # local path
 ```
 
 Install hook packs through the unified plugins installer.
 
-`NexisClaw hooks install` still works as a compatibility alias, but it prints a
-deprecation warning and forwards to `NexisClaw plugins install`.
+`FirstNexus hooks install` still works as a compatibility alias, but it prints a
+deprecation warning and forwards to `FirstNexus plugins install`.
 
 Npm specs are **registry-only** (package name + optional **exact version** or
 **dist-tag**). Git/URL/file specs and semver ranges are rejected. Dependency
@@ -214,12 +214,12 @@ installs run project-local with `--ignore-scripts` for safety, even when your
 shell has global npm install settings.
 
 Bare specs and `@latest` stay on the stable track. If npm resolves either of
-those to a prerelease, NexisClaw stops and asks you to opt in explicitly with a
+those to a prerelease, FirstNexus stops and asks you to opt in explicitly with a
 prerelease tag such as `@beta`/`@rc` or an exact prerelease version.
 
 **What it does:**
 
-- Copies the hook pack into `~/.NexisClaw/hooks/<id>`
+- Copies the hook pack into `~/.FirstNexus/hooks/<id>`
 - Enables the installed hooks in `hooks.internal.entries.*`
 - Records the install under `hooks.internal.installs`
 
@@ -234,16 +234,16 @@ prerelease tag such as `@beta`/`@rc` or an exact prerelease version.
 
 ```bash
 # Local directory
-NexisClaw plugins install ./my-hook-pack
+FirstNexus plugins install ./my-hook-pack
 
 # Local archive
-NexisClaw plugins install ./my-hook-pack.zip
+FirstNexus plugins install ./my-hook-pack.zip
 
 # NPM package
-NexisClaw plugins install @NexisClaw/my-hook-pack
+FirstNexus plugins install @FirstNexus/my-hook-pack
 
 # Link a local directory without copying
-NexisClaw plugins install -l ./my-hook-pack
+FirstNexus plugins install -l ./my-hook-pack
 ```
 
 Linked hook packs are treated as managed hooks from an operator-configured
@@ -252,14 +252,14 @@ directory, not as workspace hooks.
 ## Update hook packs
 
 ```bash
-NexisClaw plugins update <id>
-NexisClaw plugins update --all
+FirstNexus plugins update <id>
+FirstNexus plugins update --all
 ```
 
 Update tracked npm-based hook packs through the unified plugins updater.
 
-`NexisClaw hooks update` still works as a compatibility alias, but it prints a
-deprecation warning and forwards to `NexisClaw plugins update`.
+`FirstNexus hooks update` still works as a compatibility alias, but it prints a
+deprecation warning and forwards to `FirstNexus plugins update`.
 
 **Options:**
 
@@ -267,7 +267,7 @@ deprecation warning and forwards to `NexisClaw plugins update`.
 - `--dry-run`: Show what would change without writing
 
 When a stored integrity hash exists and the fetched artifact hash changes,
-NexisClaw prints a warning and asks for confirmation before proceeding. Use
+FirstNexus prints a warning and asks for confirmation before proceeding. Use
 global `--yes` to bypass prompts in CI/non-interactive runs.
 
 ## Bundled hooks
@@ -279,10 +279,10 @@ Saves session context to memory when you issue `/new` or `/reset`.
 **Enable:**
 
 ```bash
-NexisClaw hooks enable session-memory
+FirstNexus hooks enable session-memory
 ```
 
-**Output:** `~/.NexisClaw/workspace/memory/YYYY-MM-DD-HHMM.md` by default. Set `hooks.internal.entries.session-memory.llmSlug: true` for model-generated filename slugs.
+**Output:** `~/.FirstNexus/workspace/memory/YYYY-MM-DD-HHMM.md` by default. Set `hooks.internal.entries.session-memory.llmSlug: true` for model-generated filename slugs.
 
 **See:** [session-memory documentation](/automation/hooks#session-memory)
 
@@ -293,7 +293,7 @@ Injects additional bootstrap files (for example monorepo-local `AGENTS.md` / `TO
 **Enable:**
 
 ```bash
-NexisClaw hooks enable bootstrap-extra-files
+FirstNexus hooks enable bootstrap-extra-files
 ```
 
 **See:** [bootstrap-extra-files documentation](/automation/hooks#bootstrap-extra-files)
@@ -305,22 +305,22 @@ Logs all command events to a centralized audit file.
 **Enable:**
 
 ```bash
-NexisClaw hooks enable command-logger
+FirstNexus hooks enable command-logger
 ```
 
-**Output:** `~/.NexisClaw/logs/commands.log`
+**Output:** `~/.FirstNexus/logs/commands.log`
 
 **View logs:**
 
 ```bash
 # Recent commands
-tail -n 20 ~/.NexisClaw/logs/commands.log
+tail -n 20 ~/.FirstNexus/logs/commands.log
 
 # Pretty-print
-cat ~/.NexisClaw/logs/commands.log | jq .
+cat ~/.FirstNexus/logs/commands.log | jq .
 
 # Filter by action
-grep '"action":"new"' ~/.NexisClaw/logs/commands.log | jq .
+grep '"action":"new"' ~/.FirstNexus/logs/commands.log | jq .
 ```
 
 **See:** [command-logger documentation](/automation/hooks#command-logger)
@@ -334,7 +334,7 @@ Runs `BOOT.md` when the gateway starts (after channels start).
 **Enable**:
 
 ```bash
-NexisClaw hooks enable boot-md
+FirstNexus hooks enable boot-md
 ```
 
 **See:** [boot-md documentation](/automation/hooks#boot-md)

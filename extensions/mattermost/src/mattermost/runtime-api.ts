@@ -4,42 +4,42 @@ export type {
   ChannelDirectoryEntry,
   ChatType,
   HistoryEntry,
-  NexisClawConfig,
-  NexisClawPluginApi,
+  FirstNexusConfig,
+  FirstNexusPluginApi,
   ReplyPayload,
-} from "NexisClaw/plugin-sdk/core";
-export type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime";
-export { buildAgentMediaPayload } from "NexisClaw/plugin-sdk/agent-media-payload";
-export { resolveAllowlistMatchSimple } from "NexisClaw/plugin-sdk/allow-from";
-export { logInboundDrop } from "NexisClaw/plugin-sdk/channel-inbound";
-export { createChannelPairingController } from "NexisClaw/plugin-sdk/channel-pairing";
-export { createChannelMessageReplyPipeline } from "NexisClaw/plugin-sdk/channel-message";
-export { logTypingFailure } from "NexisClaw/plugin-sdk/channel-feedback";
+} from "FirstNexus/plugin-sdk/core";
+export type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime";
+export { buildAgentMediaPayload } from "FirstNexus/plugin-sdk/agent-media-payload";
+export { resolveAllowlistMatchSimple } from "FirstNexus/plugin-sdk/allow-from";
+export { logInboundDrop } from "FirstNexus/plugin-sdk/channel-inbound";
+export { createChannelPairingController } from "FirstNexus/plugin-sdk/channel-pairing";
+export { createChannelMessageReplyPipeline } from "FirstNexus/plugin-sdk/channel-message";
+export { logTypingFailure } from "FirstNexus/plugin-sdk/channel-feedback";
 export {
   listSkillCommandsForAgents,
   resolveControlCommandGate,
-} from "NexisClaw/plugin-sdk/command-auth-native";
-export { buildModelsProviderData } from "NexisClaw/plugin-sdk/models-provider-runtime";
-export { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
+} from "FirstNexus/plugin-sdk/command-auth-native";
+export { buildModelsProviderData } from "FirstNexus/plugin-sdk/models-provider-runtime";
+export { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
 export {
   resolveAllowlistProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
-export { resolveChannelMediaMaxBytes } from "NexisClaw/plugin-sdk/media-runtime";
-export { loadOutboundMediaFromUrl } from "NexisClaw/plugin-sdk/outbound-media";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
+export { resolveChannelMediaMaxBytes } from "FirstNexus/plugin-sdk/media-runtime";
+export { loadOutboundMediaFromUrl } from "FirstNexus/plugin-sdk/outbound-media";
 export {
   DEFAULT_GROUP_HISTORY_LIMIT,
   buildPendingHistoryContextFromMap,
   recordPendingHistoryEntryIfEnabled,
-} from "NexisClaw/plugin-sdk/reply-history";
-export { registerPluginHttpRoute } from "NexisClaw/plugin-sdk/webhook-targets";
+} from "FirstNexus/plugin-sdk/reply-history";
+export { registerPluginHttpRoute } from "FirstNexus/plugin-sdk/webhook-targets";
 export {
   isRequestBodyLimitError,
   readRequestBodyWithLimit,
-} from "NexisClaw/plugin-sdk/webhook-ingress";
+} from "FirstNexus/plugin-sdk/webhook-ingress";
 export {
   isTrustedProxyAddress,
   parseStrictPositiveInteger,
   resolveClientIp,
-} from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/core";

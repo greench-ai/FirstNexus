@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { resolveSessionAgentIds } from "./agent-scope.js";
 
 describe("resolveSessionAgentIds", () => {
@@ -7,7 +7,7 @@ describe("resolveSessionAgentIds", () => {
     agents: {
       list: [{ id: "main" }, { id: "beta", default: true }],
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 
   it("falls back to the configured default when sessionKey is missing", () => {
     const { defaultAgentId, sessionAgentId } = resolveSessionAgentIds({

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { maybeSeedControlUiAllowedOriginsAtStartup } from "./startup-control-ui-origins.js";
 
 describe("maybeSeedControlUiAllowedOriginsAtStartup", () => {
@@ -23,7 +23,7 @@ describe("maybeSeedControlUiAllowedOriginsAtStartup", () => {
   });
 
   it("does not rewrite config when origins already exist", async () => {
-    const config: NexisClawConfig = {
+    const config: FirstNexusConfig = {
       gateway: {
         controlUi: { allowedOrigins: ["https://control.example.com"] },
       },

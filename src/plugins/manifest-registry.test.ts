@@ -5,7 +5,7 @@ import { collectChannelSchemaMetadata } from "../config/channel-config-metadata.
 import { collectBundledChannelConfigs } from "./bundled-channel-config-metadata.js";
 import type { PluginCandidate } from "./discovery.js";
 import { loadPluginManifestRegistry } from "./manifest-registry.js";
-import type { NexisClawPackageManifest } from "./manifest.js";
+import type { FirstNexusPackageManifest } from "./manifest.js";
 import { cleanupTrackedTempDirs, makeTrackedTempDir } from "./test-helpers/fs-fixtures.js";
 
 vi.unmock("../version.js");
@@ -25,11 +25,11 @@ function mkdirSafe(dir: string) {
 }
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-manifest-registry", tempDirs);
+  return makeTrackedTempDir("FirstNexus-manifest-registry", tempDirs);
 }
 
 function writeManifest(dir: string, manifest: Record<string, unknown>) {
-  fs.writeFileSync(path.join(dir, "NexisClaw.plugin.json"), JSON.stringify(manifest), "utf-8");
+  fs.writeFileSync(path.join(dir, "FirstNexus.plugin.json"), JSON.stringify(manifest), "utf-8");
 }
 
 function writeTextFile(rootDir: string, relativePath: string, value: string) {
@@ -60,11 +60,11 @@ function createPluginCandidate(params: {
   rootDir: string;
   sourceName?: string;
   origin: "bundled" | "global" | "workspace" | "config";
-  format?: "NexisClaw" | "bundle";
+  format?: "FirstNexus" | "bundle";
   bundleFormat?: "codex" | "claude" | "cursor";
   packageName?: string;
   packageVersion?: string;
-  packageManifest?: NexisClawPackageManifest;
+  packageManifest?: FirstNexusPackageManifest;
   packageDir?: string;
   bundledManifest?: PluginCandidate["bundledManifest"];
   bundledManifestPath?: string;
@@ -186,8 +186,8 @@ function prepareLinkedManifestFixture(params: { id: string; mode: "symlink" | "h
 } {
   const rootDir = makeTempDir();
   const outsideDir = makeTempDir();
-  const outsideManifest = path.join(outsideDir, "NexisClaw.plugin.json");
-  const linkedManifest = path.join(rootDir, "NexisClaw.plugin.json");
+  const outsideManifest = path.join(outsideDir, "FirstNexus.plugin.json");
+  const linkedManifest = path.join(rootDir, "FirstNexus.plugin.json");
   fs.writeFileSync(path.join(rootDir, "index.ts"), "export default function () {}", "utf-8");
   fs.writeFileSync(
     outsideManifest,
@@ -242,7 +242,7 @@ function loadRegistryForMinHostVersionCase(params: {
         origin: "global",
         packageManifest: {
           install: {
-            npmSpec: "@NexisClaw/synology-chat",
+            npmSpec: "@FirstNexus/synology-chat",
             minHostVersion: params.minHostVersion,
           },
         },
@@ -376,12 +376,12 @@ describe("loadPluginManifestRegistry", () => {
     fs.writeFileSync(
       path.join(pluginDir, "package.json"),
       JSON.stringify({
-        name: "@NexisClaw/cached-manifest",
-        NexisClaw: { extensions: ["./index.js"] },
+        name: "@FirstNexus/cached-manifest",
+        FirstNexus: { extensions: ["./index.js"] },
       }),
       "utf-8",
     );
-    const manifestPath = path.join(pluginDir, "NexisClaw.plugin.json");
+    const manifestPath = path.join(pluginDir, "FirstNexus.plugin.json");
     writeManifest(pluginDir, {
       id: "cached-manifest",
       name: "Before",
@@ -595,7 +595,7 @@ describe("loadPluginManifestRegistry", () => {
         "diagnostics-prometheus": {
           source: "npm",
           installPath: dir,
-          resolvedName: "@NexisClaw/diagnostics-prometheus",
+          resolvedName: "@FirstNexus/diagnostics-prometheus",
           resolvedVersion: "2026.5.3",
         },
       },
@@ -603,7 +603,7 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "diagnostics-prometheus",
           rootDir: dir,
-          packageName: "@NexisClaw/diagnostics-prometheus",
+          packageName: "@FirstNexus/diagnostics-prometheus",
           origin: "global",
         }),
       ],
@@ -621,7 +621,7 @@ describe("loadPluginManifestRegistry", () => {
         "diagnostics-prometheus": {
           source: "npm",
           installPath: dir,
-          resolvedName: "@NexisClaw/diagnostics-prometheus",
+          resolvedName: "@FirstNexus/diagnostics-prometheus",
           resolvedVersion: "2026.5.3",
         },
       },
@@ -629,13 +629,13 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "diagnostics-prometheus",
           rootDir: dir,
-          packageName: "@NexisClaw/diagnostics-prometheus",
+          packageName: "@FirstNexus/diagnostics-prometheus",
           origin: "global",
         }),
         createPluginCandidate({
           idHint: "diagnostics-prometheus",
           rootDir: dir,
-          packageName: "@NexisClaw/diagnostics-prometheus",
+          packageName: "@FirstNexus/diagnostics-prometheus",
           origin: "config",
         }),
       ],
@@ -658,7 +658,7 @@ describe("loadPluginManifestRegistry", () => {
         createPluginCandidate({
           idHint: "diagnostics-prometheus",
           rootDir: dir,
-          packageName: "@NexisClaw/diagnostics-prometheus",
+          packageName: "@FirstNexus/diagnostics-prometheus",
           origin: "global",
         }),
       ],
@@ -1117,7 +1117,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "external-openai",
-      source: path.join(dir, "NexisClaw.plugin.json"),
+      source: path.join(dir, "FirstNexus.plugin.json"),
       messageIncludes: "providerAuthEnvVars is deprecated compatibility metadata",
     });
   });
@@ -1194,7 +1194,7 @@ describe("loadPluginManifestRegistry", () => {
     expectDiagnosticFields(registry, {
       level: "warn",
       pluginId: "external-chat",
-      source: path.join(dir, "NexisClaw.plugin.json"),
+      source: path.join(dir, "FirstNexus.plugin.json"),
       messageIncludes: "without channelConfigs metadata",
     });
   });
@@ -1259,17 +1259,17 @@ describe("loadPluginManifestRegistry", () => {
   it("hydrates supplemental official external catalog contracts for lagging npm manifests", () => {
     const dir = makeTempDir();
     writeManifest(dir, {
-      id: "wecom-NexisClaw-plugin",
+      id: "wecom-FirstNexus-plugin",
       channels: ["wecom"],
       configSchema: { type: "object" },
     });
 
     const registry = loadRegistry([
       createPluginCandidate({
-        idHint: "wecom-NexisClaw-plugin",
+        idHint: "wecom-FirstNexus-plugin",
         rootDir: dir,
         origin: "global",
-        packageName: "@wecom/wecom-NexisClaw-plugin",
+        packageName: "@wecom/wecom-FirstNexus-plugin",
       }),
     ]);
 
@@ -1288,7 +1288,7 @@ describe("loadPluginManifestRegistry", () => {
   it("fills missing official external catalog descriptors for partial npm channel configs", () => {
     const dir = makeTempDir();
     writeManifest(dir, {
-      id: "wecom-NexisClaw-plugin",
+      id: "wecom-FirstNexus-plugin",
       channels: ["wecom"],
       configSchema: { type: "object" },
       channelConfigs: {
@@ -1306,10 +1306,10 @@ describe("loadPluginManifestRegistry", () => {
 
     const registry = loadRegistry([
       createPluginCandidate({
-        idHint: "wecom-NexisClaw-plugin",
+        idHint: "wecom-FirstNexus-plugin",
         rootDir: dir,
         origin: "global",
-        packageName: "@wecom/wecom-NexisClaw-plugin",
+        packageName: "@wecom/wecom-FirstNexus-plugin",
       }),
     ]);
 
@@ -1333,7 +1333,7 @@ describe("loadPluginManifestRegistry", () => {
     const dir = makeTempDir();
     writeTextFile(
       dir,
-      "NexisClaw.plugin.json",
+      "FirstNexus.plugin.json",
       JSON.stringify({
         id: "external-chat",
         channels: ["safe-chat"],
@@ -1779,7 +1779,7 @@ describe("loadPluginManifestRegistry", () => {
         idHint: "telegram",
         rootDir: dir,
         origin: "bundled",
-        bundledManifestPath: path.join(dir, "NexisClaw.plugin.json"),
+        bundledManifestPath: path.join(dir, "FirstNexus.plugin.json"),
         bundledManifest: {
           id: "telegram",
           configSchema: { type: "object" },
@@ -1904,20 +1904,20 @@ describe("loadPluginManifestRegistry", () => {
       name: "skips plugins whose minHostVersion is newer than the current host",
       minHostVersion: ">=2026.3.22",
       env: { NEXISCLAW_VERSION: "2026.3.21" } as NodeJS.ProcessEnv,
-      expectedMessage: "plugin requires NexisClaw >=2026.3.22, but this host is 2026.3.21",
+      expectedMessage: "plugin requires FirstNexus >=2026.3.22, but this host is 2026.3.21",
       expectWarn: true,
     },
     {
       name: "skips plugins whose beta minHostVersion is newer than the current host",
       minHostVersion: ">=2026.5.1-beta.1",
       env: { NEXISCLAW_VERSION: "2026.4.30" } as NodeJS.ProcessEnv,
-      expectedMessage: "plugin requires NexisClaw >=2026.5.1-beta.1, but this host is 2026.4.30",
+      expectedMessage: "plugin requires FirstNexus >=2026.5.1-beta.1, but this host is 2026.4.30",
       expectWarn: true,
     },
     {
       name: "rejects invalid minHostVersion metadata",
       minHostVersion: "2026.3.22",
-      expectedMessage: "plugin manifest invalid | NexisClaw.install.minHostVersion must use",
+      expectedMessage: "plugin manifest invalid | FirstNexus.install.minHostVersion must use",
       expectWarn: false,
     },
     {
@@ -1963,7 +1963,7 @@ describe("loadPluginManifestRegistry", () => {
           origin: "global",
           packageManifest: {
             install: {
-              npmSpec: "@NexisClaw/codex",
+              npmSpec: "@FirstNexus/codex",
               minHostVersion: "2026.3.22",
             },
           },
@@ -1972,7 +1972,7 @@ describe("loadPluginManifestRegistry", () => {
     });
 
     expect(registry.plugins.map((plugin) => plugin.id)).toEqual(["codex"]);
-    expectNoRegistryDiagnosticContains(registry, "NexisClaw.install.minHostVersion must use");
+    expectNoRegistryDiagnosticContains(registry, "FirstNexus.install.minHostVersion must use");
   });
 
   it("does not runtime-gate bundled source plugins by install minHostVersion", () => {
@@ -1988,7 +1988,7 @@ describe("loadPluginManifestRegistry", () => {
           origin: "bundled",
           packageManifest: {
             install: {
-              npmSpec: "@NexisClaw/codex",
+              npmSpec: "@FirstNexus/codex",
               minHostVersion: ">=2026.5.1-beta.1",
             },
           },
@@ -1998,7 +1998,7 @@ describe("loadPluginManifestRegistry", () => {
     });
 
     expect(registry.plugins.map((plugin) => plugin.id)).toContain("codex");
-    expectNoRegistryDiagnosticContains(registry, "requires NexisClaw");
+    expectNoRegistryDiagnosticContains(registry, "requires FirstNexus");
   });
 
   it.each([
@@ -2085,23 +2085,23 @@ describe("loadPluginManifestRegistry", () => {
   it("suppresses duplicate warning when global candidates come from the same package artifact", () => {
     const firstDir = makeTempDir();
     const secondDir = makeTempDir();
-    const manifest = { id: "opik-NexisClaw", configSchema: { type: "object" } };
+    const manifest = { id: "opik-FirstNexus", configSchema: { type: "object" } };
     writeManifest(firstDir, manifest);
     writeManifest(secondDir, manifest);
 
     const candidates: PluginCandidate[] = [
       createPluginCandidate({
-        idHint: "opik-NexisClaw",
+        idHint: "opik-FirstNexus",
         rootDir: firstDir,
         origin: "global",
-        packageName: "@opik/opik-NexisClaw",
+        packageName: "@opik/opik-FirstNexus",
         packageVersion: "0.2.14",
       }),
       createPluginCandidate({
-        idHint: "opik-NexisClaw",
+        idHint: "opik-FirstNexus",
         rootDir: secondDir,
         origin: "global",
-        packageName: "@opik/opik-NexisClaw",
+        packageName: "@opik/opik-FirstNexus",
         packageVersion: "0.2.14",
       }),
     ];
@@ -2387,7 +2387,7 @@ describe("loadPluginManifestRegistry", () => {
         origin: "global",
         packageManifest: {
           install: {
-            npmSpec: "@NexisClaw/synology-chat",
+            npmSpec: "@FirstNexus/synology-chat",
             minHostVersion: ">=2026.3.22",
           },
         },

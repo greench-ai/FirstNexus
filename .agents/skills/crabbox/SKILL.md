@@ -1,11 +1,11 @@
 ---
 name: crabbox
-description: Use Crabbox for NexisClaw remote Linux validation. Default to Blacksmith Testbox; includes direct Blacksmith and owned AWS/Hetzner fallback notes when Crabbox fails.
+description: Use Crabbox for FirstNexus remote Linux validation. Default to Blacksmith Testbox; includes direct Blacksmith and owned AWS/Hetzner fallback notes when Crabbox fails.
 ---
 
 # Crabbox
 
-Use Crabbox when NexisClaw needs remote Linux proof for broad tests, CI-parity
+Use Crabbox when FirstNexus needs remote Linux proof for broad tests, CI-parity
 checks, secrets, hosted services, Docker/E2E/package lanes, warmed reusable
 boxes, sync timing, logs/results, cache inspection, or lease cleanup.
 
@@ -26,7 +26,7 @@ pnpm crabbox:run -- --help | sed -n '1,120p'
 ../crabbox/bin/crabbox webvnc --help
 ```
 
-- NexisClaw scripts prefer `../crabbox/bin/crabbox` when present. The user PATH
+- FirstNexus scripts prefer `../crabbox/bin/crabbox` when present. The user PATH
   shim can be stale.
 - Check `.crabbox.yaml` for repo defaults, but override provider explicitly.
   Even if config still says AWS, maintainer validation should normally pass
@@ -50,7 +50,7 @@ pnpm crabbox:run -- --help | sed -n '1,120p'
 
 ## macOS And Windows Targets
 
-Use these only when the task needs an existing non-Linux host. NexisClaw broad
+Use these only when the task needs an existing non-Linux host. FirstNexus broad
 validation still defaults to `blacksmith-testbox`.
 
 Crabbox supports static SSH targets:
@@ -81,7 +81,7 @@ Changed gate:
 
 ```sh
 pnpm crabbox:run -- --provider blacksmith-testbox \
-  --blacksmith-org NexisClaw \
+  --blacksmith-org FirstNexus \
   --blacksmith-workflow .github/workflows/ci-check-testbox.yml \
   --blacksmith-job check \
   --blacksmith-ref main \
@@ -96,7 +96,7 @@ Full suite:
 
 ```sh
 pnpm crabbox:run -- --provider blacksmith-testbox \
-  --blacksmith-org NexisClaw \
+  --blacksmith-org FirstNexus \
   --blacksmith-workflow .github/workflows/ci-check-testbox.yml \
   --blacksmith-job check \
   --blacksmith-ref main \
@@ -111,7 +111,7 @@ Focused rerun:
 
 ```sh
 pnpm crabbox:run -- --provider blacksmith-testbox \
-  --blacksmith-org NexisClaw \
+  --blacksmith-org FirstNexus \
   --blacksmith-workflow .github/workflows/ci-check-testbox.yml \
   --blacksmith-job check \
   --blacksmith-ref main \
@@ -296,7 +296,7 @@ Interactive CLI/onboarding:
   package under `npm/node_modules`. Overrides are test-only and must not be
   treated as official/trusted-source installs.
 - For OpenAI/Codex onboarding proof, the useful markers are the UI line
-  `Installed Codex plugin`, `npm/node_modules/@NexisClaw/codex`, and the
+  `Installed Codex plugin`, `npm/node_modules/@FirstNexus/codex`, and the
   package-lock entry showing the bundled `@openai/codex` dependency. A dummy
   OpenAI-shaped key can prove only UI/install behavior; it is not live auth.
 
@@ -401,7 +401,7 @@ pnpm crabbox:run -- --provider blacksmith-testbox --debug --timing-json -- \
 Auth fallback, only when `blacksmith` says auth is missing:
 
 ```sh
-blacksmith auth login --non-interactive --organization NexisClaw
+blacksmith auth login --non-interactive --organization FirstNexus
 ```
 
 Raw Blacksmith footguns:
@@ -421,7 +421,7 @@ Owned Cloud Fallback section below.
 
 Crabbox Blacksmith backend delegates setup to:
 
-- org: `NexisClaw`
+- org: `FirstNexus`
 - workflow: `.github/workflows/ci-check-testbox.yml`
 - job: `check`
 - ref: `main` unless testing a branch/tag intentionally
@@ -448,7 +448,7 @@ Important Blacksmith footguns:
 - If auth is missing and browser auth is acceptable:
 
 ```sh
-blacksmith auth login --non-interactive --organization NexisClaw
+blacksmith auth login --non-interactive --organization FirstNexus
 ```
 
 ## Owned Cloud Fallback
@@ -466,8 +466,8 @@ pnpm crabbox:stop -- <cbx_id-or-slug>
 Install/auth for owned Crabbox if needed:
 
 ```sh
-brew install NexisClaw/tap/crabbox
-crabbox login --url https://crabbox.NexisClaw.ai --provider aws
+brew install FirstNexus/tap/crabbox
+crabbox login --url https://crabbox.FirstNexus.ai --provider aws
 ```
 
 New users should self-resolve broker auth before anyone asks for AWS keys:
@@ -478,15 +478,15 @@ crabbox doctor
 crabbox whoami
 ```
 
-- If broker auth is missing, run `crabbox login --url https://crabbox.NexisClaw.ai --provider aws`.
+- If broker auth is missing, run `crabbox login --url https://crabbox.FirstNexus.ai --provider aws`.
 - If the CLI asks for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, or AWS
-  profile setup during normal NexisClaw validation, assume the agent selected
+  profile setup during normal FirstNexus validation, assume the agent selected
   the wrong path. Use brokered `crabbox login`, `--provider blacksmith-testbox`,
   or an existing brokered lease before asking the user for cloud credentials.
 - Ask for AWS keys only for explicit direct-provider/account administration,
-  not for normal brokered NexisClaw proof.
+  not for normal brokered FirstNexus proof.
 - Trusted automation may still use
-  `printf '%s' "$CRABBOX_COORDINATOR_TOKEN" | crabbox login --url https://crabbox.NexisClaw.ai --provider aws --token-stdin`.
+  `printf '%s' "$CRABBOX_COORDINATOR_TOKEN" | crabbox login --url https://crabbox.FirstNexus.ai --provider aws --token-stdin`.
 
 macOS config lives at:
 
@@ -495,7 +495,7 @@ macOS config lives at:
 ```
 
 It should include `broker.url`, `broker.token`, and usually `provider: aws`
-for owned-cloud lanes. Do not let that config override the NexisClaw default
+for owned-cloud lanes. Do not let that config override the FirstNexus default
 when Blacksmith proof is requested; pass `--provider blacksmith-testbox`.
 
 ### Interactive Desktop / WebVNC
@@ -545,6 +545,6 @@ Use `--market spot|on-demand` only on AWS warmup/one-shot runs.
 
 ## Boundary
 
-Do not add NexisClaw-specific setup to Crabbox itself. Put repo setup in the
+Do not add FirstNexus-specific setup to Crabbox itself. Put repo setup in the
 hydration workflow and keep Crabbox generic around lease, sync, command
 execution, logs/results, timing, and cleanup.

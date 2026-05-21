@@ -7,7 +7,7 @@ import { getRuntimeConfig } from "../config/config.js";
 import { resolveDefaultAgentDir } from "./agent-scope.js";
 import { isLiveProfileKeyModeEnabled, isLiveTestEnabled } from "./live-test-helpers.js";
 import { getApiKeyForModel, requireApiKey } from "./model-auth.js";
-import { ensureNexisClawModelsJson } from "./models-config.js";
+import { ensureFirstNexusModelsJson } from "./models-config.js";
 import { sanitizeSessionHistory } from "./pi-embedded-runner/replay-history.js";
 import { discoverAuthStorage, discoverModels } from "./pi-model-discovery.js";
 
@@ -125,7 +125,7 @@ describeLive("openai reasoning compat live", () => {
     async () => {
       const { provider, modelId } = resolveTargetModelRef();
       const cfg = getRuntimeConfig();
-      await ensureNexisClawModelsJson(cfg);
+      await ensureFirstNexusModelsJson(cfg);
 
       const agentDir = resolveDefaultAgentDir(cfg);
       const authStorage = discoverAuthStorage(agentDir);
@@ -179,7 +179,7 @@ describeLive("openai reasoning compat live", () => {
     async () => {
       const { provider, modelId } = resolveTargetModelRef();
       const cfg = getRuntimeConfig();
-      await ensureNexisClawModelsJson(cfg);
+      await ensureFirstNexusModelsJson(cfg);
 
       const agentDir = resolveDefaultAgentDir(cfg);
       const authStorage = discoverAuthStorage(agentDir);

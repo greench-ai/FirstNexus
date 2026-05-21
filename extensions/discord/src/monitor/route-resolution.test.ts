@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { ResolvedAgentRoute } from "NexisClaw/plugin-sdk/routing";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { ResolvedAgentRoute } from "FirstNexus/plugin-sdk/routing";
 import { describe, expect, it } from "vitest";
 import {
   buildDiscordRoutePeer,
@@ -12,7 +12,7 @@ import {
 function buildWorkerBindingConfig(peer: {
   kind: "channel" | "direct";
   id: string;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   return {
     agents: {
       list: [{ id: "worker" }],

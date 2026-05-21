@@ -1,8 +1,8 @@
 import type {
   BindingTargetKind,
   SessionBindingRecord,
-} from "NexisClaw/plugin-sdk/thread-bindings-session-runtime";
-import { resolveThreadBindingLifecycle } from "NexisClaw/plugin-sdk/thread-bindings-session-runtime";
+} from "FirstNexus/plugin-sdk/thread-bindings-session-runtime";
+import { resolveThreadBindingLifecycle } from "FirstNexus/plugin-sdk/thread-bindings-session-runtime";
 
 type MatrixThreadBindingTargetKind = "subagent" | "acp";
 

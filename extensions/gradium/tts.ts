@@ -1,5 +1,5 @@
-import { assertOkOrThrowProviderError } from "NexisClaw/plugin-sdk/provider-http";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import { assertOkOrThrowProviderError } from "FirstNexus/plugin-sdk/provider-http";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { normalizeGradiumBaseUrl } from "./shared.js";
 
 export async function gradiumTTS(params: {

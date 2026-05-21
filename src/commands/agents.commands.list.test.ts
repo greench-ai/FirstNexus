@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { OutputRuntimeEnv } from "../runtime.js";
 
 const {
@@ -54,7 +54,7 @@ function createRuntime(): OutputRuntimeEnv & { json: unknown[] } {
   };
 }
 
-function createConfig(): NexisClawConfig {
+function createConfig(): FirstNexusConfig {
   return {
     agents: {
       list: [{ id: "main", default: true }],
@@ -126,14 +126,14 @@ describe("agentsListCommand", () => {
         [
           "Agents:",
           "- main (default)",
-          "  Workspace: ~/.NexisClaw/workspace",
-          "  Agent dir: ~/.NexisClaw/agents/main/agent",
+          "  Workspace: ~/.FirstNexus/workspace",
+          "  Agent dir: ~/.FirstNexus/agents/main/agent",
           "  Routing rules: 1",
           "  Routing: Telegram default",
           "  Providers:",
           "    - Telegram default: configured",
           "Routing rules map channel/account/peer to an agent. Use --bindings for full rules.",
-          "Channel status reflects local config/creds. For live health: NexisClaw channels status --probe.",
+          "Channel status reflects local config/creds. For live health: FirstNexus channels status --probe.",
         ].join("\n"),
       ],
     ]);

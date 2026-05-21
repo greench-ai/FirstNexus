@@ -1,21 +1,21 @@
 ---
-summary: "CLI reference for `NexisClaw config` (get/set/patch/unset/file/schema/validate)"
+summary: "CLI reference for `FirstNexus config` (get/set/patch/unset/file/schema/validate)"
 read_when:
   - You want to read or edit config non-interactively
 title: "Config"
 sidebarTitle: "Config"
 ---
 
-Config helpers for non-interactive edits in `NexisClaw.json`: get/set/patch/unset/file/schema/validate values by path and print the active config file. Run without a subcommand to open the configure wizard (same as `NexisClaw configure`).
+Config helpers for non-interactive edits in `FirstNexus.json`: get/set/patch/unset/file/schema/validate values by path and print the active config file. Run without a subcommand to open the configure wizard (same as `FirstNexus configure`).
 
 <Note>
-When `NEXISCLAW_NIX_MODE=1`, NexisClaw treats `NexisClaw.json` as immutable. Read-only commands such as `config get`, `config file`, `config schema`, and `config validate` still work, but config writers refuse. Agents should edit the Nix source for the install instead; for the first-party nix-NexisClaw distribution, use [nix-NexisClaw Quick Start](https://github.com/NexisClaw/nix-NexisClaw#quick-start) and set values under `programs.NexisClaw.config` or `instances.<name>.config`.
+When `NEXISCLAW_NIX_MODE=1`, FirstNexus treats `FirstNexus.json` as immutable. Read-only commands such as `config get`, `config file`, `config schema`, and `config validate` still work, but config writers refuse. Agents should edit the Nix source for the install instead; for the first-party nix-FirstNexus distribution, use [nix-FirstNexus Quick Start](https://github.com/FirstNexus/nix-FirstNexus#quick-start) and set values under `programs.FirstNexus.config` or `instances.<name>.config`.
 </Note>
 
 ## Root options
 
 <ParamField path="--section <section>" type="string">
-  Repeatable guided-setup section filter when you run `NexisClaw config` without a subcommand.
+  Repeatable guided-setup section filter when you run `FirstNexus config` without a subcommand.
 </ParamField>
 
 Supported guided sections: `workspace`, `model`, `web`, `gateway`, `daemon`, `channels`, `plugins`, `skills`, `health`.
@@ -23,28 +23,28 @@ Supported guided sections: `workspace`, `model`, `web`, `gateway`, `daemon`, `ch
 ## Examples
 
 ```bash
-NexisClaw config file
-NexisClaw config --section model
-NexisClaw config --section gateway --section daemon
-NexisClaw config schema
-NexisClaw config get browser.executablePath
-NexisClaw config set browser.executablePath "/usr/bin/google-chrome"
-NexisClaw config set browser.profiles.work.executablePath "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-NexisClaw config set agents.defaults.heartbeat.every "2h"
-NexisClaw config set agents.list[0].tools.exec.node "node-id-or-name"
-NexisClaw config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
-NexisClaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN
-NexisClaw config set secrets.providers.vaultfile --provider-source file --provider-path /etc/NexisClaw/secrets.json --provider-mode json
-NexisClaw config patch --file ./NexisClaw.patch.json5 --dry-run
-NexisClaw config unset plugins.entries.brave.config.webSearch.apiKey
-NexisClaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN --dry-run
-NexisClaw config validate
-NexisClaw config validate --json
+FirstNexus config file
+FirstNexus config --section model
+FirstNexus config --section gateway --section daemon
+FirstNexus config schema
+FirstNexus config get browser.executablePath
+FirstNexus config set browser.executablePath "/usr/bin/google-chrome"
+FirstNexus config set browser.profiles.work.executablePath "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+FirstNexus config set agents.defaults.heartbeat.every "2h"
+FirstNexus config set agents.list[0].tools.exec.node "node-id-or-name"
+FirstNexus config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
+FirstNexus config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN
+FirstNexus config set secrets.providers.vaultfile --provider-source file --provider-path /etc/FirstNexus/secrets.json --provider-mode json
+FirstNexus config patch --file ./FirstNexus.patch.json5 --dry-run
+FirstNexus config unset plugins.entries.brave.config.webSearch.apiKey
+FirstNexus config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN --dry-run
+FirstNexus config validate
+FirstNexus config validate --json
 ```
 
 ### `config schema`
 
-Print the generated JSON schema for `NexisClaw.json` to stdout as JSON.
+Print the generated JSON schema for `FirstNexus.json` to stdout as JSON.
 
 <AccordionGroup>
   <Accordion title="What it includes">
@@ -62,13 +62,13 @@ Print the generated JSON schema for `NexisClaw.json` to stdout as JSON.
 </AccordionGroup>
 
 ```bash
-NexisClaw config schema
+FirstNexus config schema
 ```
 
 Pipe it into a file when you want to inspect or validate it with other tools:
 
 ```bash
-NexisClaw config schema > NexisClaw.schema.json
+FirstNexus config schema > FirstNexus.schema.json
 ```
 
 ### Paths
@@ -76,15 +76,15 @@ NexisClaw config schema > NexisClaw.schema.json
 Paths use dot or bracket notation:
 
 ```bash
-NexisClaw config get agents.defaults.workspace
-NexisClaw config get agents.list[0].id
+FirstNexus config get agents.defaults.workspace
+FirstNexus config get agents.list[0].id
 ```
 
 Use the agent list index to target a specific agent:
 
 ```bash
-NexisClaw config get agents.list
-NexisClaw config set agents.list[1].tools.exec.node "node-id-or-name"
+FirstNexus config get agents.list
+FirstNexus config set agents.list[1].tools.exec.node "node-id-or-name"
 ```
 
 ## Values
@@ -92,9 +92,9 @@ NexisClaw config set agents.list[1].tools.exec.node "node-id-or-name"
 Values are parsed as JSON5 when possible; otherwise they are treated as strings. Use `--strict-json` to require JSON5 parsing. `--json` remains supported as a legacy alias.
 
 ```bash
-NexisClaw config set agents.defaults.heartbeat.every "0m"
-NexisClaw config set gateway.port 19001 --strict-json
-NexisClaw config set channels.whatsapp.groups '["*"]' --strict-json
+FirstNexus config set agents.defaults.heartbeat.every "0m"
+FirstNexus config set gateway.port 19001 --strict-json
+FirstNexus config set channels.whatsapp.groups '["*"]' --strict-json
 ```
 
 `config get <path> --json` prints the raw value as JSON instead of terminal-formatted text.
@@ -106,25 +106,25 @@ Object assignment replaces the target path by default. Protected map/list paths 
 Use `--merge` when adding entries to those maps:
 
 ```bash
-NexisClaw config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
-NexisClaw config set models.providers.ollama.models '[{"id":"llama3.2","name":"Llama 3.2"}]' --strict-json --merge
+FirstNexus config set agents.defaults.models '{"openai/gpt-5.4":{}}' --strict-json --merge
+FirstNexus config set models.providers.ollama.models '[{"id":"llama3.2","name":"Llama 3.2"}]' --strict-json --merge
 ```
 
 Use `--replace` only when you intentionally want the provided value to become the complete target value.
 
 ## `config set` modes
 
-`NexisClaw config set` supports four assignment styles:
+`FirstNexus config set` supports four assignment styles:
 
 <Tabs>
   <Tab title="Value mode">
     ```bash
-    NexisClaw config set <path> <value>
+    FirstNexus config set <path> <value>
     ```
   </Tab>
   <Tab title="SecretRef builder mode">
     ```bash
-    NexisClaw config set channels.discord.token \
+    FirstNexus config set channels.discord.token \
       --ref-provider default \
       --ref-source env \
       --ref-id DISCORD_BOT_TOKEN
@@ -134,9 +134,9 @@ Use `--replace` only when you intentionally want the provided value to become th
     Provider builder mode targets `secrets.providers.<alias>` paths only:
 
     ```bash
-    NexisClaw config set secrets.providers.vault \
+    FirstNexus config set secrets.providers.vault \
       --provider-source exec \
-      --provider-command /usr/local/bin/NexisClaw-vault \
+      --provider-command /usr/local/bin/FirstNexus-vault \
       --provider-arg read \
       --provider-arg openai/api-key \
       --provider-timeout-ms 5000
@@ -145,7 +145,7 @@ Use `--replace` only when you intentionally want the provided value to become th
   </Tab>
   <Tab title="Batch mode">
     ```bash
-    NexisClaw config set --batch-json '[
+    FirstNexus config set --batch-json '[
       {
         "path": "secrets.providers.default",
         "provider": { "source": "env" }
@@ -158,7 +158,7 @@ Use `--replace` only when you intentionally want the provided value to become th
     ```
 
     ```bash
-    NexisClaw config set --batch-file ./config-set.batch.json --dry-run
+    FirstNexus config set --batch-file ./config-set.batch.json --dry-run
     ```
 
   </Tab>
@@ -175,15 +175,15 @@ Batch parsing always uses the batch payload (`--batch-json`/`--batch-file`) as t
 Use `config patch` when you want to paste or pipe a config-shaped patch instead of running many path-based `config set` commands. The input is a JSON5 object. Objects merge recursively, arrays and scalar values replace the target value, and `null` deletes the target path.
 
 ```bash
-NexisClaw config patch --file ./NexisClaw.patch.json5 --dry-run
-NexisClaw config patch --file ./NexisClaw.patch.json5
+FirstNexus config patch --file ./FirstNexus.patch.json5 --dry-run
+FirstNexus config patch --file ./FirstNexus.patch.json5
 ```
 
 You can also pipe a patch over stdin, which is useful for remote setup scripts:
 
 ```bash
-ssh NexisClaw-host 'NexisClaw config patch --stdin --dry-run' < ./NexisClaw.patch.json5
-ssh NexisClaw-host 'NexisClaw config patch --stdin' < ./NexisClaw.patch.json5
+ssh FirstNexus-host 'FirstNexus config patch --stdin --dry-run' < ./FirstNexus.patch.json5
+ssh FirstNexus-host 'FirstNexus config patch --stdin' < ./FirstNexus.patch.json5
 ```
 
 Example patch:
@@ -221,7 +221,7 @@ Example patch:
 Use `--replace-path <path>` when one object or array must become exactly the provided value instead of being recursively patched:
 
 ```bash
-NexisClaw config patch --file ./discord.patch.json5 --replace-path 'channels.discord.guilds["123"].channels'
+FirstNexus config patch --file ./discord.patch.json5 --replace-path 'channels.discord.guilds["123"].channels'
 ```
 
 `--dry-run` runs schema and SecretRef resolvability checks without writing. Exec-backed SecretRefs are skipped by default during dry-run; add `--allow-exec` when you intentionally want dry-run to execute provider commands.
@@ -229,12 +229,12 @@ NexisClaw config patch --file ./discord.patch.json5 --replace-path 'channels.dis
 JSON path/value mode remains supported for both SecretRefs and providers:
 
 ```bash
-NexisClaw config set channels.discord.token \
+FirstNexus config set channels.discord.token \
   '{"source":"env","provider":"default","id":"DISCORD_BOT_TOKEN"}' \
   --strict-json
 
-NexisClaw config set secrets.providers.vaultfile \
-  '{"source":"file","path":"/etc/NexisClaw/secrets.json","mode":"json"}' \
+FirstNexus config set secrets.providers.vaultfile \
+  '{"source":"file","path":"/etc/FirstNexus/secrets.json","mode":"json"}' \
   --strict-json
 ```
 
@@ -277,9 +277,9 @@ Provider builder targets must use `secrets.providers.<alias>` as the path.
 Hardened exec provider example:
 
 ```bash
-NexisClaw config set secrets.providers.vault \
+FirstNexus config set secrets.providers.vault \
   --provider-source exec \
-  --provider-command /usr/local/bin/NexisClaw-vault \
+  --provider-command /usr/local/bin/FirstNexus-vault \
   --provider-arg read \
   --provider-arg openai/api-key \
   --provider-json-only \
@@ -290,23 +290,23 @@ NexisClaw config set secrets.providers.vault \
 
 ## Dry run
 
-Use `--dry-run` to validate changes without writing `NexisClaw.json`.
+Use `--dry-run` to validate changes without writing `FirstNexus.json`.
 
 ```bash
-NexisClaw config set channels.discord.token \
+FirstNexus config set channels.discord.token \
   --ref-provider default \
   --ref-source env \
   --ref-id DISCORD_BOT_TOKEN \
   --dry-run
 
-NexisClaw config set channels.discord.token \
+FirstNexus config set channels.discord.token \
   --ref-provider default \
   --ref-source env \
   --ref-id DISCORD_BOT_TOKEN \
   --dry-run \
   --json
 
-NexisClaw config set channels.discord.token \
+FirstNexus config set channels.discord.token \
   --ref-provider vault \
   --ref-source exec \
   --ref-id discord/token \
@@ -370,7 +370,7 @@ NexisClaw config set channels.discord.token \
     {
       "ok": true,
       "operations": 1,
-      "configPath": "~/.NexisClaw/NexisClaw.json",
+      "configPath": "~/.FirstNexus/FirstNexus.json",
       "inputModes": ["builder"],
       "checks": {
         "schema": false,
@@ -387,7 +387,7 @@ NexisClaw config set channels.discord.token \
     {
       "ok": false,
       "operations": 1,
-      "configPath": "~/.NexisClaw/NexisClaw.json",
+      "configPath": "~/.FirstNexus/FirstNexus.json",
       "inputModes": ["builder"],
       "checks": {
         "schema": false,
@@ -421,29 +421,29 @@ NexisClaw config set channels.discord.token \
 
 ## Write safety
 
-`NexisClaw config set` and other NexisClaw-owned config writers validate the full post-change config before committing it to disk. If the new payload fails schema validation or looks like a destructive clobber, the active config is left alone and the rejected payload is saved beside it as `NexisClaw.json.rejected.*`.
+`FirstNexus config set` and other FirstNexus-owned config writers validate the full post-change config before committing it to disk. If the new payload fails schema validation or looks like a destructive clobber, the active config is left alone and the rejected payload is saved beside it as `FirstNexus.json.rejected.*`.
 
 <Warning>
-The active config path must be a regular file. Symlinked `NexisClaw.json` layouts are unsupported for writes; use `NEXISCLAW_CONFIG_PATH` to point directly at the real file instead.
+The active config path must be a regular file. Symlinked `FirstNexus.json` layouts are unsupported for writes; use `NEXISCLAW_CONFIG_PATH` to point directly at the real file instead.
 </Warning>
 
 Prefer CLI writes for small edits:
 
 ```bash
-NexisClaw config set gateway.reload.mode hybrid --dry-run
-NexisClaw config set gateway.reload.mode hybrid
-NexisClaw config validate
+FirstNexus config set gateway.reload.mode hybrid --dry-run
+FirstNexus config set gateway.reload.mode hybrid
+FirstNexus config validate
 ```
 
 If a write is rejected, inspect the saved payload and fix the full config shape:
 
 ```bash
-CONFIG="$(NexisClaw config file)"
+CONFIG="$(FirstNexus config file)"
 ls -lt "$CONFIG".rejected.* 2>/dev/null | head
-NexisClaw config validate
+FirstNexus config validate
 ```
 
-Direct editor writes are still allowed, but the running Gateway treats them as untrusted until they validate. Invalid direct edits fail startup or are skipped by hot reload; Gateway does not rewrite `NexisClaw.json`. Run `NexisClaw doctor --fix` to repair prefixed/clobbered config or restore the last-known-good copy. See [Gateway troubleshooting](/gateway/troubleshooting#gateway-rejected-invalid-config).
+Direct editor writes are still allowed, but the running Gateway treats them as untrusted until they validate. Invalid direct edits fail startup or are skipped by hot reload; Gateway does not rewrite `FirstNexus.json`. Run `FirstNexus doctor --fix` to repair prefixed/clobbered config or restore the last-known-good copy. See [Gateway troubleshooting](/gateway/troubleshooting#gateway-rejected-invalid-config).
 
 Whole-file recovery is reserved for doctor repair. Plugin schema changes or `minHostVersion` skew stay loud instead of rolling back unrelated user settings such as models, providers, auth profiles, channels, gateway exposure, tools, memory, browser, or cron config.
 
@@ -458,27 +458,27 @@ Restart the gateway after edits.
 Validate the current config against the active schema without starting the gateway.
 
 ```bash
-NexisClaw config validate
-NexisClaw config validate --json
+FirstNexus config validate
+FirstNexus config validate --json
 ```
 
-After `NexisClaw config validate` is passing, you can use the local TUI to have an embedded agent compare the active config against the docs while you validate each change from the same terminal:
+After `FirstNexus config validate` is passing, you can use the local TUI to have an embedded agent compare the active config against the docs while you validate each change from the same terminal:
 
 <Note>
-If validation is already failing, start with `NexisClaw configure` or `NexisClaw doctor --fix`. `NexisClaw chat` does not bypass the invalid-config guard.
+If validation is already failing, start with `FirstNexus configure` or `FirstNexus doctor --fix`. `FirstNexus chat` does not bypass the invalid-config guard.
 </Note>
 
 ```bash
-NexisClaw chat
+FirstNexus chat
 ```
 
 Then inside the TUI:
 
 ```text
-!NexisClaw config file
-!NexisClaw docs gateway auth token secretref
-!NexisClaw config validate
-!NexisClaw doctor
+!FirstNexus config file
+!FirstNexus docs gateway auth token secretref
+!FirstNexus config validate
+!FirstNexus doctor
 ```
 
 Typical repair loop:
@@ -488,13 +488,13 @@ Typical repair loop:
     Ask the agent to compare your current config with the relevant docs page and suggest the smallest fix.
   </Step>
   <Step title="Apply targeted edits">
-    Apply targeted edits with `NexisClaw config set` or `NexisClaw configure`.
+    Apply targeted edits with `FirstNexus config set` or `FirstNexus configure`.
   </Step>
   <Step title="Re-validate">
-    Rerun `NexisClaw config validate` after each change.
+    Rerun `FirstNexus config validate` after each change.
   </Step>
   <Step title="Doctor for runtime issues">
-    If validation passes but the runtime is still unhealthy, run `NexisClaw doctor` or `NexisClaw doctor --fix` for migration and repair help.
+    If validation passes but the runtime is still unhealthy, run `FirstNexus doctor` or `FirstNexus doctor --fix` for migration and repair help.
   </Step>
 </Steps>
 

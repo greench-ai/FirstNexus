@@ -1,6 +1,6 @@
 import { normalizeChatType } from "../channels/chat-type.js";
 import type { SessionChatType, SessionEntry } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
@@ -72,7 +72,7 @@ function deriveChatTypeFromKey(key?: string): SessionChatType | undefined {
 }
 
 export function resolveSendPolicy(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   entry?: SessionEntry;
   sessionKey?: string;
   channel?: string;

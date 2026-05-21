@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { withAudioFixture, withVideoFixture } from "./runner.test-utils.js";
 import type { AudioTranscriptionRequest, VideoDescriptionRequest } from "./types.js";
 
@@ -35,7 +35,7 @@ let buildProviderRegistry: typeof import("./runner.js").buildProviderRegistry;
 let clearMediaUnderstandingBinaryCacheForTests: typeof import("./runner.js").clearMediaUnderstandingBinaryCacheForTests;
 let runCapability: typeof import("./runner.js").runCapability;
 
-function createOpenAiAudioCfg(providerOverrides: Record<string, unknown> = {}): NexisClawConfig {
+function createOpenAiAudioCfg(providerOverrides: Record<string, unknown> = {}): FirstNexusConfig {
   return {
     models: {
       providers: {
@@ -54,7 +54,7 @@ function createOpenAiAudioCfg(providerOverrides: Record<string, unknown> = {}): 
         },
       },
     },
-  } as unknown as NexisClawConfig;
+  } as unknown as FirstNexusConfig;
 }
 
 function expectSingleOutputText(
@@ -116,7 +116,7 @@ describe("runCapability proxy fetch passthrough", () => {
   it("passes fetchFn to audio provider when HTTPS_PROXY is set", async () => {
     vi.stubEnv("HTTPS_PROXY", "http://proxy.test:8080");
     const seenFetchFn = await runAudioCapabilityWithFetchCapture({
-      fixturePrefix: "NexisClaw-audio-proxy",
+      fixturePrefix: "FirstNexus-audio-proxy",
       outputText: "transcribed",
     });
     expect(seenFetchFn).toBe(proxyFetchMocks.proxyFetch);
@@ -125,7 +125,7 @@ describe("runCapability proxy fetch passthrough", () => {
   it("passes fetchFn to video provider when HTTPS_PROXY is set", async () => {
     vi.stubEnv("HTTPS_PROXY", "http://proxy.test:8080");
 
-    await withVideoFixture("NexisClaw-video-proxy", async ({ ctx, media, cache }) => {
+    await withVideoFixture("FirstNexus-video-proxy", async ({ ctx, media, cache }) => {
       let seenFetchFn: typeof fetch | undefined;
 
       const result = await runCapability({
@@ -147,7 +147,7 @@ describe("runCapability proxy fetch passthrough", () => {
               },
             },
           },
-        } as unknown as NexisClawConfig,
+        } as unknown as FirstNexusConfig,
         ctx,
         attachments: cache,
         media,
@@ -178,7 +178,7 @@ describe("runCapability proxy fetch passthrough", () => {
     vi.stubEnv("http_proxy", "");
 
     const seenFetchFn = await runAudioCapabilityWithFetchCapture({
-      fixturePrefix: "NexisClaw-audio-no-proxy",
+      fixturePrefix: "FirstNexus-audio-no-proxy",
       outputText: "ok",
     });
     expect(seenFetchFn).toBeUndefined();
@@ -187,33 +187,36 @@ describe("runCapability proxy fetch passthrough", () => {
   it("passes allowPrivateNetwork to audio provider when set in providerConfig.request", async () => {
     let seenRequest: AudioTranscriptionRequest["request"];
 
-    await withAudioFixture("NexisClaw-audio-allowprivatenetwork", async ({ ctx, media, cache }) => {
-      const providerRegistry = buildProviderRegistry({
-        openai: {
-          id: "openai",
-          capabilities: ["audio"],
-          transcribeAudio: async (req: AudioTranscriptionRequest) => {
-            seenRequest = req.request;
-            return { text: "ok", model: req.model };
+    await withAudioFixture(
+      "FirstNexus-audio-allowprivatenetwork",
+      async ({ ctx, media, cache }) => {
+        const providerRegistry = buildProviderRegistry({
+          openai: {
+            id: "openai",
+            capabilities: ["audio"],
+            transcribeAudio: async (req: AudioTranscriptionRequest) => {
+              seenRequest = req.request;
+              return { text: "ok", model: req.model };
+            },
           },
-        },
-      });
+        });
 
-      const result = await runCapability({
-        capability: "audio",
-        cfg: createOpenAiAudioCfg({
-          request: {
-            allowPrivateNetwork: true,
-          },
-        }),
-        ctx,
-        attachments: cache,
-        media,
-        providerRegistry,
-      });
+        const result = await runCapability({
+          capability: "audio",
+          cfg: createOpenAiAudioCfg({
+            request: {
+              allowPrivateNetwork: true,
+            },
+          }),
+          ctx,
+          attachments: cache,
+          media,
+          providerRegistry,
+        });
 
-      expectSingleOutputText(result, "ok");
-    });
+        expectSingleOutputText(result, "ok");
+      },
+    );
 
     if (!seenRequest) {
       throw new Error("Expected audio provider request options");

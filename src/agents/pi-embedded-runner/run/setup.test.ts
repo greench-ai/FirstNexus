@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import type { ModelDefinitionConfig } from "../../../config/types.models.js";
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
 import type { ProviderRuntimeModel } from "../../../plugins/provider-runtime-model.types.js";
 import {
   buildBeforeModelResolveAttachments,
@@ -124,7 +124,7 @@ describe("resolveEffectiveRuntimeModel", () => {
           },
         },
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     const result = resolveEffectiveRuntimeModel({
       cfg,
@@ -151,7 +151,7 @@ describe("resolveEffectiveRuntimeModel", () => {
           },
         },
       },
-    } satisfies NexisClawConfig;
+    } satisfies FirstNexusConfig;
 
     const result = resolveEffectiveRuntimeModel({
       cfg,

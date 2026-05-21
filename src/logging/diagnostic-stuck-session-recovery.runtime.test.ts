@@ -141,7 +141,7 @@ describe("stuck session recovery", () => {
 
   it("logs stopped cron context when aborting an active embedded run", async () => {
     const previousStateDir = process.env.NEXISCLAW_STATE_DIR;
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-recovery-context-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-recovery-context-"));
     try {
       process.env.NEXISCLAW_STATE_DIR = tempDir;
       fs.mkdirSync(path.join(tempDir, "cron"), { recursive: true });

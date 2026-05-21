@@ -1,11 +1,11 @@
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/core";
-import { resolvePluginConfigObject } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import type { ProviderRuntimeModel } from "NexisClaw/plugin-sdk/plugin-entry";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/core";
+import { resolvePluginConfigObject } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import type { ProviderRuntimeModel } from "FirstNexus/plugin-sdk/plugin-entry";
 import {
   normalizeModelCompat,
   type ModelProviderConfig,
   type ProviderPlugin,
-} from "NexisClaw/plugin-sdk/provider-model-shared";
+} from "FirstNexus/plugin-sdk/provider-model-shared";
 import { resolveCodexSystemPromptContribution } from "./prompt-overlay.js";
 import {
   buildCodexModelDefinition,

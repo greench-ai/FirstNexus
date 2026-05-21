@@ -1,8 +1,8 @@
-import { assertOkOrThrowProviderError } from "NexisClaw/plugin-sdk/provider-http";
+import { assertOkOrThrowProviderError } from "FirstNexus/plugin-sdk/provider-http";
 import {
   fetchWithSsrFGuard,
   ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
 
 export const DEFAULT_MINIMAX_TTS_BASE_URL = "https://api.minimax.io";
 

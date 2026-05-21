@@ -14,8 +14,8 @@ historical only for current nodes).
 
 macOS can also run in **node mode**: the menubar app connects to the Gateway's
 WS server and exposes its local canvas/camera commands as a node (so
-`NexisClaw nodes …` works against this Mac). In remote gateway mode, browser
-automation is handled by the CLI node host (`NexisClaw node run` or the
+`FirstNexus nodes …` works against this Mac). In remote gateway mode, browser
+automation is handled by the CLI node host (`FirstNexus node run` or the
 installed node service), not by the native app node.
 
 Notes:
@@ -32,16 +32,16 @@ creates a device pairing request for `role: node`. Approve via the devices CLI (
 Quick CLI:
 
 ```bash
-NexisClaw devices list
-NexisClaw devices approve <requestId>
-NexisClaw devices reject <requestId>
-NexisClaw nodes status
-NexisClaw nodes describe --node <idOrNameOrIp>
+FirstNexus devices list
+FirstNexus devices approve <requestId>
+FirstNexus devices reject <requestId>
+FirstNexus nodes status
+FirstNexus nodes describe --node <idOrNameOrIp>
 ```
 
 If a node retries with changed auth details (role/scopes/public key), the prior
 pending request is superseded and a new `requestId` is created. Re-run
-`NexisClaw devices list` before approving.
+`FirstNexus devices list` before approving.
 
 Notes:
 
@@ -49,9 +49,9 @@ Notes:
 - The device pairing record is the durable approved-role contract. Token
   rotation stays inside that contract; it cannot upgrade a paired node into a
   different role that pairing approval never granted.
-- `node.pair.*` (CLI: `NexisClaw nodes pending/approve/reject/remove/rename`) is a separate gateway-owned
+- `node.pair.*` (CLI: `FirstNexus nodes pending/approve/reject/remove/rename`) is a separate gateway-owned
   node pairing store; it does **not** gate the WS `connect` handshake.
-- `NexisClaw nodes remove --node <id|name|ip>` deletes stale entries from that
+- `FirstNexus nodes remove --node <id|name|ip>` deletes stale entries from that
   separate gateway-owned node pairing store.
 - Approval scope follows the pending request's declared commands:
   - commandless request: `operator.pairing`
@@ -68,14 +68,14 @@ forwards `exec` calls to the **node host** when `host=node` is selected.
 
 - **Gateway host**: receives messages, runs the model, routes tool calls.
 - **Node host**: executes `system.run`/`system.which` on the node machine.
-- **Approvals**: enforced on the node host via `~/.NexisClaw/exec-approvals.json`.
+- **Approvals**: enforced on the node host via `~/.FirstNexus/exec-approvals.json`.
 
 Approval note:
 
 - Approval-backed node runs bind exact request context.
-- For direct shell/runtime file executions, NexisClaw also best-effort binds one concrete local
+- For direct shell/runtime file executions, FirstNexus also best-effort binds one concrete local
   file operand and denies the run if that file changes before execution.
-- If NexisClaw cannot identify exactly one concrete local file for an interpreter/runtime command,
+- If FirstNexus cannot identify exactly one concrete local file for an interpreter/runtime command,
   approval-backed execution is denied instead of pretending full runtime coverage. Use sandboxing,
   separate hosts, or an explicit trusted allowlist/full workflow for broader interpreter semantics.
 
@@ -84,7 +84,7 @@ Approval note:
 On the node machine:
 
 ```bash
-NexisClaw node run --host <gateway-host> --port 18789 --display-name "Build Node"
+FirstNexus node run --host <gateway-host> --port 18789 --display-name "Build Node"
 ```
 
 ### Remote gateway via SSH tunnel (loopback bind)
@@ -101,12 +101,12 @@ ssh -N -L 18790:127.0.0.1:18789 user@gateway-host
 
 # Terminal B: export the gateway token and connect through the tunnel
 export NEXISCLAW_GATEWAY_TOKEN="<gateway-token>"
-NexisClaw node run --host 127.0.0.1 --port 18790 --display-name "Build Node"
+FirstNexus node run --host 127.0.0.1 --port 18790 --display-name "Build Node"
 ```
 
 Notes:
 
-- `NexisClaw node run` supports token or password auth.
+- `FirstNexus node run` supports token or password auth.
 - Env vars are preferred: `NEXISCLAW_GATEWAY_TOKEN` / `NEXISCLAW_GATEWAY_PASSWORD`.
 - Config fallback is `gateway.auth.token` / `gateway.auth.password`.
 - In local mode, node host intentionally ignores `gateway.remote.token` / `gateway.remote.password`.
@@ -117,9 +117,9 @@ Notes:
 ### Start a node host (service)
 
 ```bash
-NexisClaw node install --host <gateway-host> --port 18789 --display-name "Build Node"
-NexisClaw node start
-NexisClaw node restart
+FirstNexus node install --host <gateway-host> --port 18789 --display-name "Build Node"
+FirstNexus node start
+FirstNexus node restart
 ```
 
 ### Pair + name
@@ -127,38 +127,38 @@ NexisClaw node restart
 On the gateway host:
 
 ```bash
-NexisClaw devices list
-NexisClaw devices approve <requestId>
-NexisClaw nodes status
+FirstNexus devices list
+FirstNexus devices approve <requestId>
+FirstNexus nodes status
 ```
 
-If the node retries with changed auth details, re-run `NexisClaw devices list`
+If the node retries with changed auth details, re-run `FirstNexus devices list`
 and approve the current `requestId`.
 
 Naming options:
 
-- `--display-name` on `NexisClaw node run` / `NexisClaw node install` (persists in `~/.NexisClaw/node.json` on the node).
-- `NexisClaw nodes rename --node <id|name|ip> --name "Build Node"` (gateway override).
+- `--display-name` on `FirstNexus node run` / `FirstNexus node install` (persists in `~/.FirstNexus/node.json` on the node).
+- `FirstNexus nodes rename --node <id|name|ip> --name "Build Node"` (gateway override).
 
 ### Allowlist the commands
 
 Exec approvals are **per node host**. Add allowlist entries from the gateway:
 
 ```bash
-NexisClaw approvals allowlist add --node <id|name|ip> "/usr/bin/uname"
-NexisClaw approvals allowlist add --node <id|name|ip> "/usr/bin/sw_vers"
+FirstNexus approvals allowlist add --node <id|name|ip> "/usr/bin/uname"
+FirstNexus approvals allowlist add --node <id|name|ip> "/usr/bin/sw_vers"
 ```
 
-Approvals live on the node host at `~/.NexisClaw/exec-approvals.json`.
+Approvals live on the node host at `~/.FirstNexus/exec-approvals.json`.
 
 ### Point exec at the node
 
 Configure defaults (gateway config):
 
 ```bash
-NexisClaw config set tools.exec.host node
-NexisClaw config set tools.exec.security allowlist
-NexisClaw config set tools.exec.node "<id-or-name>"
+FirstNexus config set tools.exec.host node
+FirstNexus config set tools.exec.security allowlist
+FirstNexus config set tools.exec.node "<id-or-name>"
 ```
 
 Or per session:
@@ -183,7 +183,7 @@ Related:
 Low-level (raw RPC):
 
 ```bash
-NexisClaw nodes invoke --node <idOrNameOrIp> --command canvas.eval --params '{"javaScript":"location.href"}'
+FirstNexus nodes invoke --node <idOrNameOrIp> --command canvas.eval --params '{"javaScript":"location.href"}'
 ```
 
 Higher-level helpers exist for the common "give the agent a MEDIA attachment" workflows.
@@ -221,17 +221,17 @@ If the node is showing the Canvas (WebView), `canvas.snapshot` returns `{ format
 CLI helper (writes to a temp file and prints `MEDIA:<path>`):
 
 ```bash
-NexisClaw nodes canvas snapshot --node <idOrNameOrIp> --format png
-NexisClaw nodes canvas snapshot --node <idOrNameOrIp> --format jpg --max-width 1200 --quality 0.9
+FirstNexus nodes canvas snapshot --node <idOrNameOrIp> --format png
+FirstNexus nodes canvas snapshot --node <idOrNameOrIp> --format jpg --max-width 1200 --quality 0.9
 ```
 
 ### Canvas controls
 
 ```bash
-NexisClaw nodes canvas present --node <idOrNameOrIp> --target https://example.com
-NexisClaw nodes canvas hide --node <idOrNameOrIp>
-NexisClaw nodes canvas navigate https://example.com --node <idOrNameOrIp>
-NexisClaw nodes canvas eval --node <idOrNameOrIp> --js "document.title"
+FirstNexus nodes canvas present --node <idOrNameOrIp> --target https://example.com
+FirstNexus nodes canvas hide --node <idOrNameOrIp>
+FirstNexus nodes canvas navigate https://example.com --node <idOrNameOrIp>
+FirstNexus nodes canvas eval --node <idOrNameOrIp> --js "document.title"
 ```
 
 Notes:
@@ -242,9 +242,9 @@ Notes:
 ### A2UI (Canvas)
 
 ```bash
-NexisClaw nodes canvas a2ui push --node <idOrNameOrIp> --text "Hello"
-NexisClaw nodes canvas a2ui push --node <idOrNameOrIp> --jsonl ./payload.jsonl
-NexisClaw nodes canvas a2ui reset --node <idOrNameOrIp>
+FirstNexus nodes canvas a2ui push --node <idOrNameOrIp> --text "Hello"
+FirstNexus nodes canvas a2ui push --node <idOrNameOrIp> --jsonl ./payload.jsonl
+FirstNexus nodes canvas a2ui reset --node <idOrNameOrIp>
 ```
 
 Notes:
@@ -256,16 +256,16 @@ Notes:
 Photos (`jpg`):
 
 ```bash
-NexisClaw nodes camera list --node <idOrNameOrIp>
-NexisClaw nodes camera snap --node <idOrNameOrIp>            # default: both facings (2 MEDIA lines)
-NexisClaw nodes camera snap --node <idOrNameOrIp> --facing front
+FirstNexus nodes camera list --node <idOrNameOrIp>
+FirstNexus nodes camera snap --node <idOrNameOrIp>            # default: both facings (2 MEDIA lines)
+FirstNexus nodes camera snap --node <idOrNameOrIp> --facing front
 ```
 
 Video clips (`mp4`):
 
 ```bash
-NexisClaw nodes camera clip --node <idOrNameOrIp> --duration 10s
-NexisClaw nodes camera clip --node <idOrNameOrIp> --duration 3000 --no-audio
+FirstNexus nodes camera clip --node <idOrNameOrIp> --duration 10s
+FirstNexus nodes camera clip --node <idOrNameOrIp> --duration 3000 --no-audio
 ```
 
 Notes:
@@ -279,8 +279,8 @@ Notes:
 Supported nodes expose `screen.record` (mp4). Example:
 
 ```bash
-NexisClaw nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10
-NexisClaw nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10 --no-audio
+FirstNexus nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10
+FirstNexus nodes screen record --node <idOrNameOrIp> --duration 10s --fps 10 --no-audio
 ```
 
 Notes:
@@ -297,8 +297,8 @@ Nodes expose `location.get` when Location is enabled in settings.
 CLI helper:
 
 ```bash
-NexisClaw nodes location get --node <idOrNameOrIp>
-NexisClaw nodes location get --node <idOrNameOrIp> --accuracy precise --max-age 15000 --location-timeout 10000
+FirstNexus nodes location get --node <idOrNameOrIp>
+FirstNexus nodes location get --node <idOrNameOrIp> --accuracy precise --max-age 15000 --location-timeout 10000
 ```
 
 Notes:
@@ -314,7 +314,7 @@ Android nodes can expose `sms.send` when the user grants **SMS** permission and 
 Low-level invoke:
 
 ```bash
-NexisClaw nodes invoke --node <idOrNameOrIp> --command sms.send --params '{"to":"+15555550123","message":"Hello from NexisClaw"}'
+FirstNexus nodes invoke --node <idOrNameOrIp> --command sms.send --params '{"to":"+15555550123","message":"Hello from FirstNexus"}'
 ```
 
 Notes:
@@ -340,9 +340,9 @@ Available families:
 Example invokes:
 
 ```bash
-NexisClaw nodes invoke --node <idOrNameOrIp> --command device.status --params '{}'
-NexisClaw nodes invoke --node <idOrNameOrIp> --command notifications.list --params '{}'
-NexisClaw nodes invoke --node <idOrNameOrIp> --command photos.latest --params '{"limit":1}'
+FirstNexus nodes invoke --node <idOrNameOrIp> --command device.status --params '{}'
+FirstNexus nodes invoke --node <idOrNameOrIp> --command notifications.list --params '{}'
+FirstNexus nodes invoke --node <idOrNameOrIp> --command photos.latest --params '{"limit":1}'
 ```
 
 Notes:
@@ -357,8 +357,8 @@ The headless node host exposes `system.run`, `system.which`, and `system.execApp
 Examples:
 
 ```bash
-NexisClaw nodes notify --node <idOrNameOrIp> --title "Ping" --body "Gateway ready"
-NexisClaw nodes invoke --node <idOrNameOrIp> --command system.which --params '{"name":"git"}'
+FirstNexus nodes notify --node <idOrNameOrIp> --title "Ping" --body "Gateway ready"
+FirstNexus nodes invoke --node <idOrNameOrIp> --command system.which --params '{"name":"git"}'
 ```
 
 Notes:
@@ -379,7 +379,7 @@ Notes:
 - Node hosts ignore `PATH` overrides and strip dangerous startup/shell keys (`DYLD_*`, `LD_*`, `NODE_OPTIONS`, `PYTHON*`, `PERL*`, `RUBYOPT`, `SHELLOPTS`, `PS4`). If you need extra PATH entries, configure the node host service environment (or install tools in standard locations) instead of passing `PATH` via `--env`.
 - On macOS node mode, `system.run` is gated by exec approvals in the macOS app (Settings → Exec approvals).
   Ask/allowlist/full behave the same as the headless node host; denied prompts return `SYSTEM_RUN_DENIED`.
-- On headless node host, `system.run` is gated by exec approvals (`~/.NexisClaw/exec-approvals.json`).
+- On headless node host, `system.run` is gated by exec approvals (`~/.FirstNexus/exec-approvals.json`).
 
 ## Exec node binding
 
@@ -389,21 +389,21 @@ This sets the default node for `exec host=node` (and can be overridden per agent
 Global default:
 
 ```bash
-NexisClaw config set tools.exec.node "node-id-or-name"
+FirstNexus config set tools.exec.node "node-id-or-name"
 ```
 
 Per-agent override:
 
 ```bash
-NexisClaw config get agents.list
-NexisClaw config set agents.list[0].tools.exec.node "node-id-or-name"
+FirstNexus config get agents.list
+FirstNexus config set agents.list[0].tools.exec.node "node-id-or-name"
 ```
 
 Unset to allow any node:
 
 ```bash
-NexisClaw config unset tools.exec.node
-NexisClaw config unset agents.list[0].tools.exec.node
+FirstNexus config unset tools.exec.node
+FirstNexus config unset agents.list[0].tools.exec.node
 ```
 
 ## Permissions map
@@ -412,21 +412,21 @@ Nodes may include a `permissions` map in `node.list` / `node.describe`, keyed by
 
 ## Headless node host (cross-platform)
 
-NexisClaw can run a **headless node host** (no UI) that connects to the Gateway
+FirstNexus can run a **headless node host** (no UI) that connects to the Gateway
 WebSocket and exposes `system.run` / `system.which`. This is useful on Linux/Windows
 or for running a minimal node alongside a server.
 
 Start it:
 
 ```bash
-NexisClaw node run --host <gateway-host> --port 18789
+FirstNexus node run --host <gateway-host> --port 18789
 ```
 
 Notes:
 
 - Pairing is still required (the Gateway will show a device pairing prompt).
-- The node host stores its node id, token, display name, and gateway connection info in `~/.NexisClaw/node.json`.
-- Exec approvals are enforced locally via `~/.NexisClaw/exec-approvals.json`
+- The node host stores its node id, token, display name, and gateway connection info in `~/.FirstNexus/node.json`.
+- Exec approvals are enforced locally via `~/.FirstNexus/exec-approvals.json`
   (see [Exec approvals](/tools/exec-approvals)).
 - On macOS, the headless node host executes `system.run` locally by default. Set
   `NEXISCLAW_NODE_EXEC_HOST=app` to route `system.run` through the companion app exec host; add
@@ -435,5 +435,5 @@ Notes:
 
 ## Mac node mode
 
-- The macOS menubar app connects to the Gateway WS server as a node (so `NexisClaw nodes …` works against this Mac).
+- The macOS menubar app connects to the Gateway WS server as a node (so `FirstNexus nodes …` works against this Mac).
 - In remote mode, the app opens an SSH tunnel for the Gateway port and connects to `localhost`.

@@ -1,8 +1,8 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/provider-onboard";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/provider-onboard";
 
 export const FAL_DEFAULT_IMAGE_MODEL_REF = "fal/fal-ai/flux/dev";
 
-export function applyFalConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applyFalConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   if (cfg.agents?.defaults?.imageGenerationModel) {
     return cfg;
   }

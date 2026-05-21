@@ -1,4 +1,4 @@
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
 
 export type GoogleChatDurableReplyOptions = {
   to: string;

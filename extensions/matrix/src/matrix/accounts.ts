@@ -1,6 +1,6 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
-import { hasConfiguredSecretInput } from "NexisClaw/plugin-sdk/secret-input-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
+import { hasConfiguredSecretInput } from "FirstNexus/plugin-sdk/secret-input-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   resolveConfiguredMatrixAccountIds,
   resolveMatrixDefaultOrOnlyAccountId,

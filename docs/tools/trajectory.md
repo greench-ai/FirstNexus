@@ -1,14 +1,14 @@
 ---
-summary: "Export redacted trajectory bundles for debugging an NexisClaw agent session"
+summary: "Export redacted trajectory bundles for debugging an FirstNexus agent session"
 read_when:
   - Debugging why an agent answered, failed, or called tools a certain way
-  - Exporting a support bundle for an NexisClaw session
+  - Exporting a support bundle for an FirstNexus session
   - Investigating prompt context, tool calls, runtime errors, or usage metadata
   - Disabling or relocating trajectory capture
 title: "Trajectory bundles"
 ---
 
-Trajectory capture is NexisClaw's per-session flight recorder. It records a
+Trajectory capture is FirstNexus's per-session flight recorder. It records a
 structured timeline for each agent run, then `/export-trajectory` packages the
 current session into a redacted support bundle.
 
@@ -41,10 +41,10 @@ Alias:
 /trajectory
 ```
 
-NexisClaw writes the bundle under the workspace:
+FirstNexus writes the bundle under the workspace:
 
 ```text
-.NexisClaw/trajectory-exports/NexisClaw-trajectory-<session>-<timestamp>/
+.FirstNexus/trajectory-exports/FirstNexus-trajectory-<session>-<timestamp>/
 ```
 
 You can choose a relative output directory name:
@@ -53,13 +53,13 @@ You can choose a relative output directory name:
 /export-trajectory bug-1234
 ```
 
-The custom path is resolved inside `.NexisClaw/trajectory-exports/`. Absolute
+The custom path is resolved inside `.FirstNexus/trajectory-exports/`. Absolute
 paths and `~` paths are rejected.
 
 Trajectory bundles can contain prompts, model messages, tool schemas, tool
 results, runtime events, and local paths. The chat slash command therefore runs
 through exec approval every time. Approve the export once when you intend to
-create the bundle; do not use allow-all. In group chats, NexisClaw sends the
+create the bundle; do not use allow-all. In group chats, FirstNexus sends the
 approval prompt and export result to the owner privately instead of posting the
 trajectory details back to the shared room.
 
@@ -67,7 +67,7 @@ For local inspection or support workflows, you can also run the approved command
 path directly:
 
 ```bash
-NexisClaw sessions export-trajectory --session-key "agent:main:telegram:direct:123" --workspace .
+FirstNexus sessions export-trajectory --session-key "agent:main:telegram:direct:123" --workspace .
 ```
 
 ## Access
@@ -77,7 +77,7 @@ authorization checks and owner checks for the channel.
 
 ## What gets recorded
 
-Trajectory capture is on by default for NexisClaw agent runs.
+Trajectory capture is on by default for FirstNexus agent runs.
 
 Runtime events include:
 
@@ -104,7 +104,7 @@ Events are written as JSON Lines with this schema marker:
 
 ```json
 {
-  "traceSchema": "NexisClaw-trajectory",
+  "traceSchema": "FirstNexus-trajectory",
   "schemaVersion": 1
 }
 ```
@@ -118,7 +118,7 @@ An exported bundle can contain:
 | `manifest.json`       | Bundle schema, source files, event counts, and generated file list                             |
 | `events.jsonl`        | Ordered runtime and transcript timeline                                                        |
 | `session-branch.json` | Redacted active transcript branch and session header                                           |
-| `metadata.json`       | NexisClaw version, OS/runtime, model, config snapshot, plugins, skills, and prompt metadata     |
+| `metadata.json`       | FirstNexus version, OS/runtime, model, config snapshot, plugins, skills, and prompt metadata   |
 | `artifacts.json`      | Final status, errors, usage, prompt cache, compaction count, assistant text, and tool metadata |
 | `prompts.json`        | Submitted prompts and selected prompt-building details                                         |
 | `system-prompt.txt`   | Latest compiled system prompt, when captured                                                   |
@@ -135,7 +135,7 @@ By default, runtime trajectory events are written beside the session file:
 <session>.trajectory.jsonl
 ```
 
-NexisClaw also writes a best-effort pointer file beside the session:
+FirstNexus also writes a best-effort pointer file beside the session:
 
 ```text
 <session>.trajectory-path.json
@@ -145,10 +145,10 @@ Set `NEXISCLAW_TRAJECTORY_DIR` to store runtime trajectory sidecars in a
 dedicated directory:
 
 ```bash
-export NEXISCLAW_TRAJECTORY_DIR=/var/lib/NexisClaw/trajectories
+export NEXISCLAW_TRAJECTORY_DIR=/var/lib/FirstNexus/trajectories
 ```
 
-When this variable is set, NexisClaw writes one JSONL file per session id in that
+When this variable is set, FirstNexus writes one JSONL file per session id in that
 directory.
 
 Session maintenance removes trajectory sidecars when their owning session entry
@@ -158,7 +158,7 @@ belongs to that session.
 
 ## Disable capture
 
-Set `NEXISCLAW_TRAJECTORY=0` before starting NexisClaw:
+Set `NEXISCLAW_TRAJECTORY=0` before starting FirstNexus:
 
 ```bash
 export NEXISCLAW_TRAJECTORY=0
@@ -171,7 +171,7 @@ provider artifacts, and prompt metadata may be missing.
 ## Privacy and limits
 
 Trajectory bundles are designed for support and debugging, not public posting.
-NexisClaw redacts sensitive values before writing export files:
+FirstNexus redacts sensitive values before writing export files:
 
 - credentials and known secret-like payload fields
 - image data
@@ -194,7 +194,7 @@ and cannot know every application-specific secret.
 
 If the export has no runtime events:
 
-- confirm NexisClaw was started without `NEXISCLAW_TRAJECTORY=0`
+- confirm FirstNexus was started without `NEXISCLAW_TRAJECTORY=0`
 - check whether `NEXISCLAW_TRAJECTORY_DIR` points to a writable directory
 - run another message in the session, then export again
 - inspect `manifest.json` for `runtimeEventCount`
@@ -203,7 +203,7 @@ If the command rejects the output path:
 
 - use a relative name like `bug-1234`
 - do not pass `/tmp/...` or `~/...`
-- keep the export inside `.NexisClaw/trajectory-exports/`
+- keep the export inside `.FirstNexus/trajectory-exports/`
 
 If the export fails with a size error, the session or sidecar exceeded the
 export safety limits. Start a new session or export a smaller reproduction.

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import type { RuntimeEnv } from "../runtime.js";
 import type { DoctorPrompter } from "./doctor-prompter.js";
 import type { DoctorRepairMode } from "./doctor-repair-mode.js";
@@ -57,7 +57,7 @@ describe("maybeRepairSandboxImages", () => {
     migrateLegacySandboxRegistryFiles.mockResolvedValue([]);
   });
 
-  function createSandboxConfig(mode: "off" | "all" | "non-main"): NexisClawConfig {
+  function createSandboxConfig(mode: "off" | "all" | "non-main"): FirstNexusConfig {
     return {
       agents: {
         defaults: {
@@ -146,8 +146,8 @@ describe("maybeRepairSandboxRegistryFiles", () => {
     inspectLegacySandboxRegistryFiles.mockResolvedValue([
       {
         kind: "containers",
-        registryPath: "/tmp/NexisClaw/sandbox/containers.json",
-        shardedDir: "/tmp/NexisClaw/sandbox/containers",
+        registryPath: "/tmp/FirstNexus/sandbox/containers.json",
+        shardedDir: "/tmp/FirstNexus/sandbox/containers",
         exists: true,
         valid: true,
         entries: 2,
@@ -160,8 +160,8 @@ describe("maybeRepairSandboxRegistryFiles", () => {
     expect(note).toHaveBeenCalledWith(
       [
         "Legacy sandbox registry files detected.",
-        "- containers: /tmp/NexisClaw/sandbox/containers.json (2 entries)",
-        "Run NexisClaw doctor --fix to migrate them to sharded registry files.",
+        "- containers: /tmp/FirstNexus/sandbox/containers.json (2 entries)",
+        "Run FirstNexus doctor --fix to migrate them to sharded registry files.",
       ].join("\n"),
       "Sandbox",
     );
@@ -171,8 +171,8 @@ describe("maybeRepairSandboxRegistryFiles", () => {
     inspectLegacySandboxRegistryFiles.mockResolvedValue([
       {
         kind: "containers",
-        registryPath: "/tmp/NexisClaw/sandbox/containers.json",
-        shardedDir: "/tmp/NexisClaw/sandbox/containers",
+        registryPath: "/tmp/FirstNexus/sandbox/containers.json",
+        shardedDir: "/tmp/FirstNexus/sandbox/containers",
         exists: true,
         valid: true,
         entries: 2,
@@ -181,8 +181,8 @@ describe("maybeRepairSandboxRegistryFiles", () => {
     migrateLegacySandboxRegistryFiles.mockResolvedValue([
       {
         kind: "containers",
-        registryPath: "/tmp/NexisClaw/sandbox/containers.json",
-        shardedDir: "/tmp/NexisClaw/sandbox/containers",
+        registryPath: "/tmp/FirstNexus/sandbox/containers.json",
+        shardedDir: "/tmp/FirstNexus/sandbox/containers",
         status: "migrated",
         entries: 2,
       },
@@ -195,7 +195,7 @@ describe("maybeRepairSandboxRegistryFiles", () => {
 
     expect(migrateLegacySandboxRegistryFiles).toHaveBeenCalledTimes(1);
     expect(note).toHaveBeenCalledWith(
-      "- Migrated containers registry from /tmp/NexisClaw/sandbox/containers.json into 2 shards.",
+      "- Migrated containers registry from /tmp/FirstNexus/sandbox/containers.json into 2 shards.",
       "Doctor changes",
     );
   });

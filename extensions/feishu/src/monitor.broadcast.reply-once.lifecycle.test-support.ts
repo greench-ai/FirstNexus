@@ -1,5 +1,5 @@
 import "./lifecycle.test-support.js";
-import { createNonExitingRuntimeEnv } from "NexisClaw/plugin-sdk/plugin-test-runtime";
+import { createNonExitingRuntimeEnv } from "FirstNexus/plugin-sdk/plugin-test-runtime";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ClawdbotConfig, RuntimeEnv } from "../runtime-api.js";
 import { FeishuConfigSchema } from "./config-schema.js";
@@ -138,7 +138,7 @@ describe("Feishu broadcast reply-once lifecycle", () => {
     resetFeishuLifecycleTestMocks();
     handlersByAccount = new Map();
     runtimesByAccount = new Map();
-    setFeishuLifecycleStateDir("NexisClaw-feishu-broadcast");
+    setFeishuLifecycleStateDir("FirstNexus-feishu-broadcast");
 
     createFeishuReplyDispatcherMock.mockReturnValue(createFeishuLifecycleReplyDispatcher());
 

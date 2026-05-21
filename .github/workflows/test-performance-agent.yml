@@ -25,7 +25,7 @@ env:
 jobs:
   optimize-tests:
     if: >
-      github.repository == 'NexisClaw/NexisClaw' &&
+      github.repository == 'FirstNexus/FirstNexus' &&
       (github.event_name == 'workflow_dispatch' ||
         (github.event.workflow_run.conclusion == 'success' &&
           github.event.workflow_run.event == 'push' &&
@@ -238,8 +238,8 @@ jobs:
             exit 0
           fi
 
-          git config user.name "NexisClaw-test-performance-agent[bot]"
-          git config user.email "NexisClaw-test-performance-agent[bot]@users.noreply.github.com"
+          git config user.name "FirstNexus-test-performance-agent[bot]"
+          git config user.email "FirstNexus-test-performance-agent[bot]@users.noreply.github.com"
           git add apps extensions packages scripts src test ui
           git commit --no-verify -m "test: optimize slow tests"
 

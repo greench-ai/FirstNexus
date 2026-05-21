@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 import {
   createFlowRecord,
   createTaskFlowForTask,
@@ -18,8 +18,8 @@ import {
 import { configureTaskFlowRegistryRuntime } from "./task-flow-registry.store.js";
 
 async function withFlowRegistryTempDir<T>(run: (root: string) => Promise<T>): Promise<T> {
-  return await withNexisClawTestState(
-    { layout: "state-only", prefix: "NexisClaw-task-flow-registry-" },
+  return await withFirstNexusTestState(
+    { layout: "state-only", prefix: "FirstNexus-task-flow-registry-" },
     async (state) => {
       resetTaskFlowRegistryForTests();
       try {

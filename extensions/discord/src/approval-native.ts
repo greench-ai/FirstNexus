@@ -1,12 +1,12 @@
-import { createLazyChannelApprovalNativeRuntimeAdapter } from "NexisClaw/plugin-sdk/approval-handler-adapter-runtime";
-import type { ChannelApprovalNativeRuntimeAdapter } from "NexisClaw/plugin-sdk/approval-handler-runtime";
-import { resolveApprovalRequestSessionConversation } from "NexisClaw/plugin-sdk/approval-native-runtime";
-import type { ChannelApprovalCapability } from "NexisClaw/plugin-sdk/channel-contract";
-import type { DiscordExecApprovalConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { createLazyChannelApprovalNativeRuntimeAdapter } from "FirstNexus/plugin-sdk/approval-handler-adapter-runtime";
+import type { ChannelApprovalNativeRuntimeAdapter } from "FirstNexus/plugin-sdk/approval-handler-runtime";
+import { resolveApprovalRequestSessionConversation } from "FirstNexus/plugin-sdk/approval-native-runtime";
+import type { ChannelApprovalCapability } from "FirstNexus/plugin-sdk/channel-contract";
+import type { DiscordExecApprovalConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 export { shouldHandleDiscordApprovalRequest } from "./approval-shared.js";
 import { listDiscordAccountIds, resolveDiscordAccount } from "./accounts.js";
 import {

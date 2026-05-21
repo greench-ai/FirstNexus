@@ -9,7 +9,7 @@ export {
 } from "./windows-spawn.js";
 export type {
   AnyAgentTool,
-  NexisClawPluginApi,
-  NexisClawPluginToolContext,
-  NexisClawPluginToolFactory,
+  FirstNexusPluginApi,
+  FirstNexusPluginToolContext,
+  FirstNexusPluginToolFactory,
 } from "../plugins/types.js";

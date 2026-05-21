@@ -1,10 +1,14 @@
-import { resolveReactionMessageId } from "NexisClaw/plugin-sdk/channel-actions";
-import { createActionGate, jsonResult, readStringParam } from "NexisClaw/plugin-sdk/channel-actions";
+import { resolveReactionMessageId } from "FirstNexus/plugin-sdk/channel-actions";
+import {
+  createActionGate,
+  jsonResult,
+  readStringParam,
+} from "FirstNexus/plugin-sdk/channel-actions";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { removeReactionSignal, sendReactionSignal } from "../reaction-runtime-api.js";
 import { listEnabledSignalAccounts, resolveSignalAccount } from "./accounts.js";
 import { resolveSignalReactionLevel } from "./reaction-level.js";

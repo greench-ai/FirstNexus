@@ -133,7 +133,7 @@ export function loadBundledPluginPublicArtifactModuleSync<T extends object>(para
     absolutePath: location.modulePath,
     rootPath: location.boundaryRoot,
     boundaryLabel:
-      location.boundaryRoot === NEXISCLAW_PACKAGE_ROOT ? "NexisClaw package root" : "plugin root",
+      location.boundaryRoot === NEXISCLAW_PACKAGE_ROOT ? "FirstNexus package root" : "plugin root",
     rejectHardlinks: true,
   });
   if (!opened.ok) {

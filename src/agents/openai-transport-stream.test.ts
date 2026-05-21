@@ -14,7 +14,7 @@ import { attachModelProviderRequestTransport } from "./provider-request-config.j
 import {
   buildTransportAwareSimpleStreamFn,
   createBoundaryAwareStreamFnForModel,
-  createNexisClawTransportStreamFnForModel,
+  createFirstNexusTransportStreamFnForModel,
   isTransportAwareApiSupported,
   prepareTransportAwareSimpleModel,
   resolveTransportAwareSimpleApi,
@@ -120,7 +120,7 @@ describe("openai transport stream", () => {
     }
   });
 
-  it("enforces the code mode responses tool surface before requests leave NexisClaw", () => {
+  it("enforces the code mode responses tool surface before requests leave FirstNexus", () => {
     const payload = {
       tools: [
         { type: "function", name: "exec" },
@@ -142,7 +142,7 @@ describe("openai transport stream", () => {
     ).toThrow(/Code mode payload tool surface violation/);
   });
 
-  it("adds NexisClaw attribution to native OpenAI transport headers and protects it from pi", () => {
+  it("adds FirstNexus attribution to native OpenAI transport headers and protects it from pi", () => {
     vi.stubEnv("NEXISCLAW_VERSION", "2026.3.22");
     const headers = __testing.buildOpenAIClientHeaders(
       {
@@ -171,15 +171,15 @@ describe("openai transport stream", () => {
     );
 
     expectRecordFields(headers, {
-      originator: "NexisClaw",
+      originator: "FirstNexus",
       version: "2026.3.22",
-      "User-Agent": "NexisClaw/2026.3.22",
+      "User-Agent": "FirstNexus/2026.3.22",
       "X-Provider": "model",
       "X-Caller": "request",
     });
   });
 
-  it("adds NexisClaw attribution to native OpenAI Codex transport headers", () => {
+  it("adds FirstNexus attribution to native OpenAI Codex transport headers", () => {
     vi.stubEnv("NEXISCLAW_VERSION", "2026.3.22");
     const headers = __testing.buildOpenAIClientHeaders(
       {
@@ -202,9 +202,9 @@ describe("openai transport stream", () => {
     );
 
     expectRecordFields(headers, {
-      originator: "NexisClaw",
+      originator: "FirstNexus",
       version: "2026.3.22",
-      "User-Agent": "NexisClaw/2026.3.22",
+      "User-Agent": "FirstNexus/2026.3.22",
     });
   });
 
@@ -301,7 +301,7 @@ describe("openai transport stream", () => {
       } satisfies Model<"openai-responses">),
     ).toBeTypeOf("function");
     expect(
-      createNexisClawTransportStreamFnForModel({
+      createFirstNexusTransportStreamFnForModel({
         id: "gpt-5.4",
         name: "GPT-5.4",
         api: "openai-responses",
@@ -368,9 +368,9 @@ describe("openai transport stream", () => {
 
     const prepared = prepareTransportAwareSimpleModel(model);
 
-    expect(resolveTransportAwareSimpleApi(model.api)).toBe("NexisClaw-openai-responses-transport");
+    expect(resolveTransportAwareSimpleApi(model.api)).toBe("FirstNexus-openai-responses-transport");
     expectRecordFields(prepared, {
-      api: "NexisClaw-openai-responses-transport",
+      api: "FirstNexus-openai-responses-transport",
       provider: "openai",
       id: "gpt-5.4",
     });
@@ -401,9 +401,9 @@ describe("openai transport stream", () => {
 
     const prepared = prepareTransportAwareSimpleModel(model);
 
-    expect(resolveTransportAwareSimpleApi(model.api)).toBe("NexisClaw-openai-responses-transport");
+    expect(resolveTransportAwareSimpleApi(model.api)).toBe("FirstNexus-openai-responses-transport");
     expectRecordFields(prepared, {
-      api: "NexisClaw-openai-responses-transport",
+      api: "FirstNexus-openai-responses-transport",
       provider: "openai-codex",
       id: "codex-mini-latest",
     });
@@ -434,9 +434,11 @@ describe("openai transport stream", () => {
 
     const prepared = prepareTransportAwareSimpleModel(model);
 
-    expect(resolveTransportAwareSimpleApi(model.api)).toBe("NexisClaw-anthropic-messages-transport");
+    expect(resolveTransportAwareSimpleApi(model.api)).toBe(
+      "FirstNexus-anthropic-messages-transport",
+    );
     expectRecordFields(prepared, {
-      api: "NexisClaw-anthropic-messages-transport",
+      api: "FirstNexus-anthropic-messages-transport",
       provider: "anthropic",
       id: "claude-sonnet-4-6",
     });
@@ -466,7 +468,7 @@ describe("openai transport stream", () => {
     );
 
     expect(resolveTransportAwareSimpleApi(model.api)).toBe(
-      "NexisClaw-google-generative-ai-transport",
+      "FirstNexus-google-generative-ai-transport",
     );
   });
 
@@ -492,9 +494,9 @@ describe("openai transport stream", () => {
       },
     );
 
-    expect(resolveTransportAwareSimpleApi(model.api)).toBe("NexisClaw-openai-responses-transport");
+    expect(resolveTransportAwareSimpleApi(model.api)).toBe("FirstNexus-openai-responses-transport");
     expectRecordFields(prepareTransportAwareSimpleModel(model), {
-      api: "NexisClaw-openai-responses-transport",
+      api: "FirstNexus-openai-responses-transport",
       provider: "github-copilot",
       id: "gpt-5.4",
     });
@@ -523,9 +525,11 @@ describe("openai transport stream", () => {
       },
     );
 
-    expect(resolveTransportAwareSimpleApi(model.api)).toBe("NexisClaw-anthropic-messages-transport");
+    expect(resolveTransportAwareSimpleApi(model.api)).toBe(
+      "FirstNexus-anthropic-messages-transport",
+    );
     expectRecordFields(prepareTransportAwareSimpleModel(model), {
-      api: "NexisClaw-anthropic-messages-transport",
+      api: "FirstNexus-anthropic-messages-transport",
       provider: "github-copilot",
       id: "claude-sonnet-4.6",
     });
@@ -1442,8 +1446,8 @@ describe("openai transport stream", () => {
         temperature: 0.2,
       },
       {
-        NexisClaw_session_id: "session-123",
-        NexisClaw_turn_id: "turn-123",
+        FirstNexus_session_id: "session-123",
+        FirstNexus_turn_id: "turn-123",
       },
     ) as Record<string, unknown> & {
       input?: Array<{ role?: string }>;
@@ -1471,7 +1475,7 @@ describe("openai transport stream", () => {
       input: [],
       stream: true,
       max_output_tokens: 1024,
-      metadata: { NexisClaw_session_id: "session-123" },
+      metadata: { FirstNexus_session_id: "session-123" },
       prompt_cache_key: "session-123",
       prompt_cache_retention: "24h",
       service_tier: "auto",
@@ -1528,16 +1532,16 @@ describe("openai transport stream", () => {
         temperature: 0.2,
       },
       {
-        NexisClaw_session_id: "session-123",
-        NexisClaw_turn_id: "turn-123",
+        FirstNexus_session_id: "session-123",
+        FirstNexus_turn_id: "turn-123",
       },
     ) as Record<string, unknown>;
 
     expect(params.instructions).toBe("Stable prefix\nDynamic suffix");
     expect(params.prompt_cache_key).toBe("session-123");
     expect(params.metadata).toEqual({
-      NexisClaw_session_id: "session-123",
-      NexisClaw_turn_id: "turn-123",
+      FirstNexus_session_id: "session-123",
+      FirstNexus_turn_id: "turn-123",
     });
     expect(params.max_output_tokens).toBe(1024);
     expect(params.temperature).toBe(0.2);
@@ -1549,7 +1553,7 @@ describe("openai transport stream", () => {
       input: [],
       stream: true,
       max_output_tokens: 1024,
-      metadata: { NexisClaw_session_id: "session-123" },
+      metadata: { FirstNexus_session_id: "session-123" },
       prompt_cache_key: "session-123",
       prompt_cache_retention: "24h",
       service_tier: "auto",
@@ -2379,18 +2383,18 @@ describe("openai transport stream", () => {
       } as never,
       { sessionId: "session-123" } as never,
       {
-        NexisClaw_session_id: "session-123",
-        NexisClaw_turn_id: "turn-123",
-        NexisClaw_turn_attempt: "1",
-        NexisClaw_transport: "stream",
+        FirstNexus_session_id: "session-123",
+        FirstNexus_turn_id: "turn-123",
+        FirstNexus_turn_attempt: "1",
+        FirstNexus_transport: "stream",
       },
     ) as { metadata?: Record<string, string> };
 
     expectRecordFields(params.metadata, {
-      NexisClaw_session_id: "session-123",
-      NexisClaw_turn_id: "turn-123",
-      NexisClaw_turn_attempt: "1",
-      NexisClaw_transport: "stream",
+      FirstNexus_session_id: "session-123",
+      FirstNexus_turn_id: "turn-123",
+      FirstNexus_turn_attempt: "1",
+      FirstNexus_transport: "stream",
     });
   });
 

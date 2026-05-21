@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import {
   createScopedAccountReplyToModeResolver,
   createStaticReplyToModeResolver,
@@ -8,7 +8,7 @@ import {
 
 describe("createStaticReplyToModeResolver", () => {
   it.each(["off", "all"] as const)("always returns the configured mode %s", (mode) => {
-    expect(createStaticReplyToModeResolver(mode)({ cfg: {} as NexisClawConfig })).toBe(mode);
+    expect(createStaticReplyToModeResolver(mode)({ cfg: {} as FirstNexusConfig })).toBe(mode);
   });
 });
 
@@ -18,12 +18,12 @@ describe("createTopLevelChannelReplyToModeResolver", () => {
   it.each([
     {
       name: "reads the top-level channel config",
-      cfg: { channels: { "demo-top-level": { replyToMode: "first" } } } as NexisClawConfig,
+      cfg: { channels: { "demo-top-level": { replyToMode: "first" } } } as FirstNexusConfig,
       expected: "first",
     },
     {
       name: "falls back to off",
-      cfg: {} as NexisClawConfig,
+      cfg: {} as FirstNexusConfig,
       expected: "off",
     },
   ])("$name", ({ cfg, expected }) => {
@@ -61,7 +61,7 @@ describe("createScopedAccountReplyToModeResolver", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expect(resolver({ cfg, accountId })).toBe(expected);
   });
@@ -76,7 +76,7 @@ describe("createScopedAccountReplyToModeResolver", () => {
       },
     });
 
-    expect(resolver({ cfg: {} as NexisClawConfig, chatType: "group" })).toBe("first");
+    expect(resolver({ cfg: {} as FirstNexusConfig, chatType: "group" })).toBe("first");
     expect(seen).toEqual(["group"]);
   });
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import type { HookStatusEntry, HookStatusReport } from "../hooks/hooks-status.js";
 import type { RuntimeEnv } from "../runtime.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
@@ -57,7 +57,7 @@ describe("onboard-hooks", () => {
       ? undefined
       : "missing requirements") as HookStatusEntry["blockedReason"],
     ...params,
-    source: "NexisClaw-bundled" as const,
+    source: "FirstNexus-bundled" as const,
     pluginId: undefined,
     homepage: undefined,
     always: false,
@@ -85,7 +85,7 @@ describe("onboard-hooks", () => {
 
   const createMockHookReport = (eligible = true): HookStatusReport => ({
     workspaceDir: "/mock/workspace",
-    managedHooksDir: "/mock/.NexisClaw/hooks",
+    managedHooksDir: "/mock/.FirstNexus/hooks",
     hooks: [
       createMockHook(
         {
@@ -118,7 +118,7 @@ describe("onboard-hooks", () => {
 
   async function runSetupInternalHooks(params: {
     selected: string[];
-    cfg?: NexisClawConfig;
+    cfg?: FirstNexusConfig;
     eligible?: boolean;
   }) {
     const { buildWorkspaceHookStatus } = await import("../hooks/hooks-status.js");
@@ -190,7 +190,7 @@ describe("onboard-hooks", () => {
     });
 
     it("should preserve existing hooks config when enabled", async () => {
-      const cfg: NexisClawConfig = {
+      const cfg: FirstNexusConfig = {
         hooks: {
           enabled: true,
           path: "/webhook",
@@ -212,7 +212,7 @@ describe("onboard-hooks", () => {
     });
 
     it("should preserve existing config when user skips", async () => {
-      const cfg: NexisClawConfig = {
+      const cfg: FirstNexusConfig = {
         agents: { defaults: { workspace: "/workspace" } },
       };
       const { result } = await runSetupInternalHooks({
@@ -238,7 +238,7 @@ describe("onboard-hooks", () => {
             "Hooks let you automate actions when agent commands are issued.",
             "Example: Save session context to memory when you issue /new or /reset.",
             "",
-            "Learn more: https://docs.NexisClaw.ai/automation/hooks",
+            "Learn more: https://docs.FirstNexus.ai/automation/hooks",
           ].join("\n"),
           "Hooks",
         ],
@@ -247,9 +247,9 @@ describe("onboard-hooks", () => {
             "Enabled 1 hook: session-memory",
             "",
             "You can manage hooks later with:",
-            "  NexisClaw hooks list",
-            "  NexisClaw hooks enable <name>",
-            "  NexisClaw hooks disable <name>",
+            "  FirstNexus hooks list",
+            "  FirstNexus hooks enable <name>",
+            "  FirstNexus hooks disable <name>",
           ].join("\n"),
           "Hooks Configured",
         ],

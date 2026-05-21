@@ -10,7 +10,7 @@ import {
 } from "../config/sessions.js";
 import { resolveStorePath } from "../config/sessions/paths.js";
 import type { AgentDefaultsConfig } from "../config/types.agent-defaults.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { runCronIsolatedAgentTurn } from "../cron/isolated-agent.js";
 import {
   appendCronRunLog,
@@ -107,7 +107,7 @@ function toPluginCronJob(job: CronJob): PluginHookGatewayCronJob {
 }
 
 export function buildGatewayCronService(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   deps: CliDeps;
   broadcast: (event: string, payload: unknown, opts?: { dropIfSlow?: boolean }) => void;
 }): GatewayCronState {
@@ -115,7 +115,7 @@ export function buildGatewayCronService(params: {
   const storePath = resolveCronStorePath(params.cfg.cron?.store);
   const cronEnabled = process.env.NEXISCLAW_SKIP_CRON !== "1" && params.cfg.cron?.enabled !== false;
 
-  const findAgentEntry = (cfg: NexisClawConfig, agentId: string) =>
+  const findAgentEntry = (cfg: FirstNexusConfig, agentId: string) =>
     Array.isArray(cfg.agents?.list)
       ? cfg.agents.list.find(
           (entry) =>
@@ -123,10 +123,10 @@ export function buildGatewayCronService(params: {
         )
       : undefined;
 
-  const hasConfiguredAgent = (cfg: NexisClawConfig, agentId: string) =>
+  const hasConfiguredAgent = (cfg: FirstNexusConfig, agentId: string) =>
     Boolean(findAgentEntry(cfg, agentId));
 
-  const mergeRuntimeAgentConfig = (runtimeConfig: NexisClawConfig, requestedAgentId: string) => {
+  const mergeRuntimeAgentConfig = (runtimeConfig: FirstNexusConfig, requestedAgentId: string) => {
     if (hasConfiguredAgent(runtimeConfig, requestedAgentId)) {
       return runtimeConfig;
     }
@@ -164,7 +164,7 @@ export function buildGatewayCronService(params: {
   };
 
   const resolveCronSessionKey = (params: {
-    runtimeConfig: NexisClawConfig;
+    runtimeConfig: FirstNexusConfig;
     agentId: string;
     requestedSessionKey?: string | null;
   }) => {
@@ -233,7 +233,7 @@ export function buildGatewayCronService(params: {
   };
 
   const resolveCronHeartbeatOverride = (params: {
-    runtimeConfig: NexisClawConfig;
+    runtimeConfig: FirstNexusConfig;
     agentId?: string;
     heartbeat?: AgentDefaultsConfig["heartbeat"];
   }) => {

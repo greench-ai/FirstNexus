@@ -1,8 +1,8 @@
 import {
   coerceSecretRef,
   resolveNonEnvSecretRefApiKeyMarker,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   buildCloudflareAiGatewayModelDefinition,
   resolveCloudflareAiGatewayBaseUrl,

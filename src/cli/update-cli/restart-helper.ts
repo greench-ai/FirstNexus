@@ -80,33 +80,33 @@ export async function prepareRestartScript(
       const unitName = resolveSystemdUnit(env);
       const escaped = shellEscape(unitName);
       const logSetup = renderPosixRestartLogSetup({ ...process.env, ...env });
-      filename = `NexisClaw-restart-${timestamp}.sh`;
+      filename = `FirstNexus-restart-${timestamp}.sh`;
       scriptContent = `#!/bin/sh
 # Standalone restart script — survives parent process termination.
 # Wait briefly to ensure file locks are released after update.
 sleep 1
 exec 3>&2
 ${logSetup}
-printf '[%s] NexisClaw restart attempt source=update target=%s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&2
+printf '[%s] FirstNexus restart attempt source=update target=%s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&2
 if systemctl --user is-active --quiet '${escaped}' || systemctl --user is-enabled --quiet '${escaped}'; then
   if systemctl --user restart '${escaped}'; then
     status=0
-    printf '[%s] NexisClaw restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
+    printf '[%s] FirstNexus restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
   else
     status=$?
-    printf '[%s] NexisClaw restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+    printf '[%s] FirstNexus restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
   fi
 elif systemctl is-active --quiet '${escaped}' || systemctl is-enabled --quiet '${escaped}'; then
   status=78
-  printf '[%s] system-scoped NexisClaw gateway unit detected; update cannot restart it without sudo. Run: sudo systemctl restart %s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&2
-  printf '[%s] system-scoped NexisClaw gateway unit detected; update cannot restart it without sudo. Run: sudo systemctl restart %s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&3 2>/dev/null || true
+  printf '[%s] system-scoped FirstNexus gateway unit detected; update cannot restart it without sudo. Run: sudo systemctl restart %s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&2
+  printf '[%s] system-scoped FirstNexus gateway unit detected; update cannot restart it without sudo. Run: sudo systemctl restart %s\\n' "$(date -u +%FT%TZ)" '${escaped}' >&3 2>/dev/null || true
 else
   if systemctl --user restart '${escaped}'; then
     status=0
-    printf '[%s] NexisClaw restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
+    printf '[%s] FirstNexus restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
   else
     status=$?
-    printf '[%s] NexisClaw restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+    printf '[%s] FirstNexus restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
   fi
 fi
 # Self-cleanup
@@ -125,7 +125,7 @@ exit "$status"
       const plistPath = path.join(home, "Library", "LaunchAgents", `${label}.plist`);
       const escapedPlistPath = shellEscape(plistPath);
       const logSetup = renderPosixRestartLogSetup({ ...process.env, ...env });
-      filename = `NexisClaw-restart-${timestamp}.sh`;
+      filename = `FirstNexus-restart-${timestamp}.sh`;
       scriptContent = `#!/bin/sh
 # Standalone restart script — survives parent process termination.
 # Wait briefly to ensure file locks are released after update.
@@ -134,7 +134,7 @@ sleep 1
 # audit trail. Log setup is best-effort: restart must still run if the log path
 # is temporarily unavailable.
 ${logSetup}
-printf '[%s] NexisClaw restart attempt source=update target=%s\\n' "$(date -u +%FT%TZ)" '${shellEscapeRestartLogValue(label)}' >&2
+printf '[%s] FirstNexus restart attempt source=update target=%s\\n' "$(date -u +%FT%TZ)" '${shellEscapeRestartLogValue(label)}' >&2
 # Try kickstart first (works when the service is still registered).
 # If it fails (e.g. after bootout), clear any persisted disabled state,
 # then re-register via bootstrap. Bootstrap loads RunAtLoad agents, so the
@@ -152,11 +152,11 @@ if ! launchctl kickstart -k 'gui/${uid}/${escaped}'; then
   fi
 fi
 if [ "$status" -eq 0 ]; then
-  printf '[%s] NexisClaw restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
+  printf '[%s] FirstNexus restart done source=update\\n' "$(date -u +%FT%TZ)" >&2
 else
-  printf '[%s] NexisClaw restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
+  printf '[%s] FirstNexus restart failed source=update status=%s\\n' "$(date -u +%FT%TZ)" "$status" >&2
 fi
-# Self-cleanup (log is retained under the NexisClaw state logs directory).
+# Self-cleanup (log is retained under the FirstNexus state logs directory).
 rm -f "$0"
 exit "$status"
 `;
@@ -170,7 +170,7 @@ exit "$status"
       const restartLogPath = resolveGatewayRestartLogPath({ ...process.env, ...env });
       const quotedLogPath = powerShellSingleQuote(restartLogPath);
       const quotedTaskName = powerShellSingleQuote(taskName);
-      filename = `NexisClaw-restart-${timestamp}.cmd`;
+      filename = `FirstNexus-restart-${timestamp}.cmd`;
       scriptContent = `@echo off
 REM Standalone restart script - survives parent process termination.
 REM Keep this as a cmd wrapper so Group Policy script execution policies
@@ -190,7 +190,7 @@ $logPath = ${quotedLogPath}
 try {
   $logDir = Split-Path -Parent $logPath
   New-Item -ItemType Directory -Path $logDir -Force | Out-Null
-  Add-Content -LiteralPath $logPath -Value "[$(Get-Date -Format o)] NexisClaw restart log initialized"
+  Add-Content -LiteralPath $logPath -Value "[$(Get-Date -Format o)] FirstNexus restart log initialized"
 } catch {
   # Restart should still run if log setup is unavailable.
 }
@@ -203,7 +203,7 @@ function Write-RestartLog {
   }
 }
 
-function Join-NexisClawProcessArguments {
+function Join-FirstNexusProcessArguments {
   param([string[]]$Arguments)
   ($Arguments | ForEach-Object {
     if ($_ -match "\\s") {
@@ -214,7 +214,7 @@ function Join-NexisClawProcessArguments {
   }) -join " "
 }
 
-function Invoke-NexisClawSchtasksWithTimeout {
+function Invoke-FirstNexusSchtasksWithTimeout {
   param(
     [string[]]$Arguments,
     [int]$TimeoutSeconds
@@ -223,7 +223,7 @@ function Invoke-NexisClawSchtasksWithTimeout {
   try {
     $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
     $startInfo.FileName = "schtasks.exe"
-    $startInfo.Arguments = Join-NexisClawProcessArguments -Arguments $Arguments
+    $startInfo.Arguments = Join-FirstNexusProcessArguments -Arguments $Arguments
     $startInfo.UseShellExecute = $false
     $startInfo.RedirectStandardOutput = $true
     $startInfo.RedirectStandardError = $true
@@ -233,7 +233,7 @@ function Invoke-NexisClawSchtasksWithTimeout {
         $process.Kill()
       } catch {
       }
-      Write-RestartLog "NexisClaw restart schtasks timeout source=update args=$($Arguments -join ' ')"
+      Write-RestartLog "FirstNexus restart schtasks timeout source=update args=$($Arguments -join ' ')"
       return 124
     }
     $stdout = $process.StandardOutput.ReadToEnd()
@@ -246,12 +246,12 @@ function Invoke-NexisClawSchtasksWithTimeout {
     }
     return $process.ExitCode
   } catch {
-    Write-RestartLog "NexisClaw restart schtasks failed source=update args=$($Arguments -join ' ') error=$($_.Exception.Message)"
+    Write-RestartLog "FirstNexus restart schtasks failed source=update args=$($Arguments -join ' ') error=$($_.Exception.Message)"
     return 1
   }
 }
 
-function Get-NexisClawScheduledTaskState {
+function Get-FirstNexusScheduledTaskState {
   param([string]$TaskName)
   try {
     $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
@@ -274,7 +274,7 @@ function Get-NexisClawScheduledTaskState {
   return "Unknown"
 }
 
-function Get-NexisClawListenerPids {
+function Get-FirstNexusListenerPids {
   param([int]$Port)
   $listenerPids = @()
 
@@ -302,39 +302,39 @@ function Get-NexisClawListenerPids {
   $listenerPids | Sort-Object -Unique
 }
 
-function Invoke-NexisClawStartupLauncher {
-  $launcherPath = Join-Path $env:USERPROFILE ".NexisClaw\\gateway.cmd"
+function Invoke-FirstNexusStartupLauncher {
+  $launcherPath = Join-Path $env:USERPROFILE ".FirstNexus\\gateway.cmd"
   if (-not (Test-Path -LiteralPath $launcherPath)) {
-    Write-RestartLog "NexisClaw restart startup launcher missing source=update path=$launcherPath"
+    Write-RestartLog "FirstNexus restart startup launcher missing source=update path=$launcherPath"
     return 1
   }
 
   try {
     Start-Process -FilePath $launcherPath -WindowStyle Hidden | Out-Null
-    Write-RestartLog "NexisClaw restart launched startup fallback source=update path=$launcherPath"
+    Write-RestartLog "FirstNexus restart launched startup fallback source=update path=$launcherPath"
     return 0
   } catch {
-    Write-RestartLog "NexisClaw restart startup fallback failed source=update error=$($_.Exception.Message)"
+    Write-RestartLog "FirstNexus restart startup fallback failed source=update error=$($_.Exception.Message)"
     return 1
   }
 }
 
 $taskName = ${quotedTaskName}
 $port = ${port}
-Write-RestartLog "NexisClaw restart attempt source=update target=$taskName"
+Write-RestartLog "FirstNexus restart attempt source=update target=$taskName"
 
-$taskState = Get-NexisClawScheduledTaskState -TaskName $taskName
+$taskState = Get-FirstNexusScheduledTaskState -TaskName $taskName
 if ($taskState -eq "Running") {
-  $endStatus = Invoke-NexisClawSchtasksWithTimeout -Arguments @("/End", "/TN", $taskName) -TimeoutSeconds 10
+  $endStatus = Invoke-FirstNexusSchtasksWithTimeout -Arguments @("/End", "/TN", $taskName) -TimeoutSeconds 10
   if ($endStatus -ne 0) {
-    Write-RestartLog "NexisClaw restart schtasks end did not complete cleanly source=update status=$endStatus"
+    Write-RestartLog "FirstNexus restart schtasks end did not complete cleanly source=update status=$endStatus"
   }
 } else {
-  Write-RestartLog "NexisClaw restart skipped schtasks end source=update state=$taskState"
+  Write-RestartLog "FirstNexus restart skipped schtasks end source=update state=$taskState"
 }
 
 for ($attempt = 1; $attempt -le 10; $attempt++) {
-  $listeners = @(Get-NexisClawListenerPids -Port $port)
+  $listeners = @(Get-FirstNexusListenerPids -Port $port)
   if ($listeners.Count -eq 0) {
     break
   }
@@ -343,9 +343,9 @@ for ($attempt = 1; $attempt -le 10; $attempt++) {
     foreach ($listenerPid in $listeners) {
       try {
         Stop-Process -Id $listenerPid -Force -ErrorAction Stop
-        Write-RestartLog "NexisClaw restart killed stale listener source=update pid=$listenerPid"
+        Write-RestartLog "FirstNexus restart killed stale listener source=update pid=$listenerPid"
       } catch {
-        Write-RestartLog "NexisClaw restart failed to kill stale listener source=update pid=$listenerPid error=$($_.Exception.Message)"
+        Write-RestartLog "FirstNexus restart failed to kill stale listener source=update pid=$listenerPid error=$($_.Exception.Message)"
       }
     }
     break
@@ -354,14 +354,14 @@ for ($attempt = 1; $attempt -le 10; $attempt++) {
   Start-Sleep -Seconds 1
 }
 
-$status = Invoke-NexisClawSchtasksWithTimeout -Arguments @("/Run", "/TN", $taskName) -TimeoutSeconds 30
+$status = Invoke-FirstNexusSchtasksWithTimeout -Arguments @("/Run", "/TN", $taskName) -TimeoutSeconds 30
 if ($status -ne 0) {
-  $status = Invoke-NexisClawStartupLauncher
+  $status = Invoke-FirstNexusStartupLauncher
 }
 if ($status -eq 0) {
-  Write-RestartLog "NexisClaw restart done source=update"
+  Write-RestartLog "FirstNexus restart done source=update"
 } else {
-  Write-RestartLog "NexisClaw restart failed source=update status=$status"
+  Write-RestartLog "FirstNexus restart failed source=update status=$status"
 }
 
 exit $status

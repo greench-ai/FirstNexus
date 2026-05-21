@@ -1,4 +1,4 @@
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveSignalAccount } from "./accounts.js";
 
 export function resolveSignalRpcContext(

@@ -2,21 +2,21 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
-import { loadOutboundMediaFromUrl } from "NexisClaw/plugin-sdk/outbound-media";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
+import { loadOutboundMediaFromUrl } from "FirstNexus/plugin-sdk/outbound-media";
 import {
   privateFileStoreSync,
   readRegularFileSync,
   statRegularFileSync,
   withTimeout,
-} from "NexisClaw/plugin-sdk/security-runtime";
-import { resolveStateDir as resolvePluginStateDir } from "NexisClaw/plugin-sdk/state-paths";
+} from "FirstNexus/plugin-sdk/security-runtime";
+import { resolveStateDir as resolvePluginStateDir } from "FirstNexus/plugin-sdk/state-paths";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { sleep } from "NexisClaw/plugin-sdk/text-utility-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { sleep } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { normalizeZaloReactionIcon } from "./reaction.js";
 import { createZalouserSendReceipt } from "./send-receipt.js";
 import type {

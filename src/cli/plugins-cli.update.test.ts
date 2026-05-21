@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   loadConfig,
   refreshPluginRegistry,
@@ -22,7 +22,7 @@ function createTrackedPluginConfig(params: {
   pluginId: string;
   spec: string;
   resolvedName?: string;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   return {
     plugins: {
       installs: {
@@ -34,7 +34,7 @@ function createTrackedPluginConfig(params: {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function expectRestartNoticeLogged() {
@@ -114,7 +114,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const nextConfig = {
       hooks: {
         internal: {
@@ -127,7 +127,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     loadConfig.mockReturnValue(cfg);
     updateNpmInstalledPlugins.mockResolvedValue({
@@ -162,7 +162,7 @@ describe("plugins cli update", () => {
       plugins: {
         installs: {},
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     await expect(runPluginsCommand(["plugins", "update"])).rejects.toThrow("__exit__:1");
 
@@ -175,7 +175,7 @@ describe("plugins cli update", () => {
       plugins: {
         installs: {},
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
 
     await runPluginsCommand(["plugins", "update", "--all"]);
 
@@ -186,8 +186,8 @@ describe("plugins cli update", () => {
 
   it("passes dangerous force unsafe install to plugin updates", async () => {
     const config = createTrackedPluginConfig({
-      pluginId: "NexisClaw-codex-app-server",
-      spec: "NexisClaw-codex-app-server@beta",
+      pluginId: "FirstNexus-codex-app-server",
+      spec: "FirstNexus-codex-app-server@beta",
     });
     loadConfig.mockReturnValue(config);
     setInstalledPluginIndexInstallRecords(config.plugins?.installs ?? {});
@@ -200,13 +200,13 @@ describe("plugins cli update", () => {
     await runPluginsCommand([
       "plugins",
       "update",
-      "NexisClaw-codex-app-server",
+      "FirstNexus-codex-app-server",
       "--dangerously-force-unsafe-install",
     ]);
 
     const updateParams = expectSingleCallParams(updateNpmInstalledPlugins);
     expect(updateParams.config).toEqual(config);
-    expect(updateParams.pluginIds).toEqual(["NexisClaw-codex-app-server"]);
+    expect(updateParams.pluginIds).toEqual(["FirstNexus-codex-app-server"]);
     expect(updateParams.dangerouslyForceUnsafeInstall).toBe(true);
   });
 
@@ -216,21 +216,21 @@ describe("plugins cli update", () => {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@NexisClaw/alpha@1.0.0",
+            spec: "@FirstNexus/alpha@1.0.0",
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const nextConfig = {
       plugins: {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@NexisClaw/alpha@1.1.0",
+            spec: "@FirstNexus/alpha@1.1.0",
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     loadConfig.mockReturnValue(cfg);
     setInstalledPluginIndexInstallRecords(cfg.plugins?.installs ?? {});
     updateNpmInstalledPlugins.mockResolvedValue({
@@ -268,29 +268,29 @@ describe("plugins cli update", () => {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@NexisClaw/alpha@1.0.0",
+            spec: "@FirstNexus/alpha@1.0.0",
           },
           beta: {
             source: "npm",
-            spec: "@NexisClaw/beta@1.0.0",
+            spec: "@FirstNexus/beta@1.0.0",
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const nextConfig = {
       plugins: {
         installs: {
           alpha: {
             source: "npm",
-            spec: "@NexisClaw/alpha@1.1.0",
+            spec: "@FirstNexus/alpha@1.1.0",
           },
           beta: {
             source: "npm",
-            spec: "@NexisClaw/beta@1.0.0",
+            spec: "@FirstNexus/beta@1.0.0",
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     loadConfig.mockReturnValue(cfg);
     setInstalledPluginIndexInstallRecords(cfg.plugins?.installs ?? {});
     updateNpmInstalledPlugins.mockResolvedValue({
@@ -334,7 +334,7 @@ describe("plugins cli update", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     loadConfig.mockReturnValue(cfg);
     updateNpmInstalledPlugins.mockResolvedValue({
       config: cfg,

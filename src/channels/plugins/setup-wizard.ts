@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { DEFAULT_ACCOUNT_ID } from "../../routing/session-key.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
 import { configureChannelAccessWithAllowlist } from "./setup-group-access-configure.js";
@@ -73,7 +73,7 @@ async function buildStatus(
 
 function applySetupInput(params: {
   plugin: ChannelSetupWizardPlugin;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   input: ChannelSetupInput;
 }) {
@@ -115,7 +115,7 @@ function applySetupInput(params: {
 
 function collectCredentialValues(params: {
   wizard: ChannelSetupWizard;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
 }): ChannelSetupWizardCredentialValues {
   const values: ChannelSetupWizardCredentialValues = {};
@@ -136,7 +136,7 @@ function collectCredentialValues(params: {
 async function applyWizardTextInputValue(params: {
   plugin: ChannelSetupWizardPlugin;
   input: ChannelSetupWizardTextInput;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   value: string;
 }) {

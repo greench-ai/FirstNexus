@@ -1,8 +1,8 @@
 import crypto from "node:crypto";
-import type { ChannelAccountSnapshot } from "NexisClaw/plugin-sdk/channel-contract";
-import type { ChannelOutboundAdapter } from "NexisClaw/plugin-sdk/channel-send-result";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { ChannelPlugin } from "NexisClaw/plugin-sdk/core";
+import type { ChannelAccountSnapshot } from "FirstNexus/plugin-sdk/channel-contract";
+import type { ChannelOutboundAdapter } from "FirstNexus/plugin-sdk/channel-send-result";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { ChannelPlugin } from "FirstNexus/plugin-sdk/core";
 import { monitorTlonProvider } from "./monitor/index.js";
 import { tlonSetupWizard } from "./setup-surface.js";
 import {
@@ -91,7 +91,7 @@ async function createHttpPokeApi(params: {
 }
 
 function resolveOutboundContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   to: string;
 }) {

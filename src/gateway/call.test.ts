@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import type { DeviceIdentity } from "../infra/device-identity.js";
 import { createEmptyPluginRegistry } from "../plugins/registry-empty.js";
 import { setActivePluginRegistry } from "../plugins/runtime.js";
@@ -208,9 +208,9 @@ function resetGatewayCallMocks() {
   closeCode = 1006;
   closeReason = "";
   helloMethods = ["health", "secrets.resolve"];
-  const loadConfigForTests = getRuntimeConfig as unknown as () => NexisClawConfig;
+  const loadConfigForTests = getRuntimeConfig as unknown as () => FirstNexusConfig;
   const resolveGatewayPortForTests = resolveGatewayPort as unknown as (
-    cfg?: NexisClawConfig,
+    cfg?: FirstNexusConfig,
     env?: NodeJS.ProcessEnv,
   ) => number;
   __testing.setDepsForTests({
@@ -480,7 +480,7 @@ describe("callGateway url resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
     resolveGatewayPort.mockReturnValue(18789);
     pickPrimaryTailnetIPv4.mockReturnValue(undefined);
     process.env.NEXISCLAW_GATEWAY_URL = "wss://gateway-in-container.internal:9443/ws";
@@ -779,7 +779,7 @@ describe("buildGatewayConnectionDetails", () => {
   });
 
   it("falls back to the default config loader when test deps drift", () => {
-    const tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-gateway-call-"));
+    const tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-gateway-call-"));
     process.env.NEXISCLAW_STATE_DIR = tempStateDir;
     process.env.NEXISCLAW_CONFIG_PATH = path.join(tempStateDir, "missing-config.json");
     try {
@@ -821,7 +821,7 @@ describe("buildGatewayConnectionDetails", () => {
     expect((thrown as Error).message).toContain("plaintext ws://");
     expect((thrown as Error).message).toContain("wss://");
     expect((thrown as Error).message).toContain("Tailscale Serve/Funnel");
-    expect((thrown as Error).message).toContain("NexisClaw doctor --fix");
+    expect((thrown as Error).message).toContain("FirstNexus doctor --fix");
   });
 
   it("allows ws:// private remote URLs only when NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS=1", () => {
@@ -847,14 +847,14 @@ describe("buildGatewayConnectionDetails", () => {
       gateway: {
         mode: "remote",
         bind: "loopback",
-        remote: { url: "ws://NexisClaw-gateway.ai:18789" },
+        remote: { url: "ws://FirstNexus-gateway.ai:18789" },
       },
     });
     resolveGatewayPort.mockReturnValue(18789);
 
     const details = buildGatewayConnectionDetails();
 
-    expect(details.url).toBe("ws://NexisClaw-gateway.ai:18789");
+    expect(details.url).toBe("ws://FirstNexus-gateway.ai:18789");
     expect(details.urlSource).toBe("config gateway.remote.url");
   });
 
@@ -1135,10 +1135,10 @@ describe("callGateway error details", () => {
             });
           },
         }) as never,
-      getRuntimeConfig: getRuntimeConfig as unknown as () => NexisClawConfig,
+      getRuntimeConfig: getRuntimeConfig as unknown as () => FirstNexusConfig,
       loadOrCreateDeviceIdentity: () => deviceIdentityState.value,
       resolveGatewayPort: resolveGatewayPort as unknown as (
-        cfg?: NexisClawConfig,
+        cfg?: FirstNexusConfig,
         env?: NodeJS.ProcessEnv,
       ) => number,
     });
@@ -1196,10 +1196,10 @@ describe("callGateway error details", () => {
             });
           },
         }) as never,
-      getRuntimeConfig: getRuntimeConfig as unknown as () => NexisClawConfig,
+      getRuntimeConfig: getRuntimeConfig as unknown as () => FirstNexusConfig,
       loadOrCreateDeviceIdentity: () => deviceIdentityState.value,
       resolveGatewayPort: resolveGatewayPort as unknown as (
-        cfg?: NexisClawConfig,
+        cfg?: FirstNexusConfig,
         env?: NodeJS.ProcessEnv,
       ) => number,
     });
@@ -1400,7 +1400,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1423,7 +1423,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1446,7 +1446,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1469,7 +1469,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1496,7 +1496,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await expect(callGateway({ method: "health" })).rejects.toThrow("gateway.auth.token");
   });
@@ -1516,7 +1516,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1540,7 +1540,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1563,7 +1563,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await expect(callGateway({ method: "health" })).rejects.toThrow("gateway.auth.password");
   });
@@ -1587,7 +1587,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1611,7 +1611,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1635,7 +1635,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1659,7 +1659,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1685,7 +1685,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1710,7 +1710,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1735,7 +1735,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1760,7 +1760,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 
@@ -1785,7 +1785,7 @@ describe("callGateway password resolution", () => {
           default: { source: "env" },
         },
       },
-    } as unknown as NexisClawConfig);
+    } as unknown as FirstNexusConfig);
 
     await callGateway({ method: "health" });
 

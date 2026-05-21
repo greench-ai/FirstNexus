@@ -1,17 +1,17 @@
-# @NexisClaw/zalo
+# @FirstNexus/zalo
 
-Zalo channel plugin for NexisClaw (Bot API).
+Zalo channel plugin for FirstNexus (Bot API).
 
 ## Install (local checkout)
 
 ```bash
-NexisClaw plugins install ./path/to/local/zalo-plugin
+FirstNexus plugins install ./path/to/local/zalo-plugin
 ```
 
 ## Install (npm)
 
 ```bash
-NexisClaw plugins install @NexisClaw/zalo
+FirstNexus plugins install @FirstNexus/zalo
 ```
 
 Onboarding: select Zalo and confirm the install prompt to fetch the plugin automatically.

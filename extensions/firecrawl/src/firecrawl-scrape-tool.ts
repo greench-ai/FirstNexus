@@ -1,10 +1,10 @@
-import { optionalStringEnum } from "NexisClaw/plugin-sdk/channel-actions";
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-runtime";
+import { optionalStringEnum } from "FirstNexus/plugin-sdk/channel-actions";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-runtime";
 import {
   jsonResult,
   readNumberParam,
   readStringParam,
-} from "NexisClaw/plugin-sdk/provider-web-search";
+} from "FirstNexus/plugin-sdk/provider-web-search";
 import { Type } from "typebox";
 import { runFirecrawlScrape } from "./firecrawl-client.js";
 
@@ -49,7 +49,7 @@ const FirecrawlScrapeToolSchema = Type.Object(
   { additionalProperties: false },
 );
 
-export function createFirecrawlScrapeTool(api: NexisClawPluginApi) {
+export function createFirecrawlScrapeTool(api: FirstNexusPluginApi) {
   return {
     name: "firecrawl_scrape",
     label: "Firecrawl Scrape",

@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import type { NexisClawConfig } from "../../../src/config/config.js";
+import type { FirstNexusConfig } from "../../../src/config/config.js";
 import type { ImageGenerationProvider } from "../../../src/image-generation/types.js";
 import type { MusicGenerationProvider } from "../../../src/music-generation/types.js";
 import type { VideoGenerationProvider } from "../../../src/video-generation/types.js";
@@ -28,23 +28,23 @@ const mediaRuntimeMocks = vi.hoisted(() => {
     createSubsystemLogger: vi.fn(() => ({ debug, warn })),
     describeFailoverError: vi.fn(),
     getImageGenerationProvider: vi.fn<
-      (providerId: string, config?: NexisClawConfig) => ImageGenerationProvider | undefined
+      (providerId: string, config?: FirstNexusConfig) => ImageGenerationProvider | undefined
     >(() => undefined),
     getMusicGenerationProvider: vi.fn<
-      (providerId: string, config?: NexisClawConfig) => MusicGenerationProvider | undefined
+      (providerId: string, config?: FirstNexusConfig) => MusicGenerationProvider | undefined
     >(() => undefined),
     getProviderEnvVars: vi.fn<(providerId: string) => string[]>(() => []),
     getVideoGenerationProvider: vi.fn<
-      (providerId: string, config?: NexisClawConfig) => VideoGenerationProvider | undefined
+      (providerId: string, config?: FirstNexusConfig) => VideoGenerationProvider | undefined
     >(() => undefined),
     isFailoverError: vi.fn<(err: unknown) => boolean>(() => false),
-    listImageGenerationProviders: vi.fn<(config?: NexisClawConfig) => ImageGenerationProvider[]>(
+    listImageGenerationProviders: vi.fn<(config?: FirstNexusConfig) => ImageGenerationProvider[]>(
       () => [],
     ),
-    listMusicGenerationProviders: vi.fn<(config?: NexisClawConfig) => MusicGenerationProvider[]>(
+    listMusicGenerationProviders: vi.fn<(config?: FirstNexusConfig) => MusicGenerationProvider[]>(
       () => [],
     ),
-    listVideoGenerationProviders: vi.fn<(config?: NexisClawConfig) => VideoGenerationProvider[]>(
+    listVideoGenerationProviders: vi.fn<(config?: FirstNexusConfig) => VideoGenerationProvider[]>(
       () => [],
     ),
     parseImageGenerationModelRef:

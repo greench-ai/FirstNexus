@@ -11,8 +11,8 @@ Adds text-to-speech provider support.
 
 ## Distribution
 
-- Package: `@NexisClaw/microsoft-speech`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/microsoft-speech`
+- Install route: included in FirstNexus
 
 ## Surface
 

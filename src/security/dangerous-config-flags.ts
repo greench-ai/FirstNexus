@@ -1,5 +1,5 @@
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   collectPluginConfigContractMatches,
   resolvePluginConfigContractsById,
@@ -7,7 +7,7 @@ import {
 import { isRecord } from "../utils.js";
 import { collectEnabledInsecureOrDangerousFlagsFromContracts } from "./dangerous-config-flags-core.js";
 
-export function collectEnabledInsecureOrDangerousFlags(cfg: NexisClawConfig): string[] {
+export function collectEnabledInsecureOrDangerousFlags(cfg: FirstNexusConfig): string[] {
   const pluginEntries = cfg.plugins?.entries;
   if (!isRecord(pluginEntries)) {
     return collectEnabledInsecureOrDangerousFlagsFromContracts(cfg);

@@ -47,7 +47,7 @@ const createInstallPlanFixture = vi.hoisted(() => {
     return {
       programArguments: params?.wrapperPath
         ? [params.wrapperPath, "gateway", "run"]
-        : ["NexisClaw", "gateway", "run"],
+        : ["FirstNexus", "gateway", "run"],
       workingDirectory: "/tmp",
       environment,
     };
@@ -86,7 +86,7 @@ vi.mock("../../config/io.js", () => ({
   loadConfig: loadConfigMock,
   readConfigFileSnapshotForWrite: vi.fn(async () => ({
     snapshot: await readConfigFileSnapshotMock(),
-    writeOptions: { expectedConfigPath: "/tmp/NexisClaw.json" },
+    writeOptions: { expectedConfigPath: "/tmp/FirstNexus.json" },
   })),
 }));
 
@@ -99,7 +99,7 @@ vi.mock("../../commands/gateway-install-token.persist.runtime.js", () => ({
   readConfigFileSnapshot: readConfigFileSnapshotMock,
   readConfigFileSnapshotForWrite: vi.fn(async () => ({
     snapshot: await readConfigFileSnapshotMock(),
-    writeOptions: { expectedConfigPath: "/tmp/NexisClaw.json" },
+    writeOptions: { expectedConfigPath: "/tmp/FirstNexus.json" },
   })),
   replaceConfigFile: replaceConfigFileMock,
 }));
@@ -127,7 +127,7 @@ vi.mock("../../commands/daemon-install-helpers.js", () => ({
 
 vi.mock("../../daemon/program-args.js", () => ({
   NEXISCLAW_WRAPPER_ENV_KEY: "NEXISCLAW_WRAPPER",
-  resolveNexisClawWrapperPath: async (value: string | undefined) => value?.trim() || undefined,
+  resolveFirstNexusWrapperPath: async (value: string | undefined) => value?.trim() || undefined,
 }));
 
 vi.mock("./shared.js", () => ({
@@ -311,7 +311,7 @@ describe("runDaemonInstall", () => {
 
   it("passes service environment value sources through to service install", async () => {
     buildGatewayInstallPlanMock.mockResolvedValueOnce({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {
         OPENROUTER_API_KEY: "or-operator-key",
@@ -432,7 +432,7 @@ describe("runDaemonInstall", () => {
       NODE_USE_SYSTEM_CA: undefined,
     });
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       environment: {
         NODE_EXTRA_CA_CERTS: "/etc/ssl/certs/ca-certificates.crt",
       },
@@ -447,7 +447,7 @@ describe("runDaemonInstall", () => {
   it("reinstalls when the loaded service still embeds NEXISCLAW_GATEWAY_TOKEN", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       environment: {
         NEXISCLAW_GATEWAY_TOKEN: "stale-service-token",
       },
@@ -464,13 +464,13 @@ describe("runDaemonInstall", () => {
   it("returns already-installed when the embedded gateway token matches the install plan", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       environment: {
         NEXISCLAW_GATEWAY_TOKEN: "durable-token",
       },
     } as never);
     buildGatewayInstallPlanMock.mockResolvedValueOnce({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {
         NEXISCLAW_GATEWAY_TOKEN: "durable-token",
@@ -488,9 +488,9 @@ describe("runDaemonInstall", () => {
   it("preserves wrapper env from an installed but unloaded service during forced reinstall", async () => {
     service.isLoaded.mockResolvedValue(false);
     service.readCommand.mockResolvedValue({
-      programArguments: ["/usr/local/bin/NexisClaw-doppler", "gateway", "run"],
+      programArguments: ["/usr/local/bin/FirstNexus-doppler", "gateway", "run"],
       environment: {
-        NEXISCLAW_WRAPPER: "/usr/local/bin/NexisClaw-doppler",
+        NEXISCLAW_WRAPPER: "/usr/local/bin/FirstNexus-doppler",
       },
     } as never);
 
@@ -498,12 +498,12 @@ describe("runDaemonInstall", () => {
 
     expect(service.readCommand).toHaveBeenCalledTimes(1);
     const installPlanArg = readFirstInstallPlanArg();
-    expectFields(installPlanArg, { wrapperPath: "/usr/local/bin/NexisClaw-doppler" });
+    expectFields(installPlanArg, { wrapperPath: "/usr/local/bin/FirstNexus-doppler" });
     expectFields(installPlanArg.existingEnvironment, {
-      NEXISCLAW_WRAPPER: "/usr/local/bin/NexisClaw-doppler",
+      NEXISCLAW_WRAPPER: "/usr/local/bin/FirstNexus-doppler",
     });
     expectFields(installPlanArg.env, {
-      NEXISCLAW_WRAPPER: "/usr/local/bin/NexisClaw-doppler",
+      NEXISCLAW_WRAPPER: "/usr/local/bin/FirstNexus-doppler",
     });
     expect(installDaemonServiceAndEmitMock).toHaveBeenCalledTimes(1);
   });
@@ -511,13 +511,13 @@ describe("runDaemonInstall", () => {
   it("reinstalls when wrapper command matches but wrapper env is missing", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["/usr/local/bin/NexisClaw-doppler", "gateway", "run"],
+      programArguments: ["/usr/local/bin/FirstNexus-doppler", "gateway", "run"],
       environment: {},
     } as never);
 
     await runDaemonInstall({
       json: true,
-      wrapper: "/usr/local/bin/NexisClaw-doppler",
+      wrapper: "/usr/local/bin/FirstNexus-doppler",
     });
 
     expect(installDaemonServiceAndEmitMock).toHaveBeenCalledTimes(1);
@@ -529,13 +529,13 @@ describe("runDaemonInstall", () => {
   it("reinstalls when the embedded gateway token differs from the install plan", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       environment: {
         NEXISCLAW_GATEWAY_TOKEN: "stale-service-token",
       },
     } as never);
     buildGatewayInstallPlanMock.mockResolvedValueOnce({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       workingDirectory: "/tmp",
       environment: {
         NEXISCLAW_GATEWAY_TOKEN: "fresh-token",
@@ -553,7 +553,7 @@ describe("runDaemonInstall", () => {
   it("does not reinstall when NEXISCLAW_GATEWAY_TOKEN comes from an env file", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       environment: {
         NEXISCLAW_GATEWAY_TOKEN: "env-file-token",
       },
@@ -575,7 +575,7 @@ describe("runDaemonInstall", () => {
       NODE_USE_SYSTEM_CA: undefined,
     });
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       environment: {},
     } as never);
 
@@ -609,7 +609,7 @@ describe("runDaemonInstall", () => {
   it("reuses env-backed service secrets during forced reinstall when the current shell is missing them", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       environment: {
         OPENAI_API_KEY: "service-openai-key",
       },
@@ -635,10 +635,10 @@ describe("runDaemonInstall", () => {
   it("does not reuse stale service control env during forced reinstall", async () => {
     service.isLoaded.mockResolvedValue(true);
     service.readCommand.mockResolvedValue({
-      programArguments: ["NexisClaw", "gateway", "run"],
+      programArguments: ["FirstNexus", "gateway", "run"],
       environment: {
-        NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-doctor-manual",
-        NEXISCLAW_CONFIG_PATH: "/tmp/NexisClaw-doctor-manual/NexisClaw.json",
+        NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-doctor-manual",
+        NEXISCLAW_CONFIG_PATH: "/tmp/FirstNexus-doctor-manual/FirstNexus.json",
         NEXISCLAW_GATEWAY_TOKEN: "stale-service-token",
         PATH: "/tmp/doctor-bin:/usr/bin",
         NODE_OPTIONS: "--require /tmp/evil.js",

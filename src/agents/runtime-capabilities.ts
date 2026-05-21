@@ -3,7 +3,7 @@ import {
   supportsAutomaticThreadBindingSpawn,
 } from "../channels/thread-bindings-policy.js";
 import { resolveChannelCapabilities } from "../config/channel-capabilities.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { resolveChannelPromptCapabilities } from "./channel-tools.js";
 
@@ -32,7 +32,7 @@ function mergeRuntimeCapabilities(
 }
 
 export function collectRuntimeChannelCapabilities(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   channel?: string | null;
   accountId?: string | null;
 }): string[] | undefined {

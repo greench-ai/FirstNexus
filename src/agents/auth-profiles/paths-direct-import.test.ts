@@ -26,7 +26,7 @@ describe("path-resolve helpers (direct-import coverage attribution)", () => {
   let stateDir = "";
 
   beforeEach(async () => {
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-path-direct-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-path-direct-"));
     process.env.NEXISCLAW_STATE_DIR = stateDir;
   });
 
@@ -83,7 +83,7 @@ describe("path-resolve helpers (direct-import coverage attribution)", () => {
     // Exercises the `pathname.startsWith(\"~\")` branch. We use a contrived
     // agentDir that already starts with `~` so the resolver echoes the
     // tilde path back instead of expanding it via resolveUserPath.
-    const tildeAgentDir = "~fake-NexisClaw-no-expand";
+    const tildeAgentDir = "~fake-FirstNexus-no-expand";
     const resolved = resolveAuthStorePathForDisplay(tildeAgentDir);
     expect(resolved).toBe(path.resolve(tildeAgentDir, "auth-profiles.json"));
   });
@@ -100,7 +100,7 @@ describe("ensureAuthStoreFile (direct-import coverage attribution)", () => {
   let stateDir = "";
 
   beforeEach(async () => {
-    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-path-ensure-"));
+    stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-path-ensure-"));
     process.env.NEXISCLAW_STATE_DIR = stateDir;
   });
 

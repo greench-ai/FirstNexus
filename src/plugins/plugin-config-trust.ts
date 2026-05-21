@@ -1,8 +1,8 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import type { PluginManifestRecord } from "./manifest-registry.js";
 
-type PluginEntriesConfig = NonNullable<NonNullable<NexisClawConfig["plugins"]>["entries"]>;
+type PluginEntriesConfig = NonNullable<NonNullable<FirstNexusConfig["plugins"]>["entries"]>;
 
 export function normalizePluginConfigId(id: unknown): string {
   return normalizeOptionalLowercaseString(id) ?? "";
@@ -31,7 +31,7 @@ function findPluginConfigEntry(
 }
 
 export function isWorkspacePluginAllowedByConfig(params: {
-  config: NexisClawConfig | undefined;
+  config: FirstNexusConfig | undefined;
   isImplicitlyAllowed?: (pluginId: string) => boolean;
   plugin: PluginManifestRecord;
 }): boolean {

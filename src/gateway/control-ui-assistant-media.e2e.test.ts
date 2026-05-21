@@ -22,7 +22,7 @@ describe("Control UI assistant media e2e", () => {
 
     await withGatewayServer(
       async ({ port }) => {
-        const route = `http://127.0.0.1:${port}/__NexisClaw__/assistant-media`;
+        const route = `http://127.0.0.1:${port}/__FirstNexus__/assistant-media`;
         const sourceParam = encodeURIComponent(filePath);
 
         const metadata = await fetch(`${route}?meta=1&source=${sourceParam}`, {

@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   resolveReactionLevel,
   type ReactionLevel,
   type ResolvedReactionLevel as BaseResolvedReactionLevel,
-} from "NexisClaw/plugin-sdk/status-helpers";
+} from "FirstNexus/plugin-sdk/status-helpers";
 import { resolveTelegramAccount } from "./accounts.js";
 
 export type TelegramReactionLevel = ReactionLevel;
@@ -13,7 +13,7 @@ export type ResolvedReactionLevel = BaseResolvedReactionLevel;
  * Resolve the effective reaction level and its implications.
  */
 export function resolveTelegramReactionLevel(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
 }): ResolvedReactionLevel {
   const account = resolveTelegramAccount({

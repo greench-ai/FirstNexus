@@ -1,6 +1,6 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
-import { createProviderApiKeyAuthMethod } from "NexisClaw/plugin-sdk/provider-auth-api-key";
-import { buildSingleProviderApiKeyCatalog } from "NexisClaw/plugin-sdk/provider-catalog-shared";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
+import { createProviderApiKeyAuthMethod } from "FirstNexus/plugin-sdk/provider-auth-api-key";
+import { buildSingleProviderApiKeyCatalog } from "FirstNexus/plugin-sdk/provider-catalog-shared";
 import { TOKENHUB_MODEL_CATALOG, TOKENHUB_PROVIDER_ID } from "./models.js";
 import { applyTokenHubConfig, TOKENHUB_DEFAULT_MODEL_REF } from "./onboard.js";
 import { buildTokenHubProvider } from "./provider-catalog.js";

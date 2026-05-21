@@ -1,8 +1,8 @@
 import {
   definePluginEntry,
-  type NexisClawPluginApi,
+  type FirstNexusPluginApi,
   type ProviderAuthMethodNonInteractiveContext,
-} from "NexisClaw/plugin-sdk/plugin-entry";
+} from "FirstNexus/plugin-sdk/plugin-entry";
 import {
   buildVllmProvider,
   VLLM_DEFAULT_API_KEY_ENV_VAR,
@@ -15,14 +15,14 @@ import { wrapVllmProviderStream } from "./stream.js";
 const PROVIDER_ID = "vllm";
 
 async function loadProviderSetup() {
-  return await import("NexisClaw/plugin-sdk/provider-setup");
+  return await import("FirstNexus/plugin-sdk/provider-setup");
 }
 
 export default definePluginEntry({
   id: "vllm",
   name: "vLLM Provider",
   description: "Bundled vLLM provider plugin",
-  register(api: NexisClawPluginApi) {
+  register(api: FirstNexusPluginApi) {
     api.registerProvider({
       id: PROVIDER_ID,
       label: "vLLM",
@@ -88,8 +88,8 @@ export default definePluginEntry({
       },
       buildUnknownModelHint: () =>
         "vLLM requires authentication to be registered as a provider. " +
-        'Set VLLM_API_KEY (any value works) or run "NexisClaw configure". ' +
-        "See: https://docs.NexisClaw.ai/providers/vllm",
+        'Set VLLM_API_KEY (any value works) or run "FirstNexus configure". ' +
+        "See: https://docs.FirstNexus.ai/providers/vllm",
       wrapStreamFn: wrapVllmProviderStream,
     });
   },

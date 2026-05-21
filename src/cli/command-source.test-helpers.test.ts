@@ -13,7 +13,7 @@ afterEach(() => {
 });
 
 function makeTempDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-command-source-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-command-source-"));
   tempDirs.push(dir);
   return dir;
 }

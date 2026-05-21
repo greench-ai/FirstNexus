@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { withFastReplyConfig } from "./reply/get-reply-fast-path.js";
 import { loadGetReplyModuleForTest } from "./reply/get-reply.test-loader.js";
 import { createMockTypingController } from "./reply/reply.test-helpers.js";
@@ -103,7 +103,7 @@ function createTelegramMessage(messageSid: string): MsgContext {
   };
 }
 
-function createReplyConfig(streamMode?: "block"): NexisClawConfig {
+function createReplyConfig(streamMode?: "block"): FirstNexusConfig {
   return withFastReplyConfig({
     agents: {
       defaults: {
@@ -118,7 +118,7 @@ function createReplyConfig(streamMode?: "block"): NexisClawConfig {
       },
     },
     session: { store: "/tmp/sessions.json" },
-  } as NexisClawConfig);
+  } as FirstNexusConfig);
 }
 
 function createContinueDirectivesResult() {

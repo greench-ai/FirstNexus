@@ -1,9 +1,9 @@
 import {
   type ChannelSetupWizard,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type WizardPrompter,
-} from "NexisClaw/plugin-sdk/setup-runtime";
-import { formatDocsLink } from "NexisClaw/plugin-sdk/setup-tools";
+} from "FirstNexus/plugin-sdk/setup-runtime";
+import { formatDocsLink } from "FirstNexus/plugin-sdk/setup-tools";
 import { resolveDiscordAccountAllowFrom } from "./accounts.js";
 import { resolveDiscordChannelAllowlist } from "./resolve-channels.js";
 import { resolveDiscordUserAllowlist } from "./resolve-users.js";
@@ -44,10 +44,10 @@ async function resolveDiscordAllowFromEntries(params: { token?: string; entries:
 }
 
 async function promptDiscordAllowFrom(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   prompter: WizardPrompter;
   accountId?: string;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   return await promptLegacyChannelAllowFromForAccount({
     cfg: params.cfg,
     channel,
@@ -88,7 +88,7 @@ async function promptDiscordAllowFrom(params: {
 }
 
 async function resolveDiscordGroupAllowlist(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   credentialValues: { token?: string };
   entries: string[];

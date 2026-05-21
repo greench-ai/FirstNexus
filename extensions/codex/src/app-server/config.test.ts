@@ -464,7 +464,7 @@ allowed_sandbox_modes = ["read-only", "workspace-write"]
   it("rejects the retired dynamic tool profile key", () => {
     expect(
       readCodexPluginConfig({
-        codexDynamicToolsProfile: "NexisClaw-compat",
+        codexDynamicToolsProfile: "FirstNexus-compat",
         codexDynamicToolsLoading: "direct",
       }),
     ).toEqual({});
@@ -788,7 +788,7 @@ allowed_sandbox_modes = ["read-only", "workspace-write"]
 
   it("keeps runtime config keys aligned with manifest schema and UI hints", async () => {
     const manifest = JSON.parse(
-      await fs.readFile(new URL("../../NexisClaw.plugin.json", import.meta.url), "utf8"),
+      await fs.readFile(new URL("../../FirstNexus.plugin.json", import.meta.url), "utf8"),
     ) as {
       configSchema: {
         properties: {
@@ -836,7 +836,7 @@ allowed_sandbox_modes = ["read-only", "workspace-write"]
 
   it("does not schema-default mode-derived policy fields", async () => {
     const manifest = JSON.parse(
-      await fs.readFile(new URL("../../NexisClaw.plugin.json", import.meta.url), "utf8"),
+      await fs.readFile(new URL("../../FirstNexus.plugin.json", import.meta.url), "utf8"),
     ) as {
       configSchema: {
         properties: {

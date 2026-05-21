@@ -4,7 +4,7 @@ import {
   jsonResult,
   readStringParam,
   type DiscordActionConfig,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../runtime-api.js";
 import {
   banMemberDiscord,
@@ -31,7 +31,7 @@ async function verifySenderModerationPermission(params: {
   senderUserId?: string;
   requiredPermission: bigint;
   accountId?: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 }) {
   // CLI/manual flows may not have sender context; enforce only when present.
   if (!params.senderUserId) {
@@ -52,7 +52,7 @@ export async function handleDiscordModerationAction(
   action: string,
   params: Record<string, unknown>,
   isActionEnabled: ActionGate<DiscordActionConfig>,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): Promise<AgentToolResult<unknown>> {
   if (!isDiscordModerationAction(action)) {
     throw new Error(`Unknown action: ${action}`);

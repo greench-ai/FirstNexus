@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveFirstNexusPackageRootSync } from "../infra/FirstNexus-root.js";
 import { tryReadJsonSync } from "../infra/json-files.js";
-import { resolveNexisClawPackageRootSync } from "../infra/NexisClaw-root.js";
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
 import { PluginLruCache } from "./plugin-cache-primitives.js";
 
@@ -59,7 +59,7 @@ function listPluginSdkSubpathsFromPackageJson(pkg: PluginSdkPackageJson): string
     .toSorted();
 }
 
-function hasTrustedNexisClawRootIndicator(params: {
+function hasTrustedFirstNexusRootIndicator(params: {
   packageRoot: string;
   packageJson: PluginSdkPackageJson;
 }): boolean {
@@ -72,14 +72,14 @@ function hasTrustedNexisClawRootIndicator(params: {
     return false;
   }
   const hasCliEntryExport = Object.prototype.hasOwnProperty.call(packageExports, "./cli-entry");
-  const hasNexisClawBin =
+  const hasFirstNexusBin =
     (typeof params.packageJson.bin === "string" &&
-      normalizeLowercaseStringOrEmpty(params.packageJson.bin).includes("NexisClaw")) ||
+      normalizeLowercaseStringOrEmpty(params.packageJson.bin).includes("FirstNexus")) ||
     (typeof params.packageJson.bin === "object" &&
       params.packageJson.bin !== null &&
-      typeof params.packageJson.bin.NexisClaw === "string");
-  const hasNexisClawEntrypoint = fs.existsSync(path.join(params.packageRoot, "NexisClaw.mjs"));
-  return hasCliEntryExport || hasNexisClawBin || hasNexisClawEntrypoint;
+      typeof params.packageJson.bin.FirstNexus === "string");
+  const hasFirstNexusEntrypoint = fs.existsSync(path.join(params.packageRoot, "FirstNexus.mjs"));
+  return hasCliEntryExport || hasFirstNexusBin || hasFirstNexusEntrypoint;
 }
 
 function readPluginSdkSubpathsFromPackageRoot(packageRoot: string): string[] | null {
@@ -87,21 +87,21 @@ function readPluginSdkSubpathsFromPackageRoot(packageRoot: string): string[] | n
   if (!pkg) {
     return null;
   }
-  if (!hasTrustedNexisClawRootIndicator({ packageRoot, packageJson: pkg })) {
+  if (!hasTrustedFirstNexusRootIndicator({ packageRoot, packageJson: pkg })) {
     return null;
   }
   const subpaths = listPluginSdkSubpathsFromPackageJson(pkg);
   return subpaths.length > 0 ? subpaths : null;
 }
 
-function resolveTrustedNexisClawRootFromArgvHint(params: {
+function resolveTrustedFirstNexusRootFromArgvHint(params: {
   argv1?: string;
   cwd: string;
 }): string | null {
   if (!params.argv1) {
     return null;
   }
-  const packageRoot = resolveNexisClawPackageRootSync({
+  const packageRoot = resolveFirstNexusPackageRootSync({
     cwd: params.cwd,
     argv1: params.argv1,
   });
@@ -112,7 +112,7 @@ function resolveTrustedNexisClawRootFromArgvHint(params: {
   if (!packageJson) {
     return null;
   }
-  return hasTrustedNexisClawRootIndicator({ packageRoot, packageJson }) ? packageRoot : null;
+  return hasTrustedFirstNexusRootIndicator({ packageRoot, packageJson }) ? packageRoot : null;
 }
 
 function findNearestPluginSdkPackageRoot(startDir: string, maxDepth = 12): string | null {
@@ -135,13 +135,13 @@ export function resolveLoaderPackageRoot(
   params: LoaderModuleResolveParams & { modulePath: string },
 ): string | null {
   const cwd = params.cwd ?? path.dirname(params.modulePath);
-  const fromModulePath = resolveNexisClawPackageRootSync({ cwd });
+  const fromModulePath = resolveFirstNexusPackageRootSync({ cwd });
   if (fromModulePath) {
     return fromModulePath;
   }
   const argv1 = params.argv1 ?? process.argv[1];
   const moduleUrl = params.moduleUrl ?? (params.modulePath ? undefined : import.meta.url);
-  return resolveNexisClawPackageRootSync({
+  return resolveFirstNexusPackageRootSync({
     cwd,
     ...(argv1 ? { argv1 } : {}),
     ...(moduleUrl ? { moduleUrl } : {}),
@@ -152,11 +152,11 @@ function resolveLoaderPluginSdkPackageRoot(
   params: LoaderModuleResolveParams & { modulePath: string },
 ): string | null {
   const cwd = params.cwd ?? path.dirname(params.modulePath);
-  const fromCwd = resolveNexisClawPackageRootSync({ cwd });
+  const fromCwd = resolveFirstNexusPackageRootSync({ cwd });
   const fromExplicitHints =
-    resolveTrustedNexisClawRootFromArgvHint({ cwd, argv1: params.argv1 }) ??
+    resolveTrustedFirstNexusRootFromArgvHint({ cwd, argv1: params.argv1 }) ??
     (params.moduleUrl
-      ? resolveNexisClawPackageRootSync({
+      ? resolveFirstNexusPackageRootSync({
           cwd,
           moduleUrl: params.moduleUrl,
         })
@@ -264,7 +264,7 @@ const cachedPluginSdkExportedSubpaths = new PluginLruCache<string[]>(
 const cachedPluginSdkScopedAliasMaps = new PluginLruCache<Record<string, string>>(
   MAX_PLUGIN_LOADER_ALIAS_CACHE_ENTRIES,
 );
-const PLUGIN_SDK_PACKAGE_NAMES = ["NexisClaw/plugin-sdk", "@NexisClaw/plugin-sdk"] as const;
+const PLUGIN_SDK_PACKAGE_NAMES = ["FirstNexus/plugin-sdk", "@FirstNexus/plugin-sdk"] as const;
 const CODEX_NATIVE_TASK_RUNTIME_PLUGIN_SDK_SUBPATH = "codex-native-task-runtime";
 const PLUGIN_SDK_SOURCE_CANDIDATE_EXTENSIONS = [
   ".ts",
@@ -318,7 +318,7 @@ function readPrivateLocalOnlyPluginSdkSubpaths(packageRoot: string): string[] {
 function readBundledPluginPackageName(packageJsonPath: string): string | null {
   const parsed = tryReadJsonSync<{ name?: unknown }>(packageJsonPath);
   const name = typeof parsed?.name === "string" ? parsed.name.trim() : "";
-  return name.startsWith("@NexisClaw/") ? name : null;
+  return name.startsWith("@FirstNexus/") ? name : null;
 }
 
 function isBundledPluginPublicSurfaceSourceBasename(params: {
@@ -613,7 +613,7 @@ export function resolvePluginSdkScopedAliasMap(
         }
         break;
       }
-      if (Object.prototype.hasOwnProperty.call(aliasMap, `NexisClaw/plugin-sdk/${subpath}`)) {
+      if (Object.prototype.hasOwnProperty.call(aliasMap, `FirstNexus/plugin-sdk/${subpath}`)) {
         break;
       }
     }
@@ -786,7 +786,7 @@ export function buildPluginLoaderAliasMap(
   const extensionApiAlias = resolveExtensionApiAlias({ modulePath, pluginSdkResolution });
   const result: Record<string, string> = {
     ...(extensionApiAlias
-      ? { "NexisClaw/extension-api": normalizeJitiAliasTargetPath(extensionApiAlias) }
+      ? { "FirstNexus/extension-api": normalizeJitiAliasTargetPath(extensionApiAlias) }
       : {}),
     ...resolveBundledPluginPackagePublicSurfaceAliasMap({
       modulePath,

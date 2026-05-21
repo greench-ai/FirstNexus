@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import {
   buildAccountScopedDmSecurityPolicy,
   formatPairingApproveHint,
   parseOptionalDelimitedEntries,
 } from "./helpers.js";
 
-function cfgWithChannel(channelKey: string, accounts?: Record<string, unknown>): NexisClawConfig {
+function cfgWithChannel(channelKey: string, accounts?: Record<string, unknown>): FirstNexusConfig {
   return {
     channels: {
       [channelKey]: accounts ? { accounts } : {},
     },
-  } as unknown as NexisClawConfig;
+  } as unknown as FirstNexusConfig;
 }
 
 describe("buildAccountScopedDmSecurityPolicy", () => {
@@ -118,7 +118,7 @@ describe("buildAccountScopedDmSecurityPolicy", () => {
               },
             },
           },
-        } as unknown as NexisClawConfig,
+        } as unknown as FirstNexusConfig,
         channelKey: "demo-root",
         accountId: "work",
         fallbackAccountId: "default",
@@ -144,14 +144,14 @@ describe("buildAccountScopedDmSecurityPolicy", () => {
         allowFrom: ["user-1"],
         defaultPolicy: "allowlist",
         policyPathSuffix: "dmPolicy",
-        approveHint: "NexisClaw pairing approve demo-default <code>",
+        approveHint: "FirstNexus pairing approve demo-default <code>",
       },
       expected: {
         policy: "allowlist",
         allowFrom: ["user-1"],
         policyPath: "channels.demo-default.dmPolicy",
         allowFromPath: "channels.demo-default.",
-        approveHint: "NexisClaw pairing approve demo-default <code>",
+        approveHint: "FirstNexus pairing approve demo-default <code>",
         normalizeEntry: undefined,
       },
     },

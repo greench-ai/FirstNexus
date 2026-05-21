@@ -23,7 +23,7 @@ import {
   updateSessionStore,
 } from "./store.js";
 
-const suiteRootTracker = createSuiteTempRootTracker({ prefix: "NexisClaw-skills-strip-" });
+const suiteRootTracker = createSuiteTempRootTracker({ prefix: "FirstNexus-skills-strip-" });
 
 function makeFixtureSkill(name: string, bodySize = 3000): Skill {
   // 3KB body simulates a realistic SKILL.md.

@@ -14,7 +14,7 @@ import { createDiagnosticLogRecordCapture } from "./test-helpers/diagnostic-log-
 const secret = "sk-testsecret1234567890abcd";
 const TRACE_ID = "4bf92f3577b34da6a3ce929d0e0e4736";
 const SPAN_ID = "00f067aa0ba902b7";
-const logPathTracker = createSuiteLogPathTracker("NexisClaw-log-redaction-");
+const logPathTracker = createSuiteLogPathTracker("FirstNexus-log-redaction-");
 const originalConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
 const originalHome = process.env.HOME;
 const originalTestFileLog = process.env.NEXISCLAW_TEST_FILE_LOG;
@@ -149,8 +149,8 @@ describe("file log redaction", () => {
     const home = path.join(path.dirname(logPathTracker.nextPath()), "home");
     process.env.HOME = home;
 
-    expect(loggerTest.resolveActiveLogFile("~/custom-NexisClaw.log")).toBe(
-      path.join(home, "custom-NexisClaw.log"),
+    expect(loggerTest.resolveActiveLogFile("~/custom-FirstNexus.log")).toBe(
+      path.join(home, "custom-FirstNexus.log"),
     );
   });
 

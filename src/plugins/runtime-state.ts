@@ -1,6 +1,6 @@
 import type { PluginRegistry } from "./registry-types.js";
 
-export const PLUGIN_REGISTRY_STATE = Symbol.for("NexisClaw.pluginRegistryState");
+export const PLUGIN_REGISTRY_STATE = Symbol.for("FirstNexus.pluginRegistryState");
 
 export type RuntimeTrackedPluginRegistry = PluginRegistry;
 

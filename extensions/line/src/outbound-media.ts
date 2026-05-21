@@ -1,5 +1,8 @@
-import { resolvePinnedHostnameWithPolicy, type SsrFPolicy } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import {
+  resolvePinnedHostnameWithPolicy,
+  type SsrFPolicy,
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 type LineOutboundMediaKind = "image" | "video" | "audio";
 

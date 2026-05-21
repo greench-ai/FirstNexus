@@ -34,7 +34,7 @@ export async function ensureDebugProxyCa(certDir: string): Promise<{
     "-out",
     certPath,
     "-subj",
-    "/CN=NexisClaw Debug Proxy",
+    "/CN=FirstNexus Debug Proxy",
   ]);
   return { certPath, keyPath };
 }

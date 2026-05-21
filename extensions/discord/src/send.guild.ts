@@ -5,8 +5,8 @@ import type {
   APIVoiceState,
   RESTPostAPIGuildScheduledEventJSONBody,
 } from "discord-api-types/v10";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { loadWebMediaRaw } from "NexisClaw/plugin-sdk/web-media";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { loadWebMediaRaw } from "FirstNexus/plugin-sdk/web-media";
 import {
   addGuildMemberRole,
   createGuildBan,

@@ -2,11 +2,11 @@ import {
   resolveChannelGroupRequireMention,
   resolveChannelGroupToolsPolicy,
   type GroupToolPolicyConfig,
-} from "NexisClaw/plugin-sdk/channel-policy";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/channel-policy";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/core";
 
 type IMessageGroupContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   groupId?: string | null;
   senderId?: string | null;

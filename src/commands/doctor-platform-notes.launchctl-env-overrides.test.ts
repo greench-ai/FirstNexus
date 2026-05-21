@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { noteMacLaunchctlGatewayEnvOverrides } from "./doctor-platform-notes.js";
 
 function requireNoteCall(noteFn: { mock: { calls: unknown[][] } }, index = 0): unknown[] {
@@ -22,7 +22,7 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
           token: "config-token",
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "darwin", getenv, noteFn });
 
@@ -41,7 +41,7 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
   it("does nothing when config has no gateway credentials", async () => {
     const noteFn = vi.fn();
     const getenv = vi.fn(async () => "launchctl-token");
-    const cfg = {} as NexisClawConfig;
+    const cfg = {} as FirstNexusConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "darwin", getenv, noteFn });
 
@@ -65,7 +65,7 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
           default: { source: "env" },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "darwin", getenv, noteFn });
 
@@ -83,7 +83,7 @@ describe("noteMacLaunchctlGatewayEnvOverrides", () => {
           token: "config-token",
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     await noteMacLaunchctlGatewayEnvOverrides(cfg, { platform: "linux", getenv, noteFn });
 

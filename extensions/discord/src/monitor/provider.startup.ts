@@ -1,10 +1,10 @@
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { danger } from "NexisClaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { resolveStateDir } from "NexisClaw/plugin-sdk/state-paths";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { danger } from "FirstNexus/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { resolveStateDir } from "FirstNexus/plugin-sdk/state-paths";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   Client,
   ReadyListener,
@@ -237,7 +237,7 @@ export async function fetchDiscordBotIdentity(params: {
 }
 
 export function registerDiscordMonitorListeners(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   client: Pick<Client, "listeners">;
   accountId: string;
   discordConfig: DiscordListenerConfig;

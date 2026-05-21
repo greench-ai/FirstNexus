@@ -12,7 +12,7 @@ import {
   testState,
 } from "./test-helpers.js";
 
-const { createNexisClawTools } = await import("../agents/NexisClaw-tools.js");
+const { createFirstNexusTools } = await import("../agents/FirstNexus-tools.js");
 
 installGatewayTestHooks({ scope: "suite" });
 
@@ -21,7 +21,7 @@ let gatewayPort: number;
 const gatewayToken = "test-gateway-token-1234567890";
 let envSnapshot: ReturnType<typeof captureEnv>;
 
-type SessionSendTool = ReturnType<typeof createNexisClawTools>[number];
+type SessionSendTool = ReturnType<typeof createFirstNexusTools>[number];
 const SESSION_SEND_E2E_TIMEOUT_MS = 10_000;
 let cachedSessionsSendTool: SessionSendTool | null = null;
 
@@ -29,7 +29,7 @@ function getSessionsSendTool(): SessionSendTool {
   if (cachedSessionsSendTool) {
     return cachedSessionsSendTool;
   }
-  const tool = createNexisClawTools().find((candidate) => candidate.name === "sessions_send");
+  const tool = createFirstNexusTools().find((candidate) => candidate.name === "sessions_send");
   if (!tool) {
     throw new Error("missing sessions_send tool");
   }
@@ -85,7 +85,7 @@ beforeAll(async () => {
   const pending = await requestDevicePairing({
     deviceId: identity.deviceId,
     publicKey: publicKeyRawBase64UrlFromPem(identity.publicKeyPem),
-    clientId: "NexisClaw-cli",
+    clientId: "FirstNexus-cli",
     clientMode: "cli",
     role: "operator",
     scopes: ["operator.admin", "operator.read", "operator.write", "operator.approvals"],
@@ -190,7 +190,7 @@ describe("sessions_send label lookup", () => {
         timeoutMs: 5000,
       });
 
-      const tool = createNexisClawTools({
+      const tool = createFirstNexusTools({
         config: {
           tools: {
             sessions: {

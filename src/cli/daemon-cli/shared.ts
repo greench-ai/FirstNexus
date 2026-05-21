@@ -154,7 +154,9 @@ export function renderRuntimeHints(
   const hints: string[] = [];
   const fileLog = logFile ?? null;
   if (runtime.missingUnit) {
-    hints.push(`Service not installed. Run: ${formatCliCommand("NexisClaw gateway install", env)}`);
+    hints.push(
+      `Service not installed. Run: ${formatCliCommand("FirstNexus gateway install", env)}`,
+    );
     if (fileLog) {
       hints.push(`File logs: ${fileLog}`);
     }
@@ -162,7 +164,7 @@ export function renderRuntimeHints(
   }
   if (runtime.missingSupervision) {
     hints.push(
-      `LaunchAgent installed but not loaded. Run: ${formatCliCommand("NexisClaw gateway restart", env)}`,
+      `LaunchAgent installed but not loaded. Run: ${formatCliCommand("FirstNexus gateway restart", env)}`,
     );
     if (fileLog) {
       hints.push(`File logs: ${fileLog}`);
@@ -188,8 +190,8 @@ export function renderGatewayServiceStartHints(env: NodeJS.ProcessEnv = process.
   const profile = env.NEXISCLAW_PROFILE;
   const container = resolveDaemonContainerContext(env);
   const hints = buildPlatformServiceStartHints({
-    installCommand: formatCliCommand("NexisClaw gateway install", env),
-    startCommand: formatCliCommand("NexisClaw gateway", env),
+    installCommand: formatCliCommand("FirstNexus gateway install", env),
+    startCommand: formatCliCommand("FirstNexus gateway", env),
     launchAgentPlistPath: `~/Library/LaunchAgents/${resolveGatewayLaunchAgentLabel(profile)}.plist`,
     systemdServiceName: resolveGatewaySystemdServiceName(profile),
     windowsTaskName: resolveGatewayWindowsTaskName(profile),

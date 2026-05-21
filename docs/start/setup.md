@@ -1,5 +1,5 @@
 ---
-summary: "Advanced setup and development workflows for NexisClaw"
+summary: "Advanced setup and development workflows for FirstNexus"
 read_when:
   - Setting up a new machine
   - You want "latest + greatest" without breaking your personal setup
@@ -15,14 +15,14 @@ For onboarding details, see [Onboarding (CLI)](/start/wizard).
 
 Pick a setup workflow based on how often you want updates and whether you want to run the Gateway yourself:
 
-- **Tailoring lives outside the repo:** keep your config and workspace in `~/.NexisClaw/NexisClaw.json` and `~/.NexisClaw/workspace/` so repo updates don't touch them.
+- **Tailoring lives outside the repo:** keep your config and workspace in `~/.FirstNexus/FirstNexus.json` and `~/.FirstNexus/workspace/` so repo updates don't touch them.
 - **Stable workflow (recommended for most):** install the macOS app and let it run the bundled Gateway.
 - **Bleeding edge workflow (dev):** run the Gateway yourself via `pnpm gateway:watch`, then let the macOS app attach in Local mode.
 
 ## Prereqs (from source)
 
 - Node 24 recommended (Node 22 LTS, currently `22.16+`, still supported)
-- `pnpm` required for source checkouts. NexisClaw loads bundled plugins from the
+- `pnpm` required for source checkouts. FirstNexus loads bundled plugins from the
   `extensions/*` pnpm workspace packages in dev mode, so root `npm install` does
   not prepare the full source tree.
 - Docker (optional; only for containerized setup/e2e - see [Docker](/install/docker))
@@ -31,51 +31,51 @@ Pick a setup workflow based on how often you want updates and whether you want t
 
 If you want "100% tailored to me" _and_ easy updates, keep your customization in:
 
-- **Config:** `~/.NexisClaw/NexisClaw.json` (JSON/JSON5-ish)
-- **Workspace:** `~/.NexisClaw/workspace` (skills, prompts, memories; make it a private git repo)
+- **Config:** `~/.FirstNexus/FirstNexus.json` (JSON/JSON5-ish)
+- **Workspace:** `~/.FirstNexus/workspace` (skills, prompts, memories; make it a private git repo)
 
 Bootstrap once:
 
 ```bash
-NexisClaw setup
+FirstNexus setup
 ```
 
 From inside this repo, use the local CLI entry:
 
 ```bash
-NexisClaw setup
+FirstNexus setup
 ```
 
-If you don't have a global install yet, run it via `pnpm NexisClaw setup`.
+If you don't have a global install yet, run it via `pnpm FirstNexus setup`.
 
 ## Run the Gateway from this repo
 
 After `pnpm build`, you can run the packaged CLI directly:
 
 ```bash
-node NexisClaw.mjs gateway --port 18789 --verbose
+node FirstNexus.mjs gateway --port 18789 --verbose
 ```
 
 ## Stable workflow (macOS app first)
 
-1. Install + launch **NexisClaw.app** (menu bar).
+1. Install + launch **FirstNexus.app** (menu bar).
 2. Complete the onboarding/permissions checklist (TCC prompts).
 3. Ensure Gateway is **Local** and running (the app manages it).
 4. Link surfaces (example: WhatsApp):
 
 ```bash
-NexisClaw channels login
+FirstNexus channels login
 ```
 
 5. Sanity check:
 
 ```bash
-NexisClaw health
+FirstNexus health
 ```
 
 If onboarding is not available in your build:
 
-- Run `NexisClaw setup`, then `NexisClaw channels login`, then start the Gateway manually (`NexisClaw gateway`).
+- Run `FirstNexus setup`, then `FirstNexus channels login`, then start the Gateway manually (`FirstNexus gateway`).
 
 ## Bleeding edge workflow (Gateway in a terminal)
 
@@ -93,26 +93,26 @@ If you also want the macOS app on the bleeding edge:
 
 ```bash
 pnpm install
-# First run only (or after resetting local NexisClaw config/workspace)
-pnpm NexisClaw setup
+# First run only (or after resetting local FirstNexus config/workspace)
+pnpm FirstNexus setup
 pnpm gateway:watch
 ```
 
 `gateway:watch` starts or restarts the Gateway watch process in a named tmux
 session and auto-attaches from interactive terminals. Non-interactive shells stay
-detached and print `tmux attach -t NexisClaw-gateway-watch-main`; use
+detached and print `tmux attach -t FirstNexus-gateway-watch-main`; use
 `NEXISCLAW_GATEWAY_WATCH_ATTACH=0 pnpm gateway:watch` to keep an interactive run
 detached, or `pnpm gateway:watch:raw` for foreground watch mode. The watcher
 reloads on relevant source, config, and bundled-plugin metadata changes. If the
 watched Gateway exits during startup, `gateway:watch` runs
-`NexisClaw doctor --fix --non-interactive` once and retries; set
+`FirstNexus doctor --fix --non-interactive` once and retries; set
 `NEXISCLAW_GATEWAY_WATCH_AUTO_DOCTOR=0` to disable that dev-only repair pass.
-`pnpm NexisClaw setup` is the one-time local config/workspace initialization step for a fresh checkout.
+`pnpm FirstNexus setup` is the one-time local config/workspace initialization step for a fresh checkout.
 `pnpm gateway:watch` does not rebuild `dist/control-ui`, so rerun `pnpm ui:build` after `ui/` changes or use `pnpm ui:dev` while developing the Control UI.
 
 ### 2) Point the macOS app at your running Gateway
 
-In **NexisClaw.app**:
+In **FirstNexus.app**:
 
 - Connection Mode: **Local**
   The app will attach to the running gateway on the configured port.
@@ -123,37 +123,37 @@ In **NexisClaw.app**:
 - Or via CLI:
 
 ```bash
-NexisClaw health
+FirstNexus health
 ```
 
 ### Common footguns
 
 - **Wrong port:** Gateway WS defaults to `ws://127.0.0.1:18789`; keep app + CLI on the same port.
 - **Where state lives:**
-  - Channel/provider state: `~/.NexisClaw/credentials/`
-  - Model auth profiles: `~/.NexisClaw/agents/<agentId>/agent/auth-profiles.json`
-  - Sessions: `~/.NexisClaw/agents/<agentId>/sessions/`
-  - Logs: `/tmp/NexisClaw/`
+  - Channel/provider state: `~/.FirstNexus/credentials/`
+  - Model auth profiles: `~/.FirstNexus/agents/<agentId>/agent/auth-profiles.json`
+  - Sessions: `~/.FirstNexus/agents/<agentId>/sessions/`
+  - Logs: `/tmp/FirstNexus/`
 
 ## Credential storage map
 
 Use this when debugging auth or deciding what to back up:
 
-- **WhatsApp**: `~/.NexisClaw/credentials/whatsapp/<accountId>/creds.json`
+- **WhatsApp**: `~/.FirstNexus/credentials/whatsapp/<accountId>/creds.json`
 - **Telegram bot token**: config/env or `channels.telegram.tokenFile` (regular file only; symlinks rejected)
 - **Discord bot token**: config/env or SecretRef (env/file/exec providers)
 - **Slack tokens**: config/env (`channels.slack.*`)
 - **Pairing allowlists**:
-  - `~/.NexisClaw/credentials/<channel>-allowFrom.json` (default account)
-  - `~/.NexisClaw/credentials/<channel>-<accountId>-allowFrom.json` (non-default accounts)
-- **Model auth profiles**: `~/.NexisClaw/agents/<agentId>/agent/auth-profiles.json`
-- **File-backed secrets payload (optional)**: `~/.NexisClaw/secrets.json`
-- **Legacy OAuth import**: `~/.NexisClaw/credentials/oauth.json`
+  - `~/.FirstNexus/credentials/<channel>-allowFrom.json` (default account)
+  - `~/.FirstNexus/credentials/<channel>-<accountId>-allowFrom.json` (non-default accounts)
+- **Model auth profiles**: `~/.FirstNexus/agents/<agentId>/agent/auth-profiles.json`
+- **File-backed secrets payload (optional)**: `~/.FirstNexus/secrets.json`
+- **Legacy OAuth import**: `~/.FirstNexus/credentials/oauth.json`
   More detail: [Security](/gateway/security#credential-storage-map).
 
 ## Updating (without wrecking your setup)
 
-- Keep `~/.NexisClaw/workspace` and `~/.NexisClaw/` as "your stuff"; don't put personal prompts/config into the `NexisClaw` repo.
+- Keep `~/.FirstNexus/workspace` and `~/.FirstNexus/` as "your stuff"; don't put personal prompts/config into the `FirstNexus` repo.
 - Updating source: `git pull` + `pnpm install` + keep using `pnpm gateway:watch`.
 
 ## Linux (systemd user service)
@@ -174,5 +174,5 @@ user service (no lingering needed). See [Gateway runbook](/gateway) for the syst
 - [Gateway runbook](/gateway) (flags, supervision, ports)
 - [Gateway configuration](/gateway/configuration) (config schema + examples)
 - [Discord](/channels/discord) and [Telegram](/channels/telegram) (reply tags + replyToMode settings)
-- [NexisClaw assistant setup](/start/NexisClaw)
+- [FirstNexus assistant setup](/start/FirstNexus)
 - [macOS app](/platforms/macos) (gateway lifecycle)

@@ -10,16 +10,16 @@ describe("task registry paths", () => {
         VITEST: "true",
         VITEST_POOL_ID: "7",
       } as NodeJS.ProcessEnv),
-    ).toBe(path.join(os.tmpdir(), "NexisClaw-test-state", `${process.pid}-7`));
+    ).toBe(path.join(os.tmpdir(), "FirstNexus-test-state", `${process.pid}-7`));
   });
 
   it("prefers explicit state dir overrides over Vitest sharding", () => {
     expect(
       resolveTaskStateDir({
-        NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-custom-state",
+        NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-custom-state",
         VITEST: "true",
         VITEST_POOL_ID: "7",
       } as NodeJS.ProcessEnv),
-    ).toBe("/tmp/NexisClaw-custom-state");
+    ).toBe("/tmp/FirstNexus-custom-state");
   });
 });

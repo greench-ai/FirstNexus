@@ -3,14 +3,14 @@ import os from "node:os";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import type { CliDeps } from "../cli/deps.types.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { GatewayTailscaleMode } from "../config/types.gateway.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
 import { hasConfiguredInternalHooks } from "../hooks/configured.js";
 import { isTruthyEnvValue } from "../infra/env.js";
 import type { scheduleGatewayUpdateCheck } from "../infra/update-startup.js";
 import type { getGlobalHookRunner } from "../plugins/hook-runner-global.js";
 import type { PluginHookGatewayCronService } from "../plugins/hook-types.js";
-import type { loadNexisClawPlugins } from "../plugins/loader.js";
+import type { loadFirstNexusPlugins } from "../plugins/loader.js";
 import { getPluginModuleLoaderStats } from "../plugins/plugin-module-loader-cache.js";
 import type { PluginRegistry } from "../plugins/registry.js";
 import type { PluginServicesHandle } from "../plugins/services.js";
@@ -62,7 +62,7 @@ function shouldSkipStartupModelPrewarm(env: NodeJS.ProcessEnv = process.env): bo
   return raw === "1" || raw === "true" || raw === "yes" || raw === "on";
 }
 
-function resolveGatewayMemoryStartupPolicy(cfg: NexisClawConfig): GatewayMemoryStartupPolicy {
+function resolveGatewayMemoryStartupPolicy(cfg: FirstNexusConfig): GatewayMemoryStartupPolicy {
   if (cfg.memory?.backend !== "qmd") {
     return { mode: "off" };
   }
@@ -85,7 +85,7 @@ function resolveGatewayMemoryStartupPolicy(cfg: NexisClawConfig): GatewayMemoryS
 }
 
 function scheduleGatewayMemoryBackend(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   log: { warn: (msg: string) => void };
   policy: GatewayMemoryStartupPolicy;
 }): void {
@@ -182,7 +182,7 @@ async function resolveRestartSentinelPathFast(
     return path.join(resolveUserPath(override), RESTART_SENTINEL_FILENAME);
   }
   const home = resolveHome();
-  const newStateDir = path.join(home, ".NexisClaw");
+  const newStateDir = path.join(home, ".FirstNexus");
   if (env.NEXISCLAW_TEST_FAST === "1" || (await pathExists(newStateDir))) {
     return path.join(newStateDir, RESTART_SENTINEL_FILENAME);
   }
@@ -210,12 +210,12 @@ async function refreshLatestUpdateRestartSentinelIfPresent(): Promise<Awaited<
   return await (await import("./server-restart-sentinel.js")).refreshLatestUpdateRestartSentinel();
 }
 
-function hasGatewayStartHooks(pluginRegistry: ReturnType<typeof loadNexisClawPlugins>): boolean {
+function hasGatewayStartHooks(pluginRegistry: ReturnType<typeof loadFirstNexusPlugins>): boolean {
   return pluginRegistry.typedHooks.some((hook) => hook.hookName === "gateway_start");
 }
 
 function isConfiguredCliBackendPrimary(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   explicitPrimary: string;
   normalizeProviderId: (provider: string) => string;
 }): boolean {
@@ -262,7 +262,7 @@ async function waitForAcpRuntimeBackendReady(params: {
 }
 
 async function prewarmConfiguredPrimaryModel(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   workspaceDir?: string;
   log: { warn: (msg: string) => void };
 }): Promise<void> {
@@ -305,12 +305,12 @@ async function prewarmConfiguredPrimaryModel(params: {
     return;
   }
   // Keep startup prewarm metadata-only; resolving models can import provider runtimes and block readiness.
-  const { ensureNexisClawModelsJson } = await import("../agents/models-config.js");
+  const { ensureFirstNexusModelsJson } = await import("../agents/models-config.js");
   const agentDir = resolveDefaultAgentDir(params.cfg);
   const workspaceDir =
     params.workspaceDir ?? resolveAgentWorkspaceDir(params.cfg, resolveDefaultAgentId(params.cfg));
   try {
-    await ensureNexisClawModelsJson(params.cfg, agentDir, {
+    await ensureFirstNexusModelsJson(params.cfg, agentDir, {
       workspaceDir,
       providerDiscoveryProviderIds: [provider],
       providerDiscoveryTimeoutMs: STARTUP_PROVIDER_DISCOVERY_TIMEOUT_MS,
@@ -323,7 +323,7 @@ async function prewarmConfiguredPrimaryModel(params: {
 
 async function prewarmConfiguredPrimaryModelWithTimeout(
   params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     workspaceDir?: string;
     log: { warn: (msg: string) => void };
     timeoutMs?: number;
@@ -352,7 +352,7 @@ async function prewarmConfiguredPrimaryModelWithTimeout(
 
 function schedulePrimaryModelPrewarm(
   params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     workspaceDir?: string;
     log: { warn: (msg: string) => void };
     startupTrace?: GatewayStartupTrace;
@@ -377,8 +377,8 @@ function schedulePrimaryModelPrewarm(
 }
 
 export async function startGatewaySidecars(params: {
-  cfg: NexisClawConfig;
-  pluginRegistry: ReturnType<typeof loadNexisClawPlugins>;
+  cfg: FirstNexusConfig;
+  pluginRegistry: ReturnType<typeof loadFirstNexusPlugins>;
   defaultWorkspaceDir: string;
   deps: CliDeps;
   startChannels: () => Promise<void>;
@@ -670,7 +670,7 @@ const defaultGatewayPostAttachRuntimeDeps: GatewayPostAttachRuntimeDeps = {
 export async function startGatewayPostAttachRuntime(
   params: {
     minimalTestGateway: boolean;
-    cfgAtStart: NexisClawConfig;
+    cfgAtStart: FirstNexusConfig;
     bindHost: string;
     bindHosts: string[];
     port: number;
@@ -692,8 +692,8 @@ export async function startGatewayPostAttachRuntime(
       error: (msg: string) => void;
       debug?: (msg: string) => void;
     };
-    gatewayPluginConfigAtStart: NexisClawConfig;
-    pluginRegistry: ReturnType<typeof loadNexisClawPlugins>;
+    gatewayPluginConfigAtStart: FirstNexusConfig;
+    pluginRegistry: ReturnType<typeof loadFirstNexusPlugins>;
     defaultWorkspaceDir: string;
     deps: CliDeps;
     startChannels: () => Promise<void>;

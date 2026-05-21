@@ -1,14 +1,14 @@
 import fs from "node:fs/promises";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import {
   createSubsystemLogger,
   resolveAgentContextLimits,
   resolveAgentWorkspaceDir,
   resolveGlobalSingleton,
   resolveMemorySearchSyncConfig,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-foundation";
-import { checkQmdBinaryAvailability } from "NexisClaw/plugin-sdk/memory-core-host-engine-qmd";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-foundation";
+import { checkQmdBinaryAvailability } from "FirstNexus/plugin-sdk/memory-core-host-engine-qmd";
 import {
   resolveMemoryBackendConfig,
   type MemoryEmbeddingProbeResult,
@@ -17,10 +17,10 @@ import {
   type MemorySource,
   type MemorySyncProgressUpdate,
   type ResolvedQmdConfig,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-storage";
-import { normalizeAgentId } from "NexisClaw/plugin-sdk/routing";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-storage";
+import { normalizeAgentId } from "FirstNexus/plugin-sdk/routing";
 
-const MEMORY_SEARCH_MANAGER_CACHE_KEY = Symbol.for("NexisClaw.memorySearchManagerCache");
+const MEMORY_SEARCH_MANAGER_CACHE_KEY = Symbol.for("FirstNexus.memorySearchManagerCache");
 type Maybe<T> = T | null;
 type QmdManagerRuntimeConfig = {
   workspaceDir: string;
@@ -146,7 +146,7 @@ function clearQmdManagerOpenFailure(scopeKey: string, identityKey: string): void
 }
 
 export async function getMemorySearchManager(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   purpose?: MemorySearchManagerPurpose;
 }): Promise<MemorySearchManagerResult> {
@@ -310,7 +310,7 @@ export async function getMemorySearchManager(params: {
 }
 
 async function getBuiltinMemorySearchManager(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   purpose?: MemorySearchManagerPurpose;
 }): Promise<MemorySearchManagerResult> {
@@ -619,7 +619,7 @@ function buildQmdManagerIdentityKey(
 }
 
 function resolveQmdManagerRuntimeConfig(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   agentId: string,
 ): QmdManagerRuntimeConfig {
   return {

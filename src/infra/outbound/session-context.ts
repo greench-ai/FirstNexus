@@ -1,6 +1,6 @@
 import { resolveSessionAgentId } from "../../agents/agent-scope.js";
 import { normalizeChatType } from "../../channels/chat-type.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { SilentReplyConversationType } from "../../shared/silent-reply-policy.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
 
@@ -26,7 +26,7 @@ export type OutboundSessionContext = {
 };
 
 export function buildOutboundSessionContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey?: string | null;
   policySessionKey?: string | null;
   conversationType?: string | null;

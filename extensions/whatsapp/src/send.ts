@@ -1,14 +1,14 @@
-import { formatCliCommand } from "NexisClaw/plugin-sdk/cli-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { generateSecureUuid } from "NexisClaw/plugin-sdk/core";
-import { redactIdentifier } from "NexisClaw/plugin-sdk/logging-core";
+import { formatCliCommand } from "FirstNexus/plugin-sdk/cli-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { generateSecureUuid } from "FirstNexus/plugin-sdk/core";
+import { redactIdentifier } from "FirstNexus/plugin-sdk/logging-core";
 import {
   convertMarkdownTables,
   resolveMarkdownTableMode,
-} from "NexisClaw/plugin-sdk/markdown-table-runtime";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import { normalizePollInput, type PollInput } from "NexisClaw/plugin-sdk/poll-runtime";
-import { createSubsystemLogger, getChildLogger } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/markdown-table-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import { normalizePollInput, type PollInput } from "FirstNexus/plugin-sdk/poll-runtime";
+import { createSubsystemLogger, getChildLogger } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   resolveDefaultWhatsAppAccountId,
   resolveWhatsAppAccount,
@@ -28,7 +28,7 @@ import { markdownToWhatsApp, toWhatsappJid } from "./text-runtime.js";
 const outboundLog = createSubsystemLogger("gateway/channels/whatsapp").child("outbound");
 
 function resolveOutboundWhatsAppAccountId(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
 }): string | undefined {
   const explicitAccountId = params.accountId?.trim();
@@ -38,7 +38,7 @@ function resolveOutboundWhatsAppAccountId(params: {
   return resolveDefaultWhatsAppAccountId(params.cfg);
 }
 
-function requireOutboundActiveWebListener(params: { cfg: NexisClawConfig; accountId?: string }): {
+function requireOutboundActiveWebListener(params: { cfg: FirstNexusConfig; accountId?: string }): {
   accountId: string;
   listener: ActiveWebListener;
 } {
@@ -48,7 +48,7 @@ function requireOutboundActiveWebListener(params: { cfg: NexisClawConfig; accoun
     getRegisteredWhatsAppConnectionController(resolvedAccountId)?.getActiveListener() ?? null;
   if (!listener) {
     throw new Error(
-      `No active WhatsApp Web listener (account: ${resolvedAccountId}). Start the gateway, then link WhatsApp with: ${formatCliCommand(`NexisClaw channels login --channel whatsapp --account ${resolvedAccountId}`)}.`,
+      `No active WhatsApp Web listener (account: ${resolvedAccountId}). Start the gateway, then link WhatsApp with: ${formatCliCommand(`FirstNexus channels login --channel whatsapp --account ${resolvedAccountId}`)}.`,
     );
   }
   return { accountId: resolvedAccountId, listener };
@@ -59,7 +59,7 @@ export async function sendMessageWhatsApp(
   body: string,
   options: {
     verbose: boolean;
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     mediaUrl?: string;
     mediaUrls?: readonly string[];
     mediaAccess?: {
@@ -186,7 +186,7 @@ export async function sendMessageWhatsApp(
 export async function sendTypingWhatsApp(
   to: string,
   options: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     accountId?: string;
   },
 ): Promise<void> {
@@ -209,7 +209,7 @@ export async function sendReactionWhatsApp(
     fromMe?: boolean;
     participant?: string;
     accountId?: string;
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
   },
 ): Promise<void> {
   const correlationId = generateSecureUuid();
@@ -251,7 +251,7 @@ export async function sendReactionWhatsApp(
 export async function sendPollWhatsApp(
   to: string,
   poll: PollInput,
-  options: { verbose: boolean; accountId?: string; cfg: NexisClawConfig },
+  options: { verbose: boolean; accountId?: string; cfg: FirstNexusConfig },
 ): Promise<{ messageId: string; toJid: string }> {
   const correlationId = generateSecureUuid();
   const startedAt = Date.now();

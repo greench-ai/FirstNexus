@@ -2,13 +2,13 @@ import {
   compileAllowlist,
   resolveCompiledAllowlistMatch,
   type AllowlistMatch,
-} from "NexisClaw/plugin-sdk/allow-from";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/allow-from";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   normalizeHyphenSlug,
   normalizeStringEntries,
   normalizeStringEntriesLower,
-} from "NexisClaw/plugin-sdk/string-normalization-runtime";
+} from "FirstNexus/plugin-sdk/string-normalization-runtime";
 
 const SLACK_SLUG_CACHE_MAX = 512;
 const slackSlugCache = new Map<string, string>();

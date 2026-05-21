@@ -1,9 +1,9 @@
 import { resolveEnvelopeFormatOptions } from "../auto-reply/envelope.js";
 import { readSessionUpdatedAt, resolveStorePath } from "../config/sessions.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export function resolveInboundSessionEnvelopeContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   sessionKey: string;
 }) {

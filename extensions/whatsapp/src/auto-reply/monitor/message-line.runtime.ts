@@ -1,11 +1,11 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
 export {
   formatInboundEnvelope,
   type EnvelopeFormatOptions,
-} from "NexisClaw/plugin-sdk/channel-envelope";
+} from "FirstNexus/plugin-sdk/channel-envelope";
 
-type WhatsAppMessagePrefixConfig = NexisClawConfig;
+type WhatsAppMessagePrefixConfig = FirstNexusConfig;
 
 function normalizeAgentId(agentId: string): string {
   return agentId.trim().toLowerCase() || "main";
@@ -34,5 +34,5 @@ export function resolveMessagePrefix(
   if (opts?.hasAllowFrom === true) {
     return "";
   }
-  return resolveIdentityNamePrefix(cfg, agentId) ?? opts?.fallback ?? "[NexisClaw]";
+  return resolveIdentityNamePrefix(cfg, agentId) ?? opts?.fallback ?? "[FirstNexus]";
 }

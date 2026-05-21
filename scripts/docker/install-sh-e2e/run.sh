@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Official installer E2E harness for Docker.
 #
-# Installs NexisClaw through the public one-liner, verifies the resolved npm
+# Installs FirstNexus through the public one-liner, verifies the resolved npm
 # version, then exercises onboard + local embedded agent tool turns for the
 # configured model providers. Keep this script package-install based: it should
 # validate the installed npm artifact, not repo sources.
@@ -15,7 +15,7 @@ fi
 # shellcheck source=../install-sh-common/version-parse.sh
 source "$VERIFY_HELPER_PATH"
 
-INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://NexisClaw.bot/install.sh}"
+INSTALL_URL="${NEXISCLAW_INSTALL_URL:-https://FirstNexus.bot/install.sh}"
 MODELS_MODE="${NEXISCLAW_E2E_MODELS:-both}" # both|openai|anthropic
 INSTALL_TAG="${NEXISCLAW_INSTALL_TAG:-latest}"
 E2E_PREVIOUS_VERSION="${NEXISCLAW_INSTALL_E2E_PREVIOUS:-}"
@@ -91,15 +91,15 @@ elif [[ "$MODELS_MODE" == "anthropic" && -z "$ANTHROPIC_API_TOKEN" && -z "$ANTHR
 fi
 
 resolve_npm_versions() {
-  EXPECTED_VERSION="$(quiet_npm view "NexisClaw@${INSTALL_TAG}" version)"
+  EXPECTED_VERSION="$(quiet_npm view "FirstNexus@${INSTALL_TAG}" version)"
   if [[ -z "$EXPECTED_VERSION" || "$EXPECTED_VERSION" == "undefined" || "$EXPECTED_VERSION" == "null" ]]; then
-    echo "ERROR: unable to resolve NexisClaw@${INSTALL_TAG} version" >&2
+    echo "ERROR: unable to resolve FirstNexus@${INSTALL_TAG} version" >&2
     return 2
   fi
   if [[ -n "$E2E_PREVIOUS_VERSION" ]]; then
     PREVIOUS_VERSION="$E2E_PREVIOUS_VERSION"
   else
-    PREVIOUS_VERSION="$(VERSIONS_JSON="$(quiet_npm view NexisClaw versions --json)" node - <<'NODE'
+    PREVIOUS_VERSION="$(VERSIONS_JSON="$(quiet_npm view FirstNexus versions --json)" node - <<'NODE'
 const versions = JSON.parse(process.env.VERSIONS_JSON || "[]");
 if (!Array.isArray(versions) || versions.length === 0) process.exit(1);
 process.stdout.write(versions.length >= 2 ? versions[versions.length - 2] : versions[0]);
@@ -114,7 +114,7 @@ preinstall_previous_version() {
     echo "Skip preinstall previous (NEXISCLAW_INSTALL_E2E_SKIP_PREVIOUS=1)"
   else
     echo "Preinstall previous (forces installer upgrade path; avoids read() prompt)"
-    quiet_npm install -g "NexisClaw@${PREVIOUS_VERSION}"
+    quiet_npm install -g "FirstNexus@${PREVIOUS_VERSION}"
   fi
 }
 
@@ -129,11 +129,11 @@ run_official_installer() {
 }
 
 verify_installed_version() {
-  INSTALLED_VERSION="$(NexisClaw --version 2>/dev/null | head -n 1 | tr -d '\r')"
-  INSTALLED_VERSION="$(extract_NexisClaw_semver "$INSTALLED_VERSION")"
+  INSTALLED_VERSION="$(FirstNexus --version 2>/dev/null | head -n 1 | tr -d '\r')"
+  INSTALLED_VERSION="$(extract_FirstNexus_semver "$INSTALLED_VERSION")"
   echo "installed=$INSTALLED_VERSION expected=$EXPECTED_VERSION"
   if [[ "$INSTALLED_VERSION" != "$EXPECTED_VERSION" ]]; then
-    echo "ERROR: expected NexisClaw@$EXPECTED_VERSION, got NexisClaw@$INSTALLED_VERSION" >&2
+    echo "ERROR: expected FirstNexus@$EXPECTED_VERSION, got FirstNexus@$INSTALLED_VERSION" >&2
     return 1
   fi
 }
@@ -148,7 +148,7 @@ set_image_model() {
   shift
   local candidate
   for candidate in "$@"; do
-    if NexisClaw --profile "$profile" models set-image "$candidate" >/dev/null 2>&1; then
+    if FirstNexus --profile "$profile" models set-image "$candidate" >/dev/null 2>&1; then
       echo "$candidate"
       return 0
     fi
@@ -162,7 +162,7 @@ set_agent_model() {
   local candidate
   shift
   for candidate in "$@"; do
-    if NexisClaw --profile "$profile" models set "$candidate" >/dev/null 2>&1; then
+    if FirstNexus --profile "$profile" models set "$candidate" >/dev/null 2>&1; then
       echo "$candidate"
       return 0
     fi
@@ -250,7 +250,7 @@ run_agent_turn() {
   # in the isolated container and already covered by gateway-specific lanes.
   set +e
   timeout --kill-after=15s "${AGENT_TURN_TIMEOUT_SECONDS}s" \
-    NexisClaw --profile "$profile" agent \
+    FirstNexus --profile "$profile" agent \
     --local \
     --session-id "$session_id" \
     --message "$prompt" \
@@ -364,14 +364,14 @@ dump_profile_debug() {
     fi
   fi
 
-  echo "---- NexisClaw processes ($profile) ----"
+  echo "---- FirstNexus processes ($profile) ----"
   for cmdline in /proc/[0-9]*/cmdline; do
     [[ -r "$cmdline" ]] || continue
     local pid
     pid="$(basename "$(dirname "$cmdline")")"
     local command
     command="$(tr '\0' ' ' <"$cmdline" | sed 's/[[:space:]]*$//')"
-    if [[ "$command" == *NexisClaw* || "$command" == *node* ]]; then
+    if [[ "$command" == *FirstNexus* || "$command" == *node* ]]; then
       echo "$pid $command"
     fi
   done
@@ -528,7 +528,7 @@ NODE
 session_jsonl_path() {
   local profile="$1"
   local session_id="$2"
-  echo "$HOME/.NexisClaw-${profile}/agents/main/sessions/${session_id}.jsonl"
+  echo "$HOME/.FirstNexus-${profile}/agents/main/sessions/${session_id}.jsonl"
 }
 
 run_profile() {
@@ -539,7 +539,7 @@ run_profile() {
 
   phase_mark_start "Onboard ($profile)"
 	  if [[ "$agent_model_provider" == "openai" ]]; then
-	    NexisClaw --profile "$profile" onboard \
+	    FirstNexus --profile "$profile" onboard \
 	      --non-interactive \
 	      --accept-risk \
 	      --flow quickstart \
@@ -551,7 +551,7 @@ run_profile() {
       --workspace "$workspace" \
       --skip-health
 	  elif [[ -n "$ANTHROPIC_API_KEY" ]]; then
-	    NexisClaw --profile "$profile" onboard \
+	    FirstNexus --profile "$profile" onboard \
 	      --non-interactive \
 	      --accept-risk \
 	      --flow quickstart \
@@ -563,7 +563,7 @@ run_profile() {
       --workspace "$workspace" \
       --skip-health
 	  elif [[ -n "$ANTHROPIC_API_TOKEN" ]]; then
-	    NexisClaw --profile "$profile" onboard \
+	    FirstNexus --profile "$profile" onboard \
 	      --non-interactive \
 	      --accept-risk \
 	      --flow quickstart \
@@ -576,7 +576,7 @@ run_profile() {
       --workspace "$workspace" \
       --skip-health
 	  else
-	    NexisClaw --profile "$profile" onboard \
+	    FirstNexus --profile "$profile" onboard \
 	      --non-interactive \
 	      --accept-risk \
 	      --flow quickstart \
@@ -610,7 +610,7 @@ run_profile() {
       "$OPENAI_AGENT_MODEL" \
       "openai/gpt-5.5" \
       "openai/gpt-5.4-mini")"
-    NexisClaw --profile "$profile" config set models.providers.openai "{\"baseUrl\":\"https://api.openai.com/v1\",\"models\":[],\"timeoutSeconds\":${OPENAI_PROVIDER_TIMEOUT_SECONDS},\"agentRuntime\":{\"id\":\"pi\"}}" --strict-json >/dev/null
+    FirstNexus --profile "$profile" config set models.providers.openai "{\"baseUrl\":\"https://api.openai.com/v1\",\"models\":[],\"timeoutSeconds\":${OPENAI_PROVIDER_TIMEOUT_SECONDS},\"agentRuntime\":{\"id\":\"pi\"}}" --strict-json >/dev/null
     image_model="$(set_image_model "$profile" \
       "openai/gpt-5.4-image-2")"
   else
@@ -642,7 +642,7 @@ run_profile() {
 
   phase_mark_start "Start gateway ($profile)"
   GATEWAY_LOG="$workspace/gateway.log"
-  NexisClaw --profile "$profile" gateway --port "$port" --bind loopback >"$GATEWAY_LOG" 2>&1 &
+  FirstNexus --profile "$profile" gateway --port "$port" --bind loopback >"$GATEWAY_LOG" 2>&1 &
   GATEWAY_PID="$!"
   cleanup_profile() {
     if kill -0 "$GATEWAY_PID" 2>/dev/null; then
@@ -662,12 +662,12 @@ run_profile() {
 
   phase_mark_start "Wait for health ($profile)"
   for _ in $(seq 1 240); do
-    if NexisClaw --profile "$profile" health --timeout 5000 --json >/dev/null 2>&1; then
+    if FirstNexus --profile "$profile" health --timeout 5000 --json >/dev/null 2>&1; then
       break
     fi
     sleep 0.25
   done
-  if ! NexisClaw --profile "$profile" health --timeout 60000 --json >"$HEALTH_JSON" 2>&1; then
+  if ! FirstNexus --profile "$profile" health --timeout 60000 --json >"$HEALTH_JSON" 2>&1; then
     echo "ERROR: gateway health failed ($profile, output=$HEALTH_JSON)" >&2
     dump_profile_debug "$profile" "$HEALTH_JSON" >&2 || true
     return 1
@@ -781,11 +781,11 @@ run_profile() {
 }
 
 if [[ "$MODELS_MODE" == "openai" || "$MODELS_MODE" == "both" ]]; then
-  run_profile "e2e-openai" "18789" "/tmp/NexisClaw-e2e-openai" "openai"
+  run_profile "e2e-openai" "18789" "/tmp/FirstNexus-e2e-openai" "openai"
 fi
 
 if [[ "$MODELS_MODE" == "anthropic" || "$MODELS_MODE" == "both" ]]; then
-  run_profile "e2e-anthropic" "18799" "/tmp/NexisClaw-e2e-anthropic" "anthropic"
+  run_profile "e2e-anthropic" "18799" "/tmp/FirstNexus-e2e-anthropic" "anthropic"
 fi
 
 echo "OK"

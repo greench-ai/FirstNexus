@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import type { QaBusState } from "./bus-state.js";
 import { createQaTransportAdapter, type QaTransportId } from "./qa-transport-registry.js";
 import { renderQaMarkdownReport } from "./report.js";
@@ -24,7 +24,7 @@ export function resolveQaSelfCheckOutputPath(params?: { outputPath?: string; rep
 
 export async function runQaSelfCheckAgainstState(params: {
   state: QaBusState;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   transportId?: QaTransportId;
   outputPath?: string;
   repoRoot?: string;
@@ -70,7 +70,7 @@ export async function runQaSelfCheckAgainstState(params: {
     }
   });
   const report = renderQaMarkdownReport({
-    title: "NexisClaw QA E2E Self-Check",
+    title: "FirstNexus QA E2E Self-Check",
     startedAt,
     finishedAt,
     checks,

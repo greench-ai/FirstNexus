@@ -1,5 +1,5 @@
 ---
-summary: "Optional Docker-based setup and onboarding for NexisClaw"
+summary: "Optional Docker-based setup and onboarding for FirstNexus"
 read_when:
   - You want a containerized gateway instead of local installs
   - You are validating the Docker flow
@@ -10,7 +10,7 @@ Docker is **optional**. Use it only if you want a containerized gateway or to va
 
 ## Is Docker right for me?
 
-- **Yes**: you want an isolated, throwaway gateway environment or to run NexisClaw on a host without local installs.
+- **Yes**: you want an isolated, throwaway gateway environment or to run FirstNexus on a host without local installs.
 - **No**: you are running on your own machine and just want the fastest dev loop. Use the normal install flow instead.
 - **Sandboxing note**: the default sandbox backend uses Docker when sandboxing is enabled, but sandboxing is off by default and does **not** require the full gateway to run in Docker. SSH and OpenShell sandbox backends are also available. See [Sandboxing](/gateway/sandboxing).
 
@@ -36,12 +36,12 @@ Docker is **optional**. Use it only if you want a containerized gateway or to va
     This builds the gateway image locally. To use a pre-built image instead:
 
     ```bash
-    export NEXISCLAW_IMAGE="ghcr.io/NexisClaw/NexisClaw:latest"
+    export NEXISCLAW_IMAGE="ghcr.io/FirstNexus/FirstNexus:latest"
     ./scripts/docker/setup.sh
     ```
 
     Pre-built images are published at the
-    [GitHub Container Registry](https://github.com/NexisClaw/NexisClaw/pkgs/container/NexisClaw).
+    [GitHub Container Registry](https://github.com/FirstNexus/FirstNexus/pkgs/container/FirstNexus).
     Common tags: `main`, `latest`, `<version>` (e.g. `2026.2.26`).
 
   </Step>
@@ -55,7 +55,7 @@ Docker is **optional**. Use it only if you want a containerized gateway or to va
     - start the gateway via Docker Compose
 
     During setup, pre-start onboarding and config writes run through
-    `NexisClaw-gateway` directly. `NexisClaw-cli` is for commands you run after
+    `FirstNexus-gateway` directly. `FirstNexus-cli` is for commands you run after
     the gateway container already exists.
 
   </Step>
@@ -69,7 +69,7 @@ Docker is **optional**. Use it only if you want a containerized gateway or to va
     Need the URL again?
 
     ```bash
-    docker compose run --rm NexisClaw-cli dashboard --no-open
+    docker compose run --rm FirstNexus-cli dashboard --no-open
     ```
 
   </Step>
@@ -79,13 +79,13 @@ Docker is **optional**. Use it only if you want a containerized gateway or to va
 
     ```bash
     # WhatsApp (QR)
-    docker compose run --rm NexisClaw-cli channels login
+    docker compose run --rm FirstNexus-cli channels login
 
     # Telegram
-    docker compose run --rm NexisClaw-cli channels add --channel telegram --token "<token>"
+    docker compose run --rm FirstNexus-cli channels add --channel telegram --token "<token>"
 
     # Discord
-    docker compose run --rm NexisClaw-cli channels add --channel discord --token "<token>"
+    docker compose run --rm FirstNexus-cli channels add --channel discord --token "<token>"
     ```
 
     Docs: [WhatsApp](/channels/whatsapp), [Telegram](/channels/telegram), [Discord](/channels/discord)
@@ -98,12 +98,12 @@ Docker is **optional**. Use it only if you want a containerized gateway or to va
 If you prefer to run each step yourself instead of using the setup script:
 
 ```bash
-docker build -t NexisClaw:local -f Dockerfile .
-docker compose run --rm --no-deps --entrypoint node NexisClaw-gateway \
+docker build -t FirstNexus:local -f Dockerfile .
+docker compose run --rm --no-deps --entrypoint node FirstNexus-gateway \
   dist/index.js onboard --mode local --no-install-daemon
-docker compose run --rm --no-deps --entrypoint node NexisClaw-gateway \
+docker compose run --rm --no-deps --entrypoint node FirstNexus-gateway \
   dist/index.js config set --batch-json '[{"path":"gateway.mode","value":"local"},{"path":"gateway.bind","value":"lan"},{"path":"gateway.controlUi.allowedOrigins","value":["http://localhost:18789","http://127.0.0.1:18789"]}]'
-docker compose up -d NexisClaw-gateway
+docker compose up -d FirstNexus-gateway
 ```
 
 <Note>
@@ -113,9 +113,9 @@ include it with `-f docker-compose.yml -f docker-compose.extra.yml`.
 </Note>
 
 <Note>
-Because `NexisClaw-cli` shares `NexisClaw-gateway`'s network namespace, it is a
-post-start tool. Before `docker compose up -d NexisClaw-gateway`, run onboarding
-and setup-time config writes through `NexisClaw-gateway` with
+Because `FirstNexus-cli` shares `FirstNexus-gateway`'s network namespace, it is a
+post-start tool. Before `docker compose up -d FirstNexus-gateway`, run onboarding
+and setup-time config writes through `FirstNexus-gateway` with
 `--no-deps --entrypoint node`.
 </Note>
 
@@ -123,8 +123,8 @@ and setup-time config writes through `NexisClaw-gateway` with
 
 The setup script accepts these optional environment variables:
 
-| Variable                                   | Purpose                                                         |
-| ------------------------------------------ | --------------------------------------------------------------- |
+| Variable                                    | Purpose                                                         |
+| ------------------------------------------- | --------------------------------------------------------------- |
 | `NEXISCLAW_IMAGE`                           | Use a remote image instead of building locally                  |
 | `NEXISCLAW_DOCKER_APT_PACKAGES`             | Install extra apt packages during build (space-separated)       |
 | `NEXISCLAW_EXTENSIONS`                      | Include selected bundled plugin helpers at build time           |
@@ -135,11 +135,11 @@ The setup script accepts these optional environment variables:
 | `NEXISCLAW_DOCKER_SOCKET`                   | Override Docker socket path                                     |
 | `NEXISCLAW_DISABLE_BONJOUR`                 | Disable Bonjour/mDNS advertising (defaults to `1` for Docker)   |
 | `NEXISCLAW_DISABLE_BUNDLED_SOURCE_OVERLAYS` | Disable bundled plugin source bind-mount overlays               |
-| `OTEL_EXPORTER_OTLP_ENDPOINT`              | Shared OTLP/HTTP collector endpoint for OpenTelemetry export    |
-| `OTEL_EXPORTER_OTLP_*_ENDPOINT`            | Signal-specific OTLP endpoints for traces, metrics, or logs     |
-| `OTEL_EXPORTER_OTLP_PROTOCOL`              | OTLP protocol override. Only `http/protobuf` is supported today |
-| `OTEL_SERVICE_NAME`                        | Service name used for OpenTelemetry resources                   |
-| `OTEL_SEMCONV_STABILITY_OPT_IN`            | Opt in to latest experimental GenAI semantic attributes         |
+| `OTEL_EXPORTER_OTLP_ENDPOINT`               | Shared OTLP/HTTP collector endpoint for OpenTelemetry export    |
+| `OTEL_EXPORTER_OTLP_*_ENDPOINT`             | Signal-specific OTLP endpoints for traces, metrics, or logs     |
+| `OTEL_EXPORTER_OTLP_PROTOCOL`               | OTLP protocol override. Only `http/protobuf` is supported today |
+| `OTEL_SERVICE_NAME`                         | Service name used for OpenTelemetry resources                   |
+| `OTEL_SEMCONV_STABILITY_OPT_IN`             | Opt in to latest experimental GenAI semantic attributes         |
 | `NEXISCLAW_OTEL_PRELOADED`                  | Skip starting a second OpenTelemetry SDK when one is preloaded  |
 
 Maintainers can test bundled plugin source against a packaged image by mounting
@@ -158,11 +158,11 @@ include its runtime dependencies:
 ```bash
 export NEXISCLAW_EXTENSIONS="diagnostics-otel"
 export OTEL_EXPORTER_OTLP_ENDPOINT="http://otel-collector:4318"
-export OTEL_SERVICE_NAME="NexisClaw-gateway"
+export OTEL_SERVICE_NAME="FirstNexus-gateway"
 ./scripts/docker/setup.sh
 ```
 
-Install the official `@NexisClaw/diagnostics-otel` plugin from ClawHub in
+Install the official `@FirstNexus/diagnostics-otel` plugin from ClawHub in
 packaged Docker installs before enabling export. Custom source-built images can
 still include the local plugin source with
 `NEXISCLAW_EXTENSIONS=diagnostics-otel`. To enable export, allow and enable the
@@ -172,7 +172,7 @@ export](/gateway/opentelemetry). Collector auth headers are configured through
 `diagnostics.otel.headers`, not through Docker environment variables.
 
 Prometheus metrics use the already-published Gateway port. Install
-`clawhub:@NexisClaw/diagnostics-prometheus`, enable the
+`clawhub:@FirstNexus/diagnostics-prometheus`, enable the
 `diagnostics-prometheus` plugin, then scrape:
 
 ```text
@@ -199,7 +199,7 @@ orchestration systems can restart or replace it.
 Authenticated deep health snapshot:
 
 ```bash
-docker compose exec NexisClaw-gateway node dist/index.js health --token "$NEXISCLAW_GATEWAY_TOKEN"
+docker compose exec FirstNexus-gateway node dist/index.js health --token "$NEXISCLAW_GATEWAY_TOKEN"
 ```
 
 ### LAN vs loopback
@@ -218,7 +218,7 @@ Use bind mode values in `gateway.bind` (`lan` / `loopback` / `custom` /
 
 ### Host Local Providers
 
-When NexisClaw runs in Docker, `127.0.0.1` inside the container is the container
+When FirstNexus runs in Docker, `127.0.0.1` inside the container is the container
 itself, not your host machine. Use `host.docker.internal` for AI providers that
 run on the host:
 
@@ -258,17 +258,17 @@ For gotchas and troubleshooting, see [Bonjour discovery](/gateway/bonjour).
 
 ### Storage and persistence
 
-Docker Compose bind-mounts `NEXISCLAW_CONFIG_DIR` to `/home/node/.NexisClaw`,
-`NEXISCLAW_WORKSPACE_DIR` to `/home/node/.NexisClaw/workspace`, and
-`NEXISCLAW_AUTH_PROFILE_SECRET_DIR` to `/home/node/.config/NexisClaw`, so those
+Docker Compose bind-mounts `NEXISCLAW_CONFIG_DIR` to `/home/node/.FirstNexus`,
+`NEXISCLAW_WORKSPACE_DIR` to `/home/node/.FirstNexus/workspace`, and
+`NEXISCLAW_AUTH_PROFILE_SECRET_DIR` to `/home/node/.config/FirstNexus`, so those
 paths survive container replacement. When any variable is unset, the bundled
 `docker-compose.yml` falls back under `${HOME}`, or `/tmp` when `HOME` itself is
 also missing. That keeps `docker compose up` from emitting an empty-source
 volume spec on bare environments.
 
-That mounted config directory is where NexisClaw keeps:
+That mounted config directory is where FirstNexus keeps:
 
-- `NexisClaw.json` for behavior config
+- `FirstNexus.json` for behavior config
 - `agents/<agentId>/agent/auth-profiles.json` for stored provider OAuth/API-key auth
 - `.env` for env-backed runtime secrets such as `NEXISCLAW_GATEWAY_TOKEN`
 
@@ -277,7 +277,7 @@ OAuth-backed auth profile token material. Keep it with your Docker host state,
 but separate from `NEXISCLAW_CONFIG_DIR`.
 
 Installed downloadable plugins store their package state under the mounted
-NexisClaw home, so plugin install records and package roots survive container
+FirstNexus home, so plugin install records and package roots survive container
 replacement. Gateway startup does not generate bundled-plugin dependency trees.
 
 For full persistence details on VM deployments, see
@@ -285,14 +285,14 @@ For full persistence details on VM deployments, see
 
 **Disk growth hotspots:** watch `media/`, session JSONL files,
 `cron/runs/*.jsonl`, installed plugin package roots, and rolling file logs
-under `/tmp/NexisClaw/`.
+under `/tmp/FirstNexus/`.
 
 ### Shell helpers (optional)
 
 For easier day-to-day Docker management, install `ClawDock`:
 
 ```bash
-mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/NexisClaw/NexisClaw/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
+mkdir -p ~/.clawdock && curl -sL https://raw.githubusercontent.com/FirstNexus/FirstNexus/main/scripts/clawdock/clawdock-helpers.sh -o ~/.clawdock/clawdock-helpers.sh
 echo 'source ~/.clawdock/clawdock-helpers.sh' >> ~/.zshrc && source ~/.zshrc
 ```
 
@@ -320,7 +320,7 @@ See [ClawDock](/install/clawdock) for the full helper guide.
     The script mounts `docker.sock` only after sandbox prerequisites pass. If
     sandbox setup cannot complete, the script resets `agents.defaults.sandbox.mode`
     to `off`. Codex code-mode turns are still constrained to Codex
-    `workspace-write` while the NexisClaw sandbox is active; do not mount the
+    `workspace-write` while the FirstNexus sandbox is active; do not mount the
     host Docker socket into agent sandbox containers.
 
   </Accordion>
@@ -329,23 +329,23 @@ See [ClawDock](/install/clawdock) for the full helper guide.
     Disable Compose pseudo-TTY allocation with `-T`:
 
     ```bash
-    docker compose run -T --rm NexisClaw-cli gateway probe
-    docker compose run -T --rm NexisClaw-cli devices list --json
+    docker compose run -T --rm FirstNexus-cli gateway probe
+    docker compose run -T --rm FirstNexus-cli devices list --json
     ```
 
   </Accordion>
 
   <Accordion title="Shared-network security note">
-    `NexisClaw-cli` uses `network_mode: "service:NexisClaw-gateway"` so CLI
+    `FirstNexus-cli` uses `network_mode: "service:FirstNexus-gateway"` so CLI
     commands can reach the gateway over `127.0.0.1`. Treat this as a shared
     trust boundary. The compose config drops `NET_RAW`/`NET_ADMIN` and enables
-    `no-new-privileges` on both `NexisClaw-gateway` and `NexisClaw-cli`.
+    `no-new-privileges` on both `FirstNexus-gateway` and `FirstNexus-cli`.
   </Accordion>
 
-  <Accordion title="Docker Desktop DNS failures in NexisClaw-cli">
+  <Accordion title="Docker Desktop DNS failures in FirstNexus-cli">
     Some Docker Desktop setups fail DNS lookups from the shared-network
-    `NexisClaw-cli` sidecar after `NET_RAW` is dropped, which shows up as
-    `EAI_AGAIN` during npm-backed commands such as `NexisClaw plugins install`.
+    `FirstNexus-cli` sidecar after `NET_RAW` is dropped, which shows up as
+    `EAI_AGAIN` during npm-backed commands such as `FirstNexus plugins install`.
     Keep the default hardened compose file for normal gateway operation. The
     local override below loosens the CLI container's security posture by
     restoring Docker's default capabilities, so use it only for the one-off CLI
@@ -355,14 +355,14 @@ See [ClawDock](/install/clawdock) for the full helper guide.
     ```bash
     printf '%s\n' \
       'services:' \
-      '  NexisClaw-cli:' \
+      '  FirstNexus-cli:' \
       '    cap_drop: !reset []' \
       > docker-compose.cli-no-dropped-caps.local.yml
 
-    docker compose -f docker-compose.yml -f docker-compose.cli-no-dropped-caps.local.yml run --rm NexisClaw-cli plugins install <package>
+    docker compose -f docker-compose.yml -f docker-compose.cli-no-dropped-caps.local.yml run --rm FirstNexus-cli plugins install <package>
     ```
 
-    If you already created a long-running `NexisClaw-cli` container, recreate it
+    If you already created a long-running `FirstNexus-cli` container, recreate it
     with the same override. `docker compose exec` and `docker exec` cannot
     change Linux capabilities on an already-created container.
 
@@ -370,10 +370,10 @@ See [ClawDock](/install/clawdock) for the full helper guide.
 
   <Accordion title="Permissions and EACCES">
     The image runs as `node` (uid 1000). If you see permission errors on
-    `/home/node/.NexisClaw`, make sure your host bind mounts are owned by uid 1000:
+    `/home/node/.FirstNexus`, make sure your host bind mounts are owned by uid 1000:
 
     ```bash
-    sudo chown -R 1000:1000 /path/to/NexisClaw-config /path/to/NexisClaw-workspace
+    sudo chown -R 1000:1000 /path/to/FirstNexus-config /path/to/FirstNexus-workspace
     ```
 
     The same mismatch can show up as a plugin warning such as
@@ -381,8 +381,8 @@ See [ClawDock](/install/clawdock) for the full helper guide.
     followed by `plugin present but blocked`. That means the process uid and the
     mounted plugin directory owner disagree. Prefer running the container as the
     default uid 1000 and fixing the bind mount ownership. Only chown
-    `/path/to/NexisClaw-config/npm` to `root:root` if you intentionally run
-    NexisClaw as root long term.
+    `/path/to/FirstNexus-config/npm` to `root:root` if you intentionally run
+    FirstNexus as root long term.
 
   </Accordion>
 
@@ -414,16 +414,16 @@ See [ClawDock](/install/clawdock) for the full helper guide.
     The default image is security-first and runs as non-root `node`. For a more
     full-featured container:
 
-    1. **Persist `/home/node`**: `export NEXISCLAW_HOME_VOLUME="NexisClaw_home"`
+    1. **Persist `/home/node`**: `export NEXISCLAW_HOME_VOLUME="FirstNexus_home"`
     2. **Bake system deps**: `export NEXISCLAW_DOCKER_APT_PACKAGES="git curl jq"`
     3. **Bake Playwright Chromium**: `export NEXISCLAW_INSTALL_BROWSER=1`
     4. **Or install Playwright browsers into a persisted volume**:
        ```bash
-       docker compose run --rm NexisClaw-cli \
+       docker compose run --rm FirstNexus-cli \
          node /app/node_modules/playwright-core/cli.js install chromium
        ```
     5. **Persist browser downloads**: use `NEXISCLAW_HOME_VOLUME` or
-       `NEXISCLAW_EXTRA_MOUNTS`. NexisClaw auto-detects the Docker image's
+       `NEXISCLAW_EXTRA_MOUNTS`. FirstNexus auto-detects the Docker image's
        Playwright-managed Chromium on Linux.
 
   </Accordion>
@@ -496,7 +496,7 @@ For npm installs without a source checkout, see [Sandboxing § Images and setup]
 <AccordionGroup>
   <Accordion title="Image missing or sandbox container not starting">
     Build the sandbox image with
-    [`scripts/sandbox-setup.sh`](https://github.com/NexisClaw/NexisClaw/blob/main/scripts/sandbox-setup.sh)
+    [`scripts/sandbox-setup.sh`](https://github.com/FirstNexus/FirstNexus/blob/main/scripts/sandbox-setup.sh)
     (source checkout) or the inline `docker build` command from [Sandboxing § Images and setup](/gateway/sandboxing#images-and-setup) (npm install),
     or set `agents.defaults.sandbox.docker.image` to your custom image.
     Containers are auto-created per session on demand.
@@ -508,7 +508,7 @@ For npm installs without a source checkout, see [Sandboxing § Images and setup]
   </Accordion>
 
   <Accordion title="Custom tools not found in sandbox">
-    NexisClaw runs commands with `sh -lc` (login shell), which sources
+    FirstNexus runs commands with `sh -lc` (login shell), which sources
     `/etc/profile` and may reset PATH. Set `docker.env.PATH` to prepend your
     custom tool paths, or add a script under `/etc/profile.d/` in your Dockerfile.
   </Accordion>
@@ -521,9 +521,9 @@ For npm installs without a source checkout, see [Sandboxing § Images and setup]
     Fetch a fresh dashboard link and approve the browser device:
 
     ```bash
-    docker compose run --rm NexisClaw-cli dashboard --no-open
-    docker compose run --rm NexisClaw-cli devices list
-    docker compose run --rm NexisClaw-cli devices approve <requestId>
+    docker compose run --rm FirstNexus-cli dashboard --no-open
+    docker compose run --rm FirstNexus-cli devices list
+    docker compose run --rm FirstNexus-cli devices approve <requestId>
     ```
 
     More detail: [Dashboard](/web/dashboard), [Devices](/cli/devices).
@@ -534,8 +534,8 @@ For npm installs without a source checkout, see [Sandboxing § Images and setup]
     Reset gateway mode and bind:
 
     ```bash
-    docker compose run --rm NexisClaw-cli config set --batch-json '[{"path":"gateway.mode","value":"local"},{"path":"gateway.bind","value":"lan"}]'
-    docker compose run --rm NexisClaw-cli devices list --url ws://127.0.0.1:18789
+    docker compose run --rm FirstNexus-cli config set --batch-json '[{"path":"gateway.mode","value":"local"},{"path":"gateway.bind","value":"lan"}]'
+    docker compose run --rm FirstNexus-cli devices list --url ws://127.0.0.1:18789
     ```
 
   </Accordion>
@@ -546,5 +546,5 @@ For npm installs without a source checkout, see [Sandboxing § Images and setup]
 - [Install Overview](/install) — all installation methods
 - [Podman](/install/podman) — Podman alternative to Docker
 - [ClawDock](/install/clawdock) — Docker Compose community setup
-- [Updating](/install/updating) — keeping NexisClaw up to date
+- [Updating](/install/updating) — keeping FirstNexus up to date
 - [Configuration](/gateway/configuration) — gateway configuration after install

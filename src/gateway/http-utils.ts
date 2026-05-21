@@ -29,13 +29,13 @@ export {
   type GatewayHttpRequestAuthCheckResult,
 } from "./http-auth-utils.js";
 
-export const NEXISCLAW_MODEL_ID = "NexisClaw";
-export const NEXISCLAW_DEFAULT_MODEL_ID = "NexisClaw/default";
+export const NEXISCLAW_MODEL_ID = "FirstNexus";
+export const NEXISCLAW_DEFAULT_MODEL_ID = "FirstNexus/default";
 
 function resolveAgentIdFromHeader(req: IncomingMessage): string | undefined {
   const raw =
-    normalizeOptionalString(getHeader(req, "x-NexisClaw-agent-id")) ||
-    normalizeOptionalString(getHeader(req, "x-NexisClaw-agent")) ||
+    normalizeOptionalString(getHeader(req, "x-FirstNexus-agent-id")) ||
+    normalizeOptionalString(getHeader(req, "x-FirstNexus-agent")) ||
     "";
   if (!raw) {
     return undefined;
@@ -57,7 +57,7 @@ export function resolveAgentIdFromModel(
   }
 
   const m =
-    raw.match(/^NexisClaw[:/](?<agentId>[a-z0-9][a-z0-9_-]{0,63})$/i) ??
+    raw.match(/^FirstNexus[:/](?<agentId>[a-z0-9][a-z0-9_-]{0,63})$/i) ??
     raw.match(/^agent:(?<agentId>[a-z0-9][a-z0-9_-]{0,63})$/i);
   const agentId = m?.groups?.agentId;
   if (!agentId) {
@@ -74,11 +74,11 @@ export async function resolveOpenAiCompatModelOverride(params: {
   const requestModel = params.model?.trim();
   if (requestModel && !resolveAgentIdFromModel(requestModel)) {
     return {
-      errorMessage: "Invalid `model`. Use `NexisClaw` or `NexisClaw/<agentId>`.",
+      errorMessage: "Invalid `model`. Use `FirstNexus` or `FirstNexus/<agentId>`.",
     };
   }
 
-  const raw = getHeader(params.req, "x-NexisClaw-model")?.trim();
+  const raw = getHeader(params.req, "x-FirstNexus-model")?.trim();
   if (!raw) {
     return {};
   }
@@ -88,7 +88,7 @@ export async function resolveOpenAiCompatModelOverride(params: {
   const defaultProvider = defaultModelRef.provider;
   const parsed = parseModelRef(raw, defaultProvider);
   if (!parsed) {
-    return { errorMessage: "Invalid `x-NexisClaw-model`." };
+    return { errorMessage: "Invalid `x-FirstNexus-model`." };
   }
 
   const catalog = await loadGatewayModelCatalog();
@@ -128,7 +128,7 @@ function resolveSessionKey(params: {
   user?: string | undefined;
   prefix: string;
 }): string {
-  const explicit = getHeader(params.req, "x-NexisClaw-session-key")?.trim();
+  const explicit = getHeader(params.req, "x-FirstNexus-session-key")?.trim();
   if (explicit) {
     return explicit;
   }
@@ -155,7 +155,7 @@ export function resolveGatewayRequestContext(params: {
   });
 
   const messageChannel = params.useMessageChannelHeader
-    ? (normalizeMessageChannel(getHeader(params.req, "x-NexisClaw-message-channel")) ??
+    ? (normalizeMessageChannel(getHeader(params.req, "x-FirstNexus-message-channel")) ??
       params.defaultMessageChannel)
     : params.defaultMessageChannel;
 

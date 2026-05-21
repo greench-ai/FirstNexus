@@ -69,7 +69,7 @@ describe("image input pixel guard", () => {
   const itIfMac = process.platform === "darwin" ? it : it.skip;
 
   itIfMac("converts macOS-generated HEIC images to JPEG", async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-heic-convert-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-heic-convert-"));
     try {
       const pngPath = path.join(tempDir, "input.png");
       const heicPath = path.join(tempDir, "input.heic");

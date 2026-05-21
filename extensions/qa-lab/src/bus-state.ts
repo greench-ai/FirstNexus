@@ -28,8 +28,8 @@ import type {
   QaBusWaitForInput,
 } from "./runtime-api.js";
 
-const DEFAULT_BOT_ID = "NexisClaw";
-const DEFAULT_BOT_NAME = "NexisClaw QA";
+const DEFAULT_BOT_ID = "FirstNexus";
+const DEFAULT_BOT_NAME = "FirstNexus QA";
 
 type QaBusEventSeed =
   | {

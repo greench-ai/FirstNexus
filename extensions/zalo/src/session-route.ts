@@ -3,8 +3,8 @@ import {
   stripChannelTargetPrefix,
   stripTargetKindPrefix,
   type ChannelOutboundSessionRouteParams,
-} from "NexisClaw/plugin-sdk/core";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/core";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export function resolveZaloOutboundSessionRoute(params: ChannelOutboundSessionRouteParams) {
   const trimmed = stripChannelTargetPrefix(params.target, "zalo", "zl");

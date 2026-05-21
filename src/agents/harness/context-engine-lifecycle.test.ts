@@ -21,7 +21,7 @@ function runtimeContextMessage(content: string, timestamp: number): AgentMessage
     customType: NEXISCLAW_RUNTIME_CONTEXT_CUSTOM_TYPE,
     content,
     display: false,
-    details: { source: "NexisClaw-runtime-context" },
+    details: { source: "FirstNexus-runtime-context" },
     timestamp,
   } as AgentMessage;
 }

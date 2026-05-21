@@ -1,6 +1,6 @@
-import type { MessageReceipt } from "NexisClaw/plugin-sdk/channel-message";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { RetryConfig } from "NexisClaw/plugin-sdk/retry-runtime";
+import type { MessageReceipt } from "FirstNexus/plugin-sdk/channel-message";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { RetryConfig } from "FirstNexus/plugin-sdk/retry-runtime";
 import type { RequestClient } from "./internal/discord.js";
 
 export class DiscordSendError extends Error {
@@ -34,12 +34,12 @@ export type DiscordSendResult = {
 };
 
 export type DiscordRuntimeAccountContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
 };
 
 export type DiscordReactOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
   token?: string;
   rest?: RequestClient;

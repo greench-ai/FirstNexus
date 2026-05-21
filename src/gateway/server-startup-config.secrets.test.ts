@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { loadAuthProfileStoreWithoutExternalProfiles } from "../agents/auth-profiles.js";
-import type { ConfigFileSnapshot, NexisClawConfig } from "../config/types.js";
+import type { ConfigFileSnapshot, FirstNexusConfig } from "../config/types.js";
 import type { PreparedSecretsRuntimeSnapshot, SecretResolverWarning } from "../secrets/runtime.js";
 import { KNOWN_WEAK_GATEWAY_TOKEN_PLACEHOLDERS } from "./known-weak-gateway-secrets.js";
 import {
@@ -9,7 +9,7 @@ import {
 } from "./server-startup-config.js";
 import { buildTestConfigSnapshot } from "./test-helpers.config-snapshots.js";
 
-function gatewayTokenConfig(config: NexisClawConfig): NexisClawConfig {
+function gatewayTokenConfig(config: FirstNexusConfig): FirstNexusConfig {
   return {
     ...config,
     gateway: {
@@ -23,14 +23,14 @@ function gatewayTokenConfig(config: NexisClawConfig): NexisClawConfig {
   };
 }
 
-function asConfig(value: unknown): NexisClawConfig {
-  return value as NexisClawConfig;
+function asConfig(value: unknown): FirstNexusConfig {
+  return value as FirstNexusConfig;
 }
 
-function buildSnapshot(config: NexisClawConfig): ConfigFileSnapshot {
+function buildSnapshot(config: FirstNexusConfig): ConfigFileSnapshot {
   const raw = `${JSON.stringify(config, null, 2)}\n`;
   return buildTestConfigSnapshot({
-    path: "/tmp/NexisClaw-startup-secrets-test.json",
+    path: "/tmp/FirstNexus-startup-secrets-test.json",
     exists: true,
     raw,
     parsed: config,
@@ -41,7 +41,7 @@ function buildSnapshot(config: NexisClawConfig): ConfigFileSnapshot {
   });
 }
 
-function preparedSnapshot(config: NexisClawConfig): PreparedSecretsRuntimeSnapshot {
+function preparedSnapshot(config: FirstNexusConfig): PreparedSecretsRuntimeSnapshot {
   return {
     sourceConfig: config,
     config,
@@ -271,7 +271,7 @@ describe("gateway startup config secret preflight", () => {
     });
     expect(typeof result.config.gateway).toBe("object");
     const preflightInput = callArg<{
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
       loadAuthStore?: unknown;
     }>(prepareRuntimeSecretsSnapshot);
     expect(preflightInput.config?.channels).toBeUndefined();
@@ -314,7 +314,7 @@ describe("gateway startup config secret preflight", () => {
     expect(result.auth.mode).toBe("password");
     expect(result.auth.password).toBe("override-password");
     const preflightInput = callArg<{
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
       loadAuthStore?: unknown;
     }>(prepareRuntimeSecretsSnapshot);
     expect(preflightInput.config?.gateway?.auth?.mode).toBe("password");
@@ -343,7 +343,7 @@ describe("gateway startup config secret preflight", () => {
     expect(result.auth.token).toBe("startup-test-token");
     expect(prepareRuntimeSecretsSnapshot).toHaveBeenCalledTimes(1);
     const preflightInput = callArg<{
-      config?: NexisClawConfig;
+      config?: FirstNexusConfig;
       loadAuthStore?: unknown;
     }>(prepareRuntimeSecretsSnapshot);
     expect(preflightInput.config?.gateway?.auth?.token).toBe("startup-test-token");

@@ -62,7 +62,7 @@ export function evaluateSubagentRecoveryGate(
       allowed: false,
       reason:
         `subagent orphan recovery blocked after ${previousAttempts} rapid accepted resume attempts; ` +
-        `run "NexisClaw tasks maintenance --apply" or "NexisClaw doctor --fix" to reconcile it`,
+        `run "FirstNexus tasks maintenance --apply" or "FirstNexus doctor --fix" to reconcile it`,
       shouldMarkWedged: true,
     };
   }

@@ -5,4 +5,4 @@ export {
   resolveConversationLabel,
   resolvePluginConversationBindingApproval,
   upsertChannelPairingRequest,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
+} from "FirstNexus/plugin-sdk/conversation-runtime";

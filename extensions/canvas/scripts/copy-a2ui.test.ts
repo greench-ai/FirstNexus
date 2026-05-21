@@ -1,6 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolvePreferredNexisClawTmpDir, withTempWorkspace } from "NexisClaw/plugin-sdk/temp-path";
+import {
+  resolvePreferredFirstNexusTmpDir,
+  withTempWorkspace,
+} from "FirstNexus/plugin-sdk/temp-path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { copyA2uiAssets } from "./copy-a2ui.mjs";
 
@@ -29,7 +32,7 @@ describe("canvas a2ui copy", () => {
 
   async function withA2uiFixture(run: (dir: string) => Promise<void>) {
     await withTempWorkspace(
-      { rootDir: resolvePreferredNexisClawTmpDir(), prefix: "NexisClaw-a2ui-" },
+      { rootDir: resolvePreferredFirstNexusTmpDir(), prefix: "FirstNexus-a2ui-" },
       async ({ dir }) => await run(dir),
     );
   }

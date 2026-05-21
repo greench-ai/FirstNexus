@@ -1,11 +1,11 @@
 import {
   applyAgentDefaultModelPrimary,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/provider-onboard";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/provider-onboard";
 
 export const VERCEL_AI_GATEWAY_DEFAULT_MODEL_REF = "vercel-ai-gateway/anthropic/claude-opus-4.6";
 
-function applyVercelAiGatewayProviderConfig(cfg: NexisClawConfig): NexisClawConfig {
+function applyVercelAiGatewayProviderConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   const models = { ...cfg.agents?.defaults?.models };
   models[VERCEL_AI_GATEWAY_DEFAULT_MODEL_REF] = {
     ...models[VERCEL_AI_GATEWAY_DEFAULT_MODEL_REF],
@@ -24,7 +24,7 @@ function applyVercelAiGatewayProviderConfig(cfg: NexisClawConfig): NexisClawConf
   };
 }
 
-export function applyVercelAiGatewayConfig(cfg: NexisClawConfig): NexisClawConfig {
+export function applyVercelAiGatewayConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   return applyAgentDefaultModelPrimary(
     applyVercelAiGatewayProviderConfig(cfg),
     VERCEL_AI_GATEWAY_DEFAULT_MODEL_REF,

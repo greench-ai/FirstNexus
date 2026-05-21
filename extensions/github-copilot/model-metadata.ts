@@ -1,5 +1,5 @@
-import type { ModelDefinitionConfig } from "NexisClaw/plugin-sdk/provider-model-shared";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { ModelDefinitionConfig } from "FirstNexus/plugin-sdk/provider-model-shared";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 const STATIC_MODEL_OVERRIDES = new Map<string, Partial<ModelDefinitionConfig>>([
   [

@@ -8,7 +8,7 @@ import { captureEnv } from "../test-utils/env.js";
 import { saveMediaSource, setMediaStoreNetworkDepsForTest } from "./store.js";
 
 const homeRootTracker = createSuiteTempRootTracker({
-  prefix: "NexisClaw-home-redirect-",
+  prefix: "FirstNexus-home-redirect-",
 });
 const mockRequest = vi.fn();
 
@@ -172,7 +172,7 @@ describe("media store redirects", () => {
       Cookie: "session=abc",
       "X-Api-Key": "custom-secret",
       Accept: "text/plain",
-      "User-Agent": "NexisClaw-Test/1.0",
+      "User-Agent": "FirstNexus-Test/1.0",
     });
 
     expect(mockRequest).toHaveBeenCalledTimes(2);
@@ -181,7 +181,7 @@ describe("media store redirects", () => {
     expect(secondHeaders.get("cookie")).toBeNull();
     expect(secondHeaders.get("x-api-key")).toBeNull();
     expect(secondHeaders.get("accept")).toBe("text/plain");
-    expect(secondHeaders.get("user-agent")).toBe("NexisClaw-Test/1.0");
+    expect(secondHeaders.get("user-agent")).toBe("FirstNexus-Test/1.0");
   });
 
   it("keeps headers when a redirect stays on the same origin", async () => {

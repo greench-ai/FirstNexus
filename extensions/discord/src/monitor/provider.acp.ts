@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { raceWithTimeout } from "./timeouts.js";
 
 type DiscordProviderSessionRuntimeModule = typeof import("./provider-session.runtime.js");
@@ -37,7 +37,7 @@ function classifyAcpStatusProbeError(params: {
 }
 
 export async function probeDiscordAcpBindingHealth(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   storedState?: "idle" | "running" | "error";
   lastActivityAt?: number;

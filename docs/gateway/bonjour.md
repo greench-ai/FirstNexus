@@ -6,7 +6,7 @@ read_when:
 title: "Bonjour discovery"
 ---
 
-NexisClaw can use Bonjour (mDNS / DNS-SD) to discover an active Gateway (WebSocket endpoint).
+FirstNexus can use Bonjour (mDNS / DNS-SD) to discover an active Gateway (WebSocket endpoint).
 Multicast `local.` browsing is a **LAN-only convenience**. The bundled `bonjour`
 plugin owns LAN advertising. It auto-starts on macOS hosts and is opt-in on
 Linux, Windows, and containerized Gateway deployments. For cross-network discovery, the same
@@ -22,12 +22,12 @@ boundary. You can keep the same discovery UX by switching to **unicast DNS-SD**
 High-level steps:
 
 1. Run a DNS server on the gateway host (reachable over Tailnet).
-2. Publish DNS-SD records for `_NexisClaw-gw._tcp` under a dedicated zone
-   (example: `NexisClaw.internal.`).
+2. Publish DNS-SD records for `_FirstNexus-gw._tcp` under a dedicated zone
+   (example: `FirstNexus.internal.`).
 3. Configure Tailscale **split DNS** so your chosen domain resolves via that
    DNS server for clients (including iOS).
 
-NexisClaw supports any discovery domain; `NexisClaw.internal.` is just an example.
+FirstNexus supports any discovery domain; `FirstNexus.internal.` is just an example.
 iOS/Android nodes browse both `local.` and your configured wide-area domain.
 
 ### Gateway config (recommended)
@@ -42,19 +42,19 @@ iOS/Android nodes browse both `local.` and your configured wide-area domain.
 ### One-time DNS server setup (gateway host)
 
 ```bash
-NexisClaw dns setup --apply
+FirstNexus dns setup --apply
 ```
 
 This installs CoreDNS and configures it to:
 
 - listen on port 53 only on the gateway's Tailscale interfaces
-- serve your chosen domain (example: `NexisClaw.internal.`) from `~/.NexisClaw/dns/<domain>.db`
+- serve your chosen domain (example: `FirstNexus.internal.`) from `~/.FirstNexus/dns/<domain>.db`
 
 Validate from a tailnet-connected machine:
 
 ```bash
-dns-sd -B _NexisClaw-gw._tcp NexisClaw.internal.
-dig @<TAILNET_IPV4> -p 53 _NexisClaw-gw._tcp.NexisClaw.internal PTR +short
+dns-sd -B _FirstNexus-gw._tcp FirstNexus.internal.
+dig @<TAILNET_IPV4> -p 53 _FirstNexus-gw._tcp.FirstNexus.internal PTR +short
 ```
 
 ### Tailscale DNS settings
@@ -65,7 +65,7 @@ In the Tailscale admin console:
 - Add split DNS so your discovery domain uses that nameserver.
 
 Once clients accept tailnet DNS, iOS nodes and CLI discovery can browse
-`_NexisClaw-gw._tcp` in your discovery domain without multicast.
+`_FirstNexus-gw._tcp` in your discovery domain without multicast.
 
 ### Gateway listener security (recommended)
 
@@ -74,18 +74,18 @@ access, bind explicitly and keep auth enabled.
 
 For tailnet-only setups:
 
-- Set `gateway.bind: "tailnet"` in `~/.NexisClaw/NexisClaw.json`.
+- Set `gateway.bind: "tailnet"` in `~/.FirstNexus/FirstNexus.json`.
 - Restart the Gateway (or restart the macOS menubar app).
 
 ## What advertises
 
-Only the Gateway advertises `_NexisClaw-gw._tcp`. LAN multicast advertising is
+Only the Gateway advertises `_FirstNexus-gw._tcp`. LAN multicast advertising is
 provided by the bundled `bonjour` plugin when the plugin is enabled; wide-area
 DNS-SD publishing remains Gateway-owned.
 
 ## Service types
 
-- `_NexisClaw-gw._tcp` - gateway transport beacon (used by macOS/iOS/Android nodes).
+- `_FirstNexus-gw._tcp` - gateway transport beacon (used by macOS/iOS/Android nodes).
 
 ## TXT keys (non-secret hints)
 
@@ -118,13 +118,13 @@ Useful built-in tools:
 - Browse instances:
 
   ```bash
-  dns-sd -B _NexisClaw-gw._tcp local.
+  dns-sd -B _FirstNexus-gw._tcp local.
   ```
 
 - Resolve one instance (replace `<instance>`):
 
   ```bash
-  dns-sd -L "<instance>" _NexisClaw-gw._tcp local.
+  dns-sd -L "<instance>" _FirstNexus-gw._tcp local.
   ```
 
 If browsing works but resolving fails, you're usually hitting a LAN policy or
@@ -142,19 +142,19 @@ The Gateway writes a rolling log file (printed on startup as
 - `bonjour: disabling advertiser after ... failed restarts ...`
 
 The watchdog treats active `probing`, `announcing`, and fresh conflict-renames as
-in-progress states. If the service never reaches `announced`, NexisClaw eventually
+in-progress states. If the service never reaches `announced`, FirstNexus eventually
 recreates the advertiser and, after repeated failures, disables Bonjour for that
 Gateway process instead of re-advertising forever.
 
 Bonjour uses the system hostname for the advertised `.local` host when it is a
 valid DNS label. If the system hostname contains spaces, underscores, or another
-invalid DNS-label character, NexisClaw falls back to `NexisClaw.local`. Set
+invalid DNS-label character, FirstNexus falls back to `FirstNexus.local`. Set
 `NEXISCLAW_MDNS_HOSTNAME=<name>` before starting the Gateway when you need an
 explicit host label.
 
 ## Debugging on iOS node
 
-The iOS node uses `NWBrowser` to discover `_NexisClaw-gw._tcp`.
+The iOS node uses `NWBrowser` to discover `_FirstNexus-gw._tcp`.
 
 To capture logs:
 
@@ -172,7 +172,7 @@ Enable Bonjour explicitly when same-LAN auto-discovery is useful on Linux,
 Windows, or another non-macOS host:
 
 ```bash
-NexisClaw plugins enable bonjour
+FirstNexus plugins enable bonjour
 ```
 
 When enabled, Bonjour uses `discovery.mdns.mode` to decide how much TXT metadata
@@ -201,10 +201,10 @@ It is safe for Docker images, service files, launch scripts, and one-off
 debugging because the setting disappears when the environment does.
 
 Use plugin configuration when you intentionally want to turn off the bundled LAN
-discovery plugin for that NexisClaw config:
+discovery plugin for that FirstNexus config:
 
 ```bash
-NexisClaw plugins disable bonjour
+FirstNexus plugins disable bonjour
 ```
 
 ## Docker gotchas
@@ -253,7 +253,7 @@ If a node no longer auto-discovers the Gateway after Docker setup:
    with `NEXISCLAW_DISABLE_BONJOUR=0`, test multicast from the host:
 
    ```bash
-   dns-sd -B _NexisClaw-gw._tcp local.
+   dns-sd -B _FirstNexus-gw._tcp local.
    ```
 
    If browsing is empty or the Gateway logs show repeated ciao watchdog
@@ -266,7 +266,7 @@ If a node no longer auto-discovers the Gateway after Docker setup:
 - **Multicast blocked**: some Wi-Fi networks disable mDNS.
 - **Advertiser stuck in probing/announcing**: hosts with blocked multicast,
   container bridges, WSL, or interface churn can leave the ciao advertiser in a
-  non-announced state. NexisClaw retries a few times and then disables Bonjour
+  non-announced state. FirstNexus retries a few times and then disables Bonjour
   for the current Gateway process instead of restarting the advertiser forever.
 - **Docker bridge networking**: Bonjour auto-disables in detected containers.
   Set `NEXISCLAW_DISABLE_BONJOUR=0` only for host, macvlan, or another
@@ -287,12 +287,12 @@ sequences (e.g. spaces become `\032`).
 ## Enabling / disabling / configuration
 
 - macOS hosts auto-start the bundled LAN discovery plugin by default.
-- `NexisClaw plugins enable bonjour` enables the bundled LAN discovery plugin on hosts where it is not default-enabled.
-- `NexisClaw plugins disable bonjour` disables LAN multicast advertising by disabling the bundled plugin.
+- `FirstNexus plugins enable bonjour` enables the bundled LAN discovery plugin on hosts where it is not default-enabled.
+- `FirstNexus plugins disable bonjour` disables LAN multicast advertising by disabling the bundled plugin.
 - `NEXISCLAW_DISABLE_BONJOUR=1` disables LAN multicast advertising without changing plugin config; accepted truthy values are `1`, `true`, `yes`, and `on` (legacy: `NEXISCLAW_DISABLE_BONJOUR`).
 - `NEXISCLAW_DISABLE_BONJOUR=0` forces LAN multicast advertising on, including inside detected containers; accepted falsy values are `0`, `false`, `no`, and `off`.
 - When the Bonjour plugin is enabled and `NEXISCLAW_DISABLE_BONJOUR` is unset, Bonjour advertises on normal hosts and auto-disables inside detected containers.
-- `gateway.bind` in `~/.NexisClaw/NexisClaw.json` controls the Gateway bind mode.
+- `gateway.bind` in `~/.FirstNexus/FirstNexus.json` controls the Gateway bind mode.
 - `NEXISCLAW_SSH_PORT` overrides the SSH port when `sshPort` is advertised (legacy: `NEXISCLAW_SSH_PORT`).
 - `NEXISCLAW_TAILNET_DNS` publishes a MagicDNS hint in TXT when mDNS full mode is enabled (legacy: `NEXISCLAW_TAILNET_DNS`).
 - `NEXISCLAW_CLI_PATH` overrides the advertised CLI path (legacy: `NEXISCLAW_CLI_PATH`).

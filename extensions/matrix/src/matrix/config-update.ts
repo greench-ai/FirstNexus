@@ -1,6 +1,6 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";
-import { coerceSecretRef } from "NexisClaw/plugin-sdk/secret-ref-runtime";
-import { normalizeSecretInputString } from "NexisClaw/plugin-sdk/setup";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";
+import { coerceSecretRef } from "FirstNexus/plugin-sdk/secret-ref-runtime";
+import { normalizeSecretInputString } from "FirstNexus/plugin-sdk/setup";
 import type { CoreConfig, MatrixConfig } from "../types.js";
 import { findMatrixAccountConfig } from "./account-config.js";
 import {

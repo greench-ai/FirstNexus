@@ -1,1 +1,1 @@
-export { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+export { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";

@@ -1,5 +1,5 @@
 import { afterAll, beforeAll } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   createBundleMcpTempHarness,
   createBundleProbePlugin,
@@ -41,9 +41,11 @@ export function requireMcpConfigPath(args: readonly string[] | undefined): strin
 export function setupCliBundleMcpTestHarness(): void {
   beforeAll(async () => {
     envSnapshot = captureEnv(["NEXISCLAW_BUNDLED_PLUGINS_DIR"]);
-    bundleProbeHomeDir = await tempHarness.createTempDir("NexisClaw-cli-bundle-mcp-home-");
-    bundleProbeWorkspaceDir = await tempHarness.createTempDir("NexisClaw-cli-bundle-mcp-workspace-");
-    const emptyBundledDir = await tempHarness.createTempDir("NexisClaw-cli-bundle-mcp-bundled-");
+    bundleProbeHomeDir = await tempHarness.createTempDir("FirstNexus-cli-bundle-mcp-home-");
+    bundleProbeWorkspaceDir = await tempHarness.createTempDir(
+      "FirstNexus-cli-bundle-mcp-workspace-",
+    );
+    const emptyBundledDir = await tempHarness.createTempDir("FirstNexus-cli-bundle-mcp-bundled-");
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = emptyBundledDir;
     ({ serverPath: bundleProbeServerPath } = await createBundleProbePlugin(bundleProbeHomeDir));
   });
@@ -54,7 +56,7 @@ export function setupCliBundleMcpTestHarness(): void {
   });
 }
 
-function createEnabledBundleProbeConfig(): NexisClawConfig {
+function createEnabledBundleProbeConfig(): FirstNexusConfig {
   return {
     plugins: {
       entries: {

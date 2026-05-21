@@ -41,7 +41,7 @@ function collectExcludedDistExtensionIds() {
 }
 
 function packageRootLooksInstalled(root) {
-  return root.replaceAll("\\", "/").endsWith("/node_modules/NexisClaw");
+  return root.replaceAll("\\", "/").endsWith("/node_modules/FirstNexus");
 }
 
 function smokeInInstalledLayoutIfNeeded() {
@@ -49,9 +49,9 @@ function smokeInInstalledLayoutIfNeeded() {
     return;
   }
 
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-channel-entry-smoke-"));
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-channel-entry-smoke-"));
   const nodeModulesRoot = path.join(tempRoot, "node_modules");
-  const installedPackageRoot = path.join(nodeModulesRoot, "NexisClaw");
+  const installedPackageRoot = path.join(nodeModulesRoot, "FirstNexus");
   fs.mkdirSync(nodeModulesRoot, { recursive: true });
   fs.symlinkSync(packageRoot, installedPackageRoot, "dir");
 
@@ -105,7 +105,7 @@ function collectBundledChannelEntryFiles() {
       continue;
     }
     const packageJson = readJson(packageJsonPath);
-    if (!packageJson.NexisClaw?.channel) {
+    if (!packageJson.FirstNexus?.channel) {
       continue;
     }
     if (excludedPackageExtensionDirs.has(dirent.name)) {
@@ -113,8 +113,9 @@ function collectBundledChannelEntryFiles() {
     }
 
     const extensionEntries =
-      Array.isArray(packageJson.NexisClaw.extensions) && packageJson.NexisClaw.extensions.length > 0
-        ? packageJson.NexisClaw.extensions
+      Array.isArray(packageJson.FirstNexus.extensions) &&
+      packageJson.FirstNexus.extensions.length > 0
+        ? packageJson.FirstNexus.extensions
         : ["./index.ts"];
     for (const entry of extensionEntries) {
       if (typeof entry !== "string" || entry.trim().length === 0) {
@@ -127,7 +128,7 @@ function collectBundledChannelEntryFiles() {
       });
     }
 
-    const setupEntry = packageJson.NexisClaw.setupEntry;
+    const setupEntry = packageJson.FirstNexus.setupEntry;
     if (typeof setupEntry === "string" && setupEntry.trim().length > 0) {
       files.push({
         id: dirent.name,

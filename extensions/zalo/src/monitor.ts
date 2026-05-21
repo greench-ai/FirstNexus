@@ -1,21 +1,21 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { logTypingFailure } from "NexisClaw/plugin-sdk/channel-feedback";
-import { resolveStableChannelMessageIngress } from "NexisClaw/plugin-sdk/channel-ingress-runtime";
-import { createChannelPairingController } from "NexisClaw/plugin-sdk/channel-pairing";
-import type { MarkdownTableMode, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "NexisClaw/plugin-sdk/inbound-envelope";
-import { resolveSendableOutboundReplyParts } from "NexisClaw/plugin-sdk/reply-payload";
+import { logTypingFailure } from "FirstNexus/plugin-sdk/channel-feedback";
+import { resolveStableChannelMessageIngress } from "FirstNexus/plugin-sdk/channel-ingress-runtime";
+import { createChannelPairingController } from "FirstNexus/plugin-sdk/channel-pairing";
+import type { MarkdownTableMode, FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveInboundRouteEnvelopeBuilderWithRuntime } from "FirstNexus/plugin-sdk/inbound-envelope";
+import { resolveSendableOutboundReplyParts } from "FirstNexus/plugin-sdk/reply-payload";
 import {
   deliverTextOrMediaReply,
   type OutboundReplyPayload,
-} from "NexisClaw/plugin-sdk/reply-payload";
-import { waitForAbortSignal } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/reply-payload";
+import { waitForAbortSignal } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
-import { normalizeStringEntries } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { registerPluginHttpRoute, resolveWebhookPath } from "NexisClaw/plugin-sdk/webhook-ingress";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
+import { normalizeStringEntries } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { registerPluginHttpRoute, resolveWebhookPath } from "FirstNexus/plugin-sdk/webhook-ingress";
 import type { ResolvedZaloAccount } from "./accounts.js";
 import {
   ZaloApiError,
@@ -48,7 +48,7 @@ import {
 export type ZaloMonitorOptions = {
   token: string;
   account: ResolvedZaloAccount;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   runtime: ZaloRuntimeEnv;
   abortSignal: AbortSignal;
   useWebhook?: boolean;
@@ -70,7 +70,7 @@ type ZaloWebhookModule = typeof import("./monitor.webhook.js");
 type ZaloProcessingContext = {
   token: string;
   account: ResolvedZaloAccount;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   runtime: ZaloRuntimeEnv;
   core: ZaloCoreRuntime;
   mediaMaxMb: number;
@@ -729,7 +729,7 @@ async function deliverZaloReply(params: {
   chatId: string;
   runtime: ZaloRuntimeEnv;
   core: ZaloCoreRuntime;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   webhookUrl?: string;
   webhookPath?: string;
   proxyUrl?: string;

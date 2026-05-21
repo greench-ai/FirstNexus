@@ -4,7 +4,7 @@ import {
   isCliProvider,
 } from "../agents/model-selection.js";
 import { resolveAgentModelPrimaryValue } from "../config/model-input.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 type SessionDisplayModelRow = {
   key: string;
@@ -36,7 +36,7 @@ function parseModelRef(raw: string, defaultProvider: string): SessionDisplayMode
 }
 
 function resolveAgentPrimaryModel(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   agentId: string | undefined,
 ): string | undefined {
   if (!agentId) {
@@ -65,7 +65,7 @@ function normalizeStoredOverrideModel(params: {
   };
 }
 
-function resolveDefaultModelRef(cfg: NexisClawConfig, agentId?: string): SessionDisplayModelRef {
+function resolveDefaultModelRef(cfg: FirstNexusConfig, agentId?: string): SessionDisplayModelRef {
   const primary =
     resolveAgentPrimaryModel(cfg, agentId) ??
     resolveAgentModelPrimaryValue(cfg.agents?.defaults?.model) ??
@@ -74,7 +74,7 @@ function resolveDefaultModelRef(cfg: NexisClawConfig, agentId?: string): Session
 }
 
 export function resolveSessionDisplayDefaults(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   agentId?: string,
 ): SessionDisplayDefaults {
   return {
@@ -83,7 +83,7 @@ export function resolveSessionDisplayDefaults(
 }
 
 function normalizeCliRuntimeDisplayRef(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   ref: SessionDisplayModelRef,
   defaultRef: SessionDisplayModelRef,
 ): SessionDisplayModelRef {
@@ -114,14 +114,14 @@ function normalizeCliRuntimeDisplayRef(
 }
 
 export function resolveSessionDisplayModel(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   row: SessionDisplayModelRow,
 ): string {
   return resolveSessionDisplayModelRef(cfg, row).model;
 }
 
 export function resolveSessionDisplayModelRef(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   row: SessionDisplayModelRow,
 ): SessionDisplayModelRef {
   const agentId = row.key.startsWith("agent:") ? row.key.split(":")[1] : undefined;

@@ -2,7 +2,7 @@ import { Command } from "commander";
 import type { Mock } from "vitest";
 import { vi } from "vitest";
 import { getRuntimeConfig } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import { createEmptyUninstallActions } from "../plugins/uninstall.js";
 import type { CliMockOutputRuntime } from "./test-runtime-capture.js";
@@ -33,13 +33,13 @@ function invokeMock<TArgs extends unknown[], TResult>(mock: unknown, ...args: TA
   return (mock as (...args: TArgs) => TResult)(...args);
 }
 
-export const loadConfig: Mock<LoadConfigFn> = vi.fn<LoadConfigFn>(() => ({}) as NexisClawConfig);
+export const loadConfig: Mock<LoadConfigFn> = vi.fn<LoadConfigFn>(() => ({}) as FirstNexusConfig);
 export const readConfigFileSnapshot: AsyncUnknownMock = vi.fn();
 export const writeConfigFile: AsyncUnknownMock = vi.fn(async () => undefined);
 export const replaceConfigFile: AsyncUnknownMock = vi.fn(
-  async (params: { nextConfig: NexisClawConfig }) => await writeConfigFile(params.nextConfig),
+  async (params: { nextConfig: FirstNexusConfig }) => await writeConfigFile(params.nextConfig),
 ) as AsyncUnknownMock;
-const resolveStateDir: Mock<() => string> = vi.fn(() => "/tmp/NexisClaw-state");
+const resolveStateDir: Mock<() => string> = vi.fn(() => "/tmp/FirstNexus-state");
 export const installPluginFromMarketplace: Mock<InstallPluginFromMarketplaceFn> = vi.fn();
 export const installPluginFromGitSpec: Mock<InstallPluginFromGitSpecFn> = vi.fn();
 const parseGitPluginSpec: Mock<ParseGitPluginSpecFn> = vi.fn();
@@ -169,10 +169,10 @@ vi.mock("../config/config.js", () => ({
     if (process.env.NEXISCLAW_NIX_MODE === "1") {
       throw new Error(
         [
-          "Config is managed by Nix (`NEXISCLAW_NIX_MODE=1`), so NexisClaw treats NexisClaw.json as immutable.",
-          "Do not run setup, onboarding, NexisClaw update, plugin install/update/uninstall/enable, doctor repair/token-generation, or config set against this file.",
-          "Agent-first Nix setup: https://github.com/NexisClaw/nix-NexisClaw#quick-start",
-          "NexisClaw Nix overview: https://docs.NexisClaw.ai/install/nix",
+          "Config is managed by Nix (`NEXISCLAW_NIX_MODE=1`), so FirstNexus treats FirstNexus.json as immutable.",
+          "Do not run setup, onboarding, FirstNexus update, plugin install/update/uninstall/enable, doctor repair/token-generation, or config set against this file.",
+          "Agent-first Nix setup: https://github.com/FirstNexus/nix-FirstNexus#quick-start",
+          "FirstNexus Nix overview: https://docs.FirstNexus.ai/install/nix",
         ].join("\n"),
       );
     }
@@ -189,9 +189,9 @@ vi.mock("../config/config.js", () => ({
       readConfigFileSnapshot,
       ...args,
     )) as (typeof import("../config/config.js"))["readConfigFileSnapshot"],
-  writeConfigFile: ((config: NexisClawConfig) =>
+  writeConfigFile: ((config: FirstNexusConfig) =>
     invokeMock<
-      [NexisClawConfig],
+      [FirstNexusConfig],
       ReturnType<(typeof import("../config/config.js"))["writeConfigFile"]>
     >(writeConfigFile, config)) as (typeof import("../config/config.js"))["writeConfigFile"],
   replaceConfigFile: ((
@@ -682,11 +682,11 @@ export function resetPluginsCliTestState() {
   installHooksFromPath.mockReset();
   recordHookInstall.mockReset();
 
-  loadConfig.mockReturnValue({} as NexisClawConfig);
+  loadConfig.mockReturnValue({} as FirstNexusConfig);
   readConfigFileSnapshot.mockImplementation(async () => {
     const config = getRuntimeConfig();
     return {
-      path: "/tmp/NexisClaw-config.json5",
+      path: "/tmp/FirstNexus-config.json5",
       exists: true,
       raw: "{}",
       parsed: config,
@@ -703,22 +703,22 @@ export function resetPluginsCliTestState() {
   });
   writeConfigFile.mockResolvedValue(undefined);
   replaceConfigFile.mockImplementation(
-    (async (params: { nextConfig: NexisClawConfig }) =>
+    (async (params: { nextConfig: FirstNexusConfig }) =>
       await writeConfigFile(params.nextConfig)) as (...args: unknown[]) => Promise<unknown>,
   );
-  resolveStateDir.mockReturnValue("/tmp/NexisClaw-state");
+  resolveStateDir.mockReturnValue("/tmp/FirstNexus-state");
   resolveMarketplaceInstallShortcut.mockResolvedValue(null);
   installPluginFromMarketplace.mockResolvedValue({
     ok: false,
     error: "marketplace install failed",
   });
-  enablePluginInConfig.mockImplementation(((cfg: NexisClawConfig, pluginId: string) => ({
+  enablePluginInConfig.mockImplementation(((cfg: FirstNexusConfig, pluginId: string) => ({
     config: cfg,
     enabled: true,
     pluginId,
   })) as (...args: unknown[]) => unknown);
   recordPluginInstall.mockImplementation(
-    ((cfg: NexisClawConfig) => cfg) as (...args: unknown[]) => unknown,
+    ((cfg: FirstNexusConfig) => cfg) as (...args: unknown[]) => unknown,
   );
   loadInstalledPluginIndexInstallRecords.mockImplementation(async () =>
     clonePluginInstallRecords(mockInstalledPluginIndexInstallRecords),
@@ -761,7 +761,7 @@ export function resetPluginsCliTestState() {
     current: defaultRegistryIndex,
   });
   refreshPluginRegistry.mockResolvedValue(defaultRegistryIndex);
-  applyExclusiveSlotSelection.mockImplementation((({ config }: { config: NexisClawConfig }) => ({
+  applyExclusiveSlotSelection.mockImplementation((({ config }: { config: FirstNexusConfig }) => ({
     config,
     warnings: [],
   })) as (...args: unknown[]) => unknown);
@@ -769,7 +769,7 @@ export function resetPluginsCliTestState() {
     config,
     pluginId,
   }: {
-    config: NexisClawConfig;
+    config: FirstNexusConfig;
     pluginId: string;
   }) => ({
     ok: true,
@@ -784,19 +784,19 @@ export function resetPluginsCliTestState() {
   });
   uninstallPlugin.mockResolvedValue({
     ok: true,
-    config: {} as NexisClawConfig,
+    config: {} as FirstNexusConfig,
     warnings: [],
     actions: createEmptyUninstallActions(),
   });
   updateNpmInstalledPlugins.mockResolvedValue({
     outcomes: [],
     changed: false,
-    config: {} as NexisClawConfig,
+    config: {} as FirstNexusConfig,
   });
   updateNpmInstalledHookPacks.mockResolvedValue({
     outcomes: [],
     changed: false,
-    config: {} as NexisClawConfig,
+    config: {} as FirstNexusConfig,
   });
   promptYesNo.mockResolvedValue(true);
   installPluginFromPath.mockResolvedValue({ ok: false, error: "path install disabled in test" });
@@ -838,6 +838,6 @@ export function resetPluginsCliTestState() {
     error: "hook npm install disabled in test",
   });
   recordHookInstall.mockImplementation(
-    ((cfg: NexisClawConfig) => cfg) as (...args: unknown[]) => unknown,
+    ((cfg: FirstNexusConfig) => cfg) as (...args: unknown[]) => unknown,
   );
 }

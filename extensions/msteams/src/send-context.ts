@@ -1,9 +1,9 @@
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   resolveChannelMediaMaxBytes,
   type MSTeamsConfig,
   type MSTeamsReplyStyle,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type PluginRuntime,
 } from "../runtime-api.js";
 import type { MSTeamsAccessTokenProvider } from "./attachments/types.js";
@@ -133,7 +133,7 @@ async function findConversationReference(recipient: {
 }
 
 export async function resolveMSTeamsSendContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   to: string;
 }): Promise<MSTeamsProactiveContext> {
   const msteamsCfg = params.cfg.channels?.msteams;

@@ -4,7 +4,7 @@ import path from "node:path";
 import {
   __testing as sessionBindingTesting,
   registerSessionBindingAdapter,
-} from "NexisClaw/plugin-sdk/session-binding-runtime";
+} from "FirstNexus/plugin-sdk/session-binding-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { installMatrixMonitorTestRuntime } from "../../test-runtime.js";
 import { MATRIX_NEXISCLAW_FINALIZED_PREVIEW_KEY } from "../send/types.js";

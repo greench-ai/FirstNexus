@@ -1,8 +1,8 @@
 import { resolveActiveTalkProviderConfig } from "../../config/talk.js";
-import type { NexisClawConfig } from "../../config/types.js";
+import type { FirstNexusConfig } from "../../config/types.js";
 
 export { resolveActiveTalkProviderConfig };
 
-export function getRuntimeConfigSnapshot(): NexisClawConfig | null {
+export function getRuntimeConfigSnapshot(): FirstNexusConfig | null {
   return null;
 }

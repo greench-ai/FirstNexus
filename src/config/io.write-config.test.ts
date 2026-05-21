@@ -14,7 +14,7 @@ import {
   setRuntimeConfigSnapshot,
   writeConfigFile,
 } from "./io.js";
-import type { ConfigFileSnapshot, NexisClawConfig } from "./types.NexisClaw.js";
+import type { ConfigFileSnapshot, FirstNexusConfig } from "./types.FirstNexus.js";
 
 // Mock the plugin manifest registry so we can register a fake channel whose
 // AJV JSON Schema carries a `default` value.  This lets the #56772 regression
@@ -62,7 +62,7 @@ vi.mock("./backup-rotation.js", async (importOriginal) => {
 });
 
 describe("config io write", () => {
-  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "NexisClaw-config-io-" });
+  const suiteRootTracker = createSuiteTempRootTracker({ prefix: "FirstNexus-config-io-" });
   const silentLogger = {
     warn: () => {},
     error: () => {},
@@ -178,8 +178,8 @@ describe("config io write", () => {
 
   it("logs health-state write failures through public config reads", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
-      const healthPath = path.join(home, ".NexisClaw", "logs", "config-health.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
+      const healthPath = path.join(home, ".FirstNexus", "logs", "config-health.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
@@ -206,7 +206,7 @@ describe("config io write", () => {
 
   it("refuses direct config writes in Nix mode without changing the file", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       const initialRaw = `${JSON.stringify({ gateway: { mode: "local" } }, null, 2)}\n`;
       await fs.writeFile(configPath, initialRaw, "utf-8");
@@ -221,7 +221,7 @@ describe("config io write", () => {
       });
 
       await expect(io.writeConfigFile({ gateway: { mode: "local", port: 19001 } })).rejects.toThrow(
-        "Agent-first Nix setup: https://github.com/NexisClaw/nix-NexisClaw#quick-start",
+        "Agent-first Nix setup: https://github.com/FirstNexus/nix-FirstNexus#quick-start",
       );
 
       await expect(fs.readFile(configPath, "utf-8")).resolves.toBe(initialRaw);
@@ -230,9 +230,9 @@ describe("config io write", () => {
 
   it("loads shipped plugin install config records without mutating config or plugin index", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
-      const pluginDir = path.join(home, ".NexisClaw", "plugins", "demo");
-      const manifestPath = path.join(pluginDir, "NexisClaw.plugin.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
+      const pluginDir = path.join(home, ".FirstNexus", "plugins", "demo");
+      const manifestPath = path.join(pluginDir, "FirstNexus.plugin.json");
       const source = path.join(pluginDir, "index.ts");
       await fs.mkdir(pluginDir, { recursive: true });
       await fs.writeFile(source, "export function register() {}\n", "utf-8");
@@ -306,7 +306,7 @@ describe("config io write", () => {
         });
         await expect(
           readPersistedInstalledPluginIndex({
-            stateDir: path.join(home, ".NexisClaw"),
+            stateDir: path.join(home, ".FirstNexus"),
           }),
         ).resolves.toBeNull();
         await expect(fs.readFile(configPath, "utf-8")).resolves.toBe(initialRaw);
@@ -321,9 +321,9 @@ describe("config io write", () => {
 
   it("migrates shipped plugin install config records into the plugin index during explicit writes", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
-      const pluginDir = path.join(home, ".NexisClaw", "plugins", "demo");
-      const manifestPath = path.join(pluginDir, "NexisClaw.plugin.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
+      const pluginDir = path.join(home, ".FirstNexus", "plugins", "demo");
+      const manifestPath = path.join(pluginDir, "FirstNexus.plugin.json");
       const source = path.join(pluginDir, "index.ts");
       await fs.mkdir(pluginDir, { recursive: true });
       await fs.writeFile(source, "export function register() {}\n", "utf-8");
@@ -384,7 +384,7 @@ describe("config io write", () => {
 
         const index = requireRecord(
           await readPersistedInstalledPluginIndex({
-            stateDir: path.join(home, ".NexisClaw"),
+            stateDir: path.join(home, ".FirstNexus"),
           }),
           "persisted plugin index",
         );
@@ -413,8 +413,8 @@ describe("config io write", () => {
 
   it("migrates shipped plugin install config records during explicit writes even when the manifest is missing", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
-      const pluginDir = path.join(home, ".NexisClaw", "plugins", "missing");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
+      const pluginDir = path.join(home, ".FirstNexus", "plugins", "missing");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
@@ -446,7 +446,7 @@ describe("config io write", () => {
 
       const index = requireRecord(
         await readPersistedInstalledPluginIndex({
-          stateDir: path.join(home, ".NexisClaw"),
+          stateDir: path.join(home, ".FirstNexus"),
         }),
         "persisted plugin index",
       );
@@ -465,8 +465,8 @@ describe("config io write", () => {
 
   it("keeps shipped plugin install config records when index migration fails", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
-      const unwritableStatePath = path.join(home, ".NexisClaw");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
+      const unwritableStatePath = path.join(home, ".FirstNexus");
       const pluginDir = path.join(unwritableStatePath, "plugins", "demo");
       const original = {
         plugins: {
@@ -517,8 +517,8 @@ describe("config io write", () => {
 
   it("rolls back shipped plugin install index migration when config write fails", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
-      const pluginDir = path.join(home, ".NexisClaw", "plugins", "demo");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
+      const pluginDir = path.join(home, ".FirstNexus", "plugins", "demo");
       const original = {
         plugins: {
           entries: { demo: { enabled: true } },
@@ -548,7 +548,7 @@ describe("config io write", () => {
       });
       await expect(
         readPersistedInstalledPluginIndex({
-          stateDir: path.join(home, ".NexisClaw"),
+          stateDir: path.join(home, ".FirstNexus"),
         }),
       ).resolves.toBeNull();
     });
@@ -571,7 +571,7 @@ describe("config io write", () => {
     "tightens world-writable state dir when writing the default config",
     async () => {
       await withSuiteHome(async (home) => {
-        const stateDir = path.join(home, ".NexisClaw");
+        const stateDir = path.join(home, ".FirstNexus");
         await fs.mkdir(stateDir, { recursive: true, mode: 0o777 });
         await fs.chmod(stateDir, 0o777);
 
@@ -591,7 +591,7 @@ describe("config io write", () => {
 
   it("keeps writes inside an NEXISCLAW_STATE_DIR override even when the real home config exists", async () => {
     await withSuiteHome(async (home) => {
-      const liveConfigPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const liveConfigPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(liveConfigPath), { recursive: true });
       await fs.writeFile(
         liveConfigPath,
@@ -607,7 +607,7 @@ describe("config io write", () => {
         logger: silentLogger,
       });
 
-      expect(io.configPath).toBe(path.join(overrideDir, "NexisClaw.json"));
+      expect(io.configPath).toBe(path.join(overrideDir, "FirstNexus.json"));
 
       await io.writeConfigFile({
         agents: { list: [{ id: "main", default: true }] },
@@ -621,7 +621,7 @@ describe("config io write", () => {
       expect(livePersisted.gateway).toEqual({ mode: "local", port: 18789 });
 
       const overridePersisted = JSON.parse(
-        await fs.readFile(path.join(overrideDir, "NexisClaw.json"), "utf-8"),
+        await fs.readFile(path.join(overrideDir, "FirstNexus.json"), "utf-8"),
       ) as {
         session?: { store?: unknown };
       };
@@ -631,7 +631,7 @@ describe("config io write", () => {
 
   it("does not mutate caller config when unsetPaths is applied on first write", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       const io = createConfigIO({
         env: {} as NodeJS.ProcessEnv,
         homedir: () => home,
@@ -679,7 +679,7 @@ describe("config io write", () => {
 
   it("suppresses overwrite audit output when skipOutputLogs is set", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
@@ -715,13 +715,13 @@ describe("config io write", () => {
 
   it("preserves root $schema during partial writes", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
         `${JSON.stringify(
           {
-            $schema: "https://NexisClaw.ai/config.json",
+            $schema: "https://FirstNexus.ai/config.json",
             gateway: { mode: "local" },
           },
           null,
@@ -731,14 +731,14 @@ describe("config io write", () => {
       );
 
       const persisted = await writeGatewayPortAndReadConfig(home, configPath);
-      expect(persisted.$schema).toBe("https://NexisClaw.ai/config.json");
+      expect(persisted.$schema).toBe("https://FirstNexus.ai/config.json");
       expect(persisted.gateway).toEqual({ mode: "local", port: 18789 });
     });
   });
 
   it("recovers configs polluted by a leading status line", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       const cleanConfig = {
         gateway: { mode: "local" },
         agents: { list: [{ id: "main", default: true }, { id: "discord-dm" }] },
@@ -782,7 +782,7 @@ describe("config io write", () => {
 
   it("caps repeated prefix-recovery clobber snapshots for doctor-style repair loops", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       const cleanConfig = {
         gateway: { mode: "local" },
         agents: { list: [{ id: "main", default: true }] },
@@ -817,12 +817,12 @@ describe("config io write", () => {
 
   it("rejects destructive internal writes before replacing the config", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       const original = {
         gateway: { mode: "local" },
         channels: { telegram: { enabled: true, dmPolicy: "pairing" } },
-        agents: { list: [{ id: "main", default: true, workspace: "/tmp/NexisClaw-main" }] },
+        agents: { list: [{ id: "main", default: true, workspace: "/tmp/FirstNexus-main" }] },
         tools: { profile: "messaging" },
         commands: { ownerDisplay: "hash" },
       } satisfies ConfigFileSnapshot["config"];
@@ -875,7 +875,7 @@ describe("config io write", () => {
 
   it("allows intentional size-drop writes without disabling gateway-mode protection", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       const original = {
         meta: { lastTouchedVersion: "2026.4.30" },
@@ -932,7 +932,7 @@ describe("config io write", () => {
 
   it("keeps authored agent provider params during narrowed internal agent writes", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       const original = {
         gateway: { mode: "local" },
@@ -997,7 +997,7 @@ describe("config io write", () => {
         { baseSnapshot },
       );
 
-      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as NexisClawConfig;
+      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as FirstNexusConfig;
       expect(persisted.agents?.defaults?.params).toEqual({
         transport: "sse",
         openaiWsWarmup: false,
@@ -1012,7 +1012,7 @@ describe("config io write", () => {
 
   it("preserves parsed source config when snapshot validation fails", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       const original = {
         gateway: { mode: "local" },
@@ -1035,12 +1035,12 @@ describe("config io write", () => {
 
   it("rejects root-include partial writes instead of flattening the root config", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
-      const includePath = path.join(home, ".NexisClaw", "extra.json5");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
+      const includePath = path.join(home, ".FirstNexus", "extra.json5");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         includePath,
-        `${JSON.stringify({ $schema: "https://NexisClaw.ai/config-from-include.json" }, null, 2)}\n`,
+        `${JSON.stringify({ $schema: "https://FirstNexus.ai/config-from-include.json" }, null, 2)}\n`,
         "utf-8",
       );
       await fs.writeFile(
@@ -1069,9 +1069,9 @@ describe("config io write", () => {
           cliBackends: [],
           skills: [],
           hooks: [],
-          rootDir: "/tmp/NexisClaw-test-required-plugin",
-          source: "/tmp/NexisClaw-test-required-plugin/index.ts",
-          manifestPath: "/tmp/NexisClaw-test-required-plugin/NexisClaw.plugin.json",
+          rootDir: "/tmp/FirstNexus-test-required-plugin",
+          source: "/tmp/FirstNexus-test-required-plugin/index.ts",
+          manifestPath: "/tmp/FirstNexus-test-required-plugin/FirstNexus.plugin.json",
           configSchema: {
             type: "object",
             properties: {
@@ -1113,7 +1113,7 @@ describe("config io write", () => {
 
   it("writes runtime-derived edits back to source SecretRef markers", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       const previousConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
       process.env.NEXISCLAW_CONFIG_PATH = configPath;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
@@ -1212,7 +1212,7 @@ describe("config io write", () => {
 
   it("notifies in-process reloaders with resolved source config when persisted env refs are restored", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       const previousConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
       const previousGatewayToken = process.env.NEXISCLAW_GATEWAY_TOKEN;
       process.env.NEXISCLAW_CONFIG_PATH = configPath;
@@ -1307,9 +1307,9 @@ describe("config io write", () => {
           cliBackends: [],
           skills: [],
           hooks: [],
-          rootDir: "/tmp/NexisClaw-test-demo",
-          source: "/tmp/NexisClaw-test-demo/index.ts",
-          manifestPath: "/tmp/NexisClaw-test-demo/NexisClaw.plugin.json",
+          rootDir: "/tmp/FirstNexus-test-demo",
+          source: "/tmp/FirstNexus-test-demo/index.ts",
+          manifestPath: "/tmp/FirstNexus-test-demo/FirstNexus.plugin.json",
           configSchema: {
             type: "object",
             properties: {
@@ -1322,7 +1322,7 @@ describe("config io write", () => {
     } satisfies PluginManifestRegistry);
 
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       const previousConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
       process.env.NEXISCLAW_CONFIG_PATH = configPath;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
@@ -1397,9 +1397,9 @@ describe("config io write", () => {
           cliBackends: [],
           skills: [],
           hooks: [],
-          rootDir: "/tmp/NexisClaw-test-demo",
-          source: "/tmp/NexisClaw-test-demo/index.ts",
-          manifestPath: "/tmp/NexisClaw-test-demo/NexisClaw.plugin.json",
+          rootDir: "/tmp/FirstNexus-test-demo",
+          source: "/tmp/FirstNexus-test-demo/index.ts",
+          manifestPath: "/tmp/FirstNexus-test-demo/FirstNexus.plugin.json",
           configSchema: {
             type: "object",
             properties: {
@@ -1412,7 +1412,7 @@ describe("config io write", () => {
     } satisfies PluginManifestRegistry);
 
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       const previousConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
       process.env.NEXISCLAW_CONFIG_PATH = configPath;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
@@ -1437,7 +1437,7 @@ describe("config io write", () => {
           explicitSetPaths: [["plugins", "entries", "demo", "config"]],
         });
 
-        const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as NexisClawConfig;
+        const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as FirstNexusConfig;
         expect(persisted.plugins?.entries?.demo?.config).toStrictEqual({ mode: "auto" });
       } finally {
         mockLoadPluginManifestRegistry.mockReturnValue({
@@ -1455,7 +1455,7 @@ describe("config io write", () => {
 
   it("skipPluginValidation bypasses plugin schema rejection on writeConfigFile (#76800)", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       const previousConfigPath = process.env.NEXISCLAW_CONFIG_PATH;
       process.env.NEXISCLAW_CONFIG_PATH = configPath;
       await fs.mkdir(path.dirname(configPath), { recursive: true });
@@ -1471,9 +1471,9 @@ describe("config io write", () => {
             cliBackends: [],
             skills: [],
             hooks: [],
-            rootDir: "/tmp/NexisClaw-test-strict-plugin",
-            source: "/tmp/NexisClaw-test-strict-plugin/index.ts",
-            manifestPath: "/tmp/NexisClaw-test-strict-plugin/NexisClaw.plugin.json",
+            rootDir: "/tmp/FirstNexus-test-strict-plugin",
+            source: "/tmp/FirstNexus-test-strict-plugin/index.ts",
+            manifestPath: "/tmp/FirstNexus-test-strict-plugin/FirstNexus.plugin.json",
             configSchema: {
               type: "object",
               properties: { token: { type: "string" } },
@@ -1486,7 +1486,7 @@ describe("config io write", () => {
 
       try {
         // Plugin is enabled but missing required "token" — validation fails without skip.
-        const cfg: NexisClawConfig = {
+        const cfg: FirstNexusConfig = {
           agents: { list: [{ id: "main", default: true }] },
           plugins: { entries: { "strict-plugin": { enabled: true } } },
         };
@@ -1498,7 +1498,7 @@ describe("config io write", () => {
           /Config validation failed/,
         );
         await expect(
-          writeConfigFile({ agents: { list: "not-array" } } as unknown as NexisClawConfig, {
+          writeConfigFile({ agents: { list: "not-array" } } as unknown as FirstNexusConfig, {
             skipPluginValidation: true,
           }),
         ).rejects.toThrow(/Config validation failed/);
@@ -1518,13 +1518,13 @@ describe("config io write", () => {
 
   it("preserves authored tilde paths when runtime-shaped writes hand back absolute paths", async () => {
     await withSuiteHome(async (home) => {
-      const configPath = path.join(home, ".NexisClaw", "NexisClaw.json");
+      const configPath = path.join(home, ".FirstNexus", "FirstNexus.json");
       await fs.mkdir(path.dirname(configPath), { recursive: true });
       await fs.writeFile(
         configPath,
         `${JSON.stringify(
           {
-            logging: { file: "~/NexisClaw-upgrade-survivor/gateway.jsonl" },
+            logging: { file: "~/FirstNexus-upgrade-survivor/gateway.jsonl" },
           },
           null,
           2,
@@ -1537,15 +1537,15 @@ describe("config io write", () => {
       await io.writeConfigFile(
         {
           logging: {
-            file: path.join(home, "NexisClaw-upgrade-survivor", "gateway.jsonl"),
+            file: path.join(home, "FirstNexus-upgrade-survivor", "gateway.jsonl"),
             level: "debug",
           },
         },
         { baseSnapshot: snapshot },
       );
 
-      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as NexisClawConfig;
-      expect(persisted.logging?.file).toBe("~/NexisClaw-upgrade-survivor/gateway.jsonl");
+      const persisted = JSON.parse(await fs.readFile(configPath, "utf-8")) as FirstNexusConfig;
+      expect(persisted.logging?.file).toBe("~/FirstNexus-upgrade-survivor/gateway.jsonl");
       expect(persisted.logging?.level).toBe("debug");
     });
   });

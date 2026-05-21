@@ -10,7 +10,7 @@ import {
   type SessionEntry,
   updateSessionStoreEntry,
 } from "../../config/sessions.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { logVerbose } from "../../globals.js";
 import { estimateUsageCost, resolveModelCostConfig } from "../../utils/usage-format.js";
 
@@ -52,7 +52,7 @@ function resolveNonNegativeNumber(value: number | undefined): number | undefined
 }
 
 function estimateSessionRunCostUsd(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   usage?: NormalizedUsage;
   providerUsed?: string;
   modelUsed?: string;
@@ -71,7 +71,7 @@ function estimateSessionRunCostUsd(params: {
 export async function persistSessionUsageUpdate(params: {
   storePath?: string;
   sessionKey?: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   usage?: NormalizedUsage;
   /**
    * Usage from the last individual API call (not accumulated). When provided,

@@ -473,7 +473,7 @@ function quoteCliArg(value: string): string {
 }
 
 function buildExplicitApproveCommand(opts: DevicesRpcOpts, requestId: string): string {
-  const args = ["NexisClaw", "devices", "approve", requestId];
+  const args = ["FirstNexus", "devices", "approve", requestId];
   const url = normalizeOptionalString(opts.url);
   if (url) {
     args.push("--url", url);
@@ -511,7 +511,7 @@ function resolveRequiredDeviceRole(
     return { deviceId, role };
   }
   defaultRuntime.error(
-    `--device and --role are required. Run ${formatCliCommand("NexisClaw devices list")} to choose a paired device.`,
+    `--device and --role are required. Run ${formatCliCommand("FirstNexus devices list")} to choose a paired device.`,
   );
   defaultRuntime.exit(1);
   return null;
@@ -612,7 +612,7 @@ export function registerDevicesCli(program: Command) {
         const trimmed = deviceId.trim();
         if (!trimmed) {
           defaultRuntime.error(
-            `deviceId is required. Run ${formatCliCommand("NexisClaw devices list")} to choose a paired device.`,
+            `deviceId is required. Run ${formatCliCommand("FirstNexus devices list")} to choose a paired device.`,
           );
           defaultRuntime.exit(1);
           return;
@@ -751,7 +751,7 @@ export function registerDevicesCli(program: Command) {
               break;
             case "re-approval":
               defaultRuntime.log(
-                "  Note:   Already paired. Approval-bound device details changed, so NexisClaw created a fresh request instead of silently reusing the old approval.",
+                "  Note:   Already paired. Approval-bound device details changed, so FirstNexus created a fresh request instead of silently reusing the old approval.",
               );
               break;
             case "new-pairing":

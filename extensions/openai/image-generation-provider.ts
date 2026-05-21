@@ -1,32 +1,32 @@
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import type {
   ImageGenerationOutputFormat,
   ImageGenerationProvider,
   ImageGenerationResult,
-} from "NexisClaw/plugin-sdk/image-generation";
+} from "FirstNexus/plugin-sdk/image-generation";
 import {
   parseOpenAiCompatibleImageResponse,
   toImageDataUrl,
-} from "NexisClaw/plugin-sdk/image-generation";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/logging-core";
-import { resolveClosestSize } from "NexisClaw/plugin-sdk/media-generation-runtime";
-import { extensionForMime } from "NexisClaw/plugin-sdk/media-mime";
+} from "FirstNexus/plugin-sdk/image-generation";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/logging-core";
+import { resolveClosestSize } from "FirstNexus/plugin-sdk/media-generation-runtime";
+import { extensionForMime } from "FirstNexus/plugin-sdk/media-mime";
 import {
   ensureAuthProfileStore,
   isProviderApiKeyConfigured,
   listProfilesForProvider,
   type AuthProfileStore,
-} from "NexisClaw/plugin-sdk/provider-auth";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
+} from "FirstNexus/plugin-sdk/provider-auth";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
 import {
   assertOkOrThrowHttpError,
   postJsonRequest,
   postMultipartRequest,
   resolveProviderHttpRequestConfig,
   sanitizeConfiguredModelProviderRequest,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { isPrivateNetworkOptInEnabled } from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { isPrivateNetworkOptInEnabled } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { canonicalizeCodexResponsesBaseUrl, OPENAI_CODEX_RESPONSES_BASE_URL } from "./base-url.js";
 import { OPENAI_DEFAULT_IMAGE_MODEL as DEFAULT_OPENAI_IMAGE_MODEL } from "./default-models.js";
 import { resolveConfiguredOpenAIBaseUrl } from "./shared.js";
@@ -265,7 +265,7 @@ function resolveOpenAIImageRequestSize(params: {
 
 function shouldAllowPrivateImageEndpoint(req: {
   provider: string;
-  cfg: NexisClawConfig | undefined;
+  cfg: FirstNexusConfig | undefined;
 }) {
   if (req.provider === MOCK_OPENAI_PROVIDER_ID) {
     return true;
@@ -284,7 +284,7 @@ function normalizeProviderId(value: string | undefined): string {
   return value?.trim().toLowerCase() ?? "";
 }
 
-function hasExplicitOpenAIDirectAuthConfig(cfg: NexisClawConfig | undefined): boolean {
+function hasExplicitOpenAIDirectAuthConfig(cfg: FirstNexusConfig | undefined): boolean {
   const profiles = cfg?.auth?.profiles;
   if (!profiles) {
     return false;
@@ -294,7 +294,7 @@ function hasExplicitOpenAIDirectAuthConfig(cfg: NexisClawConfig | undefined): bo
   );
 }
 
-function hasExplicitOpenAIDirectProviderConfig(cfg: NexisClawConfig | undefined): boolean {
+function hasExplicitOpenAIDirectProviderConfig(cfg: FirstNexusConfig | undefined): boolean {
   if (hasExplicitOpenAIDirectAuthConfig(cfg)) {
     return true;
   }

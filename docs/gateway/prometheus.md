@@ -1,14 +1,14 @@
 ---
-summary: "Expose NexisClaw diagnostics as Prometheus text metrics through the diagnostics-prometheus plugin"
+summary: "Expose FirstNexus diagnostics as Prometheus text metrics through the diagnostics-prometheus plugin"
 title: "Prometheus metrics"
 sidebarTitle: "Prometheus"
 read_when:
-  - You want Prometheus, Grafana, VictoriaMetrics, or another scraper to collect NexisClaw Gateway metrics
+  - You want Prometheus, Grafana, VictoriaMetrics, or another scraper to collect FirstNexus Gateway metrics
   - You need the Prometheus metric names and label policy for dashboards or alerts
   - You want metrics without running an OpenTelemetry collector
 ---
 
-NexisClaw can expose diagnostics metrics through the official `diagnostics-prometheus` plugin. It listens to trusted internal diagnostics and renders a Prometheus text endpoint at:
+FirstNexus can expose diagnostics metrics through the official `diagnostics-prometheus` plugin. It listens to trusted internal diagnostics and renders a Prometheus text endpoint at:
 
 ```text
 GET /api/diagnostics/prometheus
@@ -27,7 +27,7 @@ For traces, logs, OTLP push, and OpenTelemetry GenAI semantic attributes, see [O
 <Steps>
   <Step title="Install the plugin">
     ```bash
-    NexisClaw plugins install clawhub:@NexisClaw/diagnostics-prometheus
+    FirstNexus plugins install clawhub:@FirstNexus/diagnostics-prometheus
     ```
   </Step>
   <Step title="Enable the plugin">
@@ -49,7 +49,7 @@ For traces, logs, OTLP push, and OpenTelemetry GenAI semantic attributes, see [O
       </Tab>
       <Tab title="CLI">
         ```bash
-        NexisClaw plugins enable diagnostics-prometheus
+        FirstNexus plugins enable diagnostics-prometheus
         ```
       </Tab>
     </Tabs>
@@ -70,13 +70,13 @@ For traces, logs, OTLP push, and OpenTelemetry GenAI semantic attributes, see [O
     ```yaml
     # prometheus.yml
     scrape_configs:
-      - job_name: NexisClaw
+      - job_name: FirstNexus
         scrape_interval: 30s
         metrics_path: /api/diagnostics/prometheus
         authorization:
-          credentials_file: /etc/prometheus/NexisClaw-gateway-token
+          credentials_file: /etc/prometheus/FirstNexus-gateway-token
         static_configs:
-          - targets: ["NexisClaw-gateway:18789"]
+          - targets: ["FirstNexus-gateway:18789"]
     ```
   </Step>
 </Steps>
@@ -87,38 +87,38 @@ For traces, logs, OTLP push, and OpenTelemetry GenAI semantic attributes, see [O
 
 ## Metrics exported
 
-| Metric                                        | Type      | Labels                                                                                    |
-| --------------------------------------------- | --------- | ----------------------------------------------------------------------------------------- |
-| `NexisClaw_run_completed_total`                | counter   | `channel`, `model`, `outcome`, `provider`, `trigger`                                      |
-| `NexisClaw_run_duration_seconds`               | histogram | `channel`, `model`, `outcome`, `provider`, `trigger`                                      |
-| `NexisClaw_model_call_total`                   | counter   | `api`, `error_category`, `model`, `outcome`, `provider`, `transport`                      |
-| `NexisClaw_model_call_duration_seconds`        | histogram | `api`, `error_category`, `model`, `outcome`, `provider`, `transport`                      |
-| `NexisClaw_model_tokens_total`                 | counter   | `agent`, `channel`, `model`, `provider`, `token_type`                                     |
-| `NexisClaw_gen_ai_client_token_usage`          | histogram | `model`, `provider`, `token_type`                                                         |
-| `NexisClaw_model_cost_usd_total`               | counter   | `agent`, `channel`, `model`, `provider`                                                   |
-| `NexisClaw_tool_execution_total`               | counter   | `error_category`, `outcome`, `params_kind`, `tool`                                        |
-| `NexisClaw_tool_execution_duration_seconds`    | histogram | `error_category`, `outcome`, `params_kind`, `tool`                                        |
-| `NexisClaw_harness_run_total`                  | counter   | `channel`, `error_category`, `harness`, `model`, `outcome`, `phase`, `plugin`, `provider` |
-| `NexisClaw_harness_run_duration_seconds`       | histogram | `channel`, `error_category`, `harness`, `model`, `outcome`, `phase`, `plugin`, `provider` |
-| `NexisClaw_message_processed_total`            | counter   | `channel`, `outcome`, `reason`                                                            |
-| `NexisClaw_message_processed_duration_seconds` | histogram | `channel`, `outcome`, `reason`                                                            |
-| `NexisClaw_message_delivery_started_total`     | counter   | `channel`, `delivery_kind`                                                                |
-| `NexisClaw_message_delivery_total`             | counter   | `channel`, `delivery_kind`, `error_category`, `outcome`                                   |
-| `NexisClaw_message_delivery_duration_seconds`  | histogram | `channel`, `delivery_kind`, `error_category`, `outcome`                                   |
-| `NexisClaw_talk_event_total`                   | counter   | `brain`, `event_type`, `mode`, `provider`, `transport`                                    |
-| `NexisClaw_talk_event_duration_seconds`        | histogram | `brain`, `event_type`, `mode`, `provider`, `transport`                                    |
-| `NexisClaw_talk_audio_bytes`                   | histogram | `brain`, `event_type`, `mode`, `provider`, `transport`                                    |
-| `NexisClaw_queue_lane_size`                    | gauge     | `lane`                                                                                    |
-| `NexisClaw_queue_lane_wait_seconds`            | histogram | `lane`                                                                                    |
-| `NexisClaw_session_state_total`                | counter   | `reason`, `state`                                                                         |
-| `NexisClaw_session_queue_depth`                | gauge     | `state`                                                                                   |
-| `NexisClaw_session_recovery_total`             | counter   | `action`, `active_work_kind`, `state`, `status`                                           |
-| `NexisClaw_session_recovery_age_seconds`       | histogram | `action`, `active_work_kind`, `state`, `status`                                           |
-| `NexisClaw_memory_bytes`                       | gauge     | `kind`                                                                                    |
-| `NexisClaw_memory_rss_bytes`                   | histogram | none                                                                                      |
-| `NexisClaw_memory_pressure_total`              | counter   | `level`, `reason`                                                                         |
-| `NexisClaw_telemetry_exporter_total`           | counter   | `exporter`, `reason`, `signal`, `status`                                                  |
-| `NexisClaw_prometheus_series_dropped_total`    | counter   | none                                                                                      |
+| Metric                                          | Type      | Labels                                                                                    |
+| ----------------------------------------------- | --------- | ----------------------------------------------------------------------------------------- |
+| `FirstNexus_run_completed_total`                | counter   | `channel`, `model`, `outcome`, `provider`, `trigger`                                      |
+| `FirstNexus_run_duration_seconds`               | histogram | `channel`, `model`, `outcome`, `provider`, `trigger`                                      |
+| `FirstNexus_model_call_total`                   | counter   | `api`, `error_category`, `model`, `outcome`, `provider`, `transport`                      |
+| `FirstNexus_model_call_duration_seconds`        | histogram | `api`, `error_category`, `model`, `outcome`, `provider`, `transport`                      |
+| `FirstNexus_model_tokens_total`                 | counter   | `agent`, `channel`, `model`, `provider`, `token_type`                                     |
+| `FirstNexus_gen_ai_client_token_usage`          | histogram | `model`, `provider`, `token_type`                                                         |
+| `FirstNexus_model_cost_usd_total`               | counter   | `agent`, `channel`, `model`, `provider`                                                   |
+| `FirstNexus_tool_execution_total`               | counter   | `error_category`, `outcome`, `params_kind`, `tool`                                        |
+| `FirstNexus_tool_execution_duration_seconds`    | histogram | `error_category`, `outcome`, `params_kind`, `tool`                                        |
+| `FirstNexus_harness_run_total`                  | counter   | `channel`, `error_category`, `harness`, `model`, `outcome`, `phase`, `plugin`, `provider` |
+| `FirstNexus_harness_run_duration_seconds`       | histogram | `channel`, `error_category`, `harness`, `model`, `outcome`, `phase`, `plugin`, `provider` |
+| `FirstNexus_message_processed_total`            | counter   | `channel`, `outcome`, `reason`                                                            |
+| `FirstNexus_message_processed_duration_seconds` | histogram | `channel`, `outcome`, `reason`                                                            |
+| `FirstNexus_message_delivery_started_total`     | counter   | `channel`, `delivery_kind`                                                                |
+| `FirstNexus_message_delivery_total`             | counter   | `channel`, `delivery_kind`, `error_category`, `outcome`                                   |
+| `FirstNexus_message_delivery_duration_seconds`  | histogram | `channel`, `delivery_kind`, `error_category`, `outcome`                                   |
+| `FirstNexus_talk_event_total`                   | counter   | `brain`, `event_type`, `mode`, `provider`, `transport`                                    |
+| `FirstNexus_talk_event_duration_seconds`        | histogram | `brain`, `event_type`, `mode`, `provider`, `transport`                                    |
+| `FirstNexus_talk_audio_bytes`                   | histogram | `brain`, `event_type`, `mode`, `provider`, `transport`                                    |
+| `FirstNexus_queue_lane_size`                    | gauge     | `lane`                                                                                    |
+| `FirstNexus_queue_lane_wait_seconds`            | histogram | `lane`                                                                                    |
+| `FirstNexus_session_state_total`                | counter   | `reason`, `state`                                                                         |
+| `FirstNexus_session_queue_depth`                | gauge     | `state`                                                                                   |
+| `FirstNexus_session_recovery_total`             | counter   | `action`, `active_work_kind`, `state`, `status`                                           |
+| `FirstNexus_session_recovery_age_seconds`       | histogram | `action`, `active_work_kind`, `state`, `status`                                           |
+| `FirstNexus_memory_bytes`                       | gauge     | `kind`                                                                                    |
+| `FirstNexus_memory_rss_bytes`                   | histogram | none                                                                                      |
+| `FirstNexus_memory_pressure_total`              | counter   | `level`, `reason`                                                                         |
+| `FirstNexus_telemetry_exporter_total`           | counter   | `exporter`, `reason`, `signal`, `status`                                                  |
+| `FirstNexus_prometheus_series_dropped_total`    | counter   | none                                                                                      |
 
 ## Label policy
 
@@ -126,11 +126,11 @@ For traces, logs, OTLP push, and OpenTelemetry GenAI semantic attributes, see [O
   <Accordion title="Bounded, low-cardinality labels">
     Prometheus labels stay bounded and low-cardinality. The exporter does not emit raw diagnostic identifiers such as `runId`, `sessionKey`, `sessionId`, `callId`, `toolCallId`, message IDs, chat IDs, or provider request IDs.
 
-    Label values are redacted and must match NexisClaw's low-cardinality character policy. Values that fail the policy are replaced with `unknown`, `other`, or `none`, depending on the metric.
+    Label values are redacted and must match FirstNexus's low-cardinality character policy. Values that fail the policy are replaced with `unknown`, `other`, or `none`, depending on the metric.
 
   </Accordion>
   <Accordion title="Series cap and overflow accounting">
-    The exporter caps retained time series in memory at **2048** series across counters, gauges, and histograms combined. New series beyond that cap are dropped, and `NexisClaw_prometheus_series_dropped_total` increments by one each time.
+    The exporter caps retained time series in memory at **2048** series across counters, gauges, and histograms combined. New series beyond that cap are dropped, and `FirstNexus_prometheus_series_dropped_total` increments by one each time.
 
     Watch this counter as a hard signal that an attribute upstream is leaking high-cardinality values. The exporter never lifts the cap automatically; if it climbs, fix the source rather than disabling the cap.
 
@@ -149,35 +149,35 @@ For traces, logs, OTLP push, and OpenTelemetry GenAI semantic attributes, see [O
 
 ```promql
 # Tokens per minute, split by provider
-sum by (provider) (rate(NexisClaw_model_tokens_total[1m]))
+sum by (provider) (rate(FirstNexus_model_tokens_total[1m]))
 
 # Spend (USD) over the last hour, by model
-sum by (model) (increase(NexisClaw_model_cost_usd_total[1h]))
+sum by (model) (increase(FirstNexus_model_cost_usd_total[1h]))
 
 # 95th percentile model run duration
 histogram_quantile(
   0.95,
   sum by (le, provider, model)
-    (rate(NexisClaw_run_duration_seconds_bucket[5m]))
+    (rate(FirstNexus_run_duration_seconds_bucket[5m]))
 )
 
 # Queue wait time SLO (95p under 2s)
 histogram_quantile(
   0.95,
-  sum by (le, lane) (rate(NexisClaw_queue_lane_wait_seconds_bucket[5m]))
+  sum by (le, lane) (rate(FirstNexus_queue_lane_wait_seconds_bucket[5m]))
 ) < 2
 
 # Dropped Prometheus series (cardinality alarm)
-increase(NexisClaw_prometheus_series_dropped_total[15m]) > 0
+increase(FirstNexus_prometheus_series_dropped_total[15m]) > 0
 ```
 
 <Tip>
-Prefer `gen_ai_client_token_usage` for cross-provider dashboards: it follows the OpenTelemetry GenAI semantic conventions and is consistent with metrics from non-NexisClaw GenAI services.
+Prefer `gen_ai_client_token_usage` for cross-provider dashboards: it follows the OpenTelemetry GenAI semantic conventions and is consistent with metrics from non-FirstNexus GenAI services.
 </Tip>
 
 ## Choosing between Prometheus and OpenTelemetry export
 
-NexisClaw supports both surfaces independently. You can run either, both, or neither.
+FirstNexus supports both surfaces independently. You can run either, both, or neither.
 
 <Tabs>
   <Tab title="diagnostics-prometheus">
@@ -189,7 +189,7 @@ NexisClaw supports both surfaces independently. You can run either, both, or nei
 
   </Tab>
   <Tab title="diagnostics-otel">
-    - **Push** model: NexisClaw sends OTLP/HTTP to a collector or OTLP-compatible backend.
+    - **Push** model: FirstNexus sends OTLP/HTTP to a collector or OTLP-compatible backend.
     - Surface includes metrics, traces, and logs.
     - Bridges to Prometheus through an OpenTelemetry Collector (`prometheus` or `prometheusremotewrite` exporter) when you need both.
     - See [OpenTelemetry export](/gateway/opentelemetry) for the full catalog.
@@ -202,14 +202,14 @@ NexisClaw supports both surfaces independently. You can run either, both, or nei
 <AccordionGroup>
   <Accordion title="Empty response body">
     - Check `diagnostics.enabled: true` in config.
-    - Confirm the plugin is enabled and loaded with `NexisClaw plugins list --enabled`.
+    - Confirm the plugin is enabled and loaded with `FirstNexus plugins list --enabled`.
     - Generate some traffic; counters and histograms only emit lines after at least one event.
 
   </Accordion>
   <Accordion title="401 / unauthorized">
     The endpoint requires the Gateway operator scope (`auth: "gateway"` with `gatewayRuntimeScopeSurface: "trusted-operator"`). Use the same token or password Prometheus uses for any other Gateway operator route. There is no public unauthenticated mode.
   </Accordion>
-  <Accordion title="`NexisClaw_prometheus_series_dropped_total` is climbing">
+  <Accordion title="`FirstNexus_prometheus_series_dropped_total` is climbing">
     A new attribute is exceeding the **2048**-series cap. Inspect recent metrics for an unexpectedly high-cardinality label and fix it at the source. The exporter intentionally drops new series instead of silently rewriting labels.
   </Accordion>
   <Accordion title="Prometheus shows stale series after a restart">

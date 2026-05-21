@@ -1,7 +1,7 @@
 ---
-summary: "Shared Docker VM runtime steps for long-lived NexisClaw Gateway hosts"
+summary: "Shared Docker VM runtime steps for long-lived FirstNexus Gateway hosts"
 read_when:
-  - You are deploying NexisClaw on a cloud VM with Docker
+  - You are deploying FirstNexus on a cloud VM with Docker
   - You need the shared binary bake, persistence, and update flow
 title: "Docker VM runtime"
 ---
@@ -83,7 +83,7 @@ The URLs above are examples. For ARM-based VMs, choose the `arm64` assets. For r
 
 ```bash
 docker compose build
-docker compose up -d NexisClaw-gateway
+docker compose up -d FirstNexus-gateway
 ```
 
 If build fails with `Killed` or `exit code 137` during `pnpm install --frozen-lockfile`, the VM is out of memory.
@@ -92,9 +92,9 @@ Use a larger machine class before retrying.
 Verify binaries:
 
 ```bash
-docker compose exec NexisClaw-gateway which gog
-docker compose exec NexisClaw-gateway which goplaces
-docker compose exec NexisClaw-gateway which wacli
+docker compose exec FirstNexus-gateway which gog
+docker compose exec FirstNexus-gateway which goplaces
+docker compose exec FirstNexus-gateway which wacli
 ```
 
 Expected output:
@@ -108,7 +108,7 @@ Expected output:
 Verify Gateway:
 
 ```bash
-docker compose logs -f NexisClaw-gateway
+docker compose logs -f FirstNexus-gateway
 ```
 
 Expected output:
@@ -119,27 +119,27 @@ Expected output:
 
 ## What persists where
 
-NexisClaw runs in Docker, but Docker is not the source of truth.
+FirstNexus runs in Docker, but Docker is not the source of truth.
 All long-lived state must survive restarts, rebuilds, and reboots.
 
-| Component           | Location                                               | Persistence mechanism  | Notes                                                         |
-| ------------------- | ------------------------------------------------------ | ---------------------- | ------------------------------------------------------------- |
-| Gateway config      | `/home/node/.NexisClaw/`                                | Host volume mount      | Includes `NexisClaw.json`, `.env`                              |
-| Model auth profiles | `/home/node/.NexisClaw/agents/`                         | Host volume mount      | `agents/<agentId>/agent/auth-profiles.json` (OAuth, API keys) |
-| Auth profile key    | `/home/node/.config/NexisClaw/`                         | Host volume mount      | Local encryption key for OAuth auth profile token material    |
-| Skill configs       | `/home/node/.NexisClaw/skills/`                         | Host volume mount      | Skill-level state                                             |
-| Agent workspace     | `/home/node/.NexisClaw/workspace/`                      | Host volume mount      | Code and agent artifacts                                      |
-| WhatsApp session    | `/home/node/.NexisClaw/`                                | Host volume mount      | Preserves QR login                                            |
-| Gmail keyring       | `/home/node/.NexisClaw/`                                | Host volume + password | Requires `GOG_KEYRING_PASSWORD`                               |
-| Plugin packages     | `/home/node/.NexisClaw/npm`, `/home/node/.NexisClaw/git` | Host volume mount      | Downloadable plugin package roots                             |
-| External binaries   | `/usr/local/bin/`                                      | Docker image           | Must be baked at build time                                   |
-| Node runtime        | Container filesystem                                   | Docker image           | Rebuilt every image build                                     |
-| OS packages         | Container filesystem                                   | Docker image           | Do not install at runtime                                     |
-| Docker container    | Ephemeral                                              | Restartable            | Safe to destroy                                               |
+| Component           | Location                                                   | Persistence mechanism  | Notes                                                         |
+| ------------------- | ---------------------------------------------------------- | ---------------------- | ------------------------------------------------------------- |
+| Gateway config      | `/home/node/.FirstNexus/`                                  | Host volume mount      | Includes `FirstNexus.json`, `.env`                            |
+| Model auth profiles | `/home/node/.FirstNexus/agents/`                           | Host volume mount      | `agents/<agentId>/agent/auth-profiles.json` (OAuth, API keys) |
+| Auth profile key    | `/home/node/.config/FirstNexus/`                           | Host volume mount      | Local encryption key for OAuth auth profile token material    |
+| Skill configs       | `/home/node/.FirstNexus/skills/`                           | Host volume mount      | Skill-level state                                             |
+| Agent workspace     | `/home/node/.FirstNexus/workspace/`                        | Host volume mount      | Code and agent artifacts                                      |
+| WhatsApp session    | `/home/node/.FirstNexus/`                                  | Host volume mount      | Preserves QR login                                            |
+| Gmail keyring       | `/home/node/.FirstNexus/`                                  | Host volume + password | Requires `GOG_KEYRING_PASSWORD`                               |
+| Plugin packages     | `/home/node/.FirstNexus/npm`, `/home/node/.FirstNexus/git` | Host volume mount      | Downloadable plugin package roots                             |
+| External binaries   | `/usr/local/bin/`                                          | Docker image           | Must be baked at build time                                   |
+| Node runtime        | Container filesystem                                       | Docker image           | Rebuilt every image build                                     |
+| OS packages         | Container filesystem                                       | Docker image           | Do not install at runtime                                     |
+| Docker container    | Ephemeral                                                  | Restartable            | Safe to destroy                                               |
 
 ## Updates
 
-To update NexisClaw on the VM:
+To update FirstNexus on the VM:
 
 ```bash
 git pull

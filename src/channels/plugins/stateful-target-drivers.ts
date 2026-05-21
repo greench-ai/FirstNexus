@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type {
   ConfiguredBindingResolution,
   StatefulBindingTargetDescriptor,
@@ -15,19 +15,19 @@ export type StatefulBindingTargetResetResult =
 export type StatefulBindingTargetDriver = {
   id: string;
   ensureReady: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     bindingResolution: ConfiguredBindingResolution;
   }) => Promise<StatefulBindingTargetReadyResult>;
   ensureSession: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     bindingResolution: ConfiguredBindingResolution;
   }) => Promise<StatefulBindingTargetSessionResult>;
   resolveTargetBySessionKey?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     sessionKey: string;
   }) => StatefulBindingTargetDescriptor | null;
   resetInPlace?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     sessionKey: string;
     bindingTarget: StatefulBindingTargetDescriptor;
     reason: "new" | "reset";
@@ -67,7 +67,7 @@ export function getStatefulBindingTargetDriver(id: string): StatefulBindingTarge
 }
 
 export function resolveStatefulBindingTargetBySessionKey(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
 }): { driver: StatefulBindingTargetDriver; bindingTarget: StatefulBindingTargetDescriptor } | null {
   const sessionKey = params.sessionKey.trim();

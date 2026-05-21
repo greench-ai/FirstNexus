@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# NexisClaw CLI installer (non-interactive, no onboarding)
-# Usage: curl -fsSL --proto '=https' --tlsv1.2 https://NexisClaw.ai/install-cli.sh | bash -s -- [--json] [--prefix <path>] [--version <ver>] [--node-version <ver>] [--onboard]
+# FirstNexus CLI installer (non-interactive, no onboarding)
+# Usage: curl -fsSL --proto '=https' --tlsv1.2 https://FirstNexus.ai/install-cli.sh | bash -s -- [--json] [--prefix <path>] [--version <ver>] [--node-version <ver>] [--onboard]
 
 ensure_home_env() {
   if [[ -n "${HOME:-}" && "${HOME}" != "/" && -d "${HOME}" ]]; then
@@ -29,13 +29,13 @@ ensure_home_env() {
 
 ensure_home_env
 
-PREFIX="${NEXISCLAW_PREFIX:-${HOME}/.NexisClaw}"
+PREFIX="${NEXISCLAW_PREFIX:-${HOME}/.FirstNexus}"
 NEXISCLAW_VERSION="${NEXISCLAW_VERSION:-latest}"
 NODE_VERSION="${NEXISCLAW_NODE_VERSION:-22.22.0}"
 SHARP_IGNORE_GLOBAL_LIBVIPS="${SHARP_IGNORE_GLOBAL_LIBVIPS:-1}"
 NPM_LOGLEVEL="${NEXISCLAW_NPM_LOGLEVEL:-error}"
 INSTALL_METHOD="${NEXISCLAW_INSTALL_METHOD:-npm}"
-GIT_DIR="${NEXISCLAW_GIT_DIR:-${HOME}/NexisClaw}"
+GIT_DIR="${NEXISCLAW_GIT_DIR:-${HOME}/FirstNexus}"
 GIT_UPDATE="${NEXISCLAW_GIT_UPDATE:-1}"
 JSON=0
 RUN_ONBOARD=0
@@ -46,14 +46,14 @@ print_usage() {
   cat <<EOF
 Usage: install-cli.sh [options]
   --json                              Emit NDJSON events (no human output)
-  --prefix <path>                     Install prefix (default: ~/.NexisClaw)
+  --prefix <path>                     Install prefix (default: ~/.FirstNexus)
   --install-method, --method npm|git  Install via npm (default) or from a git checkout
   --npm                               Shortcut for --install-method npm
   --git, --github                     Shortcut for --install-method git
-  --git-dir, --dir <path>             Checkout directory (default: ~/NexisClaw)
-  --version <ver>                     NexisClaw version (default: latest)
+  --git-dir, --dir <path>             Checkout directory (default: ~/FirstNexus)
+  --version <ver>                     FirstNexus version (default: latest)
   --node-version <ver>                Node version (default: 22.22.0)
-  --onboard                           Run "NexisClaw onboard" after install
+  --onboard                           Run "FirstNexus onboard" after install
   --no-onboard                        Skip onboarding (default)
   --set-npm-prefix                    Force npm prefix to ~/.npm-global if current prefix is not writable (Linux)
 
@@ -100,7 +100,7 @@ download_file() {
 }
 
 cleanup_legacy_submodules() {
-  local repo_dir="${1:-${NEXISCLAW_GIT_DIR:-${HOME}/NexisClaw}}"
+  local repo_dir="${1:-${NEXISCLAW_GIT_DIR:-${HOME}/FirstNexus}}"
   local legacy_dir="${repo_dir}/Peekaboo"
   if [[ -d "$legacy_dir" ]]; then
     emit_json "{\"event\":\"step\",\"name\":\"legacy-submodule\",\"status\":\"start\",\"path\":\"${legacy_dir//\"/\\\"}\"}"
@@ -486,39 +486,39 @@ fix_npm_prefix_if_needed() {
   log "Configured npm prefix to ${target}"
 }
 
-install_NexisClaw() {
+install_FirstNexus() {
   local requested="${NEXISCLAW_VERSION:-latest}"
   local npm_args=(
     --loglevel "$NPM_LOGLEVEL"
     --no-fund
     --no-audit
   )
-  emit_json "{\"event\":\"step\",\"name\":\"NexisClaw\",\"status\":\"start\",\"version\":\"${requested}\"}"
-  log "Installing NexisClaw (${requested})..."
+  emit_json "{\"event\":\"step\",\"name\":\"FirstNexus\",\"status\":\"start\",\"version\":\"${requested}\"}"
+  log "Installing FirstNexus (${requested})..."
   if [[ "$SET_NPM_PREFIX" -eq 1 ]]; then
     fix_npm_prefix_if_needed
   fi
 
   if [[ "${requested}" == "latest" ]]; then
-    if ! SHARP_IGNORE_GLOBAL_LIBVIPS="$SHARP_IGNORE_GLOBAL_LIBVIPS" "$(npm_bin)" install -g --prefix "$(node_dir)" "${npm_args[@]}" "NexisClaw@latest"; then
-      log "npm install NexisClaw@latest failed; retrying NexisClaw@next"
-      emit_json "{\"event\":\"step\",\"name\":\"NexisClaw\",\"status\":\"retry\",\"version\":\"next\"}"
-      SHARP_IGNORE_GLOBAL_LIBVIPS="$SHARP_IGNORE_GLOBAL_LIBVIPS" "$(npm_bin)" install -g --prefix "$(node_dir)" "${npm_args[@]}" "NexisClaw@next"
+    if ! SHARP_IGNORE_GLOBAL_LIBVIPS="$SHARP_IGNORE_GLOBAL_LIBVIPS" "$(npm_bin)" install -g --prefix "$(node_dir)" "${npm_args[@]}" "FirstNexus@latest"; then
+      log "npm install FirstNexus@latest failed; retrying FirstNexus@next"
+      emit_json "{\"event\":\"step\",\"name\":\"FirstNexus\",\"status\":\"retry\",\"version\":\"next\"}"
+      SHARP_IGNORE_GLOBAL_LIBVIPS="$SHARP_IGNORE_GLOBAL_LIBVIPS" "$(npm_bin)" install -g --prefix "$(node_dir)" "${npm_args[@]}" "FirstNexus@next"
       requested="next"
     fi
   else
-    SHARP_IGNORE_GLOBAL_LIBVIPS="$SHARP_IGNORE_GLOBAL_LIBVIPS" "$(npm_bin)" install -g --prefix "$(node_dir)" "${npm_args[@]}" "NexisClaw@${requested}"
+    SHARP_IGNORE_GLOBAL_LIBVIPS="$SHARP_IGNORE_GLOBAL_LIBVIPS" "$(npm_bin)" install -g --prefix "$(node_dir)" "${npm_args[@]}" "FirstNexus@${requested}"
   fi
 
   mkdir -p "${PREFIX}/bin"
-  rm -f "${PREFIX}/bin/NexisClaw"
-  cat > "${PREFIX}/bin/NexisClaw" <<EOF
+  rm -f "${PREFIX}/bin/FirstNexus"
+  cat > "${PREFIX}/bin/FirstNexus" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
-exec "${PREFIX}/tools/node/bin/node" "$(node_dir)/lib/node_modules/NexisClaw/dist/entry.js" "\$@"
+exec "${PREFIX}/tools/node/bin/node" "$(node_dir)/lib/node_modules/FirstNexus/dist/entry.js" "\$@"
 EOF
-  chmod +x "${PREFIX}/bin/NexisClaw"
-  emit_json "{\"event\":\"step\",\"name\":\"NexisClaw\",\"status\":\"ok\",\"version\":\"${requested}\"}"
+  chmod +x "${PREFIX}/bin/FirstNexus"
+  emit_json "{\"event\":\"step\",\"name\":\"FirstNexus\",\"status\":\"ok\",\"version\":\"${requested}\"}"
 }
 
 ensure_pnpm_git_prepare_allowlist() {
@@ -552,9 +552,9 @@ ensure_pnpm_git_prepare_allowlist() {
   log "Updated pnpm allowlist for git-hosted build dependency: ${dep}"
 }
 
-install_NexisClaw_from_git() {
+install_FirstNexus_from_git() {
   local repo_dir="$1"
-  local repo_url="https://github.com/NexisClaw/NexisClaw.git"
+  local repo_url="https://github.com/FirstNexus/FirstNexus.git"
 
   if [[ -z "$repo_dir" ]]; then
     fail "Git install dir cannot be empty"
@@ -565,7 +565,7 @@ install_NexisClaw_from_git() {
   mkdir -p "$(dirname "$repo_dir")"
   repo_dir="$(cd "$(dirname "$repo_dir")" && pwd)/$(basename "$repo_dir")"
 
-  emit_json "{\"event\":\"step\",\"name\":\"NexisClaw\",\"status\":\"start\",\"method\":\"git\",\"repo\":\"${repo_url//\"/\\\"}\"}"
+  emit_json "{\"event\":\"step\",\"name\":\"FirstNexus\",\"status\":\"start\",\"method\":\"git\",\"repo\":\"${repo_url//\"/\\\"}\"}"
   if [[ -d "$repo_dir/.git" ]]; then
     log "Installing Openclaw from git checkout: ${repo_dir}"
   else
@@ -607,19 +607,19 @@ install_NexisClaw_from_git() {
   run_pnpm -C "$repo_dir" build
 
   mkdir -p "${PREFIX}/bin"
-  cat > "${PREFIX}/bin/NexisClaw" <<EOF
+  cat > "${PREFIX}/bin/FirstNexus" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
 exec "${PREFIX}/tools/node/bin/node" "${repo_dir}/dist/entry.js" "\$@"
 EOF
-  chmod +x "${PREFIX}/bin/NexisClaw"
-  emit_json "{\"event\":\"step\",\"name\":\"NexisClaw\",\"status\":\"ok\",\"method\":\"git\"}"
+  chmod +x "${PREFIX}/bin/FirstNexus"
+  emit_json "{\"event\":\"step\",\"name\":\"FirstNexus\",\"status\":\"ok\",\"method\":\"git\"}"
 }
 
-resolve_NexisClaw_version() {
+resolve_FirstNexus_version() {
   local version=""
-  if [[ -x "${PREFIX}/bin/NexisClaw" ]]; then
-    version="$("${PREFIX}/bin/NexisClaw" --version 2>/dev/null | head -n 1 | tr -d '\r')"
+  if [[ -x "${PREFIX}/bin/FirstNexus" ]]; then
+    version="$("${PREFIX}/bin/FirstNexus" --version 2>/dev/null | head -n 1 | tr -d '\r')"
   fi
   echo "$version"
 }
@@ -650,7 +650,7 @@ try {
 }
 
 refresh_gateway_service_if_loaded() {
-  local claw="${PREFIX}/bin/NexisClaw"
+  local claw="${PREFIX}/bin/FirstNexus"
   if [[ ! -x "$claw" ]]; then
     return 0
   fi
@@ -693,13 +693,13 @@ main() {
 
   install_node
   if [[ "$INSTALL_METHOD" == "git" ]]; then
-    install_NexisClaw_from_git "$GIT_DIR"
+    install_FirstNexus_from_git "$GIT_DIR"
   elif [[ "$INSTALL_METHOD" == "npm" ]]; then
     ensure_git
     if [[ "$SET_NPM_PREFIX" -eq 1 ]]; then
       fix_npm_prefix_if_needed
     fi
-    install_NexisClaw
+    install_FirstNexus
   else
     fail "Unknown install method: ${INSTALL_METHOD} (use npm or git)"
   fi
@@ -707,17 +707,17 @@ main() {
   refresh_gateway_service_if_loaded
 
   local installed_version
-  installed_version="$(resolve_NexisClaw_version)"
+  installed_version="$(resolve_FirstNexus_version)"
   if [[ -n "$installed_version" ]]; then
     emit_json "{\"event\":\"done\",\"ok\":true,\"version\":\"${installed_version//\"/\\\"}\"}"
-    log "NexisClaw installed (${installed_version})."
+    log "FirstNexus installed (${installed_version})."
   else
     emit_json "{\"event\":\"done\",\"ok\":true}"
-    log "NexisClaw installed."
+    log "FirstNexus installed."
   fi
 
   if [[ "$RUN_ONBOARD" -eq 1 ]]; then
-    "${PREFIX}/bin/NexisClaw" onboard
+    "${PREFIX}/bin/FirstNexus" onboard
   fi
 }
 

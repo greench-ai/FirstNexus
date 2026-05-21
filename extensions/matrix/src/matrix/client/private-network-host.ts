@@ -1,1 +1,1 @@
-export { isPrivateOrLoopbackHost } from "NexisClaw/plugin-sdk/ssrf-runtime";
+export { isPrivateOrLoopbackHost } from "FirstNexus/plugin-sdk/ssrf-runtime";

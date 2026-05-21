@@ -6,13 +6,13 @@ export type MatrixManagedDeviceInfo = {
 
 export type MatrixDeviceHealthSummary = {
   currentDeviceId: string | null;
-  staleNexisClawDevices: MatrixManagedDeviceInfo[];
-  currentNexisClawDevices: MatrixManagedDeviceInfo[];
+  staleFirstNexusDevices: MatrixManagedDeviceInfo[];
+  currentFirstNexusDevices: MatrixManagedDeviceInfo[];
 };
 
-const NEXISCLAW_DEVICE_NAME_PREFIX = "NexisClaw ";
+const NEXISCLAW_DEVICE_NAME_PREFIX = "FirstNexus ";
 
-export function isNexisClawManagedMatrixDevice(displayName: string | null | undefined): boolean {
+export function isFirstNexusManagedMatrixDevice(displayName: string | null | undefined): boolean {
   return displayName?.startsWith(NEXISCLAW_DEVICE_NAME_PREFIX) === true;
 }
 
@@ -21,11 +21,11 @@ export function summarizeMatrixDeviceHealth(
 ): MatrixDeviceHealthSummary {
   const currentDeviceId = devices.find((device) => device.current)?.deviceId ?? null;
   const openClawDevices = devices.filter((device) =>
-    isNexisClawManagedMatrixDevice(device.displayName),
+    isFirstNexusManagedMatrixDevice(device.displayName),
   );
   return {
     currentDeviceId,
-    staleNexisClawDevices: openClawDevices.filter((device) => !device.current),
-    currentNexisClawDevices: openClawDevices.filter((device) => device.current),
+    staleFirstNexusDevices: openClawDevices.filter((device) => !device.current),
+    currentFirstNexusDevices: openClawDevices.filter((device) => device.current),
   };
 }

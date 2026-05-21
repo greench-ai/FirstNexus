@@ -1,5 +1,5 @@
-import type { BaseProbeResult } from "NexisClaw/plugin-sdk/channel-contract";
-import type { MessageReceipt } from "NexisClaw/plugin-sdk/channel-message";
+import type { BaseProbeResult } from "FirstNexus/plugin-sdk/channel-contract";
+import type { MessageReceipt } from "FirstNexus/plugin-sdk/channel-message";
 
 export type LineTokenSource = "config" | "env" | "file" | "none";
 

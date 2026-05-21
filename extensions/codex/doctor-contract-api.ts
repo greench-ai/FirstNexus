@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { DoctorSessionRouteStateOwner } from "NexisClaw/plugin-sdk/runtime-doctor";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { DoctorSessionRouteStateOwner } from "FirstNexus/plugin-sdk/runtime-doctor";
 
 type LegacyConfigRule = {
   path: string[];
@@ -21,13 +21,13 @@ export const legacyConfigRules: LegacyConfigRule[] = [
   {
     path: ["plugins", "entries", "codex", "config"],
     message:
-      'plugins.entries.codex.config.codexDynamicToolsProfile is retired; Codex app-server always keeps Codex-native workspace tools native. Run "NexisClaw doctor --fix".',
+      'plugins.entries.codex.config.codexDynamicToolsProfile is retired; Codex app-server always keeps Codex-native workspace tools native. Run "FirstNexus doctor --fix".',
     match: hasRetiredDynamicToolsProfile,
   },
 ];
 
-export function normalizeCompatibilityConfig({ cfg }: { cfg: NexisClawConfig }): {
-  config: NexisClawConfig;
+export function normalizeCompatibilityConfig({ cfg }: { cfg: FirstNexusConfig }): {
+  config: FirstNexusConfig;
   changes: string[];
 } {
   const rawEntry = asRecord(cfg.plugins?.entries?.codex);
@@ -36,7 +36,7 @@ export function normalizeCompatibilityConfig({ cfg }: { cfg: NexisClawConfig }):
     return { config: cfg, changes: [] };
   }
 
-  const nextConfig = structuredClone(cfg) as NexisClawConfig & {
+  const nextConfig = structuredClone(cfg) as FirstNexusConfig & {
     plugins?: Record<string, unknown>;
   };
   const nextPlugins = asRecord(nextConfig.plugins);

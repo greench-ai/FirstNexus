@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveStorePath, updateSessionStore } from "NexisClaw/plugin-sdk/session-store-runtime";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveStorePath, updateSessionStore } from "FirstNexus/plugin-sdk/session-store-runtime";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 /**
  * Marks every session entry in the store whose key contains {@link threadId}
@@ -12,7 +12,7 @@ import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-co
  * any on-disk transcript history.
  */
 export async function closeDiscordThreadSessions(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   threadId: string;
 }): Promise<number> {

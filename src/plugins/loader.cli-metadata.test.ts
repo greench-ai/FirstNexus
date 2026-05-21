@@ -4,9 +4,9 @@ import { pathToFileURL } from "node:url";
 import { afterAll, afterEach, describe, expect, it } from "vitest";
 import {
   defineBundledChannelEntry,
-  type NexisClawPluginApi,
+  type FirstNexusPluginApi,
 } from "../plugin-sdk/channel-entry-contract.js";
-import { loadNexisClawPluginCliRegistry, loadNexisClawPlugins } from "./loader.js";
+import { loadFirstNexusPluginCliRegistry, loadFirstNexusPlugins } from "./loader.js";
 import {
   cleanupPluginLoaderFixturesForTest,
   EMPTY_PLUGIN_SCHEMA,
@@ -48,7 +48,7 @@ describe("plugin loader CLI metadata", () => {
       });
       const errors: string[] = [];
 
-      const registry = await loadNexisClawPluginCliRegistry({
+      const registry = await loadFirstNexusPluginCliRegistry({
         cache: false,
         logger: {
           info: () => {},
@@ -104,7 +104,7 @@ describe("plugin loader CLI metadata", () => {
     });
 
     const warnings: string[] = [];
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       env: { ...process.env, NEXISCLAW_STATE_DIR: stateDir },
       logger: {
         info: () => {},
@@ -147,7 +147,7 @@ describe("plugin loader CLI metadata", () => {
 };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "NexisClaw.plugin.json"),
+      path.join(plugin.dir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "config-cli",
@@ -166,7 +166,7 @@ describe("plugin loader CLI metadata", () => {
       "utf-8",
     );
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [plugin.file] },
@@ -197,8 +197,8 @@ describe("plugin loader CLI metadata", () => {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/cli-metadata-channel",
-          NexisClaw: { extensions: ["./index.cjs"], setupEntry: "./setup-entry.cjs" },
+          name: "@FirstNexus/cli-metadata-channel",
+          FirstNexus: { extensions: ["./index.cjs"], setupEntry: "./setup-entry.cjs" },
         },
         null,
         2,
@@ -206,7 +206,7 @@ describe("plugin loader CLI metadata", () => {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "cli-metadata-channel",
@@ -275,7 +275,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [pluginDir] },
@@ -304,8 +304,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/bundled-skip-channel",
-          NexisClaw: { extensions: ["./index.cjs"] },
+          name: "@FirstNexus/bundled-skip-channel",
+          FirstNexus: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -313,7 +313,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "bundled-skip-channel",
@@ -337,7 +337,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       config: {
         plugins: {
           allow: ["bundled-skip-channel"],
@@ -372,8 +372,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/bundled-cli-channel",
-          NexisClaw: { extensions: ["./index.cjs"] },
+          name: "@FirstNexus/bundled-cli-channel",
+          FirstNexus: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -381,7 +381,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "bundled-cli-channel",
@@ -424,7 +424,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       config: {
         plugins: {
           allow: ["bundled-cli-channel"],
@@ -456,8 +456,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/bundled-skip-provider",
-          NexisClaw: { extensions: ["./index.cjs"] },
+          name: "@FirstNexus/bundled-skip-provider",
+          FirstNexus: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -465,7 +465,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "bundled-skip-provider",
@@ -488,7 +488,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       config: {
         plugins: {
           allow: ["bundled-skip-provider"],
@@ -520,8 +520,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/full-cli-metadata-channel",
-          NexisClaw: { extensions: ["./index.cjs"] },
+          name: "@FirstNexus/full-cli-metadata-channel",
+          FirstNexus: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -529,7 +529,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "full-cli-metadata-channel",
@@ -589,7 +589,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {
@@ -617,8 +617,8 @@ module.exports = {
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@NexisClaw/discovery-cli-metadata-channel",
-          NexisClaw: { extensions: ["./index.cjs"] },
+          name: "@FirstNexus/discovery-cli-metadata-channel",
+          FirstNexus: { extensions: ["./index.cjs"] },
         },
         null,
         2,
@@ -626,7 +626,7 @@ module.exports = {
       "utf-8",
     );
     fs.writeFileSync(
-      path.join(pluginDir, "NexisClaw.plugin.json"),
+      path.join(pluginDir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "discovery-cli-metadata-channel",
@@ -689,7 +689,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       activate: false,
       cache: false,
       config: {
@@ -779,7 +779,7 @@ module.exports = {
 
     entry.register({
       registrationMode: "discovery",
-      runtime: {} as NexisClawPluginApi["runtime"],
+      runtime: {} as FirstNexusPluginApi["runtime"],
       registerChannel: (registration) => {
         const plugin = "plugin" in registration ? registration.plugin : registration;
         channels.push(plugin.id);
@@ -787,7 +787,7 @@ module.exports = {
       registerCli: (_register, options) => {
         commands.push(...(options?.descriptors ?? []).map((descriptor) => descriptor.name));
       },
-    } as NexisClawPluginApi);
+    } as FirstNexusPluginApi);
 
     expect(channels).toEqual(["bundled-discovery-cli"]);
     expect(fs.existsSync(runtimeMarker)).toBe(true);
@@ -823,7 +823,7 @@ module.exports = {
 };`,
     });
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       cache: false,
       config: {
         plugins: {
@@ -870,7 +870,7 @@ module.exports = {
 };`,
     });
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [plugin.file] },
@@ -908,7 +908,7 @@ module.exports = {
 };`,
     });
     fs.writeFileSync(
-      path.join(plugin.dir, "NexisClaw.plugin.json"),
+      path.join(plugin.dir, "FirstNexus.plugin.json"),
       JSON.stringify(
         {
           id: "memory-external",
@@ -921,7 +921,7 @@ module.exports = {
       "utf-8",
     );
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [plugin.file] },
@@ -961,7 +961,7 @@ module.exports = {
 };`,
     });
 
-    const registry = await loadNexisClawPluginCliRegistry({
+    const registry = await loadFirstNexusPluginCliRegistry({
       config: {
         plugins: {
           load: { paths: [plugin.file] },

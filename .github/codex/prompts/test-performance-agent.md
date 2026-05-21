@@ -1,6 +1,6 @@
-# NexisClaw Test Performance Agent
+# FirstNexus Test Performance Agent
 
-You are maintaining NexisClaw test performance after a trusted main-branch CI run.
+You are maintaining FirstNexus test performance after a trusted main-branch CI run.
 
 Goal: inspect the full-suite test performance report, then make small, coverage-preserving improvements to slow tests when the fix is clear. If the baseline report shows failing tests and the fix is obvious, fix those too.
 

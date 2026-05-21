@@ -8,7 +8,7 @@ const resolveDefaultAccountId = () => DEFAULT_ACCOUNT_ID;
 const mocks = vi.hoisted(() => ({
   callGateway: vi.fn(),
   resolveCommandConfigWithSecrets: vi.fn(),
-  readConfigFileSnapshot: vi.fn(async () => ({ path: "/tmp/NexisClaw.json" })),
+  readConfigFileSnapshot: vi.fn(async () => ({ path: "/tmp/FirstNexus.json" })),
   requireValidConfigSnapshot: vi.fn(),
   listChannelPlugins: vi.fn(),
   listConfiguredChannelIdsForReadOnlyScope: vi.fn((_params: unknown) => ["discord"]),
@@ -50,11 +50,11 @@ vi.mock("../plugins/official-external-plugin-repair-hints.js", () => ({
           pluginId: channelId,
           channelId,
           label: "Feishu",
-          installSpec: "@NexisClaw/feishu",
-          installCommand: "NexisClaw plugins install @NexisClaw/feishu",
-          doctorFixCommand: "NexisClaw doctor --fix",
+          installSpec: "@FirstNexus/feishu",
+          installCommand: "FirstNexus plugins install @FirstNexus/feishu",
+          doctorFixCommand: "FirstNexus doctor --fix",
           repairHint:
-            "Install the official external plugin with: NexisClaw plugins install @NexisClaw/feishu, or run: NexisClaw doctor --fix.",
+            "Install the official external plugin with: FirstNexus plugins install @FirstNexus/feishu, or run: FirstNexus doctor --fix.",
         }
       : null,
 }));
@@ -294,7 +294,7 @@ describe("channelsStatusCommand SecretRef fallback flow", () => {
     const joined = logs.join("\n");
     expect(joined).toContain("Missing official external plugins:");
     expect(joined).toContain(
-      "Feishu: Install the official external plugin with: NexisClaw plugins install @NexisClaw/feishu, or run: NexisClaw doctor --fix.",
+      "Feishu: Install the official external plugin with: FirstNexus plugins install @FirstNexus/feishu, or run: FirstNexus doctor --fix.",
     );
   });
 

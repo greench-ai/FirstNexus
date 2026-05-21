@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/tencent-provider",
+  "name": "@FirstNexus/tencent-provider",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw Tencent Cloud provider plugin (TokenHub + Token Plan)",
+  "description": "FirstNexus Tencent Cloud provider plugin (TokenHub + Token Plan)",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

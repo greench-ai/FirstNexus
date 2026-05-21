@@ -9,7 +9,7 @@ export type ServiceStatusSummary = {
   label: string;
   installed: boolean | null;
   loaded: boolean;
-  managedByNexisClaw: boolean;
+  managedByFirstNexus: boolean;
   externallyManaged: boolean;
   loadedText: string;
   runtime: GatewayServiceRuntime | undefined;
@@ -23,9 +23,9 @@ export async function readServiceStatusSummary(
   try {
     const state = await readGatewayServiceState(service, { env: process.env });
     const layout = await summarizeGatewayServiceLayout(state.command);
-    const managedByNexisClaw = state.installed;
-    const externallyManaged = !managedByNexisClaw && state.running;
-    const installed = managedByNexisClaw || externallyManaged;
+    const managedByFirstNexus = state.installed;
+    const externallyManaged = !managedByFirstNexus && state.running;
+    const installed = managedByFirstNexus || externallyManaged;
     const loadedText = externallyManaged
       ? "running (externally managed)"
       : state.loaded
@@ -35,7 +35,7 @@ export async function readServiceStatusSummary(
       label: service.label,
       installed,
       loaded: state.loaded,
-      managedByNexisClaw,
+      managedByFirstNexus,
       externallyManaged,
       loadedText,
       runtime: state.runtime,
@@ -46,7 +46,7 @@ export async function readServiceStatusSummary(
       label: fallbackLabel,
       installed: null,
       loaded: false,
-      managedByNexisClaw: false,
+      managedByFirstNexus: false,
       externallyManaged: false,
       loadedText: "unknown",
       runtime: undefined,

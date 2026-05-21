@@ -1,5 +1,5 @@
-import { buildChannelConfigSchema } from "NexisClaw/plugin-sdk/channel-config-schema";
-import { buildSecretInputSchema } from "NexisClaw/plugin-sdk/secret-input";
+import { buildChannelConfigSchema } from "FirstNexus/plugin-sdk/channel-config-schema";
+import { buildSecretInputSchema } from "FirstNexus/plugin-sdk/secret-input";
 import { z } from "zod";
 
 const ClickClackAccountConfigSchema = z

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isRecord } from "../utils.js";
 
 function hasOwnValue(record: Record<string, unknown>, key: string): boolean {
@@ -6,9 +6,9 @@ function hasOwnValue(record: Record<string, unknown>, key: string): boolean {
 }
 
 function mergeChannelActivationSections(params: {
-  runtimeConfig: NexisClawConfig;
-  activationConfig: NexisClawConfig;
-}): NexisClawConfig {
+  runtimeConfig: FirstNexusConfig;
+  activationConfig: FirstNexusConfig;
+}): FirstNexusConfig {
   const activationChannels = params.activationConfig.channels;
   if (!isRecord(activationChannels)) {
     return params.runtimeConfig;
@@ -37,14 +37,14 @@ function mergeChannelActivationSections(params: {
   }
   return {
     ...params.runtimeConfig,
-    channels: nextChannels as NexisClawConfig["channels"],
+    channels: nextChannels as FirstNexusConfig["channels"],
   };
 }
 
 function mergePluginActivationSections(params: {
-  runtimeConfig: NexisClawConfig;
-  activationConfig: NexisClawConfig;
-}): NexisClawConfig {
+  runtimeConfig: FirstNexusConfig;
+  activationConfig: FirstNexusConfig;
+}): FirstNexusConfig {
   const activationPlugins = params.activationConfig.plugins;
   if (!isRecord(activationPlugins)) {
     return params.runtimeConfig;
@@ -90,14 +90,14 @@ function mergePluginActivationSections(params: {
   }
   return {
     ...params.runtimeConfig,
-    plugins: nextPlugins as NexisClawConfig["plugins"],
+    plugins: nextPlugins as FirstNexusConfig["plugins"],
   };
 }
 
 export function mergeActivationSectionsIntoRuntimeConfig(params: {
-  runtimeConfig: NexisClawConfig;
-  activationConfig: NexisClawConfig;
-}): NexisClawConfig {
+  runtimeConfig: FirstNexusConfig;
+  activationConfig: FirstNexusConfig;
+}): FirstNexusConfig {
   return mergePluginActivationSections({
     ...params,
     runtimeConfig: mergeChannelActivationSections(params),

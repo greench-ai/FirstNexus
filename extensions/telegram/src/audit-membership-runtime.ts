@@ -1,6 +1,6 @@
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { isRecord } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { fetchWithTimeout } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { isRecord } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { fetchWithTimeout } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import type {
   AuditTelegramGroupMembershipParams,
   TelegramGroupMembershipAudit,

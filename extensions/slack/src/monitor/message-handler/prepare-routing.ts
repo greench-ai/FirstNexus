@@ -1,12 +1,12 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   resolveConfiguredBindingRoute,
   resolveRuntimeConversationBindingRoute,
   type ConfiguredBindingRouteResult,
   type RuntimeConversationBindingRouteResult,
-} from "NexisClaw/plugin-sdk/conversation-runtime";
-import { resolveAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { resolveThreadSessionKeys } from "NexisClaw/plugin-sdk/routing";
+} from "FirstNexus/plugin-sdk/conversation-runtime";
+import { resolveAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { resolveThreadSessionKeys } from "FirstNexus/plugin-sdk/routing";
 import { resolveSlackReplyToMode } from "../../account-reply-mode.js";
 import type { ResolvedSlackAccount } from "../../accounts.js";
 import { parseSlackTarget, type SlackTargetKind } from "../../targets.js";
@@ -14,7 +14,7 @@ import { resolveSlackThreadContext } from "../../threading.js";
 import type { SlackMessageEvent } from "../../types.js";
 
 export type SlackRoutingContextDeps = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   teamId: string;
   threadInheritParent: boolean;
   threadHistoryScope: "thread" | "channel";
@@ -36,12 +36,12 @@ type SlackRoutingContext = {
   historyKey: string;
 };
 
-type SlackRouteBinding = NonNullable<NexisClawConfig["bindings"]>[number];
+type SlackRouteBinding = NonNullable<FirstNexusConfig["bindings"]>[number];
 type SlackRouteBindingPeer = NonNullable<SlackRouteBinding["match"]["peer"]>;
 
 const slackRouteBindingConfigCache = new WeakMap<
-  NexisClawConfig,
-  { bindingsRef: NexisClawConfig["bindings"]; normalizedCfg: NexisClawConfig }
+  FirstNexusConfig,
+  { bindingsRef: FirstNexusConfig["bindings"]; normalizedCfg: FirstNexusConfig }
 >();
 
 function slackTargetDefaultKindForPeer(kind: SlackRouteBindingPeer["kind"]): SlackTargetKind {
@@ -79,7 +79,7 @@ function normalizeSlackRouteBindingPeer(peer: SlackRouteBindingPeer): SlackRoute
   return { ...peer, id: target.id };
 }
 
-function normalizeSlackRouteBindingConfig(cfg: NexisClawConfig): NexisClawConfig {
+function normalizeSlackRouteBindingConfig(cfg: FirstNexusConfig): FirstNexusConfig {
   const bindings = cfg.bindings;
   const cached = slackRouteBindingConfigCache.get(cfg);
   if (cached && cached.bindingsRef === bindings) {
@@ -113,7 +113,7 @@ function normalizeSlackRouteBindingConfig(cfg: NexisClawConfig): NexisClawConfig
   });
 
   const normalizedCfg = changed
-    ? ({ ...cfg, bindings: normalizedBindings } as NexisClawConfig)
+    ? ({ ...cfg, bindings: normalizedBindings } as FirstNexusConfig)
     : cfg;
   slackRouteBindingConfigCache.set(cfg, { bindingsRef: bindings, normalizedCfg });
   return normalizedCfg;

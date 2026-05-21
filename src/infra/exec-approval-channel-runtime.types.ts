@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ExecApprovalRequest, ExecApprovalResolved } from "./exec-approvals.js";
 import type { PluginApprovalRequest, PluginApprovalResolved } from "./plugin-approvals.js";
 
@@ -14,7 +14,7 @@ export type ExecApprovalChannelRuntimeAdapter<
 > = {
   label: string;
   clientDisplayName: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   gatewayUrl?: string;
   eventKinds?: readonly ExecApprovalChannelRuntimeEventKind[];
   isConfigured: () => boolean;

@@ -1,8 +1,8 @@
 import {
   createResolvedApproverActionAuthAdapter,
   resolveApprovalApprovers,
-} from "NexisClaw/plugin-sdk/approval-auth-runtime";
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/approval-auth-runtime";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveFeishuAccount } from "./accounts.js";
 import { normalizeFeishuTarget } from "./targets.js";
 

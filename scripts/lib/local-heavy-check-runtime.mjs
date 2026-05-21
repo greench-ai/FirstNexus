@@ -189,7 +189,7 @@ export function acquireLocalHeavyCheckLockSync(params) {
   }
 
   const commonDir = resolveGitCommonDir(params.cwd);
-  const locksDir = path.join(commonDir, "NexisClaw-local-checks");
+  const locksDir = path.join(commonDir, "FirstNexus-local-checks");
   const lockDir = path.join(locksDir, `${params.lockName ?? "heavy-check"}.lock`);
   const ownerPath = path.join(lockDir, "owner.json");
   const timeoutMs = readPositiveInt(

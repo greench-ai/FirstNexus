@@ -2,8 +2,8 @@ import {
   createOpenAiCompatibleImageGenerationProvider,
   imageSourceUploadFileName,
   type ImageGenerationProvider,
-} from "NexisClaw/plugin-sdk/image-generation";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/image-generation";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   DEEPINFRA_BASE_URL,
   DEEPINFRA_IMAGE_MODELS,

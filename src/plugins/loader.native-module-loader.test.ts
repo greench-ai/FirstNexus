@@ -1,13 +1,13 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const tempDirs: string[] = [];
 
 function makeTempDir() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-plugin-loader-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-plugin-loader-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -15,7 +15,7 @@ function makeTempDir() {
 function writeBundledPluginFixture(id: string) {
   const pluginRoot = makeTempDir();
   fs.writeFileSync(
-    path.join(pluginRoot, "NexisClaw.plugin.json"),
+    path.join(pluginRoot, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id,
@@ -46,7 +46,7 @@ function writePackagedPluginFixture(id: string) {
       {
         name: id,
         type: "commonjs",
-        NexisClaw: {
+        FirstNexus: {
           extensions: ["./index.cjs"],
         },
       },
@@ -56,7 +56,7 @@ function writePackagedPluginFixture(id: string) {
     "utf-8",
   );
   fs.writeFileSync(
-    path.join(pluginRoot, "NexisClaw.plugin.json"),
+    path.join(pluginRoot, "FirstNexus.plugin.json"),
     JSON.stringify(
       {
         id,
@@ -115,7 +115,7 @@ describe("createPluginModuleLoader", () => {
   it("loads bundled JavaScript without creating a module loader", async () => {
     const sourceLoaderCalls = mockSourceLoaderCalls();
 
-    const { loadNexisClawPlugins } = await importFreshModule<typeof import("./loader.js")>(
+    const { loadFirstNexusPlugins } = await importFreshModule<typeof import("./loader.js")>(
       import.meta.url,
       "./loader.js?scope=native-module-loader",
     );
@@ -123,7 +123,7 @@ describe("createPluginModuleLoader", () => {
     const pluginRoot = writeBundledPluginFixture("demo");
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = pluginRoot;
 
-    loadNexisClawPlugins({
+    loadFirstNexusPlugins({
       cache: false,
       workspaceDir: pluginRoot,
       onlyPluginIds: ["demo"],
@@ -144,7 +144,7 @@ describe("createPluginModuleLoader", () => {
   it("loads packaged JavaScript without creating a module loader", async () => {
     const sourceLoaderCalls = mockSourceLoaderCalls();
 
-    const { loadNexisClawPlugins } = await importFreshModule<typeof import("./loader.js")>(
+    const { loadFirstNexusPlugins } = await importFreshModule<typeof import("./loader.js")>(
       import.meta.url,
       "./loader.js?scope=packaged-native-module-loader",
     );
@@ -152,7 +152,7 @@ describe("createPluginModuleLoader", () => {
     const pluginRoot = writePackagedPluginFixture("npm-demo");
     process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = makeTempDir();
 
-    const registry = loadNexisClawPlugins({
+    const registry = loadFirstNexusPlugins({
       cache: false,
       config: {
         plugins: {

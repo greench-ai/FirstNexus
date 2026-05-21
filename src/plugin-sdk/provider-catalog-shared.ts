@@ -7,8 +7,8 @@ import { createHash } from "node:crypto";
 import { normalizeConfiguredProviderCatalogModelId } from "../agents/model-ref-shared.js";
 import { resolveProviderRequestCapabilities } from "../agents/provider-attribution.js";
 import { findNormalizedProviderKey } from "../agents/provider-id.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ModelDefinitionConfig } from "../config/types.models.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
 import { normalizeModelCatalog } from "../model-catalog/normalize.js";
 import type {
   ModelCatalogCost,
@@ -187,7 +187,7 @@ function normalizeConfiguredCatalogModelInput(
 }
 
 function resolveConfiguredProviderModels(
-  config: NexisClawConfig | undefined,
+  config: FirstNexusConfig | undefined,
   providerId: string,
 ): ModelDefinitionConfig[] {
   const providers = config?.models?.providers;
@@ -206,7 +206,7 @@ function resolveConfiguredProviderModels(
 }
 
 export function readConfiguredProviderCatalogEntries(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   providerId: string;
   publishedProviderId?: string;
 }): ConfiguredProviderCatalogEntry[] {

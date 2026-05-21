@@ -25,10 +25,10 @@ title: "Retry policy"
 
 ### Model providers
 
-- NexisClaw lets provider SDKs handle normal short retries.
+- FirstNexus lets provider SDKs handle normal short retries.
 - For Stainless-based SDKs such as Anthropic and OpenAI, retryable responses
   (`408`, `409`, `429`, and `5xx`) can include `retry-after-ms` or
-  `retry-after`. When that wait is longer than 60 seconds, NexisClaw injects
+  `retry-after`. When that wait is longer than 60 seconds, FirstNexus injects
   `x-should-retry: false` so the SDK surfaces the error immediately and model
   failover can rotate to another auth profile or fallback model.
 - Override the cap with `NEXISCLAW_SDK_RETRY_MAX_WAIT_SECONDS=<seconds>`.
@@ -50,7 +50,7 @@ title: "Retry policy"
 
 ## Configuration
 
-Set retry policy per provider in `~/.NexisClaw/NexisClaw.json`:
+Set retry policy per provider in `~/.FirstNexus/FirstNexus.json`:
 
 ```json5
 {

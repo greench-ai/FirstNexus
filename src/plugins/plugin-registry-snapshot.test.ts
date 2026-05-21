@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-plugin-registry-snapshot", tempDirs);
+  return makeTrackedTempDir("FirstNexus-plugin-registry-snapshot", tempDirs);
 }
 
 function createHermeticEnv(rootDir: string): NodeJS.ProcessEnv {
@@ -36,7 +36,7 @@ function writePackagePlugin(rootDir: string) {
   fs.mkdirSync(rootDir, { recursive: true });
   fs.writeFileSync(path.join(rootDir, "index.ts"), "export default { register() {} };\n", "utf8");
   fs.writeFileSync(
-    path.join(rootDir, "NexisClaw.plugin.json"),
+    path.join(rootDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: "demo",
       name: "Demo",
@@ -114,7 +114,7 @@ describe("loadPluginRegistrySnapshotWithMetadata", () => {
     const config = {};
     const whatsappDir = writeManagedNpmPlugin({
       stateDir,
-      packageName: "@NexisClaw/whatsapp",
+      packageName: "@FirstNexus/whatsapp",
       pluginId: "whatsapp",
       version: "2026.5.2",
     });
@@ -137,12 +137,12 @@ describe("loadPluginRegistrySnapshotWithMetadata", () => {
     expectDiagnosticsContainCode(result.diagnostics, "persisted-registry-stale-source");
     expect(result.snapshot.installRecords.whatsapp).toEqual({
       source: "npm",
-      spec: "@NexisClaw/whatsapp@2026.5.2",
+      spec: "@FirstNexus/whatsapp@2026.5.2",
       installPath: whatsappDir,
       version: "2026.5.2",
-      resolvedName: "@NexisClaw/whatsapp",
+      resolvedName: "@FirstNexus/whatsapp",
       resolvedVersion: "2026.5.2",
-      resolvedSpec: "@NexisClaw/whatsapp@2026.5.2",
+      resolvedSpec: "@FirstNexus/whatsapp@2026.5.2",
     });
     const whatsappPlugin = requirePluginRecord(result.snapshot.plugins, "whatsapp");
     expect(whatsappPlugin.origin).toBe("global");
@@ -189,7 +189,7 @@ describe("loadPluginRegistrySnapshotWithMetadata", () => {
       throw new Error("expected package plugin index record with file signatures");
     }
     expect(record.manifestFile.size).toBe(
-      fs.statSync(path.join(rootDir, "NexisClaw.plugin.json")).size,
+      fs.statSync(path.join(rootDir, "FirstNexus.plugin.json")).size,
     );
     expect(record.packageJson.fileSignature.size).toBe(
       fs.statSync(path.join(rootDir, "package.json")).size,
@@ -221,7 +221,7 @@ describe("loadPluginRegistrySnapshotWithMetadata", () => {
     writePersistedInstalledPluginIndexSync(index, { stateDir });
 
     replaceFilePreservingSizeAndMtime(
-      path.join(rootDir, "NexisClaw.plugin.json"),
+      path.join(rootDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "demo",
         name: "Demo",

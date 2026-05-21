@@ -1,8 +1,8 @@
-import { resolveChannelGroupRequireMention } from "NexisClaw/plugin-sdk/channel-policy";
-import { resolveExactLineGroupConfigKey, type NexisClawConfig } from "./channel-api.js";
+import { resolveChannelGroupRequireMention } from "FirstNexus/plugin-sdk/channel-policy";
+import { resolveExactLineGroupConfigKey, type FirstNexusConfig } from "./channel-api.js";
 
 type LineGroupContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   groupId?: string | null;
 };

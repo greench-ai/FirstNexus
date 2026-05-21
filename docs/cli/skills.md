@@ -1,5 +1,5 @@
 ---
-summary: "CLI reference for `NexisClaw skills` (search/install/update/list/info/check)"
+summary: "CLI reference for `FirstNexus skills` (search/install/update/list/info/check)"
 read_when:
   - You want to see which skills are available and ready to run
   - You want to search, install, or update skills from ClawHub
@@ -7,7 +7,7 @@ read_when:
 title: "Skills"
 ---
 
-# `NexisClaw skills`
+# `FirstNexus skills`
 
 Inspect local skills and install/update skills from ClawHub.
 
@@ -20,26 +20,26 @@ Related:
 ## Commands
 
 ```bash
-NexisClaw skills search "calendar"
-NexisClaw skills search --limit 20 --json
-NexisClaw skills install <slug>
-NexisClaw skills install <slug> --version <version>
-NexisClaw skills install <slug> --force
-NexisClaw skills install <slug> --agent <id>
-NexisClaw skills update <slug>
-NexisClaw skills update --all
-NexisClaw skills update --all --agent <id>
-NexisClaw skills list
-NexisClaw skills list --eligible
-NexisClaw skills list --json
-NexisClaw skills list --verbose
-NexisClaw skills list --agent <id>
-NexisClaw skills info <name>
-NexisClaw skills info <name> --json
-NexisClaw skills info <name> --agent <id>
-NexisClaw skills check
-NexisClaw skills check --agent <id>
-NexisClaw skills check --json
+FirstNexus skills search "calendar"
+FirstNexus skills search --limit 20 --json
+FirstNexus skills install <slug>
+FirstNexus skills install <slug> --version <version>
+FirstNexus skills install <slug> --force
+FirstNexus skills install <slug> --agent <id>
+FirstNexus skills update <slug>
+FirstNexus skills update --all
+FirstNexus skills update --all --agent <id>
+FirstNexus skills list
+FirstNexus skills list --eligible
+FirstNexus skills list --json
+FirstNexus skills list --verbose
+FirstNexus skills list --agent <id>
+FirstNexus skills info <name>
+FirstNexus skills info <name> --json
+FirstNexus skills info <name> --agent <id>
+FirstNexus skills check
+FirstNexus skills check --agent <id>
+FirstNexus skills check --json
 ```
 
 `search`/`install`/`update` use ClawHub directly and install into the active

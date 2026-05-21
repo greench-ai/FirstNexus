@@ -7,11 +7,11 @@ import {
 setupCliBundleMcpTestHarness();
 
 describe("prepareCliBundleMcpConfig resume hash", () => {
-  it("stabilizes the resume hash when only the NexisClaw loopback port changes", async () => {
+  it("stabilizes the resume hash when only the FirstNexus loopback port changes", async () => {
     const first = await prepareBundleProbeCliConfig({
       additionalConfig: {
         mcpServers: {
-          NexisClaw: {
+          FirstNexus: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
@@ -24,7 +24,7 @@ describe("prepareCliBundleMcpConfig resume hash", () => {
     const second = await prepareBundleProbeCliConfig({
       additionalConfig: {
         mcpServers: {
-          NexisClaw: {
+          FirstNexus: {
             type: "http",
             url: "http://127.0.0.1:24567/mcp",
             headers: {
@@ -46,7 +46,7 @@ describe("prepareCliBundleMcpConfig resume hash", () => {
     const first = await prepareBundleProbeCliConfig({
       additionalConfig: {
         mcpServers: {
-          NexisClaw: {
+          FirstNexus: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
@@ -59,7 +59,7 @@ describe("prepareCliBundleMcpConfig resume hash", () => {
     const second = await prepareBundleProbeCliConfig({
       additionalConfig: {
         mcpServers: {
-          NexisClaw: {
+          FirstNexus: {
             type: "http",
             url: "http://127.0.0.1:23119/other",
             headers: {

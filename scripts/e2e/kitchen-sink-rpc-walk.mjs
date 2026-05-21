@@ -7,8 +7,8 @@ import { setTimeout as delay } from "node:timers/promises";
 import { pathToFileURL } from "node:url";
 
 const PLUGIN_SPEC =
-  process.env.NEXISCLAW_KITCHEN_SINK_NPM_SPEC || "npm:@NexisClaw/kitchen-sink@latest";
-const PLUGIN_ID = process.env.NEXISCLAW_KITCHEN_SINK_PLUGIN_ID || "NexisClaw-kitchen-sink-fixture";
+  process.env.NEXISCLAW_KITCHEN_SINK_NPM_SPEC || "npm:@FirstNexus/kitchen-sink@latest";
+const PLUGIN_ID = process.env.NEXISCLAW_KITCHEN_SINK_PLUGIN_ID || "FirstNexus-kitchen-sink-fixture";
 const CHANNEL_ID = "kitchen-sink-channel";
 const CHANNEL_ACCOUNT_ID = "local";
 const TOKEN = "kitchen-sink-rpc-token";
@@ -32,7 +32,7 @@ function readPositiveInt(raw, fallback) {
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
 }
 
-function resolveNexisClawRunner() {
+function resolveFirstNexusRunner() {
   if (process.env.NEXISCLAW_ENTRY) {
     return {
       command: "node",
@@ -46,13 +46,13 @@ function resolveNexisClawRunner() {
       return { command: "node", baseArgs: [resolved], label: resolved };
     }
   }
-  return { command: "pnpm", baseArgs: ["NexisClaw"], label: "pnpm NexisClaw" };
+  return { command: "pnpm", baseArgs: ["FirstNexus"], label: "pnpm FirstNexus" };
 }
 
 function makeEnv() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-kitchen-sink-rpc-"));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-kitchen-sink-rpc-"));
   const home = path.join(root, "home");
-  const stateDir = path.join(home, ".NexisClaw");
+  const stateDir = path.join(home, ".FirstNexus");
   fs.mkdirSync(stateDir, { recursive: true });
   return {
     root,
@@ -61,7 +61,7 @@ function makeEnv() {
       HOME: home,
       NEXISCLAW_HOME: stateDir,
       NEXISCLAW_STATE_DIR: stateDir,
-      NEXISCLAW_CONFIG_PATH: path.join(stateDir, "NexisClaw.json"),
+      NEXISCLAW_CONFIG_PATH: path.join(stateDir, "FirstNexus.json"),
       NEXISCLAW_NO_ONBOARD: "1",
       NEXISCLAW_SKIP_PROVIDERS: "0",
       NEXISCLAW_KITCHEN_SINK_PERSONALITY:
@@ -118,7 +118,7 @@ function runCommand(command, args, options = {}) {
   });
 }
 
-async function runNexisClaw(runner, args, env, options = {}) {
+async function runFirstNexus(runner, args, env, options = {}) {
   return runCommand(runner.command, [...runner.baseArgs, ...args], {
     env,
     timeoutMs: options.timeoutMs ?? COMMAND_TIMEOUT_MS,
@@ -531,17 +531,17 @@ function isNonEmptyString(value) {
 }
 
 async function main() {
-  const runner = resolveNexisClawRunner();
+  const runner = resolveFirstNexusRunner();
   const port = readPositiveInt(process.env.NEXISCLAW_KITCHEN_SINK_RPC_PORT, 19173);
   const { root, env } = makeEnv();
   const logPath = path.join(root, "gateway.log");
 
   console.log(`Kitchen Sink RPC walk using ${PLUGIN_SPEC} via ${runner.label}`);
-  await runNexisClaw(runner, ["plugins", "install", PLUGIN_SPEC], env, { timeoutMs: 240000 });
+  await runFirstNexus(runner, ["plugins", "install", PLUGIN_SPEC], env, { timeoutMs: 240000 });
   configureKitchenSink(env, port);
-  await runNexisClaw(runner, ["plugins", "enable", PLUGIN_ID], env, { timeoutMs: 60000 });
+  await runFirstNexus(runner, ["plugins", "enable", PLUGIN_ID], env, { timeoutMs: 60000 });
   const inspect = parseJsonOutput(
-    (await runNexisClaw(runner, ["plugins", "inspect", PLUGIN_ID, "--runtime", "--json"], env))
+    (await runFirstNexus(runner, ["plugins", "inspect", PLUGIN_ID, "--runtime", "--json"], env))
       .stdout,
   );
   if (inspect?.plugin?.status !== "loaded") {

@@ -7,7 +7,7 @@ export function createCommandsLightVitestConfig(env?: Record<string, string | un
     dir: "src/commands",
     env,
     exclude: getUnitFastTestFiles(),
-    includeNexisClawRuntimeSetup: false,
+    includeFirstNexusRuntimeSetup: false,
     name: "commands-light",
     passWithNoTests: true,
   });

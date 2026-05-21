@@ -21,7 +21,7 @@ function shouldShowStack(argv: string[] | undefined, env: NodeJS.ProcessEnv): bo
 function pushPrefixed(out: string[], value: string): void {
   for (const line of value.split("\n")) {
     if (line.trim().length > 0) {
-      out.push(`[NexisClaw] ${line}`);
+      out.push(`[FirstNexus] ${line}`);
     }
   }
 }
@@ -29,20 +29,20 @@ function pushPrefixed(out: string[], value: string): void {
 export function formatCliFailureLines(options: FormatCliFailureOptions): string[] {
   const env = options.env ?? process.env;
   const lines = [
-    `[NexisClaw] ${options.title}`,
-    `[NexisClaw] Reason: ${formatErrorMessage(options.error)}`,
+    `[FirstNexus] ${options.title}`,
+    `[FirstNexus] Reason: ${formatErrorMessage(options.error)}`,
   ];
 
   if (shouldShowStack(options.argv, env)) {
-    lines.push("[NexisClaw] Stack:");
+    lines.push("[FirstNexus] Stack:");
     pushPrefixed(lines, formatUncaughtError(options.error));
   } else {
-    lines.push("[NexisClaw] Debug: set NEXISCLAW_DEBUG=1 to include the stack trace.");
+    lines.push("[FirstNexus] Debug: set NEXISCLAW_DEBUG=1 to include the stack trace.");
   }
 
   if (options.includeDoctorHint !== false) {
-    lines.push(`[NexisClaw] Try: ${formatCliCommand("NexisClaw doctor", env)}`);
+    lines.push(`[FirstNexus] Try: ${formatCliCommand("FirstNexus doctor", env)}`);
   }
-  lines.push(`[NexisClaw] Help: ${formatCliCommand("NexisClaw --help", env)}`);
+  lines.push(`[FirstNexus] Help: ${formatCliCommand("FirstNexus --help", env)}`);
   return lines;
 }

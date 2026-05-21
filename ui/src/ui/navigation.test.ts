@@ -78,7 +78,7 @@ describe("subtitleForTab", () => {
 
   it("returns descriptive subtitles", () => {
     expect(subtitleForTab("chat")).toContain("quick interventions");
-    expect(subtitleForTab("config")).toContain("NexisClaw.json");
+    expect(subtitleForTab("config")).toContain("FirstNexus.json");
   });
 });
 
@@ -105,7 +105,7 @@ describe("normalizeBasePath", () => {
   });
 
   it("handles nested paths", () => {
-    expect(normalizeBasePath("/apps/NexisClaw")).toBe("/apps/NexisClaw");
+    expect(normalizeBasePath("/apps/FirstNexus")).toBe("/apps/FirstNexus");
   });
 });
 
@@ -128,7 +128,7 @@ describe("pathForTab", () => {
 
   it("prepends base path", () => {
     expect(pathForTab("chat", "/ui")).toBe("/ui/chat");
-    expect(pathForTab("sessions", "/apps/NexisClaw")).toBe("/apps/NexisClaw/sessions");
+    expect(pathForTab("sessions", "/apps/FirstNexus")).toBe("/apps/FirstNexus/sessions");
   });
 });
 
@@ -147,7 +147,7 @@ describe("tabFromPath", () => {
 
   it("handles base paths", () => {
     expect(tabFromPath("/ui/chat", "/ui")).toBe("chat");
-    expect(tabFromPath("/apps/NexisClaw/sessions", "/apps/NexisClaw")).toBe("sessions");
+    expect(tabFromPath("/apps/FirstNexus/sessions", "/apps/FirstNexus")).toBe("sessions");
   });
 
   it("returns null for unknown path", () => {
@@ -174,7 +174,7 @@ describe("inferBasePathFromPathname", () => {
 
   it("infers base path from nested paths", () => {
     expect(inferBasePathFromPathname("/ui/chat")).toBe("/ui");
-    expect(inferBasePathFromPathname("/apps/NexisClaw/sessions")).toBe("/apps/NexisClaw");
+    expect(inferBasePathFromPathname("/apps/FirstNexus/sessions")).toBe("/apps/FirstNexus");
   });
 
   it("handles index.html suffix", () => {

@@ -324,7 +324,7 @@ export class GatewayPlugin extends Plugin {
         d: {
           token: this.client?.options.token ?? "",
           intents: this.options.intents ?? 0,
-          properties: { os: process.platform, browser: "NexisClaw", device: "NexisClaw" },
+          properties: { os: process.platform, browser: "FirstNexus", device: "FirstNexus" },
           shard: this.options.shard,
         },
       } as GatewayIdentify,

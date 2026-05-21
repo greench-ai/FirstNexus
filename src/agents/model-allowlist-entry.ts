@@ -1,12 +1,12 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { DEFAULT_PROVIDER } from "./defaults.js";
 import { resolveStaticAllowlistModelKey } from "./model-ref-shared.js";
 
 export function ensureStaticModelAllowlistEntry(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   modelRef: string;
   defaultProvider?: string;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   const rawModelRef = params.modelRef.trim();
   if (!rawModelRef) {
     return params.cfg;

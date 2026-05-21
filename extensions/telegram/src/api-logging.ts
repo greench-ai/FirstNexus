@@ -1,6 +1,6 @@
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/ssrf-runtime";
 
 type TelegramApiLogger = (message: string) => void;
 

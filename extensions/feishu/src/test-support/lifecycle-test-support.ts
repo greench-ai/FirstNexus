@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { createPluginRuntimeMock } from "NexisClaw/plugin-sdk/channel-test-helpers";
+import { createPluginRuntimeMock } from "FirstNexus/plugin-sdk/channel-test-helpers";
 import { expect, vi, type Mock } from "vitest";
 import type { ClawdbotConfig, PluginRuntime, RuntimeEnv } from "../../runtime-api.js";
 import { setFeishuRuntime } from "../runtime.js";

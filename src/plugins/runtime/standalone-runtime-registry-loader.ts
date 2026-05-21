@@ -3,7 +3,7 @@ import {
   getLoadedRuntimePluginRegistry,
 } from "../active-runtime-registry.js";
 import {
-  loadNexisClawPlugins,
+  loadFirstNexusPlugins,
   resolvePluginRegistryLoadCacheKey,
   type PluginLoadOptions,
 } from "../loader.js";
@@ -73,7 +73,7 @@ export function ensureStandaloneRuntimePluginRegistryLoaded(params: {
   const effectiveLoadOptions = params.forceLoad
     ? { ...params.loadOptions, cache: false }
     : params.loadOptions;
-  const registry = loadNexisClawPlugins(effectiveLoadOptions);
+  const registry = loadFirstNexusPlugins(effectiveLoadOptions);
   if (params.loadOptions.activate !== false) {
     switch (surface) {
       case "active":

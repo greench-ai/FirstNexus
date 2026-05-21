@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { BundleMcpDiagnostic, BundleMcpServerConfig } from "../plugins/bundle-mcp.js";
 import { loadMergedBundleMcpConfig } from "./bundle-mcp-config.js";
 
@@ -9,7 +9,7 @@ type EmbeddedPiMcpConfig = {
 
 export function loadEmbeddedPiMcpConfig(params: {
   workspaceDir: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
 }): EmbeddedPiMcpConfig {
   const bundleMcp = loadMergedBundleMcpConfig({
     workspaceDir: params.workspaceDir,

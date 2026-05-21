@@ -63,7 +63,7 @@ function createSglangConfig() {
 
 function createHomeEnv(suffix = "", overrides?: Partial<NodeJS.ProcessEnv>) {
   return {
-    NEXISCLAW_HOME: `/tmp/NexisClaw-home${suffix}`,
+    NEXISCLAW_HOME: `/tmp/FirstNexus-home${suffix}`,
     ...overrides,
   } as NodeJS.ProcessEnv;
 }

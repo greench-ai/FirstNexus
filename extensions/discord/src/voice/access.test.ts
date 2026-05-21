@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { DiscordAccountConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { DiscordAccountConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { authorizeDiscordVoiceIngress } from "./access.js";
 
-const baseCfg = { commands: { useAccessGroups: true } } as NexisClawConfig;
+const baseCfg = { commands: { useAccessGroups: true } } as FirstNexusConfig;
 
 describe("authorizeDiscordVoiceIngress", () => {
   it("blocks speakers outside the configured channel user allowlist", async () => {

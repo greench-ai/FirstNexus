@@ -2,7 +2,7 @@ import type {
   GeneratedMusicAsset,
   MusicGenerationProvider,
   MusicGenerationSourceImage,
-} from "NexisClaw/plugin-sdk/music-generation";
+} from "FirstNexus/plugin-sdk/music-generation";
 import {
   DEFAULT_COMFY_MODEL,
   isComfyCapabilityConfigured,

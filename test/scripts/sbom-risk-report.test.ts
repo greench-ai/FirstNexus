@@ -17,7 +17,7 @@ afterEach(() => {
 });
 
 function makeTempRepo() {
-  const dir = mkdtempSync(path.join(tmpdir(), "NexisClaw-sbom-risk-"));
+  const dir = mkdtempSync(path.join(tmpdir(), "FirstNexus-sbom-risk-"));
   tempDirs.push(dir);
   return dir;
 }

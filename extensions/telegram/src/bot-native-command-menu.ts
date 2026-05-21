@@ -1,11 +1,11 @@
 import { createHash } from "node:crypto";
-import type { Bot } from "grammy";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   normalizeOptionalString,
   readStringValue,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import type { Bot } from "grammy";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import { normalizeTelegramCommandName, TELEGRAM_COMMAND_NAME_PATTERN } from "./command-config.js";
 
@@ -387,7 +387,7 @@ export function syncTelegramMenuCommands(params: {
     // Skip sync if the command list hasn't changed since the last successful
     // sync. This prevents hitting Telegram's 429 rate limit when the gateway
     // is restarted several times in quick succession.
-    // See: NexisClaw/NexisClaw#32017
+    // See: FirstNexus/FirstNexus#32017
     const currentHash = hashCommandList(commandsToRegister);
     const cachedHash = readCachedCommandHash(accountId, botIdentity);
     if (cachedHash === currentHash) {

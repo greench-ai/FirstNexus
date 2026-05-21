@@ -1,5 +1,5 @@
 ---
-summary: "Adds GitHub Copilot model provider support to NexisClaw."
+summary: "Adds GitHub Copilot model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the github-copilot plugin
 title: "GitHub Copilot plugin"
@@ -7,12 +7,12 @@ title: "GitHub Copilot plugin"
 
 # GitHub Copilot plugin
 
-Adds GitHub Copilot model provider support to NexisClaw.
+Adds GitHub Copilot model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/github-copilot-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/github-copilot-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

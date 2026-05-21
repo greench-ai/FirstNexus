@@ -1,4 +1,4 @@
-import { isRecord } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { isRecord } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 type UnsupportedSecretRefConfigCandidate = {
   path: string;

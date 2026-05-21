@@ -118,7 +118,7 @@ function createHost() {
     toolsCatalogError: null,
     toolsCatalogResult: null,
     debugHealth: null,
-    assistantName: "NexisClaw",
+    assistantName: "FirstNexus",
     assistantAvatar: null,
     assistantAgentId: null,
     serverVersion: null,

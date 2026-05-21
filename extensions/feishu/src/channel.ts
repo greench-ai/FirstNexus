@@ -1,38 +1,38 @@
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
-import { formatAllowFromLowercase } from "NexisClaw/plugin-sdk/allow-from";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
+import { formatAllowFromLowercase } from "FirstNexus/plugin-sdk/allow-from";
 import {
   adaptScopedAccountAccessor,
   createHybridChannelConfigAdapter,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionContext,
   ChannelMessageToolDiscovery,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import { createChatChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
 import {
   defineChannelMessageAdapter,
   type ChannelMessageSendResult,
   type MessageReceiptPartKind,
-} from "NexisClaw/plugin-sdk/channel-message";
-import { createPairingPrefixStripper } from "NexisClaw/plugin-sdk/channel-pairing";
+} from "FirstNexus/plugin-sdk/channel-message";
+import { createPairingPrefixStripper } from "FirstNexus/plugin-sdk/channel-pairing";
 import {
   createAllowlistProviderGroupPolicyWarningCollector,
   projectConfigAccountIdWarningCollector,
-} from "NexisClaw/plugin-sdk/channel-policy";
-import { getSessionBindingService } from "NexisClaw/plugin-sdk/conversation-runtime";
+} from "FirstNexus/plugin-sdk/channel-policy";
+import { getSessionBindingService } from "FirstNexus/plugin-sdk/conversation-runtime";
 import {
   createChannelDirectoryAdapter,
   createRuntimeDirectoryLiveAdapter,
-} from "NexisClaw/plugin-sdk/directory-runtime";
+} from "FirstNexus/plugin-sdk/directory-runtime";
 import {
   normalizeMessagePresentation,
   renderMessagePresentationFallbackText,
-} from "NexisClaw/plugin-sdk/interactive-runtime";
-import { createLazyRuntimeNamedExport } from "NexisClaw/plugin-sdk/lazy-runtime";
-import { createRuntimeOutboundDelegates } from "NexisClaw/plugin-sdk/outbound-runtime";
-import { createComputedAccountStatusAdapter } from "NexisClaw/plugin-sdk/status-helpers";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/interactive-runtime";
+import { createLazyRuntimeNamedExport } from "FirstNexus/plugin-sdk/lazy-runtime";
+import { createRuntimeOutboundDelegates } from "FirstNexus/plugin-sdk/outbound-runtime";
+import { createComputedAccountStatusAdapter } from "FirstNexus/plugin-sdk/status-helpers";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   inspectFeishuCredentials,
   listEnabledFeishuAccounts,
@@ -1235,8 +1235,8 @@ export const feishuPlugin: ChannelPlugin<ResolvedFeishuAccount, FeishuProbeResul
       },
       auth: {
         login: async ({ cfg }) => {
-          const { createClackPrompter } = await import("NexisClaw/plugin-sdk/setup-runtime");
-          const { replaceConfigFile } = await import("NexisClaw/plugin-sdk/config-mutation");
+          const { createClackPrompter } = await import("FirstNexus/plugin-sdk/setup-runtime");
+          const { replaceConfigFile } = await import("FirstNexus/plugin-sdk/config-mutation");
           const prompter = createClackPrompter();
           const nextCfg = await runFeishuLogin({ cfg, prompter });
           if (nextCfg !== cfg) {

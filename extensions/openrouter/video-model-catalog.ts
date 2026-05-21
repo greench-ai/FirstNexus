@@ -1,19 +1,19 @@
 import {
   type UnifiedModelCatalogEntry,
   type UnifiedModelCatalogProviderContext,
-} from "NexisClaw/plugin-sdk/plugin-entry";
-import { resolveApiKeyForProvider } from "NexisClaw/plugin-sdk/provider-auth-runtime";
-import { getCachedLiveCatalogValue } from "NexisClaw/plugin-sdk/provider-catalog-shared";
+} from "FirstNexus/plugin-sdk/plugin-entry";
+import { resolveApiKeyForProvider } from "FirstNexus/plugin-sdk/provider-auth-runtime";
+import { getCachedLiveCatalogValue } from "FirstNexus/plugin-sdk/provider-catalog-shared";
 import {
   assertOkOrThrowHttpError,
   resolveProviderHttpRequestConfig,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type {
   VideoGenerationModelCapabilitiesContext,
   VideoGenerationProviderCapabilities,
   VideoGenerationResolution,
-} from "NexisClaw/plugin-sdk/video-generation";
+} from "FirstNexus/plugin-sdk/video-generation";
 import { OPENROUTER_BASE_URL } from "./provider-catalog.js";
 import { fetchOpenRouterVideoGet, type OpenRouterVideoDispatcherPolicy } from "./video-http.js";
 
@@ -223,8 +223,8 @@ async function fetchOpenRouterVideoModels(params: {
     load: async () => {
       const headers = new Headers({
         Authorization: `Bearer ${params.apiKey}`,
-        "HTTP-Referer": "https://NexisClaw.ai",
-        "X-OpenRouter-Title": "NexisClaw",
+        "HTTP-Referer": "https://FirstNexus.ai",
+        "X-OpenRouter-Title": "FirstNexus",
       });
       const { response, release } = await fetchOpenRouterVideoGet({
         url: "videos/models",

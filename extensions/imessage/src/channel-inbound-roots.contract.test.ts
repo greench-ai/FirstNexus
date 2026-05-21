@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import {
   DEFAULT_IMESSAGE_ATTACHMENT_ROOTS,
@@ -24,7 +24,7 @@ describe("iMessage channel-inbound-roots contract", () => {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 
   it("resolves configured attachment roots with account overrides", () => {
     expectResolvedRootsCase(
@@ -56,7 +56,7 @@ describe("iMessage channel-inbound-roots contract", () => {
           },
         },
       },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
 
     expectResolvedRootsCase(
       () => resolveIMessageAttachmentRoots({ cfg, accountId: "work" }),
@@ -66,14 +66,14 @@ describe("iMessage channel-inbound-roots contract", () => {
 
   it("falls back to default iMessage attachment roots", () => {
     expectResolvedRootsCase(
-      () => resolveIMessageAttachmentRoots({ cfg: {} as NexisClawConfig }),
+      () => resolveIMessageAttachmentRoots({ cfg: {} as FirstNexusConfig }),
       [...DEFAULT_IMESSAGE_ATTACHMENT_ROOTS],
     );
   });
 
   it("falls back to default iMessage remote attachment roots", () => {
     expectResolvedRootsCase(
-      () => resolveIMessageRemoteAttachmentRoots({ cfg: {} as NexisClawConfig }),
+      () => resolveIMessageRemoteAttachmentRoots({ cfg: {} as FirstNexusConfig }),
       [...DEFAULT_IMESSAGE_ATTACHMENT_ROOTS],
     );
   });

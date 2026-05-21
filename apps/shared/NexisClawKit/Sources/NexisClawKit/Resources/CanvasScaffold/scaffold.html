@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>NexisClaw</title>
+    <title>FirstNexus</title>
     <script>
       (() => {
         try {
@@ -108,7 +108,7 @@
         z-index: 1;
       }
 
-      #NexisClaw-home {
+      #FirstNexus-home {
         position: fixed;
         inset: 0;
         z-index: 2;
@@ -179,7 +179,7 @@
         box-shadow: 0 0 18px color-mix(in srgb, var(--state) 68%, transparent);
       }
 
-      #NexisClaw-home-eyebrow {
+      #FirstNexus-home-eyebrow {
         min-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -367,7 +367,7 @@
         line-height: 1.45;
       }
 
-      #NexisClaw-status {
+      #FirstNexus-status {
         position: fixed;
         inset: 0;
         display: none;
@@ -379,7 +379,7 @@
         z-index: 3;
       }
 
-      #NexisClaw-status .card {
+      #FirstNexus-status .card {
         text-align: center;
         padding: 16px 18px;
         border-radius: 14px;
@@ -390,19 +390,19 @@
         backdrop-filter: blur(14px);
       }
 
-      #NexisClaw-status .title {
+      #FirstNexus-status .title {
         font: 600 20px -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
         color: rgba(255, 255, 255, 0.92);
       }
 
-      #NexisClaw-status .subtitle {
+      #FirstNexus-status .subtitle {
         margin-top: 6px;
         font: 500 12px -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
         color: rgba(255, 255, 255, 0.58);
       }
 
       @media (max-width: 640px) {
-        #NexisClaw-home {
+        #FirstNexus-home {
           padding-left: 12px;
           padding-right: 12px;
         }
@@ -423,7 +423,7 @@
       }
 
       @media (max-height: 760px) {
-        #NexisClaw-home {
+        #FirstNexus-home {
           padding-top: calc(var(--safe-top) + 14px);
           padding-bottom: calc(var(--safe-bottom) + 12px);
         }
@@ -489,33 +489,33 @@
     </style>
   </head>
   <body data-state="offline">
-    <canvas id="NexisClaw-canvas"></canvas>
-    <div id="NexisClaw-home">
+    <canvas id="FirstNexus-canvas"></canvas>
+    <div id="FirstNexus-home">
       <div class="shell">
         <div class="hero">
           <div class="eyebrow">
             <span class="eyebrow-dot"></span>
-            <span id="NexisClaw-home-eyebrow">Welcome to NexisClaw</span>
+            <span id="FirstNexus-home-eyebrow">Welcome to FirstNexus</span>
           </div>
-          <h1 id="NexisClaw-home-title">Your phone stays quiet until it is needed</h1>
-          <p id="NexisClaw-home-subtitle">
+          <h1 id="FirstNexus-home-title">Your phone stays quiet until it is needed</h1>
+          <p id="FirstNexus-home-subtitle">
             Pair this device to your gateway to wake it only for real work, keep a live agent overview handy, and avoid battery-draining background loops.
           </p>
 
           <div class="hero-grid">
             <div class="meta-card">
               <div class="meta-label">Gateway</div>
-              <div class="meta-value" id="NexisClaw-home-gateway">Gateway</div>
-              <div class="meta-subtitle" id="NexisClaw-home-gateway-caption">Connect to load your agents</div>
+              <div class="meta-value" id="FirstNexus-home-gateway">Gateway</div>
+              <div class="meta-subtitle" id="FirstNexus-home-gateway-caption">Connect to load your agents</div>
             </div>
 
             <div class="meta-card">
               <div class="meta-label">Active Agent</div>
               <div class="agent-focus">
-                <div class="agent-badge" id="NexisClaw-home-active-badge">OC</div>
+                <div class="agent-badge" id="FirstNexus-home-active-badge">OC</div>
                 <div>
-                  <div class="name" id="NexisClaw-home-active-name">Main</div>
-                  <div class="caption" id="NexisClaw-home-active-caption">Connect to load your agents</div>
+                  <div class="name" id="FirstNexus-home-active-name">Main</div>
+                  <div class="caption" id="FirstNexus-home-active-caption">Connect to load your agents</div>
                 </div>
               </div>
             </div>
@@ -525,43 +525,43 @@
         <div class="meta-card section">
           <div class="section-header">
             <div class="section-title">Live agents</div>
-            <div class="section-count" id="NexisClaw-home-agent-count">0 agents</div>
+            <div class="section-count" id="FirstNexus-home-agent-count">0 agents</div>
           </div>
-          <div class="agent-grid" id="NexisClaw-home-agent-grid"></div>
-          <div class="footer-note" id="NexisClaw-home-footer">
+          <div class="agent-grid" id="FirstNexus-home-agent-grid"></div>
+          <div class="footer-note" id="FirstNexus-home-footer">
             When connected, the gateway can wake the phone with a silent push instead of holding an always-on session.
           </div>
         </div>
       </div>
     </div>
 
-    <div id="NexisClaw-status">
+    <div id="FirstNexus-status">
       <div class="card">
-        <div class="title" id="NexisClaw-status-title">Ready</div>
-        <div class="subtitle" id="NexisClaw-status-subtitle">Waiting for agent</div>
+        <div class="title" id="FirstNexus-status-title">Ready</div>
+        <div class="subtitle" id="FirstNexus-status-subtitle">Waiting for agent</div>
       </div>
     </div>
 
     <script>
       (() => {
-        const canvas = document.getElementById('NexisClaw-canvas');
+        const canvas = document.getElementById('FirstNexus-canvas');
         const ctx = canvas.getContext('2d');
-        const statusEl = document.getElementById('NexisClaw-status');
-        const titleEl = document.getElementById('NexisClaw-status-title');
-        const subtitleEl = document.getElementById('NexisClaw-status-subtitle');
+        const statusEl = document.getElementById('FirstNexus-status');
+        const titleEl = document.getElementById('FirstNexus-status-title');
+        const subtitleEl = document.getElementById('FirstNexus-status-subtitle');
         const home = {
-          root: document.getElementById('NexisClaw-home'),
-          eyebrow: document.getElementById('NexisClaw-home-eyebrow'),
-          title: document.getElementById('NexisClaw-home-title'),
-          subtitle: document.getElementById('NexisClaw-home-subtitle'),
-          gateway: document.getElementById('NexisClaw-home-gateway'),
-          gatewayCaption: document.getElementById('NexisClaw-home-gateway-caption'),
-          activeBadge: document.getElementById('NexisClaw-home-active-badge'),
-          activeName: document.getElementById('NexisClaw-home-active-name'),
-          activeCaption: document.getElementById('NexisClaw-home-active-caption'),
-          agentCount: document.getElementById('NexisClaw-home-agent-count'),
-          agentGrid: document.getElementById('NexisClaw-home-agent-grid'),
-          footer: document.getElementById('NexisClaw-home-footer')
+          root: document.getElementById('FirstNexus-home'),
+          eyebrow: document.getElementById('FirstNexus-home-eyebrow'),
+          title: document.getElementById('FirstNexus-home-title'),
+          subtitle: document.getElementById('FirstNexus-home-subtitle'),
+          gateway: document.getElementById('FirstNexus-home-gateway'),
+          gatewayCaption: document.getElementById('FirstNexus-home-gateway-caption'),
+          activeBadge: document.getElementById('FirstNexus-home-active-badge'),
+          activeName: document.getElementById('FirstNexus-home-active-name'),
+          activeCaption: document.getElementById('FirstNexus-home-active-caption'),
+          agentCount: document.getElementById('FirstNexus-home-agent-count'),
+          agentGrid: document.getElementById('FirstNexus-home-agent-grid'),
+          footer: document.getElementById('FirstNexus-home-footer')
         };
         const debugStatusEnabledByQuery = (() => {
           try {
@@ -641,8 +641,8 @@
 
           document.body.dataset.state = state.gatewayState || 'offline';
           home.root.style.display = 'flex';
-          home.eyebrow.textContent = state.eyebrow || 'Welcome to NexisClaw';
-          home.title.textContent = state.title || 'NexisClaw';
+          home.eyebrow.textContent = state.eyebrow || 'Welcome to FirstNexus';
+          home.title.textContent = state.title || 'FirstNexus';
           home.subtitle.textContent = state.subtitle || '';
           home.gateway.textContent = state.gatewayLabel || 'Gateway';
           home.gatewayCaption.textContent = state.gatewayState === 'connected'
@@ -678,7 +678,7 @@
           statusEl.style.display = 'none';
         }
 
-        window.__NexisClaw = {
+        window.__FirstNexus = {
           canvas,
           ctx,
           setDebugStatusEnabled,

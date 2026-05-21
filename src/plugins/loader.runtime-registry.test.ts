@@ -4,7 +4,7 @@ import {
   __testing,
   clearPluginLoaderCache,
   clearPluginRegistryLoadCache,
-  loadNexisClawPlugins,
+  loadFirstNexusPlugins,
   resolveRuntimePluginRegistry,
 } from "./loader.js";
 import { resetPluginLoaderTestStateForTest } from "./loader.test-fixtures.js";
@@ -582,10 +582,10 @@ describe("resolveRuntimePluginRegistry", () => {
         },
         workspaceDir: "/tmp/workspace-a",
       };
-      const fullRegistry = loadNexisClawPlugins(loadOptions);
+      const fullRegistry = loadFirstNexusPlugins(loadOptions);
 
-      loadNexisClawPlugins({ ...loadOptions, onlyPluginIds: ["alpha"] });
-      loadNexisClawPlugins({ ...loadOptions, onlyPluginIds: ["bravo"] });
+      loadFirstNexusPlugins({ ...loadOptions, onlyPluginIds: ["alpha"] });
+      loadFirstNexusPlugins({ ...loadOptions, onlyPluginIds: ["bravo"] });
 
       expect(resolveRuntimePluginRegistry(loadOptions)).toBe(fullRegistry);
     } finally {
@@ -645,7 +645,7 @@ describe("clearPluginLoaderCache", () => {
   });
 });
 
-describe("loadNexisClawPlugins active runtime clearing", () => {
+describe("loadFirstNexusPlugins active runtime clearing", () => {
   it("clears plugin-owned global providers before activating a new registry", () => {
     registerCompactionProvider({
       id: "stale-compaction",
@@ -657,7 +657,7 @@ describe("loadNexisClawPlugins active runtime clearing", () => {
       create: async () => ({ provider: null }),
     });
 
-    loadNexisClawPlugins({ onlyPluginIds: [] });
+    loadFirstNexusPlugins({ onlyPluginIds: [] });
 
     expect(getCompactionProvider("stale-compaction")).toBeUndefined();
     expect(getMemoryEmbeddingProvider("stale-memory")).toBeUndefined();
@@ -689,10 +689,10 @@ describe("clearPluginRegistryLoadCache", () => {
       },
       workspaceDir: "/tmp/workspace-a",
     };
-    const registry = loadNexisClawPlugins(loadOptions);
+    const registry = loadFirstNexusPlugins(loadOptions);
 
     clearPluginRegistryLoadCache();
 
-    expect(loadNexisClawPlugins(loadOptions)).not.toBe(registry);
+    expect(loadFirstNexusPlugins(loadOptions)).not.toBe(registry);
   });
 });

@@ -3,8 +3,8 @@ import {
   buildChannelKeyCandidates,
   resolveChannelEntryMatchWithFallback,
   type ChannelMatchSource,
-} from "NexisClaw/plugin-sdk/channel-targets";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-targets";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { normalizeSlackSlug } from "./allow-list.js";
 
 export type SlackChannelConfigResolved = {

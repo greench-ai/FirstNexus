@@ -37,7 +37,7 @@ describe("doctor session transcript repair", () => {
 
   beforeEach(async () => {
     note.mockClear();
-    root = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-doctor-transcripts-"));
+    root = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-doctor-transcripts-"));
   });
 
   afterEach(async () => {
@@ -144,7 +144,7 @@ describe("doctor session transcript repair", () => {
     const [message, title] = requireFirstMockCall(note, "doctor note") as [string, string];
     expect(title).toBe("Session transcripts");
     expect(message).toContain("duplicated prompt-rewrite branches");
-    expect(message).toContain('Run "NexisClaw doctor --fix"');
+    expect(message).toContain('Run "FirstNexus doctor --fix"');
     expect(countNonEmptyLines(await fs.readFile(filePath, "utf-8"))).toBe(3);
   });
 

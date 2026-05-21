@@ -1,6 +1,6 @@
 import { type Api, type Model } from "@earendil-works/pi-ai";
 import type { AgentModelConfig } from "../../config/types.agents-shared.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { SsrFPolicy } from "../../infra/net/ssrf.js";
 import { getDefaultLocalRoots } from "../../media/web-media.js";
 import { readSnakeCaseParamRaw } from "../../param-key.js";
@@ -64,30 +64,30 @@ type TaskRunDetailHandle = {
 };
 
 export function applyImageModelConfigDefaults(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
   imageModelConfig: ImageModelConfig,
-): NexisClawConfig | undefined {
+): FirstNexusConfig | undefined {
   return applyAgentDefaultModelConfig(cfg, "imageModel", imageModelConfig);
 }
 
 export function applyImageGenerationModelConfigDefaults(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
   imageGenerationModelConfig: ToolModelConfig,
-): NexisClawConfig | undefined {
+): FirstNexusConfig | undefined {
   return applyAgentDefaultModelConfig(cfg, "imageGenerationModel", imageGenerationModelConfig);
 }
 
 export function applyVideoGenerationModelConfigDefaults(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
   videoGenerationModelConfig: ToolModelConfig,
-): NexisClawConfig | undefined {
+): FirstNexusConfig | undefined {
   return applyAgentDefaultModelConfig(cfg, "videoGenerationModel", videoGenerationModelConfig);
 }
 
 export function applyMusicGenerationModelConfigDefaults(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
   musicGenerationModelConfig: ToolModelConfig,
-): NexisClawConfig | undefined {
+): FirstNexusConfig | undefined {
   return applyAgentDefaultModelConfig(cfg, "musicGenerationModel", musicGenerationModelConfig);
 }
 
@@ -106,16 +106,16 @@ export function readGenerationTimeoutMs(args: Record<string, unknown>): number |
 }
 
 export function resolveRemoteMediaSsrfPolicy(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
 ): SsrFPolicy | undefined {
   return cfg?.tools?.web?.fetch?.ssrfPolicy;
 }
 
 function applyAgentDefaultModelConfig(
-  cfg: NexisClawConfig | undefined,
+  cfg: FirstNexusConfig | undefined,
   key: "imageModel" | "imageGenerationModel" | "videoGenerationModel" | "musicGenerationModel",
   modelConfig: ToolModelConfig,
-): NexisClawConfig | undefined {
+): FirstNexusConfig | undefined {
   if (!cfg) {
     return undefined;
   }
@@ -136,7 +136,7 @@ type CapabilityProvider = {
   aliases?: string[];
   defaultModel?: string;
   models?: readonly string[];
-  isConfigured?: (ctx: { cfg?: NexisClawConfig; agentDir?: string }) => boolean;
+  isConfigured?: (ctx: { cfg?: FirstNexusConfig; agentDir?: string }) => boolean;
 };
 
 type CapabilityProviderSource = CapabilityProvider[] | (() => CapabilityProvider[]);
@@ -191,7 +191,7 @@ export function isCapabilityProviderConfigured<T extends CapabilityProvider>(par
   providers: T[];
   provider?: T;
   providerId?: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentDir?: string;
   authStore?: AuthProfileStore;
 }): boolean {
@@ -250,7 +250,7 @@ export function resolveSelectedCapabilityProvider<T extends CapabilityProvider>(
 }
 
 function resolveCapabilityModelCandidatesForTool(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentDir?: string;
   authStore?: AuthProfileStore;
   providers: CapabilityProvider[];
@@ -308,7 +308,7 @@ function resolveCapabilityModelCandidatesForTool(params: {
 }
 
 export function resolveCapabilityModelConfigForTool(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentDir?: string;
   authStore?: AuthProfileStore;
   modelConfig?: AgentModelConfig;
@@ -346,7 +346,7 @@ export function resolveCapabilityModelConfigForTool(params: {
 }
 
 export function hasGenerationToolAvailability(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   agentDir?: string;
   workspaceDir?: string;
   authStore?: AuthProfileStore;
@@ -592,7 +592,7 @@ export function resolveModelFromRegistry(params: {
 
 export async function resolveModelRuntimeApiKey(params: {
   model: Model<Api>;
-  cfg: NexisClawConfig | undefined;
+  cfg: FirstNexusConfig | undefined;
   agentDir: string;
   authStorage: {
     setRuntimeApiKey: (provider: string, apiKey: string) => void;

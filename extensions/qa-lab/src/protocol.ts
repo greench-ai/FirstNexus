@@ -1,1 +1,1 @@
-export type * from "NexisClaw/plugin-sdk/qa-channel-protocol";
+export type * from "FirstNexus/plugin-sdk/qa-channel-protocol";

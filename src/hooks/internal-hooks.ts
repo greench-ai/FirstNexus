@@ -1,5 +1,5 @@
 /**
- * Hook system for NexisClaw agent events
+ * Hook system for FirstNexus agent events
  *
  * Provides an extensible event-driven hook system for agent events
  * like command processing, session lifecycle, etc.
@@ -8,7 +8,7 @@
 import type { WorkspaceBootstrapFile } from "../agents/workspace.js";
 import type { CliDeps } from "../cli/outbound-send-deps.js";
 import type { SessionEntry } from "../config/sessions/types.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { SessionsPatchParams } from "../gateway/protocol/schema/types.js";
 import { formatErrorMessage } from "../infra/errors.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -23,7 +23,7 @@ export type { InternalHookEvent, InternalHookEventType, InternalHookHandler };
 export type AgentBootstrapHookContext = {
   workspaceDir: string;
   bootstrapFiles: WorkspaceBootstrapFile[];
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   sessionKey?: string;
   sessionId?: string;
   agentId?: string;
@@ -36,7 +36,7 @@ export type AgentBootstrapHookEvent = InternalHookEvent & {
 };
 
 export type GatewayStartupHookContext = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   deps?: CliDeps;
   workspaceDir?: string;
 };
@@ -167,7 +167,7 @@ export type MessagePreprocessedHookEvent = InternalHookEvent & {
 export type SessionPatchHookContext = {
   sessionEntry: SessionEntry;
   patch: SessionsPatchParams;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 };
 
 export type SessionPatchHookEvent = InternalHookEvent & {
@@ -186,12 +186,12 @@ export type SessionPatchHookEvent = InternalHookEvent & {
  * are invisible to triggerInternalHook in another chunk, causing hooks
  * to silently fire with zero handlers.
  */
-const INTERNAL_HOOK_HANDLERS_KEY = Symbol.for("NexisClaw.internalHookHandlers");
+const INTERNAL_HOOK_HANDLERS_KEY = Symbol.for("FirstNexus.internalHookHandlers");
 const handlers = resolveGlobalSingleton<Map<string, InternalHookHandler[]>>(
   INTERNAL_HOOK_HANDLERS_KEY,
   () => new Map<string, InternalHookHandler[]>(),
 );
-const INTERNAL_HOOKS_ENABLED_KEY = Symbol.for("NexisClaw.internalHooksEnabled");
+const INTERNAL_HOOKS_ENABLED_KEY = Symbol.for("FirstNexus.internalHooksEnabled");
 const internalHooksEnabledState = resolveGlobalSingleton<{ enabled: boolean }>(
   INTERNAL_HOOKS_ENABLED_KEY,
   () => ({ enabled: true }),

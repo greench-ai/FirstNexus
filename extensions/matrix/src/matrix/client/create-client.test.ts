@@ -29,11 +29,11 @@ let createMatrixClient: typeof import("./create-client.js").createMatrixClient;
 
 describe("createMatrixClient", () => {
   const storagePaths = {
-    rootDir: "/tmp/NexisClaw-matrix-create-client-test",
-    storagePath: "/tmp/NexisClaw-matrix-create-client-test/storage.json",
-    recoveryKeyPath: "/tmp/NexisClaw-matrix-create-client-test/recovery.key",
-    idbSnapshotPath: "/tmp/NexisClaw-matrix-create-client-test/idb.snapshot",
-    metaPath: "/tmp/NexisClaw-matrix-create-client-test/storage-meta.json",
+    rootDir: "/tmp/FirstNexus-matrix-create-client-test",
+    storagePath: "/tmp/FirstNexus-matrix-create-client-test/storage.json",
+    recoveryKeyPath: "/tmp/FirstNexus-matrix-create-client-test/recovery.key",
+    idbSnapshotPath: "/tmp/FirstNexus-matrix-create-client-test/idb.snapshot",
+    metaPath: "/tmp/FirstNexus-matrix-create-client-test/storage-meta.json",
     accountKey: "default",
     tokenHash: "token-hash",
   };
@@ -79,7 +79,7 @@ describe("createMatrixClient", () => {
       storagePath: storagePaths.storagePath,
       recoveryKeyPath: storagePaths.recoveryKeyPath,
       idbSnapshotPath: storagePaths.idbSnapshotPath,
-      cryptoDatabasePrefix: "NexisClaw-matrix-default-token-hash",
+      cryptoDatabasePrefix: "FirstNexus-matrix-default-token-hash",
       autoBootstrapCrypto: undefined,
       ssrfPolicy: undefined,
       dispatcherPolicy: undefined,

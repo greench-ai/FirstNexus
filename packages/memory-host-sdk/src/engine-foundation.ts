@@ -6,38 +6,38 @@ export {
   resolveAgentWorkspaceDir,
   resolveDefaultAgentId,
   resolveSessionAgentId,
-} from "./host/NexisClaw-runtime-agent.js";
+} from "./host/FirstNexus-runtime-agent.js";
 export {
   resolveMemorySearchConfig,
   resolveMemorySearchSyncConfig,
   type ResolvedMemorySearchConfig,
   type ResolvedMemorySearchSyncConfig,
-} from "./host/NexisClaw-runtime-agent.js";
-export { parseDurationMs } from "./host/NexisClaw-runtime-config.js";
-export { loadConfig } from "./host/NexisClaw-runtime-config.js";
-export { resolveStateDir } from "./host/NexisClaw-runtime-config.js";
-export { resolveSessionTranscriptsDirForAgent } from "./host/NexisClaw-runtime-config.js";
+} from "./host/FirstNexus-runtime-agent.js";
+export { parseDurationMs } from "./host/FirstNexus-runtime-config.js";
+export { loadConfig } from "./host/FirstNexus-runtime-config.js";
+export { resolveStateDir } from "./host/FirstNexus-runtime-config.js";
+export { resolveSessionTranscriptsDirForAgent } from "./host/FirstNexus-runtime-config.js";
 export {
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
-} from "./host/NexisClaw-runtime-config.js";
-export { root } from "./host/NexisClaw-runtime-io.js";
+} from "./host/FirstNexus-runtime-config.js";
+export { root } from "./host/FirstNexus-runtime-io.js";
 export { isPathInside } from "./host/fs-utils.js";
-export { createSubsystemLogger } from "./host/NexisClaw-runtime-io.js";
-export { detectMime } from "./host/NexisClaw-runtime-io.js";
-export { resolveGlobalSingleton } from "./host/NexisClaw-runtime-io.js";
-export { onSessionTranscriptUpdate } from "./host/NexisClaw-runtime-session.js";
-export { splitShellArgs } from "./host/NexisClaw-runtime-io.js";
-export { runTasksWithConcurrency } from "./host/NexisClaw-runtime-io.js";
+export { createSubsystemLogger } from "./host/FirstNexus-runtime-io.js";
+export { detectMime } from "./host/FirstNexus-runtime-io.js";
+export { resolveGlobalSingleton } from "./host/FirstNexus-runtime-io.js";
+export { onSessionTranscriptUpdate } from "./host/FirstNexus-runtime-session.js";
+export { splitShellArgs } from "./host/FirstNexus-runtime-io.js";
+export { runTasksWithConcurrency } from "./host/FirstNexus-runtime-io.js";
 export {
   shortenHomeInString,
   shortenHomePath,
   resolveUserPath,
   truncateUtf16Safe,
-} from "./host/NexisClaw-runtime-io.js";
-export type { NexisClawConfig } from "./host/NexisClaw-runtime-config.js";
-export type { SessionSendPolicyConfig } from "./host/NexisClaw-runtime-config.js";
-export type { SecretInput } from "./host/NexisClaw-runtime-config.js";
+} from "./host/FirstNexus-runtime-io.js";
+export type { FirstNexusConfig } from "./host/FirstNexus-runtime-config.js";
+export type { SessionSendPolicyConfig } from "./host/FirstNexus-runtime-config.js";
+export type { SecretInput } from "./host/FirstNexus-runtime-config.js";
 export type {
   MemoryBackend,
   MemoryCitationsMode,
@@ -45,5 +45,5 @@ export type {
   MemoryQmdIndexPath,
   MemoryQmdMcporterConfig,
   MemoryQmdSearchMode,
-} from "./host/NexisClaw-runtime-config.js";
-export type { MemorySearchConfig } from "./host/NexisClaw-runtime-config.js";
+} from "./host/FirstNexus-runtime-config.js";
+export type { MemorySearchConfig } from "./host/FirstNexus-runtime-config.js";

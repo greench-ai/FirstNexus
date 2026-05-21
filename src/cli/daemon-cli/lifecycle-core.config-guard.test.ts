@@ -11,7 +11,7 @@ import {
 const readConfigFileSnapshotMock = vi.fn();
 const loadConfig = vi.fn(() => ({}));
 const newerConfigHints = [
-  "Run the newer NexisClaw binary on PATH, or reinstall the intended gateway service from the newer install.",
+  "Run the newer FirstNexus binary on PATH, or reinstall the intended gateway service from the newer install.",
   "Set NEXISCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS=1 only for an intentional downgrade or recovery action.",
 ];
 const newerConfigHintItems = newerConfigHints.map((text) => ({ kind: "generic", text }));
@@ -103,7 +103,7 @@ describe("runServiceRestart config pre-flight (#35862)", () => {
     expectLatestRuntimeJson({
       action: "restart",
       ok: false,
-      error: `Gateway restart blocked: Refusing to restart the gateway service because this NexisClaw binary (${VERSION}) is older than the config last written by NexisClaw 9999.1.1.`,
+      error: `Gateway restart blocked: Refusing to restart the gateway service because this FirstNexus binary (${VERSION}) is older than the config last written by FirstNexus 9999.1.1.`,
       hints: newerConfigHints,
       hintItems: newerConfigHintItems,
       warnings: undefined,
@@ -224,7 +224,7 @@ describe("runServiceStop future-config guard", () => {
     expectLatestRuntimeJson({
       action: "stop",
       ok: false,
-      error: `Gateway stop blocked: Refusing to stop the gateway service because this NexisClaw binary (${VERSION}) is older than the config last written by NexisClaw 9999.1.1.`,
+      error: `Gateway stop blocked: Refusing to stop the gateway service because this FirstNexus binary (${VERSION}) is older than the config last written by FirstNexus 9999.1.1.`,
       hints: newerConfigHints,
       hintItems: newerConfigHintItems,
       warnings: undefined,

@@ -1,9 +1,9 @@
 import { messagingApi } from "@line/bot-sdk";
-import { getAgentScopedMediaLocalRoots } from "NexisClaw/plugin-sdk/agent-media-payload";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { mimeTypeFromFilePath } from "NexisClaw/plugin-sdk/media-mime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { loadWebMediaRaw } from "NexisClaw/plugin-sdk/web-media";
+import { getAgentScopedMediaLocalRoots } from "FirstNexus/plugin-sdk/agent-media-payload";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { mimeTypeFromFilePath } from "FirstNexus/plugin-sdk/media-mime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { loadWebMediaRaw } from "FirstNexus/plugin-sdk/web-media";
 import { resolveLineAccount } from "./accounts.js";
 import { datetimePickerAction, messageAction, postbackAction, uriAction } from "./actions.js";
 import { resolveLineChannelAccessToken } from "./channel-access-token.js";
@@ -38,7 +38,7 @@ export interface CreateRichMenuParams {
 }
 
 interface RichMenuOpts {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   channelAccessToken?: string;
   accountId?: string;
   verbose?: boolean;

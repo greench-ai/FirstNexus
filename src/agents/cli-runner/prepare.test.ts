@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { CURRENT_SESSION_VERSION } from "@earendil-works/pi-coding-agent";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { getGlobalHookRunner } from "../../plugins/hook-runner-global.js";
 import { __testing as cliBackendsTesting } from "../cli-backends.js";
 import { hashCliSessionText } from "../cli-session.js";
@@ -57,15 +57,15 @@ const mockBuildActiveMusicGenerationTaskPromptContextForSession = vi.mocked(
 function createTestMcpLoopbackServerConfig(port: number) {
   return {
     mcpServers: {
-      NexisClaw: {
+      FirstNexus: {
         type: "http",
         url: `http://127.0.0.1:${port}/mcp`,
         headers: {
           Authorization: "Bearer ${NEXISCLAW_MCP_TOKEN}",
           "x-session-key": "${NEXISCLAW_MCP_SESSION_KEY}",
-          "x-NexisClaw-agent-id": "${NEXISCLAW_MCP_AGENT_ID}",
-          "x-NexisClaw-account-id": "${NEXISCLAW_MCP_ACCOUNT_ID}",
-          "x-NexisClaw-message-channel": "${NEXISCLAW_MCP_MESSAGE_CHANNEL}",
+          "x-FirstNexus-agent-id": "${NEXISCLAW_MCP_AGENT_ID}",
+          "x-FirstNexus-account-id": "${NEXISCLAW_MCP_ACCOUNT_ID}",
+          "x-FirstNexus-message-channel": "${NEXISCLAW_MCP_MESSAGE_CHANNEL}",
         },
       },
     },
@@ -85,7 +85,7 @@ function createCliBackendConfig(
     bundleMcp?: boolean;
     reseedFromRawTranscriptWhenUncompacted?: boolean;
   } = {},
-): NexisClawConfig {
+): FirstNexusConfig {
   return {
     agents: {
       defaults: {
@@ -111,11 +111,11 @@ function createCliBackendConfig(
         },
       },
     },
-  } satisfies NexisClawConfig;
+  } satisfies FirstNexusConfig;
 }
 
 function createSessionFile() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-cli-prepare-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-cli-prepare-"));
   vi.stubEnv("NEXISCLAW_STATE_DIR", dir);
   const sessionFile = path.join(dir, "agents", "main", "sessions", "session-test.jsonl");
   fs.mkdirSync(path.dirname(sessionFile), { recursive: true });
@@ -170,7 +170,7 @@ describe("shouldSkipLocalCliCredentialEpoch", () => {
       getActiveMcpLoopbackRuntime: vi.fn(() => undefined),
       ensureMcpLoopbackServer: vi.fn(createTestMcpLoopbackServer),
       createMcpLoopbackServerConfig: vi.fn(createTestMcpLoopbackServerConfig),
-      resolveNexisClawReferencePaths: vi.fn(async () => ({ docsPath: null, sourcePath: null })),
+      resolveFirstNexusReferencePaths: vi.fn(async () => ({ docsPath: null, sourcePath: null })),
     });
     mockGetGlobalHookRunner.mockReturnValue(null);
     mockBuildActiveVideoGenerationTaskPromptContextForSession.mockReturnValue(undefined);

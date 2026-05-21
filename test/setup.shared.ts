@@ -54,7 +54,7 @@ type SharedTestSetupOptions = {
   loadProfileEnv?: boolean;
 };
 
-const SHARED_TEST_SETUP = Symbol.for("NexisClaw.sharedTestSetup");
+const SHARED_TEST_SETUP = Symbol.for("FirstNexus.sharedTestSetup");
 
 type SharedTestSetupHandle = {
   cleanup: () => void;

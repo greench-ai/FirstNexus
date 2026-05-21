@@ -7,7 +7,7 @@ import { getRuntimeConfig } from "../config/config.js";
 import { resolveDefaultAgentDir } from "./agent-scope.js";
 import { isLiveProfileKeyModeEnabled, isLiveTestEnabled } from "./live-test-helpers.js";
 import { getApiKeyForModel, requireApiKey } from "./model-auth.js";
-import { ensureNexisClawModelsJson } from "./models-config.js";
+import { ensureFirstNexusModelsJson } from "./models-config.js";
 import { sanitizeSessionHistory } from "./pi-embedded-runner/replay-history.js";
 import { discoverAuthStorage, discoverModels } from "./pi-model-discovery.js";
 import { transformTransportMessages } from "./transport-message-transform.js";
@@ -205,7 +205,7 @@ describeLive("tool replay repair live", () => {
       `accepts repaired displaced and missing tool results with ${target.ref}`,
       async () => {
         const cfg = getRuntimeConfig();
-        await ensureNexisClawModelsJson(cfg);
+        await ensureFirstNexusModelsJson(cfg);
 
         const agentDir = resolveDefaultAgentDir(cfg);
         const authStorage = discoverAuthStorage(agentDir);
@@ -316,7 +316,7 @@ describeLive("tool replay repair live", () => {
       `accepts transport replay after dropping aborted assistant tool calls with ${target.ref}`,
       async () => {
         const cfg = getRuntimeConfig();
-        await ensureNexisClawModelsJson(cfg);
+        await ensureFirstNexusModelsJson(cfg);
 
         const agentDir = resolveDefaultAgentDir(cfg);
         const authStorage = discoverAuthStorage(agentDir);

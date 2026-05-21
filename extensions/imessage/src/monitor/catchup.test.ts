@@ -17,7 +17,7 @@ let tempStateDir: string;
 let priorStateDir: string | undefined;
 
 beforeAll(() => {
-  tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-imsg-catchup-"));
+  tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-imsg-catchup-"));
   priorStateDir = process.env.NEXISCLAW_STATE_DIR;
   process.env.NEXISCLAW_STATE_DIR = tempStateDir;
 });

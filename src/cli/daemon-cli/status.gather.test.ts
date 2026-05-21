@@ -57,8 +57,8 @@ const serviceReadCommand = vi.fn<
 >(async (_env?: NodeJS.ProcessEnv) => ({
   programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
   environment: {
-    NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-daemon",
-    NEXISCLAW_CONFIG_PATH: "/tmp/NexisClaw-daemon/NexisClaw.json",
+    NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-daemon",
+    NEXISCLAW_CONFIG_PATH: "/tmp/FirstNexus-daemon/FirstNexus.json",
   },
 }));
 const resolveGatewayBindHost = vi.fn(
@@ -67,10 +67,10 @@ const resolveGatewayBindHost = vi.fn(
 const pickPrimaryTailnetIPv4 = vi.fn(() => "100.64.0.9");
 const resolveGatewayPort = vi.fn((_cfg?: unknown, _env?: unknown) => 18789);
 const resolveStateDir = vi.fn(
-  (env: NodeJS.ProcessEnv) => env.NEXISCLAW_STATE_DIR ?? "/tmp/NexisClaw-cli",
+  (env: NodeJS.ProcessEnv) => env.NEXISCLAW_STATE_DIR ?? "/tmp/FirstNexus-cli",
 );
 const resolveConfigPath = vi.fn((env: NodeJS.ProcessEnv, stateDir: string) => {
-  return env.NEXISCLAW_CONFIG_PATH ?? `${stateDir}/NexisClaw.json`;
+  return env.NEXISCLAW_CONFIG_PATH ?? `${stateDir}/FirstNexus.json`;
 });
 const createConfigIOCalls = vi.fn((configPath: string, pluginValidation?: "full" | "skip") => ({
   configPath,
@@ -101,7 +101,7 @@ vi.mock("../../config/config.js", () => ({
     configPath: string;
     pluginValidation?: "full" | "skip";
   }) => {
-    const isDaemon = configPath.includes("/NexisClaw-daemon/");
+    const isDaemon = configPath.includes("/FirstNexus-daemon/");
     const runtimeConfig = isDaemon ? daemonLoadedConfig : cliLoadedConfig;
     const warnings = isDaemon ? daemonConfigWarnings : cliConfigWarnings;
     createConfigIOCalls(configPath, pluginValidation);
@@ -202,8 +202,8 @@ describe("gatherDaemonStatus", () => {
       "DAEMON_GATEWAY_TOKEN",
       "DAEMON_GATEWAY_PASSWORD",
     ]);
-    process.env.NEXISCLAW_STATE_DIR = "/tmp/NexisClaw-cli";
-    process.env.NEXISCLAW_CONFIG_PATH = "/tmp/NexisClaw-cli/NexisClaw.json";
+    process.env.NEXISCLAW_STATE_DIR = "/tmp/FirstNexus-cli";
+    process.env.NEXISCLAW_CONFIG_PATH = "/tmp/FirstNexus-cli/FirstNexus.json";
     delete process.env.NEXISCLAW_GATEWAY_TOKEN;
     delete process.env.NEXISCLAW_GATEWAY_PASSWORD;
     delete process.env.DAEMON_GATEWAY_TOKEN;
@@ -276,7 +276,7 @@ describe("gatherDaemonStatus", () => {
       configPath?: string;
     };
     expect(probeInput.requireRpc).toBe(true);
-    expect(probeInput.configPath).toBe("/tmp/NexisClaw-daemon/NexisClaw.json");
+    expect(probeInput.configPath).toBe("/tmp/FirstNexus-daemon/FirstNexus.json");
   });
 
   it("uses configured handshake timeout as the default daemon probe budget", async () => {
@@ -317,7 +317,7 @@ describe("gatherDaemonStatus", () => {
     });
 
     expect(readConfigFileSnapshotCalls).toHaveBeenCalledTimes(1);
-    expect(readConfigFileSnapshotCalls).toHaveBeenCalledWith("/tmp/NexisClaw-cli/NexisClaw.json");
+    expect(readConfigFileSnapshotCalls).toHaveBeenCalledWith("/tmp/FirstNexus-cli/FirstNexus.json");
     expect(loadConfigCalls).not.toHaveBeenCalled();
   });
 
@@ -390,8 +390,8 @@ describe("gatherDaemonStatus", () => {
       programArguments: ["/bin/node", "cli", "gateway", "--port", "19001"],
       environment: {
         NEXISCLAW_GATEWAY_PORT: "19001",
-        NEXISCLAW_CONFIG_PATH: "/tmp/NexisClaw-daemon/NexisClaw.json",
-        NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-daemon",
+        NEXISCLAW_CONFIG_PATH: "/tmp/FirstNexus-daemon/FirstNexus.json",
+        NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-daemon",
       } as Record<string, string>,
     });
     serviceReadRuntime.mockImplementationOnce(async (env?: NodeJS.ProcessEnv) => ({
@@ -433,8 +433,8 @@ describe("gatherDaemonStatus", () => {
     });
 
     const handoffInput = callArg(readGatewayRestartHandoffSync) as NodeJS.ProcessEnv;
-    expect(handoffInput.NEXISCLAW_STATE_DIR).toBe("/tmp/NexisClaw-daemon");
-    expect(handoffInput.NEXISCLAW_CONFIG_PATH).toBe("/tmp/NexisClaw-daemon/NexisClaw.json");
+    expect(handoffInput.NEXISCLAW_STATE_DIR).toBe("/tmp/FirstNexus-daemon");
+    expect(handoffInput.NEXISCLAW_CONFIG_PATH).toBe("/tmp/FirstNexus-daemon/FirstNexus.json");
     expect(status.service.restartHandoff?.reason).toBe("plugin source changed");
     expect(status.service.restartHandoff?.restartKind).toBe("full-process");
     expect(status.service.restartHandoff?.supervisorMode).toBe("launchd");
@@ -451,8 +451,8 @@ describe("gatherDaemonStatus", () => {
   });
 
   it("uses the fast config path for plain same-file status reads", async () => {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-status-config-"));
-    const configPath = path.join(tmp, "NexisClaw.json");
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-status-config-"));
+    const configPath = path.join(tmp, "FirstNexus.json");
     await fs.writeFile(
       configPath,
       JSON.stringify({
@@ -495,8 +495,8 @@ describe("gatherDaemonStatus", () => {
   });
 
   it("uses full plugin-aware config validation for deep status", async () => {
-    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-status-config-"));
-    const configPath = path.join(tmp, "NexisClaw.json");
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-status-config-"));
+    const configPath = path.join(tmp, "FirstNexus.json");
     await fs.writeFile(
       configPath,
       JSON.stringify({
@@ -741,7 +741,7 @@ describe("gatherDaemonStatus", () => {
       portUsage: {
         port: 19001,
         status: "busy",
-        listeners: [{ pid: 9000, ppid: 8999, commandLine: "NexisClaw-gateway" }],
+        listeners: [{ pid: 9000, ppid: 8999, commandLine: "FirstNexus-gateway" }],
         hints: [],
       },
       healthy: false,

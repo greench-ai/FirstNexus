@@ -1,5 +1,5 @@
-import { readNumberParam, readStringParam } from "NexisClaw/plugin-sdk/param-readers";
-import type { WebSearchProviderPlugin } from "NexisClaw/plugin-sdk/provider-web-search-contract";
+import { readNumberParam, readStringParam } from "FirstNexus/plugin-sdk/param-readers";
+import type { WebSearchProviderPlugin } from "FirstNexus/plugin-sdk/provider-web-search-contract";
 import { createDuckDuckGoWebSearchProviderBase } from "./ddg-search-provider.shared.js";
 
 type DuckDuckGoClientModule = typeof import("./ddg-client.js");

@@ -61,7 +61,7 @@ async function ensureDevWorkspace(dir: string) {
   const [agents, soul, tools, identity, user] = await Promise.all([
     loadDevTemplate(
       "AGENTS.dev.md",
-      `# AGENTS.md - NexisClaw Dev Workspace\n\nDefault dev workspace for NexisClaw gateway --dev.\n`,
+      `# AGENTS.md - FirstNexus Dev Workspace\n\nDefault dev workspace for FirstNexus gateway --dev.\n`,
     ),
     loadDevTemplate(
       "SOUL.dev.md",

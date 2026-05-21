@@ -1,4 +1,4 @@
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import { authorizeSlackSystemEventSender } from "../auth.js";
 import { resolveSlackChannelLabel } from "../channel-config.js";
 import type { SlackMonitorContext } from "../context.js";

@@ -3,7 +3,7 @@ import {
   defineFinalizableLivePreviewAdapter,
   deliverWithFinalizableLivePreviewAdapter,
   type MessageReceipt,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import {
   createChannelProgressDraftGate,
   formatChannelProgressDraftLine,
@@ -11,20 +11,20 @@ import {
   formatChannelProgressDraftText,
   isChannelProgressDraftWorkToolName,
   resolveChannelProgressDraftMaxLines,
-} from "NexisClaw/plugin-sdk/channel-streaming";
+} from "FirstNexus/plugin-sdk/channel-streaming";
 import {
   evaluateSupplementalContextVisibility,
   resolveChannelContextVisibilityMode,
-} from "NexisClaw/plugin-sdk/context-visibility-runtime";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { hasFinalInboundReplyDispatch } from "NexisClaw/plugin-sdk/inbound-reply-dispatch";
-import type { GetReplyOptions } from "NexisClaw/plugin-sdk/reply-runtime";
-import { resolvePinnedMainDmOwnerFromAllowlist } from "NexisClaw/plugin-sdk/security-runtime";
+} from "FirstNexus/plugin-sdk/context-visibility-runtime";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { hasFinalInboundReplyDispatch } from "FirstNexus/plugin-sdk/inbound-reply-dispatch";
+import type { GetReplyOptions } from "FirstNexus/plugin-sdk/reply-runtime";
+import { resolvePinnedMainDmOwnerFromAllowlist } from "FirstNexus/plugin-sdk/security-runtime";
 import {
   loadSessionStore,
   resolveSessionStoreEntry,
-} from "NexisClaw/plugin-sdk/session-store-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/session-store-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type {
   CoreConfig,
   MatrixConfig,
@@ -102,10 +102,10 @@ const PAIRING_REPLY_COOLDOWN_MS = 5 * 60_000;
 const MATRIX_TOOL_PROGRESS_MAX_CHARS = 300;
 let matrixSendModulePromise: Promise<typeof import("../send.js")> | undefined;
 let acpBindingRuntimePromise:
-  | Promise<typeof import("NexisClaw/plugin-sdk/acp-binding-runtime")>
+  | Promise<typeof import("FirstNexus/plugin-sdk/acp-binding-runtime")>
   | undefined;
 let sessionBindingRuntimePromise:
-  | Promise<typeof import("NexisClaw/plugin-sdk/session-binding-runtime")>
+  | Promise<typeof import("FirstNexus/plugin-sdk/session-binding-runtime")>
   | undefined;
 let matrixReactionEventsPromise: Promise<typeof import("./reaction-events.js")> | undefined;
 let matrixDraftStreamPromise: Promise<typeof import("../draft-stream.js")> | undefined;
@@ -116,16 +116,16 @@ function loadMatrixSendModule(): Promise<typeof import("../send.js")> {
 }
 
 function loadAcpBindingRuntime(): Promise<
-  typeof import("NexisClaw/plugin-sdk/acp-binding-runtime")
+  typeof import("FirstNexus/plugin-sdk/acp-binding-runtime")
 > {
-  acpBindingRuntimePromise ??= import("NexisClaw/plugin-sdk/acp-binding-runtime");
+  acpBindingRuntimePromise ??= import("FirstNexus/plugin-sdk/acp-binding-runtime");
   return acpBindingRuntimePromise;
 }
 
 function loadSessionBindingRuntime(): Promise<
-  typeof import("NexisClaw/plugin-sdk/session-binding-runtime")
+  typeof import("FirstNexus/plugin-sdk/session-binding-runtime")
 > {
-  sessionBindingRuntimePromise ??= import("NexisClaw/plugin-sdk/session-binding-runtime");
+  sessionBindingRuntimePromise ??= import("FirstNexus/plugin-sdk/session-binding-runtime");
   return sessionBindingRuntimePromise;
 }
 

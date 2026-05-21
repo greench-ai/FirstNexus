@@ -10,7 +10,7 @@ import {
   defineChannelMessageAdapter,
   type ChannelMessageSendResult,
   type MessageReceiptPartKind,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import { resolveTwitchAccountContext } from "./config.js";
 import { sendMessageTwitchInternal } from "./send.js";
 import type {
@@ -113,7 +113,7 @@ export const twitchOutbound: ChannelOutboundAdapter = {
    *
    * @example
    * const result = await twitchOutbound.sendText({
-   *   cfg: NexisClawConfig,
+   *   cfg: FirstNexusConfig,
    *   to: "#mychannel",
    *   text: "Hello Twitch!",
    *   accountId: "default",
@@ -173,7 +173,7 @@ export const twitchOutbound: ChannelOutboundAdapter = {
    *
    * @example
    * const result = await twitchOutbound.sendMedia({
-   *   cfg: NexisClawConfig,
+   *   cfg: FirstNexusConfig,
    *   to: "#mychannel",
    *   text: "Check this out!",
    *   mediaUrl: "https://example.com/image.png",

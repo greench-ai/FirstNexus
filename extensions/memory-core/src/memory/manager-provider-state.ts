@@ -1,7 +1,7 @@
 import type {
-  NexisClawConfig,
+  FirstNexusConfig,
   ResolvedMemorySearchConfig,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-foundation";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-foundation";
 import {
   resolveEmbeddingProviderFallbackModel,
   type EmbeddingProvider,
@@ -74,7 +74,7 @@ export function applyMemoryFallbackProviderState(params: {
 }
 
 export function resolveMemoryFallbackProviderRequest(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   settings: ResolvedMemorySearchConfig;
   currentProviderId: string | null;
 }): {

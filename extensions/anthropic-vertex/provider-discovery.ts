@@ -1,5 +1,5 @@
-import type { ProviderCatalogContext } from "NexisClaw/plugin-sdk/provider-catalog-shared";
-import type { ModelProviderConfig } from "NexisClaw/plugin-sdk/provider-model-shared";
+import type { ProviderCatalogContext } from "FirstNexus/plugin-sdk/provider-catalog-shared";
+import type { ModelProviderConfig } from "FirstNexus/plugin-sdk/provider-model-shared";
 import { buildAnthropicVertexProvider } from "./provider-catalog.js";
 import { hasAnthropicVertexAvailableAuth, resolveAnthropicVertexConfigApiKey } from "./region.js";
 

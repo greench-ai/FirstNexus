@@ -2,7 +2,7 @@ import {
   createMessageReceiveContext,
   type MessageAckPolicy,
   type MessageReceiveContext,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import {
   buildTelegramUpdateKey,
   createTelegramUpdateDedupe,

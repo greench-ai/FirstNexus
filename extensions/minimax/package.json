@@ -1,13 +1,13 @@
 {
-  "name": "@NexisClaw/minimax-provider",
+  "name": "@FirstNexus/minimax-provider",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw MiniMax provider and OAuth plugin",
+  "description": "FirstNexus MiniMax provider and OAuth plugin",
   "type": "module",
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ]

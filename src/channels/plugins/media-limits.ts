@@ -1,13 +1,16 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { normalizeAccountId } from "../../routing/session-key.js";
 
 const MB = 1024 * 1024;
 
 export function resolveChannelMediaMaxBytes(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   // Channel-specific config lives under different keys; keep this helper generic
   // so shared plugin helpers don't need channel-id branching.
-  resolveChannelLimitMb: (params: { cfg: NexisClawConfig; accountId: string }) => number | undefined;
+  resolveChannelLimitMb: (params: {
+    cfg: FirstNexusConfig;
+    accountId: string;
+  }) => number | undefined;
   accountId?: string | null;
 }): number | undefined {
   const accountId = normalizeAccountId(params.accountId);

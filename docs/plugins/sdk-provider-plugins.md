@@ -1,25 +1,25 @@
 ---
-summary: "Step-by-step guide to building a model provider plugin for NexisClaw"
+summary: "Step-by-step guide to building a model provider plugin for FirstNexus"
 title: "Building provider plugins"
 sidebarTitle: "Provider plugins"
 read_when:
   - You are building a new model provider plugin
-  - You want to add an OpenAI-compatible proxy or custom LLM to NexisClaw
+  - You want to add an OpenAI-compatible proxy or custom LLM to FirstNexus
   - You need to understand provider auth, catalogs, and runtime hooks
 ---
 
 This guide walks through building a provider plugin that adds a model provider
-(LLM) to NexisClaw. By the end you will have a provider with a model catalog,
+(LLM) to FirstNexus. By the end you will have a provider with a model catalog,
 API key auth, and dynamic model resolution.
 
 <Info>
-  If you have not built any NexisClaw plugin before, read
+  If you have not built any FirstNexus plugin before, read
   [Getting Started](/plugins/building-plugins) first for the basic package
   structure and manifest setup.
 </Info>
 
 <Tip>
-  Provider plugins add models to NexisClaw's normal inference loop. If the model
+  Provider plugins add models to FirstNexus's normal inference loop. If the model
   must run through a native agent daemon that owns threads, compaction, or tool
   events, pair the provider with an [agent harness](/plugins/sdk-agent-harness)
   instead of putting daemon protocol details in core.
@@ -34,10 +34,10 @@ API key auth, and dynamic model resolution.
     <CodeGroup>
     ```json package.json
     {
-      "name": "@myorg/NexisClaw-acme-ai",
+      "name": "@myorg/FirstNexus-acme-ai",
       "version": "1.0.0",
       "type": "module",
-      "NexisClaw": {
+      "FirstNexus": {
         "extensions": ["./index.ts"],
         "providers": ["acme-ai"],
         "compat": {
@@ -45,14 +45,14 @@ API key auth, and dynamic model resolution.
           "minGatewayVersion": "2026.3.24-beta.2"
         },
         "build": {
-          "NexisClawVersion": "2026.3.24-beta.2",
+          "FirstNexusVersion": "2026.3.24-beta.2",
           "pluginSdkVersion": "2026.3.24-beta.2"
         }
       }
     }
     ```
 
-    ```json NexisClaw.plugin.json
+    ```json FirstNexus.plugin.json
     {
       "id": "acme-ai",
       "name": "Acme AI",
@@ -88,12 +88,12 @@ API key auth, and dynamic model resolution.
     ```
     </CodeGroup>
 
-    The manifest declares `providerAuthEnvVars` so NexisClaw can detect
+    The manifest declares `providerAuthEnvVars` so FirstNexus can detect
     credentials without loading your plugin runtime. Add `providerAuthAliases`
     when a provider variant should reuse another provider id's auth. `modelSupport`
-    is optional and lets NexisClaw auto-load your provider plugin from shorthand
+    is optional and lets FirstNexus auto-load your provider plugin from shorthand
     model ids like `acme-large` before runtime hooks exist. If you publish the
-    provider on ClawHub, those `NexisClaw.compat` and `NexisClaw.build` fields
+    provider on ClawHub, those `FirstNexus.compat` and `FirstNexus.build` fields
     are required in `package.json`.
 
   </Step>
@@ -104,8 +104,8 @@ API key auth, and dynamic model resolution.
     vendor APIs and returns `models.providers` entries.
 
     ```typescript index.ts
-    import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
-    import { createProviderApiKeyAuthMethod } from "NexisClaw/plugin-sdk/provider-auth";
+    import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
+    import { createProviderApiKeyAuthMethod } from "FirstNexus/plugin-sdk/provider-auth";
 
     export default definePluginEntry({
       id: "acme-ai",
@@ -193,14 +193,14 @@ API key auth, and dynamic model resolution.
     `registerModelCatalogProvider` is the newer control-plane catalog surface
     for list/help/picker UI. Use it for text, image-generation,
     video-generation, and music-generation rows. Keep vendor endpoint calls and
-    response mapping in the plugin; NexisClaw owns the shared row shape, source
+    response mapping in the plugin; FirstNexus owns the shared row shape, source
     labels, and help rendering.
 
     That is a working provider. Users can now
-    `NexisClaw onboard --acme-ai-api-key <key>` and select
+    `FirstNexus onboard --acme-ai-api-key <key>` and select
     `acme-ai/acme-large` as their model.
 
-    If the upstream provider uses different control tokens than NexisClaw, add a
+    If the upstream provider uses different control tokens than FirstNexus, add a
     small bidirectional text transform instead of replacing the stream path:
 
     ```typescript
@@ -220,14 +220,14 @@ API key auth, and dynamic model resolution.
 
     `input` rewrites the final system prompt and text message content before
     transport. `output` rewrites assistant text deltas and final text before
-    NexisClaw parses its own control markers or channel delivery.
+    FirstNexus parses its own control markers or channel delivery.
 
     For bundled providers that only register one text provider with API-key
     auth plus a single catalog-backed runtime, prefer the narrower
     `defineSingleProviderPluginEntry(...)` helper:
 
     ```typescript
-    import { defineSingleProviderPluginEntry } from "NexisClaw/plugin-sdk/provider-entry";
+    import { defineSingleProviderPluginEntry } from "FirstNexus/plugin-sdk/provider-entry";
 
     export default defineSingleProviderPluginEntry({
       id: "acme-ai",
@@ -264,24 +264,24 @@ API key auth, and dynamic model resolution.
     });
     ```
 
-    `buildProvider` is the live catalog path used when NexisClaw can resolve real
+    `buildProvider` is the live catalog path used when FirstNexus can resolve real
     provider auth. It may perform provider-specific discovery. Use
     `buildStaticProvider` only for offline rows that are safe to show before auth
     is configured; it must not require credentials or make network requests.
-    NexisClaw's `models list --all` display currently executes static catalogs
+    FirstNexus's `models list --all` display currently executes static catalogs
     only for bundled provider plugins, with an empty config, empty env, and no
     agent/workspace paths.
 
     If your auth flow also needs to patch `models.providers.*`, aliases, and
     the agent default model during onboarding, use the preset helpers from
-    `NexisClaw/plugin-sdk/provider-onboard`. The narrowest helpers are
+    `FirstNexus/plugin-sdk/provider-onboard`. The narrowest helpers are
     `createDefaultModelPresetAppliers(...)`,
     `createDefaultModelsPresetAppliers(...)`, and
     `createModelCatalogPresetAppliers(...)`.
 
     When a provider's native endpoint supports streamed usage blocks on the
     normal `openai-completions` transport, prefer the shared catalog helpers in
-    `NexisClaw/plugin-sdk/provider-catalog-shared` instead of hardcoding
+    `FirstNexus/plugin-sdk/provider-catalog-shared` instead of hardcoding
     provider-id checks. `supportsNativeStreamingUsageCompat(...)` and
     `applyProviderNativeStreamingUsageCompat(...)` detect support from the
     endpoint capability map, so native Moonshot/DashScope-style endpoints still
@@ -325,9 +325,9 @@ API key auth, and dynamic model resolution.
     families, so plugins usually do not need to hand-wire each hook one by one:
 
     ```typescript
-    import { buildProviderReplayFamilyHooks } from "NexisClaw/plugin-sdk/provider-model-shared";
-    import { buildProviderStreamFamilyHooks } from "NexisClaw/plugin-sdk/provider-stream";
-    import { buildProviderToolCompatFamilyHooks } from "NexisClaw/plugin-sdk/provider-tools";
+    import { buildProviderReplayFamilyHooks } from "FirstNexus/plugin-sdk/provider-model-shared";
+    import { buildProviderStreamFamilyHooks } from "FirstNexus/plugin-sdk/provider-stream";
+    import { buildProviderToolCompatFamilyHooks } from "FirstNexus/plugin-sdk/provider-tools";
 
     const GOOGLE_FAMILY_HOOKS = {
       ...buildProviderReplayFamilyHooks({ family: "google-gemini" }),
@@ -367,13 +367,13 @@ API key auth, and dynamic model resolution.
     <Accordion title="SDK seams powering the family builders">
       Each family builder is composed from lower-level public helpers exported from the same package, which you can reach for when a provider needs to go off the common pattern:
 
-      - `NexisClaw/plugin-sdk/provider-model-shared` - `ProviderReplayFamily`, `buildProviderReplayFamilyHooks(...)`, and the raw replay builders (`buildOpenAICompatibleReplayPolicy`, `buildAnthropicReplayPolicyForModel`, `buildGoogleGeminiReplayPolicy`, `buildHybridAnthropicOrOpenAIReplayPolicy`). Also exports Gemini replay helpers (`sanitizeGoogleGeminiReplayHistory`, `resolveTaggedReasoningOutputMode`) and endpoint/model helpers (`resolveProviderEndpoint`, `normalizeProviderId`, `normalizeGooglePreviewModelId`).
-      - `NexisClaw/plugin-sdk/provider-stream` - `ProviderStreamFamily`, `buildProviderStreamFamilyHooks(...)`, `composeProviderStreamWrappers(...)`, plus the shared OpenAI/Codex wrappers (`createOpenAIAttributionHeadersWrapper`, `createOpenAIFastModeWrapper`, `createOpenAIServiceTierWrapper`, `createOpenAIResponsesContextManagementWrapper`, `createCodexNativeWebSearchWrapper`), DeepSeek V4 OpenAI-compatible wrapper (`createDeepSeekV4OpenAICompatibleThinkingWrapper`), Anthropic Messages thinking prefill cleanup (`createAnthropicThinkingPrefillPayloadWrapper`), and shared proxy/provider wrappers (`createOpenRouterWrapper`, `createToolStreamWrapper`, `createMinimaxFastModeWrapper`).
-      - `NexisClaw/plugin-sdk/provider-tools` - `ProviderToolCompatFamily`, `buildProviderToolCompatFamilyHooks("gemini")`, and underlying Gemini schema helpers (`normalizeGeminiToolSchemas`, `inspectGeminiToolSchemas`).
+      - `FirstNexus/plugin-sdk/provider-model-shared` - `ProviderReplayFamily`, `buildProviderReplayFamilyHooks(...)`, and the raw replay builders (`buildOpenAICompatibleReplayPolicy`, `buildAnthropicReplayPolicyForModel`, `buildGoogleGeminiReplayPolicy`, `buildHybridAnthropicOrOpenAIReplayPolicy`). Also exports Gemini replay helpers (`sanitizeGoogleGeminiReplayHistory`, `resolveTaggedReasoningOutputMode`) and endpoint/model helpers (`resolveProviderEndpoint`, `normalizeProviderId`, `normalizeGooglePreviewModelId`).
+      - `FirstNexus/plugin-sdk/provider-stream` - `ProviderStreamFamily`, `buildProviderStreamFamilyHooks(...)`, `composeProviderStreamWrappers(...)`, plus the shared OpenAI/Codex wrappers (`createOpenAIAttributionHeadersWrapper`, `createOpenAIFastModeWrapper`, `createOpenAIServiceTierWrapper`, `createOpenAIResponsesContextManagementWrapper`, `createCodexNativeWebSearchWrapper`), DeepSeek V4 OpenAI-compatible wrapper (`createDeepSeekV4OpenAICompatibleThinkingWrapper`), Anthropic Messages thinking prefill cleanup (`createAnthropicThinkingPrefillPayloadWrapper`), and shared proxy/provider wrappers (`createOpenRouterWrapper`, `createToolStreamWrapper`, `createMinimaxFastModeWrapper`).
+      - `FirstNexus/plugin-sdk/provider-tools` - `ProviderToolCompatFamily`, `buildProviderToolCompatFamilyHooks("gemini")`, and underlying Gemini schema helpers (`normalizeGeminiToolSchemas`, `inspectGeminiToolSchemas`).
 
-      Some stream helpers stay provider-local on purpose. `@NexisClaw/anthropic-provider` keeps `wrapAnthropicProviderStream`, `resolveAnthropicBetas`, `resolveAnthropicFastMode`, `resolveAnthropicServiceTier`, and the lower-level Anthropic wrapper builders in its own public `api.ts` / `contract-api.ts` seam because they encode Claude OAuth beta handling and `context1m` gating. The xAI plugin similarly keeps native xAI Responses shaping in its own `wrapStreamFn` (`/fast` aliases, default `tool_stream`, unsupported strict-tool cleanup, xAI-specific reasoning-payload removal).
+      Some stream helpers stay provider-local on purpose. `@FirstNexus/anthropic-provider` keeps `wrapAnthropicProviderStream`, `resolveAnthropicBetas`, `resolveAnthropicFastMode`, `resolveAnthropicServiceTier`, and the lower-level Anthropic wrapper builders in its own public `api.ts` / `contract-api.ts` seam because they encode Claude OAuth beta handling and `context1m` gating. The xAI plugin similarly keeps native xAI Responses shaping in its own `wrapStreamFn` (`/fast` aliases, default `tool_stream`, unsupported strict-tool cleanup, xAI-specific reasoning-payload removal).
 
-      The same package-root pattern also backs `@NexisClaw/openai-provider` (provider builders, default-model helpers, realtime provider builders) and `@NexisClaw/openrouter-provider` (provider builder plus onboarding/config helpers).
+      The same package-root pattern also backs `@FirstNexus/openai-provider` (provider builders, default-model helpers, realtime provider builders) and `@FirstNexus/openrouter-provider` (provider builder plus onboarding/config helpers).
     </Accordion>
 
     <Tabs>
@@ -447,8 +447,8 @@ API key auth, and dynamic model resolution.
     </Tabs>
 
     <Accordion title="All available provider hooks">
-      NexisClaw calls hooks in this order. Most providers only use 2-3:
-      Compatibility-only provider fields that NexisClaw no longer calls, such as
+      FirstNexus calls hooks in this order. Most providers only use 2-3:
+      Compatibility-only provider fields that FirstNexus no longer calls, such as
       `ProviderPlugin.capabilities` and `suppressBuiltInModel`, are not listed
       here.
 
@@ -513,7 +513,7 @@ API key auth, and dynamic model resolution.
 
     A provider plugin can register speech, realtime transcription, realtime
     voice, media understanding, image generation, video generation, web fetch,
-    and web search alongside text inference. NexisClaw classifies this as a
+    and web search alongside text inference. FirstNexus classifies this as a
     **hybrid-capability** plugin - the recommended pattern for company plugins
     (one plugin per vendor). See
     [Internals: Capability Ownership](/plugins/architecture#capability-ownership-model).
@@ -527,7 +527,7 @@ API key auth, and dynamic model resolution.
         import {
           assertOkOrThrowProviderError,
           postJsonRequest,
-        } from "NexisClaw/plugin-sdk/provider-http";
+        } from "FirstNexus/plugin-sdk/provider-http";
 
         api.registerSpeechProvider({
           id: "acme-ai",
@@ -605,7 +605,7 @@ API key auth, and dynamic model resolution.
 
         Batch STT providers that POST multipart audio should use
         `buildAudioTranscriptionFormData(...)` from
-        `NexisClaw/plugin-sdk/provider-http`. The helper normalizes upload
+        `FirstNexus/plugin-sdk/provider-http`. The helper normalizes upload
         filenames, including AAC uploads that need an M4A-style filename for
         compatible transcription APIs.
       </Tab>
@@ -773,8 +773,8 @@ Do not use the legacy skill-only publish alias here; plugin packages should use
 
 ```
 <bundled-plugin-root>/acme-ai/
-├── package.json              # NexisClaw.providers metadata
-├── NexisClaw.plugin.json      # Manifest with provider auth metadata
+├── package.json              # FirstNexus.providers metadata
+├── FirstNexus.plugin.json      # Manifest with provider auth metadata
 ├── index.ts                  # definePluginEntry + registerProvider
 └── src/
     ├── provider.test.ts      # Tests

@@ -3,4 +3,4 @@ export {
   listRuntimeImageGenerationProviders,
   type GenerateImageParams,
   type GenerateImageRuntimeResult,
-} from "NexisClaw/plugin-sdk/image-generation-runtime";
+} from "FirstNexus/plugin-sdk/image-generation-runtime";

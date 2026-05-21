@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: NexisClaw
+    name: FirstNexus
     runtime: docker
     plan: starter
     healthCheckPath: /health
@@ -8,12 +8,12 @@ services:
       - key: NEXISCLAW_GATEWAY_PORT
         value: "8080"
       - key: NEXISCLAW_STATE_DIR
-        value: /data/.NexisClaw
+        value: /data/.FirstNexus
       - key: NEXISCLAW_WORKSPACE_DIR
         value: /data/workspace
       - key: NEXISCLAW_GATEWAY_TOKEN
         generateValue: true
     disk:
-      name: NexisClaw-data
+      name: FirstNexus-data
       mountPath: /data
       sizeGB: 1

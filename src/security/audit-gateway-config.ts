@@ -1,5 +1,5 @@
 import { isIP } from "node:net";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { hasConfiguredSecretInput } from "../config/types.secrets.js";
 import { resolveGatewayAuth } from "../gateway/auth-resolve.js";
 import { resolveGatewayAuthTokenSourceConflict } from "../gateway/auth-token-source-conflict.js";
@@ -11,7 +11,7 @@ import type { SecurityAuditFinding } from "./audit.types.js";
 import { collectCoreInsecureOrDangerousFlags } from "./core-dangerous-config-flags.js";
 import { DEFAULT_GATEWAY_HTTP_TOOL_DENY } from "./dangerous-tools.js";
 
-type CollectDangerousConfigFlags = (cfg: NexisClawConfig) => string[];
+type CollectDangerousConfigFlags = (cfg: FirstNexusConfig) => string[];
 
 export type CollectGatewayConfigFindingsOptions = {
   collectDangerousConfigFlags?: CollectDangerousConfigFlags;
@@ -22,8 +22,8 @@ function hasNonEmptyString(value: unknown): value is string {
 }
 
 export function collectGatewayConfigFindings(
-  cfg: NexisClawConfig,
-  sourceConfig: NexisClawConfig,
+  cfg: FirstNexusConfig,
+  sourceConfig: FirstNexusConfig,
   env: NodeJS.ProcessEnv,
   options: CollectGatewayConfigFindingsOptions = {},
 ): SecurityAuditFinding[] {

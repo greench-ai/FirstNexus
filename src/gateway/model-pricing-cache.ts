@@ -8,8 +8,8 @@ import {
   type ModelRef,
 } from "../agents/model-selection.js";
 import { resolvePluginWebSearchConfig } from "../config/plugin-web-search-config.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ModelDefinitionConfig } from "../config/types.models.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { planManifestModelCatalogRows, type ModelCatalogCost } from "../model-catalog/index.js";
 import { isInstalledPluginEnabled } from "../plugins/installed-plugin-index.js";
@@ -54,7 +54,7 @@ type OpenRouterModelPayload = {
 };
 
 type GatewayModelPricingRefreshParams = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   fetchImpl?: typeof fetch;
   workspaceDir?: string;
@@ -104,7 +104,7 @@ function clearRefreshTimer(): void {
 }
 
 function getPricingModelNormalizationOptions(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   manifestRegistry?: PluginManifestRegistry;
 }): PricingModelNormalizationOptions {
   const allowPluginBackedNormalization = params.config.plugins?.enabled !== false;
@@ -412,7 +412,7 @@ function normalizeExternalPricingPolicy(
 function filterActiveManifestRegistry(params: {
   registry: PluginManifestRegistry;
   index: PluginRegistrySnapshot;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
 }): PluginManifestRegistry {
   return {
     diagnostics: params.registry.diagnostics,
@@ -423,7 +423,7 @@ function filterActiveManifestRegistry(params: {
 }
 
 function resolveModelPricingManifestMetadata(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   workspaceDir?: string;
   pluginMetadataSnapshot?: PluginMetadataRegistryView;
@@ -707,7 +707,7 @@ function addProviderModelPair(params: {
 }
 
 function addConfiguredWebSearchPluginModels(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   aliasIndex: ReturnType<typeof buildModelAliasIndex>;
   refs: Map<string, ModelRef>;
   manifestRegistry: PluginManifestRegistry;
@@ -767,7 +767,7 @@ function isPrivateOrLoopbackBaseUrl(baseUrl: string | undefined): boolean {
 }
 
 function findConfiguredProviderModel(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   ref: ModelRef,
   options: PricingModelNormalizationOptions = {
     allowManifestNormalization: true,
@@ -786,7 +786,7 @@ function findConfiguredProviderModel(
 }
 
 function getConfiguredModelPricing(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   ref: ModelRef,
   options: PricingModelNormalizationOptions = {
     allowManifestNormalization: true,
@@ -797,7 +797,7 @@ function getConfiguredModelPricing(
 }
 
 function hasPrivateOrLoopbackConfiguredEndpoint(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   ref: ModelRef,
   options: PricingModelNormalizationOptions = {
     allowManifestNormalization: true,
@@ -813,7 +813,7 @@ function hasPrivateOrLoopbackConfiguredEndpoint(
 }
 
 function shouldFetchExternalPricingForRef(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   ref: ModelRef;
   policies: ReadonlyMap<string, ExternalPricingPolicy>;
   seededPricing: ReadonlyMap<string, CachedModelPricing>;
@@ -840,7 +840,7 @@ function shouldFetchExternalPricingForRef(params: {
 }
 
 function filterExternalPricingRefs(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   refs: ModelRef[];
   policies: ReadonlyMap<string, ExternalPricingPolicy>;
   seededPricing: ReadonlyMap<string, CachedModelPricing>;
@@ -862,7 +862,7 @@ function filterExternalPricingRefs(params: {
 }
 
 export function collectConfiguredModelPricingRefs(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   options: { manifestRegistry?: PluginManifestRegistry } = {},
 ): ModelRef[] {
   const manifestRegistry =
@@ -1136,7 +1136,7 @@ function scheduleRefresh(
 }
 
 function collectSeededPricing(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   refs: readonly ModelRef[];
   catalogPricing: ReadonlyMap<string, CachedModelPricing>;
   allowManifestNormalization: boolean;

@@ -43,7 +43,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-plugin-registry", tempDirs);
+  return makeTrackedTempDir("FirstNexus-plugin-registry", tempDirs);
 }
 
 function hermeticEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
@@ -66,7 +66,7 @@ function createCandidate(rootDir: string): PluginCandidate {
     "utf8",
   );
   fs.writeFileSync(
-    path.join(rootDir, "NexisClaw.plugin.json"),
+    path.join(rootDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: "demo",
       name: "Demo",
@@ -130,7 +130,7 @@ function createIndex(
     plugins: [
       {
         pluginId,
-        manifestPath: path.join(pluginRoot, "NexisClaw.plugin.json"),
+        manifestPath: path.join(pluginRoot, "FirstNexus.plugin.json"),
         manifestHash: "manifest-hash",
         rootDir: pluginRoot,
         origin: "global",
@@ -210,8 +210,8 @@ describe("plugin registry facade", () => {
     const absolute = path.resolve(pluginRoot, "..", "outside.txt");
 
     expect(resolvePluginPath(absolute, pluginRoot)).toBe(resolvePluginPath(absolute, undefined));
-    expect(resolvePluginPath("~/NexisClaw/plugin.txt", pluginRoot)).toBe(
-      resolvePluginPath("~/NexisClaw/plugin.txt", undefined),
+    expect(resolvePluginPath("~/FirstNexus/plugin.txt", pluginRoot)).toBe(
+      resolvePluginPath("~/FirstNexus/plugin.txt", undefined),
     );
   });
 
@@ -324,7 +324,7 @@ describe("plugin registry facade", () => {
       env,
       index,
     });
-    fs.unlinkSync(path.join(rootDir, "NexisClaw.plugin.json"));
+    fs.unlinkSync(path.join(rootDir, "FirstNexus.plugin.json"));
 
     expect(listPluginContributionIds({ lookUpTable, contribution: "providers" })).toEqual(["demo"]);
     expect(resolveProviderOwners({ lookUpTable, providerId: "DEMO" })).toEqual(["demo"]);
@@ -363,7 +363,7 @@ describe("plugin registry facade", () => {
     const rootDir = makeTempDir();
     fs.writeFileSync(path.join(rootDir, "index.ts"), "", "utf8");
     fs.writeFileSync(
-      path.join(rootDir, "NexisClaw.plugin.json"),
+      path.join(rootDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "openai",
         configSchema: { type: "object" },
@@ -376,7 +376,7 @@ describe("plugin registry facade", () => {
       plugins: [
         {
           ...createIndex("openai").plugins[0],
-          manifestPath: path.join(rootDir, "NexisClaw.plugin.json"),
+          manifestPath: path.join(rootDir, "FirstNexus.plugin.json"),
           source: path.join(rootDir, "index.ts"),
           rootDir,
         },
@@ -417,7 +417,7 @@ describe("plugin registry facade", () => {
       env,
       index,
     });
-    fs.unlinkSync(path.join(rootDir, "NexisClaw.plugin.json"));
+    fs.unlinkSync(path.join(rootDir, "FirstNexus.plugin.json"));
 
     const normalizePluginId = createPluginRegistryIdNormalizer(index, {
       manifestRegistry: lookUpTable.manifestRegistry,
@@ -442,7 +442,7 @@ describe("plugin registry facade", () => {
     const config = {} as const;
     fs.writeFileSync(path.join(persistedRootDir, "index.ts"), "", "utf8");
     fs.writeFileSync(
-      path.join(persistedRootDir, "NexisClaw.plugin.json"),
+      path.join(persistedRootDir, "FirstNexus.plugin.json"),
       JSON.stringify({ id: "persisted", configSchema: { type: "object" } }),
       "utf8",
     );
@@ -452,8 +452,8 @@ describe("plugin registry facade", () => {
         plugins: [
           {
             ...createIndex("persisted").plugins[0],
-            manifestPath: path.join(persistedRootDir, "NexisClaw.plugin.json"),
-            manifestHash: hashFile(path.join(persistedRootDir, "NexisClaw.plugin.json")),
+            manifestPath: path.join(persistedRootDir, "FirstNexus.plugin.json"),
+            manifestHash: hashFile(path.join(persistedRootDir, "FirstNexus.plugin.json")),
             source: path.join(persistedRootDir, "index.ts"),
             rootDir: persistedRootDir,
           },
@@ -513,7 +513,7 @@ describe("plugin registry facade", () => {
     });
     await writePersistedInstalledPluginIndex(persisted, { stateDir });
     fs.writeFileSync(
-      path.join(rootDir, "NexisClaw.plugin.json"),
+      path.join(rootDir, "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "demo",
         name: "Demo",
@@ -624,7 +624,7 @@ describe("plugin registry facade", () => {
         plugins: [
           {
             ...createIndex("persisted").plugins[0],
-            manifestPath: path.join(staleBundledRootDir, "NexisClaw.plugin.json"),
+            manifestPath: path.join(staleBundledRootDir, "FirstNexus.plugin.json"),
             source: path.join(staleBundledRootDir, "index.ts"),
             rootDir: staleBundledRootDir,
             origin: "bundled",
@@ -717,7 +717,7 @@ describe("plugin registry facade", () => {
       env,
     });
     const manifestReadsAfterFirst = readFileSyncSpy.mock.calls.filter((call) =>
-      String(call[0]).endsWith("NexisClaw.plugin.json"),
+      String(call[0]).endsWith("FirstNexus.plugin.json"),
     ).length;
 
     const second = loadPluginRegistrySnapshotWithMetadata({
@@ -727,7 +727,7 @@ describe("plugin registry facade", () => {
       env,
     });
     const manifestReadsAfterSecond = readFileSyncSpy.mock.calls.filter((call) =>
-      String(call[0]).endsWith("NexisClaw.plugin.json"),
+      String(call[0]).endsWith("FirstNexus.plugin.json"),
     ).length;
 
     expect(first.source).toBe("derived");

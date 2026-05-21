@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { pathExists } from "NexisClaw/plugin-sdk/security-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { pathExists } from "FirstNexus/plugin-sdk/security-runtime";
 import { ensureRepoBoundDirectory, resolveRepoRelativeOutputDir } from "../cli-paths.js";
 import {
   type CommandRunner,
@@ -72,7 +72,7 @@ type MantisDesktopBrowserSmokeSummary = {
   status: "pass" | "fail";
 };
 
-const DEFAULT_BROWSER_URL = "https://NexisClaw.ai";
+const DEFAULT_BROWSER_URL = "https://FirstNexus.ai";
 const DEFAULT_PROVIDER = "hetzner";
 const DEFAULT_CLASS = "beast";
 const DEFAULT_IDLE_TIMEOUT = "60m";
@@ -175,7 +175,7 @@ mkdir -p "$profile"
 profile_restored=false
 profile_archive_b64="\${${profileArchiveEnv}:-}"
 if [ -n "$profile_archive_b64" ]; then
-  profile_archive="$profile/NexisClaw-mantis-browser-profile.tgz"
+  profile_archive="$profile/FirstNexus-mantis-browser-profile.tgz"
   printf '%s' "$profile_archive_b64" | base64 -d >"$profile_archive"
   tar -xzf "$profile_archive" -C "$profile"
   rm -f "$profile_archive"
@@ -373,7 +373,7 @@ export async function runMantisDesktopBrowserSmoke(
   const explicitLeaseId = trimToValue(opts.leaseId) ?? trimToValue(env[CRABBOX_LEASE_ID_ENV]);
   const keepLease = opts.keepLease ?? isTruthyOptIn(env[CRABBOX_KEEP_ENV]);
   const createdLease = explicitLeaseId === undefined;
-  const remoteOutputDir = `/tmp/NexisClaw-mantis-desktop-${startedAt
+  const remoteOutputDir = `/tmp/FirstNexus-mantis-desktop-${startedAt
     .toISOString()
     .replace(/[^0-9A-Za-z]/gu, "-")}`;
   let leaseId = explicitLeaseId;

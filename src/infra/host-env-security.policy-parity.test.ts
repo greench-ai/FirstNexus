@@ -23,11 +23,11 @@ describe("host env security policy parity", () => {
     const policyPath = path.join(repoRoot, "src/infra/host-env-security-policy.json");
     const generatedSwiftPath = path.join(
       repoRoot,
-      "apps/macos/Sources/NexisClaw/HostEnvSecurityPolicy.generated.swift",
+      "apps/macos/Sources/FirstNexus/HostEnvSecurityPolicy.generated.swift",
     );
     const sanitizerSwiftPath = path.join(
       repoRoot,
-      "apps/macos/Sources/NexisClaw/HostEnvSanitizer.swift",
+      "apps/macos/Sources/FirstNexus/HostEnvSanitizer.swift",
     );
 
     const rawPolicy = JSON.parse(fs.readFileSync(policyPath, "utf8"));

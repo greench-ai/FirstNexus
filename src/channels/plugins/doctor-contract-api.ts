@@ -1,16 +1,16 @@
 import type { LegacyConfigRule } from "../../config/legacy.shared.js";
-import type { NexisClawConfig } from "../../config/types.js";
+import type { FirstNexusConfig } from "../../config/types.js";
 import { loadBundledPluginPublicArtifactModuleSync } from "../../plugins/public-surface-loader.js";
 
 type BundledChannelDoctorCompatibilityMutation = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   changes: string[];
 };
 
 type BundledChannelDoctorContractApi = {
   legacyConfigRules?: readonly LegacyConfigRule[];
   normalizeCompatibilityConfig?: (params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
   }) => BundledChannelDoctorCompatibilityMutation;
 };
 

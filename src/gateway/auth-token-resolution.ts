@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import { trimToUndefined } from "./credentials.js";
 import {
@@ -10,7 +10,7 @@ type GatewayAuthTokenResolutionSource = "explicit" | "config" | "secretRef" | "e
 type GatewayAuthTokenEnvFallback = "never" | "no-secret-ref" | "always";
 
 export async function resolveGatewayAuthToken(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   explicitToken?: string;
   envFallback?: GatewayAuthTokenEnvFallback;

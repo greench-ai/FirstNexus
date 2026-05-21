@@ -15,10 +15,10 @@ const DISCORD_TEST_CFG = {
   session: { dmScope: "main" },
 } as const;
 
-vi.mock("NexisClaw/plugin-sdk/plugin-config-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/plugin-config-runtime")>(
-    "NexisClaw/plugin-sdk/plugin-config-runtime",
-  );
+vi.mock("FirstNexus/plugin-sdk/plugin-config-runtime", async () => {
+  const actual = await vi.importActual<
+    typeof import("FirstNexus/plugin-sdk/plugin-config-runtime")
+  >("FirstNexus/plugin-sdk/plugin-config-runtime");
   return {
     ...actual,
     loadConfig: (..._args: unknown[]) => loadConfigMock(),

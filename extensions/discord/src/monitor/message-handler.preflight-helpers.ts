@@ -1,8 +1,8 @@
 import {
   implicitMentionKindWhen,
   matchesMentionWithExplicit,
-} from "NexisClaw/plugin-sdk/channel-inbound";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-inbound";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { ChannelType, type Message } from "../internal/discord.js";
 import type { DiscordMessagePreflightParams } from "./message-handler.preflight.types.js";
 import type { DiscordChannelInfo } from "./message-utils.js";

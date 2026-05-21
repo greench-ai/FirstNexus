@@ -1,6 +1,6 @@
 import { request as httpRequest } from "node:http";
 import { expect, vi } from "vitest";
-import type { NexisClawConfig, PluginRuntime } from "../runtime-api.js";
+import type { FirstNexusConfig, PluginRuntime } from "../runtime-api.js";
 import type { ResolvedZaloAccount } from "../types.js";
 
 function resolveLifecycleAllowFrom(params: {
@@ -16,7 +16,7 @@ function createLifecycleConfig(params: {
   allowFrom?: string[];
   webhookUrl?: string;
   webhookSecret?: string;
-}): NexisClawConfig {
+}): FirstNexusConfig {
   const webhookUrl = params.webhookUrl ?? "https://example.com/hooks/zalo";
   const webhookSecret = params.webhookSecret ?? "supersecret";
   const allowFrom = resolveLifecycleAllowFrom(params);
@@ -35,7 +35,7 @@ function createLifecycleConfig(params: {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function createLifecycleAccount(params: {

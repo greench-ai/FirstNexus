@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { isRecord } from "../utils.js";
 import { resolveModelRuntimePolicy } from "./model-runtime-policy.js";
@@ -55,7 +55,7 @@ function parseConfiguredModelRef(
   };
 }
 
-function hasOpenAIModelRef(config: NexisClawConfig, value: unknown, agentId?: string): boolean {
+function hasOpenAIModelRef(config: FirstNexusConfig, value: unknown, agentId?: string): boolean {
   return listAgentModelRefs(value).some((ref) => {
     if (!modelSelectionShouldEnsureCodexPlugin({ model: ref, config })) {
       return false;
@@ -72,7 +72,7 @@ function hasOpenAIModelRef(config: NexisClawConfig, value: unknown, agentId?: st
   });
 }
 
-function pushConfiguredModelRuntimeIds(config: NexisClawConfig, runtimes: Set<string>): void {
+function pushConfiguredModelRuntimeIds(config: FirstNexusConfig, runtimes: Set<string>): void {
   for (const providerConfig of Object.values(config.models?.providers ?? {})) {
     const providerRuntime = normalizeRuntimeId(providerConfig?.agentRuntime?.id);
     if (providerRuntime && providerRuntime !== "auto" && providerRuntime !== "pi") {
@@ -108,7 +108,7 @@ function pushConfiguredModelRuntimeIds(config: NexisClawConfig, runtimes: Set<st
   }
 }
 
-function pushLegacyAgentRuntimeIds(config: NexisClawConfig, runtimes: Set<string>): void {
+function pushLegacyAgentRuntimeIds(config: FirstNexusConfig, runtimes: Set<string>): void {
   const pushRuntimeId = (value: unknown) => {
     const runtime = normalizeRuntimeId(value);
     if (runtime && runtime !== "auto" && runtime !== "pi") {
@@ -129,7 +129,7 @@ export type ConfiguredAgentHarnessRuntimeOptions = {
 };
 
 export function collectConfiguredAgentHarnessRuntimes(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   env: NodeJS.ProcessEnv,
   options: ConfiguredAgentHarnessRuntimeOptions = {},
 ): string[] {

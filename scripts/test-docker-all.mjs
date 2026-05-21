@@ -1,5 +1,5 @@
 // Docker E2E aggregate scheduler.
-// Builds shared Docker images, prepares one NexisClaw npm tarball, assigns lanes
+// Builds shared Docker images, prepares one FirstNexus npm tarball, assigns lanes
 // to bare/functional images, and runs lanes through weighted resource pools.
 import { spawn } from "node:child_process";
 import fs from "node:fs";
@@ -21,7 +21,7 @@ import {
   laneSummary,
   laneWeight,
   lanesNeedE2eImageKind,
-  lanesNeedNexisClawPackage,
+  lanesNeedFirstNexusPackage,
   normalizeReleaseProfile,
   parseLaneSelection,
   parseLiveMode,
@@ -37,7 +37,7 @@ const DEFAULT_LANE_START_STAGGER_MS = 2_000;
 const DEFAULT_STATUS_INTERVAL_MS = 30_000;
 const DEFAULT_PREFLIGHT_RUN_TIMEOUT_MS = 60_000;
 const DEFAULT_TIMINGS_FILE = path.join(ROOT_DIR, ".artifacts/docker-tests/lane-timings.json");
-const DEFAULT_GITHUB_WORKFLOW = "NexisClaw-live-and-e2e-checks-reusable.yml";
+const DEFAULT_GITHUB_WORKFLOW = "FirstNexus-live-and-e2e-checks-reusable.yml";
 const IS_MAIN = process.argv[1]
   ? path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
   : false;
@@ -292,7 +292,10 @@ function buildLaneRerunCommand(name, baseEnv) {
     ["NEXISCLAW_DOCKER_E2E_FUNCTIONAL_IMAGE", baseEnv.NEXISCLAW_DOCKER_E2E_FUNCTIONAL_IMAGE],
     ["NEXISCLAW_CURRENT_PACKAGE_TGZ", baseEnv.NEXISCLAW_CURRENT_PACKAGE_TGZ],
     ["NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC", baseEnv.NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SPEC],
-    ["NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SPECS", baseEnv.NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SPECS],
+    [
+      "NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SPECS",
+      baseEnv.NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_SPECS,
+    ],
     ["NEXISCLAW_UPGRADE_SURVIVOR_SCENARIOS", baseEnv.NEXISCLAW_UPGRADE_SURVIVOR_SCENARIOS],
   ];
   if (baseEnv.NEXISCLAW_DOCKER_ALL_PNPM_COMMAND) {
@@ -482,7 +485,7 @@ function dockerPreflightContainerNames(raw) {
     .split(/\r?\n/)
     .map((line) => line.trim().split(/\s+/, 1)[0])
     .filter((name) =>
-      /^(?:NexisClaw-(?:gateway-e2e|openwebui|openwebui-gateway|config-reload-e2e)-)/.test(name),
+      /^(?:FirstNexus-(?:gateway-e2e|openwebui|openwebui-gateway|config-reload-e2e)-)/.test(name),
     );
 }
 
@@ -718,30 +721,30 @@ async function runDockerPreflight(baseEnv, options) {
   console.log(`==> Docker preflight run: ${elapsedSeconds}s`);
 }
 
-async function prepareNexisClawPackage(baseEnv, logDir) {
+async function prepareFirstNexusPackage(baseEnv, logDir) {
   const existing = baseEnv.NEXISCLAW_CURRENT_PACKAGE_TGZ;
   if (existing) {
     const packageTgz = path.resolve(existing);
     baseEnv.NEXISCLAW_CURRENT_PACKAGE_TGZ = packageTgz;
     baseEnv.NEXISCLAW_BUNDLED_CHANNEL_HOST_BUILD = "0";
     baseEnv.NEXISCLAW_NPM_ONBOARD_HOST_BUILD = "0";
-    console.log(`==> NexisClaw package: ${packageTgz}`);
+    console.log(`==> FirstNexus package: ${packageTgz}`);
     return;
   }
 
-  const packDir = path.join(logDir, "NexisClaw-package");
+  const packDir = path.join(logDir, "FirstNexus-package");
   await mkdir(packDir, { recursive: true });
-  const packageTgz = path.join(packDir, "NexisClaw-current.tgz");
+  const packageTgz = path.join(packDir, "FirstNexus-current.tgz");
   await runForeground(
-    "Prepare NexisClaw package once",
-    `node scripts/package-NexisClaw-for-docker.mjs --output-dir ${shellQuote(packDir)} --output-name NexisClaw-current.tgz`,
+    "Prepare FirstNexus package once",
+    `node scripts/package-FirstNexus-for-docker.mjs --output-dir ${shellQuote(packDir)} --output-name FirstNexus-current.tgz`,
     baseEnv,
   );
   await fs.promises.access(packageTgz);
   baseEnv.NEXISCLAW_CURRENT_PACKAGE_TGZ = packageTgz;
   baseEnv.NEXISCLAW_BUNDLED_CHANNEL_HOST_BUILD = "0";
   baseEnv.NEXISCLAW_NPM_ONBOARD_HOST_BUILD = "0";
-  console.log(`==> NexisClaw package: ${baseEnv.NEXISCLAW_CURRENT_PACKAGE_TGZ}`);
+  console.log(`==> FirstNexus package: ${baseEnv.NEXISCLAW_CURRENT_PACKAGE_TGZ}`);
 }
 
 function e2eImageForLane(poolLane, baseEnv) {
@@ -1234,12 +1237,12 @@ async function main() {
       });
     },
   );
-  if (lanesNeedNexisClawPackage(scheduledLanes)) {
-    await runPhase(phases, "prepare-NexisClaw-package", {}, async () => {
-      await prepareNexisClawPackage(baseEnv, logDir);
+  if (lanesNeedFirstNexusPackage(scheduledLanes)) {
+    await runPhase(phases, "prepare-FirstNexus-package", {}, async () => {
+      await prepareFirstNexusPackage(baseEnv, logDir);
     });
   } else {
-    console.log("==> NexisClaw package: not needed for selected lanes");
+    console.log("==> FirstNexus package: not needed for selected lanes");
   }
 
   if (buildEnabled) {

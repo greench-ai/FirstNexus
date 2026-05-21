@@ -3,8 +3,8 @@ import {
   resolveRemoteEmbeddingClient,
   type MemoryEmbeddingProvider,
   type MemoryEmbeddingProviderCreateOptions,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-embeddings";
-import type { SsrFPolicy } from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-embeddings";
+import type { SsrFPolicy } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import { OPENAI_DEFAULT_EMBEDDING_MODEL } from "./default-models.js";
 
 export type OpenAiEmbeddingClient = {

@@ -1,6 +1,6 @@
-export { resolvePreferredNexisClawTmpDir, withTempWorkspace } from "./src/runtime-api.js";
+export { resolvePreferredFirstNexusTmpDir, withTempWorkspace } from "./src/runtime-api.js";
 export {
   definePluginEntry,
   type AnyAgentTool,
-  type NexisClawPluginApi,
-} from "NexisClaw/plugin-sdk/plugin-entry";
+  type FirstNexusPluginApi,
+} from "FirstNexus/plugin-sdk/plugin-entry";

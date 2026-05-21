@@ -1,7 +1,7 @@
 import type { StreamFn } from "@earendil-works/pi-agent-core";
 import type { Context, Model } from "@earendil-works/pi-ai";
-import { registerSingleProviderPlugin } from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { expectPassthroughReplayPolicy } from "NexisClaw/plugin-sdk/provider-test-contracts";
+import { registerSingleProviderPlugin } from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { expectPassthroughReplayPolicy } from "FirstNexus/plugin-sdk/provider-test-contracts";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 

@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveProviderRuntimePlugin } from "../plugins/provider-hook-runtime.js";
 
 vi.mock("../plugins/provider-hook-runtime.js", async () => {
@@ -241,7 +241,7 @@ describe("resolveTranscriptPolicy", () => {
   });
 
   it("memoizes replay policy resolution for the same config and process env", () => {
-    const config = {} as NexisClawConfig;
+    const config = {} as FirstNexusConfig;
 
     resolveTranscriptPolicy({
       provider: "mistral",
@@ -260,7 +260,7 @@ describe("resolveTranscriptPolicy", () => {
   });
 
   it("does not reuse cached replay policies across custom env objects", () => {
-    const config = {} as NexisClawConfig;
+    const config = {} as FirstNexusConfig;
     const strictEnv = {
       ...process.env,
       NEXISCLAW_TEST_TRANSCRIPT_POLICY: "strict",
@@ -436,7 +436,7 @@ describe("resolveTranscriptPolicy", () => {
   });
 
   it("does not reuse cached unowned Anthropic policies across reasoning compat changes", () => {
-    const config = {} as NexisClawConfig;
+    const config = {} as FirstNexusConfig;
     const model = {
       id: "moonshotai/kimi-k2.5",
       name: "Kimi K2.5",

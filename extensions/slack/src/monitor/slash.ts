@@ -1,29 +1,29 @@
 import type { SlackActionMiddlewareArgs, SlackCommandMiddlewareArgs } from "@slack/bolt";
-import { resolveDefaultModelForAgent } from "NexisClaw/plugin-sdk/agent-runtime";
-import { createChannelMessageReplyPipeline } from "NexisClaw/plugin-sdk/channel-message";
+import { resolveDefaultModelForAgent } from "FirstNexus/plugin-sdk/agent-runtime";
+import { createChannelMessageReplyPipeline } from "FirstNexus/plugin-sdk/channel-message";
 import {
   formatCommandArgMenuTitle,
   resolveStoredModelOverride,
   type ChatCommandDefinition,
-} from "NexisClaw/plugin-sdk/command-auth-native";
+} from "FirstNexus/plugin-sdk/command-auth-native";
 import {
   type CommandArgs,
   resolveNativeCommandSessionTargets,
-} from "NexisClaw/plugin-sdk/command-auth-native";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+} from "FirstNexus/plugin-sdk/command-auth-native";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import {
   resolveNativeCommandsEnabled,
   resolveNativeSkillsEnabled,
-} from "NexisClaw/plugin-sdk/native-command-config-runtime";
-import type { ReplyPayload } from "NexisClaw/plugin-sdk/reply-runtime";
-import type { ResolvedAgentRoute } from "NexisClaw/plugin-sdk/routing";
-import { danger, logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { loadSessionStore, resolveStorePath } from "NexisClaw/plugin-sdk/session-store-runtime";
+} from "FirstNexus/plugin-sdk/native-command-config-runtime";
+import type { ReplyPayload } from "FirstNexus/plugin-sdk/reply-runtime";
+import type { ResolvedAgentRoute } from "FirstNexus/plugin-sdk/routing";
+import { danger, logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { loadSessionStore, resolveStorePath } from "FirstNexus/plugin-sdk/session-store-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { chunkItems } from "NexisClaw/plugin-sdk/text-chunking";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { chunkItems } from "FirstNexus/plugin-sdk/text-chunking";
 import type { ResolvedSlackAccount } from "../accounts.js";
 import { SLACK_MAX_BLOCKS } from "../blocks-input.js";
 import { formatSlackError } from "../errors.js";
@@ -45,8 +45,8 @@ import { resolveSlackRoomContextHints } from "./room-context.js";
 
 type SlackBlock = { type: string; [key: string]: unknown };
 
-const SLACK_COMMAND_ARG_ACTION_ID = "NexisClaw_cmdarg";
-const SLACK_COMMAND_ARG_ACTION_LISTENER = /^NexisClaw_cmdarg/;
+const SLACK_COMMAND_ARG_ACTION_ID = "FirstNexus_cmdarg";
+const SLACK_COMMAND_ARG_ACTION_LISTENER = /^FirstNexus_cmdarg/;
 const SLACK_COMMAND_ARG_VALUE_PREFIX = "cmdarg";
 const SLACK_COMMAND_ARG_BUTTON_ROW_SIZE = 5;
 const SLACK_COMMAND_ARG_OVERFLOW_MIN = 3;

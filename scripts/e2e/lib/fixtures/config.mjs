@@ -45,7 +45,7 @@ function writeConfig(kind) {
 }
 
 function writeOpenAiWebSearchMinimalConfig() {
-  writeJson(path.join(process.env.NEXISCLAW_STATE_DIR, "NexisClaw.json"), {
+  writeJson(path.join(process.env.NEXISCLAW_STATE_DIR, "FirstNexus.json"), {
     agents: {
       defaults: {
         model: { primary: "openai/gpt-5" },

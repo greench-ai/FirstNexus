@@ -1,35 +1,35 @@
-import { describeAccountSnapshot } from "NexisClaw/plugin-sdk/account-helpers";
+import { describeAccountSnapshot } from "FirstNexus/plugin-sdk/account-helpers";
 import {
   adaptScopedAccountAccessor,
   createScopedDmSecurityResolver,
-} from "NexisClaw/plugin-sdk/channel-config-helpers";
-import type { ChannelDoctorAdapter } from "NexisClaw/plugin-sdk/channel-contract";
-import { createChatChannelPlugin, type ChannelPlugin } from "NexisClaw/plugin-sdk/channel-core";
-import { createChannelMessageAdapterFromOutbound } from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-config-helpers";
+import type { ChannelDoctorAdapter } from "FirstNexus/plugin-sdk/channel-contract";
+import { createChatChannelPlugin, type ChannelPlugin } from "FirstNexus/plugin-sdk/channel-core";
+import { createChannelMessageAdapterFromOutbound } from "FirstNexus/plugin-sdk/channel-message";
 import {
   createAllowlistProviderOpenWarningCollector,
   projectAccountConfigWarningCollector,
-} from "NexisClaw/plugin-sdk/channel-policy";
-import type { ChannelOutboundAdapter } from "NexisClaw/plugin-sdk/channel-send-result";
-import { createScopedAccountReplyToModeResolver } from "NexisClaw/plugin-sdk/conversation-runtime";
+} from "FirstNexus/plugin-sdk/channel-policy";
+import type { ChannelOutboundAdapter } from "FirstNexus/plugin-sdk/channel-send-result";
+import { createScopedAccountReplyToModeResolver } from "FirstNexus/plugin-sdk/conversation-runtime";
 import {
   createChannelDirectoryAdapter,
   createResolvedDirectoryEntriesLister,
   createRuntimeDirectoryLiveAdapter,
-} from "NexisClaw/plugin-sdk/directory-runtime";
-import { createLazyRuntimeNamedExport } from "NexisClaw/plugin-sdk/lazy-runtime";
-import { createRuntimeOutboundDelegates } from "NexisClaw/plugin-sdk/outbound-runtime";
+} from "FirstNexus/plugin-sdk/directory-runtime";
+import { createLazyRuntimeNamedExport } from "FirstNexus/plugin-sdk/lazy-runtime";
+import { createRuntimeOutboundDelegates } from "FirstNexus/plugin-sdk/outbound-runtime";
 import {
   buildProbeChannelStatusSummary,
   collectStatusIssuesFromLastError,
   createComputedAccountStatusAdapter,
   createDefaultChannelRuntimeState,
-} from "NexisClaw/plugin-sdk/status-helpers";
+} from "FirstNexus/plugin-sdk/status-helpers";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { chunkTextForOutbound } from "NexisClaw/plugin-sdk/text-chunking";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { chunkTextForOutbound } from "FirstNexus/plugin-sdk/text-chunking";
 import { matrixMessageActions } from "./actions.js";
 import { matrixApprovalCapability } from "./approval-native.js";
 import { createMatrixPairingText, createMatrixProbeAccount } from "./channel-account-paths.js";

@@ -1,4 +1,4 @@
-import type { GatewayEvent, JsonObject, NexisClawEvent, NexisClawEventType } from "./types.js";
+import type { GatewayEvent, JsonObject, FirstNexusEvent, FirstNexusEventType } from "./types.js";
 
 function asRecord(value: unknown): JsonObject {
   return typeof value === "object" && value !== null ? (value as JsonObject) : {};
@@ -16,7 +16,7 @@ function readLowerString(value: unknown): string | undefined {
   return readString(value)?.toLowerCase();
 }
 
-function normalizeLifecycleEndEventType(data: JsonObject): NexisClawEventType {
+function normalizeLifecycleEndEventType(data: JsonObject): FirstNexusEventType {
   const status = readLowerString(data.status);
   const stopReason = readLowerString(data.stopReason);
   if (
@@ -48,7 +48,7 @@ function normalizeLifecycleEndEventType(data: JsonObject): NexisClawEventType {
   return "run.completed";
 }
 
-function normalizeAgentEventType(payload: JsonObject): NexisClawEventType {
+function normalizeAgentEventType(payload: JsonObject): FirstNexusEventType {
   const stream = readString(payload.stream);
   const data = asRecord(payload.data);
   const phase = readString(data.phase);
@@ -100,7 +100,7 @@ function normalizeAgentEventType(payload: JsonObject): NexisClawEventType {
   return "raw";
 }
 
-function normalizeNamedEventType(event: GatewayEvent): NexisClawEventType {
+function normalizeNamedEventType(event: GatewayEvent): FirstNexusEventType {
   const payload = asRecord(event.payload);
   switch (event.event) {
     case "agent":
@@ -133,7 +133,7 @@ function normalizeNamedEventType(event: GatewayEvent): NexisClawEventType {
   }
 }
 
-export function normalizeGatewayEvent(event: GatewayEvent): NexisClawEvent {
+export function normalizeGatewayEvent(event: GatewayEvent): FirstNexusEvent {
   const payload = asRecord(event.payload);
   const runId = readString(payload.runId);
   const sessionId = readString(payload.sessionId);

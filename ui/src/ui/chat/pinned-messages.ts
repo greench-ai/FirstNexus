@@ -1,6 +1,6 @@
 import { getSafeLocalStorage } from "../../local-storage.ts";
 
-const PREFIX = "NexisClaw:pinned:";
+const PREFIX = "FirstNexus:pinned:";
 
 export class PinnedMessages {
   private key: string;

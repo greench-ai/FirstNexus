@@ -11,7 +11,7 @@ import {
 } from "./models-config.e2e-harness.js";
 import { readGeneratedModelsJson } from "./models-config.test-utils.js";
 
-const planNexisClawModelsJsonMock = vi.fn();
+const planFirstNexusModelsJsonMock = vi.fn();
 const writePrivateStoreTextWriteMock = vi.fn();
 let actualPrivateFileStore:
   | typeof import("../infra/private-file-store.js").privateFileStore
@@ -19,7 +19,7 @@ let actualPrivateFileStore:
 
 installModelsConfigTestHooks();
 
-let ensureNexisClawModelsJson: typeof import("./models-config.js").ensureNexisClawModelsJson;
+let ensureFirstNexusModelsJson: typeof import("./models-config.js").ensureFirstNexusModelsJson;
 let clearCurrentPluginMetadataSnapshot: typeof import("../plugins/current-plugin-metadata-snapshot.js").clearCurrentPluginMetadataSnapshot;
 let setCurrentPluginMetadataSnapshot: typeof import("../plugins/current-plugin-metadata-snapshot.js").setCurrentPluginMetadataSnapshot;
 
@@ -78,7 +78,7 @@ async function expectMissingPath(operation: Promise<unknown>) {
 
 beforeAll(async () => {
   vi.doMock("./models-config.plan.js", () => ({
-    planNexisClawModelsJson: (...args: unknown[]) => planNexisClawModelsJsonMock(...args),
+    planFirstNexusModelsJson: (...args: unknown[]) => planFirstNexusModelsJsonMock(...args),
   }));
   vi.doMock("../infra/private-file-store.js", async () => {
     const actual = await vi.importActual<typeof import("../infra/private-file-store.js")>(
@@ -101,7 +101,7 @@ beforeAll(async () => {
       },
     };
   });
-  ({ ensureNexisClawModelsJson } = await import("./models-config.js"));
+  ({ ensureFirstNexusModelsJson } = await import("./models-config.js"));
   ({ clearCurrentPluginMetadataSnapshot, setCurrentPluginMetadataSnapshot } =
     await import("../plugins/current-plugin-metadata-snapshot.js"));
 });
@@ -121,7 +121,7 @@ beforeEach(() => {
         );
       },
     );
-  planNexisClawModelsJsonMock
+  planFirstNexusModelsJsonMock
     .mockReset()
     .mockImplementation(async (params: { cfg?: typeof CUSTOM_PROXY_MODELS_CONFIG }) => ({
       action: "write",
@@ -136,9 +136,9 @@ describe("models-config write serialization", () => {
       setCurrentPluginMetadataSnapshot(snapshot, { config: {} });
       const agentDir = path.join(home, "agent-non-default");
 
-      await ensureNexisClawModelsJson({}, agentDir);
+      await ensureFirstNexusModelsJson({}, agentDir);
 
-      const params = planNexisClawModelsJsonMock.mock.calls.at(0)?.[0] as
+      const params = planFirstNexusModelsJsonMock.mock.calls.at(0)?.[0] as
         | { pluginMetadataSnapshot?: PluginMetadataSnapshot }
         | undefined;
       expect(params?.pluginMetadataSnapshot).not.toBe(snapshot);
@@ -152,9 +152,9 @@ describe("models-config write serialization", () => {
       setCurrentPluginMetadataSnapshot(snapshot, { config: {} });
       const agentDir = path.join(home, "agent-non-default");
 
-      await ensureNexisClawModelsJson({}, agentDir, { workspaceDir });
+      await ensureFirstNexusModelsJson({}, agentDir, { workspaceDir });
 
-      const params = planNexisClawModelsJsonMock.mock.calls.at(0)?.[0] as
+      const params = planFirstNexusModelsJsonMock.mock.calls.at(0)?.[0] as
         | { workspaceDir?: string; pluginMetadataSnapshot?: PluginMetadataSnapshot }
         | undefined;
       expect(params?.workspaceDir).toBe(workspaceDir);
@@ -170,31 +170,31 @@ describe("models-config write serialization", () => {
         },
       };
 
-      const result = await ensureNexisClawModelsJson(cfg);
+      const result = await ensureFirstNexusModelsJson(cfg);
 
-      expect(result.agentDir).toBe(path.join(home, ".NexisClaw", "agents", "ops", "agent"));
+      expect(result.agentDir).toBe(path.join(home, ".FirstNexus", "agents", "ops", "agent"));
       await expect(fs.access(path.join(result.agentDir, "models.json"))).resolves.toBeUndefined();
       await expectMissingPath(
-        fs.access(path.join(home, ".NexisClaw", "agents", "main", "agent", "models.json")),
+        fs.access(path.join(home, ".FirstNexus", "agents", "main", "agent", "models.json")),
       );
     });
   });
 
   it("does not reuse scoped startup discovery cache for a different provider scope", async () => {
     await withModelsTempHome(async (home) => {
-      planNexisClawModelsJsonMock.mockImplementation(async () => ({ action: "skip" }));
+      planFirstNexusModelsJsonMock.mockImplementation(async () => ({ action: "skip" }));
       const agentDir = path.join(home, "agent");
-      await ensureNexisClawModelsJson({}, agentDir, {
+      await ensureFirstNexusModelsJson({}, agentDir, {
         providerDiscoveryProviderIds: ["openai"],
         providerDiscoveryTimeoutMs: 5000,
       });
-      await ensureNexisClawModelsJson({}, agentDir, {
+      await ensureFirstNexusModelsJson({}, agentDir, {
         providerDiscoveryProviderIds: ["anthropic"],
         providerDiscoveryTimeoutMs: 5000,
       });
 
-      expect(planNexisClawModelsJsonMock).toHaveBeenCalledTimes(2);
-      const params = planNexisClawModelsJsonMock.mock.calls.at(1)?.[0] as
+      expect(planFirstNexusModelsJsonMock).toHaveBeenCalledTimes(2);
+      const params = planFirstNexusModelsJsonMock.mock.calls.at(1)?.[0] as
         | {
             providerDiscoveryProviderIds?: string[];
             providerDiscoveryTimeoutMs?: number;
@@ -207,41 +207,41 @@ describe("models-config write serialization", () => {
 
   it("keeps the ready cache warm after models.json is written", async () => {
     await withModelsTempHome(async () => {
-      await ensureNexisClawModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
-      await ensureNexisClawModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
+      await ensureFirstNexusModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
+      await ensureFirstNexusModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
 
-      expect(planNexisClawModelsJsonMock).toHaveBeenCalledTimes(1);
+      expect(planFirstNexusModelsJsonMock).toHaveBeenCalledTimes(1);
     });
   });
 
   it("invalidates the ready cache when models.json changes externally", async () => {
     await withModelsTempHome(async () => {
-      await ensureNexisClawModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
-      await ensureNexisClawModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
+      await ensureFirstNexusModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
+      await ensureFirstNexusModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
 
       const modelPath = path.join(resolveDefaultAgentDir({}), "models.json");
       await fs.writeFile(modelPath, `${JSON.stringify({ external: true })}\n`, "utf8");
       const externalMtime = new Date(Date.now() + 2000);
       await fs.utimes(modelPath, externalMtime, externalMtime);
-      await ensureNexisClawModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
+      await ensureFirstNexusModelsJson(CUSTOM_PROXY_MODELS_CONFIG);
 
-      expect(planNexisClawModelsJsonMock).toHaveBeenCalledTimes(2);
+      expect(planFirstNexusModelsJsonMock).toHaveBeenCalledTimes(2);
     });
   });
 
   it("keeps distinct config fingerprints cached without evicting each other", async () => {
     await withModelsTempHome(async () => {
-      planNexisClawModelsJsonMock.mockImplementation(async () => ({ action: "noop" }));
+      planFirstNexusModelsJsonMock.mockImplementation(async () => ({ action: "noop" }));
       const first = structuredClone(CUSTOM_PROXY_MODELS_CONFIG);
       const second = structuredClone(CUSTOM_PROXY_MODELS_CONFIG);
       first.agents = { defaults: { model: "openai/gpt-5.4" } };
       second.agents = { defaults: { model: "anthropic/claude-sonnet-4-5" } };
 
-      await ensureNexisClawModelsJson(first);
-      await ensureNexisClawModelsJson(second);
-      await ensureNexisClawModelsJson(first);
+      await ensureFirstNexusModelsJson(first);
+      await ensureFirstNexusModelsJson(second);
+      await ensureFirstNexusModelsJson(first);
 
-      expect(planNexisClawModelsJsonMock).toHaveBeenCalledTimes(2);
+      expect(planFirstNexusModelsJsonMock).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -299,8 +299,8 @@ describe("models-config write serialization", () => {
       );
 
       const writes = Promise.all([
-        ensureNexisClawModelsJson(first),
-        ensureNexisClawModelsJson(second),
+        ensureFirstNexusModelsJson(first),
+        ensureFirstNexusModelsJson(second),
       ]);
       await firstModelsWriteStarted;
       await Promise.resolve();

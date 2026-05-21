@@ -1,5 +1,5 @@
-import type { MessagePresentation } from "NexisClaw/plugin-sdk/interactive-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { MessagePresentation } from "FirstNexus/plugin-sdk/interactive-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export function buildMSTeamsPresentationCard(params: {
   presentation: MessagePresentation;

@@ -1,12 +1,12 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ButtonInteraction, ComponentData } from "../internal/discord.js";
 
 const resolveApprovalOverGatewayMock = vi.hoisted(() => vi.fn());
 
-vi.mock("NexisClaw/plugin-sdk/approval-gateway-runtime", async (importOriginal) => {
+vi.mock("FirstNexus/plugin-sdk/approval-gateway-runtime", async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import("NexisClaw/plugin-sdk/approval-gateway-runtime")>();
+    await importOriginal<typeof import("FirstNexus/plugin-sdk/approval-gateway-runtime")>();
   return {
     ...actual,
     resolveApprovalOverGateway: resolveApprovalOverGatewayMock,
@@ -22,8 +22,10 @@ import {
 } from "./exec-approvals.js";
 
 function buildConfig(
-  execApprovals?: NonNullable<NonNullable<NexisClawConfig["channels"]>["discord"]>["execApprovals"],
-): NexisClawConfig {
+  execApprovals?: NonNullable<
+    NonNullable<FirstNexusConfig["channels"]>["discord"]
+  >["execApprovals"],
+): FirstNexusConfig {
   return {
     channels: {
       discord: {
@@ -31,7 +33,7 @@ function buildConfig(
         execApprovals,
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function createInteraction(overrides?: Partial<ButtonInteraction>): ButtonInteraction {

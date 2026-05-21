@@ -15,7 +15,7 @@ setupCliBundleMcpTestHarness();
 describe("prepareCliBundleMcpConfig", () => {
   it("injects a strict empty --mcp-config overlay for bundle-MCP-enabled backends without servers", async () => {
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "NexisClaw-cli-bundle-mcp-empty-",
+      "FirstNexus-cli-bundle-mcp-empty-",
     );
 
     const prepared = await prepareCliBundleMcpConfig({
@@ -58,9 +58,9 @@ describe("prepareCliBundleMcpConfig", () => {
 
   it("loads workspace bundle MCP plugins from the configured workspace root", async () => {
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "NexisClaw-cli-bundle-mcp-workspace-root-",
+      "FirstNexus-cli-bundle-mcp-workspace-root-",
     );
-    const pluginRoot = path.join(workspaceDir, ".NexisClaw", "extensions", "workspace-probe");
+    const pluginRoot = path.join(workspaceDir, ".FirstNexus", "extensions", "workspace-probe");
     const serverPath = path.join(pluginRoot, "servers", "probe.mjs");
     await fs.mkdir(path.dirname(serverPath), { recursive: true });
     await fs.writeFile(serverPath, "export {};\n", "utf-8");
@@ -116,7 +116,7 @@ describe("prepareCliBundleMcpConfig", () => {
     const prepared = await prepareBundleProbeCliConfig({
       additionalConfig: {
         mcpServers: {
-          NexisClaw: {
+          FirstNexus: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
@@ -131,16 +131,18 @@ describe("prepareCliBundleMcpConfig", () => {
     const raw = JSON.parse(await fs.readFile(generatedConfigPath, "utf-8")) as {
       mcpServers?: Record<string, { url?: string; headers?: Record<string, string> }>;
     };
-    expect(Object.keys(raw.mcpServers ?? {}).toSorted()).toEqual(["bundleProbe", "NexisClaw"]);
-    expect(raw.mcpServers?.NexisClaw?.url).toBe("http://127.0.0.1:23119/mcp");
-    expect(raw.mcpServers?.NexisClaw?.headers?.Authorization).toBe("Bearer ${NEXISCLAW_MCP_TOKEN}");
+    expect(Object.keys(raw.mcpServers ?? {}).toSorted()).toEqual(["bundleProbe", "FirstNexus"]);
+    expect(raw.mcpServers?.FirstNexus?.url).toBe("http://127.0.0.1:23119/mcp");
+    expect(raw.mcpServers?.FirstNexus?.headers?.Authorization).toBe(
+      "Bearer ${NEXISCLAW_MCP_TOKEN}",
+    );
 
     await prepared.cleanup?.();
   });
 
   it("preserves extra env values alongside generated MCP config", async () => {
     const workspaceDir = await cliBundleMcpHarness.tempHarness.createTempDir(
-      "NexisClaw-cli-bundle-mcp-env-",
+      "FirstNexus-cli-bundle-mcp-env-",
     );
 
     const prepared = await prepareCliBundleMcpConfig({
@@ -173,7 +175,7 @@ describe("prepareCliBundleMcpConfig", () => {
         command: "node",
         args: ["./fake-cli.mjs"],
       },
-      workspaceDir: "/tmp/NexisClaw-bundle-mcp-disabled",
+      workspaceDir: "/tmp/FirstNexus-bundle-mcp-disabled",
     });
 
     expect(prepared.backend.args).toEqual(["./fake-cli.mjs"]);

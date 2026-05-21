@@ -10,7 +10,7 @@ export {
   getQaBusState,
   injectQaBusInboundMessage,
   normalizeQaTarget,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   parseQaTarget,
   type PluginRuntime,
   pollQaBus,

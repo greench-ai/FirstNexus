@@ -21,7 +21,7 @@ export function createBundleMcpTempHarness() {
 }
 
 function resolveBundlePluginRoot(homeDir: string, pluginId: string) {
-  return path.join(homeDir, ".NexisClaw", "extensions", pluginId);
+  return path.join(homeDir, ".FirstNexus", "extensions", pluginId);
 }
 
 export async function writeClaudeBundleManifest(params: {

@@ -1,10 +1,10 @@
-import type { ProviderAuthContext } from "NexisClaw/plugin-sdk/core";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { fetchWithSsrFGuard } from "NexisClaw/plugin-sdk/ssrf-runtime";
+import type { ProviderAuthContext } from "FirstNexus/plugin-sdk/core";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { fetchWithSsrFGuard } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   normalizeOptionalString,
   normalizeStringifiedOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   azLoginDeviceCode,
   azLoginDeviceCodeWithOptions,

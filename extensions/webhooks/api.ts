@@ -1,6 +1,6 @@
 export {
   definePluginEntry,
-  type NexisClawPluginApi,
+  type FirstNexusPluginApi,
   type PluginLogger,
   type PluginRuntime,
-} from "NexisClaw/plugin-sdk/core";
+} from "FirstNexus/plugin-sdk/core";

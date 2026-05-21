@@ -15,7 +15,7 @@ function rejectAgentScopedModelWrite(command: Command, commandName: "set" | "set
     return;
   }
   throw new Error(
-    `NexisClaw models ${commandName} does not support --agent; it only updates global model defaults. Remove --agent, or run ${formatCliCommand("NexisClaw agents list")} and set the per-agent model in agent config.`,
+    `FirstNexus models ${commandName} does not support --agent; it only updates global model defaults. Remove --agent, or run ${formatCliCommand("FirstNexus agents list")} and set the per-agent model in agent config.`,
   );
 }
 
@@ -32,7 +32,7 @@ export function registerModelsCli(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/models", "docs.NexisClaw.ai/cli/models")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/models", "docs.FirstNexus.ai/cli/models")}\n`,
     );
 
   models

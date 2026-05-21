@@ -2,14 +2,14 @@ import {
   firstDefined,
   isSenderIdAllowed,
   mergeDmAllowFromSources,
-} from "NexisClaw/plugin-sdk/allow-from";
+} from "FirstNexus/plugin-sdk/allow-from";
 import type {
   DmPolicy,
   TelegramDirectConfig,
   TelegramGroupConfig,
-} from "NexisClaw/plugin-sdk/config-contracts";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/config-contracts";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export type NormalizedAllowFrom = {
   entries: string[];

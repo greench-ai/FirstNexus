@@ -18,18 +18,18 @@ vi.mock("./helpers.js", () => ({
 describe("reparseProgramFromActionArgs", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    buildParseArgvMock.mockReturnValue(["node", "NexisClaw", "status"]);
+    buildParseArgvMock.mockReturnValue(["node", "FirstNexus", "status"]);
     resolveActionArgsMock.mockReturnValue([]);
     resolveCommandOptionArgsMock.mockReturnValue([]);
   });
 
   it("uses action command name + args as fallback argv", async () => {
-    const program = new Command().name("NexisClaw");
+    const program = new Command().name("FirstNexus");
     const parseAsync = vi.spyOn(program, "parseAsync").mockResolvedValue(program);
     const actionCommand = {
       name: () => "status",
       parent: {
-        rawArgs: ["node", "NexisClaw", "status", "--json"],
+        rawArgs: ["node", "FirstNexus", "status", "--json"],
       },
     } as unknown as Command;
     resolveActionArgsMock.mockReturnValue(["--json"]);
@@ -37,15 +37,15 @@ describe("reparseProgramFromActionArgs", () => {
     await reparseProgramFromActionArgs(program, [actionCommand]);
 
     expect(buildParseArgvMock).toHaveBeenCalledWith({
-      programName: "NexisClaw",
-      rawArgs: ["node", "NexisClaw", "status", "--json"],
+      programName: "FirstNexus",
+      rawArgs: ["node", "FirstNexus", "status", "--json"],
       fallbackArgv: ["status", "--json"],
     });
-    expect(parseAsync).toHaveBeenCalledWith(["node", "NexisClaw", "status"]);
+    expect(parseAsync).toHaveBeenCalledWith(["node", "FirstNexus", "status"]);
   });
 
   it("falls back to action args without command name when action has no name", async () => {
-    const program = new Command().name("NexisClaw");
+    const program = new Command().name("FirstNexus");
     const parseAsync = vi.spyOn(program, "parseAsync").mockResolvedValue(program);
     const actionCommand = {
       name: () => "",
@@ -56,11 +56,11 @@ describe("reparseProgramFromActionArgs", () => {
     await reparseProgramFromActionArgs(program, [actionCommand]);
 
     expect(buildParseArgvMock).toHaveBeenCalledWith({
-      programName: "NexisClaw",
+      programName: "FirstNexus",
       rawArgs: undefined,
       fallbackArgv: ["--json"],
     });
-    expect(parseAsync).toHaveBeenCalledWith(["node", "NexisClaw", "status"]);
+    expect(parseAsync).toHaveBeenCalledWith(["node", "FirstNexus", "status"]);
   });
 
   it("preserves explicit parent command options in fallback argv", async () => {
@@ -81,21 +81,21 @@ describe("reparseProgramFromActionArgs", () => {
       rawArgs: [],
       fallbackArgv: ["--json", "open", "about:blank"],
     });
-    expect(parseAsync).toHaveBeenCalledWith(["node", "NexisClaw", "status"]);
+    expect(parseAsync).toHaveBeenCalledWith(["node", "FirstNexus", "status"]);
   });
 
   it("uses program root when action command is missing", async () => {
-    const program = new Command().name("NexisClaw");
+    const program = new Command().name("FirstNexus");
     const parseAsync = vi.spyOn(program, "parseAsync").mockResolvedValue(program);
 
     await reparseProgramFromActionArgs(program, []);
 
     expect(resolveActionArgsMock).toHaveBeenCalledWith(undefined);
     expect(buildParseArgvMock).toHaveBeenCalledWith({
-      programName: "NexisClaw",
+      programName: "FirstNexus",
       rawArgs: [],
       fallbackArgv: [],
     });
-    expect(parseAsync).toHaveBeenCalledWith(["node", "NexisClaw", "status"]);
+    expect(parseAsync).toHaveBeenCalledWith(["node", "FirstNexus", "status"]);
   });
 });

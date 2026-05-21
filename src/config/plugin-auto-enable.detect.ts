@@ -5,15 +5,15 @@ import {
   resolvePluginAutoEnableManifestRegistry,
 } from "./plugin-auto-enable.shared.js";
 import type { PluginAutoEnableCandidate } from "./plugin-auto-enable.types.js";
-import type { NexisClawConfig } from "./types.NexisClaw.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 
 export function detectPluginAutoEnableCandidates(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   manifestRegistry?: PluginManifestRegistry;
 }): PluginAutoEnableCandidate[] {
   const env = params.env ?? process.env;
-  const config = params.config ?? ({} as NexisClawConfig);
+  const config = params.config ?? ({} as FirstNexusConfig);
   const readiness = resolvePluginAutoEnableReadiness(config, env);
   if (!readiness.mayNeedAutoEnable) {
     return [];

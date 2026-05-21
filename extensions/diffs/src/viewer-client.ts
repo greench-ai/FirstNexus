@@ -41,8 +41,8 @@ function parsePayload(element: HTMLScriptElement): DiffViewerPayload {
 function getCards(): Array<{ host: HTMLElement; payload: DiffViewerPayload }> {
   const cards: Array<{ host: HTMLElement; payload: DiffViewerPayload }> = [];
   for (const card of document.querySelectorAll<HTMLElement>(".oc-diff-card")) {
-    const host = card.querySelector<HTMLElement>("[data-NexisClaw-diff-host]");
-    const payloadNode = card.querySelector<HTMLScriptElement>("[data-NexisClaw-diff-payload]");
+    const host = card.querySelector<HTMLElement>("[data-FirstNexus-diff-host]");
+    const payloadNode = card.querySelector<HTMLScriptElement>("[data-FirstNexus-diff-payload]");
     if (!host || !payloadNode) {
       continue;
     }
@@ -335,9 +335,9 @@ async function hydrateViewer(): Promise<void> {
 async function main(): Promise<void> {
   try {
     await hydrateViewer();
-    document.documentElement.dataset.NexisClawDiffsReady = "true";
+    document.documentElement.dataset.FirstNexusDiffsReady = "true";
   } catch (error) {
-    document.documentElement.dataset.NexisClawDiffsError = "true";
+    document.documentElement.dataset.FirstNexusDiffsError = "true";
     console.error("Failed to hydrate diff viewer", error);
   }
 }

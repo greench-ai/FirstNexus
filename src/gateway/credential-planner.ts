@@ -1,5 +1,5 @@
 import { containsEnvVarReference } from "../config/env-substitution.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { hasConfiguredSecretInput, resolveSecretInputRef } from "../config/types.secrets.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 
@@ -41,7 +41,7 @@ export type GatewayCredentialPlan = {
   remotePasswordActive: boolean;
 };
 
-type GatewaySecretDefaults = NonNullable<NexisClawConfig["secrets"]>["defaults"];
+type GatewaySecretDefaults = NonNullable<FirstNexusConfig["secrets"]>["defaults"];
 
 export const trimToUndefined = normalizeOptionalString;
 
@@ -87,7 +87,7 @@ function resolveConfiguredGatewayCredentialInput(params: {
 }
 
 export function createGatewayCredentialPlan(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   defaults?: GatewaySecretDefaults;
 }): GatewayCredentialPlan {

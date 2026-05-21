@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "./types.NexisClaw.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 
 export type PluginAutoEnableCandidate =
   | {
@@ -50,7 +50,7 @@ export type PluginAutoEnableCandidate =
     };
 
 export type PluginAutoEnableResult = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   changes: string[];
   autoEnabledReasons: Record<string, string[]>;
 };

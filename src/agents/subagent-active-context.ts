@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { sanitizeForPromptLiteral } from "./sanitize-for-prompt.js";
 import { listControlledSubagentRuns } from "./subagent-control.js";
 import { buildSubagentList } from "./subagent-list.js";
@@ -9,7 +9,7 @@ function quotePromptData(value: string): string {
 }
 
 export function buildActiveSubagentSystemPromptAddition(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   controllerSessionKey?: string;
   hasSessionsYield?: boolean;
   recentMinutes?: number;

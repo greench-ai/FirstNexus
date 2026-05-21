@@ -33,7 +33,7 @@ describe("installScheduledTask", () => {
   async function withUserProfileDir(
     run: (tmpDir: string, env: Record<string, string>) => Promise<void>,
   ) {
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-schtasks-install-"));
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-schtasks-install-"));
     const env = {
       USERPROFILE: tmpDir,
       NEXISCLAW_PROFILE: "default",
@@ -56,11 +56,11 @@ describe("installScheduledTask", () => {
 
   function expectInitialTaskQueries(): void {
     expect(schtasksCalls[0]).toEqual(["/Query"]);
-    expect(schtasksCalls[1]).toEqual(["/Query", "/TN", "NexisClaw Gateway"]);
+    expect(schtasksCalls[1]).toEqual(["/Query", "/TN", "FirstNexus Gateway"]);
   }
 
   function expectTaskRunCall(index: number): void {
-    expect(schtasksCalls[index]).toEqual(["/Run", "/TN", "NexisClaw Gateway"]);
+    expect(schtasksCalls[index]).toEqual(["/Run", "/TN", "FirstNexus Gateway"]);
   }
 
   it("writes quoted set assignments and escapes metacharacters", async () => {
@@ -133,9 +133,9 @@ describe("installScheduledTask", () => {
       });
 
       expect(schtasksCalls[0]).toEqual(["/Query"]);
-      expect(schtasksCalls[1]).toEqual(["/Query", "/TN", "NexisClaw Gateway"]);
+      expect(schtasksCalls[1]).toEqual(["/Query", "/TN", "FirstNexus Gateway"]);
       expect(schtasksCalls[2]?.[0]).toBe("/Change");
-      expect(schtasksCalls[3]).toEqual(["/Run", "/TN", "NexisClaw Gateway"]);
+      expect(schtasksCalls[3]).toEqual(["/Run", "/TN", "FirstNexus Gateway"]);
     });
   });
 

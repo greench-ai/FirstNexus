@@ -8,7 +8,7 @@ import {
   makeTempDir,
   packageBuildCommitFromTgz,
   packageVersionFromTgz,
-  packNexisClaw,
+  packFirstNexus,
   parseMode,
   parseProvider,
   resolveHostIp,
@@ -37,7 +37,7 @@ import { PhaseRunner } from "./phase-runner.ts";
 import {
   psSingleQuote,
   windowsAgentTurnConfigPatchScript,
-  windowsNexisClawResolver,
+  windowsFirstNexusResolver,
   windowsScopedEnvFunction,
 } from "./powershell.ts";
 import { ensureGuestGit, prepareMinGitZip } from "./windows-git.ts";
@@ -93,7 +93,7 @@ const defaultOptions = (): WindowsOptions => ({
   hostIp: undefined,
   hostPort: 18426,
   hostPortExplicit: false,
-  installUrl: "https://NexisClaw.ai/install.ps1",
+  installUrl: "https://FirstNexus.ai/install.ps1",
   installVersion: "",
   json: false,
   keepServer: false,
@@ -102,13 +102,13 @@ const defaultOptions = (): WindowsOptions => ({
   modelId: undefined,
   provider: "openai",
   skipLatestRefCheck: false,
-  snapshotHint: "pre-NexisClaw-native-e2e-2026-03-12",
+  snapshotHint: "pre-FirstNexus-native-e2e-2026-03-12",
   targetPackageSpec: "",
   upgradeFromPackedMain: false,
   vmName: "Windows 11",
 });
 
-const windowsPortableGitPathScript = `$portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'NexisClaw\\deps') 'portable-git') ''
+const windowsPortableGitPathScript = `$portableGit = Join-Path (Join-Path (Join-Path $env:LOCALAPPDATA 'FirstNexus\\deps') 'portable-git') ''
 $env:PATH = "$portableGit\\cmd;$portableGit\\mingw64\\bin;$portableGit\\usr\\bin;$env:PATH"
 where.exe git.exe`;
 
@@ -118,20 +118,20 @@ function usage(): string {
 Options:
   --vm <name>                Parallels VM name. Default: "Windows 11"
   --snapshot-hint <name>     Snapshot name substring/fuzzy match.
-                             Default: "pre-NexisClaw-native-e2e-2026-03-12"
+                             Default: "pre-FirstNexus-native-e2e-2026-03-12"
   --mode <fresh|upgrade|both>
   --provider <openai|anthropic|minimax>
   --model <provider/model>    Override the model used for the agent-turn smoke.
   --api-key-env <var>        Host env var name for provider API key.
   --openai-api-key-env <var> Alias for --api-key-env (backward compatible)
-  --install-url <url>        Installer URL for latest release. Default: https://NexisClaw.ai/install.ps1
+  --install-url <url>        Installer URL for latest release. Default: https://FirstNexus.ai/install.ps1
   --host-port <port>         Host HTTP port for current-main tgz. Default: 18426
   --host-ip <ip>             Override Parallels host IP.
   --latest-version <ver>     Override npm latest version lookup.
   --install-version <ver>    Pin site-installer version/dist-tag for the baseline lane.
   --upgrade-from-packed-main
                              Upgrade lane: install packed current-main npm tgz as baseline,
-                             then run NexisClaw update --channel dev.
+                             then run FirstNexus update --channel dev.
   --target-package-spec <npm-spec>
                              Install this npm package tarball instead of packing current main.
   --skip-latest-ref-check    Skip latest-release ref-mode precheck.
@@ -259,10 +259,10 @@ class WindowsSmoke {
   }
 
   async run(): Promise<void> {
-    this.runDir = await makeTempDir("NexisClaw-parallels-windows.");
+    this.runDir = await makeTempDir("FirstNexus-parallels-windows.");
     this.phases = new PhaseRunner(this.runDir);
     this.guest = new WindowsGuest(this.options.vmName, this.phases);
-    this.tgzDir = await makeTempDir("NexisClaw-parallels-windows-tgz.");
+    this.tgzDir = await makeTempDir("FirstNexus-parallels-windows-tgz.");
     try {
       this.snapshot = resolveSnapshot(this.options.vmName, this.options.snapshotHint);
       this.latestVersion = resolveLatestVersion(this.options.latestVersion);
@@ -285,7 +285,7 @@ class WindowsSmoke {
 
       this.minGitZipPath = await prepareMinGitZip(this.tgzDir);
       if (this.needsHostTgz()) {
-        this.artifact = await packNexisClaw({
+        this.artifact = await packFirstNexus({
           destination: this.tgzDir,
           packageSpec: this.options.targetPackageSpec,
           requireControlUi: false,
@@ -390,7 +390,9 @@ class WindowsSmoke {
       ensureGuestGit({ guest: this.guest, minGitZipPath: this.minGitZipPath, server: this.server }),
     );
     await this.phase("fresh.preflight", 120, () => this.logGuestPreflight(true));
-    await this.phase("fresh.install-main", 420, () => this.installMain("NexisClaw-main-fresh.tgz"));
+    await this.phase("fresh.install-main", 420, () =>
+      this.installMain("FirstNexus-main-fresh.tgz"),
+    );
     this.status.freshVersion = await this.extractLastVersion("fresh.install-main");
     await this.phase("fresh.verify-main-version", 120, () => this.verifyTargetVersion());
     await this.phase("fresh.onboard-ref", 720, () => this.runRefOnboard());
@@ -414,7 +416,7 @@ class WindowsSmoke {
     await this.phase("upgrade.preflight", 120, () => this.logGuestPreflight(false));
     if (this.options.targetPackageSpec || this.options.upgradeFromPackedMain) {
       await this.phase("upgrade.install-baseline-package", 420, () =>
-        this.installMain("NexisClaw-main-upgrade.tgz"),
+        this.installMain("FirstNexus-main-upgrade.tgz"),
       );
       this.status.latestInstalledVersion = await this.extractLastVersion(
         "upgrade.install-baseline-package",
@@ -495,7 +497,7 @@ class WindowsSmoke {
     script: string,
     options: { check?: boolean; timeoutMs?: number } = {},
   ): string {
-    return this.guest.powershell(`${windowsNexisClawResolver}\n${script}`, options);
+    return this.guest.powershell(`${windowsFirstNexusResolver}\n${script}`, options);
   }
 
   private restoreSnapshot(): void {
@@ -570,9 +572,9 @@ class WindowsSmoke {
     throw new Error("Windows guest did not become ready");
   }
 
-  private logGuestPreflight(cleanNexisClaw: boolean): void {
-    const cleanScript = cleanNexisClaw
-      ? "npm.cmd uninstall -g NexisClaw --no-fund --no-audit --loglevel=error 2>$null; $global:LASTEXITCODE = 0"
+  private logGuestPreflight(cleanFirstNexus: boolean): void {
+    const cleanScript = cleanFirstNexus
+      ? "npm.cmd uninstall -g FirstNexus --no-fund --no-audit --loglevel=error 2>$null; $global:LASTEXITCODE = 0"
       : "";
     this.guestPowerShell(
       `$ErrorActionPreference = 'Continue'
@@ -592,8 +594,8 @@ ${cleanScript}`,
 $script = Invoke-RestMethod -Uri ${psSingleQuote(this.options.installUrl)}
 & ([scriptblock]::Create($script))${versionArg} -NoOnboard
 if ($LASTEXITCODE -ne 0) { throw "installer failed with exit code $LASTEXITCODE" }
-Invoke-NexisClaw --version
-if ($LASTEXITCODE -ne 0) { throw "NexisClaw --version failed with exit code $LASTEXITCODE" }`,
+Invoke-FirstNexus --version
+if ($LASTEXITCODE -ne 0) { throw "FirstNexus --version failed with exit code $LASTEXITCODE" }`,
       { timeoutMs: 420_000 },
     );
   }
@@ -609,8 +611,8 @@ $tgz = Join-Path $env:TEMP ${psSingleQuote(tempName)}
 curl.exe -fsSL ${psSingleQuote(tgzUrl)} -o $tgz
 npm.cmd install -g $tgz --no-fund --no-audit --loglevel=error
 if ($LASTEXITCODE -ne 0) { throw "npm install failed with exit code $LASTEXITCODE" }
-Invoke-NexisClaw --version
-if ($LASTEXITCODE -ne 0) { throw "NexisClaw --version failed with exit code $LASTEXITCODE" }`,
+Invoke-FirstNexus --version
+if ($LASTEXITCODE -ne 0) { throw "FirstNexus --version failed with exit code $LASTEXITCODE" }`,
       { timeoutMs: 420_000 },
     );
   }
@@ -630,7 +632,7 @@ if ($LASTEXITCODE -ne 0) { throw "NexisClaw --version failed with exit code $LAS
   }
 
   private verifyVersionContains(needle: string): void {
-    const version = this.guestPowerShell("Invoke-NexisClaw --version");
+    const version = this.guestPowerShell("Invoke-FirstNexus --version");
     if (!version.includes(needle)) {
       throw new Error(`version mismatch: expected substring ${needle}`);
     }
@@ -647,8 +649,8 @@ if ($LASTEXITCODE -ne 0) { throw "NexisClaw --version failed with exit code $LAS
       `$ErrorActionPreference = 'Continue'
 $PSNativeCommandUseErrorActionPreference = $false
 Set-Item -Path ('Env:' + ${psSingleQuote(this.auth.apiKeyEnv)}) -Value ${psSingleQuote(this.auth.apiKeyValue)}
-Invoke-NexisClaw onboard --non-interactive --mode local --auth-choice ${psSingleQuote(this.auth.authChoice)} --secret-input-mode ref --gateway-port 18789 --gateway-bind loopback --install-daemon --skip-skills --skip-health --accept-risk --json
-if ($LASTEXITCODE -ne 0) { throw "NexisClaw onboard failed with exit code $LASTEXITCODE" }`,
+Invoke-FirstNexus onboard --non-interactive --mode local --auth-choice ${psSingleQuote(this.auth.authChoice)} --secret-input-mode ref --gateway-port 18789 --gateway-bind loopback --install-daemon --skip-skills --skip-health --accept-risk --json
+if ($LASTEXITCODE -ne 0) { throw "FirstNexus onboard failed with exit code $LASTEXITCODE" }`,
       720_000,
     );
   }
@@ -664,7 +666,7 @@ if ($LASTEXITCODE -ne 0) { throw "NexisClaw onboard failed with exit code $LASTE
       beforeLaunchAttempt: () => this.waitForGuestReady(120),
       label,
       onLaunchRetry: warn,
-      script: `${windowsNexisClawResolver}\n${script}`,
+      script: `${windowsFirstNexusResolver}\n${script}`,
       timeoutMs,
       vmName: this.options.vmName,
     });
@@ -674,7 +676,7 @@ if ($LASTEXITCODE -ne 0) { throw "NexisClaw onboard failed with exit code $LASTE
     this.guestPowerShell(
       `$ErrorActionPreference = 'Stop'
 ${windowsPortableGitPathScript}
-$configPath = Join-Path $env:USERPROFILE '.NexisClaw\\NexisClaw.json'
+$configPath = Join-Path $env:USERPROFILE '.FirstNexus\\FirstNexus.json'
 $config = Get-Content $configPath -Raw | ConvertFrom-Json
 if ($null -eq $config.update) {
   $config | Add-Member -MemberType NoteProperty -Name update -Value ([pscustomobject]@{})
@@ -682,22 +684,24 @@ if ($null -eq $config.update) {
 $config.update | Add-Member -Force -MemberType NoteProperty -Name channel -Value 'dev'
 $config | ConvertTo-Json -Depth 100 | Set-Content -Path $configPath -Encoding utf8
 ${windowsScopedEnvFunction}
-$script:NexisClawUpdateExit = 0
+$script:FirstNexusUpdateExit = 0
 Invoke-WithScopedEnv @{ NEXISCLAW_ALLOW_OLDER_BINARY_DESTRUCTIVE_ACTIONS = '1'; NEXISCLAW_DISABLE_BUNDLED_PLUGINS = '1' } {
-  Invoke-NexisClaw update --channel dev --yes --json
-  $script:NexisClawUpdateExit = $LASTEXITCODE
+  Invoke-FirstNexus update --channel dev --yes --json
+  $script:FirstNexusUpdateExit = $LASTEXITCODE
 }
-if ($script:NexisClawUpdateExit -ne 0) { throw "NexisClaw update failed with exit code $script:NexisClawUpdateExit" }
-Invoke-NexisClaw --version
-Invoke-NexisClaw update status --json`,
-      { timeoutMs: Number(process.env.NEXISCLAW_PARALLELS_WINDOWS_UPDATE_TIMEOUT_S || 1200) * 1000 },
+if ($script:FirstNexusUpdateExit -ne 0) { throw "FirstNexus update failed with exit code $script:FirstNexusUpdateExit" }
+Invoke-FirstNexus --version
+Invoke-FirstNexus update status --json`,
+      {
+        timeoutMs: Number(process.env.NEXISCLAW_PARALLELS_WINDOWS_UPDATE_TIMEOUT_S || 1200) * 1000,
+      },
     );
   }
 
   private verifyDevChannelUpdate(): void {
     const status = this.guestPowerShell(
       `${windowsPortableGitPathScript}
-Invoke-NexisClaw update status --json`,
+Invoke-FirstNexus update status --json`,
     );
     for (const needle of ['"installKind": "git"', '"value": "dev"', '"branch": "main"']) {
       if (!status.includes(needle)) {
@@ -711,7 +715,7 @@ Invoke-NexisClaw update status --json`,
       `gateway-${action}`,
       `$ErrorActionPreference = 'Continue'
 $PSNativeCommandUseErrorActionPreference = $false
-Invoke-NexisClaw gateway ${action}
+Invoke-FirstNexus gateway ${action}
 if ($LASTEXITCODE -ne 0) { throw "gateway ${action} failed with exit code $LASTEXITCODE" }`,
       420_000,
     );
@@ -726,7 +730,7 @@ if ($LASTEXITCODE -ne 0) { throw "gateway ${action} failed with exit code $LASTE
     const start = Date.now();
     while (Date.now() < deadline) {
       const probe = this.guestPowerShell(
-        "Invoke-NexisClaw gateway probe --url ws://127.0.0.1:18789 --timeout 30000 --json",
+        "Invoke-FirstNexus gateway probe --url ws://127.0.0.1:18789 --timeout 30000 --json",
         { check: false, timeoutMs: 60_000 },
       );
       if (/"ok"\s*:\s*true/.test(probe)) {
@@ -736,7 +740,7 @@ if ($LASTEXITCODE -ne 0) { throw "gateway ${action} failed with exit code $LASTE
         warn(
           `gateway-reachable recovery: gateway start after ${Math.floor((Date.now() - start) / 1000)}s`,
         );
-        this.guestPowerShell("Invoke-NexisClaw gateway start", {
+        this.guestPowerShell("Invoke-FirstNexus gateway start", {
           check: false,
           timeoutMs: 120_000,
         });
@@ -750,11 +754,11 @@ if ($LASTEXITCODE -ne 0) { throw "gateway ${action} failed with exit code $LASTE
   }
 
   private showGatewayStatusCompat(): void {
-    const help = this.guestPowerShell("Invoke-NexisClaw gateway status --help", {
+    const help = this.guestPowerShell("Invoke-FirstNexus gateway status --help", {
       check: false,
     });
     const suffix = help.includes("--require-rpc") ? "--deep --require-rpc" : "--deep";
-    this.guestPowerShell(`Invoke-NexisClaw gateway status ${suffix}`);
+    this.guestPowerShell(`Invoke-FirstNexus gateway status ${suffix}`);
   }
 
   private verifyTurn(): Promise<void> {
@@ -769,7 +773,7 @@ Set-Item -Path ('Env:' + ${psSingleQuote(this.auth.apiKeyEnv)}) -Value ${psSingl
 $agentOk = $false
 for ($attempt = 1; $attempt -le 2; $attempt++) {
   $sessionId = if ($attempt -eq 1) { 'parallels-windows-smoke' } else { "parallels-windows-smoke-retry-$attempt" }
-  $sessionsDir = Join-Path $env:USERPROFILE '.NexisClaw\\agents\\main\\sessions'
+  $sessionsDir = Join-Path $env:USERPROFILE '.FirstNexus\\agents\\main\\sessions'
   $sessionPath = Join-Path $sessionsDir "$sessionId.jsonl"
   Remove-Item $sessionPath -Force -ErrorAction SilentlyContinue
   $args = @(
@@ -787,7 +791,7 @@ for ($attempt = 1; $attempt -le 2; $attempt++) {
     '${resolveParallelsModelTimeoutSeconds("windows")}',
     '--json'
   )
-  $output = Invoke-NexisClaw @args 2>&1
+  $output = Invoke-FirstNexus @args 2>&1
   $agentExitCode = $LASTEXITCODE
   if ($null -ne $output) { $output | ForEach-Object { $_ } }
   if ($agentExitCode -eq 0 -and ($output | Out-String) -match '"finalAssistant(Raw|Visible)Text":\\s*"OK"') {
@@ -803,14 +807,14 @@ for ($attempt = 1; $attempt -le 2; $attempt++) {
     throw "agent failed with exit code $agentExitCode"
   }
 }
-if (-not $agentOk) { throw 'NexisClaw agent finished without OK response' }`,
+if (-not $agentOk) { throw 'FirstNexus agent finished without OK response' }`,
       Number(process.env.NEXISCLAW_PARALLELS_WINDOWS_AGENT_TIMEOUT_S || 2700) * 1000,
     );
   }
 
   private async extractLastVersion(phaseName: string): Promise<string> {
     const log = await readFile(path.join(this.runDir, `${phaseName}.log`), "utf8").catch(() => "");
-    const matches = [...log.matchAll(/NexisClaw\s+([0-9][^\s]*)/gi)];
+    const matches = [...log.matchAll(/FirstNexus\s+([0-9][^\s]*)/gi)];
     return matches.at(-1)?.[1] ?? "";
   }
 

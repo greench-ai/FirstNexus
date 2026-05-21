@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import type { Command } from "commander";
 import { readConfigFileSnapshot, replaceConfigFile } from "../config/config.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { sanitizeExecApprovalDisplayText } from "../infra/exec-approval-command-display.js";
 import {
   collectExecPolicyScopeSnapshots,
@@ -213,9 +213,9 @@ function applyApprovalsDefaults(
 }
 
 function buildNextExecPolicyConfig(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   policy: ExecPolicyResolved,
-): NexisClawConfig {
+): FirstNexusConfig {
   const draft = structuredClone(config);
   applyConfigExecPolicy(draft as Record<string, unknown>, policy);
   return draft;
@@ -369,7 +369,7 @@ export function registerExecPolicyCli(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/approvals", "docs.NexisClaw.ai/cli/approvals")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/approvals", "docs.FirstNexus.ai/cli/approvals")}\n`,
     );
 
   execPolicy

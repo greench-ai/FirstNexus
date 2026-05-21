@@ -191,7 +191,7 @@ function createIsolatedTestHome(restore: RestoreEntry[]): {
   cleanup: () => void;
   tempHome: string;
 } {
-  const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-test-home-"));
+  const tempHome = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-test-home-"));
 
   process.env.HOME = tempHome;
   process.env.USERPROFILE = tempHome;
@@ -226,7 +226,7 @@ function createIsolatedTestHome(restore: RestoreEntry[]): {
 
   // Windows: prefer the default state dir so auth/profile tests match real paths.
   if (process.platform === "win32") {
-    process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".NexisClaw");
+    process.env.NEXISCLAW_STATE_DIR = path.join(tempHome, ".FirstNexus");
   }
 
   process.env.XDG_CONFIG_HOME = path.join(tempHome, ".config");
@@ -369,28 +369,28 @@ function stageLiveTestState(params: {
   const rawStateDir = params.env.NEXISCLAW_STATE_DIR?.trim();
   let realStateDir = rawStateDir
     ? resolveHomeRelativePath(rawStateDir, params.realHome)
-    : path.join(params.realHome, ".NexisClaw");
+    : path.join(params.realHome, ".FirstNexus");
   const priorIsolatedHome = params.env.NEXISCLAW_TEST_HOME?.trim();
   const snapshotHome = params.env.HOME?.trim();
   if (
     priorIsolatedHome &&
     snapshotHome &&
     snapshotHome !== priorIsolatedHome &&
-    realStateDir === path.join(priorIsolatedHome, ".NexisClaw")
+    realStateDir === path.join(priorIsolatedHome, ".FirstNexus")
   ) {
-    realStateDir = path.join(params.realHome, ".NexisClaw");
+    realStateDir = path.join(params.realHome, ".FirstNexus");
   }
-  const tempStateDir = path.join(params.tempHome, ".NexisClaw");
+  const tempStateDir = path.join(params.tempHome, ".FirstNexus");
   fs.mkdirSync(tempStateDir, { recursive: true });
   fs.mkdirSync(path.join(params.tempHome, ".gemini"), { recursive: true });
 
   const realConfigPath = params.env.NEXISCLAW_CONFIG_PATH?.trim()
     ? resolveHomeRelativePath(params.env.NEXISCLAW_CONFIG_PATH, params.realHome)
-    : path.join(realStateDir, "NexisClaw.json");
+    : path.join(realStateDir, "FirstNexus.json");
   if (fs.existsSync(realConfigPath)) {
     const rawConfig = fs.readFileSync(realConfigPath, "utf8");
     fs.writeFileSync(
-      path.join(tempStateDir, "NexisClaw.json"),
+      path.join(tempStateDir, "FirstNexus.json"),
       sanitizeLiveConfig(rawConfig),
       "utf8",
     );

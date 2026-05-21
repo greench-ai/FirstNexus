@@ -1,12 +1,15 @@
 import type { webhook } from "@line/bot-sdk";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { DEFAULT_GROUP_HISTORY_LIMIT, type HistoryEntry } from "NexisClaw/plugin-sdk/reply-history";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import {
+  DEFAULT_GROUP_HISTORY_LIMIT,
+  type HistoryEntry,
+} from "FirstNexus/plugin-sdk/reply-history";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
 import {
   createNonExitingRuntime,
   logVerbose,
   type RuntimeEnv,
-} from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/runtime-env";
 import { resolveLineAccount } from "./accounts.js";
 import { createLineWebhookReplayCache, handleLineWebhookEvents } from "./bot-handlers.js";
 import type { LineInboundContext } from "./bot-message-context.js";
@@ -17,7 +20,7 @@ interface LineBotOptions {
   channelSecret: string;
   accountId?: string;
   runtime?: RuntimeEnv;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   mediaMaxMb?: number;
   onMessage?: (ctx: LineInboundContext) => Promise<void>;
 }

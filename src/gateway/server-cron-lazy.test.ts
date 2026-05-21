@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CliDeps } from "../cli/deps.types.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { CronServiceContract } from "../cron/service-contract.js";
 import type { GatewayCronState } from "./server-cron.js";
 
@@ -120,11 +120,11 @@ describe("createLazyGatewayCronState", () => {
   });
 });
 
-function createParams(overrides: Partial<NexisClawConfig> = {}) {
+function createParams(overrides: Partial<FirstNexusConfig> = {}) {
   return {
     cfg: {
       ...overrides,
-    } as NexisClawConfig,
+    } as FirstNexusConfig,
     deps: {} as CliDeps,
     broadcast: vi.fn(),
   };
@@ -133,7 +133,7 @@ function createParams(overrides: Partial<NexisClawConfig> = {}) {
 function createCronState(cron: CronServiceContract): GatewayCronState {
   return {
     cron,
-    storePath: "/tmp/NexisClaw-cron.json",
+    storePath: "/tmp/FirstNexus-cron.json",
     cronEnabled: true,
   } as GatewayCronState;
 }

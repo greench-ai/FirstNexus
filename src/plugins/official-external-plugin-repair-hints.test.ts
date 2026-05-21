@@ -35,11 +35,11 @@ describe("resolveMissingOfficialExternalChannelPluginRepairHint", () => {
       pluginId: "feishu",
       channelId: "feishu",
       label: "Feishu",
-      installSpec: "@NexisClaw/feishu",
-      installCommand: "NexisClaw plugins install @NexisClaw/feishu",
-      doctorFixCommand: "NexisClaw doctor --fix",
+      installSpec: "@FirstNexus/feishu",
+      installCommand: "FirstNexus plugins install @FirstNexus/feishu",
+      doctorFixCommand: "FirstNexus doctor --fix",
       repairHint:
-        "Install the official external plugin with: NexisClaw plugins install @NexisClaw/feishu, or run: NexisClaw doctor --fix.",
+        "Install the official external plugin with: FirstNexus plugins install @FirstNexus/feishu, or run: FirstNexus doctor --fix.",
     });
   });
 

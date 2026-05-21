@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { MigrationProviderContext } from "NexisClaw/plugin-sdk/plugin-entry";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/provider-auth";
-import { resolvePreferredNexisClawTmpDir } from "NexisClaw/plugin-sdk/temp-path";
+import type { MigrationProviderContext } from "FirstNexus/plugin-sdk/plugin-entry";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/provider-auth";
+import { resolvePreferredFirstNexusTmpDir } from "FirstNexus/plugin-sdk/temp-path";
 
 const tempRoots = new Set<string>();
 
@@ -15,7 +15,7 @@ const logger = {
 
 export async function makeTempRoot() {
   const root = await fs.mkdtemp(
-    path.join(resolvePreferredNexisClawTmpDir(), "NexisClaw-migrate-hermes-"),
+    path.join(resolvePreferredFirstNexusTmpDir(), "FirstNexus-migrate-hermes-"),
   );
   tempRoots.add(root);
   return root;
@@ -34,11 +34,11 @@ export async function writeFile(filePath: string, content: string) {
 }
 
 export function makeConfigRuntime(
-  config: NexisClawConfig,
-  onWrite?: (next: NexisClawConfig) => void,
+  config: FirstNexusConfig,
+  onWrite?: (next: FirstNexusConfig) => void,
 ): NonNullable<MigrationProviderContext["runtime"]> {
-  const commitConfig = (next: NexisClawConfig) => {
-    for (const key of Object.keys(config) as Array<keyof NexisClawConfig>) {
+  const commitConfig = (next: FirstNexusConfig) => {
+    for (const key of Object.keys(config) as Array<keyof FirstNexusConfig>) {
       delete config[key];
     }
     Object.assign(config, next);
@@ -53,7 +53,7 @@ export function makeConfigRuntime(
         mutate,
       }: {
         afterWrite?: unknown;
-        mutate: (draft: NexisClawConfig, context: unknown) => Promise<unknown> | void;
+        mutate: (draft: FirstNexusConfig, context: unknown) => Promise<unknown> | void;
       }) => {
         const next = structuredClone(config);
         const result = await mutate(next, {
@@ -73,7 +73,7 @@ export function makeConfigRuntime(
         nextConfig,
       }: {
         afterWrite?: unknown;
-        nextConfig: NexisClawConfig;
+        nextConfig: FirstNexusConfig;
       }) => {
         commitConfig(nextConfig);
         return { afterWrite, followUp: { mode: "auto", requiresRestart: false }, nextConfig };
@@ -86,10 +86,10 @@ export function makeContext(params: {
   source: string;
   stateDir: string;
   workspaceDir: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   includeSecrets?: boolean;
   overwrite?: boolean;
-  model?: NonNullable<NonNullable<NexisClawConfig["agents"]>["defaults"]>["model"];
+  model?: NonNullable<NonNullable<FirstNexusConfig["agents"]>["defaults"]>["model"];
   reportDir?: string;
   runtime?: MigrationProviderContext["runtime"];
 }): MigrationProviderContext {
@@ -102,7 +102,7 @@ export function makeContext(params: {
           ...(params.model !== undefined ? { model: params.model } : {}),
         },
       },
-    } as NexisClawConfig);
+    } as FirstNexusConfig);
   return {
     config,
     stateDir: params.stateDir,

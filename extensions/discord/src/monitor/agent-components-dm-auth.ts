@@ -1,6 +1,6 @@
-import { createChannelPairingChallengeIssuer } from "NexisClaw/plugin-sdk/channel-pairing";
-import { isDangerousNameMatchingEnabled } from "NexisClaw/plugin-sdk/dangerous-name-runtime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+import { createChannelPairingChallengeIssuer } from "FirstNexus/plugin-sdk/channel-pairing";
+import { isDangerousNameMatchingEnabled } from "FirstNexus/plugin-sdk/dangerous-name-runtime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   resolveComponentInteractionContext,
   resolveDiscordChannelContext,

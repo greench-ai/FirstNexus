@@ -2,7 +2,7 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { normalizeOptionalLowercaseString } from "../shared/string-coerce.js";
 import { isContainerEnvironment } from "./container-environment.js";
 import { formatErrorMessage } from "./errors.js";
-import { triggerNexisClawRestart } from "./restart.js";
+import { triggerFirstNexusRestart } from "./restart.js";
 import { detectRespawnSupervisor } from "./supervisor-markers.js";
 
 type RespawnMode = "spawned" | "supervised" | "disabled" | "failed";
@@ -49,7 +49,7 @@ export function restartGatewayProcessWithFreshPid(): GatewayRespawnResult {
     // Avoid detached kickstart/start handoffs here so restart timing stays tied
     // to launchd's native supervision rather than a second helper process.
     if (supervisor === "schtasks") {
-      const restart = triggerNexisClawRestart();
+      const restart = triggerFirstNexusRestart();
       if (!restart.ok) {
         return {
           mode: "failed",
@@ -98,7 +98,7 @@ export function respawnGatewayProcessForUpdate(): GatewayUpdateRespawnResult {
   const supervisor = detectRespawnSupervisor(process.env);
   if (supervisor) {
     if (supervisor === "schtasks") {
-      const restart = triggerNexisClawRestart();
+      const restart = triggerFirstNexusRestart();
       if (!restart.ok) {
         return {
           mode: "failed",

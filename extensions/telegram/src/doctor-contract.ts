@@ -1,14 +1,14 @@
 import type {
   ChannelDoctorConfigMutation,
   ChannelDoctorLegacyConfigRule,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   asObjectRecord,
   hasLegacyAccountStreamingAliases,
   hasLegacyStreamingAliases,
   normalizeLegacyChannelAliases,
-} from "NexisClaw/plugin-sdk/runtime-doctor";
+} from "FirstNexus/plugin-sdk/runtime-doctor";
 import { resolveTelegramPreviewStreamMode } from "./preview-streaming.js";
 
 function hasLegacyTelegramStreamingAliases(value: unknown): boolean {
@@ -37,7 +37,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
   {
     path: ["channels", "telegram", "groupMentionsOnly"],
     message:
-      'channels.telegram.groupMentionsOnly was removed; use channels.telegram.groups."*".requireMention instead. Run "NexisClaw doctor --fix".',
+      'channels.telegram.groupMentionsOnly was removed; use channels.telegram.groups."*".requireMention instead. Run "FirstNexus doctor --fix".',
   },
   {
     path: ["channels", "telegram"],
@@ -56,7 +56,7 @@ export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = [
 export function normalizeCompatibilityConfig({
   cfg,
 }: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 }): ChannelDoctorConfigMutation {
   const rawEntry = asObjectRecord((cfg.channels as Record<string, unknown> | undefined)?.telegram);
   if (!rawEntry) {
@@ -113,8 +113,8 @@ export function normalizeCompatibilityConfig({
       ...cfg,
       channels: {
         ...cfg.channels,
-        telegram: updated as unknown as NonNullable<NexisClawConfig["channels"]>["telegram"],
-      } as NexisClawConfig["channels"],
+        telegram: updated as unknown as NonNullable<FirstNexusConfig["channels"]>["telegram"],
+      } as FirstNexusConfig["channels"],
     },
     changes,
   };

@@ -1,18 +1,18 @@
 ---
-summary: "CLI reference for `NexisClaw dashboard` (open the Control UI)"
+summary: "CLI reference for `FirstNexus dashboard` (open the Control UI)"
 read_when:
   - You want to open the Control UI with your current token
   - You want to print the URL without launching a browser
 title: "Dashboard"
 ---
 
-# `NexisClaw dashboard`
+# `FirstNexus dashboard`
 
 Open the Control UI using your current auth.
 
 ```bash
-NexisClaw dashboard
-NexisClaw dashboard --no-open
+FirstNexus dashboard
+FirstNexus dashboard --no-open
 ```
 
 Notes:

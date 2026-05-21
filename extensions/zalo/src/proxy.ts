@@ -1,4 +1,4 @@
-import { makeProxyFetch } from "NexisClaw/plugin-sdk/fetch-runtime";
+import { makeProxyFetch } from "FirstNexus/plugin-sdk/fetch-runtime";
 import type { ZaloFetch } from "./api.js";
 
 const proxyCache = new Map<string, ZaloFetch>();

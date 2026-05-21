@@ -1,4 +1,4 @@
-import { isLoopbackHost } from "NexisClaw/plugin-sdk/gateway-runtime";
+import { isLoopbackHost } from "FirstNexus/plugin-sdk/gateway-runtime";
 import type { ResolvedMattermostAccount } from "./accounts.js";
 import {
   fetchMattermostUserTeams,
@@ -8,7 +8,7 @@ import {
 import {
   listSkillCommandsForAgents,
   parseStrictPositiveInteger,
-  type NexisClawConfig,
+  type FirstNexusConfig,
   type RuntimeEnv,
 } from "./runtime-api.js";
 import {
@@ -24,7 +24,7 @@ import {
 import { activateSlashCommands } from "./slash-state.js";
 
 function buildSlashCommands(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   runtime: RuntimeEnv;
   nativeSkills: boolean;
 }): MattermostCommandSpec[] {
@@ -133,7 +133,7 @@ async function registerSlashCommandsAcrossTeams(params: {
 
 export async function registerMattermostMonitorSlashCommands(params: {
   client: MattermostClient;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   runtime: RuntimeEnv;
   account: ResolvedMattermostAccount;
   baseUrl: string;

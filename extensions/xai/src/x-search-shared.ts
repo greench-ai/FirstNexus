@@ -1,4 +1,4 @@
-import { postTrustedWebToolsJson, wrapWebContent } from "NexisClaw/plugin-sdk/provider-web-search";
+import { postTrustedWebToolsJson, wrapWebContent } from "FirstNexus/plugin-sdk/provider-web-search";
 import {
   buildXaiResponsesToolBody,
   resolveXaiResponseTextCitationsAndInline,

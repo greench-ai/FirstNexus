@@ -94,7 +94,9 @@ describe("docker build helper", () => {
     expect(liveCliBackend).toContain(
       'NEXISCLAW_LIVE_DOCKER_REPO_ROOT="$ROOT_DIR" "$TRUSTED_HARNESS_DIR/scripts/test-live-build-docker.sh"',
     );
-    expect(liveCliBackend).toContain("direct Codex CLI probe failed before NexisClaw gateway smoke");
+    expect(liveCliBackend).toContain(
+      "direct Codex CLI probe failed before FirstNexus gateway smoke",
+    );
     expect(liveCliBackend).toContain("==> Direct Codex CLI probe ok");
     expect(liveCliBackend).not.toContain(
       'echo "==> Reuse live-test image: $LIVE_IMAGE_NAME (NEXISCLAW_SKIP_DOCKER_BUILD=1)"',
@@ -123,10 +125,10 @@ describe("docker build helper", () => {
     const openWebUiRunner = readFileSync(OPENWEBUI_DOCKER_E2E_PATH, "utf8");
 
     expect(scenarios).toContain(
-      '"NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=openai NEXISCLAW_INSTALL_E2E_IMAGE=NexisClaw-install-e2e-openai:local NEXISCLAW_INSTALL_E2E_AGENT_TOOL_SMOKE=0 NEXISCLAW_INSTALL_E2E_OPENAI_MODEL=openai/gpt-5.4-mini NEXISCLAW_INSTALL_E2E_AGENT_TURN_TIMEOUT_SECONDS=120 NEXISCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS=120 pnpm test:install:e2e"',
+      '"NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=openai NEXISCLAW_INSTALL_E2E_IMAGE=FirstNexus-install-e2e-openai:local NEXISCLAW_INSTALL_E2E_AGENT_TOOL_SMOKE=0 NEXISCLAW_INSTALL_E2E_OPENAI_MODEL=openai/gpt-5.4-mini NEXISCLAW_INSTALL_E2E_AGENT_TURN_TIMEOUT_SECONDS=120 NEXISCLAW_INSTALL_E2E_OPENAI_PROVIDER_TIMEOUT_SECONDS=120 pnpm test:install:e2e"',
     );
     expect(scenarios).toContain(
-      '"NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=anthropic NEXISCLAW_INSTALL_E2E_IMAGE=NexisClaw-install-e2e-anthropic:local pnpm test:install:e2e"',
+      '"NEXISCLAW_INSTALL_TAG=beta NEXISCLAW_E2E_MODELS=anthropic NEXISCLAW_INSTALL_E2E_IMAGE=FirstNexus-install-e2e-anthropic:local pnpm test:install:e2e"',
     );
     expect(scenarios).toContain(
       '"NEXISCLAW_OPENWEBUI_MODEL=openai/gpt-5.4-mini OPENWEBUI_SMOKE_MODE=models NEXISCLAW_OPENWEBUI_PROVIDER_TIMEOUT_SECONDS=300 NEXISCLAW_SKIP_DOCKER_BUILD=1 pnpm test:docker:openwebui"',
@@ -230,12 +232,12 @@ describe("docker build helper", () => {
   });
 
   it("prepares pnpm workspace package fixtures without package dependencies", () => {
-    const root = mkdtempSync(join(tmpdir(), "NexisClaw-update-channel-fixture-"));
+    const root = mkdtempSync(join(tmpdir(), "FirstNexus-update-channel-fixture-"));
     try {
       mkdirSync(join(root, "patches"));
       writeFileSync(
         join(root, "package.json"),
-        `${JSON.stringify({ name: "NexisClaw", version: "2026.5.6", scripts: {} }, null, 2)}\n`,
+        `${JSON.stringify({ name: "FirstNexus", version: "2026.5.6", scripts: {} }, null, 2)}\n`,
         "utf8",
       );
       writeFileSync(
@@ -283,7 +285,7 @@ describe("docker build helper", () => {
     expect(runner).toContain("NEXISCLAW_BUNDLED_PLUGIN_SWEEP_INDEX");
     expect(runner).toContain("NEXISCLAW_BUNDLED_PLUGIN_RUNTIME_READY_MS");
     expect(runner).toContain("scripts/e2e/lib/bundled-plugin-install-uninstall/sweep.sh");
-    expect(probe).toContain('"NexisClaw.plugin.json"');
+    expect(probe).toContain('"FirstNexus.plugin.json"');
     expect(runtimeSmoke).toContain("process.env.NEXISCLAW_BUNDLED_PLUGIN_RUNTIME_READY_MS");
     expect(runtimeSmoke).toContain("900000");
     expect(sweep).toContain("read -r plugin_id plugin_dir requires_config");
@@ -365,7 +367,7 @@ describe("docker build helper", () => {
     expect(assertions).toContain('Skipping "demo-plugin-dir" (source: path).');
 
     expect(sweep).toContain("start_npm_fixture_registry");
-    expect(sweep).toContain('plugins install "npm:@NexisClaw/demo-plugin-npm@0.0.1"');
+    expect(sweep).toContain('plugins install "npm:@FirstNexus/demo-plugin-npm@0.0.1"');
     expect(sweep).toContain("plugins update demo-plugin-npm");
     expect(assertions).toContain("demo-plugin-npm is up to date (0.0.1).");
     expect(npmRegistry).toContain('"dist-tags": { latest: entry.latestVersion }');
@@ -378,7 +380,7 @@ describe("docker build helper", () => {
 
     expect(clawhub).toContain('plugins install "$CLAWHUB_PLUGIN_SPEC"');
     expect(clawhub).toContain('plugins update "$CLAWHUB_PLUGIN_ID"');
-    expect(clawhub).toContain("clawhub:@NexisClaw/kitchen-sink");
+    expect(clawhub).toContain("clawhub:@FirstNexus/kitchen-sink");
     expect(assertions).toContain("clawhub-updated");
     expect(assertions).toContain("record.clawpackSha256");
     expect(assertions).toContain("record.artifactKind");

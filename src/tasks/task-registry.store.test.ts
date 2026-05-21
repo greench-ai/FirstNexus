@@ -2,7 +2,7 @@ import { mkdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { requireNodeSqlite } from "../infra/node-sqlite.js";
-import { withNexisClawTestState } from "../test-utils/NexisClaw-test-state.js";
+import { withFirstNexusTestState } from "../test-utils/FirstNexus-test-state.js";
 import { createManagedTaskFlow, resetTaskFlowRegistryForTests } from "./task-flow-registry.js";
 import {
   createTaskRecord,
@@ -300,8 +300,8 @@ describe("task-registry store runtime", () => {
     if (process.platform === "win32") {
       return;
     }
-    await withNexisClawTestState(
-      { layout: "state-only", prefix: "NexisClaw-task-store-" },
+    await withFirstNexusTestState(
+      { layout: "state-only", prefix: "FirstNexus-task-store-" },
       async () => {
         createTaskRecord({
           runtime: "cron",
@@ -324,8 +324,8 @@ describe("task-registry store runtime", () => {
   });
 
   it("migrates legacy ownerless cron rows to system scope", async () => {
-    await withNexisClawTestState(
-      { layout: "state-only", prefix: "NexisClaw-task-store-legacy-" },
+    await withFirstNexusTestState(
+      { layout: "state-only", prefix: "FirstNexus-task-store-legacy-" },
       async () => {
         const sqlitePath = resolveTaskRegistrySqlitePath(process.env);
         mkdirSync(path.dirname(sqlitePath), { recursive: true });
@@ -408,8 +408,8 @@ describe("task-registry store runtime", () => {
   });
 
   it("keeps legacy requester_session_key rows writable after restore", async () => {
-    await withNexisClawTestState(
-      { layout: "state-only", prefix: "NexisClaw-task-store-legacy-write-" },
+    await withFirstNexusTestState(
+      { layout: "state-only", prefix: "FirstNexus-task-store-legacy-write-" },
       async () => {
         const sqlitePath = resolveTaskRegistrySqlitePath(process.env);
         mkdirSync(path.dirname(sqlitePath), { recursive: true });

@@ -1,9 +1,9 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { CronJob } from "../types.js";
 import { resolveEffectiveModelFallbacks } from "./run-execution.runtime.js";
 
 export function resolveCronFallbacksOverride(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   job: CronJob;
   agentId: string;
 }): string[] | undefined {

@@ -1,16 +1,16 @@
 import {
   DEFAULT_ACCOUNT_ID,
   type ChannelSetupAdapter,
-  type NexisClawConfig,
-} from "NexisClaw/plugin-sdk/setup";
+  type FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/setup";
 import { resolveDefaultFeishuAccountId } from "./accounts.js";
 import type { FeishuConfig } from "./types.js";
 
 export function setFeishuNamedAccountEnabled(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   accountId: string,
   enabled: boolean,
-): NexisClawConfig {
+): FirstNexusConfig {
   const feishuCfg = cfg.channels?.feishu as FeishuConfig | undefined;
   return {
     ...cfg,

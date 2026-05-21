@@ -1,8 +1,8 @@
 import { normalizeSafeBinProfileFixtures } from "../infra/exec-safe-bin-policy.js";
 import { normalizeTrustedSafeBinDirs } from "../infra/exec-safe-bin-trust.js";
-import type { NexisClawConfig } from "./types.js";
+import type { FirstNexusConfig } from "./types.js";
 
-export function normalizeExecSafeBinProfilesInConfig(cfg: NexisClawConfig): void {
+export function normalizeExecSafeBinProfilesInConfig(cfg: FirstNexusConfig): void {
   const normalizeExec = (exec: unknown) => {
     if (!exec || typeof exec !== "object" || Array.isArray(exec)) {
       return;

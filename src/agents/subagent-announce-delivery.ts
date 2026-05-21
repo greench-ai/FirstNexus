@@ -1,5 +1,5 @@
 import { completionRequiresMessageToolDelivery } from "../auto-reply/reply/completion-delivery-policy.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { ConversationRef } from "../infra/outbound/session-binding-service.js";
 import { stringifyRouteThreadId } from "../plugin-sdk/channel-route.js";
 import { normalizeAccountId } from "../routing/session-key.js";
@@ -182,7 +182,7 @@ function resolveDirectAnnounceTransientRetryDelaysMs() {
     : ([5_000, 10_000, 20_000] as const);
 }
 
-export function resolveSubagentAnnounceTimeoutMs(cfg: NexisClawConfig): number {
+export function resolveSubagentAnnounceTimeoutMs(cfg: FirstNexusConfig): number {
   const configured = cfg.agents?.defaults?.subagents?.announceTimeoutMs;
   if (typeof configured !== "number" || !Number.isFinite(configured)) {
     return DEFAULT_SUBAGENT_ANNOUNCE_TIMEOUT_MS;

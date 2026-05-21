@@ -1,5 +1,5 @@
-import { logDebug } from "NexisClaw/plugin-sdk/logging-core";
-import { logVerbose, shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+import { logDebug } from "FirstNexus/plugin-sdk/logging-core";
+import { logVerbose, shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import type { DiscordChannelConfigResolved } from "./allow-list.js";
 
 export function logDiscordPreflightChannelConfig(params: {

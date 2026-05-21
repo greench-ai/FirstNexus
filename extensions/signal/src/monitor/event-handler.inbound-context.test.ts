@@ -1,5 +1,5 @@
-import { expectChannelInboundContextContract as expectInboundContextContract } from "NexisClaw/plugin-sdk/channel-contract-testing";
-import type { MsgContext } from "NexisClaw/plugin-sdk/reply-runtime";
+import { expectChannelInboundContextContract as expectInboundContextContract } from "FirstNexus/plugin-sdk/channel-contract-testing";
+import type { MsgContext } from "FirstNexus/plugin-sdk/reply-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { SignalReactionMessage } from "./event-handler.types.js";
 vi.useRealTimers();
@@ -40,9 +40,9 @@ vi.mock("../send.js", () => ({
   sendReadReceiptSignal: sendReadReceiptMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/reply-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/reply-runtime")>(
-    "NexisClaw/plugin-sdk/reply-runtime",
+vi.mock("FirstNexus/plugin-sdk/reply-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/reply-runtime")>(
+    "FirstNexus/plugin-sdk/reply-runtime",
   );
   return {
     ...actual,
@@ -52,9 +52,9 @@ vi.mock("NexisClaw/plugin-sdk/reply-runtime", async () => {
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/conversation-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/conversation-runtime")>(
-    "NexisClaw/plugin-sdk/conversation-runtime",
+vi.mock("FirstNexus/plugin-sdk/conversation-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/conversation-runtime")>(
+    "FirstNexus/plugin-sdk/conversation-runtime",
   );
   return {
     ...actual,
@@ -63,9 +63,9 @@ vi.mock("NexisClaw/plugin-sdk/conversation-runtime", async () => {
   };
 });
 
-vi.mock("NexisClaw/plugin-sdk/system-event-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/system-event-runtime")>(
-    "NexisClaw/plugin-sdk/system-event-runtime",
+vi.mock("FirstNexus/plugin-sdk/system-event-runtime", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/system-event-runtime")>(
+    "FirstNexus/plugin-sdk/system-event-runtime",
   );
   return {
     ...actual,

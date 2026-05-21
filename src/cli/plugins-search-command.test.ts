@@ -53,7 +53,7 @@ describe("plugins search command", () => {
         {
           score: 12,
           package: {
-            name: "NexisClaw-calendar",
+            name: "FirstNexus-calendar",
             displayName: "Calendar",
             family: "code-plugin",
             channel: "community",
@@ -69,7 +69,7 @@ describe("plugins search command", () => {
         {
           score: 10,
           package: {
-            name: "NexisClaw-calendar-bundle",
+            name: "FirstNexus-calendar-bundle",
             displayName: "Calendar Bundle",
             family: "bundle-plugin",
             channel: "official",
@@ -94,9 +94,9 @@ describe("plugins search command", () => {
       family: "bundle-plugin",
       limit: 5,
     });
-    expect(mocks.logs.join("\n")).toContain("NexisClaw-calendar");
+    expect(mocks.logs.join("\n")).toContain("FirstNexus-calendar");
     expect(mocks.logs.join("\n")).toContain(
-      "Install: NexisClaw plugins install clawhub:NexisClaw-calendar",
+      "Install: FirstNexus plugins install clawhub:FirstNexus-calendar",
     );
   });
 

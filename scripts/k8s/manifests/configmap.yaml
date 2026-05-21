@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: NexisClaw-config
+  name: FirstNexus-config
   labels:
-    app: NexisClaw
+    app: FirstNexus
 data:
-  NexisClaw.json: |
+  FirstNexus.json: |
     {
       "gateway": {
         "mode": "local",
@@ -20,19 +20,19 @@ data:
       },
       "agents": {
         "defaults": {
-          "workspace": "~/.NexisClaw/workspace"
+          "workspace": "~/.FirstNexus/workspace"
         },
         "list": [
           {
             "id": "default",
-            "name": "NexisClaw Assistant",
-            "workspace": "~/.NexisClaw/workspace"
+            "name": "FirstNexus Assistant",
+            "workspace": "~/.FirstNexus/workspace"
           }
         ]
       },
       "cron": { "enabled": false }
     }
   AGENTS.md: |
-    # NexisClaw Assistant
+    # FirstNexus Assistant
 
     You are a helpful AI assistant running in Kubernetes.

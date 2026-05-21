@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it } from "vitest";
 import { createDiscordSetupWizardBase } from "./setup-core.js";
 
@@ -33,7 +33,7 @@ describe("discordSetupWizard.dmPolicy", () => {
               },
             },
           },
-        } as NexisClawConfig,
+        } as FirstNexusConfig,
         "alerts",
       ),
     ).toBe("allowlist");
@@ -59,7 +59,7 @@ describe("discordSetupWizard.dmPolicy", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       "open",
       "alerts",
     );
@@ -88,7 +88,7 @@ describe("discordSetupWizard.status", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(configured).toBe(false);
@@ -110,11 +110,11 @@ describe("discordSetupWizard.groupAccess", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       accountId: "default",
       resolved: [
         {
-          input: "NexisClaw/#triage",
+          input: "FirstNexus/#triage",
           resolved: true,
           guildId: "guild-1",
           channelId: "channel-1",

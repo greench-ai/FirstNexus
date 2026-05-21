@@ -1,3 +1,3 @@
-import { describeProviderWizardModelPickerContract } from "NexisClaw/plugin-sdk/provider-test-contracts";
+import { describeProviderWizardModelPickerContract } from "FirstNexus/plugin-sdk/provider-test-contracts";
 
 describeProviderWizardModelPickerContract();

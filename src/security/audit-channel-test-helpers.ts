@@ -1,14 +1,14 @@
 import type { ChannelPlugin } from "../channels/plugins/types.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 
 export function stubAuditChannelPlugin(params: {
   id: string;
   label: string;
   commands: ChannelPlugin["commands"];
   collectAuditFindings: NonNullable<ChannelPlugin["security"]>["collectAuditFindings"];
-  resolveAccount: (cfg: NexisClawConfig, accountId: string | null | undefined) => unknown;
-  inspectAccount?: (cfg: NexisClawConfig, accountId: string | null | undefined) => unknown;
-  isConfigured?: (account: unknown, cfg: NexisClawConfig) => boolean;
+  resolveAccount: (cfg: FirstNexusConfig, accountId: string | null | undefined) => unknown;
+  inspectAccount?: (cfg: FirstNexusConfig, accountId: string | null | undefined) => unknown;
+  isConfigured?: (account: unknown, cfg: FirstNexusConfig) => boolean;
 }): ChannelPlugin {
   return {
     id: params.id,

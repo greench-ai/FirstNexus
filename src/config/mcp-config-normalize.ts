@@ -1,9 +1,9 @@
 import { isRecord } from "../utils.js";
 
 type ConfigMcpServers = Record<string, Record<string, unknown>>;
-type NexisClawMcpHttpTransport = "sse" | "streamable-http";
+type FirstNexusMcpHttpTransport = "sse" | "streamable-http";
 
-const CLI_MCP_TYPE_TO_NEXISCLAW_TRANSPORT: Record<string, NexisClawMcpHttpTransport | "stdio"> = {
+const CLI_MCP_TYPE_TO_NEXISCLAW_TRANSPORT: Record<string, FirstNexusMcpHttpTransport | "stdio"> = {
   http: "streamable-http",
   "streamable-http": "streamable-http",
   sse: "sse",
@@ -14,9 +14,9 @@ function normalizeMcpString(value: unknown): string {
   return typeof value === "string" ? value.trim().toLowerCase() : "";
 }
 
-export function resolveNexisClawMcpTransportAlias(
+export function resolveFirstNexusMcpTransportAlias(
   value: unknown,
-): NexisClawMcpHttpTransport | undefined {
+): FirstNexusMcpHttpTransport | undefined {
   const mapped = CLI_MCP_TYPE_TO_NEXISCLAW_TRANSPORT[normalizeMcpString(value)];
   return mapped === "sse" || mapped === "streamable-http" ? mapped : undefined;
 }
@@ -29,7 +29,7 @@ export function canonicalizeConfiguredMcpServer(
   server: Record<string, unknown>,
 ): Record<string, unknown> {
   const next = { ...server };
-  const transportAlias = resolveNexisClawMcpTransportAlias(next.type);
+  const transportAlias = resolveFirstNexusMcpTransportAlias(next.type);
   if (typeof next.transport !== "string" && transportAlias) {
     next.transport = transportAlias;
   }

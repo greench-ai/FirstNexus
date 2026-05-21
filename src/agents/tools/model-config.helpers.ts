@@ -4,7 +4,7 @@ import {
   resolveAgentModelTimeoutMsValue,
 } from "../../config/model-input.js";
 import type { AgentModelConfig } from "../../config/types.agents-shared.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
   externalCliDiscoveryForProviderAuth,
   ensureAuthProfileStore,
@@ -24,7 +24,10 @@ export function hasToolModelConfig(model: ToolModelConfig | undefined): boolean 
   );
 }
 
-export function resolveDefaultModelRef(cfg?: NexisClawConfig): { provider: string; model: string } {
+export function resolveDefaultModelRef(cfg?: FirstNexusConfig): {
+  provider: string;
+  model: string;
+} {
   if (cfg) {
     const resolved = resolveConfiguredModelRef({
       cfg,

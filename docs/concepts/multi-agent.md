@@ -8,7 +8,7 @@ status: active
 
 Run multiple _isolated_ agents — each with its own workspace, state directory (`agentDir`), and session history — plus multiple channel accounts (e.g. two WhatsApps) in one running Gateway. Inbound messages are routed to the right agent through bindings.
 
-An **agent** here is the full per-persona scope: workspace files, auth profiles, model registry, and session store. `agentDir` is the on-disk state directory that holds this per-agent config at `~/.NexisClaw/agents/<agentId>/`. A **binding** maps a channel account (e.g. a Slack workspace or a WhatsApp number) to one of those agents.
+An **agent** here is the full per-persona scope: workspace files, auth profiles, model registry, and session store. `agentDir` is the on-disk state directory that holds this per-agent config at `~/.FirstNexus/agents/<agentId>/`. A **binding** maps a channel account (e.g. a Slack workspace or a WhatsApp number) to one of those agents.
 
 ## What is "one agent"?
 
@@ -16,12 +16,12 @@ An **agent** is a fully scoped brain with its own:
 
 - **Workspace** (files, AGENTS.md/SOUL.md/USER.md, local notes, persona rules).
 - **State directory** (`agentDir`) for auth profiles, model registry, and per-agent config.
-- **Session store** (chat history + routing state) under `~/.NexisClaw/agents/<agentId>/sessions`.
+- **Session store** (chat history + routing state) under `~/.FirstNexus/agents/<agentId>/sessions`.
 
 Auth profiles are **per-agent**. Each agent reads from its own:
 
 ```text
-~/.NexisClaw/agents/<agentId>/agent/auth-profiles.json
+~/.FirstNexus/agents/<agentId>/agent/auth-profiles.json
 ```
 
 <Note>
@@ -31,13 +31,13 @@ Auth profiles are **per-agent**. Each agent reads from its own:
 <Warning>
 Never reuse `agentDir` across agents (it causes auth/session collisions). Agents
 can read through to the default/main agent's auth profiles when they do not have
-a local profile, but NexisClaw does not clone OAuth refresh tokens into the
+a local profile, but FirstNexus does not clone OAuth refresh tokens into the
 secondary agent store. If you want an independent OAuth account, sign in from
 that agent; if you copy credentials manually, copy only portable static
 `api_key` or `token` profiles.
 </Warning>
 
-Skills are loaded from each agent workspace plus shared roots such as `~/.NexisClaw/skills`, then filtered by the effective agent skill allowlist when configured. Use `agents.defaults.skills` for a shared baseline and `agents.list[].skills` for per-agent replacement. See [Skills: per-agent vs shared](/tools/skills#per-agent-vs-shared-skills) and [Skills: agent skill allowlists](/tools/skills#agent-skill-allowlists).
+Skills are loaded from each agent workspace plus shared roots such as `~/.FirstNexus/skills`, then filtered by the effective agent skill allowlist when configured. Use `agents.defaults.skills` for a shared baseline and `agents.list[].skills` for per-agent replacement. See [Skills: per-agent vs shared](/tools/skills#per-agent-vs-shared-skills) and [Skills: agent skill allowlists](/tools/skills#agent-skill-allowlists).
 
 The Gateway can host **one agent** (default) or **many agents** side-by-side.
 
@@ -47,27 +47,27 @@ The Gateway can host **one agent** (default) or **many agents** side-by-side.
 
 ## Paths (quick map)
 
-- Config: `~/.NexisClaw/NexisClaw.json` (or `NEXISCLAW_CONFIG_PATH`)
-- State dir: `~/.NexisClaw` (or `NEXISCLAW_STATE_DIR`)
-- Workspace: `~/.NexisClaw/workspace` (or `~/.NexisClaw/workspace-<agentId>`)
-- Agent dir: `~/.NexisClaw/agents/<agentId>/agent` (or `agents.list[].agentDir`)
-- Sessions: `~/.NexisClaw/agents/<agentId>/sessions`
+- Config: `~/.FirstNexus/FirstNexus.json` (or `NEXISCLAW_CONFIG_PATH`)
+- State dir: `~/.FirstNexus` (or `NEXISCLAW_STATE_DIR`)
+- Workspace: `~/.FirstNexus/workspace` (or `~/.FirstNexus/workspace-<agentId>`)
+- Agent dir: `~/.FirstNexus/agents/<agentId>/agent` (or `agents.list[].agentDir`)
+- Sessions: `~/.FirstNexus/agents/<agentId>/sessions`
 
 ### Single-agent mode (default)
 
-If you do nothing, NexisClaw runs a single agent:
+If you do nothing, FirstNexus runs a single agent:
 
 - `agentId` defaults to **`main`**.
 - Sessions are keyed as `agent:main:<mainKey>`.
-- Workspace defaults to `~/.NexisClaw/workspace` (or `~/.NexisClaw/workspace-<profile>` when `NEXISCLAW_PROFILE` is set).
-- State defaults to `~/.NexisClaw/agents/main/agent`.
+- Workspace defaults to `~/.FirstNexus/workspace` (or `~/.FirstNexus/workspace-<profile>` when `NEXISCLAW_PROFILE` is set).
+- State defaults to `~/.FirstNexus/agents/main/agent`.
 
 ## Agent helper
 
 Use the agent wizard to add a new isolated agent:
 
 ```bash
-NexisClaw agents add work
+FirstNexus agents add work
 ```
 
 Then add `bindings` (or let the wizard do it) to route inbound messages.
@@ -75,7 +75,7 @@ Then add `bindings` (or let the wizard do it) to route inbound messages.
 Verify with:
 
 ```bash
-NexisClaw agents list --bindings
+FirstNexus agents list --bindings
 ```
 
 ## Quick start
@@ -85,11 +85,11 @@ NexisClaw agents list --bindings
     Use the wizard or create workspaces manually:
 
     ```bash
-    NexisClaw agents add coding
-    NexisClaw agents add social
+    FirstNexus agents add coding
+    FirstNexus agents add social
     ```
 
-    Each agent gets its own workspace with `SOUL.md`, `AGENTS.md`, and optional `USER.md`, plus a dedicated `agentDir` and session store under `~/.NexisClaw/agents/<agentId>`.
+    Each agent gets its own workspace with `SOUL.md`, `AGENTS.md`, and optional `USER.md`, plus a dedicated `agentDir` and session store under `~/.FirstNexus/agents/<agentId>`.
 
   </Step>
   <Step title="Create channel accounts">
@@ -100,7 +100,7 @@ NexisClaw agents list --bindings
     - WhatsApp: link each phone number per account.
 
     ```bash
-    NexisClaw channels login --channel whatsapp --account work
+    FirstNexus channels login --channel whatsapp --account work
     ```
 
     See channel guides: [Discord](/channels/discord), [Telegram](/channels/telegram), [WhatsApp](/channels/whatsapp).
@@ -111,9 +111,9 @@ NexisClaw agents list --bindings
   </Step>
   <Step title="Restart and verify">
     ```bash
-    NexisClaw gateway restart
-    NexisClaw agents list --bindings
-    NexisClaw channels status --probe
+    FirstNexus gateway restart
+    FirstNexus agents list --bindings
+    FirstNexus channels status --probe
     ```
   </Step>
 </Steps>
@@ -179,8 +179,8 @@ Example:
 {
   agents: {
     list: [
-      { id: "alex", workspace: "~/.NexisClaw/workspace-alex" },
-      { id: "mia", workspace: "~/.NexisClaw/workspace-mia" },
+      { id: "alex", workspace: "~/.FirstNexus/workspace-alex" },
+      { id: "mia", workspace: "~/.FirstNexus/workspace-mia" },
     ],
   },
   bindings: [
@@ -247,7 +247,7 @@ Bindings are **deterministic** and **most-specific wins**:
   <Accordion title="Account-scope detail">
     - A binding that omits `accountId` matches the default account only.
     - Use `accountId: "*"` for a channel-wide fallback across all accounts.
-    - If you later add the same binding for the same agent with an explicit account id, NexisClaw upgrades the existing channel-only binding to account-scoped instead of duplicating it.
+    - If you later add the same binding for the same agent with an explicit account id, FirstNexus upgrades the existing channel-only binding to account-scoped instead of duplicating it.
 
   </Accordion>
 </AccordionGroup>
@@ -256,7 +256,7 @@ Bindings are **deterministic** and **most-specific wins**:
 
 Channels that support **multiple accounts** (e.g. WhatsApp) use `accountId` to identify each login. Each `accountId` can be routed to a different agent, so one server can host multiple phone numbers without mixing sessions.
 
-If you want a channel-wide default account when `accountId` is omitted, set `channels.<channel>.defaultAccount` (optional). When unset, NexisClaw falls back to `default` if present, otherwise the first configured account id (sorted).
+If you want a channel-wide default account when `accountId` is omitted, set `channels.<channel>.defaultAccount` (optional). When unset, FirstNexus falls back to `default` if present, otherwise the first configured account id (sorted).
 
 Common channels supporting this pattern include:
 
@@ -281,8 +281,8 @@ Common channels supporting this pattern include:
     {
       agents: {
         list: [
-          { id: "main", workspace: "~/.NexisClaw/workspace-main" },
-          { id: "coding", workspace: "~/.NexisClaw/workspace-coding" },
+          { id: "main", workspace: "~/.FirstNexus/workspace-main" },
+          { id: "coding", workspace: "~/.FirstNexus/workspace-coding" },
         ],
       },
       bindings: [
@@ -328,8 +328,8 @@ Common channels supporting this pattern include:
     {
       agents: {
         list: [
-          { id: "main", workspace: "~/.NexisClaw/workspace-main" },
-          { id: "alerts", workspace: "~/.NexisClaw/workspace-alerts" },
+          { id: "main", workspace: "~/.FirstNexus/workspace-main" },
+          { id: "alerts", workspace: "~/.FirstNexus/workspace-alerts" },
         ],
       },
       bindings: [
@@ -362,11 +362,11 @@ Common channels supporting this pattern include:
     Link each account before starting the gateway:
 
     ```bash
-    NexisClaw channels login --channel whatsapp --account personal
-    NexisClaw channels login --channel whatsapp --account biz
+    FirstNexus channels login --channel whatsapp --account personal
+    FirstNexus channels login --channel whatsapp --account biz
     ```
 
-    `~/.NexisClaw/NexisClaw.json` (JSON5):
+    `~/.FirstNexus/FirstNexus.json` (JSON5):
 
     ```js
     {
@@ -376,14 +376,14 @@ Common channels supporting this pattern include:
             id: "home",
             default: true,
             name: "Home",
-            workspace: "~/.NexisClaw/workspace-home",
-            agentDir: "~/.NexisClaw/agents/home/agent",
+            workspace: "~/.FirstNexus/workspace-home",
+            agentDir: "~/.FirstNexus/agents/home/agent",
           },
           {
             id: "work",
             name: "Work",
-            workspace: "~/.NexisClaw/workspace-work",
-            agentDir: "~/.NexisClaw/agents/work/agent",
+            workspace: "~/.FirstNexus/workspace-work",
+            agentDir: "~/.FirstNexus/agents/work/agent",
           },
         ],
       },
@@ -416,12 +416,12 @@ Common channels supporting this pattern include:
         whatsapp: {
           accounts: {
             personal: {
-              // Optional override. Default: ~/.NexisClaw/credentials/whatsapp/personal
-              // authDir: "~/.NexisClaw/credentials/whatsapp/personal",
+              // Optional override. Default: ~/.FirstNexus/credentials/whatsapp/personal
+              // authDir: "~/.FirstNexus/credentials/whatsapp/personal",
             },
             biz: {
-              // Optional override. Default: ~/.NexisClaw/credentials/whatsapp/biz
-              // authDir: "~/.NexisClaw/credentials/whatsapp/biz",
+              // Optional override. Default: ~/.FirstNexus/credentials/whatsapp/biz
+              // authDir: "~/.FirstNexus/credentials/whatsapp/biz",
             },
           },
         },
@@ -445,13 +445,13 @@ Common channels supporting this pattern include:
           {
             id: "chat",
             name: "Everyday",
-            workspace: "~/.NexisClaw/workspace-chat",
+            workspace: "~/.FirstNexus/workspace-chat",
             model: "anthropic/claude-sonnet-4-6",
           },
           {
             id: "opus",
             name: "Deep Work",
-            workspace: "~/.NexisClaw/workspace-opus",
+            workspace: "~/.FirstNexus/workspace-opus",
             model: "anthropic/claude-opus-4-6",
           },
         ],
@@ -479,13 +479,13 @@ Common channels supporting this pattern include:
           {
             id: "chat",
             name: "Everyday",
-            workspace: "~/.NexisClaw/workspace-chat",
+            workspace: "~/.FirstNexus/workspace-chat",
             model: "anthropic/claude-sonnet-4-6",
           },
           {
             id: "opus",
             name: "Deep Work",
-            workspace: "~/.NexisClaw/workspace-opus",
+            workspace: "~/.FirstNexus/workspace-opus",
             model: "anthropic/claude-opus-4-6",
           },
         ],
@@ -513,7 +513,7 @@ Common channels supporting this pattern include:
           {
             id: "family",
             name: "Family",
-            workspace: "~/.NexisClaw/workspace-family",
+            workspace: "~/.FirstNexus/workspace-family",
             identity: { name: "Family Bot" },
             groupChat: {
               mentionPatterns: ["@family", "@familybot", "@Family Bot"],
@@ -567,7 +567,7 @@ Each agent can have its own sandbox and tool restrictions:
     list: [
       {
         id: "personal",
-        workspace: "~/.NexisClaw/workspace-personal",
+        workspace: "~/.FirstNexus/workspace-personal",
         sandbox: {
           mode: "off",  // No sandbox for personal agent
         },
@@ -575,7 +575,7 @@ Each agent can have its own sandbox and tool restrictions:
       },
       {
         id: "family",
-        workspace: "~/.NexisClaw/workspace-family",
+        workspace: "~/.FirstNexus/workspace-family",
         sandbox: {
           mode: "all",     // Always sandboxed
           scope: "agent",  // One container per agent

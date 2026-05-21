@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { formatErrorMessage } from "../../infra/errors.js";
 import { createSubsystemLogger } from "../../logging/subsystem.js";
 import type { CompactEmbeddedPiSessionParams } from "../pi-embedded-runner/compact.types.js";
@@ -58,7 +58,7 @@ function compareHarnessSupport(
 export function selectAgentHarness(params: {
   provider: string;
   modelId?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   agentId?: string;
   sessionKey?: string;
   agentHarnessId?: string;
@@ -69,7 +69,7 @@ export function selectAgentHarness(params: {
 function selectAgentHarnessDecision(params: {
   provider: string;
   modelId?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   agentId?: string;
   sessionKey?: string;
   agentHarnessId?: string;

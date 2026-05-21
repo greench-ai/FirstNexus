@@ -26,7 +26,7 @@ function collectStaticModuleReferences(
 }
 
 describe("tool system boundary", () => {
-  it("keeps production tool modules independent from NexisClaw subsystems", () => {
+  it("keeps production tool modules independent from FirstNexus subsystems", () => {
     const violations = readdirSync(toolsDir, { withFileTypes: true }).flatMap((entry) => {
       if (!entry.isFile() || !entry.name.endsWith(".ts") || entry.name.endsWith(".test.ts")) {
         return [];

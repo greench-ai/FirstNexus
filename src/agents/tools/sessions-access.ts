@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { resolveSandboxSessionToolsVisibility } from "../../plugin-sdk/session-visibility.js";
 import { isSubagentSessionKey } from "../../routing/session-key.js";
 import { normalizeOptionalString } from "../../shared/string-coerce.js";
@@ -14,7 +14,7 @@ export {
 } from "../../plugin-sdk/session-visibility.js";
 
 export function resolveSandboxedSessionToolContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentSessionKey?: string;
   sandboxed?: boolean;
 }): {

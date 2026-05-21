@@ -1,9 +1,9 @@
-import { resolveApprovalOverGateway } from "NexisClaw/plugin-sdk/approval-gateway-runtime";
-import type { ExecApprovalReplyDecision } from "NexisClaw/plugin-sdk/approval-reply-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import { resolveApprovalOverGateway } from "FirstNexus/plugin-sdk/approval-gateway-runtime";
+import type { ExecApprovalReplyDecision } from "FirstNexus/plugin-sdk/approval-reply-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
 export type ResolveTelegramExecApprovalParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   approvalId: string;
   decision: ExecApprovalReplyDecision;
   senderId?: string | null;

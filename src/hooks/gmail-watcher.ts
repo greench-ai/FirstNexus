@@ -8,7 +8,7 @@
 import { type ChildProcess, spawn } from "node:child_process";
 import path from "node:path";
 import { hasBinary } from "../agents/skills.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveExecutable } from "../infra/executable-path.js";
 import { getWindowsInstallRoots } from "../infra/windows-install-roots.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
@@ -164,7 +164,7 @@ export type GmailWatcherStartResult = {
  * Start the Gmail watcher service.
  * Called automatically by the gateway if hooks.gmail is configured.
  */
-export async function startGmailWatcher(cfg: NexisClawConfig): Promise<GmailWatcherStartResult> {
+export async function startGmailWatcher(cfg: FirstNexusConfig): Promise<GmailWatcherStartResult> {
   // Check if gmail hooks are configured
   if (!cfg.hooks?.enabled) {
     return { started: false, reason: "hooks not enabled" };

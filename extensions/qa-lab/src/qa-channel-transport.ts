@@ -1,6 +1,6 @@
 import { setTimeout as sleep } from "node:timers/promises";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import type { QaBusState } from "./bus-state.js";
 import { getQaProvider } from "./providers/index.js";
 import { QaStateBackedTransportAdapter } from "./qa-transport.js";
@@ -81,15 +81,15 @@ export function createQaChannelGatewayConfig(params: {
       [QA_CHANNEL_ID]: {
         enabled: true,
         baseUrl: params.baseUrl,
-        botUserId: "NexisClaw",
-        botDisplayName: "NexisClaw QA",
+        botUserId: "FirstNexus",
+        botDisplayName: "FirstNexus QA",
         allowFrom: ["*"],
         pollTimeoutMs: 250,
       },
     },
     messages: {
       groupChat: {
-        mentionPatterns: ["\\b@?NexisClaw\\b"],
+        mentionPatterns: ["\\b@?FirstNexus\\b"],
         visibleReplies: "automatic",
       },
     },
@@ -112,7 +112,7 @@ function createQaChannelReportNotes(params: QaTransportReportParams) {
 async function handleQaChannelAction(params: {
   action: QaTransportActionName;
   args: Record<string, unknown>;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }) {
   return await qaChannelPlugin.actions?.handleAction?.({

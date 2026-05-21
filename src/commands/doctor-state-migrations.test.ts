@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   autoMigrateLegacyStateDir,
   autoMigrateLegacyState,
@@ -26,7 +26,7 @@ vi.mock("../channels/plugins/bundled.js", async () => {
     }
   }
 
-  function resolveTelegramAccountId(cfg: NexisClawConfig): string {
+  function resolveTelegramAccountId(cfg: FirstNexusConfig): string {
     const defaultAgentId = cfg.agents?.list?.find((agent) => agent.default)?.id ?? "main";
     const boundAccountId = cfg.bindings?.find(
       (binding) =>
@@ -38,7 +38,7 @@ vi.mock("../channels/plugins/bundled.js", async () => {
   }
 
   function detectTelegramAllowFromMigration(params: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     env: NodeJS.ProcessEnv;
   }) {
     const root = params.env.NEXISCLAW_STATE_DIR;
@@ -103,7 +103,7 @@ vi.mock("../channels/plugins/bundled.js", async () => {
     ]),
     listBundledChannelLegacyStateMigrationDetectors: vi.fn(() => [
       ({ oauthDir }: { oauthDir: string }) => detectWhatsAppLegacyStateMigrations({ oauthDir }),
-      ({ cfg, env }: { cfg: NexisClawConfig; env: NodeJS.ProcessEnv }) =>
+      ({ cfg, env }: { cfg: FirstNexusConfig; env: NodeJS.ProcessEnv }) =>
         detectTelegramAllowFromMigration({ cfg, env }),
     ]),
     listBundledChannelSetupPluginsByFeature: vi.fn((feature: string) => {
@@ -137,7 +137,7 @@ vi.mock("../channels/plugins/bundled.js", async () => {
                 cfg,
                 env,
               }: {
-                cfg: NexisClawConfig;
+                cfg: FirstNexusConfig;
                 env: NodeJS.ProcessEnv;
               }) => detectTelegramAllowFromMigration({ cfg, env }),
             },
@@ -181,14 +181,14 @@ vi.mock("../infra/json-files.js", async () => {
 });
 
 async function makeTempRoot() {
-  const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "NexisClaw-doctor-"));
+  const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), "FirstNexus-doctor-"));
   tempRoots.push(root);
   return root;
 }
 
 async function makeRootWithEmptyCfg() {
   const root = await makeTempRoot();
-  const cfg: NexisClawConfig = {};
+  const cfg: FirstNexusConfig = {};
   return { root, cfg };
 }
 
@@ -207,7 +207,7 @@ function writeLegacyTelegramAllowFromStore(oauthDir: string) {
   );
 }
 
-async function runTelegramAllowFromMigration(params: { root: string; cfg: NexisClawConfig }) {
+async function runTelegramAllowFromMigration(params: { root: string; cfg: FirstNexusConfig }) {
   const oauthDir = ensureCredentialsDir(params.root);
   writeLegacyTelegramAllowFromStore(oauthDir);
   const detected = await detectLegacyStateMigrations({
@@ -248,7 +248,7 @@ function writeLegacySessionsFixture(params: {
 
 async function detectAndRunMigrations(params: {
   root: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   now?: () => number;
 }) {
   const detected = await detectLegacyStateMigrations({
@@ -267,7 +267,7 @@ function readSessionsStore(targetDir: string) {
 
 async function runAndReadSessionsStore(params: {
   root: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   targetDir: string;
   now?: () => number;
 }) {
@@ -285,7 +285,7 @@ const DIR_LINK_TYPE = process.platform === "win32" ? "junction" : "dir";
 
 function getStateDirMigrationPaths(root: string) {
   return {
-    targetDir: path.join(root, ".NexisClaw"),
+    targetDir: path.join(root, ".FirstNexus"),
     legacyDir: path.join(root, ".clawdbot"),
   };
 }
@@ -311,7 +311,7 @@ async function runFreshStateDirMigration(root: string, env = {} as NodeJS.Proces
 
 async function runAutoMigrateLegacyStateWithLog(params: {
   root: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   now?: () => number;
 }) {
   const log = { info: vi.fn(), warn: vi.fn() };
@@ -354,7 +354,7 @@ function ensureCredentialsDir(root: string) {
 describe("doctor legacy state migrations", () => {
   it("migrates legacy sessions into agents/<id>/sessions", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const legacySessionsDir = writeLegacySessionsFixture({
       root,
       sessions: {
@@ -400,7 +400,7 @@ describe("doctor legacy state migrations", () => {
 
   it("keeps shipped WhatsApp legacy group keys channel-qualified during migration", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const targetDir = path.join(root, "agents", "main", "sessions");
 
     writeLegacySessionsFixture({
@@ -514,7 +514,7 @@ describe("doctor legacy state migrations", () => {
 
   it("does not fan out legacy Telegram pairing allowFrom store to configured named accounts", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       channels: {
         telegram: {
           defaultAccount: "bot2",
@@ -546,7 +546,7 @@ describe("doctor legacy state migrations", () => {
 
   it("migrates legacy Telegram pairing allowFrom store to the default agent bound account", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [{ id: "ops", default: true }],
       },
@@ -582,7 +582,7 @@ describe("doctor legacy state migrations", () => {
 
   it("no-ops when nothing detected", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const detected = await detectLegacyStateMigrations({
       cfg,
       env: { NEXISCLAW_STATE_DIR: root } as NodeJS.ProcessEnv,
@@ -593,7 +593,7 @@ describe("doctor legacy state migrations", () => {
 
   it("routes legacy state to the default agent entry", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: { list: [{ id: "alpha", default: true }] },
     };
     writeLegacySessionsFixture({
@@ -615,7 +615,7 @@ describe("doctor legacy state migrations", () => {
 
   it("honors session.mainKey when seeding the direct-chat bucket", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = { session: { mainKey: "work" } };
+    const cfg: FirstNexusConfig = { session: { mainKey: "work" } };
     writeLegacySessionsFixture({
       root,
       sessions: {
@@ -655,7 +655,7 @@ describe("doctor legacy state migrations", () => {
 
   it("prefers the newest entry when collapsing main aliases", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = { session: { mainKey: "work" } };
+    const cfg: FirstNexusConfig = { session: { mainKey: "work" } };
     const targetDir = path.join(root, "agents", "main", "sessions");
     writeJson5(path.join(targetDir, "sessions.json"), {
       "agent:main:main": { sessionId: "legacy", updatedAt: 50 },
@@ -674,7 +674,7 @@ describe("doctor legacy state migrations", () => {
 
   it("lowercases agent session keys during canonicalization", async () => {
     const root = await makeTempRoot();
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const targetDir = path.join(root, "agents", "main", "sessions");
     writeJson5(path.join(targetDir, "sessions.json"), {
       "agent:main:slack:channel:C123": { sessionId: "legacy", updatedAt: 10 },

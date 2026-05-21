@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { SecurityAuditFinding } from "./audit.types.js";
 
 let auditDeepModulePromise: Promise<typeof import("./audit.deep.runtime.js")> | undefined;
@@ -9,7 +9,7 @@ async function loadAuditDeepModule() {
 }
 
 export async function collectDeepCodeSafetyFindings(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   stateDir: string;
   deep: boolean;
   summaryCache?: Map<string, Promise<unknown>>;

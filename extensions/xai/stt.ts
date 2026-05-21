@@ -2,15 +2,15 @@ import type {
   AudioTranscriptionRequest,
   AudioTranscriptionResult,
   MediaUnderstandingProvider,
-} from "NexisClaw/plugin-sdk/media-understanding";
+} from "FirstNexus/plugin-sdk/media-understanding";
 import {
   assertOkOrThrowHttpError,
   buildAudioTranscriptionFormData,
   postTranscriptionRequest,
   resolveProviderHttpRequestConfig,
   requireTranscriptionText,
-} from "NexisClaw/plugin-sdk/provider-http";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/provider-http";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { XAI_BASE_URL } from "./model-definitions.js";
 
 export const XAI_DEFAULT_STT_MODEL = "grok-stt";

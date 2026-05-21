@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { TalkTransport } from "./talk-events.js";
 
 export type RealtimeVoiceProviderId = string;
@@ -90,17 +90,17 @@ export type RealtimeVoiceProviderCapabilities = {
 };
 
 export type RealtimeVoiceProviderResolveConfigContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   rawConfig: RealtimeVoiceProviderConfig;
 };
 
 export type RealtimeVoiceProviderConfiguredContext = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   providerConfig: RealtimeVoiceProviderConfig;
 };
 
 export type RealtimeVoiceBridgeCreateRequest = RealtimeVoiceBridgeCallbacks & {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   providerConfig: RealtimeVoiceProviderConfig;
   audioFormat?: RealtimeVoiceAudioFormat;
   instructions?: string;
@@ -110,7 +110,7 @@ export type RealtimeVoiceBridgeCreateRequest = RealtimeVoiceBridgeCallbacks & {
 };
 
 export type RealtimeVoiceBrowserSessionCreateRequest = {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   providerConfig: RealtimeVoiceProviderConfig;
   instructions?: string;
   tools?: RealtimeVoiceTool[];

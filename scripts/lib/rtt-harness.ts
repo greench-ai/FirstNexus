@@ -64,7 +64,7 @@ type TelegramQaSummary = {
 };
 
 const NEXISCLAW_PACKAGE_SPEC_RE =
-  /^NexisClaw@(main|alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$/u;
+  /^FirstNexus@(main|alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$/u;
 
 const REQUIRED_TELEGRAM_ENV = [
   "NEXISCLAW_QA_TELEGRAM_GROUP_ID",
@@ -72,10 +72,10 @@ const REQUIRED_TELEGRAM_ENV = [
   "NEXISCLAW_QA_TELEGRAM_SUT_BOT_TOKEN",
 ] as const;
 
-export function validateNexisClawPackageSpec(spec: string) {
+export function validateFirstNexusPackageSpec(spec: string) {
   if (!NEXISCLAW_PACKAGE_SPEC_RE.test(spec)) {
     throw new Error(
-      `Package spec must be NexisClaw@main, NexisClaw@alpha, NexisClaw@beta, NexisClaw@latest, or an exact NexisClaw release version; got: ${spec}`,
+      `Package spec must be FirstNexus@main, FirstNexus@alpha, FirstNexus@beta, FirstNexus@latest, or an exact FirstNexus release version; got: ${spec}`,
     );
   }
   return spec;
@@ -155,7 +155,7 @@ export async function assertHarnessRoot(harnessRoot: string) {
   try {
     await fs.access(scriptPath);
   } catch {
-    throw new Error(`Missing NexisClaw Telegram npm harness: ${scriptPath}`);
+    throw new Error(`Missing FirstNexus Telegram npm harness: ${scriptPath}`);
   }
 }
 
@@ -185,7 +185,7 @@ export async function resolveMainVersion(harnessRoot: string) {
     await fs.readFile(path.join(harnessRoot, "package.json"), "utf8"),
   ) as { version?: unknown };
   if (typeof packageJson.version !== "string" || packageJson.version.trim().length === 0) {
-    throw new Error("NexisClaw package.json must contain a non-empty version.");
+    throw new Error("FirstNexus package.json must contain a non-empty version.");
   }
   const { stdout } = await execFileAsync("git", ["rev-parse", "--short=10", "HEAD"], {
     cwd: harnessRoot,

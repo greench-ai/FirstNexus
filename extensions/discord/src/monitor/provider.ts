@@ -1,26 +1,26 @@
-import type { ChannelRuntimeSurface } from "NexisClaw/plugin-sdk/channel-contract";
+import type { ChannelRuntimeSurface } from "FirstNexus/plugin-sdk/channel-contract";
 import {
   listNativeCommandSpecsForConfig,
   listSkillCommandsForAgents,
-} from "NexisClaw/plugin-sdk/command-auth-native";
-import type { NexisClawConfig, ReplyToMode } from "NexisClaw/plugin-sdk/config-contracts";
-import { createConnectedChannelStatusPatch } from "NexisClaw/plugin-sdk/gateway-runtime";
+} from "FirstNexus/plugin-sdk/command-auth-native";
+import type { FirstNexusConfig, ReplyToMode } from "FirstNexus/plugin-sdk/config-contracts";
+import { createConnectedChannelStatusPatch } from "FirstNexus/plugin-sdk/gateway-runtime";
 import {
   resolveNativeCommandsEnabled,
   resolveNativeSkillsEnabled,
-} from "NexisClaw/plugin-sdk/native-command-config-runtime";
-import { resolveTextChunkLimit } from "NexisClaw/plugin-sdk/reply-chunking";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
-import { isVerbose, logVerbose, shouldLogVerbose, warn } from "NexisClaw/plugin-sdk/runtime-env";
-import { createSubsystemLogger } from "NexisClaw/plugin-sdk/runtime-env";
-import { createNonExitingRuntime, type RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/native-command-config-runtime";
+import { resolveTextChunkLimit } from "FirstNexus/plugin-sdk/reply-chunking";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
+import { isVerbose, logVerbose, shouldLogVerbose, warn } from "FirstNexus/plugin-sdk/runtime-env";
+import { createSubsystemLogger } from "FirstNexus/plugin-sdk/runtime-env";
+import { createNonExitingRuntime, type RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   GROUP_POLICY_BLOCKED_LABEL,
   resolveOpenProviderRuntimeGroupPolicy,
   resolveDefaultGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "NexisClaw/plugin-sdk/runtime-group-policy";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/runtime-group-policy";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   resolveDiscordAccount,
   resolveDiscordAccountAllowFrom,
@@ -66,7 +66,7 @@ import type { DiscordMonitorStatusSink } from "./status.js";
 export type MonitorDiscordOpts = {
   token?: string;
   accountId?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   runtime?: RuntimeEnv;
   channelRuntime?: ChannelRuntimeSurface;
   abortSignal?: AbortSignal;
@@ -478,7 +478,7 @@ export async function monitorDiscordProvider(opts: MonitorDiscordOpts = {}) {
     const logger = createSubsystemLogger("discord/monitor");
     const guildHistories = new Map<
       string,
-      import("NexisClaw/plugin-sdk/reply-history").HistoryEntry[]
+      import("FirstNexus/plugin-sdk/reply-history").HistoryEntry[]
     >();
     let { botUserId, botUserName } = await fetchDiscordBotIdentity({
       client,

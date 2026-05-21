@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginManifestRecord } from "../plugins/manifest-registry.js";
 import type { PluginConfigUiHint } from "../plugins/types.js";
 import { getPath, setPathCreateStrict } from "../secrets/path-utils.js";
@@ -54,7 +54,7 @@ function resolveJsonSchemaProperty(
 }
 
 function getExistingPluginConfig(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   pluginId: string,
 ): Record<string, unknown> {
   return (config.plugins?.entries?.[pluginId]?.config as Record<string, unknown>) ?? {};
@@ -130,7 +130,7 @@ export function discoverUnconfiguredPlugins(params: {
     configSchema?: Record<string, unknown>;
     enabled?: boolean;
   }>;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
 }): ConfigurablePlugin[] {
   const all = discoverConfigurablePlugins(params);
   return all.filter((plugin) => {
@@ -143,7 +143,7 @@ export function discoverUnconfiguredPlugins(params: {
 }
 
 async function listEnabledConfigurableManifestPlugins(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   workspaceDir?: string;
 }): Promise<readonly PluginManifestRecord[]> {
   const { loadPluginMetadataSnapshot } = await loadPluginMetadataSnapshotModule();
@@ -164,11 +164,11 @@ async function listEnabledConfigurableManifestPlugins(params: {
  */
 async function promptPluginFields(params: {
   plugin: ConfigurablePlugin;
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   prompter: WizardPrompter;
   /** When true, show all fields including already-configured ones (for configure flow). */
   showConfigured?: boolean;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const { plugin, config, prompter } = params;
   const existing = getExistingPluginConfig(config, plugin.id);
   const updatedConfig = structuredClone(existing);
@@ -189,10 +189,10 @@ async function promptPluginFields(params: {
     const helpSuffix = hint.help ? ` — ${hint.help}` : "";
 
     // Skip sensitive fields — WizardPrompter has no masked input;
-    // direct users to NexisClaw config set or the Web UI instead.
+    // direct users to FirstNexus config set or the Web UI instead.
     if (hint.sensitive) {
       await prompter.note(
-        `"${label}" is sensitive. Set it via:\n  NexisClaw config set plugins.entries.${plugin.id}.config.${key} <value>\nor use the Web UI Settings page.`,
+        `"${label}" is sensitive. Set it via:\n  FirstNexus config set plugins.entries.${plugin.id}.config.${key} <value>\nor use the Web UI Settings page.`,
         "Sensitive field",
       );
       continue;
@@ -312,10 +312,10 @@ async function promptPluginFields(params: {
  * Shows unconfigured plugin fields and prompts the user.
  */
 export async function setupPluginConfig(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   prompter: WizardPrompter;
   workspaceDir?: string;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const manifestPlugins = await listEnabledConfigurableManifestPlugins({
     config: params.config,
     workspaceDir: params.workspaceDir,
@@ -368,10 +368,10 @@ export async function setupPluginConfig(params: {
  * Shows all configurable plugins and all their non-advanced fields.
  */
 export async function configurePluginConfig(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   prompter: WizardPrompter;
   workspaceDir?: string;
-}): Promise<NexisClawConfig> {
+}): Promise<FirstNexusConfig> {
   const manifestPlugins = await listEnabledConfigurableManifestPlugins({
     config: params.config,
     workspaceDir: params.workspaceDir,

@@ -3,12 +3,12 @@ import fs from "node:fs/promises";
 import net from "node:net";
 import os from "node:os";
 import path from "node:path";
-import { createSandboxTestContext } from "NexisClaw/plugin-sdk/test-fixtures";
+import { createSandboxTestContext } from "FirstNexus/plugin-sdk/test-fixtures";
 import {
   createSandboxBrowserConfig,
   createSandboxPruneConfig,
   createSandboxSshConfig,
-} from "NexisClaw/plugin-sdk/test-fixtures";
+} from "FirstNexus/plugin-sdk/test-fixtures";
 import { describe, expect, it } from "vitest";
 import { createOpenShellSandboxBackendFactory } from "./backend.js";
 import { resolveOpenShellPluginConfig } from "./config.js";
@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \\
 RUN groupadd -g 1000 sandbox && \\
     useradd -m -u 1000 -g sandbox sandbox
 
-RUN echo "NexisClaw-openshell-e2e" > /opt/openshell-e2e-marker.txt
+RUN echo "FirstNexus-openshell-e2e" > /opt/openshell-e2e-marker.txt
 
 WORKDIR /sandbox
 CMD ["sleep", "infinity"]
@@ -357,7 +357,7 @@ describe("openshell sandbox backend e2e", () => {
         return;
       }
 
-      const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-openshell-e2e-"));
+      const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-openshell-e2e-"));
       const env = openshellEnv(rootDir);
       const previousHome = process.env.HOME;
       const previousXdgConfigHome = process.env.XDG_CONFIG_HOME;
@@ -368,9 +368,9 @@ describe("openshell sandbox backend e2e", () => {
       const denyPolicyPath = path.join(rootDir, "deny-policy.yaml");
       const allowPolicyPath = path.join(rootDir, "allow-policy.yaml");
       const scopeSuffix = `${process.pid}-${Date.now()}`;
-      const gatewayName = `NexisClaw-e2e-${scopeSuffix}`;
+      const gatewayName = `FirstNexus-e2e-${scopeSuffix}`;
       const scopeKey = `session:openshell-e2e-deny:${scopeSuffix}`;
-      const allowSandboxName = `NexisClaw-policy-allow-${scopeSuffix}`;
+      const allowSandboxName = `FirstNexus-policy-allow-${scopeSuffix}`;
       const gatewayPort = await allocatePort();
       let hostPolicyServer: HostPolicyServer | null = null;
       const sandboxCfg = {
@@ -380,8 +380,8 @@ describe("openshell sandbox backend e2e", () => {
         workspaceAccess: "rw" as const,
         workspaceRoot: path.join(rootDir, "sandboxes"),
         docker: {
-          image: "NexisClaw-sandbox:bookworm-slim",
-          containerPrefix: "NexisClaw-sbx-",
+          image: "FirstNexus-sandbox:bookworm-slim",
+          containerPrefix: "FirstNexus-sbx-",
           workdir: "/workspace",
           readOnlyRoot: true,
           tmpfs: ["/tmp"],
@@ -389,7 +389,7 @@ describe("openshell sandbox backend e2e", () => {
           capDrop: ["ALL"],
           env: {},
         },
-        ssh: createSandboxSshConfig("/tmp/NexisClaw-sandboxes"),
+        ssh: createSandboxSshConfig("/tmp/FirstNexus-sandboxes"),
         browser: createSandboxBrowserConfig(),
         tools: { allow: [], deny: [] },
         prune: createSandboxPruneConfig(),
@@ -465,7 +465,7 @@ describe("openshell sandbox backend e2e", () => {
         expect(execResult.code).toBe(0);
         const stdout = execResult.stdout.trim();
         expect(stdout).toContain("/sandbox");
-        expect(stdout).toContain("NexisClaw-openshell-e2e");
+        expect(stdout).toContain("FirstNexus-openshell-e2e");
         expect(stdout).toContain("seed-from-local");
 
         const curlPathResult = await runBackendExec({

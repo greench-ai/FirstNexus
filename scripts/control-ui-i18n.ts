@@ -132,7 +132,7 @@ const LOCALE_ENTRIES: readonly LocaleEntry[] = [
 ];
 
 const DEFAULT_GLOSSARY: readonly GlossaryEntry[] = [
-  { source: "NexisClaw", target: "NexisClaw" },
+  { source: "FirstNexus", target: "FirstNexus" },
   { source: "Gateway", target: "Gateway" },
   { source: "Control UI", target: "Control UI" },
   { source: "Skills", target: "Skills" },
@@ -911,7 +911,7 @@ function getPiRuntimeDir() {
   return path.join(
     homedir(),
     ".cache",
-    "NexisClaw",
+    "FirstNexus",
     "control-ui-i18n",
     "pi-runtime",
     resolvePiPackageVersion(),

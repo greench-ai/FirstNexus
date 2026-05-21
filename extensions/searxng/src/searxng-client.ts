@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   DEFAULT_CACHE_TTL_MINUTES,
   DEFAULT_SEARCH_COUNT,
@@ -13,14 +13,14 @@ import {
   withTrustedWebSearchEndpoint,
   wrapWebContent,
   writeCache,
-} from "NexisClaw/plugin-sdk/provider-web-search";
+} from "FirstNexus/plugin-sdk/provider-web-search";
 import {
   assertHttpUrlTargetsPrivateNetwork,
   isBlockedHostnameOrIp,
   isPrivateIpAddress,
   resolvePinnedHostnameWithPolicy,
   type LookupFn,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   resolveSearxngBaseUrl,
   resolveSearxngCategories,
@@ -229,7 +229,7 @@ async function fetchSearxngResults(params: {
 }
 
 export async function runSearxngSearch(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   query: string;
   count?: number;
   categories?: string;

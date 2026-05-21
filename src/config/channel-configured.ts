@@ -4,10 +4,10 @@ import {
   hasMeaningfulChannelConfigShallow,
   resolveChannelConfigRecord,
 } from "./channel-configured-shared.js";
-import type { NexisClawConfig } from "./types.NexisClaw.js";
+import type { FirstNexusConfig } from "./types.FirstNexus.js";
 
 export function isChannelConfigured(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   channelId: string,
   env: NodeJS.ProcessEnv = process.env,
 ): boolean {

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import { z } from "zod";
 import {
   joinQaCredentialEndpoint,

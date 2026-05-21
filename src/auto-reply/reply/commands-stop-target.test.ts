@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import {
   getActivePluginRegistry,
   resetPluginRuntimeStateForTest,
@@ -98,7 +98,7 @@ function buildStopParams(): HandleCommandsParams {
     cfg: {
       commands: { text: true },
       channels: { telegram: { allowFrom: ["*"] } },
-    } as NexisClawConfig,
+    } as FirstNexusConfig,
     ctx: {
       Provider: "telegram",
       Surface: "telegram",
@@ -192,7 +192,7 @@ describe("handleStopCommand target fallback", () => {
     const cfg = {
       commands: { text: true, allowFrom: { "*": ["*"] } },
       channels: { telegram: { allowFrom: ["*"] } },
-    } as NexisClawConfig;
+    } as FirstNexusConfig;
     const ctx = {
       Provider: "telegram",
       Surface: "telegram",

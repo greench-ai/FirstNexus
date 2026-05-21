@@ -1,4 +1,4 @@
-import { isLoopbackHost } from "NexisClaw/plugin-sdk/gateway-runtime";
+import { isLoopbackHost } from "FirstNexus/plugin-sdk/gateway-runtime";
 
 export const QA_CREDENTIALS_DEFAULT_ENDPOINT_PREFIX = "/qa-credentials/v1";
 const QA_CREDENTIALS_ALLOW_INSECURE_HTTP_ENV_KEY = "NEXISCLAW_QA_ALLOW_INSECURE_HTTP";

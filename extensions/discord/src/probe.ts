@@ -1,7 +1,7 @@
-import type { BaseProbeResult } from "NexisClaw/plugin-sdk/channel-contract";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { resolveFetch } from "NexisClaw/plugin-sdk/fetch-runtime";
-import { fetchWithTimeout } from "NexisClaw/plugin-sdk/text-utility-runtime";
+import type { BaseProbeResult } from "FirstNexus/plugin-sdk/channel-contract";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { resolveFetch } from "FirstNexus/plugin-sdk/fetch-runtime";
+import { fetchWithTimeout } from "FirstNexus/plugin-sdk/text-utility-runtime";
 import { DiscordApiError, fetchDiscord } from "./api.js";
 import { normalizeDiscordToken } from "./token.js";
 

@@ -1,5 +1,5 @@
 ---
-summary: "Adds Kimi, Kimi Coding model provider support to NexisClaw."
+summary: "Adds Kimi, Kimi Coding model provider support to FirstNexus."
 read_when:
   - You are installing, configuring, or auditing the kimi plugin
 title: "Kimi plugin"
@@ -7,12 +7,12 @@ title: "Kimi plugin"
 
 # Kimi plugin
 
-Adds Kimi, Kimi Coding model provider support to NexisClaw.
+Adds Kimi, Kimi Coding model provider support to FirstNexus.
 
 ## Distribution
 
-- Package: `@NexisClaw/kimi-provider`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/kimi-provider`
+- Install route: included in FirstNexus
 
 ## Surface
 

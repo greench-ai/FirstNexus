@@ -14,13 +14,13 @@ import type {
   ChannelStatusIssue as ContractChannelStatusIssue,
   ChannelThreadingContext as ContractChannelThreadingContext,
   ChannelThreadingToolContext as ContractChannelThreadingToolContext,
-} from "NexisClaw/plugin-sdk/channel-contract";
+} from "FirstNexus/plugin-sdk/channel-contract";
 import type {
   ChannelMessageActionContext as CoreChannelMessageActionContext,
-  NexisClawPluginApi as CoreNexisClawPluginApi,
+  FirstNexusPluginApi as CoreFirstNexusPluginApi,
   PluginRuntime as CorePluginRuntime,
-} from "NexisClaw/plugin-sdk/core";
-import * as providerEntrySdk from "NexisClaw/plugin-sdk/provider-entry";
+} from "FirstNexus/plugin-sdk/core";
+import * as providerEntrySdk from "FirstNexus/plugin-sdk/provider-entry";
 import ts from "typescript";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import type { ChannelMessageActionContext } from "../../channels/plugins/types.js";
@@ -41,7 +41,7 @@ import * as channelActionsDirectSdk from "../../plugin-sdk/channel-actions.js";
 import * as channelLifecycleDirectSdk from "../../plugin-sdk/channel-lifecycle.js";
 import type {
   ChannelMessageActionContext as SharedChannelMessageActionContext,
-  NexisClawPluginApi as SharedNexisClawPluginApi,
+  FirstNexusPluginApi as SharedFirstNexusPluginApi,
   PluginRuntime as SharedPluginRuntime,
 } from "../../plugin-sdk/channel-plugin-common.js";
 import * as channelReplyPipelineDirectSdk from "../../plugin-sdk/channel-reply-pipeline.js";
@@ -50,7 +50,7 @@ import { publicPluginSdkSubpaths as pluginSdkSubpaths } from "../../plugin-sdk/e
 import * as globalSingletonDirectSdk from "../../plugin-sdk/global-singleton.js";
 import * as providerEntryDirectSdk from "../../plugin-sdk/provider-entry.js";
 import type { PluginRuntime } from "../runtime/types.js";
-import type { NexisClawPluginApi } from "../types.js";
+import type { FirstNexusPluginApi } from "../types.js";
 
 const SRC_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const REPO_ROOT = resolve(SRC_ROOT, "..");
@@ -795,7 +795,7 @@ describe("plugin-sdk subpath exports", () => {
         resolve(REPO_ROOT, "test"),
       ],
       pattern:
-        /(?:from\s+|import\s+(?:type\s+)?|import\s*\(\s*)["']NexisClaw\/plugin-sdk\/channel-runtime(?=["'])/u,
+        /(?:from\s+|import\s+(?:type\s+)?|import\s*\(\s*)["']FirstNexus\/plugin-sdk\/channel-runtime(?=["'])/u,
       exclude: [
         "src/plugins/compat/registry.ts",
         "src/plugins/sdk-alias.test.ts",
@@ -1272,35 +1272,39 @@ describe("plugin-sdk subpath exports", () => {
     expectTypeOf<ContractChannelStatusIssue>().toMatchTypeOf<ChannelStatusIssue>();
     expectTypeOf<ContractChannelThreadingContext>().toMatchTypeOf<ChannelThreadingContext>();
     expectTypeOf<ContractChannelThreadingToolContext>().toMatchTypeOf<ChannelThreadingToolContext>();
-    expectTypeOf<CoreNexisClawPluginApi>().toMatchTypeOf<NexisClawPluginApi>();
+    expectTypeOf<CoreFirstNexusPluginApi>().toMatchTypeOf<FirstNexusPluginApi>();
     expectTypeOf<CorePluginRuntime>().toMatchTypeOf<PluginRuntime>();
     expectTypeOf<CoreChannelMessageActionContext>().toMatchTypeOf<ChannelMessageActionContext>();
-    expectTypeOf<CoreNexisClawPluginApi>().toMatchTypeOf<SharedNexisClawPluginApi>();
+    expectTypeOf<CoreFirstNexusPluginApi>().toMatchTypeOf<SharedFirstNexusPluginApi>();
     expectTypeOf<CorePluginRuntime>().toMatchTypeOf<SharedPluginRuntime>();
     expectTypeOf<CoreChannelMessageActionContext>().toMatchTypeOf<SharedChannelMessageActionContext>();
   });
 
   it("keeps runtime entry subpaths importable", async () => {
-    const coreSdk = await importResolvedPluginSdkSubpath("NexisClaw/plugin-sdk/core");
+    const coreSdk = await importResolvedPluginSdkSubpath("FirstNexus/plugin-sdk/core");
     const channelActionsSdk = await importResolvedPluginSdkSubpath(
-      "NexisClaw/plugin-sdk/channel-actions",
+      "FirstNexus/plugin-sdk/channel-actions",
     );
     const globalSingletonSdk = await importResolvedPluginSdkSubpath(
-      "NexisClaw/plugin-sdk/global-singleton",
+      "FirstNexus/plugin-sdk/global-singleton",
     );
-    const pluginEntrySdk = await importResolvedPluginSdkSubpath("NexisClaw/plugin-sdk/plugin-entry");
+    const pluginEntrySdk = await importResolvedPluginSdkSubpath(
+      "FirstNexus/plugin-sdk/plugin-entry",
+    );
     const channelLifecycleSdk = await importResolvedPluginSdkSubpath(
-      "NexisClaw/plugin-sdk/channel-lifecycle",
+      "FirstNexus/plugin-sdk/channel-lifecycle",
     );
     const channelPairingSdk = await importResolvedPluginSdkSubpath(
-      "NexisClaw/plugin-sdk/channel-pairing",
+      "FirstNexus/plugin-sdk/channel-pairing",
     );
     const channelReplyPipelineSdk = await importResolvedPluginSdkSubpath(
-      "NexisClaw/plugin-sdk/channel-reply-pipeline",
+      "FirstNexus/plugin-sdk/channel-reply-pipeline",
     );
     const representativeModules = [];
     for (const id of representativeRuntimeSmokeSubpaths) {
-      representativeModules.push(await importResolvedPluginSdkSubpath(`NexisClaw/plugin-sdk/${id}`));
+      representativeModules.push(
+        await importResolvedPluginSdkSubpath(`FirstNexus/plugin-sdk/${id}`),
+      );
     }
 
     expect(coreSdk.definePluginEntry).toBe(pluginEntrySdk.definePluginEntry);
@@ -1376,8 +1380,10 @@ describe("plugin-sdk subpath exports", () => {
   });
 
   it("keeps the Zalouser command-auth compatibility facade importable", async () => {
-    const zalouserSdk = await importResolvedPluginSdkSubpath("NexisClaw/plugin-sdk/zalouser");
-    const commandAuthSdk = await importResolvedPluginSdkSubpath("NexisClaw/plugin-sdk/command-auth");
+    const zalouserSdk = await importResolvedPluginSdkSubpath("FirstNexus/plugin-sdk/zalouser");
+    const commandAuthSdk = await importResolvedPluginSdkSubpath(
+      "FirstNexus/plugin-sdk/command-auth",
+    );
 
     expect(zalouserSdk.resolveSenderCommandAuthorization).toBe(
       commandAuthSdk.resolveSenderCommandAuthorization,

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../../config/types.FirstNexus.js";
 import {
   listExplicitConfiguredChannelIdsForConfig,
   resolveConfiguredChannelPresencePolicy,
@@ -17,7 +17,7 @@ export type ChannelPluginBlockerHit = {
   reason: "disabled in config" | "plugins disabled";
 };
 
-function hasExplicitChannelPluginBlockerConfig(cfg: NexisClawConfig): boolean {
+function hasExplicitChannelPluginBlockerConfig(cfg: FirstNexusConfig): boolean {
   if (cfg.plugins?.enabled === false) {
     return true;
   }
@@ -37,7 +37,7 @@ function hasExplicitChannelPluginBlockerConfig(cfg: NexisClawConfig): boolean {
 }
 
 export function scanConfiguredChannelPluginBlockers(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): ChannelPluginBlockerHit[] {
   if (!hasExplicitChannelPluginBlockerConfig(cfg)) {

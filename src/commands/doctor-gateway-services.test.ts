@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { withEnvAsync } from "../test-utils/env.js";
 import { createDoctorPrompter } from "./doctor-prompter.js";
 import {
@@ -148,12 +148,12 @@ function mockProcessPlatform(platform: NodeJS.Platform) {
   });
 }
 
-async function runRepair(cfg: NexisClawConfig) {
+async function runRepair(cfg: FirstNexusConfig) {
   await maybeRepairGatewayServiceConfig(cfg, "local", makeDoctorIo(), makeDoctorPrompts());
 }
 
 async function runNonInteractiveRepair(params: {
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   updateInProgress?: boolean;
 }) {
   Object.defineProperty(process.stdin, "isTTY", {
@@ -181,7 +181,7 @@ async function runNonInteractiveRepair(params: {
 
 const gatewayProgramArguments = [
   "/usr/bin/node",
-  "/usr/local/bin/NexisClaw",
+  "/usr/local/bin/FirstNexus",
   "gateway",
   "--port",
   "18789",
@@ -326,12 +326,14 @@ describe("maybeRepairGatewayServiceConfig", () => {
     mocks.renderSystemNodeWarning.mockReturnValue(undefined);
     mocks.resolveSystemNodeInfo.mockResolvedValue(null);
     mocks.isSystemdUnitActive.mockResolvedValue(false);
-    mocks.resolveGatewayAuthTokenForService.mockImplementation(async (cfg: NexisClawConfig, env) => {
-      const configToken =
-        typeof cfg.gateway?.auth?.token === "string" ? cfg.gateway.auth.token.trim() : undefined;
-      const envToken = env.NEXISCLAW_GATEWAY_TOKEN?.trim() || undefined;
-      return { token: configToken || envToken };
-    });
+    mocks.resolveGatewayAuthTokenForService.mockImplementation(
+      async (cfg: FirstNexusConfig, env) => {
+        const configToken =
+          typeof cfg.gateway?.auth?.token === "string" ? cfg.gateway.auth.token.trim() : undefined;
+        const envToken = env.NEXISCLAW_GATEWAY_TOKEN?.trim() || undefined;
+        return { token: configToken || envToken };
+      },
+    );
   });
 
   afterEach(() => {
@@ -350,7 +352,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("treats gateway.auth.token as source of truth for service token repairs", async () => {
     setupGatewayTokenRepairScenario();
 
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -371,7 +373,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("does not duplicate gateway runtime warnings already emitted by the node install plan", async () => {
     const nvmNode = "/home/orin/.nvm/versions/node/v22.22.2/bin/node";
     mocks.readCommand.mockResolvedValue({
-      programArguments: [nvmNode, "/usr/local/bin/NexisClaw", "gateway", "--port", "18789"],
+      programArguments: [nvmNode, "/usr/local/bin/FirstNexus", "gateway", "--port", "18789"],
       environment: {},
     });
     mocks.buildGatewayInstallPlan.mockImplementation(async ({ warn }) => {
@@ -380,7 +382,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         "Gateway runtime",
       );
       return {
-        programArguments: [nvmNode, "/usr/local/bin/NexisClaw", "gateway", "--port", "18789"],
+        programArguments: [nvmNode, "/usr/local/bin/FirstNexus", "gateway", "--port", "18789"],
         workingDirectory: "/tmp",
         environment: {},
       };
@@ -454,7 +456,13 @@ describe("maybeRepairGatewayServiceConfig", () => {
       environment: {},
     });
     mocks.buildGatewayInstallPlan.mockResolvedValue({
-      programArguments: ["/usr/bin/node", "/usr/local/bin/NexisClaw", "gateway", "--port", "18888"],
+      programArguments: [
+        "/usr/bin/node",
+        "/usr/local/bin/FirstNexus",
+        "gateway",
+        "--port",
+        "18888",
+      ],
       workingDirectory: "/tmp",
       environment: {},
     });
@@ -521,7 +529,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     await withEnvAsync({ NEXISCLAW_GATEWAY_TOKEN: "env-token" }, async () => {
       setupGatewayTokenRepairScenario();
 
-      const cfg: NexisClawConfig = {
+      const cfg: FirstNexusConfig = {
         gateway: {},
       };
 
@@ -542,14 +550,14 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("does not flag entrypoint mismatch when symlink and realpath match", async () => {
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/Users/test/Library/pnpm/global/5/node_modules/NexisClaw/dist/index.js",
+      currentEntrypoint: "/Users/test/Library/pnpm/global/5/node_modules/FirstNexus/dist/index.js",
       installEntrypoint:
-        "/Users/test/Library/pnpm/global/5/node_modules/.pnpm/NexisClaw@2026.3.12/node_modules/NexisClaw/dist/index.js",
+        "/Users/test/Library/pnpm/global/5/node_modules/.pnpm/FirstNexus@2026.3.12/node_modules/FirstNexus/dist/index.js",
       realpath: async (value: string) => {
-        if (value.includes("/global/5/node_modules/NexisClaw/")) {
+        if (value.includes("/global/5/node_modules/FirstNexus/")) {
           return value.replace(
-            "/global/5/node_modules/NexisClaw/",
-            "/global/5/node_modules/.pnpm/NexisClaw@2026.3.12/node_modules/NexisClaw/",
+            "/global/5/node_modules/FirstNexus/",
+            "/global/5/node_modules/.pnpm/FirstNexus@2026.3.12/node_modules/FirstNexus/",
           );
         }
         return value;
@@ -568,8 +576,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("does not flag entrypoint mismatch when realpath fails but normalized absolute paths match", async () => {
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/opt/NexisClaw/../NexisClaw/dist/index.js",
-      installEntrypoint: "/opt/NexisClaw/dist/index.js",
+      currentEntrypoint: "/opt/FirstNexus/../FirstNexus/dist/index.js",
+      installEntrypoint: "/opt/FirstNexus/dist/index.js",
       realpathError: new Error("no realpath"),
     });
 
@@ -584,7 +592,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   });
 
   it("keeps wrapper-managed gateway services aligned during entrypoint drift checks", async () => {
-    const wrapperPath = "/usr/local/bin/NexisClaw-doppler";
+    const wrapperPath = "/usr/local/bin/FirstNexus-doppler";
     mocks.readCommand.mockResolvedValue({
       programArguments: [wrapperPath, "gateway", "--port", "18789"],
       environment: {
@@ -608,7 +616,9 @@ describe("maybeRepairGatewayServiceConfig", () => {
       callArg(mocks.buildGatewayInstallPlan, 0, "buildGatewayInstallPlan call"),
       "buildGatewayInstallPlan options",
     );
-    expect(requireRecord(installPlanOptions.env, "install env").NEXISCLAW_WRAPPER).toBe(wrapperPath);
+    expect(requireRecord(installPlanOptions.env, "install env").NEXISCLAW_WRAPPER).toBe(
+      wrapperPath,
+    );
     expect(
       requireRecord(installPlanOptions.existingEnvironment, "install existing environment")
         .NEXISCLAW_WRAPPER,
@@ -618,7 +628,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       "Gateway service config",
     );
     expect(mocks.note).toHaveBeenCalledWith(
-      "Gateway service invokes NEXISCLAW_WRAPPER: /usr/local/bin/NexisClaw-doppler",
+      "Gateway service invokes NEXISCLAW_WRAPPER: /usr/local/bin/FirstNexus-doppler",
       "Gateway",
     );
     expect(mocks.stage).not.toHaveBeenCalled();
@@ -628,8 +638,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("still flags entrypoint mismatch when canonicalized paths differ", async () => {
     setupGatewayEntrypointRepairScenario({
       currentEntrypoint:
-        "/Users/test/.nvm/versions/node/v22.0.0/lib/node_modules/NexisClaw/dist/index.js",
-      installEntrypoint: "/Users/test/Library/pnpm/global/5/node_modules/NexisClaw/dist/index.js",
+        "/Users/test/.nvm/versions/node/v22.0.0/lib/node_modules/FirstNexus/dist/index.js",
+      installEntrypoint: "/Users/test/Library/pnpm/global/5/node_modules/FirstNexus/dist/index.js",
     });
 
     await runRepair({ gateway: {} });
@@ -645,7 +655,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("skips entrypoint rewrites for an active systemd unit", async () => {
     mockProcessPlatform("linux");
     mocks.readCommand.mockResolvedValue({
-      ...createGatewayCommand("/opt/old-NexisClaw/dist/index.js"),
+      ...createGatewayCommand("/opt/old-FirstNexus/dist/index.js"),
       sourcePath: "/etc/systemd/system/custom-gateway.service",
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -653,7 +663,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [],
     });
     mocks.buildGatewayInstallPlan.mockResolvedValue({
-      ...createGatewayCommand("/opt/new-NexisClaw/dist/index.js"),
+      ...createGatewayCommand("/opt/new-FirstNexus/dist/index.js"),
       workingDirectory: "/tmp",
     });
     mocks.isSystemdUnitActive.mockResolvedValue(true);
@@ -673,7 +683,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("repairs entrypoint drift when the systemd unit is stopped", async () => {
     mockProcessPlatform("linux");
     mocks.readCommand.mockResolvedValue({
-      ...createGatewayCommand("/opt/old-NexisClaw/dist/index.js"),
+      ...createGatewayCommand("/opt/old-FirstNexus/dist/index.js"),
       sourcePath: "/home/test/.config/systemd/user/custom-gateway.service",
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
@@ -681,7 +691,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       issues: [],
     });
     mocks.buildGatewayInstallPlan.mockResolvedValue({
-      ...createGatewayCommand("/opt/new-NexisClaw/dist/index.js"),
+      ...createGatewayCommand("/opt/new-FirstNexus/dist/index.js"),
       workingDirectory: "/tmp",
     });
     mocks.isSystemdUnitActive.mockResolvedValue(false);
@@ -700,9 +710,9 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("leaves all service metadata unchanged when an active unit has command drift plus other issues", async () => {
     mockProcessPlatform("linux");
     mocks.readCommand.mockResolvedValue({
-      programArguments: ["/usr/bin/NexisClaw", "run"],
+      programArguments: ["/usr/bin/FirstNexus", "run"],
       environment: {},
-      sourcePath: "/home/test/.config/systemd/user/NexisClaw-gateway.service",
+      sourcePath: "/home/test/.config/systemd/user/FirstNexus-gateway.service",
     });
     mocks.auditGatewayServiceConfig.mockResolvedValue({
       ok: false,
@@ -740,8 +750,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("skips entrypoint rewrite in non-interactive fix mode", async () => {
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/Users/test/Library/npm/node_modules/NexisClaw/dist/entry.js",
-      installEntrypoint: "/Users/test/Library/npm/node_modules/NexisClaw/dist/index.js",
+      currentEntrypoint: "/Users/test/Library/npm/node_modules/FirstNexus/dist/entry.js",
+      installEntrypoint: "/Users/test/Library/npm/node_modules/FirstNexus/dist/index.js",
       installWorkingDirectory: "/tmp",
     });
 
@@ -754,7 +764,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       "Gateway service entrypoint does not match the current install.",
       "Gateway service config",
     );
-    expectNoteContaining("NexisClaw gateway install --force", "Gateway service config");
+    expectNoteContaining("FirstNexus gateway install --force", "Gateway service config");
     expect(mocks.stage).not.toHaveBeenCalled();
     expect(mocks.install).not.toHaveBeenCalled();
   });
@@ -762,8 +772,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("defers systemd service config rewrites during non-interactive update repairs", async () => {
     mockProcessPlatform("linux");
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/Users/test/Library/npm/node_modules/NexisClaw/dist/entry.js",
-      installEntrypoint: "/Users/test/Library/npm/node_modules/NexisClaw/dist/index.js",
+      currentEntrypoint: "/Users/test/Library/npm/node_modules/FirstNexus/dist/entry.js",
+      installEntrypoint: "/Users/test/Library/npm/node_modules/FirstNexus/dist/index.js",
       installWorkingDirectory: "/tmp",
     });
 
@@ -784,8 +794,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("keeps staging non-systemd service config repairs during non-interactive update repairs", async () => {
     mockProcessPlatform("darwin");
     setupGatewayEntrypointRepairScenario({
-      currentEntrypoint: "/Users/test/Library/npm/node_modules/NexisClaw/dist/entry.js",
-      installEntrypoint: "/Users/test/Library/npm/node_modules/NexisClaw/dist/index.js",
+      currentEntrypoint: "/Users/test/Library/npm/node_modules/FirstNexus/dist/entry.js",
+      installEntrypoint: "/Users/test/Library/npm/node_modules/FirstNexus/dist/index.js",
       installWorkingDirectory: "/tmp",
     });
 
@@ -821,7 +831,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
     });
     mocks.install.mockResolvedValue(undefined);
 
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       gateway: {
         auth: {
           mode: "token",
@@ -850,7 +860,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       async () => {
         setupGatewayTokenRepairScenario();
 
-        const cfg: NexisClawConfig = {
+        const cfg: FirstNexusConfig = {
           gateway: {},
         };
 
@@ -885,7 +895,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
       async () => {
         setupGatewayTokenRepairScenario();
 
-        const cfg: NexisClawConfig = {
+        const cfg: FirstNexusConfig = {
           gateway: {},
         };
 
@@ -936,7 +946,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         });
         mocks.install.mockResolvedValue(undefined);
 
-        const cfg: NexisClawConfig = {
+        const cfg: FirstNexusConfig = {
           gateway: {},
         };
 
@@ -952,8 +962,8 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("reports service config drift but skips service rewrite when service repair policy is external", async () => {
     await withEnvAsync({ NEXISCLAW_SERVICE_REPAIR_POLICY: "external" }, async () => {
       setupGatewayEntrypointRepairScenario({
-        currentEntrypoint: "/Users/test/Library/npm/node_modules/NexisClaw/dist/entry.js",
-        installEntrypoint: "/Users/test/Library/npm/node_modules/NexisClaw/dist/index.js",
+        currentEntrypoint: "/Users/test/Library/npm/node_modules/FirstNexus/dist/entry.js",
+        installEntrypoint: "/Users/test/Library/npm/node_modules/FirstNexus/dist/index.js",
         installWorkingDirectory: "/tmp",
       });
 
@@ -976,7 +986,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
 
   it("warns when the gateway service entrypoint resolves to a source checkout", async () => {
     await withEnvAsync({}, async () => {
-      const root = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-doctor-service-layout-"));
+      const root = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-doctor-service-layout-"));
       try {
         await fs.mkdir(path.join(root, ".git"), { recursive: true });
         await fs.mkdir(path.join(root, "src"), { recursive: true });
@@ -984,7 +994,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
         await fs.mkdir(path.join(root, "dist"), { recursive: true });
         await fs.writeFile(
           path.join(root, "package.json"),
-          JSON.stringify({ name: "NexisClaw", version: "0.0.0-test" }),
+          JSON.stringify({ name: "FirstNexus", version: "0.0.0-test" }),
           "utf8",
         );
         const entrypoint = path.join(root, "dist", "index.js");
@@ -1006,7 +1016,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("does not duplicate Gateway service config panels for a source-checkout entrypoint with audit findings", async () => {
     await withEnvAsync({}, async () => {
       const root = await fs.mkdtemp(
-        path.join(os.tmpdir(), "NexisClaw-doctor-service-config-dedup-"),
+        path.join(os.tmpdir(), "FirstNexus-doctor-service-config-dedup-"),
       );
       try {
         await fs.mkdir(path.join(root, ".git"), { recursive: true });
@@ -1015,12 +1025,12 @@ describe("maybeRepairGatewayServiceConfig", () => {
         await fs.mkdir(path.join(root, "dist"), { recursive: true });
         await fs.writeFile(
           path.join(root, "package.json"),
-          JSON.stringify({ name: "NexisClaw", version: "0.0.0-test" }),
+          JSON.stringify({ name: "FirstNexus", version: "0.0.0-test" }),
           "utf8",
         );
         const sourceCheckoutEntrypoint = path.join(root, "dist", "index.js");
         await fs.writeFile(sourceCheckoutEntrypoint, "export {};\n", "utf8");
-        const installEntrypoint = "/usr/local/lib/node_modules/NexisClaw/dist/index.js";
+        const installEntrypoint = "/usr/local/lib/node_modules/FirstNexus/dist/index.js";
         setupGatewayEntrypointRepairScenario({
           currentEntrypoint: sourceCheckoutEntrypoint,
           installEntrypoint,
@@ -1038,7 +1048,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
           "Gateway service entrypoint does not match the current install.",
         );
         expect(consolidated).not.toContain("resolves to a source checkout");
-        const forceMatches = consolidated.match(/NexisClaw gateway install --force/g) ?? [];
+        const forceMatches = consolidated.match(/FirstNexus gateway install --force/g) ?? [];
         expect(forceMatches).toHaveLength(0);
       } finally {
         await fs.rm(root, { recursive: true, force: true });
@@ -1049,7 +1059,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
   it("keeps the gateway install force hint when a source-checkout warning is suppressed and repair is declined", async () => {
     await withEnvAsync({}, async () => {
       const root = await fs.mkdtemp(
-        path.join(os.tmpdir(), "NexisClaw-doctor-service-config-force-hint-"),
+        path.join(os.tmpdir(), "FirstNexus-doctor-service-config-force-hint-"),
       );
       try {
         await fs.mkdir(path.join(root, ".git"), { recursive: true });
@@ -1058,12 +1068,12 @@ describe("maybeRepairGatewayServiceConfig", () => {
         await fs.mkdir(path.join(root, "dist"), { recursive: true });
         await fs.writeFile(
           path.join(root, "package.json"),
-          JSON.stringify({ name: "NexisClaw", version: "0.0.0-test" }),
+          JSON.stringify({ name: "FirstNexus", version: "0.0.0-test" }),
           "utf8",
         );
         const sourceCheckoutEntrypoint = path.join(root, "dist", "index.js");
         await fs.writeFile(sourceCheckoutEntrypoint, "export {};\n", "utf8");
-        const installEntrypoint = "/usr/local/lib/node_modules/NexisClaw/dist/index.js";
+        const installEntrypoint = "/usr/local/lib/node_modules/FirstNexus/dist/index.js";
         setupGatewayEntrypointRepairScenario({
           currentEntrypoint: sourceCheckoutEntrypoint,
           installEntrypoint,
@@ -1092,7 +1102,7 @@ describe("maybeRepairGatewayServiceConfig", () => {
           "Gateway service entrypoint does not match the current install.",
         );
         expect(auditNote).not.toContain("resolves to a source checkout");
-        expect(gatewayServiceConfigNotes[1]?.[0]).toContain("NexisClaw gateway install --force");
+        expect(gatewayServiceConfigNotes[1]?.[0]).toContain("FirstNexus gateway install --force");
       } finally {
         await fs.rm(root, { recursive: true, force: true });
       }
@@ -1206,7 +1216,7 @@ describe("maybeScanExtraGatewayServices", () => {
     });
     expectNoteContaining("clawdbot-gateway.service", "Legacy gateway removed");
     expect(runtime.log).toHaveBeenCalledWith(
-      "Legacy gateway services removed. Installing NexisClaw gateway next.",
+      "Legacy gateway services removed. Installing FirstNexus gateway next.",
     );
   });
 
@@ -1232,7 +1242,7 @@ describe("maybeScanExtraGatewayServices", () => {
       );
       expect(mocks.uninstallLegacySystemdUnits).not.toHaveBeenCalled();
       expect(runtime.log).not.toHaveBeenCalledWith(
-        "Legacy gateway services removed. Installing NexisClaw gateway next.",
+        "Legacy gateway services removed. Installing FirstNexus gateway next.",
       );
     });
   });

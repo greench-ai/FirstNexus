@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { vi } from "vitest";
 import type { createDiscordMessageHandler } from "./message-handler.js";
 import { createNoopThreadBindingManager } from "./thread-bindings.js";
@@ -10,7 +10,7 @@ export function createDiscordHandlerParams(overrides?: {
   setStatus?: (patch: Record<string, unknown>) => void;
   abortSignal?: AbortSignal;
 }): Parameters<typeof createDiscordMessageHandler>[0] {
-  const cfg: NexisClawConfig = {
+  const cfg: FirstNexusConfig = {
     channels: {
       discord: {
         enabled: true,

@@ -50,8 +50,8 @@ describe("status.command-sections", () => {
     expect(lines).toContain("    critical detail");
     expect(lines).toContain("    muted(Fix: fix it)");
     expect(lines).toContain("muted(… +1 more)");
-    expect(lines.at(-2)).toBe("muted(Full report: cmd:NexisClaw security audit)");
-    expect(lines.at(-1)).toBe("muted(Deep probe: cmd:NexisClaw security audit --deep)");
+    expect(lines.at(-2)).toBe("muted(Full report: cmd:FirstNexus security audit)");
+    expect(lines.at(-1)).toBe("muted(Deep probe: cmd:FirstNexus security audit --deep)");
   });
 
   it("builds verbose sessions rows and empty fallback rows", () => {
@@ -77,7 +77,7 @@ describe("status.command-sections", () => {
           updatedAt: 2,
           age: 7_000,
           model: "gpt-5.5",
-          runtime: "NexisClaw Pi Default",
+          runtime: "FirstNexus Pi Default",
           totalTokens: null,
           totalTokensFresh: false,
           remainingTokens: null,
@@ -109,7 +109,7 @@ describe("status.command-sections", () => {
         Kind: "cron",
         Age: "7000ms",
         Model: "gpt-5.5",
-        Runtime: "NexisClaw Pi Default",
+        Runtime: "FirstNexus Pi Default",
         Tokens: "12k",
         Cache: "cache ok",
       },
@@ -203,14 +203,14 @@ describe("status.command-sections", () => {
         gatewayReachable: false,
       }),
     ).toEqual([
-      "FAQ: https://docs.NexisClaw.ai/faq",
-      "Troubleshooting: https://docs.NexisClaw.ai/troubleshooting",
+      "FAQ: https://docs.FirstNexus.ai/faq",
+      "Troubleshooting: https://docs.FirstNexus.ai/troubleshooting",
       "",
       "warn(upgrade ready)",
       "Next steps:",
-      "  Need to share?      cmd:NexisClaw status --all",
-      "  Need to debug live? cmd:NexisClaw logs --follow",
-      "  Fix reachability first: cmd:NexisClaw gateway probe",
+      "  Need to share?      cmd:FirstNexus status --all",
+      "  Need to debug live? cmd:FirstNexus logs --follow",
+      "  Fix reachability first: cmd:FirstNexus gateway probe",
     ]);
   });
 
@@ -244,9 +244,9 @@ describe("status.command-sections", () => {
       "warn(Gateway scope upgrade approval required.)",
       "muted(Reason: device is asking for more scopes than currently approved.)",
       "muted(Hint: Review the requested scopes, then approve the pending upgrade.)",
-      "muted(Recovery: cmd:NexisClaw devices approve req-123)",
-      "muted(Fallback: cmd:NexisClaw devices approve --latest)",
-      "muted(Inspect: cmd:NexisClaw devices list)",
+      "muted(Recovery: cmd:FirstNexus devices approve req-123)",
+      "muted(Fallback: cmd:FirstNexus devices approve --latest)",
+      "muted(Inspect: cmd:FirstNexus devices list)",
     ]);
   });
 

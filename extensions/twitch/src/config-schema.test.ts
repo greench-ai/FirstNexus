@@ -1,5 +1,5 @@
 import AjvPkg from "ajv";
-import { buildChannelConfigSchema } from "NexisClaw/plugin-sdk/channel-config-schema";
+import { buildChannelConfigSchema } from "FirstNexus/plugin-sdk/channel-config-schema";
 import { describe, expect, it } from "vitest";
 import { TwitchConfigSchema } from "./config-schema.js";
 
@@ -19,10 +19,10 @@ describe("TwitchConfigSchema JSON schema", () => {
     expect(
       validateTwitchConfig({
         enabled: false,
-        username: "NexisClaw",
+        username: "FirstNexus",
         accessToken: "oauth:test",
         clientId: "test-client-id",
-        channel: "NexisClaw-test",
+        channel: "FirstNexus-test",
       }),
     ).toBe(true);
   });
@@ -34,10 +34,10 @@ describe("TwitchConfigSchema JSON schema", () => {
         defaultAccount: "stream",
         accounts: {
           stream: {
-            username: "NexisClaw",
+            username: "FirstNexus",
             accessToken: "oauth:test",
             clientId: "test-client-id",
-            channel: "NexisClaw-test",
+            channel: "FirstNexus-test",
           },
         },
       }),

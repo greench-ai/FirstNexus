@@ -10,7 +10,7 @@ import {
   resolveIMessageMessageId,
 } from "./monitor-reply-cache.js";
 
-// Isolate from any live ~/.NexisClaw/imessage/reply-cache.jsonl that the
+// Isolate from any live ~/.FirstNexus/imessage/reply-cache.jsonl that the
 // developer might have from a running gateway. Without this, the on-disk
 // hydrate path picks up production data and tests get cross-pollinated.
 //
@@ -20,7 +20,7 @@ import {
 let tempStateDir: string;
 let priorStateDir: string | undefined;
 beforeAll(() => {
-  tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-imsg-reply-cache-"));
+  tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-imsg-reply-cache-"));
   priorStateDir = process.env.NEXISCLAW_STATE_DIR;
   process.env.NEXISCLAW_STATE_DIR = tempStateDir;
 });

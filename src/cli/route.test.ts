@@ -78,14 +78,14 @@ describe("tryRouteCli", () => {
   });
 
   it("skips config guard for routed status --json commands", async () => {
-    await expect(tryRouteCli(["node", "NexisClaw", "status", "--json"])).resolves.toBe(true);
+    await expect(tryRouteCli(["node", "FirstNexus", "status", "--json"])).resolves.toBe(true);
 
     expect(ensureConfigReadyMock).not.toHaveBeenCalled();
     expect(ensurePluginRegistryLoadedMock).not.toHaveBeenCalled();
   });
 
   it("does not pass suppressDoctorStdout for routed non-json commands", async () => {
-    await expect(tryRouteCli(["node", "NexisClaw", "status"])).resolves.toBe(true);
+    await expect(tryRouteCli(["node", "FirstNexus", "status"])).resolves.toBe(true);
 
     expect(ensureConfigReadyMock).toHaveBeenCalledTimes(1);
     const configReadyCall = ensureConfigReadyMock.mock.calls.at(0)?.[0] as
@@ -111,7 +111,7 @@ describe("tryRouteCli", () => {
       captured.push(loggingState.forceConsoleToStderr);
     });
 
-    await tryRouteCli(["node", "NexisClaw", "agents", "--json"]);
+    await tryRouteCli(["node", "FirstNexus", "agents", "--json"]);
 
     expect(ensurePluginRegistryLoadedMock).toHaveBeenCalledTimes(1);
     expect(captured[0]).toBe(true);
@@ -125,7 +125,7 @@ describe("tryRouteCli", () => {
       return true;
     });
 
-    await expect(tryRouteCli(["node", "NexisClaw", "models", "status", "--json"])).resolves.toBe(
+    await expect(tryRouteCli(["node", "FirstNexus", "models", "status", "--json"])).resolves.toBe(
       true,
     );
 
@@ -144,7 +144,7 @@ describe("tryRouteCli", () => {
       captured.push(loggingState.forceConsoleToStderr);
     });
 
-    await tryRouteCli(["node", "NexisClaw", "agents"]);
+    await tryRouteCli(["node", "FirstNexus", "agents"]);
 
     expect(ensurePluginRegistryLoadedMock).toHaveBeenCalledTimes(1);
     expect(captured[0]).toBe(false);
@@ -152,13 +152,13 @@ describe("tryRouteCli", () => {
   });
 
   it("routes status when root options precede the command", async () => {
-    await expect(tryRouteCli(["node", "NexisClaw", "--log-level", "debug", "status"])).resolves.toBe(
-      true,
-    );
+    await expect(
+      tryRouteCli(["node", "FirstNexus", "--log-level", "debug", "status"]),
+    ).resolves.toBe(true);
 
     expect(findRoutedCommandMock).toHaveBeenCalledWith(
       ["status"],
-      ["node", "NexisClaw", "--log-level", "debug", "status"],
+      ["node", "FirstNexus", "--log-level", "debug", "status"],
     );
     expect(ensureConfigReadyMock).toHaveBeenCalledTimes(1);
     const configReadyCall = ensureConfigReadyMock.mock.calls.at(0)?.[0] as
@@ -174,7 +174,7 @@ describe("tryRouteCli", () => {
   it("respects NEXISCLAW_HIDE_BANNER for routed commands", async () => {
     process.env.NEXISCLAW_HIDE_BANNER = "1";
 
-    await expect(tryRouteCli(["node", "NexisClaw", "status"])).resolves.toBe(true);
+    await expect(tryRouteCli(["node", "FirstNexus", "status"])).resolves.toBe(true);
 
     expect(emitCliBannerMock).not.toHaveBeenCalled();
   });
@@ -186,7 +186,7 @@ describe("tryRouteCli", () => {
       run: runRouteMock,
     });
 
-    await expect(tryRouteCli(["node", "NexisClaw", "tasks", "list"])).resolves.toBe(false);
+    await expect(tryRouteCli(["node", "FirstNexus", "tasks", "list"])).resolves.toBe(false);
 
     expect(ensureConfigReadyMock).not.toHaveBeenCalled();
     expect(ensurePluginRegistryLoadedMock).not.toHaveBeenCalled();

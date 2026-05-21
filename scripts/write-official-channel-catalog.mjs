@@ -34,7 +34,7 @@ function buildCatalogEntry(packageJson) {
     return null;
   }
   const packageName = trimString(packageJson.name);
-  const manifest = isRecord(packageJson.NexisClaw) ? packageJson.NexisClaw : null;
+  const manifest = isRecord(packageJson.FirstNexus) ? packageJson.FirstNexus : null;
   const release = manifest && isRecord(manifest.release) ? manifest.release : null;
   const channel = manifest && isRecord(manifest.channel) ? manifest.channel : null;
   if (!packageName || !channel || release?.publishToNpm !== true) {
@@ -50,7 +50,7 @@ function buildCatalogEntry(packageJson) {
     name: packageName,
     ...(version ? { version } : {}),
     ...(description ? { description } : {}),
-    NexisClaw: {
+    FirstNexus: {
       channel,
       install,
     },
@@ -58,7 +58,7 @@ function buildCatalogEntry(packageJson) {
 }
 
 function getCatalogChannelId(entry) {
-  return trimString(entry?.NexisClaw?.channel?.id) || trimString(entry?.name);
+  return trimString(entry?.FirstNexus?.channel?.id) || trimString(entry?.name);
 }
 
 export function buildOfficialChannelCatalog(params = {}) {
@@ -95,8 +95,8 @@ export function buildOfficialChannelCatalog(params = {}) {
   }
 
   entries.sort((left, right) => {
-    const leftId = trimString(left.NexisClaw?.channel?.id) || left.name;
-    const rightId = trimString(right.NexisClaw?.channel?.id) || right.name;
+    const leftId = trimString(left.FirstNexus?.channel?.id) || left.name;
+    const rightId = trimString(right.FirstNexus?.channel?.id) || right.name;
     return leftId.localeCompare(rightId);
   });
 

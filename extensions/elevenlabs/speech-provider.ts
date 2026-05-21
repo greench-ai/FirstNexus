@@ -1,13 +1,13 @@
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { assertOkOrThrowProviderError } from "NexisClaw/plugin-sdk/provider-http";
-import { normalizeResolvedSecretInputString } from "NexisClaw/plugin-sdk/secret-input";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { assertOkOrThrowProviderError } from "FirstNexus/plugin-sdk/provider-http";
+import { normalizeResolvedSecretInputString } from "FirstNexus/plugin-sdk/secret-input";
 import type {
   SpeechDirectiveTokenParseContext,
   SpeechProviderConfig,
   SpeechProviderOverrides,
   SpeechProviderPlugin,
   SpeechVoiceOption,
-} from "NexisClaw/plugin-sdk/speech";
+} from "FirstNexus/plugin-sdk/speech";
 import {
   asBoolean,
   asFiniteNumber,
@@ -17,12 +17,12 @@ import {
   normalizeSeed,
   requireInRange,
   trimToUndefined,
-} from "NexisClaw/plugin-sdk/speech";
+} from "FirstNexus/plugin-sdk/speech";
 import {
   fetchWithSsrFGuard,
   ssrfPolicyFromHttpBaseUrlAllowedHostname,
-} from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveElevenLabsApiKeyWithProfileFallback } from "./config-api.js";
 import { isValidElevenLabsVoiceId, normalizeElevenLabsBaseUrl } from "./shared.js";
 import { elevenLabsTTS, elevenLabsTTSStream } from "./tts.js";

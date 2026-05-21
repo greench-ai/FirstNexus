@@ -2,16 +2,22 @@ import fs from "node:fs";
 import path from "node:path";
 import { Readable } from "node:stream";
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import type { MessageReceipt } from "NexisClaw/plugin-sdk/channel-message";
-import { mediaKindFromMime } from "NexisClaw/plugin-sdk/media-mime";
-import { MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS, runFfmpeg } from "NexisClaw/plugin-sdk/media-runtime";
-import { readRegularFile, writeExternalFileWithinRoot } from "NexisClaw/plugin-sdk/security-runtime";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { MessageReceipt } from "FirstNexus/plugin-sdk/channel-message";
+import { mediaKindFromMime } from "FirstNexus/plugin-sdk/media-mime";
 import {
-  resolvePreferredNexisClawTmpDir,
+  MEDIA_FFMPEG_MAX_AUDIO_DURATION_SECS,
+  runFfmpeg,
+} from "FirstNexus/plugin-sdk/media-runtime";
+import {
+  readRegularFile,
+  writeExternalFileWithinRoot,
+} from "FirstNexus/plugin-sdk/security-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import {
+  resolvePreferredFirstNexusTmpDir,
   withTempWorkspace,
   withTempDownloadPath,
-} from "NexisClaw/plugin-sdk/temp-path";
+} from "FirstNexus/plugin-sdk/temp-path";
 import type { ClawdbotConfig } from "../runtime-api.js";
 import { resolveFeishuRuntimeAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
@@ -327,7 +333,7 @@ export async function downloadImageFeishu(params: {
 
   const buffer = await readFeishuResponseBuffer({
     response,
-    tmpDirPrefix: "NexisClaw-feishu-img-",
+    tmpDirPrefix: "FirstNexus-feishu-img-",
     errorPrefix: "Feishu image download failed",
   });
   const meta = extractFeishuDownloadMetadata(response);
@@ -347,7 +353,7 @@ async function downloadMessageResourceWithType(params: {
 
   const buffer = await readFeishuResponseBuffer({
     response,
-    tmpDirPrefix: "NexisClaw-feishu-resource-",
+    tmpDirPrefix: "FirstNexus-feishu-resource-",
     errorPrefix: "Feishu message resource download failed",
   });
   return { buffer, ...extractFeishuDownloadMetadata(response) };
@@ -752,7 +758,7 @@ async function transcodeToFeishuVoiceOpus(params: {
   contentType?: string;
 }): Promise<{ buffer: Buffer; fileName: string; contentType: string }> {
   return await withTempWorkspace(
-    { rootDir: resolvePreferredNexisClawTmpDir(), prefix: "feishu-voice-" },
+    { rootDir: resolvePreferredFirstNexusTmpDir(), prefix: "feishu-voice-" },
     async (workspace) => {
       const ext = normalizeLowercaseStringOrEmpty(path.extname(params.fileName));
       const inputExt = ext && ext.length <= 12 ? ext : ".audio";

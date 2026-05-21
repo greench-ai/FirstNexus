@@ -23,24 +23,24 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-function localNexisClawProfile(): Parameters<typeof createProfileResetOps>[0]["profile"] {
+function localFirstNexusProfile(): Parameters<typeof createProfileResetOps>[0]["profile"] {
   return {
-    name: "NexisClaw",
+    name: "FirstNexus",
     cdpUrl: "http://127.0.0.1:18800",
     cdpHost: "127.0.0.1",
     cdpIsLoopback: true,
     cdpPort: 18800,
     color: "#f60",
-    driver: "NexisClaw",
+    driver: "FirstNexus",
     headless: false,
     attachOnly: false,
   };
 }
 
-function createLocalNexisClawResetOps(
+function createLocalFirstNexusResetOps(
   params: Omit<Parameters<typeof createProfileResetOps>[0], "profile">,
 ) {
-  return createProfileResetOps({ profile: localNexisClawProfile(), ...params });
+  return createProfileResetOps({ profile: localFirstNexusProfile(), ...params });
 }
 
 function createStatelessResetOps(profile: Parameters<typeof createProfileResetOps>[0]["profile"]) {
@@ -49,14 +49,14 @@ function createStatelessResetOps(profile: Parameters<typeof createProfileResetOp
     getProfileState: () => ({ profile: {} as never, running: null }),
     stopRunningBrowser: vi.fn(async () => ({ stopped: false })),
     isHttpReachable: vi.fn(async () => false),
-    resolveNexisClawUserDataDir: (name: string) => `/tmp/${name}`,
+    resolveFirstNexusUserDataDir: (name: string) => `/tmp/${name}`,
   });
 }
 
 describe("createProfileResetOps", () => {
   it("rejects remote non-extension profiles", async () => {
     const ops = createStatelessResetOps({
-      ...localNexisClawProfile(),
+      ...localFirstNexusProfile(),
       name: "remote",
       cdpUrl: "https://browserless.example/chrome",
       cdpHost: "browserless.example",
@@ -69,8 +69,8 @@ describe("createProfileResetOps", () => {
   });
 
   it("stops local browser, closes playwright connection, and trashes profile dir", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-reset-"));
-    const profileDir = path.join(tempRoot, "NexisClaw");
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-reset-"));
+    const profileDir = path.join(tempRoot, "FirstNexus");
     fs.mkdirSync(profileDir, { recursive: true });
 
     const stopRunningBrowser = vi.fn(async () => ({ stopped: true }));
@@ -80,11 +80,11 @@ describe("createProfileResetOps", () => {
       running: { pid: 1 } as never,
     }));
 
-    const ops = createLocalNexisClawResetOps({
+    const ops = createLocalFirstNexusResetOps({
       getProfileState,
       stopRunningBrowser,
       isHttpReachable,
-      resolveNexisClawUserDataDir: () => profileDir,
+      resolveFirstNexusUserDataDir: () => profileDir,
     });
 
     const result = await ops.resetProfile();
@@ -102,16 +102,16 @@ describe("createProfileResetOps", () => {
   });
 
   it("forces playwright disconnect when loopback cdp is occupied by non-owned process", async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-reset-no-own-"));
-    const profileDir = path.join(tempRoot, "NexisClaw");
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-reset-no-own-"));
+    const profileDir = path.join(tempRoot, "FirstNexus");
     fs.mkdirSync(profileDir, { recursive: true });
 
     const stopRunningBrowser = vi.fn(async () => ({ stopped: false }));
-    const ops = createLocalNexisClawResetOps({
+    const ops = createLocalFirstNexusResetOps({
       getProfileState: () => ({ profile: {} as never, running: null }),
       stopRunningBrowser,
       isHttpReachable: vi.fn(async () => true),
-      resolveNexisClawUserDataDir: () => profileDir,
+      resolveFirstNexusUserDataDir: () => profileDir,
     });
 
     await ops.resetProfile();

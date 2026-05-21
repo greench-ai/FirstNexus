@@ -11,27 +11,27 @@ if [[ -z "$TRUSTED_HARNESS_DIR" || ! -d "$TRUSTED_HARNESS_DIR" ]]; then
 fi
 TRUSTED_HARNESS_DIR="$(cd "$TRUSTED_HARNESS_DIR" && pwd)"
 source "$TRUSTED_HARNESS_DIR/scripts/lib/live-docker-auth.sh"
-IMAGE_NAME="${NEXISCLAW_IMAGE:-NexisClaw:local}"
+IMAGE_NAME="${NEXISCLAW_IMAGE:-FirstNexus:local}"
 LIVE_IMAGE_NAME="${NEXISCLAW_LIVE_IMAGE:-${IMAGE_NAME}-live}"
-CONFIG_DIR="${NEXISCLAW_CONFIG_DIR:-$HOME/.NexisClaw}"
-WORKSPACE_DIR="${NEXISCLAW_WORKSPACE_DIR:-$HOME/.NexisClaw/workspace}"
-PROFILE_FILE="$(NexisClaw_live_default_profile_file)"
+CONFIG_DIR="${NEXISCLAW_CONFIG_DIR:-$HOME/.FirstNexus}"
+WORKSPACE_DIR="${NEXISCLAW_WORKSPACE_DIR:-$HOME/.FirstNexus/workspace}"
+PROFILE_FILE="$(FirstNexus_live_default_profile_file)"
 CODEX_HARNESS_AUTH_MODE="${NEXISCLAW_LIVE_CODEX_HARNESS_AUTH:-codex-auth}"
 TEMP_DIRS=()
 DOCKER_USER="${NEXISCLAW_DOCKER_USER:-node}"
 DOCKER_HOME_MOUNT=()
 DOCKER_TRUSTED_HARNESS_MOUNT=()
 DOCKER_TRUSTED_HARNESS_CONTAINER_DIR=""
-DOCKER_CACHE_CONTAINER_DIR="/tmp/NexisClaw-cache"
-DOCKER_CLI_TOOLS_CONTAINER_DIR="/tmp/NexisClaw-npm-global"
+DOCKER_CACHE_CONTAINER_DIR="/tmp/FirstNexus-cache"
+DOCKER_CLI_TOOLS_CONTAINER_DIR="/tmp/FirstNexus-npm-global"
 DOCKER_EXTRA_ENV_FILES=()
 DOCKER_AUTH_PRESTAGED=0
 
-NexisClaw_live_codex_harness_is_ci() {
+FirstNexus_live_codex_harness_is_ci() {
   [[ -n "${CI:-}" && "${CI:-}" != "false" ]] || [[ -n "${GITHUB_ACTIONS:-}" && "${GITHUB_ACTIONS:-}" != "false" ]]
 }
 
-NexisClaw_live_codex_harness_append_build_extension() {
+FirstNexus_live_codex_harness_append_build_extension() {
   local extension="${1:?extension required}"
   local current="${NEXISCLAW_DOCKER_BUILD_EXTENSIONS:-${NEXISCLAW_EXTENSIONS:-}}"
   case " $current " in
@@ -66,7 +66,7 @@ fi
 if [[ "$CODEX_HARNESS_AUTH_MODE" != "api-key" && ! -s "$HOME/.codex/auth.json" ]]; then
   echo "ERROR: NEXISCLAW_LIVE_CODEX_HARNESS_AUTH=codex-auth requires ~/.codex/auth.json before building the live Docker image." >&2
   if [[ -n "${OPENAI_API_KEY:-}" ]]; then
-    echo "If this is a Testbox/API-key run, set NEXISCLAW_LIVE_CODEX_HARNESS_AUTH=api-key and run through NexisClaw-testbox-env." >&2
+    echo "If this is a Testbox/API-key run, set NEXISCLAW_LIVE_CODEX_HARNESS_AUTH=api-key and run through FirstNexus-testbox-env." >&2
   fi
   exit 1
 fi
@@ -80,29 +80,29 @@ trap cleanup_temp_dirs EXIT
 
 if [[ -n "${NEXISCLAW_DOCKER_CLI_TOOLS_DIR:-}" ]]; then
   CLI_TOOLS_DIR="${NEXISCLAW_DOCKER_CLI_TOOLS_DIR}"
-elif NexisClaw_live_codex_harness_is_ci; then
-  CLI_TOOLS_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/NexisClaw-docker-cli-tools.XXXXXX")"
+elif FirstNexus_live_codex_harness_is_ci; then
+  CLI_TOOLS_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/FirstNexus-docker-cli-tools.XXXXXX")"
   TEMP_DIRS+=("$CLI_TOOLS_DIR")
 else
-  CLI_TOOLS_DIR="$HOME/.cache/NexisClaw/docker-cli-tools"
+  CLI_TOOLS_DIR="$HOME/.cache/FirstNexus/docker-cli-tools"
 fi
 if [[ -n "${NEXISCLAW_DOCKER_CACHE_HOME_DIR:-}" ]]; then
   CACHE_HOME_DIR="${NEXISCLAW_DOCKER_CACHE_HOME_DIR}"
-elif NexisClaw_live_codex_harness_is_ci; then
-  CACHE_HOME_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/NexisClaw-docker-cache.XXXXXX")"
+elif FirstNexus_live_codex_harness_is_ci; then
+  CACHE_HOME_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/FirstNexus-docker-cache.XXXXXX")"
   TEMP_DIRS+=("$CACHE_HOME_DIR")
 else
-  CACHE_HOME_DIR="$HOME/.cache/NexisClaw/docker-cache"
+  CACHE_HOME_DIR="$HOME/.cache/FirstNexus/docker-cache"
 fi
 
 mkdir -p "$CLI_TOOLS_DIR"
 mkdir -p "$CACHE_HOME_DIR"
-if NexisClaw_live_codex_harness_is_ci; then
+if FirstNexus_live_codex_harness_is_ci; then
   chmod 0777 "$CLI_TOOLS_DIR" "$CACHE_HOME_DIR" || true
 fi
-if NexisClaw_live_codex_harness_is_ci; then
+if FirstNexus_live_codex_harness_is_ci; then
   DOCKER_USER="$(id -u):$(id -g)"
-  DOCKER_HOME_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/NexisClaw-docker-home.XXXXXX")"
+  DOCKER_HOME_DIR="$(mktemp -d "${RUNNER_TEMP:-/tmp}/FirstNexus-docker-home.XXXXXX")"
   TEMP_DIRS+=("$DOCKER_HOME_DIR")
   DOCKER_HOME_MOUNT=(-v "$DOCKER_HOME_DIR":/home/node)
 fi
@@ -122,23 +122,23 @@ if [[ "$CODEX_HARNESS_AUTH_MODE" != "api-key" ]]; then
   while IFS= read -r auth_file; do
     [[ -n "$auth_file" ]] || continue
     AUTH_FILES+=("$auth_file")
-  done < <(NexisClaw_live_collect_auth_files_from_csv "openai-codex")
+  done < <(FirstNexus_live_collect_auth_files_from_csv "openai-codex")
 fi
 
 AUTH_FILES_CSV=""
 if ((${#AUTH_FILES[@]} > 0)); then
-  AUTH_FILES_CSV="$(NexisClaw_live_join_csv "${AUTH_FILES[@]}")"
+  AUTH_FILES_CSV="$(FirstNexus_live_join_csv "${AUTH_FILES[@]}")"
 fi
 
 if [[ -n "${DOCKER_HOME_DIR:-}" ]]; then
-  NexisClaw_live_stage_auth_into_home "$DOCKER_HOME_DIR" --files "${AUTH_FILES[@]}"
+  FirstNexus_live_stage_auth_into_home "$DOCKER_HOME_DIR" --files "${AUTH_FILES[@]}"
   DOCKER_AUTH_PRESTAGED=1
 fi
 
 EXTERNAL_AUTH_MOUNTS=()
 if ((${#AUTH_FILES[@]} > 0)); then
   for auth_file in "${AUTH_FILES[@]}"; do
-    auth_file="$(NexisClaw_live_validate_relative_home_path "$auth_file")"
+    auth_file="$(FirstNexus_live_validate_relative_home_path "$auth_file")"
     host_path="$HOME/$auth_file"
     if [[ -f "$host_path" ]]; then
       EXTERNAL_AUTH_MOUNTS+=(-v "$host_path":/host-auth-files/"$auth_file":ro)
@@ -148,7 +148,7 @@ fi
 
 DOCKER_AUTH_ENV=()
 if [[ "$CODEX_HARNESS_AUTH_MODE" == "api-key" ]]; then
-  docker_env_dir="$(mktemp -d "${RUNNER_TEMP:-/tmp}/NexisClaw-codex-harness-env.XXXXXX")"
+  docker_env_dir="$(mktemp -d "${RUNNER_TEMP:-/tmp}/FirstNexus-codex-harness-env.XXXXXX")"
   TEMP_DIRS+=("$docker_env_dir")
   docker_env_file="$docker_env_dir/openai.env"
   {
@@ -171,7 +171,7 @@ export NPM_CONFIG_CACHE="${NPM_CONFIG_CACHE:-$XDG_CACHE_HOME/npm}"
 export npm_config_cache="$NPM_CONFIG_CACHE"
 if [ "${NEXISCLAW_LIVE_CODEX_HARNESS_DEBUG:-}" = "1" ]; then
   id
-  mount | grep -E 'NexisClaw-cache|NexisClaw-npm|/home/node' || true
+  mount | grep -E 'FirstNexus-cache|FirstNexus-npm|/home/node' || true
   ls -ld "$HOME" "$XDG_CACHE_HOME" "$NPM_CONFIG_PREFIX" 2>/dev/null || true
 fi
 # Force the Codex harness to use the staged `~/.codex` auth files. This lane
@@ -212,20 +212,20 @@ if [ "${NEXISCLAW_LIVE_CODEX_HARNESS_AUTH:-codex-auth}" = "api-key" ]; then
 fi
 tmp_dir="$(mktemp -d)"
 source "$trusted_scripts_dir/lib/live-docker-stage.sh"
-NexisClaw_live_stage_source_tree "$tmp_dir"
-NexisClaw_live_stage_node_modules "$tmp_dir"
-NexisClaw_live_link_runtime_tree "$tmp_dir"
+FirstNexus_live_stage_source_tree "$tmp_dir"
+FirstNexus_live_stage_node_modules "$tmp_dir"
+FirstNexus_live_link_runtime_tree "$tmp_dir"
 if [ -d /app/dist-runtime/extensions/codex ]; then
   export NEXISCLAW_BUNDLED_PLUGINS_DIR=/app/dist-runtime/extensions
 elif [ -d /app/dist/extensions/codex ]; then
   export NEXISCLAW_BUNDLED_PLUGINS_DIR=/app/dist/extensions
-elif [ -f "$tmp_dir/extensions/codex/NexisClaw.plugin.json" ]; then
+elif [ -f "$tmp_dir/extensions/codex/FirstNexus.plugin.json" ]; then
   export NEXISCLAW_BUNDLED_PLUGINS_DIR="$tmp_dir/extensions"
 else
   echo "ERROR: staged Codex plugin not found for live harness." >&2
   exit 1
 fi
-NexisClaw_live_stage_state_dir "$tmp_dir/.NexisClaw-state"
+FirstNexus_live_stage_state_dir "$tmp_dir/.FirstNexus-state"
 if [ -n "${NEXISCLAW_LIVE_CODEX_TRUSTED_HARNESS_DIR:-}" ] && [ -d "$NEXISCLAW_LIVE_CODEX_TRUSTED_HARNESS_DIR" ]; then
   for harness_file in src/gateway/gateway-codex-harness.live-helpers.ts; do
     if [ -f "$NEXISCLAW_LIVE_CODEX_TRUSTED_HARNESS_DIR/$harness_file" ]; then
@@ -234,7 +234,7 @@ if [ -n "${NEXISCLAW_LIVE_CODEX_TRUSTED_HARNESS_DIR:-}" ] && [ -d "$NEXISCLAW_LI
     fi
   done
 fi
-NexisClaw_live_prepare_staged_config
+FirstNexus_live_prepare_staged_config
 cd "$tmp_dir"
 if [ "${NEXISCLAW_LIVE_CODEX_HARNESS_USE_CI_SAFE_CODEX_CONFIG:-1}" = "1" ]; then
   node --import tsx "$trusted_scripts_dir/prepare-codex-ci-config.ts" "$HOME/.codex/config.toml" "$tmp_dir"
@@ -256,7 +256,7 @@ fi
 pnpm test:live ${NEXISCLAW_LIVE_CODEX_TEST_FILES:-src/gateway/gateway-codex-harness.live.test.ts}
 EOF
 
-NexisClaw_live_codex_harness_append_build_extension codex
+FirstNexus_live_codex_harness_append_build_extension codex
 # The release package image intentionally excludes externalized plugins such as
 # Codex. This lane must rebuild the live image so the plugin-owned harness is
 # present under the bundled plugin runtime directory.
@@ -316,18 +316,18 @@ DOCKER_RUN_ARGS=(docker run --rm -t \
   -e NEXISCLAW_LIVE_CODEX_TEST_FILES="${NEXISCLAW_LIVE_CODEX_TEST_FILES:-}" \
   -e NEXISCLAW_LIVE_TEST=1 \
   -e NEXISCLAW_VITEST_FS_MODULE_CACHE=0)
-NexisClaw_live_append_array DOCKER_RUN_ARGS DOCKER_AUTH_ENV
-NexisClaw_live_append_array DOCKER_RUN_ARGS DOCKER_EXTRA_ENV_FILES
-NexisClaw_live_append_array DOCKER_RUN_ARGS DOCKER_HOME_MOUNT
-NexisClaw_live_append_array DOCKER_RUN_ARGS DOCKER_TRUSTED_HARNESS_MOUNT
+FirstNexus_live_append_array DOCKER_RUN_ARGS DOCKER_AUTH_ENV
+FirstNexus_live_append_array DOCKER_RUN_ARGS DOCKER_EXTRA_ENV_FILES
+FirstNexus_live_append_array DOCKER_RUN_ARGS DOCKER_HOME_MOUNT
+FirstNexus_live_append_array DOCKER_RUN_ARGS DOCKER_TRUSTED_HARNESS_MOUNT
 DOCKER_RUN_ARGS+=(\
   -v "$CACHE_HOME_DIR":"$DOCKER_CACHE_CONTAINER_DIR" \
   -v "$ROOT_DIR":/src:ro \
-  -v "$CONFIG_DIR":/home/node/.NexisClaw \
-  -v "$WORKSPACE_DIR":/home/node/.NexisClaw/workspace \
+  -v "$CONFIG_DIR":/home/node/.FirstNexus \
+  -v "$WORKSPACE_DIR":/home/node/.FirstNexus/workspace \
   -v "$CLI_TOOLS_DIR":"$DOCKER_CLI_TOOLS_CONTAINER_DIR")
-NexisClaw_live_append_array DOCKER_RUN_ARGS EXTERNAL_AUTH_MOUNTS
-NexisClaw_live_append_array DOCKER_RUN_ARGS PROFILE_MOUNT
+FirstNexus_live_append_array DOCKER_RUN_ARGS EXTERNAL_AUTH_MOUNTS
+FirstNexus_live_append_array DOCKER_RUN_ARGS PROFILE_MOUNT
 DOCKER_RUN_ARGS+=(\
   "$LIVE_IMAGE_NAME" \
   -lc "$LIVE_TEST_CMD")

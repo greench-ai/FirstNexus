@@ -1,8 +1,8 @@
 {
-  "name": "@NexisClaw/qa-channel",
+  "name": "@FirstNexus/qa-channel",
   "version": "2026.5.12-beta.1",
   "private": true,
-  "description": "NexisClaw QA synthetic channel plugin",
+  "description": "FirstNexus QA synthetic channel plugin",
   "type": "module",
   "exports": {
     ".": "./index.ts",
@@ -15,18 +15,18 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*",
-    "NexisClaw": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*",
+    "FirstNexus": "workspace:*"
   },
   "peerDependencies": {
-    "NexisClaw": ">=2026.5.12-beta.1"
+    "FirstNexus": ">=2026.5.12-beta.1"
   },
   "peerDependenciesMeta": {
-    "NexisClaw": {
+    "FirstNexus": {
       "optional": true
     }
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
@@ -38,7 +38,7 @@
       "detailLabel": "QA Channel",
       "docsPath": "/channels/qa-channel",
       "docsLabel": "qa-channel",
-      "blurb": "Synthetic Slack-class transport for automated NexisClaw QA scenarios.",
+      "blurb": "Synthetic Slack-class transport for automated FirstNexus QA scenarios.",
       "systemImage": "checklist",
       "order": 999,
       "exposure": {

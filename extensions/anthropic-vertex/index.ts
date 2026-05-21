@@ -1,6 +1,6 @@
-import { definePluginEntry } from "NexisClaw/plugin-sdk/plugin-entry";
-import { readConfiguredProviderCatalogEntries } from "NexisClaw/plugin-sdk/provider-catalog-shared";
-import { NATIVE_ANTHROPIC_REPLAY_HOOKS } from "NexisClaw/plugin-sdk/provider-model-shared";
+import { definePluginEntry } from "FirstNexus/plugin-sdk/plugin-entry";
+import { readConfiguredProviderCatalogEntries } from "FirstNexus/plugin-sdk/provider-catalog-shared";
+import { NATIVE_ANTHROPIC_REPLAY_HOOKS } from "FirstNexus/plugin-sdk/provider-model-shared";
 import {
   hasAnthropicVertexAvailableAuth,
   mergeImplicitAnthropicVertexProvider,

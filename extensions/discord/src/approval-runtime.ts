@@ -2,13 +2,13 @@ export {
   isChannelExecApprovalClientEnabledFromConfig,
   matchesApprovalRequestFilters,
   getExecApprovalReplyMetadata,
-} from "NexisClaw/plugin-sdk/approval-client-runtime";
-export { resolveApprovalApprovers } from "NexisClaw/plugin-sdk/approval-auth-runtime";
+} from "FirstNexus/plugin-sdk/approval-client-runtime";
+export { resolveApprovalApprovers } from "FirstNexus/plugin-sdk/approval-auth-runtime";
 export {
   createApproverRestrictedNativeApprovalCapability,
   splitChannelApprovalCapability,
-} from "NexisClaw/plugin-sdk/approval-delivery-runtime";
+} from "FirstNexus/plugin-sdk/approval-delivery-runtime";
 export {
   createChannelApproverDmTargetResolver,
   createChannelNativeOriginTargetResolver,
-} from "NexisClaw/plugin-sdk/approval-native-runtime";
+} from "FirstNexus/plugin-sdk/approval-native-runtime";

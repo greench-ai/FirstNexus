@@ -90,7 +90,7 @@ describe("browser control HTTP auth", () => {
 
     const password = await realFetch(`${base}/`, {
       headers: {
-        "x-NexisClaw-password": "browser-password",
+        "x-FirstNexus-password": "browser-password",
       },
     });
     expect(password.status).toBe(200);
@@ -101,7 +101,7 @@ describe("browser control HTTP auth", () => {
 
     const password = await realFetch(`${base}/`, {
       headers: {
-        "x-NexisClaw-password": "browser-control-secret",
+        "x-FirstNexus-password": "browser-control-secret",
       },
     });
     expect(password.status).toBe(401);

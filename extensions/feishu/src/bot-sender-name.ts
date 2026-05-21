@@ -1,4 +1,4 @@
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { createFeishuClient } from "./client.js";
 import type { ResolvedFeishuAccount } from "./types.js";
 

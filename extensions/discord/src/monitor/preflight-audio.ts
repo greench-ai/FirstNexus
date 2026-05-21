@@ -1,7 +1,7 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { getFileExtension } from "NexisClaw/plugin-sdk/media-mime";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { getFileExtension } from "FirstNexus/plugin-sdk/media-mime";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 type DiscordPreflightAudioRuntime = typeof import("./preflight-audio.runtime.js");
 
@@ -66,7 +66,7 @@ export async function resolveDiscordPreflightAudioMentionContext(params: {
   isDirectMessage: boolean;
   shouldRequireMention: boolean;
   mentionRegexes: RegExp[];
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   abortSignal?: AbortSignal;
 }): Promise<{
   hasAudioAttachment: boolean;

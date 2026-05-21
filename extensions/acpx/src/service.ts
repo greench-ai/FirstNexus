@@ -2,11 +2,11 @@ import { randomUUID } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { inspect } from "node:util";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import type {
   AcpRuntime,
-  NexisClawPluginService,
-  NexisClawPluginServiceContext,
+  FirstNexusPluginService,
+  FirstNexusPluginServiceContext,
   PluginLogger,
 } from "../runtime-api.js";
 import { registerAcpRuntimeBackend, unregisterAcpRuntimeBackend } from "../runtime-api.js";
@@ -19,8 +19,8 @@ import {
 } from "./config.js";
 import { createAcpxProcessLeaseStore, type AcpxProcessLeaseStore } from "./process-lease.js";
 import {
-  cleanupNexisClawOwnedAcpxProcessTree,
-  reapStaleNexisClawOwnedAcpxOrphans,
+  cleanupFirstNexusOwnedAcpxProcessTree,
+  reapStaleFirstNexusOwnedAcpxOrphans,
   type AcpxProcessCleanupDeps,
 } from "./process-reaper.js";
 
@@ -71,9 +71,9 @@ function createLazyDefaultRuntime(params: AcpxRuntimeFactoryParams): AcpxRuntime
     runtimePromise ??= loadRuntimeModule().then((module) => {
       runtime = new module.AcpxRuntime({
         cwd: params.pluginConfig.cwd,
-        NexisClawGatewayInstanceId: params.gatewayInstanceId,
-        NexisClawProcessLeaseStore: params.processLeaseStore,
-        NexisClawWrapperRoot: params.wrapperRoot,
+        FirstNexusGatewayInstanceId: params.gatewayInstanceId,
+        FirstNexusProcessLeaseStore: params.processLeaseStore,
+        FirstNexusWrapperRoot: params.wrapperRoot,
         sessionStore: module.createFileSessionStore({
           stateDir: params.pluginConfig.stateDir,
         }),
@@ -191,7 +191,7 @@ function normalizeProbeAgent(value: string | undefined): string | undefined {
   return normalized ? normalized : undefined;
 }
 
-function resolveAllowedAgentsProbeAgent(ctx: NexisClawPluginServiceContext): string | undefined {
+function resolveAllowedAgentsProbeAgent(ctx: FirstNexusPluginServiceContext): string | undefined {
   for (const agent of ctx.config.acp?.allowedAgents ?? []) {
     const normalized = normalizeProbeAgent(agent);
     if (normalized) {
@@ -271,7 +271,7 @@ async function reapOpenAcpxProcessLeases(params: {
       await params.leaseStore.markState(lease.leaseId, "closing");
       let result = pendingLeaseRootResults.get(lease.wrapperRoot);
       if (!result) {
-        result = await reapStaleNexisClawOwnedAcpxOrphans({
+        result = await reapStaleFirstNexusOwnedAcpxOrphans({
           wrapperRoot: lease.wrapperRoot,
           deps: params.deps,
         });
@@ -286,7 +286,7 @@ async function reapOpenAcpxProcessLeases(params: {
       continue;
     }
     await params.leaseStore.markState(lease.leaseId, "closing");
-    const result = await cleanupNexisClawOwnedAcpxProcessTree({
+    const result = await cleanupFirstNexusOwnedAcpxProcessTree({
       rootPid: lease.rootPid,
       expectedLeaseId: lease.leaseId,
       expectedGatewayInstanceId: lease.gatewayInstanceId,
@@ -305,13 +305,13 @@ async function reapOpenAcpxProcessLeases(params: {
 
 export function createAcpxRuntimeService(
   params: CreateAcpxRuntimeServiceParams = {},
-): NexisClawPluginService {
+): FirstNexusPluginService {
   let runtime: AcpxRuntimeLike | null = null;
   let lifecycleRevision = 0;
 
   return {
     id: "acpx-runtime",
-    async start(ctx: NexisClawPluginServiceContext): Promise<void> {
+    async start(ctx: FirstNexusPluginServiceContext): Promise<void> {
       if (process.env.NEXISCLAW_SKIP_ACPX_RUNTIME === "1") {
         ctx.logger.info("skipping embedded acpx runtime backend (NEXISCLAW_SKIP_ACPX_RUNTIME=1)");
         return;
@@ -342,7 +342,7 @@ export function createAcpxRuntimeService(
       });
       if (startupReap.terminatedPids.length > 0) {
         ctx.logger.info(
-          `reaped ${startupReap.terminatedPids.length} stale NexisClaw-owned ACPX process${startupReap.terminatedPids.length === 1 ? "" : "es"}`,
+          `reaped ${startupReap.terminatedPids.length} stale FirstNexus-owned ACPX process${startupReap.terminatedPids.length === 1 ? "" : "es"}`,
         );
       }
       warnOnIgnoredLegacyCompatibilityConfig({
@@ -408,7 +408,7 @@ export function createAcpxRuntimeService(
         ctx.logger.warn(`embedded acpx runtime setup failed: ${formatErrorMessage(err)}`);
       }
     },
-    async stop(_ctx: NexisClawPluginServiceContext): Promise<void> {
+    async stop(_ctx: FirstNexusPluginServiceContext): Promise<void> {
       lifecycleRevision += 1;
       unregisterAcpRuntimeBackend(ACPX_BACKEND_ID);
       runtime = null;

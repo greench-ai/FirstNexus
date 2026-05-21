@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { importFreshModule } from "NexisClaw/plugin-sdk/test-fixtures";
+import { importFreshModule } from "FirstNexus/plugin-sdk/test-fixtures";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("../../plugins/bundled-dir.js", async (importOriginal) => {
@@ -55,8 +55,8 @@ afterEach(() => {
 
 describe("bundled root-aware plugin lookups", () => {
   it("reads bundled channel ids from the active bundled root without re-importing", async () => {
-    const rootA = makeBundledRoot("NexisClaw-bundled-ids-a-");
-    const rootB = makeBundledRoot("NexisClaw-bundled-ids-b-");
+    const rootA = makeBundledRoot("FirstNexus-bundled-ids-a-");
+    const rootB = makeBundledRoot("FirstNexus-bundled-ids-b-");
 
     vi.doMock("../../plugins/channel-catalog-registry.js", () => ({
       listChannelCatalogEntries: (params?: { env?: NodeJS.ProcessEnv }) => {
@@ -86,8 +86,8 @@ describe("bundled root-aware plugin lookups", () => {
   });
 
   it("reads bootstrap plugins from the active bundled root without re-importing", async () => {
-    const rootA = makeBundledRoot("NexisClaw-bootstrap-a-");
-    const rootB = makeBundledRoot("NexisClaw-bootstrap-b-");
+    const rootA = makeBundledRoot("FirstNexus-bootstrap-a-");
+    const rootB = makeBundledRoot("FirstNexus-bootstrap-b-");
 
     vi.doMock("./bundled-ids.js", () => ({
       listBundledChannelPluginIdsForRoot: () => {
@@ -157,7 +157,7 @@ describe("bundled root-aware plugin lookups", () => {
   });
 
   it("retries bootstrap plugin loading after an error", async () => {
-    const root = makeBundledRoot("NexisClaw-bootstrap-plugin-throw-");
+    const root = makeBundledRoot("FirstNexus-bootstrap-plugin-throw-");
 
     vi.doMock("./bundled-ids.js", () => ({
       listBundledChannelPluginIdsForRoot: () =>
@@ -193,7 +193,7 @@ describe("bundled root-aware plugin lookups", () => {
   });
 
   it("keeps plugin loading independent from bootstrap secrets loading errors", async () => {
-    const root = makeBundledRoot("NexisClaw-bootstrap-secrets-throw-");
+    const root = makeBundledRoot("FirstNexus-bootstrap-secrets-throw-");
 
     vi.doMock("./bundled-ids.js", () => ({
       listBundledChannelPluginIdsForRoot: () =>

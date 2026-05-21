@@ -11,7 +11,7 @@ import {
   extractRtt,
   readTelegramSummary,
   safeRunLabel,
-  validateNexisClawPackageSpec,
+  validateFirstNexusPackageSpec,
 } from "../../scripts/lib/rtt-harness.ts";
 import { __testing as cliTesting } from "../../scripts/rtt.ts";
 
@@ -24,34 +24,34 @@ afterEach(async () => {
 });
 
 describe("RTT harness", () => {
-  it("validates NexisClaw package specs", () => {
-    expect(validateNexisClawPackageSpec("NexisClaw@main")).toBe("NexisClaw@main");
-    expect(validateNexisClawPackageSpec("NexisClaw@alpha")).toBe("NexisClaw@alpha");
-    expect(validateNexisClawPackageSpec("NexisClaw@beta")).toBe("NexisClaw@beta");
-    expect(validateNexisClawPackageSpec("NexisClaw@latest")).toBe("NexisClaw@latest");
-    expect(validateNexisClawPackageSpec("NexisClaw@2026.4.30")).toBe("NexisClaw@2026.4.30");
-    expect(validateNexisClawPackageSpec("NexisClaw@2026.4.30-beta.2")).toBe(
-      "NexisClaw@2026.4.30-beta.2",
+  it("validates FirstNexus package specs", () => {
+    expect(validateFirstNexusPackageSpec("FirstNexus@main")).toBe("FirstNexus@main");
+    expect(validateFirstNexusPackageSpec("FirstNexus@alpha")).toBe("FirstNexus@alpha");
+    expect(validateFirstNexusPackageSpec("FirstNexus@beta")).toBe("FirstNexus@beta");
+    expect(validateFirstNexusPackageSpec("FirstNexus@latest")).toBe("FirstNexus@latest");
+    expect(validateFirstNexusPackageSpec("FirstNexus@2026.4.30")).toBe("FirstNexus@2026.4.30");
+    expect(validateFirstNexusPackageSpec("FirstNexus@2026.4.30-beta.2")).toBe(
+      "FirstNexus@2026.4.30-beta.2",
     );
-    expect(validateNexisClawPackageSpec("NexisClaw@2026.4.30-alpha.2")).toBe(
-      "NexisClaw@2026.4.30-alpha.2",
+    expect(validateFirstNexusPackageSpec("FirstNexus@2026.4.30-alpha.2")).toBe(
+      "FirstNexus@2026.4.30-alpha.2",
     );
 
-    expect(() => validateNexisClawPackageSpec("@NexisClaw/NexisClaw@beta")).toThrow(
+    expect(() => validateFirstNexusPackageSpec("@FirstNexus/FirstNexus@beta")).toThrow(
       /Package spec must be/,
     );
-    expect(() => validateNexisClawPackageSpec("NexisClaw@next")).toThrow(/Package spec must be/);
+    expect(() => validateFirstNexusPackageSpec("FirstNexus@next")).toThrow(/Package spec must be/);
   });
 
   it("builds stable run labels", () => {
-    expect(safeRunLabel("NexisClaw@beta")).toBe("NexisClaw_beta");
+    expect(safeRunLabel("FirstNexus@beta")).toBe("FirstNexus_beta");
     expect(
       buildRunId({
         now: new Date("2026-05-01T03:04:05.678Z"),
-        spec: "NexisClaw@beta",
+        spec: "FirstNexus@beta",
         index: 1,
       }),
-    ).toBe("2026-05-01T030405678Z-NexisClaw_beta-2");
+    ).toBe("2026-05-01T030405678Z-FirstNexus_beta-2");
   });
 
   it("constructs harness env without dropping caller env", () => {
@@ -65,14 +65,14 @@ describe("RTT harness", () => {
       samples: 20,
       sampleTimeoutMs: 30_000,
       scenarios: ["telegram-mentioned-message-reply"],
-      spec: "NexisClaw@beta",
+      spec: "FirstNexus@beta",
       timeoutMs: 180_000,
       version: "2026.4.30-beta.1",
     });
 
     expect(env.NEXISCLAW_QA_TELEGRAM_GROUP_ID).toBe("-100123");
-    expect(env.NEXISCLAW_NPM_TELEGRAM_PACKAGE_SPEC).toBe("NexisClaw@beta");
-    expect(env.NEXISCLAW_NPM_TELEGRAM_PACKAGE_LABEL).toBe("NexisClaw@beta (2026.4.30-beta.1)");
+    expect(env.NEXISCLAW_NPM_TELEGRAM_PACKAGE_SPEC).toBe("FirstNexus@beta");
+    expect(env.NEXISCLAW_NPM_TELEGRAM_PACKAGE_LABEL).toBe("FirstNexus@beta (2026.4.30-beta.1)");
     expect(env.NEXISCLAW_NPM_TELEGRAM_PROVIDER_MODE).toBe("mock-openai");
     expect(env.NEXISCLAW_NPM_TELEGRAM_SCENARIOS).toBe("telegram-mentioned-message-reply");
     expect(env.NEXISCLAW_NPM_TELEGRAM_OUTPUT_DIR).toBe(".artifacts/rtt/run/raw");
@@ -111,7 +111,7 @@ describe("RTT harness", () => {
       rawSummary: summary,
       runId: "run",
       scenarios: ["telegram-mentioned-message-reply"],
-      spec: "NexisClaw@beta",
+      spec: "FirstNexus@beta",
       startedAt: new Date("2026-05-01T00:00:00.000Z"),
       version: "2026.4.30-beta.1",
     });
@@ -123,7 +123,7 @@ describe("RTT harness", () => {
         rawSummaryPath: "runs/run/raw/telegram-qa-summary.json",
         resultPath: "runs/run/result.json",
       },
-      package: { spec: "NexisClaw@beta", version: "2026.4.30-beta.1" },
+      package: { spec: "FirstNexus@beta", version: "2026.4.30-beta.1" },
       run: {
         durationMs: 12_000,
         finishedAt: "2026-05-01T00:00:12.000Z",
@@ -166,7 +166,7 @@ describe("RTT harness", () => {
       },
       runId: "run",
       scenarios: ["telegram-mentioned-message-reply"],
-      spec: "NexisClaw@latest",
+      spec: "FirstNexus@latest",
       startedAt: new Date("2026-05-01T00:00:00.000Z"),
       version: "2026.4.29",
     });
@@ -176,7 +176,7 @@ describe("RTT harness", () => {
   });
 
   it("appends JSONL rows", async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-rtt-test-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-rtt-test-"));
     tempDirs.push(tempDir);
     const jsonlPath = path.join(tempDir, "data/rtt.jsonl");
     await appendJsonl(jsonlPath, { run: 1 });
@@ -187,9 +187,9 @@ describe("RTT harness", () => {
 
   it("parses CLI options", () => {
     const parsed = cliTesting.parseArgs([
-      "NexisClaw@latest",
+      "FirstNexus@latest",
       "--package-tgz",
-      "/tmp/NexisClaw.tgz",
+      "/tmp/FirstNexus.tgz",
       "--provider",
       "live-frontier",
       "--runs",
@@ -201,19 +201,19 @@ describe("RTT harness", () => {
       "--timeout-ms",
       "240000",
       "--harness-root",
-      "/tmp/NexisClaw",
+      "/tmp/FirstNexus",
       "--output",
       "/tmp/runs",
     ]);
 
-    expect(parsed.spec).toBe("NexisClaw@latest");
+    expect(parsed.spec).toBe("FirstNexus@latest");
     expect(parsed.options).toStrictEqual({
-      packageTgz: "/tmp/NexisClaw.tgz",
+      packageTgz: "/tmp/FirstNexus.tgz",
       providerMode: "live-frontier",
       runs: 3,
       samples: 5,
       sampleTimeoutMs: 30_000,
-      harnessRoot: "/tmp/NexisClaw",
+      harnessRoot: "/tmp/FirstNexus",
       output: "/tmp/runs",
       scenarios: ["telegram-mentioned-message-reply"],
       timeoutMs: 240_000,

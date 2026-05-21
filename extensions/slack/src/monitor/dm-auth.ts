@@ -1,6 +1,6 @@
-import { formatAllowlistMatchMeta } from "NexisClaw/plugin-sdk/allow-from";
-import { createChannelPairingChallengeIssuer } from "NexisClaw/plugin-sdk/channel-pairing";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
+import { formatAllowlistMatchMeta } from "FirstNexus/plugin-sdk/allow-from";
+import { createChannelPairingChallengeIssuer } from "FirstNexus/plugin-sdk/channel-pairing";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
 import { resolveSlackAllowListMatch } from "./allow-list.js";
 import type { SlackMonitorContext } from "./context.js";
 import { upsertChannelPairingRequest } from "./conversation.runtime.js";

@@ -1,6 +1,6 @@
 services:
-  NexisClaw-gateway:
-    image: ${NEXISCLAW_IMAGE:-NexisClaw:local}
+  FirstNexus-gateway:
+    image: ${NEXISCLAW_IMAGE:-FirstNexus:local}
     build: .
     env_file:
       - path: .env
@@ -11,11 +11,11 @@ services:
       # Pin container-side workspace and config paths so host values written to
       # `.env` (used by Compose for the bind-mount source below) cannot leak
       # into runtime code that resolves these env vars inside the container.
-      # Without this override, a macOS host path like /Users/<you>/.NexisClaw/...
+      # Without this override, a macOS host path like /Users/<you>/.FirstNexus/...
       # imported from .env caused first-reply `mkdir '/Users'` EACCES failures
       # in Linux Docker (#77436).
-      NEXISCLAW_CONFIG_DIR: /home/node/.NexisClaw
-      NEXISCLAW_WORKSPACE_DIR: /home/node/.NexisClaw/workspace
+      NEXISCLAW_CONFIG_DIR: /home/node/.FirstNexus
+      NEXISCLAW_WORKSPACE_DIR: /home/node/.FirstNexus/workspace
       NEXISCLAW_GATEWAY_TOKEN: ${NEXISCLAW_GATEWAY_TOKEN:-}
       NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS: ${NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS:-}
       # Empty means auto: Bonjour disables itself in detected containers.
@@ -36,9 +36,9 @@ services:
       CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE:-}
       TZ: ${NEXISCLAW_TZ:-UTC}
     volumes:
-      - ${NEXISCLAW_CONFIG_DIR:-${HOME:-/tmp}/.NexisClaw}:/home/node/.NexisClaw
-      - ${NEXISCLAW_WORKSPACE_DIR:-${HOME:-/tmp}/.NexisClaw/workspace}:/home/node/.NexisClaw/workspace
-      - ${NEXISCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.NexisClaw-auth-profile-secrets}:/home/node/.config/NexisClaw
+      - ${NEXISCLAW_CONFIG_DIR:-${HOME:-/tmp}/.FirstNexus}:/home/node/.FirstNexus
+      - ${NEXISCLAW_WORKSPACE_DIR:-${HOME:-/tmp}/.FirstNexus/workspace}:/home/node/.FirstNexus/workspace
+      - ${NEXISCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.FirstNexus-auth-profile-secrets}:/home/node/.config/FirstNexus
       ## Uncomment the lines below to enable sandbox isolation
       ## (agents.defaults.sandbox). Requires Docker CLI in the image
       ## (build with --build-arg NEXISCLAW_INSTALL_DOCKER_CLI=1) or use
@@ -85,9 +85,9 @@ services:
       retries: 5
       start_period: 20s
 
-  NexisClaw-cli:
-    image: ${NEXISCLAW_IMAGE:-NexisClaw:local}
-    network_mode: "service:NexisClaw-gateway"
+  FirstNexus-cli:
+    image: ${NEXISCLAW_IMAGE:-FirstNexus:local}
+    network_mode: "service:FirstNexus-gateway"
     env_file:
       - path: .env
         required: false
@@ -101,8 +101,8 @@ services:
       TERM: xterm-256color
       # Pin container-side workspace and config paths so host values written to
       # `.env` cannot leak into runtime code via the env_file import (#77436).
-      NEXISCLAW_CONFIG_DIR: /home/node/.NexisClaw
-      NEXISCLAW_WORKSPACE_DIR: /home/node/.NexisClaw/workspace
+      NEXISCLAW_CONFIG_DIR: /home/node/.FirstNexus
+      NEXISCLAW_WORKSPACE_DIR: /home/node/.FirstNexus/workspace
       NEXISCLAW_GATEWAY_TOKEN: ${NEXISCLAW_GATEWAY_TOKEN:-}
       NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS: ${NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS:-}
       BROWSER: echo
@@ -111,12 +111,12 @@ services:
       CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE:-}
       TZ: ${NEXISCLAW_TZ:-UTC}
     volumes:
-      - ${NEXISCLAW_CONFIG_DIR:-${HOME:-/tmp}/.NexisClaw}:/home/node/.NexisClaw
-      - ${NEXISCLAW_WORKSPACE_DIR:-${HOME:-/tmp}/.NexisClaw/workspace}:/home/node/.NexisClaw/workspace
-      - ${NEXISCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.NexisClaw-auth-profile-secrets}:/home/node/.config/NexisClaw
+      - ${NEXISCLAW_CONFIG_DIR:-${HOME:-/tmp}/.FirstNexus}:/home/node/.FirstNexus
+      - ${NEXISCLAW_WORKSPACE_DIR:-${HOME:-/tmp}/.FirstNexus/workspace}:/home/node/.FirstNexus/workspace
+      - ${NEXISCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.FirstNexus-auth-profile-secrets}:/home/node/.config/FirstNexus
     stdin_open: true
     tty: true
     init: true
     entrypoint: ["node", "dist/index.js"]
     depends_on:
-      - NexisClaw-gateway
+      - FirstNexus-gateway

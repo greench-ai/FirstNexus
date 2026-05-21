@@ -1,10 +1,10 @@
 {
-  "name": "@NexisClaw/diagnostics-otel",
+  "name": "@FirstNexus/diagnostics-otel",
   "version": "2026.5.12-beta.1",
-  "description": "NexisClaw diagnostics OpenTelemetry exporter",
+  "description": "FirstNexus diagnostics OpenTelemetry exporter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NexisClaw/NexisClaw"
+    "url": "https://github.com/FirstNexus/FirstNexus"
   },
   "type": "module",
   "dependencies": {
@@ -21,15 +21,15 @@
     "@opentelemetry/semantic-conventions": "1.40.0"
   },
   "devDependencies": {
-    "@NexisClaw/plugin-sdk": "workspace:*"
+    "@FirstNexus/plugin-sdk": "workspace:*"
   },
-  "NexisClaw": {
+  "FirstNexus": {
     "extensions": [
       "./index.ts"
     ],
     "install": {
-      "clawhubSpec": "clawhub:@NexisClaw/diagnostics-otel",
-      "npmSpec": "@NexisClaw/diagnostics-otel",
+      "clawhubSpec": "clawhub:@FirstNexus/diagnostics-otel",
+      "npmSpec": "@FirstNexus/diagnostics-otel",
       "defaultChoice": "npm",
       "minHostVersion": ">=2026.4.25"
     },
@@ -37,7 +37,7 @@
       "pluginApi": ">=2026.5.12-beta.1"
     },
     "build": {
-      "NexisClawVersion": "2026.5.12-beta.1"
+      "FirstNexusVersion": "2026.5.12-beta.1"
     },
     "release": {
       "publishToClawHub": true,

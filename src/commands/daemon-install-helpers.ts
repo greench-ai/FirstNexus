@@ -4,14 +4,14 @@ import path from "node:path";
 import type { AuthProfileStore } from "../agents/auth-profiles/types.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { collectDurableServiceEnvVarSources } from "../config/state-dir-dotenv.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { resolveSecretInputRef } from "../config/types.secrets.js";
 import { resolveGatewayLaunchAgentLabel } from "../daemon/constants.js";
 import { resolveGatewayStateDir } from "../daemon/paths.js";
 import {
   NEXISCLAW_WRAPPER_ENV_KEY,
   resolveGatewayProgramArguments,
-  resolveNexisClawWrapperPath,
+  resolveFirstNexusWrapperPath,
 } from "../daemon/program-args.js";
 import {
   addServiceEnvPlanEntries,
@@ -138,7 +138,7 @@ async function collectAuthProfileServiceEnvVars(params: {
 
 function collectConfigSecretRefServiceEnvVars(params: {
   env: Record<string, string | undefined>;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   durableEnvironment: Record<string, string | undefined>;
   warn?: DaemonInstallWarnFn;
 }): Record<string, string> {
@@ -190,7 +190,7 @@ function collectConfigSecretRefServiceEnvVars(params: {
 
 function collectExecSecretRefPassEnvServiceEnvVars(params: {
   env: Record<string, string | undefined>;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   durableEnvironment: Record<string, string | undefined>;
   warn?: DaemonInstallWarnFn;
 }): Record<string, string> {
@@ -410,7 +410,7 @@ function resolveGatewayInstallWorkingDirectory(params: {
 
 async function buildGatewayInstallEnvironment(params: {
   env: Record<string, string | undefined>;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   authStore?: AuthProfileStore;
   warn?: DaemonInstallWarnFn;
   serviceEnvironment: Record<string, string | undefined>;
@@ -505,7 +505,7 @@ export async function buildGatewayInstallPlan(params: {
   platform?: NodeJS.Platform;
   warn?: DaemonInstallWarnFn;
   /** Full config to extract env vars from (env vars + inline env keys). */
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   authStore?: AuthProfileStore;
   existingEnvironmentValueSources?: Record<
     string,
@@ -519,7 +519,7 @@ export async function buildGatewayInstallPlan(params: {
     devMode: params.devMode,
     nodePath: params.nodePath,
   });
-  const wrapperPath = await resolveNexisClawWrapperPath(
+  const wrapperPath = await resolveFirstNexusWrapperPath(
     params.wrapperPath ?? params.env[NEXISCLAW_WRAPPER_ENV_KEY],
   );
   const serviceInputEnv: Record<string, string | undefined> = wrapperPath
@@ -577,5 +577,5 @@ export async function buildGatewayInstallPlan(params: {
 export function gatewayInstallErrorHint(platform = process.platform): string {
   return platform === "win32"
     ? "Tip: native Windows now falls back to a per-user Startup-folder login item when Scheduled Task creation is denied; if install still fails, rerun from an elevated PowerShell or skip service install."
-    : `Tip: rerun \`${formatCliCommand("NexisClaw gateway install")}\` after fixing the error.`;
+    : `Tip: rerun \`${formatCliCommand("FirstNexus gateway install")}\` after fixing the error.`;
 }

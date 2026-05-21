@@ -68,7 +68,7 @@ function buildProps(overrides?: Partial<DreamingProps>): DreamingProps {
     dreamDiaryError: null,
     dreamDiaryPath: "DREAMS.md",
     dreamDiaryContent:
-      "# Dream Diary\n\n<!-- NexisClaw:dreaming:diary:start -->\n\n---\n\n*April 5, 2026, 3:00 AM*\n\nThe repository whispered of forgotten endpoints tonight.\n\n<!-- NexisClaw:dreaming:diary:end -->",
+      "# Dream Diary\n\n<!-- FirstNexus:dreaming:diary:start -->\n\n---\n\n*April 5, 2026, 3:00 AM*\n\nThe repository whispered of forgotten endpoints tonight.\n\n<!-- FirstNexus:dreaming:diary:end -->",
     memoryWikiEnabled: true,
     wikiImportInsightsLoading: false,
     wikiImportInsightsError: null,
@@ -456,13 +456,13 @@ describe("dreaming view", () => {
         dreamDiaryContent: [
           "# Dream Diary",
           "",
-          "<!-- NexisClaw:dreaming:diary:start -->",
+          "<!-- FirstNexus:dreaming:diary:start -->",
           "",
           "---",
           "",
           "*January 1, 2026*",
           "",
-          "<!-- NexisClaw:dreaming:backfill-entry day=2026-01-01 source=memory/2026-01-01.md -->",
+          "<!-- FirstNexus:dreaming:backfill-entry day=2026-01-01 source=memory/2026-01-01.md -->",
           "",
           "What Happened",
           "1. Always use Happy Together for flights.",
@@ -476,7 +476,7 @@ describe("dreaming view", () => {
           "Possible Lasting Updates",
           "- Use Happy Together for flights.",
           "",
-          "<!-- NexisClaw:dreaming:diary:end -->",
+          "<!-- FirstNexus:dreaming:diary:end -->",
         ].join("\n"),
       }),
     );
@@ -501,7 +501,7 @@ describe("dreaming view", () => {
         dreamDiaryContent: [
           "# Dream Diary",
           "",
-          "<!-- NexisClaw:dreaming:diary:start -->",
+          "<!-- FirstNexus:dreaming:diary:start -->",
           "",
           "---",
           "",
@@ -520,7 +520,7 @@ describe("dreaming view", () => {
           "Candidates",
           "- candidate",
           "",
-          "<!-- NexisClaw:dreaming:diary:end -->",
+          "<!-- FirstNexus:dreaming:diary:end -->",
         ].join("\n"),
       }),
     );

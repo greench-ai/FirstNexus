@@ -36,10 +36,10 @@ export type ResolvedGlobalInstallTarget = ResolvedGlobalInstallCommand & {
   packageRoot: string | null;
 };
 
-const PRIMARY_PACKAGE_NAME = "NexisClaw";
+const PRIMARY_PACKAGE_NAME = "FirstNexus";
 const ALL_PACKAGE_NAMES = [PRIMARY_PACKAGE_NAME] as const;
 const GLOBAL_RENAME_PREFIX = ".";
-export const NEXISCLAW_MAIN_PACKAGE_SPEC = "github:NexisClaw/NexisClaw#main";
+export const NEXISCLAW_MAIN_PACKAGE_SPEC = "github:FirstNexus/FirstNexus#main";
 const COREPACK_ENABLE_DOWNLOAD_PROMPT_DEFAULT = "0";
 const NPM_GLOBAL_INSTALL_QUIET_FLAGS = ["--no-fund", "--no-audit", "--loglevel=error"] as const;
 const NPM_GLOBAL_INSTALL_OMIT_OPTIONAL_FLAGS = [
@@ -238,7 +238,7 @@ async function collectCriticalInstalledPackageDistPaths(packageRoot: string): Pr
       }
       if (
         (await pathExists(path.join(packageRoot, pluginRoot, "package.json"))) ||
-        (await pathExists(path.join(packageRoot, pluginRoot, "NexisClaw.plugin.json")))
+        (await pathExists(path.join(packageRoot, pluginRoot, "FirstNexus.plugin.json")))
       ) {
         expectedFiles.add(relativePath);
       }
@@ -297,7 +297,7 @@ async function resolvePortableGitPathPrepend(): Promise<string[]> {
   if (!localAppData) {
     return [];
   }
-  const portableGitRoot = path.join(localAppData, "NexisClaw", "deps", "portable-git");
+  const portableGitRoot = path.join(localAppData, "FirstNexus", "deps", "portable-git");
   const candidates = [
     path.join(portableGitRoot, "mingw64", "bin"),
     path.join(portableGitRoot, "usr", "bin"),

@@ -201,7 +201,7 @@ export function resolveQaLiveProviderConfigPath(env: NodeJS.ProcessEnv = process
     env[QA_LIVE_PROVIDER_CONFIG_PATH_ENV]?.trim() || env.NEXISCLAW_CONFIG_PATH?.trim();
   return explicit
     ? { path: resolveUserPath(explicit, env), explicit: true }
-    : { path: path.join(os.homedir(), ".NexisClaw", "NexisClaw.json"), explicit: false };
+    : { path: path.join(os.homedir(), ".FirstNexus", "FirstNexus.json"), explicit: false };
 }
 
 export function resolveQaForwardedLiveEnv(baseEnv: NodeJS.ProcessEnv = process.env) {

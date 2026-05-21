@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 
 export type IMessageAccountConfig = Omit<
-  NonNullable<NonNullable<NexisClawConfig["channels"]>["imessage"]>,
+  NonNullable<NonNullable<FirstNexusConfig["channels"]>["imessage"]>,
   "accounts" | "defaultAccount"
 >;

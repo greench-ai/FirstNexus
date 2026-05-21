@@ -314,7 +314,7 @@ jobs:
           install_dir="${RUNNER_TEMP}/crabbox"
           mkdir -p "$install_dir/src" "$HOME/.local/bin"
           git init "$install_dir/src"
-          git -C "$install_dir/src" remote add origin https://github.com/NexisClaw/crabbox.git
+          git -C "$install_dir/src" remote add origin https://github.com/FirstNexus/crabbox.git
           git -C "$install_dir/src" fetch --depth 1 origin "$CRABBOX_REF"
           git -C "$install_dir/src" checkout --detach FETCH_HEAD
           go build -C "$install_dir/src" -o "$HOME/.local/bin/crabbox" ./cmd/crabbox
@@ -393,7 +393,7 @@ jobs:
           fi
 
           set +e
-          pnpm --dir "$candidate_repo" NexisClaw qa telegram \
+          pnpm --dir "$candidate_repo" FirstNexus qa telegram \
             --repo-root "$candidate_repo" \
             --output-dir "$output_rel" \
             --provider-mode live-frontier \
@@ -426,7 +426,7 @@ jobs:
           if [[ -n "${CRABBOX_LEASE_ID:-}" ]]; then
             desktop_args+=(--lease-id "$CRABBOX_LEASE_ID")
           fi
-          pnpm --dir "$candidate_repo" NexisClaw qa mantis desktop-browser-smoke \
+          pnpm --dir "$candidate_repo" FirstNexus qa mantis desktop-browser-smoke \
             --repo-root "$candidate_repo" \
             --html-file "$output_rel/telegram-live-transcript.html" \
             --output-dir "$output_rel/desktop-browser" \

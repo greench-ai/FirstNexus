@@ -6,7 +6,7 @@
   "cpuProfDir": null,
   "heapProfDir": null,
   "primary": {
-    "entry": "NexisClaw.mjs",
+    "entry": "FirstNexus.mjs",
     "cases": [
       {
         "id": "version",

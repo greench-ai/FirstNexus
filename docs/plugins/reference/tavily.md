@@ -11,8 +11,8 @@ Adds agent-callable tools. Adds web search provider support.
 
 ## Distribution
 
-- Package: `@NexisClaw/tavily-plugin`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/tavily-plugin`
+- Install route: included in FirstNexus
 
 ## Surface
 

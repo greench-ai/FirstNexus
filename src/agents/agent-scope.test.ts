@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import {
   hasConfiguredModelFallbacks,
   resolveAgentConfig,
@@ -28,15 +28,15 @@ afterEach(() => {
 
 describe("resolveAgentConfig", () => {
   it("should return undefined when no agents config exists", () => {
-    const cfg: NexisClawConfig = {};
+    const cfg: FirstNexusConfig = {};
     const result = resolveAgentConfig(cfg, "main");
     expect(result).toBeUndefined();
   });
 
   it("should return undefined when agent id does not exist", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
-        list: [{ id: "main", workspace: "~/NexisClaw" }],
+        list: [{ id: "main", workspace: "~/FirstNexus" }],
       },
     };
     const result = resolveAgentConfig(cfg, "nonexistent");
@@ -44,14 +44,14 @@ describe("resolveAgentConfig", () => {
   });
 
   it("should return basic agent config", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [
           {
             id: "main",
             name: "Main Agent",
-            workspace: "~/NexisClaw",
-            agentDir: "~/.NexisClaw/agents/main",
+            workspace: "~/FirstNexus",
+            agentDir: "~/.FirstNexus/agents/main",
             model: "anthropic/claude-sonnet-4-6",
           },
         ],
@@ -60,8 +60,8 @@ describe("resolveAgentConfig", () => {
     const result = resolveAgentConfig(cfg, "main");
     expect(result).toEqual({
       name: "Main Agent",
-      workspace: "~/NexisClaw",
-      agentDir: "~/.NexisClaw/agents/main",
+      workspace: "~/FirstNexus",
+      agentDir: "~/.FirstNexus/agents/main",
       model: "anthropic/claude-sonnet-4-6",
       identity: undefined,
       groupChat: undefined,
@@ -73,7 +73,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("prefers per-agent verbose defaults over global defaults", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           verboseDefault: "full",
@@ -90,7 +90,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("merges contextLimits from defaults with per-agent overrides", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           contextLimits: {
@@ -121,7 +121,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("merges runRetries from defaults with per-agent overrides", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           runRetries: {
@@ -158,13 +158,13 @@ describe("resolveAgentConfig", () => {
         },
         list: [{ id: "main" }],
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
     expect(resolveAgentExplicitModelPrimary(cfgWithStringDefault, "main")).toBeUndefined();
     expect(resolveAgentEffectiveModelPrimary(cfgWithStringDefault, "main")).toBe(
       "anthropic/claude-sonnet-4-6",
     );
 
-    const cfgWithObjectDefault: NexisClawConfig = {
+    const cfgWithObjectDefault: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -178,7 +178,7 @@ describe("resolveAgentConfig", () => {
     expect(resolveAgentExplicitModelPrimary(cfgWithObjectDefault, "main")).toBeUndefined();
     expect(resolveAgentEffectiveModelPrimary(cfgWithObjectDefault, "main")).toBe("openai/gpt-5.4");
 
-    const cfgNoDefaults: NexisClawConfig = {
+    const cfgNoDefaults: FirstNexusConfig = {
       agents: {
         list: [{ id: "main" }],
       },
@@ -188,7 +188,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("supports per-agent model primary+fallbacks", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -214,7 +214,7 @@ describe("resolveAgentConfig", () => {
     expect(resolveAgentModelFallbacksOverride(cfg, "linus")).toEqual(["openai/gpt-5.4"]);
 
     // If an agent owns a primary, missing fallbacks means no model fallback.
-    const cfgNoOverride: NexisClawConfig = {
+    const cfgNoOverride: FirstNexusConfig = {
       agents: {
         list: [
           {
@@ -235,7 +235,7 @@ describe("resolveAgentConfig", () => {
       }),
     ).toStrictEqual([]);
 
-    const cfgStringModel: NexisClawConfig = {
+    const cfgStringModel: FirstNexusConfig = {
       agents: {
         list: [
           {
@@ -247,7 +247,7 @@ describe("resolveAgentConfig", () => {
     };
     expect(resolveAgentModelFallbacksOverride(cfgStringModel, "linus")).toStrictEqual([]);
 
-    const cfgStrictAgentWithDefaultFallbacks: NexisClawConfig = {
+    const cfgStrictAgentWithDefaultFallbacks: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -277,7 +277,7 @@ describe("resolveAgentConfig", () => {
     ).toStrictEqual([]);
 
     // Explicit empty list disables global fallbacks for that agent.
-    const cfgDisable: NexisClawConfig = {
+    const cfgDisable: FirstNexusConfig = {
       agents: {
         list: [
           {
@@ -330,7 +330,7 @@ describe("resolveAgentConfig", () => {
       }),
     ).toStrictEqual([]);
 
-    const cfgInheritDefaultsWithoutAgentModel: NexisClawConfig = {
+    const cfgInheritDefaultsWithoutAgentModel: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -359,7 +359,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("updates the effective model primary at the winning config layer", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -390,7 +390,7 @@ describe("resolveAgentConfig", () => {
       fallbacks: ["anthropic/claude-sonnet-4-6"],
     });
 
-    const inheritedCfg: NexisClawConfig = {
+    const inheritedCfg: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -429,7 +429,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("resolves run fallback overrides via shared helper", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -464,7 +464,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("computes whether any model fallbacks are configured via shared helper", () => {
-    const cfgDefaultsOnly: NexisClawConfig = {
+    const cfgDefaultsOnly: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -481,7 +481,7 @@ describe("resolveAgentConfig", () => {
       }),
     ).toBe(true);
 
-    const cfgAgentOverrideOnly: NexisClawConfig = {
+    const cfgAgentOverrideOnly: FirstNexusConfig = {
       agents: {
         defaults: {
           model: {
@@ -520,7 +520,7 @@ describe("resolveAgentConfig", () => {
         list: [
           {
             id: "work",
-            workspace: "~/NexisClaw-work",
+            workspace: "~/FirstNexus-work",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -531,7 +531,7 @@ describe("resolveAgentConfig", () => {
           },
         ],
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
     const result = resolveAgentConfig(cfg, "work");
     expect(result?.sandbox).toEqual({
       mode: "all",
@@ -543,12 +543,12 @@ describe("resolveAgentConfig", () => {
   });
 
   it("should return agent-specific tools config", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [
           {
             id: "restricted",
-            workspace: "~/NexisClaw-restricted",
+            workspace: "~/FirstNexus-restricted",
             tools: {
               allow: ["read"],
               deny: ["exec", "write", "edit"],
@@ -573,12 +573,12 @@ describe("resolveAgentConfig", () => {
   });
 
   it("should return both sandbox and tools config", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [
           {
             id: "family",
-            workspace: "~/NexisClaw-family",
+            workspace: "~/FirstNexus-family",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -597,38 +597,38 @@ describe("resolveAgentConfig", () => {
   });
 
   it("should normalize agent id", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
-        list: [{ id: "main", workspace: "~/NexisClaw" }],
+        list: [{ id: "main", workspace: "~/FirstNexus" }],
       },
     };
     // Should normalize to "main" (default)
     const result = resolveAgentConfig(cfg, "");
-    expect(result?.workspace).toBe("~/NexisClaw");
+    expect(result?.workspace).toBe("~/FirstNexus");
   });
 
   it("uses NEXISCLAW_HOME for default agent workspace", () => {
-    const home = path.join(path.sep, "srv", "NexisClaw-home");
+    const home = path.join(path.sep, "srv", "FirstNexus-home");
     vi.stubEnv("NEXISCLAW_HOME", home);
 
-    const workspace = resolveAgentWorkspaceDir({} as NexisClawConfig, "main");
-    expect(workspace).toBe(path.join(path.resolve(home), ".NexisClaw", "workspace"));
+    const workspace = resolveAgentWorkspaceDir({} as FirstNexusConfig, "main");
+    expect(workspace).toBe(path.join(path.resolve(home), ".FirstNexus", "workspace"));
   });
 
   it("uses NEXISCLAW_HOME for default agentDir", () => {
-    const home = path.join(path.sep, "srv", "NexisClaw-home");
+    const home = path.join(path.sep, "srv", "FirstNexus-home");
     vi.stubEnv("NEXISCLAW_HOME", home);
     // Clear state dir so it falls back to NEXISCLAW_HOME
     vi.stubEnv("NEXISCLAW_STATE_DIR", "");
 
-    const agentDir = resolveAgentDir({} as NexisClawConfig, "main");
-    expect(agentDir).toBe(path.join(path.resolve(home), ".NexisClaw", "agents", "main", "agent"));
+    const agentDir = resolveAgentDir({} as FirstNexusConfig, "main");
+    expect(agentDir).toBe(path.join(path.resolve(home), ".FirstNexus", "agents", "main", "agent"));
   });
 
   it("resolves default agentDir from the configured default agent", () => {
     const stateDir = path.join(path.sep, "tmp", "test-state");
     vi.stubEnv("NEXISCLAW_STATE_DIR", stateDir);
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [{ id: "main" }, { id: "ops", default: true }],
       },
@@ -640,7 +640,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("non-default agent uses agents.defaults.workspace as base (#59789)", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: { workspace: "/shared-ws" },
         list: [{ id: "main" }, { id: "work", default: true, workspace: "/work-ws" }],
@@ -651,7 +651,7 @@ describe("resolveAgentConfig", () => {
   });
 
   it("default agent without per-agent workspace uses agents.defaults.workspace directly", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: { workspace: "/shared-ws" },
         list: [{ id: "main" }, { id: "work", default: true }],
@@ -664,7 +664,7 @@ describe("resolveAgentConfig", () => {
   it("non-default agent without defaults.workspace falls back to stateDir", () => {
     const stateDir = path.join(path.sep, "tmp", "test-state");
     vi.stubEnv("NEXISCLAW_STATE_DIR", stateDir);
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [{ id: "main" }, { id: "work", default: true, workspace: "/work-ws" }],
       },
@@ -676,9 +676,9 @@ describe("resolveAgentConfig", () => {
 
 describe("resolveAgentIdByWorkspacePath", () => {
   it("returns the most specific workspace match for a directory", () => {
-    const workspaceRoot = `/tmp/NexisClaw-agent-scope-${Date.now()}-root`;
+    const workspaceRoot = `/tmp/FirstNexus-agent-scope-${Date.now()}-root`;
     const opsWorkspace = `${workspaceRoot}/projects/ops`;
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [
           { id: "main", workspace: workspaceRoot },
@@ -691,8 +691,8 @@ describe("resolveAgentIdByWorkspacePath", () => {
   });
 
   it("returns undefined when directory has no matching workspace", () => {
-    const workspaceRoot = `/tmp/NexisClaw-agent-scope-${Date.now()}-root`;
-    const cfg: NexisClawConfig = {
+    const workspaceRoot = `/tmp/FirstNexus-agent-scope-${Date.now()}-root`;
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [
           { id: "main", workspace: workspaceRoot },
@@ -702,12 +702,12 @@ describe("resolveAgentIdByWorkspacePath", () => {
     };
 
     expect(
-      resolveAgentIdByWorkspacePath(cfg, `/tmp/NexisClaw-agent-scope-${Date.now()}-unrelated`),
+      resolveAgentIdByWorkspacePath(cfg, `/tmp/FirstNexus-agent-scope-${Date.now()}-unrelated`),
     ).toBeUndefined();
   });
 
   it("matches workspace paths through symlink aliases", () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-agent-scope-"));
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-agent-scope-"));
     const realWorkspaceRoot = path.join(tempRoot, "real-root");
     const realOpsWorkspace = path.join(realWorkspaceRoot, "projects", "ops");
     const aliasWorkspaceRoot = path.join(tempRoot, "alias-root");
@@ -719,7 +719,7 @@ describe("resolveAgentIdByWorkspacePath", () => {
         process.platform === "win32" ? "junction" : "dir",
       );
 
-      const cfg: NexisClawConfig = {
+      const cfg: FirstNexusConfig = {
         agents: {
           list: [
             { id: "main", workspace: realWorkspaceRoot },
@@ -742,10 +742,10 @@ describe("resolveAgentIdByWorkspacePath", () => {
 
 describe("resolveAgentIdsByWorkspacePath", () => {
   it("returns matching workspaces ordered by specificity", () => {
-    const workspaceRoot = `/tmp/NexisClaw-agent-scope-${Date.now()}-root`;
+    const workspaceRoot = `/tmp/FirstNexus-agent-scope-${Date.now()}-root`;
     const opsWorkspace = `${workspaceRoot}/projects/ops`;
     const opsDevWorkspace = `${opsWorkspace}/dev`;
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         list: [
           { id: "main", workspace: workspaceRoot },
@@ -765,7 +765,7 @@ describe("resolveAgentIdsByWorkspacePath", () => {
 
 describe("resolveAgentSkillsFilter", () => {
   it("inherits agents.defaults.skills when the agent omits skills", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           skills: ["github", "weather"],
@@ -778,7 +778,7 @@ describe("resolveAgentSkillsFilter", () => {
   });
 
   it("uses agents.list[].skills as a full replacement", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           skills: ["github", "weather"],
@@ -791,7 +791,7 @@ describe("resolveAgentSkillsFilter", () => {
   });
 
   it("keeps explicit empty agent skills as no skills", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           skills: ["github", "weather"],

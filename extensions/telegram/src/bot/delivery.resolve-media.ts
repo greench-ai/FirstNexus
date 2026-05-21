@@ -1,6 +1,6 @@
 import path from "node:path";
+import { root as fsRoot } from "FirstNexus/plugin-sdk/file-access-runtime";
 import { GrammyError } from "grammy";
-import { root as fsRoot } from "NexisClaw/plugin-sdk/file-access-runtime";
 import type { TelegramTransport } from "../fetch.js";
 import { cacheSticker, getCachedSticker } from "../sticker-cache.js";
 import {

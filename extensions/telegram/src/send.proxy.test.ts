@@ -26,10 +26,10 @@ const resolveTelegramApiBase = vi.hoisted(
   () => (apiRoot?: string) => apiRoot?.trim()?.replace(/\/+$/, "") || "https://api.telegram.org",
 );
 
-vi.mock("NexisClaw/plugin-sdk/plugin-config-runtime", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/plugin-config-runtime")>(
-    "NexisClaw/plugin-sdk/plugin-config-runtime",
-  );
+vi.mock("FirstNexus/plugin-sdk/plugin-config-runtime", async () => {
+  const actual = await vi.importActual<
+    typeof import("FirstNexus/plugin-sdk/plugin-config-runtime")
+  >("FirstNexus/plugin-sdk/plugin-config-runtime");
   return {
     ...actual,
     requireRuntimeConfig: (cfg: unknown) => cfg ?? loadConfig(),

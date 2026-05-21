@@ -19,7 +19,7 @@ describe("resolveBundledSkillsDir", () => {
   });
 
   it("returns NEXISCLAW_BUNDLED_SKILLS_DIR override when set", async () => {
-    const overrideDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-bundled-override-"));
+    const overrideDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-bundled-override-"));
     process.env.NEXISCLAW_BUNDLED_SKILLS_DIR = ` ${overrideDir} `;
     expect(resolveBundledSkillsDir()).toBe(overrideDir);
   });
@@ -27,8 +27,8 @@ describe("resolveBundledSkillsDir", () => {
   it("resolves bundled skills under a flattened dist layout", async () => {
     delete process.env.NEXISCLAW_BUNDLED_SKILLS_DIR;
 
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-bundled-"));
-    await fs.writeFile(path.join(root, "package.json"), JSON.stringify({ name: "NexisClaw" }));
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-bundled-"));
+    await fs.writeFile(path.join(root, "package.json"), JSON.stringify({ name: "FirstNexus" }));
 
     await writeSkill({
       dir: path.join(root, "skills", "peekaboo"),

@@ -1,11 +1,11 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { generateConversationLabel } from "NexisClaw/plugin-sdk/reply-dispatch-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { generateConversationLabel } from "FirstNexus/plugin-sdk/reply-dispatch-runtime";
 export { resolveAutoTopicLabelConfig } from "./auto-topic-label-config.js";
 
 export async function generateTelegramTopicLabel(params: {
   userMessage: string;
   prompt: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId?: string;
   agentDir?: string;
 }): Promise<string | null> {

@@ -91,7 +91,7 @@ function describeExecFailure(error) {
 }
 
 export function runInstalledWorkspaceBootstrapSmoke(params) {
-  const tempRoot = mkdtempSync(join(tmpdir(), "NexisClaw-workspace-bootstrap-smoke-"));
+  const tempRoot = mkdtempSync(join(tmpdir(), "FirstNexus-workspace-bootstrap-smoke-"));
   const homeDir = join(tempRoot, "home");
   const cwd = join(tempRoot, "cwd");
   mkdirSync(homeDir, { recursive: true });
@@ -103,7 +103,7 @@ export function runInstalledWorkspaceBootstrapSmoke(params) {
       execFileSync(
         process.execPath,
         [
-          join(params.packageRoot, "NexisClaw.mjs"),
+          join(params.packageRoot, "FirstNexus.mjs"),
           "agent",
           "--message",
           "workspace bootstrap smoke",
@@ -133,7 +133,7 @@ export function runInstalledWorkspaceBootstrapSmoke(params) {
       );
     }
 
-    const workspaceDir = join(homeDir, ".NexisClaw", "workspace");
+    const workspaceDir = join(homeDir, ".FirstNexus", "workspace");
     const missingFiles = collectMissingBootstrapWorkspaceFiles(workspaceDir);
     if (missingFiles.length > 0) {
       const outputDetails = combinedOutput.length > 0 ? `\nCommand output:\n${combinedOutput}` : "";

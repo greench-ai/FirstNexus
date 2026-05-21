@@ -1,13 +1,13 @@
 import type { ModelCatalogEntry } from "../../agents/model-catalog.js";
 import type { ModelAliasIndex } from "../../agents/model-selection.js";
 import type { SessionEntry } from "../../config/sessions.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { MsgContext } from "../templating.js";
 import type { InlineDirectives } from "./directive-handling.parse.js";
 import type { ElevatedLevel, ReasoningLevel, ThinkLevel, VerboseLevel } from "./directives.js";
 
 export type HandleDirectiveOnlyCoreParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   directives: InlineDirectives;
   sessionEntry: SessionEntry;
   sessionStore: Record<string, SessionEntry>;
@@ -53,7 +53,7 @@ export type ApplyInlineDirectivesFastLaneParams = HandleDirectiveOnlyCoreParams 
   workspaceDir?: string;
   agentId?: string;
   isGroup: boolean;
-  agentCfg?: NonNullable<NexisClawConfig["agents"]>["defaults"];
+  agentCfg?: NonNullable<FirstNexusConfig["agents"]>["defaults"];
   modelState: {
     resolveDefaultThinkingLevel: () => Promise<ThinkLevel | undefined>;
     resolveThinkingCatalog: () => Promise<ModelCatalogEntry[] | undefined>;

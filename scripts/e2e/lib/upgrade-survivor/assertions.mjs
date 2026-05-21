@@ -112,7 +112,7 @@ function seedState() {
       write(path.join(workspace, fileName), contents);
     }
   }
-  writeJson(path.join(workspace, ".NexisClaw", "workspace-state.json"), {
+  writeJson(path.join(workspace, ".FirstNexus", "workspace-state.json"), {
     version: 1,
     setupCompletedAt: "2026-04-01T00:00:00.000Z",
   });
@@ -124,7 +124,7 @@ function seedState() {
 
   const runtimeRoot = path.join(stateDir, "plugin-runtime-deps");
   for (const plugin of ["discord", "telegram", "whatsapp"]) {
-    writeJson(path.join(runtimeRoot, plugin, ".NexisClaw-runtime-deps-stamp.json"), {
+    writeJson(path.join(runtimeRoot, plugin, ".FirstNexus-runtime-deps-stamp.json"), {
       version: 0,
       plugin,
       stale: true,
@@ -133,7 +133,7 @@ function seedState() {
       path.join(
         runtimeRoot,
         plugin,
-        ".NexisClaw-runtime-deps-copy-stale",
+        ".FirstNexus-runtime-deps-copy-stale",
         "node_modules",
         "stale-sentinel",
         "package.json",
@@ -147,8 +147,8 @@ function seedState() {
       writeJson(
         path.join(
           runtimeRoot,
-          `NexisClaw-${version}-${plugin}`,
-          ".NexisClaw-runtime-deps-stamp.json",
+          `FirstNexus-${version}-${plugin}`,
+          ".FirstNexus-runtime-deps-stamp.json",
         ),
         {
           packageVersion: version,
@@ -159,7 +159,7 @@ function seedState() {
       write(
         path.join(
           runtimeRoot,
-          `NexisClaw-${version}-${plugin}`,
+          `FirstNexus-${version}-${plugin}`,
           "node_modules",
           "stale-sentinel",
           "package.json",
@@ -320,7 +320,7 @@ function assertConfigSurvived() {
 
   if (hasCoverage(coverage) && acceptsIntent(coverage, "logging")) {
     assert(
-      config.logging?.file === "~/NexisClaw-upgrade-survivor/gateway.jsonl",
+      config.logging?.file === "~/FirstNexus-upgrade-survivor/gateway.jsonl",
       "logging.file tilde path changed",
     );
   }
@@ -357,7 +357,7 @@ function assertStateSurvived() {
     }
   }
   if (scenario === "stale-source-plugin-shadow") {
-    const staleRoot = path.join(stateDir, "extensions", "opik-NexisClaw");
+    const staleRoot = path.join(stateDir, "extensions", "opik-FirstNexus");
     assert(
       fs.existsSync(path.join(staleRoot, "src", "index.ts")),
       "source-only plugin shadow fixture missing",
@@ -370,7 +370,7 @@ function assertStateSurvived() {
     const version = process.env.NEXISCLAW_UPGRADE_SURVIVOR_BASELINE_VERSION || "2026.4.24";
     const runtimeRoot = path.join(stateDir, "plugin-runtime-deps");
     const staleVersionedRoots = fs.existsSync(runtimeRoot)
-      ? fs.readdirSync(runtimeRoot).filter((entry) => entry.startsWith(`NexisClaw-${version}-`))
+      ? fs.readdirSync(runtimeRoot).filter((entry) => entry.startsWith(`FirstNexus-${version}-`))
       : [];
     assert(
       staleVersionedRoots.length === 0,
@@ -435,11 +435,11 @@ function assertConfiguredPluginInstalls() {
   const records = index.installRecords ?? {};
   assertOptionalConfiguredPluginIndex(records, index.plugins ?? [], {
     bundled: true,
-    packageName: "@NexisClaw/matrix",
+    packageName: "@FirstNexus/matrix",
     pluginId: "matrix",
   });
   assertOptionalConfiguredPluginIndex(records, index.plugins ?? [], {
-    packageName: "@NexisClaw/brave-plugin",
+    packageName: "@FirstNexus/brave-plugin",
     pluginId: "brave",
   });
   assert(!records.telegram, "internal telegram plugin should not be installed externally");

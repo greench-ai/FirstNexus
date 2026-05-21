@@ -1,7 +1,7 @@
-import { normalizeOptionalLowercaseString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { normalizeOptionalLowercaseString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   dispatchReplyFromConfigWithSettledDispatcher,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../runtime-api.js";
 import type { StoredConversationReference } from "./conversation-store.js";
 import { formatUnknownError } from "./errors.js";
@@ -54,7 +54,7 @@ export function buildFeedbackEvent(params: {
 }
 
 type RunFeedbackReflectionParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   adapter: MSTeamsAdapter;
   appId: string;
   conversationRef: StoredConversationReference;
@@ -68,7 +68,7 @@ type RunFeedbackReflectionParams = {
 };
 
 function buildReflectionContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   conversationId: string;
   sessionKey: string;
   reflectionPrompt: string;
@@ -106,7 +106,7 @@ function buildReflectionContext(params: {
 }
 
 function createReflectionCaptureDispatcher(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   agentId: string;
   log: MSTeamsMonitorLogger;
 }) {

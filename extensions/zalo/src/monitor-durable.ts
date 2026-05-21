@@ -1,6 +1,6 @@
-import type { MarkdownTableMode } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolveSendableOutboundReplyParts } from "NexisClaw/plugin-sdk/reply-payload";
-import type { OutboundReplyPayload } from "NexisClaw/plugin-sdk/reply-payload";
+import type { MarkdownTableMode } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolveSendableOutboundReplyParts } from "FirstNexus/plugin-sdk/reply-payload";
+import type { OutboundReplyPayload } from "FirstNexus/plugin-sdk/reply-payload";
 
 export type ZaloDurableReplyOptions = {
   to: string;

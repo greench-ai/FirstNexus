@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import type { PluginSlotsConfig } from "../config/types.plugins.js";
 import type { PluginKind } from "./plugin-kind.types.js";
 
@@ -57,13 +57,13 @@ export function defaultSlotIdForKey(slotKey: PluginSlotKey): string {
 }
 
 export type SlotSelectionResult = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   warnings: string[];
   changed: boolean;
 };
 
 export function applyExclusiveSlotSelection(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   selectedId: string;
   selectedKind?: PluginKind | PluginKind[];
   registry?: { plugins: SlotPluginRecord[] };

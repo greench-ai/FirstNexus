@@ -1,5 +1,5 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { PluginRuntime } from "NexisClaw/plugin-sdk/core";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { PluginRuntime } from "FirstNexus/plugin-sdk/core";
 import type { GatewayAccount } from "../engine/types.js";
 import type { ResolvedQQBotAccount } from "../types.js";
 
@@ -18,11 +18,11 @@ export function toGatewayAccount(account: ResolvedQQBotAccount): GatewayAccount 
 }
 
 /**
- * Persist NexisClaw config through the injected plugin runtime (typed entry point).
+ * Persist FirstNexus config through the injected plugin runtime (typed entry point).
  */
-export async function writeNexisClawConfigThroughRuntime(
+export async function writeFirstNexusConfigThroughRuntime(
   runtime: PluginRuntime,
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
 ): Promise<void> {
   await runtime.config.replaceConfigFile({
     nextConfig: cfg,

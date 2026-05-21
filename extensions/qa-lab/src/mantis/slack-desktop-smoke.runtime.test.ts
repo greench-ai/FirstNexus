@@ -137,7 +137,7 @@ describe("mantis Slack desktop smoke runtime", () => {
     expect(remoteScript).toContain('sudo apt-get update -y >>"$out/apt.log" 2>&1 || true');
     expect(remoteScript).toContain("slack-desktop-smoke.mp4");
     expect(remoteScript).not.toContain("-video_size");
-    expect(remoteScript).toContain("NexisClaw qa slack");
+    expect(remoteScript).toContain("FirstNexus qa slack");
     expect(remoteScript).toContain("--scenario 'slack-canary'");
     expect(remoteScript).toContain("NEXISCLAW_MANTIS_SLACK_BROWSER_PROFILE_DIR");
     const rsyncArgs = commands
@@ -145,10 +145,10 @@ describe("mantis Slack desktop smoke runtime", () => {
       .flatMap((entry) => entry.args);
     expect(rsyncArgs).not.toContain("--delete");
     expect(rsyncArgs).toContain(
-      "crabbox@203.0.113.10:/tmp/NexisClaw-mantis-slack-desktop-2026-05-04T13-00-00-000Z/",
+      "crabbox@203.0.113.10:/tmp/FirstNexus-mantis-slack-desktop-2026-05-04T13-00-00-000Z/",
     );
     expect(rsyncArgs).toContain(
-      "crabbox@203.0.113.10:/tmp/NexisClaw-mantis-slack-desktop-2026-05-04T13-00-00-000Z/slack-qa/",
+      "crabbox@203.0.113.10:/tmp/FirstNexus-mantis-slack-desktop-2026-05-04T13-00-00-000Z/slack-qa/",
     );
     await expect(fs.readFile(result.screenshotPath ?? "", "utf8")).resolves.toBe("png");
     await expect(fs.readFile(result.videoPath ?? "", "utf8")).resolves.toBe("mp4");
@@ -338,8 +338,8 @@ describe("mantis Slack desktop smoke runtime", () => {
     expect(runCommand?.env?.NEXISCLAW_QA_SLACK_SUT_BOT_TOKEN).toBe("xoxb-leased");
     const remoteScript = runCommand?.args.at(-1);
     expect(remoteScript).toContain("setup_gateway=1");
-    expect(remoteScript).toContain("NexisClaw gateway run");
-    expect(remoteScript).toContain('</dev/null >"$out/NexisClaw-gateway.log"');
+    expect(remoteScript).toContain("FirstNexus gateway run");
+    expect(remoteScript).toContain('</dev/null >"$out/FirstNexus-gateway.log"');
     expect(remoteScript).toContain('kill -0 "$gateway_pid"');
     expect(remoteScript).toContain('disown "$gateway_pid"');
     expect(fetchMock.mock.calls.map(([url]) => describeFetchInput(url))).toEqual([

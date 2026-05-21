@@ -16,7 +16,7 @@ afterEach(() => {
 });
 
 function makeTempDir() {
-  return makeTrackedTempDir("NexisClaw-installed-manifest-registry", tempDirs);
+  return makeTrackedTempDir("FirstNexus-installed-manifest-registry", tempDirs);
 }
 
 function writePlugin(rootDir: string, pluginId: string, modelPrefix: string) {
@@ -26,7 +26,7 @@ function writePlugin(rootDir: string, pluginId: string, modelPrefix: string) {
     "utf8",
   );
   fs.writeFileSync(
-    path.join(rootDir, "NexisClaw.plugin.json"),
+    path.join(rootDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: pluginId,
       configSchema: { type: "object" },
@@ -51,7 +51,7 @@ function createIndex(rootDir: string): InstalledPluginIndex {
     plugins: [
       {
         pluginId: "installed",
-        manifestPath: path.join(rootDir, "NexisClaw.plugin.json"),
+        manifestPath: path.join(rootDir, "FirstNexus.plugin.json"),
         manifestHash: "manifest-hash",
         source: path.join(rootDir, "index.ts"),
         rootDir,
@@ -73,7 +73,7 @@ function createIndex(rootDir: string): InstalledPluginIndex {
 describe("loadPluginManifestRegistryForInstalledIndex", () => {
   it("reconstructs installed-index manifest registries when manifest files change", () => {
     const rootDir = makeTempDir();
-    const manifestPath = path.join(rootDir, "NexisClaw.plugin.json");
+    const manifestPath = path.join(rootDir, "FirstNexus.plugin.json");
     writePlugin(rootDir, "installed", "installed-");
     const index = createIndex(rootDir);
     const env = {
@@ -176,7 +176,7 @@ describe("loadPluginManifestRegistryForInstalledIndex", () => {
     fs.writeFileSync(
       path.join(rootDir, "package.json"),
       JSON.stringify({
-        NexisClaw: {
+        FirstNexus: {
           channel: {
             id: "installed",
             label: "Installed",

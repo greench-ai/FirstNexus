@@ -1,14 +1,14 @@
 import path from "node:path";
 import { MANIFEST_KEY } from "../../compat/legacy-names.js";
+import { resolveFirstNexusPackageRootSync } from "../../infra/FirstNexus-root.js";
 import { tryReadJsonSync } from "../../infra/json-files.js";
 import { isPrereleaseSemverVersion, parseRegistryNpmSpec } from "../../infra/npm-registry-spec.js";
-import { resolveNexisClawPackageRootSync } from "../../infra/NexisClaw-root.js";
 import { listChannelCatalogEntries } from "../../plugins/channel-catalog-registry.js";
 import {
   describePluginInstallSource,
   type PluginInstallSourceInfo,
 } from "../../plugins/install-source-info.js";
-import type { NexisClawPackageManifest } from "../../plugins/manifest.js";
+import type { FirstNexusPackageManifest } from "../../plugins/manifest.js";
 import type { PluginPackageChannel, PluginPackageInstall } from "../../plugins/manifest.js";
 import { listOfficialExternalChannelCatalogEntries } from "../../plugins/official-external-plugin-catalog.js";
 import type { PluginOrigin } from "../../plugins/plugin-origin.types.js";
@@ -68,7 +68,7 @@ type ExternalCatalogEntry = {
   name?: string;
   version?: string;
   description?: string;
-} & Partial<Record<ManifestKey, NexisClawPackageManifest>>;
+} & Partial<Record<ManifestKey, FirstNexusPackageManifest>>;
 
 const ENV_CATALOG_PATHS = ["NEXISCLAW_PLUGIN_CATALOG_PATHS", "NEXISCLAW_MPM_CATALOG_PATHS"];
 const OFFICIAL_CHANNEL_CATALOG_RELATIVE_PATH = path.join("dist", "channel-catalog.json");
@@ -172,8 +172,8 @@ function resolveOfficialCatalogPaths(options: CatalogOptions): string[] {
   }
 
   const packageRoots = [
-    resolveNexisClawPackageRootSync({ cwd: process.cwd() }),
-    resolveNexisClawPackageRootSync({ moduleUrl: import.meta.url }),
+    resolveFirstNexusPackageRootSync({ cwd: process.cwd() }),
+    resolveFirstNexusPackageRootSync({ moduleUrl: import.meta.url }),
   ].filter((entry, index, all): entry is string => Boolean(entry) && all.indexOf(entry) === index);
 
   const candidates = packageRoots.map((packageRoot) =>
@@ -202,7 +202,7 @@ function loadOfficialCatalogEntries(options: CatalogOptions): ChannelPluginCatal
 }
 
 function toChannelMeta(params: {
-  channel: NonNullable<NexisClawPackageManifest["channel"]>;
+  channel: NonNullable<FirstNexusPackageManifest["channel"]>;
   id: string;
 }): ChannelMeta | null {
   const label = params.channel.label?.trim();

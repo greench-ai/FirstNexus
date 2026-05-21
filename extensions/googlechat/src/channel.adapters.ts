@@ -1,25 +1,25 @@
-import { adaptScopedAccountAccessor } from "NexisClaw/plugin-sdk/channel-config-helpers";
+import { adaptScopedAccountAccessor } from "FirstNexus/plugin-sdk/channel-config-helpers";
 import {
   createMessageReceiptFromOutboundResults,
   defineChannelMessageAdapter,
   type MessageReceiptPartKind,
-} from "NexisClaw/plugin-sdk/channel-message";
+} from "FirstNexus/plugin-sdk/channel-message";
 import {
   composeAccountWarningCollectors,
   createAllowlistProviderOpenWarningCollector,
-} from "NexisClaw/plugin-sdk/channel-policy";
+} from "FirstNexus/plugin-sdk/channel-policy";
 import {
   createChannelDirectoryAdapter,
   listResolvedDirectoryGroupEntriesFromMapKeys,
   listResolvedDirectoryUserEntriesFromAllowFrom,
-} from "NexisClaw/plugin-sdk/directory-runtime";
-import { createLazyRuntimeNamedExport } from "NexisClaw/plugin-sdk/lazy-runtime";
-import type { OutboundMediaLoadOptions } from "NexisClaw/plugin-sdk/outbound-media";
-import { sanitizeForPlainText } from "NexisClaw/plugin-sdk/outbound-runtime";
+} from "FirstNexus/plugin-sdk/directory-runtime";
+import { createLazyRuntimeNamedExport } from "FirstNexus/plugin-sdk/lazy-runtime";
+import type { OutboundMediaLoadOptions } from "FirstNexus/plugin-sdk/outbound-media";
+import { sanitizeForPlainText } from "FirstNexus/plugin-sdk/outbound-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   type ResolvedGoogleChatAccount,
   chunkTextForOutbound,
@@ -32,7 +32,7 @@ import {
   resolveChannelMediaMaxBytes,
   resolveGoogleChatAccount,
   resolveGoogleChatOutboundSpace,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "./channel.deps.runtime.js";
 import { resolveGoogleChatGroupRequireMention } from "./group-policy.js";
 
@@ -87,7 +87,7 @@ const collectGoogleChatGroupPolicyWarnings =
 const collectGoogleChatSecurityWarnings = composeAccountWarningCollectors<
   ResolvedGoogleChatAccount,
   {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     account: ResolvedGoogleChatAccount;
   }
 >(
@@ -130,7 +130,7 @@ export const googlechatSecurityAdapter = {
 
 export const googlechatThreadingAdapter = {
   scopedAccountReplyToMode: {
-    resolveAccount: (cfg: NexisClawConfig, accountId?: string | null) =>
+    resolveAccount: (cfg: FirstNexusConfig, accountId?: string | null) =>
       resolveGoogleChatAccount({ cfg, accountId }),
     resolveReplyToMode: (account: ResolvedGoogleChatAccount, _chatType?: string | null) =>
       account.config.replyToMode,
@@ -148,7 +148,7 @@ export const googlechatPairingTextAdapter = {
     message,
     accountId,
   }: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     id: string;
     message: string;
     accountId?: string | null;
@@ -206,7 +206,7 @@ export const googlechatOutboundAdapter = {
       replyToId,
       threadId,
     }: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       to: string;
       text: string;
       accountId?: string | null;
@@ -246,7 +246,7 @@ export const googlechatOutboundAdapter = {
       replyToId,
       threadId,
     }: {
-      cfg: NexisClawConfig;
+      cfg: FirstNexusConfig;
       to: string;
       text?: string;
       mediaUrl?: string;

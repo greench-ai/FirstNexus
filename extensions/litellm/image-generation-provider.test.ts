@@ -28,11 +28,11 @@ const {
   sanitizeConfiguredModelProviderRequestMock: vi.fn((request) => request),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-auth-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-auth-runtime", () => ({
   resolveApiKeyForProvider: resolveApiKeyForProviderMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/provider-http", () => ({
+vi.mock("FirstNexus/plugin-sdk/provider-http", () => ({
   assertOkOrThrowHttpError: assertOkOrThrowHttpErrorMock,
   createProviderOperationDeadline: createProviderOperationDeadlineMock,
   postJsonRequest: postJsonRequestMock,
@@ -43,8 +43,8 @@ vi.mock("NexisClaw/plugin-sdk/provider-http", () => ({
 }));
 
 afterAll(() => {
-  vi.doUnmock("NexisClaw/plugin-sdk/provider-auth-runtime");
-  vi.doUnmock("NexisClaw/plugin-sdk/provider-http");
+  vi.doUnmock("FirstNexus/plugin-sdk/provider-auth-runtime");
+  vi.doUnmock("FirstNexus/plugin-sdk/provider-http");
   vi.resetModules();
 });
 

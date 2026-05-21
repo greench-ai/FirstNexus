@@ -1,5 +1,5 @@
 import { withTempWorkspace, type TempWorkspace } from "../infra/private-temp-workspace.js";
-import { resolvePreferredNexisClawTmpDir } from "../infra/tmp-NexisClaw-dir.js";
+import { resolvePreferredFirstNexusTmpDir } from "../infra/tmp-FirstNexus-dir.js";
 import { runExec } from "../process/exec.js";
 import { createLazyPromiseLoader } from "../shared/lazy-promise.js";
 
@@ -358,7 +358,7 @@ function readJpegExifOrientation(buffer: Buffer): number | null {
 
 async function withImageTemp<T>(fn: (workspace: TempWorkspace) => Promise<T>): Promise<T> {
   return await withTempWorkspace(
-    { rootDir: resolvePreferredNexisClawTmpDir(), prefix: "NexisClaw-img-" },
+    { rootDir: resolvePreferredFirstNexusTmpDir(), prefix: "FirstNexus-img-" },
     fn,
   );
 }

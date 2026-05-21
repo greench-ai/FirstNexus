@@ -2,8 +2,8 @@ import path from "node:path";
 import {
   replaceManagedMarkdownBlock,
   withTrailingNewline,
-} from "NexisClaw/plugin-sdk/memory-host-markdown";
-import { root as fsRoot } from "NexisClaw/plugin-sdk/security-runtime";
+} from "FirstNexus/plugin-sdk/memory-host-markdown";
+import { root as fsRoot } from "FirstNexus/plugin-sdk/security-runtime";
 import { compileMemoryWikiVault, type CompileMemoryWikiResult } from "./compile.js";
 import type { ResolvedMemoryWikiConfig } from "./config.js";
 import {
@@ -21,10 +21,10 @@ import {
 } from "./query.js";
 import { initializeMemoryWikiVault } from "./vault.js";
 
-const GENERATED_START = "<!-- NexisClaw:wiki:generated:start -->";
-const GENERATED_END = "<!-- NexisClaw:wiki:generated:end -->";
-const HUMAN_START = "<!-- NexisClaw:human:start -->";
-const HUMAN_END = "<!-- NexisClaw:human:end -->";
+const GENERATED_START = "<!-- FirstNexus:wiki:generated:start -->";
+const GENERATED_END = "<!-- FirstNexus:wiki:generated:end -->";
+const HUMAN_START = "<!-- FirstNexus:human:start -->";
+const HUMAN_END = "<!-- FirstNexus:human:end -->";
 
 type CreateSynthesisMemoryWikiMutation = {
   op: "create_synthesis";

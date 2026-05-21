@@ -43,7 +43,7 @@ export default defineConfig(() => {
       {
         name: "control-ui-dev-stubs",
         configureServer(server) {
-          server.middlewares.use("/__NexisClaw/control-ui-config.json", (_req, res) => {
+          server.middlewares.use("/__FirstNexus/control-ui-config.json", (_req, res) => {
             res.setHeader("Content-Type", "application/json");
             res.end(
               JSON.stringify({

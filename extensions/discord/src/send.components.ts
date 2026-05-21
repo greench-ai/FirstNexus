@@ -1,9 +1,9 @@
 import { ChannelType } from "discord-api-types/v10";
-import { recordChannelActivity } from "NexisClaw/plugin-sdk/channel-activity-runtime";
-import type { MarkdownTableMode, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { OutboundMediaAccess } from "NexisClaw/plugin-sdk/media-runtime";
-import { requireRuntimeConfig } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import type { ChunkMode } from "NexisClaw/plugin-sdk/reply-chunking";
+import { recordChannelActivity } from "FirstNexus/plugin-sdk/channel-activity-runtime";
+import type { MarkdownTableMode, FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type { OutboundMediaAccess } from "FirstNexus/plugin-sdk/media-runtime";
+import { requireRuntimeConfig } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import type { ChunkMode } from "FirstNexus/plugin-sdk/reply-chunking";
 import { resolveDiscordAccount } from "./accounts.js";
 import { registerDiscordComponentEntries } from "./components-registry.js";
 import {
@@ -147,7 +147,7 @@ function collapseClassicComponentText(spec: DiscordComponentMessageSpec): string
 }
 
 type DiscordComponentSendOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string;
   token?: string;
   rest?: RequestClient;

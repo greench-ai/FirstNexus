@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 export type PluginLruCacheResult<T> = { hit: true; value: T } | { hit: false };
 
@@ -66,16 +66,16 @@ export class PluginLruCache<T> {
   }
 }
 
-export type ConfigScopedRuntimeCache<T> = WeakMap<NexisClawConfig, Map<string, T>>;
+export type ConfigScopedRuntimeCache<T> = WeakMap<FirstNexusConfig, Map<string, T>>;
 
 export type ConfigScopedPromiseLoader<T> = {
-  load(config?: NexisClawConfig): Promise<T>;
+  load(config?: FirstNexusConfig): Promise<T>;
   clear(): void;
 };
 
 export function resolveConfigScopedRuntimeCacheValue<T>(params: {
   cache: ConfigScopedRuntimeCache<T>;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   key: string;
   load: () => T;
 }): T {
@@ -100,12 +100,12 @@ export function createPluginCacheKey(parts: readonly unknown[]): string {
 }
 
 export function createConfigScopedPromiseLoader<T>(
-  load: (config?: NexisClawConfig) => T | Promise<T>,
+  load: (config?: FirstNexusConfig) => T | Promise<T>,
 ): ConfigScopedPromiseLoader<T> {
   let defaultPromise: Promise<T> | undefined;
-  let promisesByConfig = new WeakMap<NexisClawConfig, Promise<T>>();
+  let promisesByConfig = new WeakMap<FirstNexusConfig, Promise<T>>();
 
-  const createPromise = (config?: NexisClawConfig): Promise<T> => {
+  const createPromise = (config?: FirstNexusConfig): Promise<T> => {
     const promise = Promise.resolve().then(() => load(config));
     void promise.catch(() => {
       if (config) {
@@ -118,7 +118,7 @@ export function createConfigScopedPromiseLoader<T>(
   };
 
   return {
-    async load(config?: NexisClawConfig): Promise<T> {
+    async load(config?: FirstNexusConfig): Promise<T> {
       if (!config) {
         defaultPromise ??= createPromise();
         return await defaultPromise;
@@ -133,7 +133,7 @@ export function createConfigScopedPromiseLoader<T>(
     },
     clear(): void {
       defaultPromise = undefined;
-      promisesByConfig = new WeakMap<NexisClawConfig, Promise<T>>();
+      promisesByConfig = new WeakMap<FirstNexusConfig, Promise<T>>();
     },
   };
 }

@@ -11,11 +11,11 @@ describe("prepareCliBundleMcpConfig codex", () => {
         args: ["exec", "--json"],
         resumeArgs: ["exec", "resume", "{sessionId}"],
       },
-      workspaceDir: "/tmp/NexisClaw-bundle-mcp-codex",
+      workspaceDir: "/tmp/FirstNexus-bundle-mcp-codex",
       config: { plugins: { enabled: false } },
       additionalConfig: {
         mcpServers: {
-          NexisClaw: {
+          FirstNexus: {
             type: "http",
             url: "http://127.0.0.1:23119/mcp",
             headers: {
@@ -31,14 +31,14 @@ describe("prepareCliBundleMcpConfig codex", () => {
       "exec",
       "--json",
       "-c",
-      'mcp_servers={ NexisClaw = { url = "http://127.0.0.1:23119/mcp", default_tools_approval_mode = "approve", bearer_token_env_var = "NEXISCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "NEXISCLAW_MCP_SESSION_KEY" } } }',
+      'mcp_servers={ FirstNexus = { url = "http://127.0.0.1:23119/mcp", default_tools_approval_mode = "approve", bearer_token_env_var = "NEXISCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "NEXISCLAW_MCP_SESSION_KEY" } } }',
     ]);
     expect(prepared.backend.resumeArgs).toEqual([
       "exec",
       "resume",
       "{sessionId}",
       "-c",
-      'mcp_servers={ NexisClaw = { url = "http://127.0.0.1:23119/mcp", default_tools_approval_mode = "approve", bearer_token_env_var = "NEXISCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "NEXISCLAW_MCP_SESSION_KEY" } } }',
+      'mcp_servers={ FirstNexus = { url = "http://127.0.0.1:23119/mcp", default_tools_approval_mode = "approve", bearer_token_env_var = "NEXISCLAW_MCP_TOKEN", env_http_headers = { x-session-key = "NEXISCLAW_MCP_SESSION_KEY" } } }',
     ]);
     expect(prepared.cleanup).toBeUndefined();
   });

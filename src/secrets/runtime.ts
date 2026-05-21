@@ -16,7 +16,7 @@ import {
   clearRuntimeConfigSnapshot,
   setRuntimeConfigSnapshotRefreshHandler,
   setRuntimeConfigSnapshot,
-  type NexisClawConfig,
+  type FirstNexusConfig,
 } from "../config/config.js";
 import { coerceSecretRef } from "../config/types.secrets.js";
 import type { PluginOrigin } from "../plugins/plugin-origin.types.js";
@@ -32,8 +32,8 @@ import type { RuntimeWebToolsMetadata } from "./runtime-web-tools.js";
 export type { SecretResolverWarning } from "./runtime-shared.js";
 
 export type PreparedSecretsRuntimeSnapshot = {
-  sourceConfig: NexisClawConfig;
-  config: NexisClawConfig;
+  sourceConfig: FirstNexusConfig;
+  config: FirstNexusConfig;
   authStores: Array<{ agentDir: string; store: AuthProfileStore }>;
   warnings: SecretResolverWarning[];
   webTools: RuntimeWebToolsMetadata;
@@ -110,7 +110,7 @@ function clearActiveSecretsRuntimeState(): void {
 }
 
 function collectCandidateAgentDirs(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): string[] {
   const dirs = new Set<string>();
@@ -122,7 +122,7 @@ function collectCandidateAgentDirs(
 }
 
 function resolveRefreshAgentDirs(
-  config: NexisClawConfig,
+  config: FirstNexusConfig,
   context: SecretsRuntimeRefreshContext,
 ): string[] {
   const configDerived = collectCandidateAgentDirs(config, context.env);
@@ -133,7 +133,7 @@ function resolveRefreshAgentDirs(
 }
 
 async function resolveLoadablePluginOrigins(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
 }): Promise<ReadonlyMap<string, PluginOrigin>> {
   const workspaceDir = resolveAgentWorkspaceDir(
@@ -166,7 +166,7 @@ function mergeSecretsRuntimeEnv(
   return merged;
 }
 
-function hasConfiguredPluginEntries(config: NexisClawConfig): boolean {
+function hasConfiguredPluginEntries(config: FirstNexusConfig): boolean {
   const entries = config.plugins?.entries;
   return (
     !!entries &&
@@ -176,7 +176,7 @@ function hasConfiguredPluginEntries(config: NexisClawConfig): boolean {
   );
 }
 
-function hasConfiguredChannelEntries(config: NexisClawConfig): boolean {
+function hasConfiguredChannelEntries(config: FirstNexusConfig): boolean {
   const channels = config.channels;
   return (
     !!channels &&
@@ -246,7 +246,7 @@ function hasActiveRuntimeWebFetchProviderSurface(
   return hasCredentialBearingWebFetchValue(fetchConfig, defaults);
 }
 
-function hasRuntimeWebToolConfigSurface(config: NexisClawConfig): boolean {
+function hasRuntimeWebToolConfigSurface(config: FirstNexusConfig): boolean {
   const web = config.tools?.web;
   const defaults = config.secrets?.defaults;
   const fetchExplicitlyDisabled =
@@ -309,7 +309,7 @@ function hasSecretRefCandidate(
 }
 
 function canUseSecretsRuntimeFastPath(params: {
-  sourceConfig: NexisClawConfig;
+  sourceConfig: FirstNexusConfig;
   authStores: Array<{ agentDir: string; store: AuthProfileStore }>;
 }): boolean {
   if (hasRuntimeWebToolConfigSurface(params.sourceConfig)) {
@@ -323,7 +323,7 @@ function canUseSecretsRuntimeFastPath(params: {
 }
 
 export async function prepareSecretsRuntimeSnapshot(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   agentDirs?: string[];
   includeAuthStoreRefs?: boolean;

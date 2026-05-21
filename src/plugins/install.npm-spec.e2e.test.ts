@@ -40,7 +40,7 @@ afterEach(async () => {
 });
 
 async function makeTempDir(label: string): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), `NexisClaw-${label}-`));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), `FirstNexus-${label}-`));
   tempDirs.push(dir);
   return dir;
 }
@@ -68,7 +68,7 @@ async function packPlugin(params: {
         name: params.packageName,
         version: params.version,
         type: "module",
-        NexisClaw: { extensions: ["./dist/index.js"] },
+        FirstNexus: { extensions: ["./dist/index.js"] },
         ...(params.peerDependencies
           ? {
               peerDependencies: params.peerDependencies,
@@ -82,7 +82,7 @@ async function packPlugin(params: {
     "utf8",
   );
   await fs.writeFile(
-    path.join(packageDir, "NexisClaw.plugin.json"),
+    path.join(packageDir, "FirstNexus.plugin.json"),
     `${JSON.stringify(
       {
         id: params.pluginId,
@@ -273,14 +273,14 @@ async function startMutableRegistry(params: {
 }
 
 describe("installPluginFromNpmSpec e2e", () => {
-  it("scrubs root NexisClaw materialized by required npm peers", async () => {
+  it("scrubs root FirstNexus materialized by required npm peers", async () => {
     const rootDir = await makeTempDir("npm-plugin-required-peer-e2e");
     const npmRoot = path.join(rootDir, "managed-npm");
     const packageName = `required-peer-plugin-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
     const versions = [
       await packPlugin({
         packageName,
-        peerDependencies: { NexisClaw: ">=2026.0.0" },
+        peerDependencies: { FirstNexus: ">=2026.0.0" },
         peerDependenciesMeta: {},
         pluginId: packageName,
         version: "1.0.0",
@@ -289,15 +289,15 @@ describe("installPluginFromNpmSpec e2e", () => {
     ];
     const openClawVersions = [
       await packPlugin({
-        packageName: "NexisClaw",
-        pluginId: "registry-NexisClaw-copy",
+        packageName: "FirstNexus",
+        pluginId: "registry-FirstNexus-copy",
         version: "2026.0.0",
         rootDir,
       }),
     ];
     const registry = await startStaticRegistry([
       { packageName, latest: "1.0.0", versions },
-      { packageName: "NexisClaw", latest: "2026.0.0", versions: openClawVersions },
+      { packageName: "FirstNexus", latest: "2026.0.0", versions: openClawVersions },
     ]);
     process.env.NPM_CONFIG_REGISTRY = registry;
     process.env.npm_config_registry = registry;
@@ -331,11 +331,11 @@ describe("installPluginFromNpmSpec e2e", () => {
     ) as {
       packages?: Record<string, unknown>;
     };
-    const rawNexisClawLockEntry = rawLock.packages?.["node_modules/NexisClaw"] as
+    const rawFirstNexusLockEntry = rawLock.packages?.["node_modules/FirstNexus"] as
       | { peer?: unknown; version?: unknown }
       | undefined;
-    expect(rawNexisClawLockEntry?.peer).toBe(true);
-    expect(rawNexisClawLockEntry?.version).toBe("2026.0.0");
+    expect(rawFirstNexusLockEntry?.peer).toBe(true);
+    expect(rawFirstNexusLockEntry?.version).toBe("2026.0.0");
 
     const result = await installPluginFromNpmSpec({
       spec: `${packageName}@1.0.0`,
@@ -350,14 +350,14 @@ describe("installPluginFromNpmSpec e2e", () => {
     const lock = JSON.parse(await fs.readFile(path.join(npmRoot, "package-lock.json"), "utf8")) as {
       packages?: Record<string, unknown>;
     };
-    expect(lock.packages?.["node_modules/NexisClaw"]).toBeUndefined();
-    await expect(fs.lstat(path.join(npmRoot, "node_modules", "NexisClaw"))).rejects.toHaveProperty(
+    expect(lock.packages?.["node_modules/FirstNexus"]).toBeUndefined();
+    await expect(fs.lstat(path.join(npmRoot, "node_modules", "FirstNexus"))).rejects.toHaveProperty(
       "code",
       "ENOENT",
     );
     await expect(
       fs
-        .lstat(path.join(result.targetDir, "node_modules", "NexisClaw"))
+        .lstat(path.join(result.targetDir, "node_modules", "FirstNexus"))
         .then((stat) => stat.isSymbolicLink()),
     ).resolves.toBe(true);
   });
@@ -374,8 +374,8 @@ describe("installPluginFromNpmSpec e2e", () => {
         versions: [
           await packPlugin({
             packageName: codexName,
-            peerDependencies: { NexisClaw: ">=2026.5.5-beta.2" },
-            peerDependenciesMeta: { NexisClaw: { optional: true } },
+            peerDependencies: { FirstNexus: ">=2026.5.5-beta.2" },
+            peerDependenciesMeta: { FirstNexus: { optional: true } },
             pluginId: codexName,
             version: "1.0.0",
             rootDir,
@@ -388,7 +388,7 @@ describe("installPluginFromNpmSpec e2e", () => {
         versions: [
           await packPlugin({
             packageName: opikName,
-            peerDependencies: { NexisClaw: ">=2026.3.2" },
+            peerDependencies: { FirstNexus: ">=2026.3.2" },
             peerDependenciesMeta: {},
             pluginId: opikName,
             version: "1.0.0",
@@ -397,12 +397,12 @@ describe("installPluginFromNpmSpec e2e", () => {
         ],
       },
       {
-        packageName: "NexisClaw",
+        packageName: "FirstNexus",
         latest: "2026.5.4",
         versions: [
           await packPlugin({
-            packageName: "NexisClaw",
-            pluginId: "registry-NexisClaw-copy",
+            packageName: "FirstNexus",
+            pluginId: "registry-FirstNexus-copy",
             version: "2026.5.4",
             rootDir,
           }),
@@ -449,24 +449,24 @@ describe("installPluginFromNpmSpec e2e", () => {
     const lock = JSON.parse(await fs.readFile(path.join(npmRoot, "package-lock.json"), "utf8")) as {
       packages?: Record<string, unknown>;
     };
-    expect(lock.packages?.["node_modules/NexisClaw"]).toBeUndefined();
-    await expect(fs.lstat(path.join(npmRoot, "node_modules", "NexisClaw"))).rejects.toHaveProperty(
+    expect(lock.packages?.["node_modules/FirstNexus"]).toBeUndefined();
+    await expect(fs.lstat(path.join(npmRoot, "node_modules", "FirstNexus"))).rejects.toHaveProperty(
       "code",
       "ENOENT",
     );
     await expect(
       fs
-        .lstat(path.join(npmRoot, "node_modules", codexName, "node_modules", "NexisClaw"))
+        .lstat(path.join(npmRoot, "node_modules", codexName, "node_modules", "FirstNexus"))
         .then((stat) => stat.isSymbolicLink()),
     ).resolves.toBe(true);
     await expect(
       fs
-        .lstat(path.join(npmRoot, "node_modules", opikName, "node_modules", "NexisClaw"))
+        .lstat(path.join(npmRoot, "node_modules", opikName, "node_modules", "FirstNexus"))
         .then((stat) => stat.isSymbolicLink()),
     ).resolves.toBe(true);
   });
 
-  it("relinks managed npm sibling NexisClaw peers after later plugin installs", async () => {
+  it("relinks managed npm sibling FirstNexus peers after later plugin installs", async () => {
     const rootDir = await makeTempDir("npm-plugin-peer-e2e");
     const npmRoot = path.join(rootDir, "managed-npm");
     const peerPackageName = `peer-plugin-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
@@ -474,7 +474,7 @@ describe("installPluginFromNpmSpec e2e", () => {
     const peerVersions = [
       await packPlugin({
         packageName: peerPackageName,
-        peerDependencies: { NexisClaw: ">=2026.0.0" },
+        peerDependencies: { FirstNexus: ">=2026.0.0" },
         pluginId: peerPackageName,
         version: "1.0.0",
         rootDir,
@@ -504,7 +504,7 @@ describe("installPluginFromNpmSpec e2e", () => {
     if (!first.ok) {
       throw new Error(first.error);
     }
-    const peerLink = path.join(first.targetDir, "node_modules", "NexisClaw");
+    const peerLink = path.join(first.targetDir, "node_modules", "FirstNexus");
     await expect(fs.lstat(peerLink).then((stat) => stat.isSymbolicLink())).resolves.toBe(true);
 
     const second = await installPluginFromNpmSpec({
@@ -521,11 +521,11 @@ describe("installPluginFromNpmSpec e2e", () => {
     const manifest = JSON.parse(await fs.readFile(path.join(npmRoot, "package.json"), "utf8")) as {
       dependencies?: Record<string, string>;
     };
-    expect(manifest.dependencies?.NexisClaw).toBeUndefined();
+    expect(manifest.dependencies?.FirstNexus).toBeUndefined();
     const lock = JSON.parse(await fs.readFile(path.join(npmRoot, "package-lock.json"), "utf8")) as {
       packages?: Record<string, unknown>;
     };
-    expect(lock.packages?.["node_modules/NexisClaw"]).toBeUndefined();
+    expect(lock.packages?.["node_modules/FirstNexus"]).toBeUndefined();
   });
 
   it("pins a mutable npm tag to the version resolved before install", async () => {

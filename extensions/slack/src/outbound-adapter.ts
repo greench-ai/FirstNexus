@@ -2,20 +2,20 @@ import {
   attachChannelToResult,
   type ChannelOutboundAdapter,
   createAttachedChannelResultAdapter,
-} from "NexisClaw/plugin-sdk/channel-send-result";
+} from "FirstNexus/plugin-sdk/channel-send-result";
 import {
   resolveInteractiveTextFallback,
   type InteractiveReply,
   type MessagePresentation,
-} from "NexisClaw/plugin-sdk/interactive-runtime";
-import type { OutboundIdentity } from "NexisClaw/plugin-sdk/outbound-runtime";
-import { resolveOutboundSendDep } from "NexisClaw/plugin-sdk/outbound-send-deps";
+} from "FirstNexus/plugin-sdk/interactive-runtime";
+import type { OutboundIdentity } from "FirstNexus/plugin-sdk/outbound-runtime";
+import { resolveOutboundSendDep } from "FirstNexus/plugin-sdk/outbound-send-deps";
 import {
   resolvePayloadMediaUrls,
   sendPayloadMediaSequenceAndFinalize,
   sendTextMediaPayload,
-} from "NexisClaw/plugin-sdk/reply-payload";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/reply-payload";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { parseSlackBlocksInput } from "./blocks-input.js";
 import {
   buildSlackInteractiveBlocks,

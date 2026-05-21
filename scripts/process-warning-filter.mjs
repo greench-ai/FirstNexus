@@ -1,4 +1,4 @@
-const warningFilterKey = Symbol.for("NexisClaw.warning-filter");
+const warningFilterKey = Symbol.for("FirstNexus.warning-filter");
 
 export function installProcessWarningFilter() {
   if (globalThis[warningFilterKey]?.installed) {

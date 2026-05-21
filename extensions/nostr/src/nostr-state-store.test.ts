@@ -14,7 +14,7 @@ import { setNostrRuntime } from "./runtime.js";
 
 async function withTempStateDir<T>(fn: (dir: string) => Promise<T>) {
   const previous = process.env.NEXISCLAW_STATE_DIR;
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-nostr-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-nostr-"));
   process.env.NEXISCLAW_STATE_DIR = dir;
   setNostrRuntime({
     state: {
@@ -25,7 +25,7 @@ async function withTempStateDir<T>(fn: (dir: string) => Promise<T>) {
           return override;
         }
         const resolveHome = homedir ?? os.homedir;
-        return path.join(resolveHome(), ".NexisClaw");
+        return path.join(resolveHome(), ".FirstNexus");
       },
     },
   } as PluginRuntime);

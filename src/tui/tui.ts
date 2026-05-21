@@ -13,7 +13,7 @@ import {
   TUI,
 } from "@earendil-works/pi-tui";
 import { resolveAgentIdByWorkspacePath, resolveDefaultAgentId } from "../agents/agent-scope.js";
-import { getRuntimeConfig, type NexisClawConfig } from "../config/config.js";
+import { getRuntimeConfig, type FirstNexusConfig } from "../config/config.js";
 import { registerUncaughtExceptionHandler } from "../infra/unhandled-rejections.js";
 import { setConsoleSubsystemFilter } from "../logging/console.js";
 import { loggingState } from "../logging/state.js";
@@ -67,7 +67,7 @@ export {
   shouldEnableWindowsGitBashPasteFallback,
 } from "./tui-submit.js";
 
-const NEXISCLAW_CLI_WRAPPER_PATH = fileURLToPath(new URL("../../NexisClaw.mjs", import.meta.url));
+const NEXISCLAW_CLI_WRAPPER_PATH = fileURLToPath(new URL("../../FirstNexus.mjs", import.meta.url));
 const NEXISCLAW_RUN_NODE_SCRIPT_PATH = fileURLToPath(
   new URL("../../scripts/run-node.mjs", import.meta.url),
 );
@@ -80,7 +80,7 @@ const OPENAI_CODEX_PROVIDER = "openai-codex";
 
 type RunTuiOptions = TuiOptions & {
   backend?: TuiBackend;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   title?: string;
 };
 
@@ -135,7 +135,7 @@ export function resolveLocalAuthSpawnCwd(params: { args: string[]; defaultCwd?: 
     return defaultCwd;
   }
   const entryBase = path.basename(entryArg).toLowerCase();
-  if (entryBase === "NexisClaw.mjs") {
+  if (entryBase === "FirstNexus.mjs") {
     return path.dirname(entryArg);
   }
   if (entryBase === "run-node.mjs") {
@@ -170,7 +170,7 @@ export function resolveTuiSessionKey(params: {
 }
 
 export function resolveInitialTuiAgentId(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   fallbackAgentId: string;
   initialSessionInput?: string;
   cwd?: string;
@@ -200,9 +200,9 @@ export function resolveGatewayDisconnectState(reason?: string): {
   if (/pairing required/i.test(reasonLabel)) {
     return {
       connectionStatus: `gateway disconnected: ${reasonLabel}`,
-      activityStatus: "pairing required: run NexisClaw devices list",
+      activityStatus: "pairing required: run FirstNexus devices list",
       pairingHint:
-        "Pairing required. Run `NexisClaw devices list`, approve your request ID, then reconnect.",
+        "Pairing required. Run `FirstNexus devices list`, approve your request ID, then reconnect.",
     };
   }
   return {
@@ -638,7 +638,7 @@ export async function runTui(opts: RunTuiOptions): Promise<TuiResult> {
       : null
     : null;
   if (isLocalMode) {
-    setConsoleSubsystemFilter(["__NexisClaw_tui_quiet__"]);
+    setConsoleSubsystemFilter(["__FirstNexus_tui_quiet__"]);
   }
 
   const tui = new TUI(new ProcessTerminal());
@@ -768,7 +768,7 @@ export async function runTui(opts: RunTuiOptions): Promise<TuiResult> {
   const updateHeader = () => {
     const sessionLabel = formatSessionKey(currentSessionKey);
     const agentLabel = formatAgentLabel(currentAgentId);
-    const title = opts.title ?? "NexisClaw tui";
+    const title = opts.title ?? "FirstNexus tui";
     header.setText(
       theme.header(
         `${title} - ${client.connection.url} - agent ${agentLabel} - session ${sessionLabel}`,
@@ -955,7 +955,7 @@ export async function runTui(opts: RunTuiOptions): Promise<TuiResult> {
       return await work();
     } finally {
       if (isLocalMode) {
-        setConsoleSubsystemFilter(["__NexisClaw_tui_quiet__"]);
+        setConsoleSubsystemFilter(["__FirstNexus_tui_quiet__"]);
       }
       tui.start();
       tui.setFocus(editor);
@@ -1110,7 +1110,7 @@ export async function runTui(opts: RunTuiOptions): Promise<TuiResult> {
   const deferredFinish = createDeferredTuiFinish();
   const forceExit = () => {
     try {
-      process.stderr.write("NexisClaw tui forcing exit\n");
+      process.stderr.write("FirstNexus tui forcing exit\n");
     } catch {
       // Best effort only; force exit must not depend on stderr.
     }
@@ -1133,7 +1133,7 @@ export async function runTui(opts: RunTuiOptions): Promise<TuiResult> {
       .catch((err) => {
         if (!isTuiTerminalLossError(err)) {
           try {
-            process.stderr.write(`NexisClaw tui shutdown failed: ${String(err)}\n`);
+            process.stderr.write(`FirstNexus tui shutdown failed: ${String(err)}\n`);
           } catch {
             // Best effort only; exit must still complete.
           }

@@ -3,11 +3,11 @@ import { shortenText } from "./text-format.js";
 
 describe("shortenText", () => {
   it("returns original text when it fits", () => {
-    expect(shortenText("NexisClaw", 16)).toBe("NexisClaw");
+    expect(shortenText("FirstNexus", 16)).toBe("FirstNexus");
   });
 
   it("truncates and appends ellipsis when over limit", () => {
-    expect(shortenText("NexisClaw-status-output", 10)).toBe("NexisClaw-…");
+    expect(shortenText("FirstNexus-status-output", 10)).toBe("FirstNexus-…");
   });
 
   it("counts multi-byte characters correctly", () => {

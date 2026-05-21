@@ -12,7 +12,7 @@ import { collectProviderApiKeys } from "./live-auth-keys.js";
 import { isLiveTestEnabled } from "./live-test-helpers.js";
 import { getApiKeyForModel, requireApiKey } from "./model-auth.js";
 import { normalizeProviderId, parseModelRef } from "./model-selection.js";
-import { ensureNexisClawModelsJson } from "./models-config.js";
+import { ensureFirstNexusModelsJson } from "./models-config.js";
 import { discoverAuthStorage, discoverModels } from "./pi-model-discovery.js";
 import { buildAssistantMessageWithZeroUsage } from "./stream-message-shared.js";
 
@@ -194,7 +194,7 @@ export async function resolveLiveDirectModel(params: {
 
   logLiveCache(`resolving ${params.provider} model from configured auth storage`);
   const cfg = getRuntimeConfig();
-  await ensureNexisClawModelsJson(cfg);
+  await ensureFirstNexusModelsJson(cfg);
   const agentDir = resolveDefaultAgentDir(cfg);
   const authStorage = discoverAuthStorage(agentDir);
   const models = discoverModels(authStorage, agentDir).getAll();

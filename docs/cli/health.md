@@ -1,11 +1,11 @@
 ---
-summary: "CLI reference for `NexisClaw health` (gateway health snapshot via RPC)"
+summary: "CLI reference for `FirstNexus health` (gateway health snapshot via RPC)"
 read_when:
   - You want to quickly check the running Gateway's health
 title: "Health"
 ---
 
-# `NexisClaw health`
+# `FirstNexus health`
 
 Fetch health from the running Gateway.
 
@@ -21,16 +21,16 @@ Fetch health from the running Gateway.
 Examples:
 
 ```bash
-NexisClaw health
-NexisClaw health --json
-NexisClaw health --timeout 2500
-NexisClaw health --verbose
-NexisClaw health --debug
+FirstNexus health
+FirstNexus health --json
+FirstNexus health --timeout 2500
+FirstNexus health --verbose
+FirstNexus health --debug
 ```
 
 Notes:
 
-- Default `NexisClaw health` asks the running gateway for its health snapshot. When the
+- Default `FirstNexus health` asks the running gateway for its health snapshot. When the
   gateway already has a fresh cached snapshot, it can return that cached payload and
   refresh in the background.
 - `--verbose` forces a live probe, prints gateway connection details, and expands the

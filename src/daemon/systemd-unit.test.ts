@@ -4,18 +4,18 @@ import { buildSystemdUnit } from "./systemd-unit.js";
 describe("buildSystemdUnit", () => {
   it("quotes arguments with whitespace", () => {
     const unit = buildSystemdUnit({
-      description: "NexisClaw Gateway",
-      programArguments: ["/usr/bin/NexisClaw", "gateway", "--name", "My Bot"],
+      description: "FirstNexus Gateway",
+      programArguments: ["/usr/bin/FirstNexus", "gateway", "--name", "My Bot"],
       environment: {},
     });
     const execStart = unit.split("\n").find((line) => line.startsWith("ExecStart="));
-    expect(execStart).toBe('ExecStart=/usr/bin/NexisClaw gateway --name "My Bot"');
+    expect(execStart).toBe('ExecStart=/usr/bin/FirstNexus gateway --name "My Bot"');
   });
 
   it("renders control-group kill mode for child-process cleanup", () => {
     const unit = buildSystemdUnit({
-      description: "NexisClaw Gateway",
-      programArguments: ["/usr/bin/NexisClaw", "gateway", "run"],
+      description: "FirstNexus Gateway",
+      programArguments: ["/usr/bin/FirstNexus", "gateway", "run"],
       environment: {},
     });
     expect(unit).toContain("KillMode=control-group");
@@ -30,8 +30,8 @@ describe("buildSystemdUnit", () => {
   it("rejects environment values with line breaks", () => {
     expect(() =>
       buildSystemdUnit({
-        description: "NexisClaw Gateway",
-        programArguments: ["/usr/bin/NexisClaw", "gateway", "start"],
+        description: "FirstNexus Gateway",
+        programArguments: ["/usr/bin/FirstNexus", "gateway", "start"],
         environment: {
           INJECT: "ok\nExecStartPre=/bin/touch /tmp/oc15789_rce",
         },
@@ -41,16 +41,16 @@ describe("buildSystemdUnit", () => {
 
   it("renders EnvironmentFile entries before inline Environment values", () => {
     const unit = buildSystemdUnit({
-      description: "NexisClaw Gateway",
-      programArguments: ["/usr/bin/NexisClaw", "gateway", "run"],
-      environmentFiles: ["/home/test/.NexisClaw/.env"],
+      description: "FirstNexus Gateway",
+      programArguments: ["/usr/bin/FirstNexus", "gateway", "run"],
+      environmentFiles: ["/home/test/.FirstNexus/.env"],
       environment: {
         NEXISCLAW_GATEWAY_PORT: "18789",
       },
     });
-    expect(unit).toContain("EnvironmentFile=-/home/test/.NexisClaw/.env");
+    expect(unit).toContain("EnvironmentFile=-/home/test/.FirstNexus/.env");
     expect(unit).toContain("Environment=NEXISCLAW_GATEWAY_PORT=18789");
-    expect(unit.indexOf("EnvironmentFile=-/home/test/.NexisClaw/.env")).toBeLessThan(
+    expect(unit.indexOf("EnvironmentFile=-/home/test/.FirstNexus/.env")).toBeLessThan(
       unit.indexOf("Environment=NEXISCLAW_GATEWAY_PORT=18789"),
     );
   });

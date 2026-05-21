@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { withTempHome } from "NexisClaw/plugin-sdk/test-env";
+import { withTempHome } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, it, vi } from "vitest";
 import { resolveMatrixAccountStorageRoot } from "../../storage-paths.js";
 import type { MatrixRoomKeyBackupRestoreResult } from "../sdk.js";
@@ -48,7 +48,7 @@ async function runLegacyRestoreScenario(params: {
   restoreRoomKeyBackup: () => Promise<MatrixRoomKeyBackupRestoreResult>;
 }) {
   return withTempHome(async (home) => {
-    const stateDir = path.join(home, ".NexisClaw");
+    const stateDir = path.join(home, ".FirstNexus");
     const auth = params.auth ?? BASE_AUTH;
     const sourceAuth = params.sourceAuth ?? auth;
     const { rootDir } = resolveMatrixAccountStorageRoot({

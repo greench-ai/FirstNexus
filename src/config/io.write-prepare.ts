@@ -4,7 +4,7 @@ import { isRecord } from "../utils.js";
 import { applyMergePatch } from "./merge-patch.js";
 import { normalizeAgentModelMapForConfig, normalizeAgentModelRefForConfig } from "./model-input.js";
 import { isBlockedObjectKey } from "./prototype-keys.js";
-import type { NexisClawConfig } from "./types.js";
+import type { FirstNexusConfig } from "./types.js";
 
 const OPEN_DM_POLICY_ALLOW_FROM_RE =
   /^(?<policyPath>[a-z0-9_.-]+)\s*=\s*"open"\s+requires\s+(?<allowPath>[a-z0-9_.-]+)(?:\s+\(or\s+[a-z0-9_.-]+\))?\s+to include "\*"$/i;
@@ -614,10 +614,10 @@ export function formatConfigValidationFailure(pathLabel: string, issueMessage: s
     `Configuration mismatch: ${policyPath} is "open", but ${allowPath} does not include "*".`,
     "",
     "Fix with:",
-    `  NexisClaw config set ${allowPath} '["*"]'`,
+    `  FirstNexus config set ${allowPath} '["*"]'`,
     "",
     "Or switch policy:",
-    `  NexisClaw config set ${policyPath} "pairing"`,
+    `  FirstNexus config set ${policyPath} "pairing"`,
   ].join("\n");
 }
 
@@ -635,11 +635,11 @@ function hasOwnObjectKey(value: Record<string, unknown>, key: string): boolean {
 
 const WRITE_PRUNED_OBJECT = Symbol("write-pruned-object");
 
-function coerceConfig(value: unknown): NexisClawConfig {
+function coerceConfig(value: unknown): FirstNexusConfig {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return {};
   }
-  return value as NexisClawConfig;
+  return value as FirstNexusConfig;
 }
 
 function unsetPathForWriteAt(
@@ -712,9 +712,9 @@ function unsetPathForWriteAt(
 }
 
 export function unsetPathForWrite(
-  root: NexisClawConfig,
+  root: FirstNexusConfig,
   pathSegments: string[],
-): { changed: boolean; next: NexisClawConfig } {
+): { changed: boolean; next: FirstNexusConfig } {
   if (pathSegments.length === 0) {
     return { changed: false, next: root };
   }
@@ -732,9 +732,9 @@ export function unsetPathForWrite(
 }
 
 export function applyUnsetPathsForWrite(
-  root: NexisClawConfig,
+  root: FirstNexusConfig,
   unsetPaths: readonly string[][] | undefined,
-): NexisClawConfig {
+): FirstNexusConfig {
   let next = root;
   for (const unsetPath of unsetPaths ?? []) {
     if (!Array.isArray(unsetPath) || unsetPath.length === 0) {

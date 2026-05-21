@@ -1,2 +1,2 @@
-export { definePluginEntry, type NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
-export { resolveStateDir } from "NexisClaw/plugin-sdk/state-paths";
+export { definePluginEntry, type FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
+export { resolveStateDir } from "FirstNexus/plugin-sdk/state-paths";

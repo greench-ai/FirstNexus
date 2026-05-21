@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import { VIDEO_GENERATION_TASK_KIND } from "../video-generation-task-status.js";
 import {
   createMediaGenerationTaskLifecycle,
@@ -36,7 +36,7 @@ export const failVideoGenerationTaskRun = (
 ) => videoGenerationTaskLifecycle.failTaskRun(...params);
 
 export async function wakeVideoGenerationTaskCompletion(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   handle: VideoGenerationTaskHandle | null;
   status: "ok" | "error";
   statusLabel: string;

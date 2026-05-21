@@ -2,7 +2,7 @@ import { EventEmitter } from "node:events";
 import path from "node:path";
 import { Readable } from "node:stream";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { createRestrictedAgentSandboxConfig } from "./test-helpers/sandbox-agent-config-fixtures.js";
 
 type SpawnCall = {
@@ -54,7 +54,7 @@ let resolveSandboxContext: typeof import("./sandbox/context.js").resolveSandboxC
 let resolveSandboxConfigForAgent: typeof import("./sandbox/config.js").resolveSandboxConfigForAgent;
 let resolveSandboxRuntimeStatus: typeof import("./sandbox/runtime-status.js").resolveSandboxRuntimeStatus;
 
-async function resolveContext(config: NexisClawConfig, sessionKey: string, workspaceDir: string) {
+async function resolveContext(config: FirstNexusConfig, sessionKey: string, workspaceDir: string) {
   return resolveSandboxContext({
     config,
     sessionKey,
@@ -76,7 +76,7 @@ function expectDockerSetupCommand(command: string) {
 
 function createDefaultsSandboxConfig(
   scope: "agent" | "shared" | "session" = "agent",
-): NexisClawConfig {
+): FirstNexusConfig {
   return {
     agents: {
       defaults: {
@@ -89,7 +89,7 @@ function createDefaultsSandboxConfig(
   };
 }
 
-function createWorkSetupCommandConfig(scope: "agent" | "shared"): NexisClawConfig {
+function createWorkSetupCommandConfig(scope: "agent" | "shared"): FirstNexusConfig {
   return {
     agents: {
       defaults: {
@@ -104,7 +104,7 @@ function createWorkSetupCommandConfig(scope: "agent" | "shared"): NexisClawConfi
       list: [
         {
           id: "work",
-          workspace: "~/NexisClaw-work",
+          workspace: "~/FirstNexus-work",
           sandbox: {
             mode: "all",
             scope,
@@ -133,19 +133,19 @@ describe("Agent-specific sandbox config", () => {
   });
 
   it("should use agent-specific workspaceRoot", async () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           sandbox: {
             mode: "all",
             scope: "agent",
-            workspaceRoot: "~/.NexisClaw/sandboxes",
+            workspaceRoot: "~/.FirstNexus/sandboxes",
           },
         },
         list: [
           {
             id: "isolated",
-            workspace: "~/NexisClaw-isolated",
+            workspace: "~/FirstNexus-isolated",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -165,7 +165,7 @@ describe("Agent-specific sandbox config", () => {
   });
 
   it("should prefer agent config over global for multiple agents", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           sandbox: {
@@ -176,14 +176,14 @@ describe("Agent-specific sandbox config", () => {
         list: [
           {
             id: "main",
-            workspace: "~/NexisClaw",
+            workspace: "~/FirstNexus",
             sandbox: {
               mode: "off",
             },
           },
           {
             id: "family",
-            workspace: "~/NexisClaw-family",
+            workspace: "~/FirstNexus-family",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -232,7 +232,7 @@ describe("Agent-specific sandbox config", () => {
   });
 
   it("should use global sandbox config when no agent-specific config exists", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           sandbox: {
@@ -243,7 +243,7 @@ describe("Agent-specific sandbox config", () => {
         list: [
           {
             id: "main",
-            workspace: "~/NexisClaw",
+            workspace: "~/FirstNexus",
           },
         ],
       },
@@ -280,7 +280,7 @@ describe("Agent-specific sandbox config", () => {
   });
 
   it("should allow agent-specific docker settings beyond setupCommand", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           sandbox: {
@@ -295,7 +295,7 @@ describe("Agent-specific sandbox config", () => {
         list: [
           {
             id: "work",
-            workspace: "~/NexisClaw-work",
+            workspace: "~/FirstNexus-work",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -328,14 +328,14 @@ describe("Agent-specific sandbox config", () => {
             list: [
               {
                 id: "main",
-                workspace: "~/NexisClaw",
+                workspace: "~/FirstNexus",
                 sandbox: {
                   mode: "off",
                 },
               },
             ],
           },
-        } satisfies NexisClawConfig,
+        } satisfies FirstNexusConfig,
         sessionKey: "agent:main:main",
         assert: (runtime: ReturnType<typeof resolveSandboxRuntimeStatus>) => {
           expect(runtime.mode).toBe("off");
@@ -353,7 +353,7 @@ describe("Agent-specific sandbox config", () => {
             list: [
               {
                 id: "family",
-                workspace: "~/NexisClaw-family",
+                workspace: "~/FirstNexus-family",
                 sandbox: {
                   mode: "all",
                   scope: "agent",
@@ -361,7 +361,7 @@ describe("Agent-specific sandbox config", () => {
               },
             ],
           },
-        } satisfies NexisClawConfig,
+        } satisfies FirstNexusConfig,
         sessionKey: "agent:family:whatsapp:group:123",
         assert: (runtime: ReturnType<typeof resolveSandboxRuntimeStatus>) => {
           expect(runtime.mode).toBe("all");
@@ -378,7 +378,7 @@ describe("Agent-specific sandbox config", () => {
   });
 
   it("should use agent-specific scope", () => {
-    const cfg: NexisClawConfig = {
+    const cfg: FirstNexusConfig = {
       agents: {
         defaults: {
           sandbox: {
@@ -389,7 +389,7 @@ describe("Agent-specific sandbox config", () => {
         list: [
           {
             id: "work",
-            workspace: "~/NexisClaw-work",
+            workspace: "~/FirstNexus-work",
             sandbox: {
               mode: "all",
               scope: "agent",
@@ -427,7 +427,7 @@ describe("Agent-specific sandbox config", () => {
               },
             },
           },
-        } satisfies NexisClawConfig,
+        } satisfies FirstNexusConfig,
         expected: ["image"],
       },
     ]) {

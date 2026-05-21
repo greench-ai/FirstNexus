@@ -39,7 +39,7 @@ function toOpenAiModel(id: string): OpenAiModelObject {
     id,
     object: "model",
     created: 0,
-    owned_by: "NexisClaw",
+    owned_by: "FirstNexus",
     permission: [],
   };
 }
@@ -63,9 +63,9 @@ function loadAgentModelIds(): string[] {
   const cfg = getRuntimeConfig();
   const defaultAgentId = resolveDefaultAgentId(cfg);
   const ids = new Set<string>([NEXISCLAW_MODEL_ID, NEXISCLAW_DEFAULT_MODEL_ID]);
-  ids.add(`NexisClaw/${defaultAgentId}`);
+  ids.add(`FirstNexus/${defaultAgentId}`);
   for (const agentId of listAgentIds(cfg)) {
-    ids.add(`NexisClaw/${agentId}`);
+    ids.add(`FirstNexus/${agentId}`);
   }
   return Array.from(ids);
 }

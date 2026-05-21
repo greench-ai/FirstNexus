@@ -14,7 +14,7 @@ import {
   type LegacySandboxRegistryMigrationResult,
 } from "../agents/sandbox/registry.js";
 import { formatCliCommand } from "../cli/command-format.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { runCommandWithTimeout, runExec } from "../process/exec.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { note } from "../terminal/note.js";
@@ -101,22 +101,22 @@ async function dockerImageExists(image: string): Promise<boolean> {
   }
 }
 
-function resolveSandboxDockerImage(cfg: NexisClawConfig): string {
+function resolveSandboxDockerImage(cfg: FirstNexusConfig): string {
   const image = cfg.agents?.defaults?.sandbox?.docker?.image?.trim();
   return image ? image : DEFAULT_SANDBOX_IMAGE;
 }
 
-function resolveSandboxBackend(cfg: NexisClawConfig): string {
+function resolveSandboxBackend(cfg: FirstNexusConfig): string {
   const backend = cfg.agents?.defaults?.sandbox?.backend?.trim();
   return backend || "docker";
 }
 
-function resolveSandboxBrowserImage(cfg: NexisClawConfig): string {
+function resolveSandboxBrowserImage(cfg: FirstNexusConfig): string {
   const image = cfg.agents?.defaults?.sandbox?.browser?.image?.trim();
   return image ? image : DEFAULT_SANDBOX_BROWSER_IMAGE;
 }
 
-function updateSandboxDockerImage(cfg: NexisClawConfig, image: string): NexisClawConfig {
+function updateSandboxDockerImage(cfg: FirstNexusConfig, image: string): FirstNexusConfig {
   return {
     ...cfg,
     agents: {
@@ -135,7 +135,7 @@ function updateSandboxDockerImage(cfg: NexisClawConfig, image: string): NexisCla
   };
 }
 
-function updateSandboxBrowserImage(cfg: NexisClawConfig, image: string): NexisClawConfig {
+function updateSandboxBrowserImage(cfg: FirstNexusConfig, image: string): FirstNexusConfig {
   return {
     ...cfg,
     agents: {
@@ -193,10 +193,10 @@ async function handleMissingSandboxImage(
 }
 
 export async function maybeRepairSandboxImages(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   runtime: RuntimeEnv,
   prompter: DoctorPrompter,
-): Promise<NexisClawConfig> {
+): Promise<FirstNexusConfig> {
   const sandbox = cfg.agents?.defaults?.sandbox;
   const mode = sandbox?.mode ?? "off";
   if (!sandbox || mode === "off") {
@@ -222,7 +222,7 @@ export async function maybeRepairSandboxImages(
       "",
       "Options:",
       "- Install Docker and restart the gateway",
-      "- Disable sandbox mode: NexisClaw config set agents.defaults.sandbox.mode off",
+      "- Disable sandbox mode: FirstNexus config set agents.defaults.sandbox.mode off",
     ];
     note(lines.join("\n"), "Sandbox");
     return cfg;
@@ -305,7 +305,7 @@ export async function maybeRepairSandboxRegistryFiles(prompter: DoctorPrompter):
       [
         "Legacy sandbox registry files detected.",
         ...legacyFiles.map(formatLegacyRegistryInspectionLine),
-        `Run ${formatCliCommand("NexisClaw doctor --fix")} to migrate them to sharded registry files.`,
+        `Run ${formatCliCommand("FirstNexus doctor --fix")} to migrate them to sharded registry files.`,
       ].join("\n"),
       "Sandbox",
     );
@@ -321,7 +321,7 @@ export async function maybeRepairSandboxRegistryFiles(prompter: DoctorPrompter):
   }
 }
 
-export function noteSandboxScopeWarnings(cfg: NexisClawConfig) {
+export function noteSandboxScopeWarnings(cfg: FirstNexusConfig) {
   const globalSandbox = cfg.agents?.defaults?.sandbox;
   const agents = Array.isArray(cfg.agents?.list) ? cfg.agents.list : [];
   const warnings: string[] = [];

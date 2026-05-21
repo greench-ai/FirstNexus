@@ -200,7 +200,7 @@ function expectSecurityConnectError(
 ) {
   const error = onConnectError.mock.calls.at(0)?.[0] as Error;
   expect(error.message).toContain("SECURITY ERROR");
-  expect(error.message).toContain("NexisClaw doctor --fix");
+  expect(error.message).toContain("FirstNexus doctor --fix");
   if (params?.expectTailscaleHint) {
     expect(error.message).toContain("Tailscale Serve/Funnel");
   }
@@ -393,7 +393,7 @@ describe("GatewayClient security checks", () => {
     process.env.NEXISCLAW_ALLOW_INSECURE_PRIVATE_WS = "1";
     const onConnectError = vi.fn();
     const client = new GatewayClient({
-      url: "ws://NexisClaw-gateway.ai:18789",
+      url: "ws://FirstNexus-gateway.ai:18789",
       onConnectError,
     });
 
@@ -1005,7 +1005,7 @@ describe("GatewayClient connect auth payload", () => {
     });
     const env = {
       ...process.env,
-      NEXISCLAW_STATE_DIR: "/tmp/NexisClaw-client-service-state",
+      NEXISCLAW_STATE_DIR: "/tmp/FirstNexus-client-service-state",
     } as NodeJS.ProcessEnv;
     const client = new GatewayClient({
       url: "ws://127.0.0.1:18789",

@@ -29,7 +29,7 @@ export type AcpxProcessCleanupDeps = {
 export type AcpxProcessCleanupResult = {
   inspectedPids: number[];
   terminatedPids: number[];
-  skippedReason?: "missing-root" | "not-NexisClaw-owned" | "unverified-root";
+  skippedReason?: "missing-root" | "not-FirstNexus-owned" | "unverified-root";
 };
 
 export type AcpxStartupReapResult = {
@@ -138,7 +138,7 @@ function liveCommandMatchesLeaseIdentity(params: {
   );
 }
 
-export function isNexisClawOwnedAcpxProcessCommand(params: {
+export function isFirstNexusOwnedAcpxProcessCommand(params: {
   command: string | undefined;
   wrapperRoot?: string;
 }): boolean {
@@ -261,7 +261,7 @@ async function terminatePids(
   return terminated;
 }
 
-export async function cleanupNexisClawOwnedAcpxProcessTree(params: {
+export async function cleanupFirstNexusOwnedAcpxProcessTree(params: {
   rootPid?: number;
   rootCommand?: string;
   expectedLeaseId?: string;
@@ -283,7 +283,7 @@ export async function cleanupNexisClawOwnedAcpxProcessTree(params: {
 
   const listedTree = collectProcessTree(processes, rootPid);
   // Session-store PIDs are stale data. If the live process table cannot prove
-  // that this PID still belongs to an NexisClaw-owned wrapper, fail closed to
+  // that this PID still belongs to an FirstNexus-owned wrapper, fail closed to
   // avoid killing an unrelated process after PID reuse.
   if (listedTree.length === 0) {
     return { inspectedPids: [], terminatedPids: [], skippedReason: "unverified-root" };
@@ -299,7 +299,7 @@ export async function cleanupNexisClawOwnedAcpxProcessTree(params: {
     return {
       inspectedPids: listedTree.map((processInfo) => processInfo.pid),
       terminatedPids: [],
-      skippedReason: "not-NexisClaw-owned",
+      skippedReason: "not-FirstNexus-owned",
     };
   }
   if (
@@ -309,11 +309,11 @@ export async function cleanupNexisClawOwnedAcpxProcessTree(params: {
     return {
       inspectedPids: listedTree.map((processInfo) => processInfo.pid),
       terminatedPids: [],
-      skippedReason: "not-NexisClaw-owned",
+      skippedReason: "not-FirstNexus-owned",
     };
   }
   if (
-    !isNexisClawOwnedAcpxProcessCommand({
+    !isFirstNexusOwnedAcpxProcessCommand({
       command: rootCommand,
       wrapperRoot: params.wrapperRoot,
     })
@@ -321,7 +321,7 @@ export async function cleanupNexisClawOwnedAcpxProcessTree(params: {
     return {
       inspectedPids: listedTree.map((processInfo) => processInfo.pid),
       terminatedPids: [],
-      skippedReason: "not-NexisClaw-owned",
+      skippedReason: "not-FirstNexus-owned",
     };
   }
   if (
@@ -334,7 +334,7 @@ export async function cleanupNexisClawOwnedAcpxProcessTree(params: {
     return {
       inspectedPids: listedTree.map((processInfo) => processInfo.pid),
       terminatedPids: [],
-      skippedReason: "not-NexisClaw-owned",
+      skippedReason: "not-FirstNexus-owned",
     };
   }
 
@@ -345,7 +345,7 @@ export async function cleanupNexisClawOwnedAcpxProcessTree(params: {
   };
 }
 
-export async function reapStaleNexisClawOwnedAcpxOrphans(params: {
+export async function reapStaleFirstNexusOwnedAcpxOrphans(params: {
   wrapperRoot: string;
   deps?: AcpxProcessCleanupDeps;
 }): Promise<AcpxStartupReapResult> {
@@ -363,7 +363,7 @@ export async function reapStaleNexisClawOwnedAcpxOrphans(params: {
   const orphans = processes.filter(
     (processInfo) =>
       processInfo.ppid === 1 &&
-      isNexisClawOwnedAcpxProcessCommand({
+      isFirstNexusOwnedAcpxProcessCommand({
         command: processInfo.command,
         wrapperRoot: params.wrapperRoot,
       }),

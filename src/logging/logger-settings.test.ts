@@ -1,7 +1,7 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 let originalTestFileLog: string | undefined;
-let originalNexisClawLogLevel: string | undefined;
+let originalFirstNexusLogLevel: string | undefined;
 let logging: typeof import("../logging.js");
 
 beforeAll(async () => {
@@ -10,7 +10,7 @@ beforeAll(async () => {
 
 beforeEach(() => {
   originalTestFileLog = process.env.NEXISCLAW_TEST_FILE_LOG;
-  originalNexisClawLogLevel = process.env.NEXISCLAW_LOG_LEVEL;
+  originalFirstNexusLogLevel = process.env.NEXISCLAW_LOG_LEVEL;
   delete process.env.NEXISCLAW_TEST_FILE_LOG;
   delete process.env.NEXISCLAW_LOG_LEVEL;
   logging.resetLogger();
@@ -23,10 +23,10 @@ afterEach(() => {
   } else {
     process.env.NEXISCLAW_TEST_FILE_LOG = originalTestFileLog;
   }
-  if (originalNexisClawLogLevel === undefined) {
+  if (originalFirstNexusLogLevel === undefined) {
     delete process.env.NEXISCLAW_LOG_LEVEL;
   } else {
-    process.env.NEXISCLAW_LOG_LEVEL = originalNexisClawLogLevel;
+    process.env.NEXISCLAW_LOG_LEVEL = originalFirstNexusLogLevel;
   }
   logging.resetLogger();
   logging.setLoggerOverride(null);
@@ -49,14 +49,14 @@ describe("getResolvedLoggerSettings", () => {
     process.env.NEXISCLAW_TEST_FILE_LOG = "1";
     logging.setLoggerConfigLoaderForTests(() => ({
       level: "debug",
-      file: "/tmp/NexisClaw-configured.log",
+      file: "/tmp/FirstNexus-configured.log",
       maxFileBytes: 2048,
     }));
 
     const settings = logging.getResolvedLoggerSettings();
 
     expect(settings.level).toBe("debug");
-    expect(settings.file).toBe("/tmp/NexisClaw-configured.log");
+    expect(settings.file).toBe("/tmp/FirstNexus-configured.log");
     expect(settings.maxFileBytes).toBe(2048);
   });
 

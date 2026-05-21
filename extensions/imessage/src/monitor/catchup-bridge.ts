@@ -1,4 +1,4 @@
-import { warn } from "NexisClaw/plugin-sdk/runtime-env";
+import { warn } from "FirstNexus/plugin-sdk/runtime-env";
 import type { IMessageRpcClient } from "../client.js";
 import {
   type CatchupDispatchFn,

@@ -1,8 +1,8 @@
 /**
- * High-level lifecycle management for NexisClaw's operator-managed network
+ * High-level lifecycle management for FirstNexus's operator-managed network
  * proxy routing.
  *
- * NexisClaw does not spawn or configure the filtering proxy. When enabled, it
+ * FirstNexus does not spawn or configure the filtering proxy. When enabled, it
  * routes process-wide HTTP clients through the configured forward proxy URL and
  * restores the previous process state on shutdown.
  */

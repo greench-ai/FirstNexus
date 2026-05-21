@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import {
   normalizeOptionalLowercaseString,
   normalizeOptionalString,
@@ -28,8 +28,8 @@ export type PluginActivationState = PluginActivationStateLike;
 
 export type PluginActivationConfigSource = {
   plugins: NormalizedPluginsConfig;
-  rootConfig?: NexisClawConfig;
-} & PluginActivationConfigSourceLike<NexisClawConfig>;
+  rootConfig?: FirstNexusConfig;
+} & PluginActivationConfigSourceLike<FirstNexusConfig>;
 
 export type NormalizedPluginsConfig = SharedNormalizedPluginsConfig;
 
@@ -79,13 +79,13 @@ export function normalizePluginId(id: string): string {
 }
 
 export const normalizePluginsConfig = (
-  config?: NexisClawConfig["plugins"],
+  config?: FirstNexusConfig["plugins"],
 ): NormalizedPluginsConfig => {
   return normalizePluginsConfigWithResolver(config, createScopedPluginIdNormalizer());
 };
 
 export function createPluginActivationSource(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   plugins?: NormalizedPluginsConfig;
 }): PluginActivationConfigSource {
   return {
@@ -94,22 +94,22 @@ export function createPluginActivationSource(params: {
   };
 }
 
-const hasExplicitMemorySlot = (plugins?: NexisClawConfig["plugins"]) =>
+const hasExplicitMemorySlot = (plugins?: FirstNexusConfig["plugins"]) =>
   Boolean(plugins?.slots && Object.prototype.hasOwnProperty.call(plugins.slots, "memory"));
 
-const hasExplicitMemoryEntry = (plugins?: NexisClawConfig["plugins"]) =>
+const hasExplicitMemoryEntry = (plugins?: FirstNexusConfig["plugins"]) =>
   Boolean(
     plugins?.entries &&
     Object.prototype.hasOwnProperty.call(plugins.entries, defaultSlotIdForKey("memory")),
   );
 
-export const hasExplicitPluginConfig = (plugins?: NexisClawConfig["plugins"]) =>
+export const hasExplicitPluginConfig = (plugins?: FirstNexusConfig["plugins"]) =>
   hasExplicitPluginConfigShared(plugins);
 
 export function applyTestPluginDefaults(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
-): NexisClawConfig {
+): FirstNexusConfig {
   if (!env.VITEST) {
     return cfg;
   }
@@ -145,7 +145,7 @@ export function applyTestPluginDefaults(
 }
 
 export function isTestDefaultMemorySlotDisabled(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): boolean {
   if (!env.VITEST) {
@@ -162,7 +162,7 @@ export function resolvePluginActivationState(params: {
   id: string;
   origin: PluginOrigin;
   config: NormalizedPluginsConfig;
-  rootConfig?: NexisClawConfig;
+  rootConfig?: FirstNexusConfig;
   enabledByDefault?: boolean;
   activationSource?: PluginActivationConfigSource;
   autoEnabledReason?: string;
@@ -193,7 +193,7 @@ type EffectiveActivationParams = {
   id: string;
   origin: PluginOrigin;
   config: NormalizedPluginsConfig;
-  rootConfig?: NexisClawConfig;
+  rootConfig?: FirstNexusConfig;
   enabledByDefault?: boolean;
   activationSource?: PluginActivationConfigSource;
 };

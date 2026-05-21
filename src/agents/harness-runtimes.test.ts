@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { collectConfiguredAgentHarnessRuntimes } from "./harness-runtimes.js";
 
 describe("collectConfiguredAgentHarnessRuntimes", () => {
@@ -20,7 +20,7 @@ describe("collectConfiguredAgentHarnessRuntimes", () => {
           },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     expect(collectConfiguredAgentHarnessRuntimes(config, {}, { includeEnvRuntime: false })).toEqual(
       ["claude"],

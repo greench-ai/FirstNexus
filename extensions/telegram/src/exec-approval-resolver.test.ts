@@ -1,11 +1,11 @@
-import type { ExecApprovalReplyDecision } from "NexisClaw/plugin-sdk/approval-reply-runtime";
+import type { ExecApprovalReplyDecision } from "FirstNexus/plugin-sdk/approval-reply-runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const approvalGatewayRuntimeHoisted = vi.hoisted(() => ({
   resolveApprovalOverGatewaySpy: vi.fn(),
 }));
 
-vi.mock("NexisClaw/plugin-sdk/approval-gateway-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/approval-gateway-runtime", () => ({
   resolveApprovalOverGateway: (...args: unknown[]) =>
     approvalGatewayRuntimeHoisted.resolveApprovalOverGatewaySpy(...args),
 }));

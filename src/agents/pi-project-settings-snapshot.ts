@@ -1,7 +1,7 @@
 import path from "node:path";
 import type { SettingsManager } from "@earendil-works/pi-coding-agent";
 import { applyMergePatch } from "../config/merge-patch.js";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { readRootJsonObjectSync } from "../infra/json-files.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import type { BundleMcpServerConfig } from "../plugins/bundle-mcp.js";
@@ -41,12 +41,12 @@ function sanitizeProjectSettings(settings: PiSettingsSnapshot): PiSettingsSnapsh
   return sanitizePiSettingsSnapshot(settings);
 }
 
-function canReuseUnscopedCurrentPluginMetadataSnapshot(config: NexisClawConfig): boolean {
+function canReuseUnscopedCurrentPluginMetadataSnapshot(config: FirstNexusConfig): boolean {
   return normalizePluginsConfigWithResolver(config.plugins).loadPaths.length === 0;
 }
 
 function resolveUnscopedCurrentPluginMetadataSnapshot(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   workspaceDir?: string;
 }): PluginMetadataSnapshot | undefined {
@@ -85,7 +85,7 @@ function loadBundleSettingsFile(params: {
 
 export function loadEnabledBundlePiSettingsSnapshot(params: {
   cwd: string;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   env?: NodeJS.ProcessEnv;
   pluginMetadataSnapshot?: PluginMetadataSnapshot;
 }): PiSettingsSnapshot {
@@ -174,7 +174,7 @@ export function loadEnabledBundlePiSettingsSnapshot(params: {
 }
 
 export function resolveEmbeddedPiProjectSettingsPolicy(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
 ): EmbeddedPiProjectSettingsPolicy {
   const raw = cfg?.agents?.defaults?.embeddedPi?.projectSettingsPolicy;
   if (raw === "trusted" || raw === "sanitize" || raw === "ignore") {

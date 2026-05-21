@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { getBundledChannelAccountInspector } from "./plugins/bundled.js";
 import { getLoadedChannelPlugin } from "./plugins/registry.js";
 import type { ChannelId } from "./plugins/types.public.js";
@@ -7,7 +7,7 @@ export type ReadOnlyInspectedAccount = Record<string, unknown>;
 
 export async function inspectReadOnlyChannelAccount(params: {
   channelId: ChannelId;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): Promise<ReadOnlyInspectedAccount | null> {
   const inspectAccount =

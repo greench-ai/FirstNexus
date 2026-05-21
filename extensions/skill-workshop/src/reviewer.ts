@@ -4,8 +4,8 @@ import path from "node:path";
 import {
   resolveAgentEffectiveModelPrimary,
   resolveDefaultModelForAgent,
-} from "NexisClaw/plugin-sdk/agent-runtime";
-import type { NexisClawPluginApi } from "../api.js";
+} from "FirstNexus/plugin-sdk/agent-runtime";
+import type { FirstNexusPluginApi } from "../api.js";
 import type { SkillWorkshopConfig } from "./config.js";
 import { normalizeSkillName } from "./skills.js";
 import { compactWhitespace, extractTranscriptText } from "./text.js";
@@ -38,7 +38,7 @@ type ReviewerJson = {
   newText?: string;
 };
 
-function resolveReviewerFallbackModel(params: { api: NexisClawPluginApi; agentId: string }): {
+function resolveReviewerFallbackModel(params: { api: FirstNexusPluginApi; agentId: string }): {
   provider: string;
   model: string;
 } {
@@ -233,7 +233,7 @@ async function buildReviewPrompt(params: {
 }
 
 export async function reviewTranscriptForProposal(params: {
-  api: NexisClawPluginApi;
+  api: FirstNexusPluginApi;
   config: SkillWorkshopConfig;
   ctx: ReviewContext;
   messages: unknown[];

@@ -1,6 +1,6 @@
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
+import { isAutoLinkedFileRef } from "FirstNexus/plugin-sdk/text-autolink-runtime";
 import MarkdownIt from "markdown-it";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
-import { isAutoLinkedFileRef } from "NexisClaw/plugin-sdk/text-autolink-runtime";
 import type { MatrixClient } from "./sdk.js";
 import { isMatrixQualifiedUserId } from "./target-ids.js";
 

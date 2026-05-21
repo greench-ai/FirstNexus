@@ -1,19 +1,19 @@
-import type { TelegramNetworkConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { TelegramNetworkConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("NexisClaw/plugin-sdk/runtime-env", () => ({
+vi.mock("FirstNexus/plugin-sdk/runtime-env", () => ({
   isTruthyEnvValue: (value: string | undefined) =>
     typeof value === "string" && /^(1|true|yes|on)$/i.test(value.trim()),
   isWSL2Sync: vi.fn(() => false),
 }));
 
-let isWSL2Sync: typeof import("NexisClaw/plugin-sdk/runtime-env").isWSL2Sync;
+let isWSL2Sync: typeof import("FirstNexus/plugin-sdk/runtime-env").isWSL2Sync;
 let resetTelegramNetworkConfigStateForTests: typeof import("./network-config.js").resetTelegramNetworkConfigStateForTests;
 let resolveTelegramAutoSelectFamilyDecision: typeof import("./network-config.js").resolveTelegramAutoSelectFamilyDecision;
 let resolveTelegramDnsResultOrderDecision: typeof import("./network-config.js").resolveTelegramDnsResultOrderDecision;
 
 async function loadModule() {
-  ({ isWSL2Sync } = await import("NexisClaw/plugin-sdk/runtime-env"));
+  ({ isWSL2Sync } = await import("FirstNexus/plugin-sdk/runtime-env"));
   ({
     resetTelegramNetworkConfigStateForTests,
     resolveTelegramAutoSelectFamilyDecision,

@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { createGatewayCredentialPlan } from "../gateway/credential-planner.js";
 import type { SecretDefaults } from "./runtime-shared.js";
 import { isRecord } from "./shared.js";
@@ -58,7 +58,7 @@ function createState(params: {
 }
 
 export function evaluateGatewayAuthSurfaceStates(params: {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   defaults?: SecretDefaults;
 }): GatewayAuthSurfaceStateMap {

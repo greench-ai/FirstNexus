@@ -16,7 +16,7 @@ export type SkillInstallSpec = {
   targetDir?: string;
 };
 
-export type NexisClawSkillMetadata = {
+export type FirstNexusSkillMetadata = {
   always?: boolean;
   skillKey?: string;
   primaryEnv?: string;
@@ -78,7 +78,7 @@ export type SkillExposure = {
 export type SkillEntry = {
   skill: Skill;
   frontmatter: ParsedSkillFrontmatter;
-  metadata?: NexisClawSkillMetadata;
+  metadata?: FirstNexusSkillMetadata;
   invocation?: SkillInvocationPolicy;
   exposure?: SkillExposure;
 };

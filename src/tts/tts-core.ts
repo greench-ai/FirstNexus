@@ -8,7 +8,7 @@ import {
 } from "../agents/model-selection.js";
 import { resolveModelAsync } from "../agents/pi-embedded-runner/model.js";
 import { prepareModelForSimpleCompletion } from "../agents/simple-completion-transport.js";
-import type { NexisClawConfig } from "../config/types.js";
+import type { FirstNexusConfig } from "../config/types.js";
 import { normalizeOptionalString } from "../shared/string-coerce.js";
 import type { ResolvedTtsConfig } from "./tts-types.js";
 export {
@@ -50,7 +50,7 @@ type SummaryModelSelection = {
 };
 
 function resolveSummaryModelRef(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   config: ResolvedTtsConfig,
 ): SummaryModelSelection {
   const defaultRef = resolveDefaultModelForAgent({ cfg });
@@ -79,7 +79,7 @@ export async function summarizeText(
   params: {
     text: string;
     targetLength: number;
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     config: ResolvedTtsConfig;
     timeoutMs: number;
   },

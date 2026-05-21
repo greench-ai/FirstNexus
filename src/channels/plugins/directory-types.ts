@@ -1,7 +1,7 @@
-import type { NexisClawConfig } from "../../config/types.js";
+import type { FirstNexusConfig } from "../../config/types.js";
 
 export type DirectoryConfigParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   query?: string | null;
   limit?: number | null;

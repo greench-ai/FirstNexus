@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { normalizeLowercaseStringOrEmpty } from "../shared/string-coerce.js";
 
 const DIAGNOSTICS_ENV = "NEXISCLAW_DIAGNOSTICS";
@@ -47,7 +47,7 @@ function uniqueFlags(flags: string[]): string[] {
 }
 
 export function resolveDiagnosticFlags(
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): string[] {
   const configFlags = Array.isArray(cfg?.diagnostics?.flags) ? cfg?.diagnostics?.flags : [];
@@ -92,7 +92,7 @@ export function matchesDiagnosticFlag(flag: string, enabledFlags: string[]): boo
 
 export function isDiagnosticFlagEnabled(
   flag: string,
-  cfg?: NexisClawConfig,
+  cfg?: FirstNexusConfig,
   env: NodeJS.ProcessEnv = process.env,
 ): boolean {
   const flags = resolveDiagnosticFlags(cfg, env);

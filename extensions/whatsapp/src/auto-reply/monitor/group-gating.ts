@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import {
   getPrimaryIdentityId,
   getReplyContext,
@@ -31,7 +31,7 @@ export type GroupHistoryEntry = {
 };
 
 type ApplyGroupGatingParams = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   msg: WebInboundMsg;
   mentionText?: string;
   deferMissingMention?: boolean;

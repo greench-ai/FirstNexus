@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { describe, expect, it, vi } from "vitest";
 import type { SignalDaemonExitEvent } from "./daemon.js";
 import {
@@ -45,7 +45,7 @@ function createAutoAbortController() {
 
 async function runMonitorWithMocks(opts: MonitorSignalProviderOptions) {
   return monitorSignalProvider({
-    config: config as NexisClawConfig,
+    config: config as FirstNexusConfig,
     waitForTransportReady:
       waitForTransportReadyMock as MonitorSignalProviderOptions["waitForTransportReady"],
     ...opts,

@@ -7,7 +7,7 @@
 
 SERVER="${NEXISCLAW_SERVER:-l36}"
 
-STATUS=$(ssh -o ConnectTimeout=5 "$SERVER" '$HOME/NexisClaw/scripts/claude-auth-status.sh simple' 2>&1)
+STATUS=$(ssh -o ConnectTimeout=5 "$SERVER" '$HOME/FirstNexus/scripts/claude-auth-status.sh simple' 2>&1)
 
 case "$STATUS" in
     OK)
@@ -22,7 +22,7 @@ case "$STATUS" in
         termux-toast "Auth expired - opening console..."
         termux-open-url "https://console.anthropic.com/settings/api-keys"
         sleep 2
-        termux-notification -t "NexisClaw Re-Auth" -c "After getting key, run: ssh $SERVER '~/NexisClaw/scripts/mobile-reauth.sh'" --id NexisClaw-auth
+        termux-notification -t "FirstNexus Re-Auth" -c "After getting key, run: ssh $SERVER '~/FirstNexus/scripts/mobile-reauth.sh'" --id FirstNexus-auth
         ;;
     *)
         termux-toast "Connection error"

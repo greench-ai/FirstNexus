@@ -1,13 +1,13 @@
 import type { StreamFn } from "@earendil-works/pi-agent-core";
 import { streamSimple } from "@earendil-works/pi-ai";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { resolvePluginConfigObject } from "NexisClaw/plugin-sdk/plugin-config-runtime";
-import type { NexisClawPluginApi } from "NexisClaw/plugin-sdk/plugin-entry";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { resolvePluginConfigObject } from "FirstNexus/plugin-sdk/plugin-config-runtime";
+import type { FirstNexusPluginApi } from "FirstNexus/plugin-sdk/plugin-entry";
 import {
   ANTHROPIC_BY_MODEL_REPLAY_HOOKS,
   normalizeProviderId,
-} from "NexisClaw/plugin-sdk/provider-model-shared";
-import { streamWithPayloadPatch } from "NexisClaw/plugin-sdk/provider-stream-shared";
+} from "FirstNexus/plugin-sdk/provider-model-shared";
+import { streamWithPayloadPatch } from "FirstNexus/plugin-sdk/provider-stream-shared";
 import { refreshAwsSharedConfigCacheForBedrock } from "./aws-credential-refresh.js";
 import { mergeImplicitBedrockProvider, resolveBedrockConfigApiKey } from "./discovery-shared.js";
 import { bedrockMemoryEmbeddingProviderAdapter } from "./memory-embedding-adapter.js";
@@ -164,7 +164,7 @@ function isBedrockAppInferenceProfile(modelId: string): boolean {
 /**
  * pi-ai's internal `supportsPromptCaching` checks `model.id` for specific Claude
  * model name patterns, which fails for application inference profile ARNs (opaque
- * IDs that may not contain the model name). When NexisClaw's `isAnthropicBedrockModel`
+ * IDs that may not contain the model name). When FirstNexus's `isAnthropicBedrockModel`
  * identifies the model but pi-ai won't inject cache points, we do it via onPayload.
  *
  * Gated to application inference profile ARNs only — regular Claude model IDs and
@@ -179,7 +179,7 @@ function needsCachePointInjection(modelId: string): boolean {
   if (piAiWouldInjectCachePoints(modelId)) {
     return false;
   }
-  // Check if NexisClaw identifies this as an Anthropic model via the ARN heuristic.
+  // Check if FirstNexus identifies this as an Anthropic model via the ARN heuristic.
   if (isAnthropicBedrockModel(modelId)) {
     return true;
   }
@@ -211,7 +211,7 @@ function resolvedModelSupportsCaching(modelArn: string): boolean {
  * otherwise opaque.
  *
  * Region is extracted from the profile ARN itself to avoid mismatches when
- * the NexisClaw config region differs from the profile's home region.
+ * the FirstNexus config region differs from the profile's home region.
  */
 type BedrockAppProfileTraits = {
   cacheEligible: boolean;
@@ -356,7 +356,7 @@ function patchOpus47MaxThinkingEffort(payload: Record<string, unknown>): void {
   payload.additionalModelRequestFields = fields;
 }
 
-export function registerAmazonBedrockPlugin(api: NexisClawPluginApi): void {
+export function registerAmazonBedrockPlugin(api: FirstNexusPluginApi): void {
   // Keep registration-local constants inside the function so partial module
   // initialization during test bootstrap cannot trip TDZ reads.
   const providerId = "amazon-bedrock";
@@ -374,7 +374,7 @@ export function registerAmazonBedrockPlugin(api: NexisClawPluginApi): void {
   const startupPluginConfig = (api.pluginConfig ?? {}) as AmazonBedrockPluginConfig;
 
   function resolveCurrentPluginConfig(
-    config: NexisClawConfig | undefined,
+    config: FirstNexusConfig | undefined,
   ): AmazonBedrockPluginConfig | undefined {
     const runtimePluginConfig = resolvePluginConfigObject(config, providerId);
     return (

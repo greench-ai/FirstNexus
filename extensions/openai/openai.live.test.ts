@@ -3,21 +3,21 @@ import os from "node:os";
 import path from "node:path";
 import { getModel, type Api, type Model } from "@earendil-works/pi-ai";
 import { AuthStorage, ModelRegistry } from "@earendil-works/pi-coding-agent";
-import OpenAI from "openai";
-import type { ResolvedTtsConfig } from "NexisClaw/plugin-sdk/agent-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { encodePngRgba, fillPixel } from "NexisClaw/plugin-sdk/media-runtime";
+import type { ResolvedTtsConfig } from "FirstNexus/plugin-sdk/agent-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { encodePngRgba, fillPixel } from "FirstNexus/plugin-sdk/media-runtime";
 import {
   registerProviderPlugin,
   requireRegisteredProvider,
-} from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { runRealtimeSttLiveTest } from "NexisClaw/plugin-sdk/provider-test-contracts";
-import { getRuntimeConfig } from "NexisClaw/plugin-sdk/runtime-config-snapshot";
+} from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { runRealtimeSttLiveTest } from "FirstNexus/plugin-sdk/provider-test-contracts";
+import { getRuntimeConfig } from "FirstNexus/plugin-sdk/runtime-config-snapshot";
 import {
   isOverloadedErrorMessage,
   isServerErrorMessage,
   isTimeoutErrorMessage,
-} from "NexisClaw/plugin-sdk/test-env";
+} from "FirstNexus/plugin-sdk/test-env";
+import OpenAI from "openai";
 import { describe, expect, it } from "vitest";
 import plugin from "./index.js";
 
@@ -119,7 +119,7 @@ function resolveLiveOpenAISkipReason(error: unknown): string | null {
   return null;
 }
 
-function createLiveConfig(): NexisClawConfig {
+function createLiveConfig(): FirstNexusConfig {
   const cfg = getRuntimeConfig();
   return {
     ...cfg,
@@ -134,7 +134,7 @@ function createLiveConfig(): NexisClawConfig {
         },
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function createLiveTtsConfig(): ResolvedTtsConfig {
@@ -269,7 +269,7 @@ describeLive("openai plugin live", () => {
     const ttsConfig = createLiveTtsConfig();
 
     const audioFile = await speechProvider.synthesize({
-      text: "NexisClaw integration test OK.",
+      text: "FirstNexus integration test OK.",
       cfg,
       providerConfig: ttsConfig.providerConfigs.openai ?? {},
       target: "audio-file",
@@ -349,7 +349,7 @@ describeLive("openai plugin live", () => {
     const speechProvider = requireRegisteredProvider(speechProviders, "openai");
     const cfg = createLiveConfig();
     const ttsConfig = createLiveTtsConfig();
-    const phrase = "Testing NexisClaw OpenAI realtime transcription integration test OK.";
+    const phrase = "Testing FirstNexus OpenAI realtime transcription integration test OK.";
 
     const telephony = await speechProvider.synthesizeTelephony?.({
       text: phrase,

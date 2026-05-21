@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { InstalledPluginIndex } from "./installed-plugin-index.js";
 import type { PluginManifestRecord, PluginManifestRegistry } from "./manifest-registry.js";
 import type { PluginDiagnostic } from "./manifest-types.js";
@@ -53,7 +53,7 @@ export type PluginMetadataRegistryView = Pick<PluginMetadataSnapshot, "index" | 
 export type PluginMetadataManifestView = Pick<PluginMetadataSnapshot, "index" | "plugins">;
 
 export type LoadPluginMetadataSnapshotParams = {
-  config: NexisClawConfig;
+  config: FirstNexusConfig;
   workspaceDir?: string;
   stateDir?: string;
   env: NodeJS.ProcessEnv;

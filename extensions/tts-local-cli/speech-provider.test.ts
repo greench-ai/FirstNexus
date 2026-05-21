@@ -1,24 +1,27 @@
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import type { SpeechProviderConfig, SpeechSynthesisRequest } from "NexisClaw/plugin-sdk/speech-core";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import type {
+  SpeechProviderConfig,
+  SpeechSynthesisRequest,
+} from "FirstNexus/plugin-sdk/speech-core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 type SpeechSynthesisTarget = SpeechSynthesisRequest["target"];
 
 const runFfmpegMock = vi.hoisted(() => vi.fn<(args: string[]) => Promise<string | void>>());
 
-vi.mock("NexisClaw/plugin-sdk/media-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/media-runtime", () => ({
   runFfmpeg: runFfmpegMock,
 }));
 
 import { buildCliSpeechProvider } from "./speech-provider.js";
 
-const TEST_CFG = {} as NexisClawConfig;
+const TEST_CFG = {} as FirstNexusConfig;
 
 function createCliFixture(): { dir: string; script: string } {
-  const dir = mkdtempSync(path.join(os.tmpdir(), "NexisClaw-cli-tts-test-"));
+  const dir = mkdtempSync(path.join(os.tmpdir(), "FirstNexus-cli-tts-test-"));
   const script = path.join(dir, "write-audio.mjs");
   writeFileSync(
     script,
@@ -260,8 +263,8 @@ describe("buildCliSpeechProvider", () => {
       return;
     }
     const fixture = createCliFixture();
-    const rawFfmpeg = await vi.importActual<typeof import("NexisClaw/plugin-sdk/media-runtime")>(
-      "NexisClaw/plugin-sdk/media-runtime",
+    const rawFfmpeg = await vi.importActual<typeof import("FirstNexus/plugin-sdk/media-runtime")>(
+      "FirstNexus/plugin-sdk/media-runtime",
     );
     runFfmpegMock.mockImplementation(async (args) => {
       await rawFfmpeg.runFfmpeg(args);

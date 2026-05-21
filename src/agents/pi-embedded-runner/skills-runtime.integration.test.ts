@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import { writePluginWithSkill } from "../test-helpers/skill-plugin-fixtures.js";
 import { resolveEmbeddedRunSkillEntries } from "./skills-runtime.js";
 
@@ -24,8 +24,8 @@ async function createTempDir(prefix: string) {
 }
 
 async function setupBundledDiffsPlugin() {
-  const bundledPluginsDir = await createTempDir("NexisClaw-bundled-");
-  const workspaceDir = await createTempDir("NexisClaw-workspace-");
+  const bundledPluginsDir = await createTempDir("FirstNexus-bundled-");
+  const workspaceDir = await createTempDir("FirstNexus-workspace-");
   const pluginRoot = path.join(bundledPluginsDir, "diffs");
 
   await writePluginWithSkill({
@@ -38,7 +38,7 @@ async function setupBundledDiffsPlugin() {
   return { bundledPluginsDir, workspaceDir };
 }
 
-async function resolveBundledDiffsSkillEntries(config?: NexisClawConfig) {
+async function resolveBundledDiffsSkillEntries(config?: FirstNexusConfig) {
   const { bundledPluginsDir, workspaceDir } = await setupBundledDiffsPlugin();
   process.env.NEXISCLAW_BUNDLED_PLUGINS_DIR = bundledPluginsDir;
 
@@ -52,7 +52,7 @@ afterEach(async () => {
 
 describe("resolveEmbeddedRunSkillEntries (integration)", () => {
   it("loads bundled diffs skill when explicitly enabled in config", async () => {
-    const config: NexisClawConfig = {
+    const config: FirstNexusConfig = {
       plugins: {
         entries: {
           diffs: { enabled: true },

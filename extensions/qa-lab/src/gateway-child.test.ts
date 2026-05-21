@@ -17,12 +17,12 @@ const qaTempPathState = vi.hoisted(() => ({
   preferredTmpDir: process.env.TMPDIR || "/tmp",
 }));
 
-vi.mock("NexisClaw/plugin-sdk/ssrf-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/ssrf-runtime", () => ({
   fetchWithSsrFGuard: fetchWithSsrFGuardMock,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/temp-path", () => ({
-  resolvePreferredNexisClawTmpDir: () => qaTempPathState.preferredTmpDir,
+vi.mock("FirstNexus/plugin-sdk/temp-path", () => ({
+  resolvePreferredFirstNexusTmpDir: () => qaTempPathState.preferredTmpDir,
 }));
 
 vi.mock("./node-exec.js", () => ({
@@ -42,14 +42,14 @@ afterEach(async () => {
 
 function createParams(baseEnv?: NodeJS.ProcessEnv) {
   return {
-    configPath: "/tmp/NexisClaw-qa/NexisClaw.json",
+    configPath: "/tmp/FirstNexus-qa/FirstNexus.json",
     gatewayToken: "qa-token",
-    homeDir: "/tmp/NexisClaw-qa/home",
-    stateDir: "/tmp/NexisClaw-qa/state",
-    xdgConfigHome: "/tmp/NexisClaw-qa/xdg-config",
-    xdgDataHome: "/tmp/NexisClaw-qa/xdg-data",
-    xdgCacheHome: "/tmp/NexisClaw-qa/xdg-cache",
-    bundledPluginsDir: "/tmp/NexisClaw-qa/bundled-plugins",
+    homeDir: "/tmp/FirstNexus-qa/home",
+    stateDir: "/tmp/FirstNexus-qa/state",
+    xdgConfigHome: "/tmp/FirstNexus-qa/xdg-config",
+    xdgDataHome: "/tmp/FirstNexus-qa/xdg-data",
+    xdgCacheHome: "/tmp/FirstNexus-qa/xdg-cache",
+    bundledPluginsDir: "/tmp/FirstNexus-qa/bundled-plugins",
     compatibilityHostVersion: "2026.4.8",
     baseEnv,
   };
@@ -142,7 +142,7 @@ describe("buildQaRuntimeEnv", () => {
     expect(env.NEXISCLAW_QA_ALLOW_LOCAL_IMAGE_PROVIDER).toBe("1");
     expect(env.NEXISCLAW_ALLOW_SLOW_REPLY_TESTS).toBe("1");
     expect(env.NEXISCLAW_SKIP_STARTUP_MODEL_PREWARM).toBe("1");
-    expect(env.NEXISCLAW_BUNDLED_PLUGINS_DIR).toBe("/tmp/NexisClaw-qa/bundled-plugins");
+    expect(env.NEXISCLAW_BUNDLED_PLUGINS_DIR).toBe("/tmp/FirstNexus-qa/bundled-plugins");
     expect(env.NEXISCLAW_COMPATIBILITY_HOST_VERSION).toBe("2026.4.8");
   });
 
@@ -178,7 +178,7 @@ describe("buildQaRuntimeEnv", () => {
     expect(env.OPENAI_API_KEY).toBe("openai-explicit");
   });
 
-  it("preserves Codex CLI auth home for live frontier runs while sandboxing NexisClaw home", async () => {
+  it("preserves Codex CLI auth home for live frontier runs while sandboxing FirstNexus home", async () => {
     const hostHome = await mkdtemp(path.join(os.tmpdir(), "qa-host-home-"));
     cleanups.push(async () => {
       await rm(hostHome, { recursive: true, force: true });
@@ -193,12 +193,12 @@ describe("buildQaRuntimeEnv", () => {
       providerMode: "live-frontier",
     });
 
-    expect(env.HOME).toBe("/tmp/NexisClaw-qa/home");
-    expect(env.NEXISCLAW_HOME).toBe("/tmp/NexisClaw-qa/home");
+    expect(env.HOME).toBe("/tmp/FirstNexus-qa/home");
+    expect(env.NEXISCLAW_HOME).toBe("/tmp/FirstNexus-qa/home");
     expect(env.CODEX_HOME).toBe(codexHome);
   });
 
-  it("forwards host HOME for live Claude CLI runs while keeping NexisClaw home sandboxed", async () => {
+  it("forwards host HOME for live Claude CLI runs while keeping FirstNexus home sandboxed", async () => {
     const hostHome = await mkdtemp(path.join(os.tmpdir(), "qa-host-home-"));
     cleanups.push(async () => {
       await rm(hostHome, { recursive: true, force: true });
@@ -213,11 +213,11 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.HOME).toBe(hostHome);
-    expect(env.NEXISCLAW_HOME).toBe("/tmp/NexisClaw-qa/home");
-    expect(env.NEXISCLAW_STATE_DIR).toBe("/tmp/NexisClaw-qa/state");
+    expect(env.NEXISCLAW_HOME).toBe("/tmp/FirstNexus-qa/home");
+    expect(env.NEXISCLAW_STATE_DIR).toBe("/tmp/FirstNexus-qa/state");
   });
 
-  it("can forward host HOME for browser-backed QA runs while keeping NexisClaw home sandboxed", async () => {
+  it("can forward host HOME for browser-backed QA runs while keeping FirstNexus home sandboxed", async () => {
     const hostHome = await mkdtemp(path.join(os.tmpdir(), "qa-host-home-"));
     cleanups.push(async () => {
       await rm(hostHome, { recursive: true, force: true });
@@ -232,8 +232,8 @@ describe("buildQaRuntimeEnv", () => {
     });
 
     expect(env.HOME).toBe(hostHome);
-    expect(env.NEXISCLAW_HOME).toBe("/tmp/NexisClaw-qa/home");
-    expect(env.NEXISCLAW_STATE_DIR).toBe("/tmp/NexisClaw-qa/state");
+    expect(env.NEXISCLAW_HOME).toBe("/tmp/FirstNexus-qa/home");
+    expect(env.NEXISCLAW_STATE_DIR).toBe("/tmp/FirstNexus-qa/state");
   });
 
   it("preserves the live Anthropic key for live Claude CLI runs without writing it into config", async () => {
@@ -745,7 +745,7 @@ describe("buildQaRuntimeEnv", () => {
 
   it("rejects preserved gateway artifacts outside the repo root", async () => {
     await expect(
-      __testing.assertQaArtifactDirWithinRepo("/tmp/NexisClaw-repo", "/tmp/outside"),
+      __testing.assertQaArtifactDirWithinRepo("/tmp/FirstNexus-repo", "/tmp/outside"),
     ).rejects.toThrow("QA gateway artifact directory must stay within the repo root.");
   });
 
@@ -775,7 +775,7 @@ describe("buildQaRuntimeEnv", () => {
       await rm(stagedRoot, { recursive: true, force: true });
     });
 
-    await writeFile(path.join(tempRoot, "NexisClaw.json"), "{}", "utf8");
+    await writeFile(path.join(tempRoot, "FirstNexus.json"), "{}", "utf8");
     await writeFile(path.join(stagedRoot, "marker.txt"), "x", "utf8");
 
     await __testing.cleanupQaGatewayTempRoots({
@@ -870,7 +870,7 @@ describe("qa bundled plugin dir", () => {
       recursive: true,
     });
     await writeFile(
-      path.join(repoRoot, "dist", "extensions", "kimi-coding", "NexisClaw.plugin.json"),
+      path.join(repoRoot, "dist", "extensions", "kimi-coding", "FirstNexus.plugin.json"),
       JSON.stringify({ id: "kimi", providers: ["kimi"] }),
       "utf8",
     );
@@ -900,14 +900,14 @@ describe("qa bundled plugin dir", () => {
       "utf8",
     );
     await writeFile(
-      path.join(repoRoot, "dist", "extensions", "memory-core", "NexisClaw.plugin.json"),
+      path.join(repoRoot, "dist", "extensions", "memory-core", "FirstNexus.plugin.json"),
       JSON.stringify({ id: "memory-core", kind: "memory" }),
       "utf8",
     );
     await mkdir(path.join(repoRoot, "extensions", "memory-core"), { recursive: true });
     await writeFile(path.join(repoRoot, "extensions", "memory-core", "package.json"), "{}", "utf8");
     await writeFile(
-      path.join(repoRoot, "extensions", "memory-core", "NexisClaw.plugin.json"),
+      path.join(repoRoot, "extensions", "memory-core", "FirstNexus.plugin.json"),
       JSON.stringify({ id: "memory-core", kind: "memory" }),
       "utf8",
     );
@@ -934,7 +934,7 @@ describe("qa bundled plugin dir", () => {
       path.join(repoRoot, "package.json"),
       JSON.stringify(
         {
-          name: "NexisClaw",
+          name: "FirstNexus",
           type: "module",
           exports: {
             "./plugin-sdk/account-id": {
@@ -959,13 +959,13 @@ describe("qa bundled plugin dir", () => {
     );
     await writeFile(
       path.join(repoRoot, "dist", "extensions", "qa-channel", "package.json"),
-      JSON.stringify({ name: "@NexisClaw/qa-channel", type: "module" }, null, 2),
+      JSON.stringify({ name: "@FirstNexus/qa-channel", type: "module" }, null, 2),
       "utf8",
     );
     await writeFile(
       path.join(repoRoot, "dist", "extensions", "qa-channel", "index.js"),
       [
-        'import { normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";',
+        'import { normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";',
         'export const accountId = normalizeAccountId("QA");',
         "",
       ].join("\n"),
@@ -1002,7 +1002,7 @@ describe("qa bundled plugin dir", () => {
       path.join(repoRoot, ".artifacts", "qa-runtime", path.basename(tempRoot)),
     );
     await expect(readFile(path.join(stagedRoot, "package.json"), "utf8")).resolves.toContain(
-      '"name": "NexisClaw"',
+      '"name": "FirstNexus"',
     );
     const qaChannel = (await import(
       `${pathToFileURL(path.join(bundledPluginsDir, "qa-channel", "index.js")).href}?t=${Date.now()}`
@@ -1035,7 +1035,7 @@ describe("qa bundled plugin dir", () => {
     });
     await writeFile(
       path.join(repoRoot, "package.json"),
-      JSON.stringify({ name: "NexisClaw", type: "module" }, null, 2),
+      JSON.stringify({ name: "FirstNexus", type: "module" }, null, 2),
       "utf8",
     );
     await mkdir(path.join(repoRoot, "dist"), { recursive: true });
@@ -1054,7 +1054,7 @@ describe("qa bundled plugin dir", () => {
     );
     await writeFile(
       path.join(repoRoot, "dist-runtime", "extensions", "runtime-only", "package.json"),
-      JSON.stringify({ name: "@NexisClaw/runtime-only", type: "module" }, null, 2),
+      JSON.stringify({ name: "@FirstNexus/runtime-only", type: "module" }, null, 2),
       "utf8",
     );
     await writeFile(
@@ -1111,7 +1111,7 @@ describe("qa bundled plugin dir", () => {
     });
     await writeFile(
       path.join(repoRoot, "package.json"),
-      JSON.stringify({ name: "NexisClaw", type: "module" }, null, 2),
+      JSON.stringify({ name: "FirstNexus", type: "module" }, null, 2),
       "utf8",
     );
     const tempRoot = await mkdtemp(path.join(os.tmpdir(), "qa-bundled-invalid-target-"));
@@ -1141,7 +1141,7 @@ describe("qa bundled plugin dir", () => {
       path.join(repoRoot, "package.json"),
       JSON.stringify(
         {
-          name: "NexisClaw",
+          name: "FirstNexus",
           type: "module",
           exports: {
             "./plugin-sdk/account-id": {
@@ -1163,13 +1163,13 @@ describe("qa bundled plugin dir", () => {
     await mkdir(path.join(repoRoot, "extensions", "qa-channel"), { recursive: true });
     await writeFile(
       path.join(repoRoot, "extensions", "qa-channel", "package.json"),
-      JSON.stringify({ name: "@NexisClaw/qa-channel", type: "module" }, null, 2),
+      JSON.stringify({ name: "@FirstNexus/qa-channel", type: "module" }, null, 2),
       "utf8",
     );
     await writeFile(
       path.join(repoRoot, "extensions", "qa-channel", "index.ts"),
       [
-        'import { normalizeAccountId } from "NexisClaw/plugin-sdk/account-id";',
+        'import { normalizeAccountId } from "FirstNexus/plugin-sdk/account-id";',
         'import { marker } from "fake-dep";',
         'export const accountId = `${normalizeAccountId("QA")}:${marker}`;',
         "",
@@ -1235,7 +1235,7 @@ describe("qa bundled plugin dir", () => {
     });
     await mkdir(path.join(repoRoot, "dist", "extensions", "openai"), { recursive: true });
     await writeFile(
-      path.join(repoRoot, "dist", "extensions", "openai", "NexisClaw.plugin.json"),
+      path.join(repoRoot, "dist", "extensions", "openai", "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "openai",
         providers: ["openai", "openai-codex"],
@@ -1259,7 +1259,7 @@ describe("qa bundled plugin dir", () => {
     });
     await mkdir(path.join(repoRoot, "dist", "extensions", "openai"), { recursive: true });
     await writeFile(
-      path.join(repoRoot, "dist", "extensions", "openai", "NexisClaw.plugin.json"),
+      path.join(repoRoot, "dist", "extensions", "openai", "FirstNexus.plugin.json"),
       JSON.stringify({
         id: "openai",
         providers: ["openai"],
@@ -1297,7 +1297,7 @@ describe("qa bundled plugin dir", () => {
   it("copies selected live provider configs from the host config", async () => {
     const configPath = path.join(
       await mkdtemp(path.join(os.tmpdir(), "qa-provider-config-")),
-      "NexisClaw.json",
+      "FirstNexus.json",
     );
     cleanups.push(async () => {
       await rm(path.dirname(configPath), { recursive: true, force: true });
@@ -1357,14 +1357,14 @@ describe("qa bundled plugin dir", () => {
     await mkdir(path.join(bundledRoot, "qa-channel"), { recursive: true });
     await writeFile(
       path.join(bundledRoot, "qa-channel", "package.json"),
-      JSON.stringify({ NexisClaw: { install: { minHostVersion: ">=2026.4.8" } } }),
+      JSON.stringify({ FirstNexus: { install: { minHostVersion: ">=2026.4.8" } } }),
       "utf8",
     );
 
     await mkdir(path.join(bundledRoot, "memory-core"), { recursive: true });
     await writeFile(
       path.join(bundledRoot, "memory-core", "package.json"),
-      JSON.stringify({ NexisClaw: { install: { minHostVersion: ">=2026.4.7" } } }),
+      JSON.stringify({ FirstNexus: { install: { minHostVersion: ">=2026.4.7" } } }),
       "utf8",
     );
 
@@ -1390,13 +1390,13 @@ describe("qa bundled plugin dir", () => {
     await mkdir(path.join(bundledRoot, "qa-channel"), { recursive: true });
     await writeFile(
       path.join(bundledRoot, "qa-channel", "package.json"),
-      JSON.stringify({ NexisClaw: { install: { minHostVersion: ">=2026.4.8" } } }),
+      JSON.stringify({ FirstNexus: { install: { minHostVersion: ">=2026.4.8" } } }),
       "utf8",
     );
     await mkdir(path.join(bundledRoot, "speech-core"), { recursive: true });
     await writeFile(
       path.join(bundledRoot, "speech-core", "package.json"),
-      JSON.stringify({ NexisClaw: { install: { minHostVersion: ">=2026.4.9" } } }),
+      JSON.stringify({ FirstNexus: { install: { minHostVersion: ">=2026.4.9" } } }),
       "utf8",
     );
 

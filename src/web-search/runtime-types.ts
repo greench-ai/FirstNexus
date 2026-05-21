@@ -1,18 +1,18 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type {
   PluginWebSearchProviderEntry,
   WebSearchProviderToolDefinition,
 } from "../plugins/web-provider-types.js";
 import type { RuntimeWebSearchMetadata } from "../secrets/runtime-web-tools.types.js";
 
-type WebSearchConfig = NonNullable<NexisClawConfig["tools"]>["web"] extends infer Web
+type WebSearchConfig = NonNullable<FirstNexusConfig["tools"]>["web"] extends infer Web
   ? Web extends { search?: infer Search }
     ? Search
     : undefined
   : undefined;
 
 export type ResolveWebSearchDefinitionParams = {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   sandboxed?: boolean;
   runtimeWebSearch?: RuntimeWebSearchMetadata;
   providerId?: string;
@@ -30,7 +30,7 @@ export type RunWebSearchResult = {
 };
 
 export type ListWebSearchProvidersParams = {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
 };
 
 export type RuntimeWebSearchProviderEntry = PluginWebSearchProviderEntry;

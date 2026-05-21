@@ -1,5 +1,5 @@
 ---
-summary: "CLI reference for `NexisClaw plugins` (list, install, marketplace, uninstall, enable/disable, doctor)"
+summary: "CLI reference for `FirstNexus plugins` (list, install, marketplace, uninstall, enable/disable, doctor)"
 read_when:
   - You want to install or manage Gateway plugins or compatible bundles
   - You want to debug plugin load failures
@@ -30,29 +30,29 @@ Manage Gateway plugins, hook packs, and compatible bundles.
 ## Commands
 
 ```bash
-NexisClaw plugins list
-NexisClaw plugins list --enabled
-NexisClaw plugins list --verbose
-NexisClaw plugins list --json
-NexisClaw plugins search <query>
-NexisClaw plugins search <query> --limit 20
-NexisClaw plugins search <query> --json
-NexisClaw plugins install <path-or-spec>
-NexisClaw plugins inspect <id>
-NexisClaw plugins inspect <id> --runtime
-NexisClaw plugins inspect <id> --json
-NexisClaw plugins inspect --all
-NexisClaw plugins info <id>
-NexisClaw plugins enable <id>
-NexisClaw plugins disable <id>
-NexisClaw plugins registry
-NexisClaw plugins registry --refresh
-NexisClaw plugins uninstall <id>
-NexisClaw plugins doctor
-NexisClaw plugins update <id-or-npm-spec>
-NexisClaw plugins update --all
-NexisClaw plugins marketplace list <marketplace>
-NexisClaw plugins marketplace list <marketplace> --json
+FirstNexus plugins list
+FirstNexus plugins list --enabled
+FirstNexus plugins list --verbose
+FirstNexus plugins list --json
+FirstNexus plugins search <query>
+FirstNexus plugins search <query> --limit 20
+FirstNexus plugins search <query> --json
+FirstNexus plugins install <path-or-spec>
+FirstNexus plugins inspect <id>
+FirstNexus plugins inspect <id> --runtime
+FirstNexus plugins inspect <id> --json
+FirstNexus plugins inspect --all
+FirstNexus plugins info <id>
+FirstNexus plugins enable <id>
+FirstNexus plugins disable <id>
+FirstNexus plugins registry
+FirstNexus plugins registry --refresh
+FirstNexus plugins uninstall <id>
+FirstNexus plugins doctor
+FirstNexus plugins update <id-or-npm-spec>
+FirstNexus plugins update --all
+FirstNexus plugins marketplace list <marketplace>
+FirstNexus plugins marketplace list <marketplace> --json
 ```
 
 For slow install, inspect, uninstall, or registry-refresh investigation, run the
@@ -60,34 +60,34 @@ command with `NEXISCLAW_PLUGIN_LIFECYCLE_TRACE=1`. The trace writes phase timing
 to stderr and keeps JSON output parseable. See [Debugging](/help/debugging#plugin-lifecycle-trace).
 
 <Note>
-In Nix mode (`NEXISCLAW_NIX_MODE=1`), plugin lifecycle mutators are disabled. Use the Nix source for this install instead of `plugins install`, `plugins update`, `plugins uninstall`, `plugins enable`, or `plugins disable`; for nix-NexisClaw, use the agent-first [Quick Start](https://github.com/NexisClaw/nix-NexisClaw#quick-start).
+In Nix mode (`NEXISCLAW_NIX_MODE=1`), plugin lifecycle mutators are disabled. Use the Nix source for this install instead of `plugins install`, `plugins update`, `plugins uninstall`, `plugins enable`, or `plugins disable`; for nix-FirstNexus, use the agent-first [Quick Start](https://github.com/FirstNexus/nix-FirstNexus#quick-start).
 </Note>
 
 <Note>
-Bundled plugins ship with NexisClaw. Some are enabled by default (for example bundled model providers, bundled speech providers, and the bundled browser plugin); others require `plugins enable`.
+Bundled plugins ship with FirstNexus. Some are enabled by default (for example bundled model providers, bundled speech providers, and the bundled browser plugin); others require `plugins enable`.
 
-Native NexisClaw plugins must ship `NexisClaw.plugin.json` with an inline JSON Schema (`configSchema`, even if empty). Compatible bundles use their own bundle manifests instead.
+Native FirstNexus plugins must ship `FirstNexus.plugin.json` with an inline JSON Schema (`configSchema`, even if empty). Compatible bundles use their own bundle manifests instead.
 
-`plugins list` shows `Format: NexisClaw` or `Format: bundle`. Verbose list/info output also shows the bundle subtype (`codex`, `claude`, or `cursor`) plus detected bundle capabilities.
+`plugins list` shows `Format: FirstNexus` or `Format: bundle`. Verbose list/info output also shows the bundle subtype (`codex`, `claude`, or `cursor`) plus detected bundle capabilities.
 </Note>
 
 ### Install
 
 ```bash
-NexisClaw plugins search "calendar"                   # search ClawHub plugins
-NexisClaw plugins install <package>                      # npm by default
-NexisClaw plugins install clawhub:<package>              # ClawHub only
-NexisClaw plugins install npm:<package>                  # npm only
-NexisClaw plugins install npm-pack:<path.tgz>            # local npm pack through npm install semantics
-NexisClaw plugins install git:github.com/<owner>/<repo>  # git repo
-NexisClaw plugins install git:github.com/<owner>/<repo>@<ref>
-NexisClaw plugins install <package> --force              # overwrite existing install
-NexisClaw plugins install <package> --pin                # pin version
-NexisClaw plugins install <package> --dangerously-force-unsafe-install
-NexisClaw plugins install <path>                         # local path
-NexisClaw plugins install <plugin>@<marketplace>         # marketplace
-NexisClaw plugins install <plugin> --marketplace <name>  # marketplace (explicit)
-NexisClaw plugins install <plugin> --marketplace https://github.com/<owner>/<repo>
+FirstNexus plugins search "calendar"                   # search ClawHub plugins
+FirstNexus plugins install <package>                      # npm by default
+FirstNexus plugins install clawhub:<package>              # ClawHub only
+FirstNexus plugins install npm:<package>                  # npm only
+FirstNexus plugins install npm-pack:<path.tgz>            # local npm pack through npm install semantics
+FirstNexus plugins install git:github.com/<owner>/<repo>  # git repo
+FirstNexus plugins install git:github.com/<owner>/<repo>@<ref>
+FirstNexus plugins install <package> --force              # overwrite existing install
+FirstNexus plugins install <package> --pin                # pin version
+FirstNexus plugins install <package> --dangerously-force-unsafe-install
+FirstNexus plugins install <path>                         # local path
+FirstNexus plugins install <plugin>@<marketplace>         # marketplace
+FirstNexus plugins install <plugin> --marketplace <name>  # marketplace (explicit)
+FirstNexus plugins install <plugin> --marketplace https://github.com/<owner>/<repo>
 ```
 
 Maintainers testing setup-time installs can override automatic plugin install
@@ -100,13 +100,13 @@ Bare package names install from npm by default during the launch cutover. Use `c
 
 `plugins search` queries ClawHub for installable plugin packages and prints
 install-ready package names. It searches code-plugin and bundle-plugin packages,
-not skills. Use `NexisClaw skills search` for ClawHub skills.
+not skills. Use `FirstNexus skills search` for ClawHub skills.
 
 <Note>
 ClawHub is the primary distribution and discovery surface for most plugins. Npm
-remains a supported fallback and direct-install path. NexisClaw-owned
-`@NexisClaw/*` plugin packages are published on npm again; see the current list
-on [npmjs.com/org/NexisClaw](https://www.npmjs.com/org/NexisClaw) or the
+remains a supported fallback and direct-install path. FirstNexus-owned
+`@FirstNexus/*` plugin packages are published on npm again; see the current list
+on [npmjs.com/org/FirstNexus](https://www.npmjs.com/org/FirstNexus) or the
 [plugin inventory](/plugins/plugin-inventory). Stable installs use `latest`.
 Beta-channel installs and updates prefer the npm `beta` dist-tag when that tag
 is available, then fall back to `latest`.
@@ -114,15 +114,15 @@ is available, then fall back to `latest`.
 
 <AccordionGroup>
   <Accordion title="Config includes and invalid-config repair">
-    If your `plugins` section is backed by a single-file `$include`, `plugins install/update/enable/disable/uninstall` write through to that included file and leave `NexisClaw.json` untouched. Root includes, include arrays, and includes with sibling overrides fail closed instead of flattening. See [Config includes](/gateway/configuration) for the supported shapes.
+    If your `plugins` section is backed by a single-file `$include`, `plugins install/update/enable/disable/uninstall` write through to that included file and leave `FirstNexus.json` untouched. Root includes, include arrays, and includes with sibling overrides fail closed instead of flattening. See [Config includes](/gateway/configuration) for the supported shapes.
 
-    If config is invalid during install, `plugins install` normally fails closed and tells you to run `NexisClaw doctor --fix` first. During Gateway startup and hot reload, invalid plugin config fails closed like any other invalid config; `NexisClaw doctor --fix` can quarantine the invalid plugin entry. The only documented install-time exception is a narrow bundled-plugin recovery path for plugins that explicitly opt into `NexisClaw.install.allowInvalidConfigRecovery`.
+    If config is invalid during install, `plugins install` normally fails closed and tells you to run `FirstNexus doctor --fix` first. During Gateway startup and hot reload, invalid plugin config fails closed like any other invalid config; `FirstNexus doctor --fix` can quarantine the invalid plugin entry. The only documented install-time exception is a narrow bundled-plugin recovery path for plugins that explicitly opt into `FirstNexus.install.allowInvalidConfigRecovery`.
 
   </Accordion>
   <Accordion title="--force and reinstall vs update">
-    `--force` reuses the existing install target and overwrites an already-installed plugin or hook pack in place. Use it when you are intentionally reinstalling the same id from a new local path, archive, ClawHub package, or npm artifact. For routine upgrades of an already tracked npm plugin, prefer `NexisClaw plugins update <id-or-npm-spec>`.
+    `--force` reuses the existing install target and overwrites an already-installed plugin or hook pack in place. Use it when you are intentionally reinstalling the same id from a new local path, archive, ClawHub package, or npm artifact. For routine upgrades of an already tracked npm plugin, prefer `FirstNexus plugins update <id-or-npm-spec>`.
 
-    If you run `plugins install` for a plugin id that is already installed, NexisClaw stops and points you at `plugins update <id-or-npm-spec>` for a normal upgrade, or at `plugins install <package> --force` when you genuinely want to overwrite the current install from a different source.
+    If you run `plugins install` for a plugin id that is already installed, FirstNexus stops and points you at `plugins update <id-or-npm-spec>` for a normal upgrade, or at `plugins install <package> --force` when you genuinely want to overwrite the current install from a different source.
 
   </Accordion>
   <Accordion title="--pin scope">
@@ -131,33 +131,33 @@ is available, then fall back to `latest`.
   <Accordion title="--dangerously-force-unsafe-install">
     `--dangerously-force-unsafe-install` is a break-glass option for false positives in the built-in dangerous-code scanner. It allows the install to continue even when the built-in scanner reports `critical` findings, but it does **not** bypass plugin `before_install` hook policy blocks and does **not** bypass scan failures.
 
-    This CLI flag applies to plugin install/update flows. Gateway-backed skill dependency installs use the matching `dangerouslyForceUnsafeInstall` request override, while `NexisClaw skills install` remains a separate ClawHub skill download/install flow.
+    This CLI flag applies to plugin install/update flows. Gateway-backed skill dependency installs use the matching `dangerouslyForceUnsafeInstall` request override, while `FirstNexus skills install` remains a separate ClawHub skill download/install flow.
 
     If a plugin you published on ClawHub is blocked by a registry scan, use the publisher steps in [ClawHub](/clawhub/security).
 
   </Accordion>
   <Accordion title="Hook packs and npm specs">
-    `plugins install` is also the install surface for hook packs that expose `NexisClaw.hooks` in `package.json`. Use `NexisClaw hooks` for filtered hook visibility and per-hook enablement, not package installation.
+    `plugins install` is also the install surface for hook packs that expose `FirstNexus.hooks` in `package.json`. Use `FirstNexus hooks` for filtered hook visibility and per-hook enablement, not package installation.
 
-    Npm specs are **registry-only** (package name + optional **exact version** or **dist-tag**). Git/URL/file specs and semver ranges are rejected. Dependency installs run project-local with `--ignore-scripts` for safety, even when your shell has global npm install settings. Managed plugin npm roots inherit NexisClaw's package-level npm `overrides`, so host security pins apply to hoisted plugin dependencies too.
+    Npm specs are **registry-only** (package name + optional **exact version** or **dist-tag**). Git/URL/file specs and semver ranges are rejected. Dependency installs run project-local with `--ignore-scripts` for safety, even when your shell has global npm install settings. Managed plugin npm roots inherit FirstNexus's package-level npm `overrides`, so host security pins apply to hoisted plugin dependencies too.
 
     Use `npm:<package>` when you want to make npm resolution explicit. Bare package specs also install directly from npm during the launch cutover.
 
-    Bare specs and `@latest` stay on the stable track. NexisClaw date-stamped correction versions such as `2026.5.3-1` are stable releases for this check. If npm resolves either of those to a prerelease, NexisClaw stops and asks you to opt in explicitly with a prerelease tag such as `@beta`/`@rc` or an exact prerelease version such as `@1.2.3-beta.4`.
+    Bare specs and `@latest` stay on the stable track. FirstNexus date-stamped correction versions such as `2026.5.3-1` are stable releases for this check. If npm resolves either of those to a prerelease, FirstNexus stops and asks you to opt in explicitly with a prerelease tag such as `@beta`/`@rc` or an exact prerelease version such as `@1.2.3-beta.4`.
 
-    If a bare install spec matches an official plugin id (for example `diffs`), NexisClaw installs the catalog entry directly. To install an npm package with the same name, use an explicit scoped spec (for example `@scope/diffs`).
+    If a bare install spec matches an official plugin id (for example `diffs`), FirstNexus installs the catalog entry directly. To install an npm package with the same name, use an explicit scoped spec (for example `@scope/diffs`).
 
   </Accordion>
   <Accordion title="Git repositories">
     Use `git:<repo>` to install directly from a git repository. Supported forms include `git:github.com/owner/repo`, `git:owner/repo`, full `https://`, `ssh://`, `git://`, `file://`, and `git@host:owner/repo.git` clone URLs. Add `@<ref>` or `#<ref>` to check out a branch, tag, or commit before install.
 
-    Git installs clone into a temporary directory, check out the requested ref when present, then use the normal plugin directory installer. That means manifest validation, dangerous-code scanning, package-manager install work, and install records behave like npm installs. Recorded git installs include the source URL/ref plus the resolved commit so `NexisClaw plugins update` can re-resolve the source later.
+    Git installs clone into a temporary directory, check out the requested ref when present, then use the normal plugin directory installer. That means manifest validation, dangerous-code scanning, package-manager install work, and install records behave like npm installs. Recorded git installs include the source URL/ref plus the resolved commit so `FirstNexus plugins update` can re-resolve the source later.
 
-    After installing from git, use `NexisClaw plugins inspect <id> --runtime --json` to verify runtime registrations such as gateway methods and CLI commands. If the plugin registered a CLI root with `api.registerCli`, execute that command directly through the NexisClaw root CLI, for example `NexisClaw demo-plugin ping`.
+    After installing from git, use `FirstNexus plugins inspect <id> --runtime --json` to verify runtime registrations such as gateway methods and CLI commands. If the plugin registered a CLI root with `api.registerCli`, execute that command directly through the FirstNexus root CLI, for example `FirstNexus demo-plugin ping`.
 
   </Accordion>
   <Accordion title="Archives">
-    Supported archives: `.zip`, `.tgz`, `.tar.gz`, `.tar`. Native NexisClaw plugin archives must contain a valid `NexisClaw.plugin.json` at the extracted plugin root; archives that only contain `package.json` are rejected before NexisClaw writes install records.
+    Supported archives: `.zip`, `.tgz`, `.tar.gz`, `.tar`. Native FirstNexus plugin archives must contain a valid `FirstNexus.plugin.json` at the extracted plugin root; archives that only contain `package.json` are rejected before FirstNexus writes install records.
 
     Use `npm-pack:<path.tgz>` when the file is an npm-pack tarball and you want
     to test the same managed npm-root install path used by registry installs,
@@ -173,42 +173,42 @@ is available, then fall back to `latest`.
 ClawHub installs use an explicit `clawhub:<package>` locator:
 
 ```bash
-NexisClaw plugins install clawhub:NexisClaw-codex-app-server
-NexisClaw plugins install clawhub:NexisClaw-codex-app-server@1.2.3
+FirstNexus plugins install clawhub:FirstNexus-codex-app-server
+FirstNexus plugins install clawhub:FirstNexus-codex-app-server@1.2.3
 ```
 
 Bare npm-safe plugin specs install from npm by default during the launch cutover:
 
 ```bash
-NexisClaw plugins install NexisClaw-codex-app-server
+FirstNexus plugins install FirstNexus-codex-app-server
 ```
 
 Use `npm:` to make npm-only resolution explicit:
 
 ```bash
-NexisClaw plugins install npm:NexisClaw-codex-app-server
-NexisClaw plugins install npm:@scope/plugin-name@1.0.1
+FirstNexus plugins install npm:FirstNexus-codex-app-server
+FirstNexus plugins install npm:@scope/plugin-name@1.0.1
 ```
 
-NexisClaw checks the advertised plugin API / minimum gateway compatibility before install. When the selected ClawHub version publishes a ClawPack artifact, NexisClaw downloads the versioned npm-pack `.tgz`, verifies the ClawHub digest header and the artifact digest, then installs it through the normal archive path. Older ClawHub versions without ClawPack metadata still install through the legacy package archive verification path. Recorded installs keep their ClawHub source metadata, artifact kind, npm integrity, npm shasum, tarball name, and ClawPack digest facts for later updates.
-Unversioned ClawHub installs keep an unversioned recorded spec so `NexisClaw plugins update` can follow newer ClawHub releases; explicit version or tag selectors such as `clawhub:pkg@1.2.3` and `clawhub:pkg@beta` remain pinned to that selector.
+FirstNexus checks the advertised plugin API / minimum gateway compatibility before install. When the selected ClawHub version publishes a ClawPack artifact, FirstNexus downloads the versioned npm-pack `.tgz`, verifies the ClawHub digest header and the artifact digest, then installs it through the normal archive path. Older ClawHub versions without ClawPack metadata still install through the legacy package archive verification path. Recorded installs keep their ClawHub source metadata, artifact kind, npm integrity, npm shasum, tarball name, and ClawPack digest facts for later updates.
+Unversioned ClawHub installs keep an unversioned recorded spec so `FirstNexus plugins update` can follow newer ClawHub releases; explicit version or tag selectors such as `clawhub:pkg@1.2.3` and `clawhub:pkg@beta` remain pinned to that selector.
 
 #### Marketplace shorthand
 
 Use `plugin@marketplace` shorthand when the marketplace name exists in Claude's local registry cache at `~/.claude/plugins/known_marketplaces.json`:
 
 ```bash
-NexisClaw plugins marketplace list <marketplace-name>
-NexisClaw plugins install <plugin-name>@<marketplace-name>
+FirstNexus plugins marketplace list <marketplace-name>
+FirstNexus plugins install <plugin-name>@<marketplace-name>
 ```
 
 Use `--marketplace` when you want to pass the marketplace source explicitly:
 
 ```bash
-NexisClaw plugins install <plugin-name> --marketplace <marketplace-name>
-NexisClaw plugins install <plugin-name> --marketplace <owner/repo>
-NexisClaw plugins install <plugin-name> --marketplace https://github.com/<owner>/<repo>
-NexisClaw plugins install <plugin-name> --marketplace ./my-marketplace
+FirstNexus plugins install <plugin-name> --marketplace <marketplace-name>
+FirstNexus plugins install <plugin-name> --marketplace <owner/repo>
+FirstNexus plugins install <plugin-name> --marketplace https://github.com/<owner>/<repo>
+FirstNexus plugins install <plugin-name> --marketplace ./my-marketplace
 ```
 
 <Tabs>
@@ -221,13 +221,13 @@ NexisClaw plugins install <plugin-name> --marketplace ./my-marketplace
 
   </Tab>
   <Tab title="Remote marketplace rules">
-    For remote marketplaces loaded from GitHub or git, plugin entries must stay inside the cloned marketplace repo. NexisClaw accepts relative path sources from that repo and rejects HTTP(S), absolute-path, git, GitHub, and other non-path plugin sources from remote manifests.
+    For remote marketplaces loaded from GitHub or git, plugin entries must stay inside the cloned marketplace repo. FirstNexus accepts relative path sources from that repo and rejects HTTP(S), absolute-path, git, GitHub, and other non-path plugin sources from remote manifests.
   </Tab>
 </Tabs>
 
-For local paths and archives, NexisClaw auto-detects:
+For local paths and archives, FirstNexus auto-detects:
 
-- native NexisClaw plugins (`NexisClaw.plugin.json`)
+- native FirstNexus plugins (`FirstNexus.plugin.json`)
 - Codex-compatible bundles (`.codex-plugin/plugin.json`)
 - Claude-compatible bundles (`.claude-plugin/plugin.json` or the default Claude component layout)
 - Cursor-compatible bundles (`.cursor-plugin/plugin.json`)
@@ -239,13 +239,13 @@ Compatible bundles install into the normal plugin root and participate in the sa
 ### List
 
 ```bash
-NexisClaw plugins list
-NexisClaw plugins list --enabled
-NexisClaw plugins list --verbose
-NexisClaw plugins list --json
-NexisClaw plugins search <query>
-NexisClaw plugins search <query> --limit 20
-NexisClaw plugins search <query> --json
+FirstNexus plugins list
+FirstNexus plugins list --enabled
+FirstNexus plugins list --verbose
+FirstNexus plugins list --json
+FirstNexus plugins search <query>
+FirstNexus plugins search <query> --limit 20
+FirstNexus plugins search <query> --json
 ```
 
 <ParamField path="--enabled" type="boolean">
@@ -259,10 +259,10 @@ NexisClaw plugins search <query> --json
 </ParamField>
 
 <Note>
-`plugins list` reads the persisted local plugin registry first, with a manifest-only derived fallback when the registry is missing or invalid. It is useful for checking whether a plugin is installed, enabled, and visible to cold startup planning, but it is not a live runtime probe of an already-running Gateway process. After changing plugin code, enablement, hook policy, or `plugins.load.paths`, restart the Gateway that serves the channel before expecting new `register(api)` code or hooks to run. For remote/container deployments, verify you are restarting the actual `NexisClaw gateway run` child, not only a wrapper process.
+`plugins list` reads the persisted local plugin registry first, with a manifest-only derived fallback when the registry is missing or invalid. It is useful for checking whether a plugin is installed, enabled, and visible to cold startup planning, but it is not a live runtime probe of an already-running Gateway process. After changing plugin code, enablement, hook policy, or `plugins.load.paths`, restart the Gateway that serves the channel before expecting new `register(api)` code or hooks to run. For remote/container deployments, verify you are restarting the actual `FirstNexus gateway run` child, not only a wrapper process.
 
 `plugins list --json` includes each plugin's `dependencyStatus` from `package.json`
-`dependencies` and `optionalDependencies`. NexisClaw checks whether those package
+`dependencies` and `optionalDependencies`. FirstNexus checks whether those package
 names are present along the plugin's normal Node `node_modules` lookup path; it
 does not import plugin runtime code, run a package manager, or repair missing
 dependencies.
@@ -271,24 +271,24 @@ dependencies.
 `plugins search` is a remote ClawHub catalog lookup. It does not inspect local
 state, mutate config, install packages, or load plugin runtime code. Search
 results include the ClawHub package name, family, channel, version, summary, and
-an install hint such as `NexisClaw plugins install clawhub:<package>`.
+an install hint such as `FirstNexus plugins install clawhub:<package>`.
 
 For bundled plugin work inside a packaged Docker image, bind-mount the plugin
 source directory over the matching packaged source path, such as
-`/app/extensions/synology-chat`. NexisClaw will discover that mounted source
+`/app/extensions/synology-chat`. FirstNexus will discover that mounted source
 overlay before `/app/dist/extensions/synology-chat`; a plain copied source
 directory remains inert so normal packaged installs still use compiled dist.
 
 For runtime hook debugging:
 
-- `NexisClaw plugins inspect <id> --runtime --json` shows registered hooks and diagnostics from a module-loaded inspection pass. Runtime inspection never installs dependencies; use `NexisClaw doctor --fix` to clean legacy dependency state or recover missing downloadable plugins that are referenced by config.
-- `NexisClaw gateway status --deep --require-rpc` confirms the reachable Gateway, service/process hints, config path, and RPC health.
+- `FirstNexus plugins inspect <id> --runtime --json` shows registered hooks and diagnostics from a module-loaded inspection pass. Runtime inspection never installs dependencies; use `FirstNexus doctor --fix` to clean legacy dependency state or recover missing downloadable plugins that are referenced by config.
+- `FirstNexus gateway status --deep --require-rpc` confirms the reachable Gateway, service/process hints, config path, and RPC health.
 - Non-bundled conversation hooks (`llm_input`, `llm_output`, `before_model_resolve`, `before_agent_reply`, `before_agent_run`, `before_agent_finalize`, `agent_end`) require `plugins.entries.<id>.hooks.allowConversationAccess=true`.
 
 Use `--link` to avoid copying a local directory (adds to `plugins.load.paths`):
 
 ```bash
-NexisClaw plugins install -l ./my-plugin
+FirstNexus plugins install -l ./my-plugin
 ```
 
 <Note>
@@ -299,19 +299,19 @@ Use `--pin` on npm installs to save the resolved exact spec (`name@version`) in 
 
 ### Plugin index
 
-Plugin install metadata is machine-managed state, not user config. Installs and updates write it to `plugins/installs.json` under the active NexisClaw state directory. Its top-level `installRecords` map is the durable source of install metadata, including records for broken or missing plugin manifests. The `plugins` array is the manifest-derived cold registry cache. The file includes a do-not-edit warning and is used by `NexisClaw plugins update`, uninstall, diagnostics, and the cold plugin registry.
+Plugin install metadata is machine-managed state, not user config. Installs and updates write it to `plugins/installs.json` under the active FirstNexus state directory. Its top-level `installRecords` map is the durable source of install metadata, including records for broken or missing plugin manifests. The `plugins` array is the manifest-derived cold registry cache. The file includes a do-not-edit warning and is used by `FirstNexus plugins update`, uninstall, diagnostics, and the cold plugin registry.
 
-When NexisClaw sees shipped legacy `plugins.installs` records in config, runtime reads treat them as compatibility input without rewriting `NexisClaw.json`. Explicit plugin writes and `NexisClaw doctor --fix` move those records into the plugin index and remove the config key when config writes are allowed; if either write fails, the config records are kept so the install metadata is not lost.
+When FirstNexus sees shipped legacy `plugins.installs` records in config, runtime reads treat them as compatibility input without rewriting `FirstNexus.json`. Explicit plugin writes and `FirstNexus doctor --fix` move those records into the plugin index and remove the config key when config writes are allowed; if either write fails, the config records are kept so the install metadata is not lost.
 
 ### Uninstall
 
 ```bash
-NexisClaw plugins uninstall <id>
-NexisClaw plugins uninstall <id> --dry-run
-NexisClaw plugins uninstall <id> --keep-files
+FirstNexus plugins uninstall <id>
+FirstNexus plugins uninstall <id> --dry-run
+FirstNexus plugins uninstall <id> --keep-files
 ```
 
-`uninstall` removes plugin records from `plugins.entries`, the persisted plugin index, plugin allow/deny list entries, and linked `plugins.load.paths` entries when applicable. Unless `--keep-files` is set, uninstall also removes the tracked managed install directory when it is inside NexisClaw's plugin extensions root. For active memory plugins, the memory slot resets to `memory-core`.
+`uninstall` removes plugin records from `plugins.entries`, the persisted plugin index, plugin allow/deny list entries, and linked `plugins.load.paths` entries when applicable. Unless `--keep-files` is set, uninstall also removes the tracked managed install directory when it is inside FirstNexus's plugin extensions root. For active memory plugins, the memory slot resets to `memory-core`.
 
 <Note>
 `--keep-config` is supported as a deprecated alias for `--keep-files`.
@@ -320,32 +320,32 @@ NexisClaw plugins uninstall <id> --keep-files
 ### Update
 
 ```bash
-NexisClaw plugins update <id-or-npm-spec>
-NexisClaw plugins update --all
-NexisClaw plugins update <id-or-npm-spec> --dry-run
-NexisClaw plugins update @NexisClaw/voice-call
-NexisClaw plugins update NexisClaw-codex-app-server --dangerously-force-unsafe-install
+FirstNexus plugins update <id-or-npm-spec>
+FirstNexus plugins update --all
+FirstNexus plugins update <id-or-npm-spec> --dry-run
+FirstNexus plugins update @FirstNexus/voice-call
+FirstNexus plugins update FirstNexus-codex-app-server --dangerously-force-unsafe-install
 ```
 
 Updates apply to tracked plugin installs in the managed plugin index and tracked hook-pack installs in `hooks.internal.installs`.
 
 <AccordionGroup>
   <Accordion title="Resolving plugin id vs npm spec">
-    When you pass a plugin id, NexisClaw reuses the recorded install spec for that plugin. That means previously stored dist-tags such as `@beta` and exact pinned versions continue to be used on later `update <id>` runs.
+    When you pass a plugin id, FirstNexus reuses the recorded install spec for that plugin. That means previously stored dist-tags such as `@beta` and exact pinned versions continue to be used on later `update <id>` runs.
 
-    For npm installs, you can also pass an explicit npm package spec with a dist-tag or exact version. NexisClaw resolves that package name back to the tracked plugin record, updates that installed plugin, and records the new npm spec for future id-based updates.
+    For npm installs, you can also pass an explicit npm package spec with a dist-tag or exact version. FirstNexus resolves that package name back to the tracked plugin record, updates that installed plugin, and records the new npm spec for future id-based updates.
 
     Passing the npm package name without a version or tag also resolves back to the tracked plugin record. Use this when a plugin was pinned to an exact version and you want to move it back to the registry's default release line.
 
   </Accordion>
   <Accordion title="Beta channel updates">
-    `NexisClaw plugins update` reuses the tracked plugin spec unless you pass a new spec. `NexisClaw update` additionally knows the active NexisClaw update channel: on the beta channel, default-line npm and ClawHub plugin records try `@beta` first, then fall back to the recorded default/latest spec if no plugin beta release exists. That fallback is reported as a warning and does not fail the core update. Exact versions and explicit tags stay pinned to that selector.
+    `FirstNexus plugins update` reuses the tracked plugin spec unless you pass a new spec. `FirstNexus update` additionally knows the active FirstNexus update channel: on the beta channel, default-line npm and ClawHub plugin records try `@beta` first, then fall back to the recorded default/latest spec if no plugin beta release exists. That fallback is reported as a warning and does not fail the core update. Exact versions and explicit tags stay pinned to that selector.
 
   </Accordion>
   <Accordion title="Version checks and integrity drift">
-    Before a live npm update, NexisClaw checks the installed package version against the npm registry metadata. If the installed version and recorded artifact identity already match the resolved target, the update is skipped without downloading, reinstalling, or rewriting `NexisClaw.json`.
+    Before a live npm update, FirstNexus checks the installed package version against the npm registry metadata. If the installed version and recorded artifact identity already match the resolved target, the update is skipped without downloading, reinstalling, or rewriting `FirstNexus.json`.
 
-    When a stored integrity hash exists and the fetched artifact hash changes, NexisClaw treats that as npm artifact drift. The interactive `NexisClaw plugins update` command prints the expected and actual hashes and asks for confirmation before proceeding. Non-interactive update helpers fail closed unless the caller supplies an explicit continuation policy.
+    When a stored integrity hash exists and the fetched artifact hash changes, FirstNexus treats that as npm artifact drift. The interactive `FirstNexus plugins update` command prints the expected and actual hashes and asks for confirmation before proceeding. Non-interactive update helpers fail closed unless the caller supplies an explicit continuation policy.
 
   </Accordion>
   <Accordion title="--dangerously-force-unsafe-install on update">
@@ -356,14 +356,14 @@ Updates apply to tracked plugin installs in the managed plugin index and tracked
 ### Inspect
 
 ```bash
-NexisClaw plugins inspect <id>
-NexisClaw plugins inspect <id> --runtime
-NexisClaw plugins inspect <id> --json
+FirstNexus plugins inspect <id>
+FirstNexus plugins inspect <id> --runtime
+FirstNexus plugins inspect <id> --json
 ```
 
-Inspect shows identity, load status, source, manifest capabilities, policy flags, diagnostics, install metadata, bundle capabilities, and any detected MCP or LSP server support without importing plugin runtime by default. Add `--runtime` to load the plugin module and include registered hooks, tools, commands, services, gateway methods, and HTTP routes. Runtime inspection reports missing plugin dependencies directly; installs and repairs stay in `NexisClaw plugins install`, `NexisClaw plugins update`, and `NexisClaw doctor --fix`.
+Inspect shows identity, load status, source, manifest capabilities, policy flags, diagnostics, install metadata, bundle capabilities, and any detected MCP or LSP server support without importing plugin runtime by default. Add `--runtime` to load the plugin module and include registered hooks, tools, commands, services, gateway methods, and HTTP routes. Runtime inspection reports missing plugin dependencies directly; installs and repairs stay in `FirstNexus plugins install`, `FirstNexus plugins update`, and `FirstNexus doctor --fix`.
 
-Plugin-owned CLI commands are usually installed as root `NexisClaw` command groups, but plugins may also register nested commands under a core parent such as `NexisClaw nodes`. After `inspect --runtime` shows a command under `cliCommands`, run it at the listed path; for example a plugin that registers `demo-git` can be verified with `NexisClaw demo-git ping`.
+Plugin-owned CLI commands are usually installed as root `FirstNexus` command groups, but plugins may also register nested commands under a core parent such as `FirstNexus nodes`. After `inspect --runtime` shows a command under `cliCommands`, run it at the listed path; for example a plugin that registers `demo-git` can be verified with `FirstNexus demo-git ping`.
 
 Each plugin is classified by what it actually registers at runtime:
 
@@ -381,7 +381,7 @@ The `--json` flag outputs a machine-readable report suitable for scripting and a
 ### Doctor
 
 ```bash
-NexisClaw plugins doctor
+FirstNexus plugins doctor
 ```
 
 `doctor` reports plugin load errors, manifest/discovery diagnostics, and compatibility notices. When everything is clean it prints `No plugin issues detected.`
@@ -393,26 +393,26 @@ For module-shape failures such as missing `register`/`activate` exports, rerun w
 ### Registry
 
 ```bash
-NexisClaw plugins registry
-NexisClaw plugins registry --refresh
-NexisClaw plugins registry --json
+FirstNexus plugins registry
+FirstNexus plugins registry --refresh
+FirstNexus plugins registry --json
 ```
 
-The local plugin registry is NexisClaw's persisted cold read model for installed plugin identity, enablement, source metadata, and contribution ownership. Normal startup, provider owner lookup, channel setup classification, and plugin inventory can read it without importing plugin runtime modules.
+The local plugin registry is FirstNexus's persisted cold read model for installed plugin identity, enablement, source metadata, and contribution ownership. Normal startup, provider owner lookup, channel setup classification, and plugin inventory can read it without importing plugin runtime modules.
 
 Use `plugins registry` to inspect whether the persisted registry is present, current, or stale. Use `--refresh` to rebuild it from the persisted plugin index, config policy, and manifest/package metadata. This is a repair path, not a runtime activation path.
 
-`NexisClaw doctor --fix` also repairs registry-adjacent managed npm drift: if an orphaned or recovered `@NexisClaw/*` package under the managed plugin npm root shadows a bundled plugin, doctor removes that stale package and rebuilds the registry so startup validates against the bundled manifest. Doctor also relinks the host `NexisClaw` package into managed npm plugins that declare `peerDependencies.NexisClaw`, so package-local runtime imports such as `NexisClaw/plugin-sdk/*` resolve after updates or npm repairs.
+`FirstNexus doctor --fix` also repairs registry-adjacent managed npm drift: if an orphaned or recovered `@FirstNexus/*` package under the managed plugin npm root shadows a bundled plugin, doctor removes that stale package and rebuilds the registry so startup validates against the bundled manifest. Doctor also relinks the host `FirstNexus` package into managed npm plugins that declare `peerDependencies.FirstNexus`, so package-local runtime imports such as `FirstNexus/plugin-sdk/*` resolve after updates or npm repairs.
 
 <Warning>
-`NEXISCLAW_DISABLE_PERSISTED_PLUGIN_REGISTRY=1` is a deprecated break-glass compatibility switch for registry read failures. Prefer `plugins registry --refresh` or `NexisClaw doctor --fix`; the env fallback is only for emergency startup recovery while the migration rolls out.
+`NEXISCLAW_DISABLE_PERSISTED_PLUGIN_REGISTRY=1` is a deprecated break-glass compatibility switch for registry read failures. Prefer `plugins registry --refresh` or `FirstNexus doctor --fix`; the env fallback is only for emergency startup recovery while the migration rolls out.
 </Warning>
 
 ### Marketplace
 
 ```bash
-NexisClaw plugins marketplace list <source>
-NexisClaw plugins marketplace list <source> --json
+FirstNexus plugins marketplace list <source>
+FirstNexus plugins marketplace list <source> --json
 ```
 
 Marketplace list accepts a local marketplace path, a `marketplace.json` path, a GitHub shorthand like `owner/repo`, a GitHub repo URL, or a git URL. `--json` prints the resolved source label plus the parsed marketplace manifest and plugin entries.

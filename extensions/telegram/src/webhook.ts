@@ -1,33 +1,33 @@
 import { createServer } from "node:http";
 import type { IncomingMessage } from "node:http";
 import net from "node:net";
-import { InputFile } from "grammy";
-import type { ChannelAccountSnapshot } from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { isDiagnosticsEnabled } from "NexisClaw/plugin-sdk/diagnostic-runtime";
+import type { ChannelAccountSnapshot } from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { isDiagnosticsEnabled } from "FirstNexus/plugin-sdk/diagnostic-runtime";
 import {
   logWebhookError,
   logWebhookProcessed,
   logWebhookReceived,
   startDiagnosticHeartbeat,
   stopDiagnosticHeartbeat,
-} from "NexisClaw/plugin-sdk/logging-core";
-import type { BackoffPolicy, RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+} from "FirstNexus/plugin-sdk/logging-core";
+import type { BackoffPolicy, RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import {
   computeBackoff,
   defaultRuntime,
   formatDurationPrecise,
   sleepWithAbort,
-} from "NexisClaw/plugin-sdk/runtime-env";
-import { safeEqualSecret } from "NexisClaw/plugin-sdk/security-runtime";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/ssrf-runtime";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/runtime-env";
+import { safeEqualSecret } from "FirstNexus/plugin-sdk/security-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/ssrf-runtime";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import {
   applyBasicWebhookRequestGuards,
   createFixedWindowRateLimiter,
   WEBHOOK_RATE_LIMIT_DEFAULTS,
-} from "NexisClaw/plugin-sdk/webhook-ingress";
-import { readJsonBodyWithLimit } from "NexisClaw/plugin-sdk/webhook-request-guards";
+} from "FirstNexus/plugin-sdk/webhook-ingress";
+import { readJsonBodyWithLimit } from "FirstNexus/plugin-sdk/webhook-request-guards";
+import { InputFile } from "grammy";
 import { resolveTelegramAllowedUpdates } from "./allowed-updates.js";
 import { withTelegramApiErrorLogging } from "./api-logging.js";
 import { createTelegramBot } from "./bot.js";
@@ -209,7 +209,7 @@ function resolveForwardedClientIp(
   return undefined;
 }
 
-function resolveTelegramWebhookClientIp(req: IncomingMessage, config?: NexisClawConfig): string {
+function resolveTelegramWebhookClientIp(req: IncomingMessage, config?: FirstNexusConfig): string {
   const remoteAddress = parseIpLiteral(req.socket.remoteAddress);
   const trustedProxies = config?.gateway?.trustedProxies;
   if (!remoteAddress) {
@@ -237,7 +237,7 @@ function resolveTelegramWebhookClientIp(req: IncomingMessage, config?: NexisClaw
 function resolveTelegramWebhookRateLimitKey(
   req: IncomingMessage,
   path: string,
-  config?: NexisClawConfig,
+  config?: FirstNexusConfig,
 ): string {
   return `${path}:${resolveTelegramWebhookClientIp(req, config)}`;
 }
@@ -245,7 +245,7 @@ function resolveTelegramWebhookRateLimitKey(
 export async function startTelegramWebhook(opts: {
   token: string;
   accountId?: string;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   path?: string;
   port?: number;
   host?: string;

@@ -128,16 +128,16 @@ describe("resolveSlackThreadTs", () => {
 
 describe("buildSlackSlashCommandMatcher", () => {
   it("matches with or without a leading slash", () => {
-    const matcher = buildSlackSlashCommandMatcher("NexisClaw");
+    const matcher = buildSlackSlashCommandMatcher("FirstNexus");
 
-    expect(matcher.test("NexisClaw")).toBe(true);
-    expect(matcher.test("/NexisClaw")).toBe(true);
+    expect(matcher.test("FirstNexus")).toBe(true);
+    expect(matcher.test("/FirstNexus")).toBe(true);
   });
 
   it("does not match similar names", () => {
-    const matcher = buildSlackSlashCommandMatcher("NexisClaw");
+    const matcher = buildSlackSlashCommandMatcher("FirstNexus");
 
-    expect(matcher.test("/NexisClaw-bot")).toBe(false);
-    expect(matcher.test("NexisClaw-bot")).toBe(false);
+    expect(matcher.test("/FirstNexus-bot")).toBe(false);
+    expect(matcher.test("FirstNexus-bot")).toBe(false);
   });
 });

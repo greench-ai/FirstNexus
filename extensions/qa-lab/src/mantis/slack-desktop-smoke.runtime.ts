@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { formatErrorMessage } from "NexisClaw/plugin-sdk/error-runtime";
-import { pathExists } from "NexisClaw/plugin-sdk/security-runtime";
+import { formatErrorMessage } from "FirstNexus/plugin-sdk/error-runtime";
+import { pathExists } from "FirstNexus/plugin-sdk/security-runtime";
 import { ensureRepoBoundDirectory, resolveRepoRelativeOutputDir } from "../cli-paths.js";
 import {
   acquireQaCredentialLease,
@@ -428,7 +428,7 @@ slack_url="$slack_url_override"
 if [ -z "$slack_url" ] && [ -n "$team_id" ] && [ -n "\${NEXISCLAW_QA_SLACK_CHANNEL_ID:-}" ]; then
   slack_url="https://app.slack.com/client/$team_id/$NEXISCLAW_QA_SLACK_CHANNEL_ID"
 fi
-profile="\${NEXISCLAW_MANTIS_SLACK_BROWSER_PROFILE_DIR:-$HOME/.config/NexisClaw-mantis/slack-chrome-profile}"
+profile="\${NEXISCLAW_MANTIS_SLACK_BROWSER_PROFILE_DIR:-$HOME/.config/FirstNexus-mantis/slack-chrome-profile}"
 mkdir -p "$profile"
 if [ "$setup_gateway" = "1" ]; then
   export SLACK_BOT_TOKEN="\${NEXISCLAW_MANTIS_SLACK_BOT_TOKEN:-\${SLACK_BOT_TOKEN:-}}"
@@ -516,7 +516,7 @@ qa_status=0
     exit 3
   fi
   if [ "$setup_gateway" = "1" ]; then
-    export NEXISCLAW_HOME="$HOME/.NexisClaw-mantis/slack-NexisClaw"
+    export NEXISCLAW_HOME="$HOME/.FirstNexus-mantis/slack-FirstNexus"
     mkdir -p "$NEXISCLAW_HOME"
     cat >"$out/slack.socket.patch.json5" <<MANTIS_SLACK_PATCH
 {
@@ -545,20 +545,20 @@ qa_status=0
   },
 }
 MANTIS_SLACK_PATCH
-    pnpm NexisClaw config patch --file "$out/slack.socket.patch.json5" --dry-run
-    pnpm NexisClaw config patch --file "$out/slack.socket.patch.json5"
-    nohup pnpm NexisClaw gateway run --dev --allow-unconfigured --port 38973 --cli-backend-logs </dev/null >"$out/NexisClaw-gateway.log" 2>&1 &
+    pnpm FirstNexus config patch --file "$out/slack.socket.patch.json5" --dry-run
+    pnpm FirstNexus config patch --file "$out/slack.socket.patch.json5"
+    nohup pnpm FirstNexus gateway run --dev --allow-unconfigured --port 38973 --cli-backend-logs </dev/null >"$out/FirstNexus-gateway.log" 2>&1 &
     gateway_pid="$!"
-    echo "$gateway_pid" >"$out/NexisClaw-gateway.pid"
+    echo "$gateway_pid" >"$out/FirstNexus-gateway.pid"
     sleep 12
     if ! kill -0 "$gateway_pid" >/dev/null 2>&1; then
-      echo "NexisClaw gateway exited during startup." >&2
+      echo "FirstNexus gateway exited during startup." >&2
       wait "$gateway_pid" || true
       exit 1
     fi
     disown "$gateway_pid" >/dev/null 2>&1 || true
   else
-    qa_args=(NexisClaw qa slack --repo-root . --output-dir "$out/slack-qa" --provider-mode "$provider_mode" --model "$primary_model" --alt-model "$alternate_model" --credential-source "$credential_source" --credential-role "$credential_role")
+    qa_args=(FirstNexus qa slack --repo-root . --output-dir "$out/slack-qa" --provider-mode "$provider_mode" --model "$primary_model" --alt-model "$alternate_model" --credential-source "$credential_source" --credential-role "$credential_role")
     if [ "$fast_mode" = "1" ]; then
       qa_args+=(--fast)
     fi
@@ -580,8 +580,8 @@ cat >"$out/remote-metadata.json" <<MANTIS_REMOTE_METADATA
   "display": "$DISPLAY",
   "openedUrl": "$slack_url",
   "gatewaySetup": $setup_gateway,
-  "gatewayAlive": $(if [ "$setup_gateway" = "1" ] && [ -f "$out/NexisClaw-gateway.pid" ] && kill -0 "$(cat "$out/NexisClaw-gateway.pid")" >/dev/null 2>&1; then echo true; else echo false; fi),
-  "gatewayPid": "$(if [ -f "$out/NexisClaw-gateway.pid" ]; then cat "$out/NexisClaw-gateway.pid"; fi)",
+  "gatewayAlive": $(if [ "$setup_gateway" = "1" ] && [ -f "$out/FirstNexus-gateway.pid" ] && kill -0 "$(cat "$out/FirstNexus-gateway.pid")" >/dev/null 2>&1; then echo true; else echo false; fi),
+  "gatewayPid": "$(if [ -f "$out/FirstNexus-gateway.pid" ]; then cat "$out/FirstNexus-gateway.pid"; fi)",
   "gatewayPort": 38973,
   "qaExitCode": $qa_status,
   "credentialSource": "$credential_source",
@@ -731,7 +731,7 @@ export async function runMantisSlackDesktopSmoke(
   const explicitLeaseId = trimToValue(opts.leaseId) ?? trimToValue(env[CRABBOX_LEASE_ID_ENV]);
   const keepLease = opts.keepLease ?? (gatewaySetup || isTruthyOptIn(env[CRABBOX_KEEP_ENV]));
   const createdLease = explicitLeaseId === undefined;
-  const remoteOutputDir = `/tmp/NexisClaw-mantis-slack-desktop-${startedAt
+  const remoteOutputDir = `/tmp/FirstNexus-mantis-slack-desktop-${startedAt
     .toISOString()
     .replace(/[^0-9A-Za-z]/gu, "-")}`;
   let credentialLease: SlackGatewayCredentialLease | undefined;
@@ -855,7 +855,7 @@ export async function runMantisSlackDesktopSmoke(
       throw remoteRunError;
     }
     if (gatewaySetup && !gatewaySetupCompleted) {
-      throw new Error("Slack desktop gateway setup did not report a live NexisClaw gateway.");
+      throw new Error("Slack desktop gateway setup did not report a live FirstNexus gateway.");
     }
     summary = {
       artifacts: {

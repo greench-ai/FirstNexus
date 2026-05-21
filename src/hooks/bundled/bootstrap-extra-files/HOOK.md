@@ -1,15 +1,15 @@
 ---
 name: bootstrap-extra-files
 description: "Inject additional workspace bootstrap files via glob/path patterns"
-homepage: https://docs.NexisClaw.ai/automation/hooks#bootstrap-extra-files
+homepage: https://docs.FirstNexus.ai/automation/hooks#bootstrap-extra-files
 metadata:
   {
-    "NexisClaw":
+    "FirstNexus":
       {
         "emoji": "📎",
         "events": ["agent:bootstrap"],
         "requires": { "config": ["workspace.dir"] },
-        "install": [{ "id": "bundled", "kind": "bundled", "label": "Bundled with NexisClaw" }],
+        "install": [{ "id": "bundled", "kind": "bundled", "label": "Bundled with FirstNexus" }],
       },
   }
 ---

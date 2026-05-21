@@ -8,7 +8,7 @@ import {
 
 describe("irc normalize", () => {
   it("normalizes targets", () => {
-    expect(normalizeIrcMessagingTarget("irc:channel:NexisClaw")).toBe("#NexisClaw");
+    expect(normalizeIrcMessagingTarget("irc:channel:FirstNexus")).toBe("#FirstNexus");
     expect(normalizeIrcMessagingTarget("user:alice")).toBe("alice");
     expect(normalizeIrcMessagingTarget("\n")).toBeUndefined();
   });

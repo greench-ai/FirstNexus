@@ -17,7 +17,7 @@ describe("status.scan.config-shared", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.resolveConfigPath.mockReturnValue(
-      `/tmp/NexisClaw-status-scan-config-shared-missing-${process.pid}.json`,
+      `/tmp/FirstNexus-status-scan-config-shared-missing-${process.pid}.json`,
     );
   });
 
@@ -105,7 +105,7 @@ describe("status.scan.config-shared", () => {
     });
 
     expect(result.secretDiagnostics).toEqual([
-      "NEXISCLAW_GATEWAY_TOKEN conflicts with gateway.auth.token: Remove NEXISCLAW_GATEWAY_TOKEN from the shell, ~/.NexisClaw/.env, or launchctl env if gateway.auth.token is intended, or point gateway.auth.token at ${NEXISCLAW_GATEWAY_TOKEN} if the env var should be canonical.",
+      "NEXISCLAW_GATEWAY_TOKEN conflicts with gateway.auth.token: Remove NEXISCLAW_GATEWAY_TOKEN from the shell, ~/.FirstNexus/.env, or launchctl env if gateway.auth.token is intended, or point gateway.auth.token at ${NEXISCLAW_GATEWAY_TOKEN} if the env var should be canonical.",
     ]);
   });
 

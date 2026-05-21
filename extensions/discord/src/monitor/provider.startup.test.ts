@@ -24,15 +24,15 @@ vi.mock("../internal/voice.js", () => ({
   },
 }));
 
-vi.mock("NexisClaw/plugin-sdk/dangerous-name-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/dangerous-name-runtime", () => ({
   isDangerousNameMatchingEnabled: () => false,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/runtime-env", () => ({
+vi.mock("FirstNexus/plugin-sdk/runtime-env", () => ({
   danger: (value: string) => value,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/string-coerce-runtime", () => ({
+vi.mock("FirstNexus/plugin-sdk/string-coerce-runtime", () => ({
   normalizeOptionalString: (value: string | null | undefined) => {
     if (typeof value !== "string") {
       return undefined;

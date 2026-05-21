@@ -8,7 +8,7 @@ vi.mock("../../tts/tts.js", () => ({
 describe("buildCliAgentSystemPrompt", () => {
   it("uses config-backed sub-agent delegation mode", () => {
     const prompt = buildCliAgentSystemPrompt({
-      workspaceDir: "/tmp/NexisClaw",
+      workspaceDir: "/tmp/FirstNexus",
       config: {
         agents: {
           defaults: {

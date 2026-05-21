@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../../config/config.js";
+import type { FirstNexusConfig } from "../../config/config.js";
 import * as pdfExtractModule from "../../media/pdf-extract.js";
 import * as webMedia from "../../media/web-media.js";
 import type { AuthProfileStore } from "../auth-profiles/types.js";
@@ -69,16 +69,16 @@ async function withConfiguredPdfTool(
   });
 }
 
-function withPdfModel(primary: string): NexisClawConfig {
+function withPdfModel(primary: string): FirstNexusConfig {
   return {
     agents: { defaults: { pdfModel: { primary } } },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
-function withDefaultModel(primary: string): NexisClawConfig {
+function withDefaultModel(primary: string): FirstNexusConfig {
   return {
     agents: { defaults: { model: { primary } } },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function expectFields(value: unknown, expected: Record<string, unknown>): void {
@@ -143,7 +143,7 @@ async function stubPdfToolInfra(
           }) as never;
   vi.spyOn(modelDiscovery, "discoverModels").mockReturnValue({ find } as never);
 
-  vi.spyOn(modelsConfig, "ensureNexisClawModelsJson").mockResolvedValue({
+  vi.spyOn(modelsConfig, "ensureFirstNexusModelsJson").mockResolvedValue({
     agentDir,
     wrote: false,
   });
@@ -157,7 +157,7 @@ async function stubPdfToolInfra(
 async function withManagedInboundPdf(
   run: (params: { stateDir: string; mediaId: string; mediaPath: string }) => Promise<void>,
 ) {
-  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-pdf-managed-inbound-"));
+  const stateDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-pdf-managed-inbound-"));
   const inboundDir = path.join(stateDir, "media", "inbound");
   const mediaId = "claim-check-test.pdf";
   const mediaPath = path.join(inboundDir, mediaId);
@@ -290,8 +290,8 @@ describe("createPdfTool", () => {
 
   it("respects fsPolicy.workspaceOnly for non-sandbox pdf paths", async () => {
     await withTempPdfAgentDir(async (agentDir) => {
-      const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-pdf-ws-"));
-      const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-pdf-out-"));
+      const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-pdf-ws-"));
+      const outsideDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-pdf-out-"));
       try {
         const cfg = withPdfModel(ANTHROPIC_PDF_MODEL);
         const tool = requirePdfTool(
@@ -368,7 +368,7 @@ describe("createPdfTool", () => {
         input: ["text", "document"],
       });
       vi.spyOn(pdfNativeProviders, "anthropicAnalyzePdf").mockResolvedValue("native summary");
-      const cfg: NexisClawConfig = {
+      const cfg: FirstNexusConfig = {
         ...withPdfModel(ANTHROPIC_PDF_MODEL),
         tools: {
           web: {
@@ -439,10 +439,10 @@ describe("createPdfTool", () => {
         pdf: "/tmp/doc.pdf",
       });
 
-      const ensureModelsJsonMock = vi.mocked(modelsConfig.ensureNexisClawModelsJson);
+      const ensureModelsJsonMock = vi.mocked(modelsConfig.ensureFirstNexusModelsJson);
       const [modelsConfigArg, modelsAgentDir, modelsOptions] = firstMockCall(
         ensureModelsJsonMock,
-        "ensureNexisClawModelsJson",
+        "ensureFirstNexusModelsJson",
       );
       expectFields(
         (modelsConfigArg as { agents?: { defaults?: unknown } } | undefined)?.agents?.defaults,

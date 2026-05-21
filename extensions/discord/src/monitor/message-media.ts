@@ -1,17 +1,17 @@
 import { StickerFormatType, type APIAttachment, type APIStickerItem } from "discord-api-types/v10";
-import { getFileExtension } from "NexisClaw/plugin-sdk/media-mime";
+import { getFileExtension } from "FirstNexus/plugin-sdk/media-mime";
 import {
   fetchRemoteMedia,
   saveMediaBuffer,
   type FetchLike,
-} from "NexisClaw/plugin-sdk/media-runtime";
-import { buildMediaPayload } from "NexisClaw/plugin-sdk/reply-payload";
-import { logVerbose } from "NexisClaw/plugin-sdk/runtime-env";
-import type { SsrFPolicy } from "NexisClaw/plugin-sdk/ssrf-runtime";
+} from "FirstNexus/plugin-sdk/media-runtime";
+import { buildMediaPayload } from "FirstNexus/plugin-sdk/reply-payload";
+import { logVerbose } from "FirstNexus/plugin-sdk/runtime-env";
+import type { SsrFPolicy } from "FirstNexus/plugin-sdk/ssrf-runtime";
 import {
   normalizeLowercaseStringOrEmpty,
   normalizeOptionalString,
-} from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import type { Message } from "../internal/discord.js";
 import {
   resolveDiscordMessageSnapshots,

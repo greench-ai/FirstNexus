@@ -1,6 +1,6 @@
 import type { PluginHealthErrorSummary } from "../../commands/health.types.js";
 import { createConfigIO } from "../../config/io.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { GatewayServiceRuntime } from "../../daemon/service-runtime.js";
 import type { GatewayService } from "../../daemon/service.js";
 import { resolveGatewayProbeAuthSafeWithSecretInputs } from "../../gateway/probe-auth.js";
@@ -276,7 +276,7 @@ async function resolveGatewayRestartProbeAuth(
     pluginValidation: "skip",
   })
     .readBestEffortConfig()
-    .catch((): NexisClawConfig => ({}));
+    .catch((): FirstNexusConfig => ({}));
   const resolved = await resolveGatewayProbeAuthSafeWithSecretInputs({
     cfg,
     mode: "local",

@@ -1,4 +1,4 @@
-import type { ReplyToMode } from "NexisClaw/plugin-sdk/config-contracts";
+import type { ReplyToMode } from "FirstNexus/plugin-sdk/config-contracts";
 import type { SlackAppMentionEvent, SlackMessageEvent } from "./types.js";
 
 type SlackThreadContext = {

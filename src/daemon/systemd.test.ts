@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const execFileMock = vi.hoisted(() => vi.fn());
 
 vi.mock("node:child_process", async () => {
-  const { mockNodeChildProcessExecFile } = await import("NexisClaw/plugin-sdk/test-node-mocks");
+  const { mockNodeChildProcessExecFile } = await import("FirstNexus/plugin-sdk/test-node-mocks");
   return mockNodeChildProcessExecFile(
     Object.assign(execFileMock, {
       __promisify__: vi.fn(),
@@ -37,9 +37,9 @@ type ExecFileError = Error & {
 };
 
 const TEST_SERVICE_HOME = "/home/test";
-const TEST_MANAGED_HOME = "/tmp/NexisClaw-test-home";
-const GATEWAY_SERVICE = "NexisClaw-gateway.service";
-const NODE_SERVICE = "NexisClaw-node.service";
+const TEST_MANAGED_HOME = "/tmp/FirstNexus-test-home";
+const GATEWAY_SERVICE = "FirstNexus-gateway.service";
+const NODE_SERVICE = "FirstNexus-node.service";
 
 const createExecFileError = (
   message: string,
@@ -124,10 +124,14 @@ function mockReadGatewayServiceFile(
 }
 
 async function expectExecStartWithoutEnvironment(envFileLine: string) {
-  mockReadGatewayServiceFile(["[Service]", "ExecStart=/usr/bin/NexisClaw gateway run", envFileLine]);
+  mockReadGatewayServiceFile([
+    "[Service]",
+    "ExecStart=/usr/bin/FirstNexus gateway run",
+    envFileLine,
+  ]);
 
   const command = await readSystemdServiceExecStart({ HOME: TEST_SERVICE_HOME });
-  expect(command?.programArguments).toEqual(["/usr/bin/NexisClaw", "gateway", "run"]);
+  expect(command?.programArguments).toEqual(["/usr/bin/FirstNexus", "gateway", "run"]);
   expect(command?.environment).toBeUndefined();
 }
 
@@ -249,7 +253,7 @@ describe("systemd availability", () => {
     });
 
     await expect(
-      isSystemdUserServiceAvailable({ USER: "NexisClaw", SUDO_USER: "admin" }),
+      isSystemdUserServiceAvailable({ USER: "FirstNexus", SUDO_USER: "admin" }),
     ).resolves.toBe(true);
     expect(execFileMock).toHaveBeenCalledTimes(1);
   });
@@ -276,7 +280,7 @@ describe("isSystemdServiceEnabled", () => {
     err.code = "ENOENT";
     vi.spyOn(fs, "access").mockRejectedValueOnce(err);
 
-    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/NexisClaw-test-home" } });
+    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/FirstNexus-test-home" } });
 
     expect(result).toBe(false);
     expect(execFileMock).not.toHaveBeenCalled();
@@ -380,7 +384,7 @@ describe("isSystemdServiceEnabled", () => {
     vi.spyOn(fs, "access").mockResolvedValue(undefined);
     execFileMock
       .mockImplementationOnce((_cmd, args, _opts, cb) => {
-        expect(args).toEqual(["--user", "is-enabled", "NexisClaw-gateway.service"]);
+        expect(args).toEqual(["--user", "is-enabled", "FirstNexus-gateway.service"]);
         const err = new Error("Failed to connect to bus") as Error & { code?: number };
         err.code = 1;
         cb(err, "", "Failed to connect to bus");
@@ -388,13 +392,13 @@ describe("isSystemdServiceEnabled", () => {
       .mockImplementationOnce((_cmd, args, _opts, cb) => {
         expect(args[0]).toBe("--machine");
         expect(String(args[1])).toMatch(/^[^@]+@$/);
-        expect(args.slice(2)).toEqual(["--user", "is-enabled", "NexisClaw-gateway.service"]);
+        expect(args.slice(2)).toEqual(["--user", "is-enabled", "FirstNexus-gateway.service"]);
         const err = new Error("permission denied") as Error & { code?: number };
         err.code = 1;
         cb(err, "", "permission denied");
       });
     await expect(
-      isSystemdServiceEnabled({ env: { HOME: "/tmp/NexisClaw-test-home" } }),
+      isSystemdServiceEnabled({ env: { HOME: "/tmp/FirstNexus-test-home" } }),
     ).rejects.toThrow("systemctl is-enabled unavailable: permission denied");
   });
 
@@ -404,12 +408,12 @@ describe("isSystemdServiceEnabled", () => {
       // On Ubuntu 24.04, `systemctl --user is-enabled <unit>` exits with
       // code 4 and prints "not-found" to stdout when the unit doesn't exist.
       const err = new Error(
-        "Command failed: systemctl --user is-enabled NexisClaw-gateway.service",
+        "Command failed: systemctl --user is-enabled FirstNexus-gateway.service",
       ) as Error & { code?: number };
       err.code = 4;
       cb(err, "not-found\n", "");
     });
-    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/NexisClaw-test-home" } });
+    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/FirstNexus-test-home" } });
     expect(result).toBe(false);
   });
 });
@@ -447,7 +451,7 @@ describe("isNonFatalSystemdInstallProbeError", () => {
   it("matches wrapper-only WSL install probe failures", () => {
     expect(
       isNonFatalSystemdInstallProbeError(
-        new Error("Command failed: systemctl --user is-enabled NexisClaw-gateway.service"),
+        new Error("Command failed: systemctl --user is-enabled FirstNexus-gateway.service"),
       ),
     ).toBe(true);
   });
@@ -507,12 +511,12 @@ describe("resolveSystemdUserUnitPath", () => {
     {
       name: "uses default service name when NEXISCLAW_PROFILE is unset",
       env: { HOME: "/home/test" },
-      expected: "/home/test/.config/systemd/user/NexisClaw-gateway.service",
+      expected: "/home/test/.config/systemd/user/FirstNexus-gateway.service",
     },
     {
       name: "uses profile-specific service name when NEXISCLAW_PROFILE is set to a custom value",
       env: { HOME: "/home/test", NEXISCLAW_PROFILE: "jbphoenix" },
-      expected: "/home/test/.config/systemd/user/NexisClaw-gateway-jbphoenix.service",
+      expected: "/home/test/.config/systemd/user/FirstNexus-gateway-jbphoenix.service",
     },
     {
       name: "prefers NEXISCLAW_SYSTEMD_UNIT over NEXISCLAW_PROFILE",
@@ -546,8 +550,8 @@ describe("resolveSystemdUserUnitPath", () => {
 
 describe("splitArgsPreservingQuotes", () => {
   it("splits on whitespace outside quotes", () => {
-    expect(splitArgsPreservingQuotes('/usr/bin/NexisClaw gateway start --name "My Bot"')).toEqual([
-      "/usr/bin/NexisClaw",
+    expect(splitArgsPreservingQuotes('/usr/bin/FirstNexus gateway start --name "My Bot"')).toEqual([
+      "/usr/bin/FirstNexus",
       "gateway",
       "start",
       "--name",
@@ -557,32 +561,32 @@ describe("splitArgsPreservingQuotes", () => {
 
   it("supports systemd-style backslash escaping", () => {
     expect(
-      splitArgsPreservingQuotes('NexisClaw --name "My \\"Bot\\"" --foo bar', {
+      splitArgsPreservingQuotes('FirstNexus --name "My \\"Bot\\"" --foo bar', {
         escapeMode: "backslash",
       }),
-    ).toEqual(["NexisClaw", "--name", 'My "Bot"', "--foo", "bar"]);
+    ).toEqual(["FirstNexus", "--name", 'My "Bot"', "--foo", "bar"]);
   });
 
   it("supports schtasks-style escaped quotes while preserving other backslashes", () => {
     expect(
-      splitArgsPreservingQuotes('NexisClaw --path "C:\\\\Program Files\\\\NexisClaw"', {
+      splitArgsPreservingQuotes('FirstNexus --path "C:\\\\Program Files\\\\FirstNexus"', {
         escapeMode: "backslash-quote-only",
       }),
-    ).toEqual(["NexisClaw", "--path", "C:\\\\Program Files\\\\NexisClaw"]);
+    ).toEqual(["FirstNexus", "--path", "C:\\\\Program Files\\\\FirstNexus"]);
 
     expect(
-      splitArgsPreservingQuotes('NexisClaw --label "My \\"Quoted\\" Name"', {
+      splitArgsPreservingQuotes('FirstNexus --label "My \\"Quoted\\" Name"', {
         escapeMode: "backslash-quote-only",
       }),
-    ).toEqual(["NexisClaw", "--label", 'My "Quoted" Name']);
+    ).toEqual(["FirstNexus", "--label", 'My "Quoted" Name']);
   });
 });
 
 describe("parseSystemdExecStart", () => {
   it("preserves quoted arguments", () => {
-    const execStart = '/usr/bin/NexisClaw gateway start --name "My Bot"';
+    const execStart = '/usr/bin/FirstNexus gateway start --name "My Bot"';
     expect(parseSystemdExecStart(execStart)).toEqual([
-      "/usr/bin/NexisClaw",
+      "/usr/bin/FirstNexus",
       "gateway",
       "start",
       "--name",
@@ -598,8 +602,12 @@ describe("readSystemdServiceExecStart", () => {
 
   it("loads NEXISCLAW_GATEWAY_TOKEN from EnvironmentFile", async () => {
     const readFileSpy = mockReadGatewayServiceFile(
-      ["[Service]", "ExecStart=/usr/bin/NexisClaw gateway run", "EnvironmentFile=%h/.NexisClaw/.env"],
-      { [`${TEST_SERVICE_HOME}/.NexisClaw/.env`]: "NEXISCLAW_GATEWAY_TOKEN=env-file-token\n" },
+      [
+        "[Service]",
+        "ExecStart=/usr/bin/FirstNexus gateway run",
+        "EnvironmentFile=%h/.FirstNexus/.env",
+      ],
+      { [`${TEST_SERVICE_HOME}/.FirstNexus/.env`]: "NEXISCLAW_GATEWAY_TOKEN=env-file-token\n" },
     );
 
     const command = await readSystemdServiceExecStart({ HOME: TEST_SERVICE_HOME });
@@ -611,11 +619,11 @@ describe("readSystemdServiceExecStart", () => {
     mockReadGatewayServiceFile(
       [
         "[Service]",
-        "ExecStart=/usr/bin/NexisClaw gateway run",
-        "EnvironmentFile=%h/.NexisClaw/.env",
+        "ExecStart=/usr/bin/FirstNexus gateway run",
+        "EnvironmentFile=%h/.FirstNexus/.env",
         'Environment="NEXISCLAW_GATEWAY_TOKEN=inline-token"',
       ],
-      { [`${TEST_SERVICE_HOME}/.NexisClaw/.env`]: "NEXISCLAW_GATEWAY_TOKEN=env-file-token\n" },
+      { [`${TEST_SERVICE_HOME}/.FirstNexus/.env`]: "NEXISCLAW_GATEWAY_TOKEN=env-file-token\n" },
     );
 
     const command = await readSystemdServiceExecStart({ HOME: TEST_SERVICE_HOME });
@@ -624,27 +632,27 @@ describe("readSystemdServiceExecStart", () => {
   });
 
   it("ignores missing optional EnvironmentFile entries", async () => {
-    await expectExecStartWithoutEnvironment("EnvironmentFile=-%h/.NexisClaw/missing.env");
+    await expectExecStartWithoutEnvironment("EnvironmentFile=-%h/.FirstNexus/missing.env");
   });
 
   it("keeps parsing when non-optional EnvironmentFile entries are missing", async () => {
-    await expectExecStartWithoutEnvironment("EnvironmentFile=%h/.NexisClaw/missing.env");
+    await expectExecStartWithoutEnvironment("EnvironmentFile=%h/.FirstNexus/missing.env");
   });
 
   it("supports multiple EnvironmentFile entries and quoted paths", async () => {
     vi.spyOn(fs, "readFile").mockImplementation(async (pathname) => {
       const pathValue = pathLikeToString(pathname);
-      if (pathValue.endsWith("/NexisClaw-gateway.service")) {
+      if (pathValue.endsWith("/FirstNexus-gateway.service")) {
         return [
           "[Service]",
-          "ExecStart=/usr/bin/NexisClaw gateway run",
-          'EnvironmentFile=%h/.NexisClaw/first.env "%h/.NexisClaw/second env.env"',
+          "ExecStart=/usr/bin/FirstNexus gateway run",
+          'EnvironmentFile=%h/.FirstNexus/first.env "%h/.FirstNexus/second env.env"',
         ].join("\n");
       }
-      if (pathValue === "/home/test/.NexisClaw/first.env") {
+      if (pathValue === "/home/test/.FirstNexus/first.env") {
         return "NEXISCLAW_GATEWAY_TOKEN=first-token\n"; // pragma: allowlist secret
       }
-      if (pathValue === "/home/test/.NexisClaw/second env.env") {
+      if (pathValue === "/home/test/.FirstNexus/second env.env") {
         return 'NEXISCLAW_GATEWAY_PASSWORD="second password"\n'; // pragma: allowlist secret
       }
       throw new Error(`unexpected readFile path: ${pathValue}`);
@@ -660,10 +668,10 @@ describe("readSystemdServiceExecStart", () => {
   it("resolves relative EnvironmentFile paths from the unit directory", async () => {
     vi.spyOn(fs, "readFile").mockImplementation(async (pathname) => {
       const pathValue = pathLikeToString(pathname);
-      if (pathValue.endsWith("/NexisClaw-gateway.service")) {
+      if (pathValue.endsWith("/FirstNexus-gateway.service")) {
         return [
           "[Service]",
-          "ExecStart=/usr/bin/NexisClaw gateway run",
+          "ExecStart=/usr/bin/FirstNexus gateway run",
           "EnvironmentFile=./gateway.env ./override.env",
         ].join("\n");
       }
@@ -689,14 +697,14 @@ describe("readSystemdServiceExecStart", () => {
   it("parses EnvironmentFile content with comments and quoted values", async () => {
     vi.spyOn(fs, "readFile").mockImplementation(async (pathname) => {
       const pathValue = pathLikeToString(pathname);
-      if (pathValue.endsWith("/NexisClaw-gateway.service")) {
+      if (pathValue.endsWith("/FirstNexus-gateway.service")) {
         return [
           "[Service]",
-          "ExecStart=/usr/bin/NexisClaw gateway run",
-          "EnvironmentFile=%h/.NexisClaw/gateway.env",
+          "ExecStart=/usr/bin/FirstNexus gateway run",
+          "EnvironmentFile=%h/.FirstNexus/gateway.env",
         ].join("\n");
       }
-      if (pathValue === "/home/test/.NexisClaw/gateway.env") {
+      if (pathValue === "/home/test/.FirstNexus/gateway.env") {
         return [
           "# comment",
           "; another comment",
@@ -728,13 +736,13 @@ describe("stageSystemdService", () => {
       envFilePath: string;
     }) => Promise<void>,
   ): Promise<void> {
-    const tempHomeRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-systemd-stage-"));
+    const tempHomeRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-systemd-stage-"));
     const home = path.join(tempHomeRoot, "home");
-    const stateDir = path.join(home, ".NexisClaw");
+    const stateDir = path.join(home, ".FirstNexus");
     const env = {
       HOME: home,
       NEXISCLAW_STATE_DIR: stateDir,
-      NEXISCLAW_SYSTEMD_UNIT: "NexisClaw-gateway-stage-test",
+      NEXISCLAW_SYSTEMD_UNIT: "FirstNexus-gateway-stage-test",
     };
     const unitPath = resolveSystemdUserUnitPath(env);
     const envFilePath = path.join(stateDir, "gateway.systemd.env");
@@ -772,7 +780,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "gateway", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: {
           NEXISCLAW_GATEWAY_TOKEN: "dotenv-token",
@@ -809,7 +817,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "gateway", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: {
           NEXISCLAW_GATEWAY_TOKEN: "fresh-token",
@@ -847,10 +855,10 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "gateway", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "gateway", "run"],
         workingDirectory: "/tmp",
         // Staging manages NEXISCLAW_GATEWAY_TOKEN inline; NEXISCLAW_SERVICE_MANAGED_ENV_KEYS
-        // marks it as an NexisClaw-managed key so the stale env-file copy is cleared.
+        // marks it as an FirstNexus-managed key so the stale env-file copy is cleared.
         environment: {
           NEXISCLAW_GATEWAY_TOKEN: "fresh-gateway-token",
           LLM_API_KEY: "dotenv-key",
@@ -894,7 +902,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "gateway", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: { NEXISCLAW_GATEWAY_PORT: "18789" },
       });
@@ -926,7 +934,7 @@ describe("stageSystemdService", () => {
       await stageSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "gateway", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "gateway", "run"],
         workingDirectory: "/tmp",
         environment: { LLM_API_KEY: "new-value" },
       });
@@ -944,13 +952,13 @@ describe("systemd service install and uninstall", () => {
   async function withNodeSystemdFixture(
     run: (context: { env: Record<string, string>; unitPath: string }) => Promise<void>,
   ): Promise<void> {
-    const tempHomeRoot = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-node-systemd-"));
+    const tempHomeRoot = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-node-systemd-"));
     const home = path.join(tempHomeRoot, "home");
-    const stateDir = path.join(home, ".NexisClaw");
+    const stateDir = path.join(home, ".FirstNexus");
     const env = {
       HOME: home,
       NEXISCLAW_STATE_DIR: stateDir,
-      NEXISCLAW_SYSTEMD_UNIT: "NexisClaw-node",
+      NEXISCLAW_SYSTEMD_UNIT: "FirstNexus-node",
     };
     const unitPath = resolveSystemdUserUnitPath(env);
 
@@ -990,16 +998,16 @@ describe("systemd service install and uninstall", () => {
       await installSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "node", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
-          NEXISCLAW_SYSTEMD_UNIT: "NexisClaw-node",
+          NEXISCLAW_SYSTEMD_UNIT: "FirstNexus-node",
         },
       });
 
       const unit = await fs.readFile(unitPath, "utf8");
-      expect(unitPath).toMatch(/NexisClaw-node\.service$/);
-      expect(unit).toContain("NexisClaw node run");
+      expect(unitPath).toMatch(/FirstNexus-node\.service$/);
+      expect(unit).toContain("FirstNexus node run");
       expect(execFileMock).toHaveBeenCalledTimes(4);
     });
   });
@@ -1020,7 +1028,7 @@ describe("systemd service install and uninstall", () => {
           cb(
             createExecFileError("enable failed"),
             "",
-            "Unit file NexisClaw-node.service does not exist.",
+            "Unit file FirstNexus-node.service does not exist.",
           );
         })
         .mockImplementationOnce((_cmd, args, _opts, cb) => {
@@ -1039,10 +1047,10 @@ describe("systemd service install and uninstall", () => {
       await installSystemdService({
         env,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "node", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
-          NEXISCLAW_SYSTEMD_UNIT: "NexisClaw-node",
+          NEXISCLAW_SYSTEMD_UNIT: "FirstNexus-node",
         },
       });
 
@@ -1084,10 +1092,10 @@ describe("systemd service install and uninstall", () => {
       await installSystemdService({
         env: installEnv,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "node", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
-          NEXISCLAW_SYSTEMD_UNIT: "NexisClaw-node",
+          NEXISCLAW_SYSTEMD_UNIT: "FirstNexus-node",
         },
       });
 
@@ -1097,7 +1105,7 @@ describe("systemd service install and uninstall", () => {
 
   it("uses the sudo-u target user for install activation machine-scope retry", async () => {
     await withNodeSystemdFixture(async ({ env }) => {
-      const installEnv = { ...env, USER: "NexisClaw", SUDO_USER: "admin" };
+      const installEnv = { ...env, USER: "FirstNexus", SUDO_USER: "admin" };
       execFileMock
         .mockImplementationOnce((_cmd, args, _opts, cb) => {
           assertUserSystemctlArgs(args, "status");
@@ -1118,7 +1126,7 @@ describe("systemd service install and uninstall", () => {
           );
         })
         .mockImplementationOnce((_cmd, args, _opts, cb) => {
-          assertMachineUserSystemctlArgs(args, "NexisClaw", "enable", NODE_SERVICE);
+          assertMachineUserSystemctlArgs(args, "FirstNexus", "enable", NODE_SERVICE);
           cb(null, "", "");
         })
         .mockImplementationOnce((_cmd, args, _opts, cb) => {
@@ -1129,10 +1137,10 @@ describe("systemd service install and uninstall", () => {
       await installSystemdService({
         env: installEnv,
         stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-        programArguments: ["/usr/bin/NexisClaw", "node", "run"],
+        programArguments: ["/usr/bin/FirstNexus", "node", "run"],
         workingDirectory: "/tmp",
         environment: {
-          NEXISCLAW_SYSTEMD_UNIT: "NexisClaw-node",
+          NEXISCLAW_SYSTEMD_UNIT: "FirstNexus-node",
         },
       });
 
@@ -1169,10 +1177,10 @@ describe("systemd service install and uninstall", () => {
         installSystemdService({
           env,
           stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
-          programArguments: ["/usr/bin/NexisClaw", "node", "run"],
+          programArguments: ["/usr/bin/FirstNexus", "node", "run"],
           workingDirectory: "/tmp",
           environment: {
-            NEXISCLAW_SYSTEMD_UNIT: "NexisClaw-node",
+            NEXISCLAW_SYSTEMD_UNIT: "FirstNexus-node",
           },
         }),
       ).rejects.toThrow("systemctl --user unavailable: Failed to connect to bus: No medium found");
@@ -1184,7 +1192,7 @@ describe("systemd service install and uninstall", () => {
   it("disables the NEXISCLAW_SYSTEMD_UNIT override during uninstall", async () => {
     await withNodeSystemdFixture(async ({ env, unitPath }) => {
       await fs.mkdir(path.dirname(unitPath), { recursive: true });
-      await fs.writeFile(unitPath, "[Unit]\nDescription=NexisClaw Node\n", "utf8");
+      await fs.writeFile(unitPath, "[Unit]\nDescription=FirstNexus Node\n", "utf8");
 
       execFileMock
         .mockImplementationOnce((_cmd, args, _opts, cb) => {
@@ -1261,7 +1269,7 @@ describe("systemd service control", () => {
     execFileMock
       .mockImplementationOnce((_cmd, _args, _opts, cb) => cb(null, "", ""))
       .mockImplementationOnce((_cmd, args, _opts, cb) => {
-        assertUserSystemctlArgs(args, "restart", "NexisClaw-gateway-work.service");
+        assertUserSystemctlArgs(args, "restart", "FirstNexus-gateway-work.service");
         cb(null, "", "");
       });
     await assertRestartSuccess({ NEXISCLAW_PROFILE: "work" });

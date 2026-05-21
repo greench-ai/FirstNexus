@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { resolveGatewayProbeAuth as resolveStatusGatewayProbeAuth } from "../commands/status.gateway-probe.js";
-import type { NexisClawConfig } from "../config/config.js";
+import type { FirstNexusConfig } from "../config/config.js";
 import { resolveGatewayAuth } from "./auth.js";
 import { resolveGatewayCredentialsFromConfig } from "./credentials.js";
 import { resolveGatewayProbeAuth } from "./probe-auth.js";
@@ -14,7 +14,7 @@ type ExpectedCredentialSet = {
 
 type TestCase = {
   name: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   env: NodeJS.ProcessEnv;
   expected: ExpectedCredentialSet;
 };
@@ -24,7 +24,7 @@ const gatewayEnv = {
   NEXISCLAW_GATEWAY_PASSWORD: "env-password", // pragma: allowlist secret
 } as NodeJS.ProcessEnv;
 
-function makeRemoteGatewayConfig(remote: { token?: string; password?: string }): NexisClawConfig {
+function makeRemoteGatewayConfig(remote: { token?: string; password?: string }): FirstNexusConfig {
   return {
     gateway: {
       mode: "remote",
@@ -34,7 +34,7 @@ function makeRemoteGatewayConfig(remote: { token?: string; password?: string }):
         password: "local-password", // pragma: allowlist secret
       },
     },
-  } as NexisClawConfig;
+  } as FirstNexusConfig;
 }
 
 function withGatewayAuthEnv<T>(env: NodeJS.ProcessEnv, fn: () => T): T {
@@ -79,7 +79,7 @@ describe("gateway credential precedence coverage", () => {
             password: "config-password", // pragma: allowlist secret
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {
         NEXISCLAW_GATEWAY_TOKEN: "env-token", // pragma: allowlist secret
         NEXISCLAW_GATEWAY_PASSWORD: "env-password", // pragma: allowlist secret
@@ -128,7 +128,7 @@ describe("gateway credential precedence coverage", () => {
             password: "config-password", // pragma: allowlist secret
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       env: {
         NEXISCLAW_GATEWAY_TOKEN: "env-token",
         NEXISCLAW_GATEWAY_PASSWORD: "env-password", // pragma: allowlist secret

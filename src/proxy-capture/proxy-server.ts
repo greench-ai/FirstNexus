@@ -106,7 +106,7 @@ export async function startDebugProxyServer(params: {
       store.recordEvent({
         sessionId: params.settings.sessionId,
         ts: Date.now(),
-        sourceScope: "NexisClaw",
+        sourceScope: "FirstNexus",
         sourceProcess: params.settings.sourceProcess,
         protocol: target.protocol === "https:" ? "https" : "http",
         direction: "local",
@@ -130,7 +130,7 @@ export async function startDebugProxyServer(params: {
     store.recordEvent({
       sessionId: params.settings.sessionId,
       ts: Date.now(),
-      sourceScope: "NexisClaw",
+      sourceScope: "FirstNexus",
       sourceProcess: params.settings.sourceProcess,
       protocol: target.protocol === "https:" ? "https" : "http",
       direction: "outbound",
@@ -160,7 +160,7 @@ export async function startDebugProxyServer(params: {
           store.recordEvent({
             sessionId: params.settings.sessionId,
             ts: Date.now(),
-            sourceScope: "NexisClaw",
+            sourceScope: "FirstNexus",
             sourceProcess: params.settings.sourceProcess,
             protocol: target.protocol === "https:" ? "https" : "http",
             direction: "inbound",
@@ -182,7 +182,7 @@ export async function startDebugProxyServer(params: {
       store.recordEvent({
         sessionId: params.settings.sessionId,
         ts: Date.now(),
-        sourceScope: "NexisClaw",
+        sourceScope: "FirstNexus",
         sourceProcess: params.settings.sourceProcess,
         protocol: target.protocol === "https:" ? "https" : "http",
         direction: "local",
@@ -214,7 +214,7 @@ export async function startDebugProxyServer(params: {
       store.recordEvent({
         sessionId: params.settings.sessionId,
         ts: Date.now(),
-        sourceScope: "NexisClaw",
+        sourceScope: "FirstNexus",
         sourceProcess: params.settings.sourceProcess,
         protocol: "connect",
         direction: "local",
@@ -230,7 +230,7 @@ export async function startDebugProxyServer(params: {
     store.recordEvent({
       sessionId: params.settings.sessionId,
       ts: Date.now(),
-      sourceScope: "NexisClaw",
+      sourceScope: "FirstNexus",
       sourceProcess: params.settings.sourceProcess,
       protocol: "connect",
       direction: "local",
@@ -247,7 +247,7 @@ export async function startDebugProxyServer(params: {
       store.recordEvent({
         sessionId: params.settings.sessionId,
         ts: Date.now(),
-        sourceScope: "NexisClaw",
+        sourceScope: "FirstNexus",
         sourceProcess: params.settings.sourceProcess,
         protocol: "connect",
         direction: "local",
@@ -275,7 +275,7 @@ export async function startDebugProxyServer(params: {
       store.recordEvent({
         sessionId: params.settings.sessionId,
         ts: Date.now(),
-        sourceScope: "NexisClaw",
+        sourceScope: "FirstNexus",
         sourceProcess: params.settings.sourceProcess,
         protocol: "connect",
         direction: "local",

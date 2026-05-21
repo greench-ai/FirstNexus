@@ -3,7 +3,7 @@ import { bumpSkillsSnapshotVersion } from "../agents/skills/refresh-state.js";
 import type { ConfigWriteNotification } from "../config/io.js";
 import { formatConfigIssueLines } from "../config/issue-format.js";
 import { resolveConfigWriteFollowUp } from "../config/runtime-snapshot.js";
-import type { ConfigFileSnapshot, NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { ConfigFileSnapshot, FirstNexusConfig } from "../config/types.FirstNexus.js";
 import type { PluginInstallRecord } from "../config/types.plugins.js";
 import {
   loadInstalledPluginIndexInstallRecords,
@@ -73,7 +73,7 @@ type GatewayConfigReloader = {
 
 type PluginInstallRecords = Record<string, PluginInstallRecord>;
 
-function asPluginInstallConfig(records: PluginInstallRecords): NexisClawConfig {
+function asPluginInstallConfig(records: PluginInstallRecords): FirstNexusConfig {
   return {
     plugins: {
       installs: records,
@@ -82,12 +82,12 @@ function asPluginInstallConfig(records: PluginInstallRecords): NexisClawConfig {
 }
 
 export function startGatewayConfigReloader(opts: {
-  initialConfig: NexisClawConfig;
-  initialCompareConfig?: NexisClawConfig;
+  initialConfig: FirstNexusConfig;
+  initialCompareConfig?: FirstNexusConfig;
   initialInternalWriteHash?: string | null;
   readSnapshot: () => Promise<ConfigFileSnapshot>;
-  onHotReload: (plan: GatewayReloadPlan, nextConfig: NexisClawConfig) => Promise<void>;
-  onRestart: (plan: GatewayReloadPlan, nextConfig: NexisClawConfig) => void | Promise<void>;
+  onHotReload: (plan: GatewayReloadPlan, nextConfig: FirstNexusConfig) => Promise<void>;
+  onRestart: (plan: GatewayReloadPlan, nextConfig: FirstNexusConfig) => void | Promise<void>;
   promoteSnapshot?: (snapshot: ConfigFileSnapshot, reason: string) => Promise<boolean>;
   initialPluginInstallRecords?: PluginInstallRecords;
   readPluginInstallRecords?: () => Promise<PluginInstallRecords>;
@@ -109,8 +109,8 @@ export function startGatewayConfigReloader(opts: {
   let restartQueued = false;
   let missingConfigRetries = 0;
   let pendingInProcessConfig: {
-    config: NexisClawConfig;
-    compareConfig: NexisClawConfig;
+    config: FirstNexusConfig;
+    compareConfig: FirstNexusConfig;
     persistedHash: string;
     afterWrite?: ConfigWriteNotification["afterWrite"];
   } | null = null;
@@ -134,7 +134,7 @@ export function startGatewayConfigReloader(opts: {
   const schedule = () => {
     scheduleAfter(settings.debounceMs);
   };
-  const queueRestart = (plan: GatewayReloadPlan, nextConfig: NexisClawConfig) => {
+  const queueRestart = (plan: GatewayReloadPlan, nextConfig: FirstNexusConfig) => {
     if (restartQueued) {
       return;
     }
@@ -178,8 +178,8 @@ export function startGatewayConfigReloader(opts: {
   };
 
   const applySnapshot = async (
-    nextConfig: NexisClawConfig,
-    nextCompareConfig: NexisClawConfig,
+    nextConfig: FirstNexusConfig,
+    nextCompareConfig: FirstNexusConfig,
     afterWrite?: ConfigWriteNotification["afterWrite"],
   ) => {
     const configChangedPaths = diffConfigPaths(currentCompareConfig, nextCompareConfig);

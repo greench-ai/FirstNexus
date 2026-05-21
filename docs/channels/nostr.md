@@ -1,28 +1,28 @@
 ---
 summary: "Nostr DM channel via NIP-04 encrypted messages"
 read_when:
-  - You want NexisClaw to receive DMs via Nostr
+  - You want FirstNexus to receive DMs via Nostr
   - You're setting up decentralized messaging
 title: "Nostr"
 ---
 
 **Status:** Optional bundled plugin (disabled by default until configured).
 
-Nostr is a decentralized protocol for social networking. This channel enables NexisClaw to receive and respond to encrypted direct messages (DMs) via NIP-04.
+Nostr is a decentralized protocol for social networking. This channel enables FirstNexus to receive and respond to encrypted direct messages (DMs) via NIP-04.
 
 ## Bundled plugin
 
-Current NexisClaw releases ship Nostr as a bundled plugin, so normal packaged
+Current FirstNexus releases ship Nostr as a bundled plugin, so normal packaged
 builds do not need a separate install.
 
 ### Older/custom installs
 
-- Onboarding (`NexisClaw onboard`) and `NexisClaw channels add` still surface
+- Onboarding (`FirstNexus onboard`) and `FirstNexus channels add` still surface
   Nostr from the shared channel catalog.
 - If your build excludes bundled Nostr, install the npm package directly.
 
 ```bash
-NexisClaw plugins install @NexisClaw/nostr
+FirstNexus plugins install @FirstNexus/nostr
 ```
 
 Use the bare package to follow the current official release tag. Pin an exact
@@ -31,7 +31,7 @@ version only when you need a reproducible install.
 Use a local checkout (dev workflows):
 
 ```bash
-NexisClaw plugins install --link <path-to-local-nostr-plugin>
+FirstNexus plugins install --link <path-to-local-nostr-plugin>
 ```
 
 Restart the Gateway after installing or enabling plugins.
@@ -39,8 +39,8 @@ Restart the Gateway after installing or enabling plugins.
 ### Non-interactive setup
 
 ```bash
-NexisClaw channels add --channel nostr --private-key "$NOSTR_PRIVATE_KEY"
-NexisClaw channels add --channel nostr --private-key "$NOSTR_PRIVATE_KEY" --relay-urls "wss://relay.damus.io,wss://relay.primal.net"
+FirstNexus channels add --channel nostr --private-key "$NOSTR_PRIVATE_KEY"
+FirstNexus channels add --channel nostr --private-key "$NOSTR_PRIVATE_KEY" --relay-urls "wss://relay.damus.io,wss://relay.primal.net"
 ```
 
 Use `--use-env` to keep `NOSTR_PRIVATE_KEY` in the environment instead of storing the key in config.
@@ -98,14 +98,14 @@ Example:
     nostr: {
       privateKey: "${NOSTR_PRIVATE_KEY}",
       profile: {
-        name: "NexisClaw",
-        displayName: "NexisClaw",
+        name: "FirstNexus",
+        displayName: "FirstNexus",
         about: "Personal assistant DM bot",
         picture: "https://example.com/avatar.png",
         banner: "https://example.com/banner.png",
         website: "https://example.com",
-        nip05: "NexisClaw@example.com",
-        lud16: "NexisClaw@example.com",
+        nip05: "FirstNexus@example.com",
+        lud16: "FirstNexus@example.com",
       },
     },
   },

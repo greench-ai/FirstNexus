@@ -1,7 +1,7 @@
-import type { BaseProbeResult, BaseTokenResolution } from "NexisClaw/plugin-sdk/channel-contract";
-import { expectDirectoryIds } from "NexisClaw/plugin-sdk/channel-test-helpers";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { withEnvAsync } from "NexisClaw/plugin-sdk/test-env";
+import type { BaseProbeResult, BaseTokenResolution } from "FirstNexus/plugin-sdk/channel-contract";
+import { expectDirectoryIds } from "FirstNexus/plugin-sdk/channel-test-helpers";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { withEnvAsync } from "FirstNexus/plugin-sdk/test-env";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import {
   listTelegramDirectoryGroupsFromConfig,
@@ -26,7 +26,7 @@ describe("Telegram directory contract", () => {
           groups: { "-1001": {}, "*": {} },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     await expectDirectoryIds(
       listTelegramDirectoryPeersFromConfig,
@@ -53,7 +53,7 @@ describe("Telegram directory contract", () => {
             },
           },
         },
-      } as unknown as NexisClawConfig;
+      } as unknown as FirstNexusConfig;
 
       await expectDirectoryIds(listTelegramDirectoryPeersFromConfig, cfg, ["@alice"]);
       await expectDirectoryIds(listTelegramDirectoryGroupsFromConfig, cfg, ["-1001"]);
@@ -74,7 +74,7 @@ describe("Telegram directory contract", () => {
           groups: { "-1001": {} },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     await expectDirectoryIds(listTelegramDirectoryPeersFromConfig, cfg, ["@alice"]);
     await expectDirectoryIds(listTelegramDirectoryGroupsFromConfig, cfg, ["-1001"]);
@@ -88,7 +88,7 @@ describe("Telegram directory contract", () => {
           groups: { "-1001": {}, "-1002": {}, "-2001": {} },
         },
       },
-    } as unknown as NexisClawConfig;
+    } as unknown as FirstNexusConfig;
 
     const groups = await listTelegramDirectoryGroupsFromConfig({
       cfg,

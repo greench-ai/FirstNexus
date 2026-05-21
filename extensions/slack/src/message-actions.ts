@@ -1,11 +1,11 @@
-import { createActionGate } from "NexisClaw/plugin-sdk/channel-actions";
-import type { ChannelMessageActionName } from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { extractToolSend, type ChannelToolSend } from "NexisClaw/plugin-sdk/tool-send";
+import { createActionGate } from "FirstNexus/plugin-sdk/channel-actions";
+import type { ChannelMessageActionName } from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { extractToolSend, type ChannelToolSend } from "FirstNexus/plugin-sdk/tool-send";
 import { listEnabledSlackAccounts, resolveSlackAccount } from "./accounts.js";
 
 export function listSlackMessageActions(
-  cfg: NexisClawConfig,
+  cfg: FirstNexusConfig,
   accountId?: string | null,
 ): ChannelMessageActionName[] {
   const accounts = (

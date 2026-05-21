@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       package_spec:
-        description: Published NexisClaw package spec to test when no artifact is supplied
+        description: Published FirstNexus package spec to test when no artifact is supplied
         required: true
-        default: NexisClaw@beta
+        default: FirstNexus@beta
         type: string
       package_label:
         description: Optional display label for an artifact-backed package candidate
@@ -43,7 +43,7 @@ on:
   workflow_call:
     inputs:
       package_spec:
-        description: Published NexisClaw package spec to test when no artifact is supplied
+        description: Published FirstNexus package spec to test when no artifact is supplied
         required: true
         type: string
       package_artifact_name:
@@ -127,7 +127,7 @@ jobs:
           file: ./scripts/e2e/Dockerfile
           target: build
           platforms: linux/amd64
-          tags: NexisClaw-docker-e2e:local
+          tags: FirstNexus-docker-e2e:local
           load: true
           push: false
           provenance: false
@@ -152,8 +152,8 @@ jobs:
           set -euo pipefail
 
           if [[ -z "${PACKAGE_ARTIFACT_NAME// }" ]]; then
-            if [[ ! "${PACKAGE_SPEC}" =~ ^NexisClaw@(alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$ ]]; then
-              echo "package_spec must be NexisClaw@alpha, NexisClaw@beta, NexisClaw@latest, or an exact NexisClaw release version; got: ${PACKAGE_SPEC}" >&2
+            if [[ ! "${PACKAGE_SPEC}" =~ ^FirstNexus@(alpha|beta|latest|[0-9]{4}\.[1-9][0-9]*\.[1-9][0-9]*(-[1-9][0-9]*|-(alpha|beta)\.[1-9][0-9]*)?)$ ]]; then
+              echo "package_spec must be FirstNexus@alpha, FirstNexus@beta, FirstNexus@latest, or an exact FirstNexus release version; got: ${PACKAGE_SPEC}" >&2
               exit 1
             fi
           fi
@@ -201,7 +201,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           NEXISCLAW_SKIP_DOCKER_BUILD: "1"
-          NEXISCLAW_DOCKER_E2E_IMAGE: NexisClaw-docker-e2e:local
+          NEXISCLAW_DOCKER_E2E_IMAGE: FirstNexus-docker-e2e:local
           NEXISCLAW_NPM_TELEGRAM_PACKAGE_SPEC: ${{ inputs.package_spec }}
           NEXISCLAW_NPM_TELEGRAM_PACKAGE_LABEL: ${{ inputs.package_label }}
           NEXISCLAW_NPM_TELEGRAM_PROVIDER_MODE: ${{ inputs.provider_mode }}

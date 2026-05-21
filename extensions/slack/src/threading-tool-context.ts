@@ -1,14 +1,14 @@
 import type {
   ChannelThreadingContext,
   ChannelThreadingToolContext,
-} from "NexisClaw/plugin-sdk/channel-contract";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/channel-contract";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveSlackAccount, resolveSlackReplyToMode } from "./accounts.js";
 import { normalizeSlackThreadTsCandidate } from "./thread-ts.js";
 
 export function buildSlackThreadingToolContext(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   context: ChannelThreadingContext;
   hasRepliedRef?: { value: boolean };

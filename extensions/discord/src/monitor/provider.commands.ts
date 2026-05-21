@@ -2,18 +2,20 @@ import {
   listNativeCommandSpecsForConfig,
   listSkillCommandsForAgents,
   type NativeCommandSpec,
-} from "NexisClaw/plugin-sdk/command-auth-native";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { danger, warn, type RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
-import { normalizeLowercaseStringOrEmpty } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+} from "FirstNexus/plugin-sdk/command-auth-native";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { danger, warn, type RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
+import { normalizeLowercaseStringOrEmpty } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 
 export type GetPluginCommandSpecs =
-  typeof import("NexisClaw/plugin-sdk/plugin-runtime").getPluginCommandSpecs;
+  typeof import("FirstNexus/plugin-sdk/plugin-runtime").getPluginCommandSpecs;
 
-let pluginRuntimePromise: Promise<typeof import("NexisClaw/plugin-sdk/plugin-runtime")> | undefined;
+let pluginRuntimePromise:
+  | Promise<typeof import("FirstNexus/plugin-sdk/plugin-runtime")>
+  | undefined;
 
 async function loadPluginRuntime() {
-  const promise = pluginRuntimePromise ?? import("NexisClaw/plugin-sdk/plugin-runtime");
+  const promise = pluginRuntimePromise ?? import("FirstNexus/plugin-sdk/plugin-runtime");
   pluginRuntimePromise = promise;
   try {
     return await promise;
@@ -28,7 +30,7 @@ async function loadPluginRuntime() {
 async function appendPluginCommandSpecs(params: {
   commandSpecs: NativeCommandSpec[];
   runtime: RuntimeEnv;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   getPluginCommandSpecs?: GetPluginCommandSpecs;
 }): Promise<NativeCommandSpec[]> {
   const merged = [...params.commandSpecs];
@@ -61,7 +63,7 @@ async function appendPluginCommandSpecs(params: {
 }
 
 export async function resolveDiscordProviderCommandSpecs(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   runtime: RuntimeEnv;
   nativeEnabled: boolean;
   nativeSkillsEnabled: boolean;

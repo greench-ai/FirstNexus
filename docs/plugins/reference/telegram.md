@@ -1,5 +1,5 @@
 ---
-summary: "Adds the Telegram channel surface for sending and receiving NexisClaw messages."
+summary: "Adds the Telegram channel surface for sending and receiving FirstNexus messages."
 read_when:
   - You are installing, configuring, or auditing the telegram plugin
 title: "Telegram plugin"
@@ -7,12 +7,12 @@ title: "Telegram plugin"
 
 # Telegram plugin
 
-Adds the Telegram channel surface for sending and receiving NexisClaw messages.
+Adds the Telegram channel surface for sending and receiving FirstNexus messages.
 
 ## Distribution
 
-- Package: `@NexisClaw/telegram`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/telegram`
+- Install route: included in FirstNexus
 
 ## Surface
 

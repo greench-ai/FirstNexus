@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import {
-  loadNexisClawProviderIndex,
+  loadFirstNexusProviderIndex,
   normalizeModelCatalogProviderId,
   planProviderIndexModelCatalogRows,
 } from "../../model-catalog/index.js";
@@ -9,12 +9,12 @@ import { normalizePluginsConfig, resolveEffectiveEnableState } from "../../plugi
 
 export function loadProviderIndexCatalogRowsForList(params: {
   providerFilter?: string;
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
 }): readonly NormalizedModelCatalogRow[] {
   const providerFilter = params.providerFilter
     ? normalizeModelCatalogProviderId(params.providerFilter)
     : undefined;
-  const index = loadNexisClawProviderIndex();
+  const index = loadFirstNexusProviderIndex();
   return planProviderIndexModelCatalogRows({
     index,
     ...(providerFilter ? { providerFilter } : {}),

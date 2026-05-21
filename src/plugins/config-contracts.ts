@@ -1,6 +1,6 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { isRecord } from "../utils.js";
-import { discoverNexisClawPlugins } from "./discovery.js";
+import { discoverFirstNexusPlugins } from "./discovery.js";
 import { loadPluginManifestRegistry } from "./manifest-registry.js";
 import type { PluginManifestConfigContracts } from "./manifest.js";
 import type { PluginOrigin } from "./plugin-origin.types.js";
@@ -99,7 +99,7 @@ export function collectPluginConfigContractMatches(params: {
 }
 
 export function resolvePluginConfigContractsById(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   workspaceDir?: string;
   env?: NodeJS.ProcessEnv;
   fallbackToBundledMetadata?: boolean;
@@ -124,7 +124,7 @@ export function resolvePluginConfigContractsById(params: {
     if (bundledContractFallbacks.has(pluginId)) {
       return bundledContractFallbacks.get(pluginId);
     }
-    const discovery = discoverNexisClawPlugins({
+    const discovery = discoverFirstNexusPlugins({
       workspaceDir: params.workspaceDir,
       env: params.env,
     });

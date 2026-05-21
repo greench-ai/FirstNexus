@@ -12,7 +12,7 @@ import {
 import { buildPluginCompatibilitySnapshotNotices } from "./status.js";
 
 function addStartupActivation(pluginDir: string, onStartup: boolean): void {
-  const manifestPath = path.join(pluginDir, "NexisClaw.plugin.json");
+  const manifestPath = path.join(pluginDir, "FirstNexus.plugin.json");
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as Record<string, unknown>;
   fs.writeFileSync(
     manifestPath,

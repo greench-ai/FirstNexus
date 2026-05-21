@@ -7,7 +7,7 @@ const VERSION_ONLY_TEXT_PATHS = new Set([
   "apps/android/app/build.gradle.kts",
   "apps/ios/Config/Version.xcconfig",
   "apps/ios/version.json",
-  "apps/macos/Sources/NexisClaw/Resources/Info.plist",
+  "apps/macos/Sources/FirstNexus/Resources/Info.plist",
 ]);
 
 function normalizePath(input) {

@@ -313,7 +313,7 @@ describe("createChildAdapter", () => {
         usedFallback: false,
       });
       const adapter = await createChildAdapter({
-        argv: ["NexisClaw", "version"],
+        argv: ["FirstNexus", "version"],
         stdinMode: "pipe-closed",
       });
       return { ...stub, adapter };
@@ -333,7 +333,7 @@ describe("createChildAdapter", () => {
   });
 
   it("disables detached mode in service-managed runtime", async () => {
-    process.env.NEXISCLAW_SERVICE_MARKER = "NexisClaw";
+    process.env.NEXISCLAW_SERVICE_MARKER = "FirstNexus";
 
     await createAdapterHarness({ pid: 7777 });
 

@@ -1,9 +1,9 @@
-export type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+export type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 export type {
   MemoryEmbeddingProbeResult,
   MemoryProviderStatus,
   MemorySyncProgressUpdate,
-} from "NexisClaw/plugin-sdk/memory-core-host-engine-storage";
+} from "FirstNexus/plugin-sdk/memory-core-host-engine-storage";
 export {
   dedupeDreamDiaryEntries,
   removeBackfillDiaryEntries,

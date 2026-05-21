@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 
 // Module-level tracker of sessions that have received `session_start` but not
 // yet a paired `session_end`. The close handler drains this set on gateway
@@ -14,7 +14,7 @@ import type { NexisClawConfig } from "../config/types.NexisClaw.js";
 // runs. That is what keeps the shutdown finalizer from double-firing.
 
 export type ActiveSessionForShutdown = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   sessionKey: string;
   sessionId: string;
   storePath: string;

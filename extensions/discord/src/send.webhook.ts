@@ -1,6 +1,6 @@
-import { recordChannelActivity } from "NexisClaw/plugin-sdk/channel-activity-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
-import { normalizeOptionalString } from "NexisClaw/plugin-sdk/string-coerce-runtime";
+import { recordChannelActivity } from "FirstNexus/plugin-sdk/channel-activity-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
+import { normalizeOptionalString } from "FirstNexus/plugin-sdk/string-coerce-runtime";
 import { resolveDiscordClientAccountContext } from "./client.js";
 import {
   DiscordError,
@@ -14,7 +14,7 @@ import { createDiscordSendResult } from "./send.receipt.js";
 import type { DiscordSendResult } from "./send.types.js";
 
 type DiscordWebhookSendOpts = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   webhookId: string;
   webhookToken: string;
   accountId?: string;

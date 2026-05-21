@@ -17,7 +17,7 @@ import {
 } from "../../config/config.js";
 import { formatConfigIssueLines } from "../../config/issue-format.js";
 import { asResolvedSourceConfig, asRuntimeConfig } from "../../config/materialize.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { PluginInstallRecord } from "../../config/types.plugins.js";
 import { GATEWAY_SERVICE_KIND, GATEWAY_SERVICE_MARKER } from "../../daemon/constants.js";
 import { resolveGatewayInstallEntrypoint } from "../../daemon/gateway-entrypoint.js";
@@ -136,7 +136,8 @@ const POST_INSTALL_DOCTOR_SERVICE_ENV_KEYS = [
   ...SERVICE_REFRESH_PATH_ENV_KEYS,
   "NEXISCLAW_PROFILE",
 ] as const;
-const POST_UPDATE_PLUGIN_REPAIR_GUIDANCE = "Run NexisClaw doctor --fix to attempt automatic repair.";
+const POST_UPDATE_PLUGIN_REPAIR_GUIDANCE =
+  "Run FirstNexus doctor --fix to attempt automatic repair.";
 
 const UPDATE_QUIPS = [
   "Leveled up! New skills unlocked. You're welcome.",
@@ -211,7 +212,7 @@ function normalizePluginInstallRecordMap(value: unknown): Record<string, PluginI
 
 export async function collectMissingPluginInstallPayloads(params: {
   records: Record<string, PluginInstallRecord>;
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   skipDisabledPlugins?: boolean;
   syncOfficialPluginInstalls?: boolean;
   env?: NodeJS.ProcessEnv;
@@ -274,7 +275,7 @@ function formatMissingPluginPayloadReason(entry: MissingPluginInstallPayload): s
 }
 
 function formatPostUpdatePluginInspectGuidance(pluginId: string): string {
-  return `Run NexisClaw plugins inspect ${pluginId} --runtime --json for details.`;
+  return `Run FirstNexus plugins inspect ${pluginId} --runtime --json for details.`;
 }
 
 function createPostUpdatePluginWarning(params: {
@@ -336,8 +337,8 @@ export function buildInvalidConfigPostCoreUpdateResult(): {
   result: PostCorePluginUpdateResult;
 } {
   const guidance = [
-    "Run `NexisClaw doctor` to inspect the config validation errors.",
-    "Once the config parses, rerun `NexisClaw update`.",
+    "Run `FirstNexus doctor` to inspect the config validation errors.",
+    "Once the config parses, rerun `FirstNexus update`.",
   ];
   const message =
     "Plugin post-update convergence skipped because the config is invalid; refusing to restart the gateway with an unverified plugin set.";
@@ -475,12 +476,12 @@ export async function recoverLaunchAgentAndRecheckGatewayHealth(params: {
 
 function formatPostUpdateGatewayRecoveryInstructions(result: UpdateRunResult): string[] {
   const lines = [
-    `Recovery: run \`${replaceCliName(formatCliCommand("NexisClaw gateway restart"), CLI_NAME)}\`; if macOS reports the LaunchAgent is installed but not loaded, run \`${replaceCliName(formatCliCommand("NexisClaw gateway install --force"), CLI_NAME)}\` from the logged-in user session, then rerun \`${replaceCliName(formatCliCommand("NexisClaw gateway status --deep"), CLI_NAME)}\`.`,
+    `Recovery: run \`${replaceCliName(formatCliCommand("FirstNexus gateway restart"), CLI_NAME)}\`; if macOS reports the LaunchAgent is installed but not loaded, run \`${replaceCliName(formatCliCommand("FirstNexus gateway install --force"), CLI_NAME)}\` from the logged-in user session, then rerun \`${replaceCliName(formatCliCommand("FirstNexus gateway status --deep"), CLI_NAME)}\`.`,
   ];
   const beforeVersion = normalizeOptionalString(result.before?.version);
   if (isPackageManagerUpdateMode(result.mode) && beforeVersion) {
     lines.push(
-      `Rollback: reinstall NexisClaw ${beforeVersion} with the same package manager, then rerun \`${replaceCliName(formatCliCommand("NexisClaw gateway install --force"), CLI_NAME)}\`.`,
+      `Rollback: reinstall FirstNexus ${beforeVersion} with the same package manager, then rerun \`${replaceCliName(formatCliCommand("FirstNexus gateway install --force"), CLI_NAME)}\`.`,
     );
   }
   return lines;
@@ -496,9 +497,9 @@ type PrePackageServiceStop = {
 };
 
 function formatGatewayAncestryBlockMessage(pid: number): string {
-  return `NexisClaw update detected it is running inside the gateway process tree.
+  return `FirstNexus update detected it is running inside the gateway process tree.
 Gateway PID ${pid} is an ancestor of this process, so this updater cannot safely stop or restart the gateway that owns it.
-Run \`${replaceCliName(formatCliCommand("NexisClaw update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`;
+Run \`${replaceCliName(formatCliCommand("FirstNexus update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`;
 }
 
 function isGatewayAncestorPid(pid: unknown): pid is number {
@@ -696,11 +697,11 @@ async function resolvePackageRuntimePreflightError(params: {
   }
   const targetLabel = status.version ?? target;
   return [
-    `Node ${process.versions.node ?? "unknown"} is too old for NexisClaw@${targetLabel}.`,
+    `Node ${process.versions.node ?? "unknown"} is too old for FirstNexus@${targetLabel}.`,
     `The requested package requires ${status.nodeEngine}.`,
-    "Upgrade Node to 22.16+ or Node 24, then rerun `NexisClaw update`.",
-    "Bare `npm i -g NexisClaw` can silently install an older compatible release.",
-    "After upgrading Node, use `npm i -g NexisClaw@latest`.",
+    "Upgrade Node to 22.16+ or Node 24, then rerun `FirstNexus update`.",
+    "Bare `npm i -g FirstNexus` can silently install an older compatible release.",
+    "After upgrading Node, use `npm i -g FirstNexus@latest`.",
   ].join("\n");
 }
 
@@ -769,7 +770,7 @@ export function resolvePostInstallDoctorEnv(params?: {
 }
 
 export function resolveUpdatedGatewayRestartPort(params: {
-  config?: NexisClawConfig;
+  config?: FirstNexusConfig;
   processEnv?: NodeJS.ProcessEnv;
   serviceEnv?: NodeJS.ProcessEnv;
 }): number {
@@ -938,7 +939,7 @@ async function tryInstallShellCompletion(opts: {
       if (!opts.skipPrompt) {
         defaultRuntime.log(
           theme.muted(
-            `Skipped. Run \`${replaceCliName(formatCliCommand("NexisClaw completion --install"), CLI_NAME)}\` later to enable.`,
+            `Skipped. Run \`${replaceCliName(formatCliCommand("FirstNexus completion --install"), CLI_NAME)}\` later to enable.`,
           ),
         );
       }
@@ -1567,7 +1568,7 @@ async function maybeRestartService(params: {
           ]
         : []),
       `Restart log: ${resolveGatewayRestartLogPath(params.serviceEnv ?? process.env)}`,
-      `Run \`${replaceCliName(formatCliCommand("NexisClaw gateway status --deep"), CLI_NAME)}\` for details.`,
+      `Run \`${replaceCliName(formatCliCommand("FirstNexus gateway status --deep"), CLI_NAME)}\` for details.`,
       ...formatPostUpdateGatewayRecoveryInstructions(params.result),
     ];
     if (params.opts.json) {
@@ -1704,7 +1705,7 @@ async function maybeRestartService(params: {
         defaultRuntime.log(theme.warn(`Daemon restart failed: ${String(err)}`));
         defaultRuntime.log(
           theme.muted(
-            `You may need to restart the service manually: ${replaceCliName(formatCliCommand("NexisClaw gateway restart"), CLI_NAME)}`,
+            `You may need to restart the service manually: ${replaceCliName(formatCliCommand("FirstNexus gateway restart"), CLI_NAME)}`,
           ),
         );
       }
@@ -1720,13 +1721,13 @@ async function maybeRestartService(params: {
     if (params.result.mode === "npm" || params.result.mode === "pnpm") {
       defaultRuntime.log(
         theme.muted(
-          `Tip: Run \`${replaceCliName(formatCliCommand("NexisClaw doctor"), CLI_NAME)}\`, then \`${replaceCliName(formatCliCommand("NexisClaw gateway restart"), CLI_NAME)}\` to apply updates to a running gateway.`,
+          `Tip: Run \`${replaceCliName(formatCliCommand("FirstNexus doctor"), CLI_NAME)}\`, then \`${replaceCliName(formatCliCommand("FirstNexus gateway restart"), CLI_NAME)}\` to apply updates to a running gateway.`,
         ),
       );
     } else {
       defaultRuntime.log(
         theme.muted(
-          `Tip: Run \`${replaceCliName(formatCliCommand("NexisClaw gateway restart"), CLI_NAME)}\` to apply updates to a running gateway.`,
+          `Tip: Run \`${replaceCliName(formatCliCommand("FirstNexus gateway restart"), CLI_NAME)}\` to apply updates to a running gateway.`,
         ),
       );
     }
@@ -1807,7 +1808,7 @@ async function persistRequestedUpdateChannel(params: {
 
 function createUpdatedChannelSnapshot(
   snapshot: Awaited<ReturnType<typeof readConfigFileSnapshot>>,
-  next: NexisClawConfig,
+  next: FirstNexusConfig,
 ): Awaited<ReturnType<typeof readConfigFileSnapshot>> {
   if (!snapshot.valid) {
     return snapshot;
@@ -1952,7 +1953,7 @@ async function continuePostCoreUpdateInFreshProcess(params: {
   if (params.opts.timeout) {
     argv.push("--timeout", params.opts.timeout);
   }
-  const resultDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-update-post-core-"));
+  const resultDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-update-post-core-"));
   const resultPath = path.join(resultDir, "plugins.json");
   const installRecordsPath = path.join(resultDir, "plugin-install-records.json");
 
@@ -2186,7 +2187,9 @@ export async function updateCommand(opts: UpdateCommandOptions): Promise<void> {
     updateInstallKind === "git" ? DEFAULT_GIT_CHANNEL : DEFAULT_PACKAGE_CHANNEL;
   const channel = requestedChannel ?? storedChannel ?? defaultChannel;
   const devTargetRef =
-    channel === "dev" ? process.env.NEXISCLAW_UPDATE_DEV_TARGET_REF?.trim() || undefined : undefined;
+    channel === "dev"
+      ? process.env.NEXISCLAW_UPDATE_DEV_TARGET_REF?.trim() || undefined
+      : undefined;
 
   const explicitTag = normalizeTag(opts.tag);
   let tag = explicitTag ?? channelToNpmTag(channel);
@@ -2349,7 +2352,7 @@ export async function updateCommand(opts: UpdateCommandOptions): Promise<void> {
 
   const showProgress = !opts.json && process.stdout.isTTY;
   if (!opts.json) {
-    defaultRuntime.log(theme.heading("Updating NexisClaw..."));
+    defaultRuntime.log(theme.heading("Updating FirstNexus..."));
     defaultRuntime.log("");
   }
 
@@ -2383,8 +2386,8 @@ export async function updateCommand(opts: UpdateCommandOptions): Promise<void> {
       defaultRuntime.error(
         [
           "Package updates cannot run from inside the gateway service process.",
-          "That path replaces the active NexisClaw dist tree while the live gateway may still lazy-load old chunks.",
-          `Run \`${replaceCliName(formatCliCommand("NexisClaw update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`,
+          "That path replaces the active FirstNexus dist tree while the live gateway may still lazy-load old chunks.",
+          `Run \`${replaceCliName(formatCliCommand("FirstNexus update"), CLI_NAME)}\` from a shell outside the gateway service, or stop the gateway service first and then update.`,
         ].join("\n"),
       );
       defaultRuntime.exit(1);
@@ -2457,18 +2460,18 @@ export async function updateCommand(opts: UpdateCommandOptions): Promise<void> {
         ),
       );
       defaultRuntime.log(
-        theme.muted("Commit, stash, or discard the local changes, then rerun `NexisClaw update`."),
+        theme.muted("Commit, stash, or discard the local changes, then rerun `FirstNexus update`."),
       );
     }
     if (result.reason === "not-git-install") {
       defaultRuntime.log(
         theme.warn(
-          `Skipped: this NexisClaw install isn't a git checkout, and the package manager couldn't be detected. Update via your package manager, then run \`${replaceCliName(formatCliCommand("NexisClaw doctor"), CLI_NAME)}\` and \`${replaceCliName(formatCliCommand("NexisClaw gateway restart"), CLI_NAME)}\`.`,
+          `Skipped: this FirstNexus install isn't a git checkout, and the package manager couldn't be detected. Update via your package manager, then run \`${replaceCliName(formatCliCommand("FirstNexus doctor"), CLI_NAME)}\` and \`${replaceCliName(formatCliCommand("FirstNexus gateway restart"), CLI_NAME)}\`.`,
         ),
       );
       defaultRuntime.log(
         theme.muted(
-          `Examples: \`${replaceCliName("npm i -g NexisClaw@latest", CLI_NAME)}\` or \`${replaceCliName("pnpm add -g NexisClaw@latest", CLI_NAME)}\``,
+          `Examples: \`${replaceCliName("npm i -g FirstNexus@latest", CLI_NAME)}\` or \`${replaceCliName("pnpm add -g FirstNexus@latest", CLI_NAME)}\``,
         ),
       );
     }

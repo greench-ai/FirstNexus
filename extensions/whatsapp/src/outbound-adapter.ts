@@ -1,6 +1,6 @@
-import { type ChannelOutboundAdapter } from "NexisClaw/plugin-sdk/channel-send-result";
-import { chunkText } from "NexisClaw/plugin-sdk/reply-chunking";
-import { shouldLogVerbose } from "NexisClaw/plugin-sdk/runtime-env";
+import { type ChannelOutboundAdapter } from "FirstNexus/plugin-sdk/channel-send-result";
+import { chunkText } from "FirstNexus/plugin-sdk/reply-chunking";
+import { shouldLogVerbose } from "FirstNexus/plugin-sdk/runtime-env";
 import { createWhatsAppOutboundBase } from "./outbound-base.js";
 import { normalizeWhatsAppPayloadText } from "./outbound-media-contract.js";
 import { resolveWhatsAppOutboundTarget } from "./resolve-outbound-target.js";

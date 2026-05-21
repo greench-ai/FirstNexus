@@ -18,7 +18,7 @@ describe("cleanupLegacyPluginDependencyState", () => {
   let tempDir: string;
 
   beforeEach(async () => {
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "NexisClaw-plugin-deps-cleanup-"));
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "FirstNexus-plugin-deps-cleanup-"));
   });
 
   afterEach(async () => {
@@ -44,13 +44,13 @@ describe("cleanupLegacyPluginDependencyState", () => {
       "dist",
       "extensions",
       "demo",
-      ".NexisClaw-runtime-deps-stamp.json",
+      ".FirstNexus-runtime-deps-stamp.json",
     );
     const legacyManifest = path.join(
       packageRoot,
       "extensions",
       "demo",
-      ".NexisClaw-runtime-deps.json",
+      ".FirstNexus-runtime-deps.json",
     );
     const thirdPartyNodeModules = path.join(
       stateDir,
@@ -100,12 +100,12 @@ describe("cleanupLegacyPluginDependencyState", () => {
 
   it("removes dangling global plugin-runtime symlinks that point at legacy runtime deps", async () => {
     const stateDir = path.join(tempDir, "state");
-    const packageRoot = path.join(tempDir, "prefix", "lib", "node_modules", "NexisClaw");
+    const packageRoot = path.join(tempDir, "prefix", "lib", "node_modules", "FirstNexus");
     const nodeModulesRoot = path.dirname(packageRoot);
     const legacyRuntimeRoot = path.join(stateDir, "plugin-runtime-deps");
     const legacyTarget = path.join(
       legacyRuntimeRoot,
-      "NexisClaw-2026.4.29-slack",
+      "FirstNexus-2026.4.29-slack",
       "node_modules",
       "@slack",
       "web-api",

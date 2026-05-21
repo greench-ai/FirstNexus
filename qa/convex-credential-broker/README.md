@@ -58,17 +58,17 @@ Client URL policy:
 Maintainers can manage rows without using the Convex dashboard:
 
 ```bash
-pnpm NexisClaw qa credentials add \
+pnpm FirstNexus qa credentials add \
   --kind telegram \
   --payload-file qa/telegram-credential.json
 
-pnpm NexisClaw qa credentials add \
+pnpm FirstNexus qa credentials add \
   --kind discord \
   --payload-file qa/discord-credential.json
 
-pnpm NexisClaw qa credentials list --kind telegram
+pnpm FirstNexus qa credentials list --kind telegram
 
-pnpm NexisClaw qa credentials remove --credential-id <credential-id>
+pnpm FirstNexus qa credentials remove --credential-id <credential-id>
 ```
 
 Admin endpoints require `NEXISCLAW_QA_CONVEX_SECRET_MAINTAINER`.

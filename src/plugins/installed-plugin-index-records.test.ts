@@ -19,7 +19,7 @@ import { writeManagedNpmPlugin } from "./test-helpers/managed-npm-plugin.js";
 const tempDirs: string[] = [];
 
 function makeStateDir(): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "NexisClaw-plugin-index-records-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "FirstNexus-plugin-index-records-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -30,7 +30,7 @@ function createPluginCandidate(stateDir: string, pluginId: string): PluginCandid
   const source = path.join(rootDir, "index.ts");
   fs.writeFileSync(source, "export function register() {}\n", "utf8");
   fs.writeFileSync(
-    path.join(rootDir, "NexisClaw.plugin.json"),
+    path.join(rootDir, "FirstNexus.plugin.json"),
     JSON.stringify({
       id: pluginId,
       configSchema: { type: "object" },
@@ -71,8 +71,8 @@ describe("plugin index install records store", () => {
       {
         twitch: {
           source: "npm",
-          spec: "@NexisClaw/plugin-twitch@1.0.0",
-          installPath: "plugins/npm/@NexisClaw/plugin-twitch",
+          spec: "@FirstNexus/plugin-twitch@1.0.0",
+          installPath: "plugins/npm/@FirstNexus/plugin-twitch",
         },
       },
       {
@@ -94,8 +94,8 @@ describe("plugin index install records store", () => {
     expect(persisted.generatedAtMs).toBe(1777118400000);
     expectRecordFields(persisted.installRecords?.twitch, {
       source: "npm",
-      spec: "@NexisClaw/plugin-twitch@1.0.0",
-      installPath: "plugins/npm/@NexisClaw/plugin-twitch",
+      spec: "@FirstNexus/plugin-twitch@1.0.0",
+      installPath: "plugins/npm/@FirstNexus/plugin-twitch",
     });
     expect(persisted.plugins).toHaveLength(1);
     expect(persisted.plugins?.[0]?.pluginId).toBe("twitch");
@@ -103,8 +103,8 @@ describe("plugin index install records store", () => {
     await expect(readPersistedInstalledPluginIndexInstallRecords({ stateDir })).resolves.toEqual({
       twitch: {
         source: "npm",
-        spec: "@NexisClaw/plugin-twitch@1.0.0",
-        installPath: "plugins/npm/@NexisClaw/plugin-twitch",
+        spec: "@FirstNexus/plugin-twitch@1.0.0",
+        installPath: "plugins/npm/@FirstNexus/plugin-twitch",
       },
     });
   });
@@ -201,13 +201,13 @@ describe("plugin index install records store", () => {
     const stateDir = makeStateDir();
     const discordDir = writeManagedNpmPlugin({
       stateDir,
-      packageName: "@NexisClaw/discord",
+      packageName: "@FirstNexus/discord",
       pluginId: "discord",
       version: "2026.5.2",
     });
     const codexDir = writeManagedNpmPlugin({
       stateDir,
-      packageName: "@NexisClaw/codex",
+      packageName: "@FirstNexus/codex",
       pluginId: "codex",
       version: "2026.5.2",
     });
@@ -218,21 +218,21 @@ describe("plugin index install records store", () => {
     const loaded = await loadInstalledPluginIndexInstallRecords({ stateDir });
     expectRecordFields(loaded.codex, {
       source: "npm",
-      spec: "@NexisClaw/codex@2026.5.2",
+      spec: "@FirstNexus/codex@2026.5.2",
       installPath: codexDir,
       version: "2026.5.2",
-      resolvedName: "@NexisClaw/codex",
+      resolvedName: "@FirstNexus/codex",
       resolvedVersion: "2026.5.2",
-      resolvedSpec: "@NexisClaw/codex@2026.5.2",
+      resolvedSpec: "@FirstNexus/codex@2026.5.2",
     });
     expectRecordFields(loaded.discord, {
       source: "npm",
-      spec: "@NexisClaw/discord@2026.5.2",
+      spec: "@FirstNexus/discord@2026.5.2",
       installPath: discordDir,
       version: "2026.5.2",
-      resolvedName: "@NexisClaw/discord",
+      resolvedName: "@FirstNexus/discord",
       resolvedVersion: "2026.5.2",
-      resolvedSpec: "@NexisClaw/discord@2026.5.2",
+      resolvedSpec: "@FirstNexus/discord@2026.5.2",
     });
     const loadedSync = loadInstalledPluginIndexInstallRecordsSync({ stateDir });
     expectRecordFields(loadedSync.codex, { source: "npm", installPath: codexDir });
@@ -243,7 +243,7 @@ describe("plugin index install records store", () => {
     const stateDir = makeStateDir();
     writeManagedNpmPlugin({
       stateDir,
-      packageName: "@NexisClaw/discord",
+      packageName: "@FirstNexus/discord",
       pluginId: "discord",
       version: "2026.5.2",
     });
@@ -252,7 +252,7 @@ describe("plugin index install records store", () => {
       {
         discord: {
           source: "npm",
-          spec: "@NexisClaw/discord@beta",
+          spec: "@FirstNexus/discord@beta",
           installPath: path.join(stateDir, "custom", "discord"),
           integrity: "sha512-persisted",
         },
@@ -263,7 +263,7 @@ describe("plugin index install records store", () => {
     const loaded = await loadInstalledPluginIndexInstallRecords({ stateDir });
     expectRecordFields(loaded.discord, {
       source: "npm",
-      spec: "@NexisClaw/discord@beta",
+      spec: "@FirstNexus/discord@beta",
       installPath: path.join(stateDir, "custom", "discord"),
       integrity: "sha512-persisted",
     });

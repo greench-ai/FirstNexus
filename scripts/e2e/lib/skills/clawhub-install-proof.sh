@@ -5,37 +5,37 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 cd "$ROOT_DIR"
 
-source "$ROOT_DIR/scripts/lib/NexisClaw-e2e-instance.sh"
+source "$ROOT_DIR/scripts/lib/FirstNexus-e2e-instance.sh"
 
 NEXISCLAW_TEST_STATE_SCRIPT_B64="${NEXISCLAW_TEST_STATE_SCRIPT_B64:-}"
 if [ -n "$NEXISCLAW_TEST_STATE_SCRIPT_B64" ]; then
-  NexisClaw_e2e_eval_test_state_from_b64 "$NEXISCLAW_TEST_STATE_SCRIPT_B64"
+  FirstNexus_e2e_eval_test_state_from_b64 "$NEXISCLAW_TEST_STATE_SCRIPT_B64"
 else
-  export HOME="$(mktemp -d "${TMPDIR:-/tmp}/NexisClaw-skill-install-home.XXXXXX")"
+  export HOME="$(mktemp -d "${TMPDIR:-/tmp}/FirstNexus-skill-install-home.XXXXXX")"
   export USERPROFILE="$HOME"
   export NEXISCLAW_HOME="$HOME"
-  export NEXISCLAW_STATE_DIR="$HOME/.NexisClaw"
-  export NEXISCLAW_CONFIG_PATH="$NEXISCLAW_STATE_DIR/NexisClaw.json"
+  export NEXISCLAW_STATE_DIR="$HOME/.FirstNexus"
+  export NEXISCLAW_CONFIG_PATH="$NEXISCLAW_STATE_DIR/FirstNexus.json"
   mkdir -p "$NEXISCLAW_STATE_DIR"
 fi
 
 if [ -n "${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}" ]; then
   export NPM_CONFIG_PREFIX="${NPM_CONFIG_PREFIX:-$HOME/.npm-global}"
   export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
-  NexisClaw_e2e_install_package /tmp/NexisClaw-skill-install-npm.log
+  FirstNexus_e2e_install_package /tmp/FirstNexus-skill-install-npm.log
 fi
 
-if [ -n "${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}" ] && command -v NexisClaw >/dev/null 2>&1; then
-  NEXISCLAW_CMD=(NexisClaw)
+if [ -n "${NEXISCLAW_CURRENT_PACKAGE_TGZ:-}" ] && command -v FirstNexus >/dev/null 2>&1; then
+  NEXISCLAW_CMD=(FirstNexus)
 elif command -v pnpm >/dev/null 2>&1 && [ -f package.json ]; then
   if [ "${NEXISCLAW_SKILL_INSTALL_E2E_BUILD_SOURCE:-0}" = "1" ]; then
-    pnpm build >/tmp/NexisClaw-skill-install-build.log 2>&1
+    pnpm build >/tmp/FirstNexus-skill-install-build.log 2>&1
   fi
-  NEXISCLAW_CMD=(pnpm --silent NexisClaw)
-elif command -v NexisClaw >/dev/null 2>&1; then
-  NEXISCLAW_CMD=(NexisClaw)
+  NEXISCLAW_CMD=(pnpm --silent FirstNexus)
+elif command -v FirstNexus >/dev/null 2>&1; then
+  NEXISCLAW_CMD=(FirstNexus)
 else
-  echo "NexisClaw command not found; install package first or run from repo with pnpm" >&2
+  echo "FirstNexus command not found; install package first or run from repo with pnpm" >&2
   exit 1
 fi
 
@@ -56,10 +56,10 @@ NODE
 query="${NEXISCLAW_SKILL_INSTALL_E2E_QUERY:-homeassistant}"
 requested_slug="${NEXISCLAW_SKILL_INSTALL_E2E_SLUG:-}"
 preferred_slug="${NEXISCLAW_SKILL_INSTALL_E2E_PREFERRED_SLUG:-homeassistant-skill}"
-search_json="/tmp/NexisClaw-skill-install-search.json"
-resolve_json="/tmp/NexisClaw-skill-install-resolved.json"
-install_log="/tmp/NexisClaw-skill-install.log"
-info_json="/tmp/NexisClaw-skill-install-info.json"
+search_json="/tmp/FirstNexus-skill-install-search.json"
+resolve_json="/tmp/FirstNexus-skill-install-resolved.json"
+install_log="/tmp/FirstNexus-skill-install.log"
+info_json="/tmp/FirstNexus-skill-install-info.json"
 
 echo "Searching live ClawHub skills for: $query"
 "${NEXISCLAW_CMD[@]}" skills search "$query" --limit 8 --json >"$search_json"
@@ -96,18 +96,18 @@ slug="$(node -e 'process.stdout.write(JSON.parse(require("node:fs").readFileSync
 echo "Installing live ClawHub skill: $slug"
 if ! "${NEXISCLAW_CMD[@]}" skills install "$slug" --force >"$install_log" 2>&1; then
   echo "Skill install failed" >&2
-  NexisClaw_e2e_dump_logs /tmp/NexisClaw-skill-install-npm.log "$search_json" "$resolve_json" "$install_log"
+  FirstNexus_e2e_dump_logs /tmp/FirstNexus-skill-install-npm.log "$search_json" "$resolve_json" "$install_log"
   exit 1
 fi
 
-workspace_dir="$HOME/.NexisClaw/workspace"
+workspace_dir="$HOME/.FirstNexus/workspace"
 skill_dir="$workspace_dir/skills/$slug"
 origin_json="$skill_dir/.clawhub/origin.json"
 lock_json="$workspace_dir/.clawhub/lock.json"
 
-NexisClaw_e2e_assert_file "$skill_dir/SKILL.md"
-NexisClaw_e2e_assert_file "$origin_json"
-NexisClaw_e2e_assert_file "$lock_json"
+FirstNexus_e2e_assert_file "$skill_dir/SKILL.md"
+FirstNexus_e2e_assert_file "$origin_json"
+FirstNexus_e2e_assert_file "$lock_json"
 
 "${NEXISCLAW_CMD[@]}" skills info "$slug" --json >"$info_json"
 

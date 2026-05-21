@@ -9,7 +9,7 @@ import {
 } from "../../trajectory/paths.js";
 import type { SessionEntry } from "./types.js";
 
-// Keep integration tests deterministic: never read a real NexisClaw.json.
+// Keep integration tests deterministic: never read a real FirstNexus.json.
 vi.mock("../config.js", async () => ({
   ...(await vi.importActual<typeof import("../config.js")>("../config.js")),
   getRuntimeConfig: vi.fn().mockReturnValue({}),
@@ -39,7 +39,7 @@ const ENFORCED_MAINTENANCE_OVERRIDE = {
 
 const archiveTimestamp = (ms: number) => new Date(ms).toISOString().replaceAll(":", "-");
 
-const suiteRootTracker = createSuiteTempRootTracker({ prefix: "NexisClaw-pruning-integ-" });
+const suiteRootTracker = createSuiteTempRootTracker({ prefix: "FirstNexus-pruning-integ-" });
 
 function makeEntry(updatedAt: number): SessionEntry {
   return { sessionId: crypto.randomUUID(), updatedAt };
@@ -196,12 +196,12 @@ describe("Integration: saveSessionStore with pruning", () => {
     const freshPointer = resolveTrajectoryPointerFilePath(freshTranscript);
     await fs.writeFile(staleTranscript, '{"type":"session"}\n', "utf-8");
     await fs.writeFile(freshTranscript, '{"type":"session"}\n', "utf-8");
-    await fs.writeFile(staleRuntime, '{"traceSchema":"NexisClaw-trajectory"}\n', "utf-8");
-    await fs.writeFile(freshRuntime, '{"traceSchema":"NexisClaw-trajectory"}\n', "utf-8");
+    await fs.writeFile(staleRuntime, '{"traceSchema":"FirstNexus-trajectory"}\n', "utf-8");
+    await fs.writeFile(freshRuntime, '{"traceSchema":"FirstNexus-trajectory"}\n', "utf-8");
     await fs.writeFile(
       stalePointer,
       JSON.stringify({
-        traceSchema: "NexisClaw-trajectory-pointer",
+        traceSchema: "FirstNexus-trajectory-pointer",
         schemaVersion: 1,
         sessionId: staleSessionId,
         runtimeFile: staleRuntime,
@@ -211,7 +211,7 @@ describe("Integration: saveSessionStore with pruning", () => {
     await fs.writeFile(
       freshPointer,
       JSON.stringify({
-        traceSchema: "NexisClaw-trajectory-pointer",
+        traceSchema: "FirstNexus-trajectory-pointer",
         schemaVersion: 1,
         sessionId: freshSessionId,
         runtimeFile: freshRuntime,

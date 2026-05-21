@@ -1,11 +1,11 @@
-import { createQueuedWizardPrompter } from "NexisClaw/plugin-sdk/plugin-test-runtime";
-import { DEFAULT_ACCOUNT_ID } from "NexisClaw/plugin-sdk/routing";
-import type { RuntimeEnv } from "NexisClaw/plugin-sdk/runtime-env";
+import { createQueuedWizardPrompter } from "FirstNexus/plugin-sdk/plugin-test-runtime";
+import { DEFAULT_ACCOUNT_ID } from "FirstNexus/plugin-sdk/routing";
+import type { RuntimeEnv } from "FirstNexus/plugin-sdk/runtime-env";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { WHATSAPP_AUTH_UNSTABLE_CODE } from "./auth-store.js";
 import { whatsappSetupPlugin } from "./channel.setup.js";
 import { checkWhatsAppHeartbeatReady } from "./heartbeat.js";
-import type { NexisClawConfig } from "./runtime-api.js";
+import type { FirstNexusConfig } from "./runtime-api.js";
 import { finalizeWhatsAppSetup } from "./setup-finalize.js";
 import {
   createWhatsAppAllowlistModeInput,
@@ -34,7 +34,7 @@ const hoisted = vi.hoisted(() => ({
     }),
   ),
   resolveWhatsAppAuthDir: vi.fn(() => ({
-    authDir: "/tmp/NexisClaw-whatsapp-test",
+    authDir: "/tmp/FirstNexus-whatsapp-test",
   })),
 }));
 
@@ -53,9 +53,9 @@ vi.mock("./login.js", () => ({
   loginWeb: hoisted.loginWeb,
 }));
 
-vi.mock("NexisClaw/plugin-sdk/setup", async () => {
-  const actual = await vi.importActual<typeof import("NexisClaw/plugin-sdk/setup")>(
-    "NexisClaw/plugin-sdk/setup",
+vi.mock("FirstNexus/plugin-sdk/setup", async () => {
+  const actual = await vi.importActual<typeof import("FirstNexus/plugin-sdk/setup")>(
+    "FirstNexus/plugin-sdk/setup",
   );
   const normalizeE164 = (value?: string | null) => {
     const raw = (value ?? "").trim();
@@ -82,12 +82,12 @@ vi.mock("NexisClaw/plugin-sdk/setup", async () => {
     normalizeE164,
     pathExists: hoisted.pathExists,
     splitSetupEntries: splitSetupEntriesForMock,
-    setSetupChannelEnabled: (cfg: NexisClawConfig, channel: string, enabled: boolean) => ({
+    setSetupChannelEnabled: (cfg: FirstNexusConfig, channel: string, enabled: boolean) => ({
       ...cfg,
       channels: {
         ...cfg.channels,
         [channel]: {
-          ...(cfg.channels?.[channel as keyof NonNullable<NexisClawConfig["channels"]>] as object),
+          ...(cfg.channels?.[channel as keyof NonNullable<FirstNexusConfig["channels"]>] as object),
           enabled,
         },
       },
@@ -120,12 +120,12 @@ function createRuntime(): RuntimeEnv {
 
 async function runConfigureWithHarness(params: {
   harness: ReturnType<typeof createQueuedWizardPrompter>;
-  cfg?: NexisClawConfig;
+  cfg?: FirstNexusConfig;
   runtime?: RuntimeEnv;
   forceAllowFrom?: boolean;
 }) {
   const result = await finalizeWhatsAppSetup({
-    cfg: params.cfg ?? ({} as NexisClawConfig),
+    cfg: params.cfg ?? ({} as FirstNexusConfig),
     accountId: DEFAULT_ACCOUNT_ID,
     forceAllowFrom: params.forceAllowFrom ?? false,
     prompter: params.harness.prompter,
@@ -170,7 +170,7 @@ describe("whatsapp setup wizard", () => {
       exists: false,
     });
     hoisted.resolveWhatsAppAuthDir.mockReset();
-    hoisted.resolveWhatsAppAuthDir.mockReturnValue({ authDir: "/tmp/NexisClaw-whatsapp-test" });
+    hoisted.resolveWhatsAppAuthDir.mockReturnValue({ authDir: "/tmp/FirstNexus-whatsapp-test" });
   });
 
   it("applies owner allowlist when forceAllowFrom is enabled", async () => {
@@ -263,7 +263,7 @@ describe("whatsapp setup wizard", () => {
 
     const result = await runConfigureWithHarness({
       harness,
-      cfg: createWhatsAppRootAllowFromConfig() as NexisClawConfig,
+      cfg: createWhatsAppRootAllowFromConfig() as FirstNexusConfig,
     });
 
     expectWhatsAppOpenPolicySetup(result.cfg, harness);
@@ -284,7 +284,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       accountId: "work",
       account: {
         accountId: "work",
@@ -316,7 +316,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       accountId: "work",
       account: {
         accountId: "work",
@@ -351,7 +351,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(result.cfg.channels?.whatsapp?.dmPolicy).toBeUndefined();
@@ -382,7 +382,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
     });
 
     expect(result.cfg.channels?.whatsapp?.accounts?.Default?.authDir).toBe("/tmp/default-auth");
@@ -444,7 +444,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       deps: {
         readWebAuthExistsForDecision: async () => ({
           outcome: "stable" as const,
@@ -469,7 +469,7 @@ describe("whatsapp setup wizard", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       deps: {
         readWebAuthExistsForDecision: async () => ({ outcome: "unstable" as const }),
         hasActiveWebListener: () => true,

@@ -1,4 +1,7 @@
-import type { DiscordAccountConfig, NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+import type {
+  DiscordAccountConfig,
+  FirstNexusConfig,
+} from "FirstNexus/plugin-sdk/config-contracts";
 import type {
   ButtonInteraction,
   ChannelSelectMenuInteraction,
@@ -35,10 +38,10 @@ export type DiscordChannelContext = {
 };
 
 export type AgentComponentContext = {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId: string;
   discordConfig?: DiscordAccountConfig;
-  runtime?: import("NexisClaw/plugin-sdk/runtime-env").RuntimeEnv;
+  runtime?: import("FirstNexus/plugin-sdk/runtime-env").RuntimeEnv;
   token?: string;
   guildEntries?: Record<string, DiscordGuildEntryResolved>;
   allowFrom?: string[];

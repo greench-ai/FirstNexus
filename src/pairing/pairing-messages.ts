@@ -7,9 +7,9 @@ export function buildPairingReply(params: {
   code: string;
 }): string {
   const { channel, idLine, code } = params;
-  const approveCommand = formatCliCommand(`NexisClaw pairing approve ${channel} ${code}`);
+  const approveCommand = formatCliCommand(`FirstNexus pairing approve ${channel} ${code}`);
   return [
-    "NexisClaw: access not configured.",
+    "FirstNexus: access not configured.",
     "",
     idLine,
     "Pairing code:",
@@ -18,7 +18,7 @@ export function buildPairingReply(params: {
     "```",
     "",
     "Ask the bot owner to approve with:",
-    formatCliCommand(`NexisClaw pairing approve ${channel} ${code}`),
+    formatCliCommand(`FirstNexus pairing approve ${channel} ${code}`),
     "```",
     approveCommand,
     "```",

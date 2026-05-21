@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { NexisClawConfig } from "../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../config/types.FirstNexus.js";
 import { resolveVisibleModelCatalog } from "./model-catalog-visibility.js";
 import type { ModelCatalogEntry } from "./model-catalog.types.js";
 import { createProviderAuthChecker } from "./model-provider-auth.js";
@@ -22,7 +22,7 @@ describe("resolveVisibleModelCatalog", () => {
       { provider: "anthropic", id: "claude-test", name: "Claude Test" },
       { provider: "openai", id: "gpt-test", name: "GPT Test" },
     ];
-    const cfg = {} as NexisClawConfig;
+    const cfg = {} as FirstNexusConfig;
 
     const result = resolveVisibleModelCatalog({
       cfg,
@@ -63,7 +63,7 @@ describe("resolveVisibleModelCatalog", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       catalog,
       defaultProvider: "anthropic",
       runtimeAuthDiscovery: true,
@@ -98,7 +98,7 @@ describe("resolveVisibleModelCatalog", () => {
             },
           },
         },
-      } as NexisClawConfig,
+      } as FirstNexusConfig,
       catalog: [{ provider: "anthropic", id: "claude-test", name: "Claude Test" }],
       defaultProvider: "anthropic",
       runtimeAuthDiscovery: true,

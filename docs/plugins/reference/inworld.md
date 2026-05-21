@@ -11,8 +11,8 @@ Inworld streaming text-to-speech (MP3, OGG_OPUS, PCM telephony).
 
 ## Distribution
 
-- Package: `@NexisClaw/inworld-speech`
-- Install route: included in NexisClaw
+- Package: `@FirstNexus/inworld-speech`
+- Install route: included in FirstNexus
 
 ## Surface
 

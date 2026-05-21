@@ -12,9 +12,9 @@ type StoreCall = { name: string; args: unknown[] };
 const settings: DebugProxySettings = {
   enabled: true,
   required: false,
-  dbPath: "/tmp/NexisClaw-proxy-runtime-test.sqlite",
-  blobDir: "/tmp/NexisClaw-proxy-runtime-test-blobs",
-  certDir: "/tmp/NexisClaw-proxy-runtime-test-certs",
+  dbPath: "/tmp/FirstNexus-proxy-runtime-test.sqlite",
+  blobDir: "/tmp/FirstNexus-proxy-runtime-test-blobs",
+  certDir: "/tmp/FirstNexus-proxy-runtime-test-certs",
   sessionId: "runtime-test-session",
   sourceProcess: "runtime-test",
 };

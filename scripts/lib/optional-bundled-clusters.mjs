@@ -29,8 +29,8 @@ function shouldIncludeOptionalBundledClusters(env = process.env) {
 
 function hasReleasedBundledInstall(packageJson) {
   return (
-    typeof packageJson?.NexisClaw?.install?.npmSpec === "string" &&
-    packageJson.NexisClaw.install.npmSpec.trim().length > 0
+    typeof packageJson?.FirstNexus?.install?.npmSpec === "string" &&
+    packageJson.FirstNexus.install.npmSpec.trim().length > 0
   );
 }
 

@@ -1,4 +1,4 @@
-import { missingTargetError } from "NexisClaw/plugin-sdk/channel-feedback";
+import { missingTargetError } from "FirstNexus/plugin-sdk/channel-feedback";
 import {
   isWhatsAppGroupJid,
   isWhatsAppNewsletterJid,

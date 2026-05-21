@@ -1,4 +1,4 @@
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { CallGatewayOptions } from "../../gateway/call.js";
 import type { SessionsListParams, SessionsResolveParams } from "../../gateway/protocol/index.js";
 import type { ReadSessionMessagesAsyncOptions } from "../../gateway/session-utils.fs.js";
@@ -8,8 +8,8 @@ import type { SessionsResolveResult } from "../../gateway/sessions-resolve.js";
 type EmbeddedCallGateway = <T = Record<string, unknown>>(opts: CallGatewayOptions) => Promise<T>;
 
 interface EmbeddedGatewayRuntime {
-  resolveSessionAgentId: (opts: { sessionKey: string; config: NexisClawConfig }) => string;
-  getRuntimeConfig: () => NexisClawConfig;
+  resolveSessionAgentId: (opts: { sessionKey: string; config: FirstNexusConfig }) => string;
+  getRuntimeConfig: () => FirstNexusConfig;
   augmentChatHistoryWithCliSessionImports: (opts: {
     entry: unknown;
     provider: string | undefined;
@@ -25,28 +25,28 @@ interface EmbeddedGatewayRuntime {
     messages: unknown[];
     maxSingleMessageBytes: number;
   }) => { messages: unknown[] };
-  resolveEffectiveChatHistoryMaxChars: (cfg: NexisClawConfig) => number;
+  resolveEffectiveChatHistoryMaxChars: (cfg: FirstNexusConfig) => number;
   projectRecentChatDisplayMessages: (
     msgs: unknown[],
     opts?: { maxChars?: number; maxMessages?: number },
   ) => unknown[];
   capArrayByJsonBytes: (items: unknown[], maxBytes: number) => { items: unknown[] };
   listSessionsFromStoreAsync: (opts: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     storePath: string;
     store: unknown;
     opts: SessionsListParams;
   }) => Promise<SessionsListResult>;
-  loadCombinedSessionStoreForGateway: (cfg: NexisClawConfig) => {
+  loadCombinedSessionStoreForGateway: (cfg: FirstNexusConfig) => {
     storePath: string;
     store: unknown;
   };
   resolveSessionKeyFromResolveParams: (opts: {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     p: SessionsResolveParams;
   }) => Promise<SessionsResolveResult>;
   loadSessionEntry: (sessionKey: string) => {
-    cfg: NexisClawConfig;
+    cfg: FirstNexusConfig;
     storePath: string | undefined;
     entry: Record<string, unknown> | undefined;
   };
@@ -57,7 +57,7 @@ interface EmbeddedGatewayRuntime {
     opts: ReadSessionMessagesAsyncOptions,
   ) => Promise<unknown[]>;
   resolveSessionModelRef: (
-    cfg: NexisClawConfig,
+    cfg: FirstNexusConfig,
     entry: unknown,
     sessionAgentId: string,
   ) => { provider: string | undefined };

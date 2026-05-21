@@ -15,13 +15,16 @@ vi.mock("../plugins/bundled-dir.js", () => ({
 }));
 
 // The channel-catalog.json fallback still walks package roots via
-// resolveNexisClawPackageRootSync. Isolate from the real repo by mocking
+// resolveFirstNexusPackageRootSync. Isolate from the real repo by mocking
 // moduleUrl/argv1 resolution to null and deriving only from the tmp cwd.
-vi.mock("../infra/NexisClaw-root.js", () => ({
-  resolveNexisClawPackageRootSync: (opts: { cwd?: string; argv1?: string; moduleUrl?: string }) =>
+vi.mock("../infra/FirstNexus-root.js", () => ({
+  resolveFirstNexusPackageRootSync: (opts: { cwd?: string; argv1?: string; moduleUrl?: string }) =>
     opts.cwd ?? null,
-  resolveNexisClawPackageRoot: async (opts: { cwd?: string; argv1?: string; moduleUrl?: string }) =>
-    opts.cwd ?? null,
+  resolveFirstNexusPackageRoot: async (opts: {
+    cwd?: string;
+    argv1?: string;
+    moduleUrl?: string;
+  }) => opts.cwd ?? null,
 }));
 
 import { resolveBundledPluginsDir } from "../plugins/bundled-dir.js";
@@ -59,7 +62,7 @@ function useBundledPluginsDir(extensionsRoot: string | undefined): void {
 
 function seedRoot(prefix: string): string {
   const root = makeTempRepoRoot(tempDirs, prefix);
-  writeJsonFile(path.join(root, "package.json"), { name: "NexisClaw" });
+  writeJsonFile(path.join(root, "package.json"), { name: "FirstNexus" });
   vi.spyOn(process, "cwd").mockReturnValue(root);
   return root;
 }
@@ -70,8 +73,8 @@ function seedChannelPkg(
 ): void {
   const pluginDir = path.dirname(pkgJsonPath);
   writeJsonFile(pkgJsonPath, {
-    name: `@NexisClaw/${opts.id}`,
-    NexisClaw: {
+    name: `@FirstNexus/${opts.id}`,
+    FirstNexus: {
       channel: {
         id: opts.id,
         label: opts.label ?? opts.id,
@@ -80,7 +83,7 @@ function seedChannelPkg(
       },
     },
   });
-  writeJsonFile(path.join(pluginDir, "NexisClaw.plugin.json"), {
+  writeJsonFile(path.join(pluginDir, "FirstNexus.plugin.json"), {
     id: opts.id,
     configSchema: { type: "object" },
     channels: [opts.id],
@@ -128,8 +131,8 @@ describe("listBundledChannelCatalogEntries", () => {
     writeJsonFile(path.join(root, "dist", "channel-catalog.json"), {
       entries: [
         {
-          name: "@NexisClaw/qqbot",
-          NexisClaw: {
+          name: "@FirstNexus/qqbot",
+          FirstNexus: {
             channel: {
               id: "qqbot",
               label: "QQ Bot",
@@ -157,8 +160,8 @@ describe("listBundledChannelCatalogEntries", () => {
     writeJsonFile(path.join(root, "dist", "channel-catalog.json"), {
       entries: [
         {
-          name: "@NexisClaw/fallback",
-          NexisClaw: {
+          name: "@FirstNexus/fallback",
+          FirstNexus: {
             channel: {
               id: "fallback-channel",
               label: "Fallback",
@@ -186,8 +189,8 @@ describe("listBundledChannelCatalogEntries", () => {
     writeJsonFile(path.join(root, "dist", "channel-catalog.json"), {
       entries: [
         {
-          name: "@NexisClaw/fallback",
-          NexisClaw: {
+          name: "@FirstNexus/fallback",
+          FirstNexus: {
             channel: {
               id: "fallback-channel",
               label: "Fallback",

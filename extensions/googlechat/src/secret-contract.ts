@@ -7,8 +7,8 @@ import {
   resolveChannelAccountSurface,
   type ResolverContext,
   type SecretDefaults,
-} from "NexisClaw/plugin-sdk/channel-secret-basic-runtime";
-import { coerceSecretRef } from "NexisClaw/plugin-sdk/secret-ref-runtime";
+} from "FirstNexus/plugin-sdk/channel-secret-basic-runtime";
+import { coerceSecretRef } from "FirstNexus/plugin-sdk/secret-ref-runtime";
 
 type GoogleChatAccountLike = {
   serviceAccount?: unknown;
@@ -16,13 +16,13 @@ type GoogleChatAccountLike = {
   accounts?: Record<string, unknown>;
 };
 
-export const secretTargetRegistryEntries: import("NexisClaw/plugin-sdk/channel-secret-basic-runtime").SecretTargetRegistryEntry[] =
+export const secretTargetRegistryEntries: import("FirstNexus/plugin-sdk/channel-secret-basic-runtime").SecretTargetRegistryEntry[] =
   [
     {
       id: "channels.googlechat.accounts.*.serviceAccount",
       targetType: "channels.googlechat.serviceAccount",
       targetTypeAliases: ["channels.googlechat.accounts.*.serviceAccount"],
-      configFile: "NexisClaw.json",
+      configFile: "FirstNexus.json",
       pathPattern: "channels.googlechat.accounts.*.serviceAccount",
       refPathPattern: "channels.googlechat.accounts.*.serviceAccountRef",
       secretShape: "sibling_ref",
@@ -35,7 +35,7 @@ export const secretTargetRegistryEntries: import("NexisClaw/plugin-sdk/channel-s
     {
       id: "channels.googlechat.serviceAccount",
       targetType: "channels.googlechat.serviceAccount",
-      configFile: "NexisClaw.json",
+      configFile: "FirstNexus.json",
       pathPattern: "channels.googlechat.serviceAccount",
       refPathPattern: "channels.googlechat.serviceAccountRef",
       secretShape: "sibling_ref",

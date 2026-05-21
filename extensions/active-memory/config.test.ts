@@ -1,9 +1,12 @@
 import fs from "node:fs";
-import { type JsonSchemaObject, validateJsonSchemaValue } from "NexisClaw/plugin-sdk/config-schema";
+import {
+  type JsonSchemaObject,
+  validateJsonSchemaValue,
+} from "FirstNexus/plugin-sdk/config-schema";
 import { describe, expect, it } from "vitest";
 
 const manifest = JSON.parse(
-  fs.readFileSync(new URL("./NexisClaw.plugin.json", import.meta.url), "utf-8"),
+  fs.readFileSync(new URL("./FirstNexus.plugin.json", import.meta.url), "utf-8"),
 ) as { configSchema: JsonSchemaObject };
 
 describe("active-memory manifest config schema", () => {

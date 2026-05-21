@@ -1,13 +1,13 @@
 import {
   createResolvedApproverActionAuthAdapter,
   resolveApprovalApprovers,
-} from "NexisClaw/plugin-sdk/approval-auth-runtime";
-import type { NexisClawConfig } from "NexisClaw/plugin-sdk/config-contracts";
+} from "FirstNexus/plugin-sdk/approval-auth-runtime";
+import type { FirstNexusConfig } from "FirstNexus/plugin-sdk/config-contracts";
 import { resolveSlackAccount, resolveSlackAccountAllowFrom } from "./accounts.js";
 import { normalizeSlackApproverId } from "./exec-approvals.js";
 
 function getSlackApprovalApprovers(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
 }): string[] {
   const account = resolveSlackAccount(params).config;
@@ -20,7 +20,7 @@ function getSlackApprovalApprovers(params: {
 }
 
 export function isSlackApprovalAuthorizedSender(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   accountId?: string | null;
   senderId?: string | null;
 }): boolean {

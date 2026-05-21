@@ -9,17 +9,17 @@ import {
 } from "./state-dir-env.js";
 
 type EnvSnapshot = {
-  NexisClaw?: string;
+  FirstNexus?: string;
 };
 
 function snapshotCurrentStateDirVars(): EnvSnapshot {
   return {
-    NexisClaw: process.env.NEXISCLAW_STATE_DIR,
+    FirstNexus: process.env.NEXISCLAW_STATE_DIR,
   };
 }
 
 function expectStateDirVars(snapshot: EnvSnapshot) {
-  expect(process.env.NEXISCLAW_STATE_DIR).toBe(snapshot.NexisClaw);
+  expect(process.env.NEXISCLAW_STATE_DIR).toBe(snapshot.FirstNexus);
 }
 
 async function expectPathMissing(filePath: string) {
@@ -46,8 +46,8 @@ describe("state-dir-env helpers", () => {
     const prev = snapshotCurrentStateDirVars();
     const snapshot = snapshotStateDirEnv();
 
-    setStateDirEnv("/tmp/NexisClaw-state-dir-test");
-    expect(process.env.NEXISCLAW_STATE_DIR).toBe("/tmp/NexisClaw-state-dir-test");
+    setStateDirEnv("/tmp/FirstNexus-state-dir-test");
+    expect(process.env.NEXISCLAW_STATE_DIR).toBe("/tmp/FirstNexus-state-dir-test");
 
     restoreStateDirEnv(snapshot);
     expectStateDirVars(prev);
@@ -58,7 +58,7 @@ describe("state-dir-env helpers", () => {
 
     let capturedTempRoot = "";
     let capturedStateDir = "";
-    await withStateDirEnv("NexisClaw-state-dir-env-", async ({ tempRoot, stateDir }) => {
+    await withStateDirEnv("FirstNexus-state-dir-env-", async ({ tempRoot, stateDir }) => {
       capturedTempRoot = tempRoot;
       capturedStateDir = stateDir;
       expect(process.env.NEXISCLAW_STATE_DIR).toBe(stateDir);
@@ -74,7 +74,7 @@ describe("state-dir-env helpers", () => {
     let capturedTempRoot = "";
     let capturedStateDir = "";
     await expect(
-      withStateDirEnv("NexisClaw-state-dir-env-", async ({ tempRoot, stateDir }) => {
+      withStateDirEnv("FirstNexus-state-dir-env-", async ({ tempRoot, stateDir }) => {
         capturedTempRoot = tempRoot;
         capturedStateDir = stateDir;
         throw new Error("boom");

@@ -1,5 +1,5 @@
 import { normalizeChatType } from "../../channels/chat-type.js";
-import type { NexisClawConfig } from "../../config/types.NexisClaw.js";
+import type { FirstNexusConfig } from "../../config/types.FirstNexus.js";
 import type { SessionSendPolicyDecision } from "../../sessions/send-policy.js";
 import type { SourceReplyDeliveryMode } from "../get-reply-options.types.js";
 
@@ -18,7 +18,7 @@ export function isExplicitSourceReplyCommand(ctx: SourceReplyDeliveryModeContext
 }
 
 export function resolveSourceReplyDeliveryMode(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   ctx: SourceReplyDeliveryModeContext;
   requested?: SourceReplyDeliveryMode;
   messageToolAvailable?: boolean;
@@ -60,7 +60,7 @@ export type SourceReplyVisibilityPolicy = {
 };
 
 export function resolveSourceReplyVisibilityPolicy(params: {
-  cfg: NexisClawConfig;
+  cfg: FirstNexusConfig;
   ctx: SourceReplyDeliveryModeContext;
   requested?: SourceReplyDeliveryMode;
   sendPolicy: SessionSendPolicyDecision;

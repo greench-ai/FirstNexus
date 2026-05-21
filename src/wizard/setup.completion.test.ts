@@ -10,12 +10,12 @@ function createPrompter(confirmValue = false) {
 
 function createDeps() {
   const deps: NonNullable<Parameters<typeof setupWizardShellCompletion>[0]["deps"]> = {
-    resolveCliName: () => "NexisClaw",
+    resolveCliName: () => "FirstNexus",
     checkShellCompletionStatus: vi.fn(async (_binName: string) => ({
       shell: "zsh" as const,
       profileInstalled: false,
       cacheExists: false,
-      cachePath: "/tmp/NexisClaw.zsh",
+      cachePath: "/tmp/FirstNexus.zsh",
       usesSlowPattern: false,
     })),
     ensureCompletionCacheExists: vi.fn(async (_binName: string) => true),
@@ -32,8 +32,8 @@ describe("setupWizardShellCompletion", () => {
     await setupWizardShellCompletion({ flow: "quickstart", prompter, deps });
 
     expect(prompter.confirm).not.toHaveBeenCalled();
-    expect(deps.ensureCompletionCacheExists).toHaveBeenCalledWith("NexisClaw");
-    expect(deps.installCompletion).toHaveBeenCalledWith("zsh", true, "NexisClaw");
+    expect(deps.ensureCompletionCacheExists).toHaveBeenCalledWith("FirstNexus");
+    expect(deps.installCompletion).toHaveBeenCalledWith("zsh", true, "FirstNexus");
     expect(prompter.note).toHaveBeenCalled();
   });
 
