@@ -1,6 +1,6 @@
 import CoreLocation
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 @MainActor
 protocol MacNodeRuntimeMainActorServices: Sendable {

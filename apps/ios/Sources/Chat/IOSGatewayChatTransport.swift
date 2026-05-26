@@ -1,7 +1,7 @@
 import Foundation
 import OpenClawChatUI
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 import OSLog
 
 struct IOSGatewayChatTransport: OpenClawChatTransport {

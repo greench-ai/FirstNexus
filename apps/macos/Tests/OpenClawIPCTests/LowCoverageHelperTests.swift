@@ -1,6 +1,6 @@
 import AppKit
 import Foundation
-import OpenClawProtocol
+import FirstNexusProtocol
 import Testing
 @testable import OpenClaw
 

@@ -1,6 +1,6 @@
 import CoreLocation
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 /// Monitors significant location changes and pushes `location.update`
 /// events to the gateway so the severance hook can determine whether

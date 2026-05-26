@@ -1,7 +1,7 @@
 import Darwin
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 
 struct WizardCliOptions {
     var url: String?

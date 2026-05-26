@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import FirstNexusProtocol
 
 func whatsappLoginWaitRequestTimeoutMs(
     startedAt: Date,

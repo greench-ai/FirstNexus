@@ -1,7 +1,7 @@
 import Observation
 import OpenClawChatUI
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 import os
 import Security
 import SwiftUI

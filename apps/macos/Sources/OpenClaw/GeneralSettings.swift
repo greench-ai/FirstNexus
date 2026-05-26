@@ -2,7 +2,7 @@ import AppKit
 import Observation
 import OpenClawDiscovery
 import OpenClawIPC
-import OpenClawKit
+import FirstNexusKit
 import SwiftUI
 
 struct GeneralSettings: View {

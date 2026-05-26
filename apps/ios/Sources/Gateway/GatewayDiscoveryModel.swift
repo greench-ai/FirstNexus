@@ -1,7 +1,7 @@
 import Foundation
 import Network
 import Observation
-import OpenClawKit
+import FirstNexusKit
 
 @MainActor
 @Observable

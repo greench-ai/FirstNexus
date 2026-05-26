@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 // Prefer the OpenClawKit wrapper to keep gateway request payloads consistent.
 typealias AnyCodable = OpenClawKit.AnyCodable

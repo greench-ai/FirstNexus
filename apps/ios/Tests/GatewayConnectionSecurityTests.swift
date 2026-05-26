@@ -1,6 +1,6 @@
 import Foundation
 import Network
-import OpenClawKit
+import FirstNexusKit
 import Testing
 @testable import OpenClaw
 

@@ -1,5 +1,5 @@
 import AppKit
-import OpenClawProtocol
+import FirstNexusProtocol
 import SwiftUI
 import Testing
 @testable import OpenClaw

@@ -1,6 +1,6 @@
 import EventKit
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 final class RemindersService: RemindersServicing {
     func list(params: OpenClawRemindersListParams) async throws -> OpenClawRemindersListPayload {

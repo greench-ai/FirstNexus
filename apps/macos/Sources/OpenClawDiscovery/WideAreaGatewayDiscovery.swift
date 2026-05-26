@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 struct WideAreaGatewayBeacon: Equatable {
     var instanceName: String

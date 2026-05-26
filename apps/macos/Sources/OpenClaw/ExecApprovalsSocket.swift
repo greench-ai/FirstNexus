@@ -2,7 +2,7 @@ import AppKit
 import CryptoKit
 import Darwin
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 import OSLog
 
 struct ExecApprovalPromptRequest: Codable {

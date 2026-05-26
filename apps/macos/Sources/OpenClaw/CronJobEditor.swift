@@ -1,5 +1,5 @@
 import Observation
-import OpenClawProtocol
+import FirstNexusProtocol
 import SwiftUI
 
 struct CronJobEditor: View {

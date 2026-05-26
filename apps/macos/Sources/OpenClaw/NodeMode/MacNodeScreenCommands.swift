@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 enum MacNodeScreenCommand: String, Codable {
     case snapshot = "screen.snapshot"

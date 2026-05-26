@@ -1,6 +1,6 @@
 import Contacts
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 final class ContactsService: ContactsServicing {
     private static var payloadKeys: [CNKeyDescriptor] {

@@ -1,6 +1,6 @@
 import Foundation
 import Network
-import OpenClawKit
+import FirstNexusKit
 
 enum A2UIReadyState {
     case ready(String)

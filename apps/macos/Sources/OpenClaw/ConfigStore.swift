@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import FirstNexusProtocol
 
 enum ConfigStore {
     struct Overrides {

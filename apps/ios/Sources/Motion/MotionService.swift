@@ -1,6 +1,6 @@
 import CoreMotion
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 final class MotionService: MotionServicing {
     func activities(params: OpenClawMotionActivityParams) async throws -> OpenClawMotionActivityPayload {

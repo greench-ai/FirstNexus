@@ -1,6 +1,6 @@
 import Foundation
 import Network
-import OpenClawKit
+import FirstNexusKit
 
 final class NetworkStatusService: @unchecked Sendable {
     func currentStatus(timeoutMs: Int = 1500) async -> OpenClawNetworkStatusPayload {

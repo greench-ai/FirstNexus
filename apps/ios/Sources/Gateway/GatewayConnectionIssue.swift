@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 enum GatewayConnectionIssue: Equatable {
     case none

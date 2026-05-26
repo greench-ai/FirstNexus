@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 public enum TailscaleNetwork {
     public static func isTailnetIPv4(_ address: String) -> Bool {

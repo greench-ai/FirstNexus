@@ -1,7 +1,7 @@
 import CoreGraphics
 import Foundation
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 import OSLog
 
 @MainActor

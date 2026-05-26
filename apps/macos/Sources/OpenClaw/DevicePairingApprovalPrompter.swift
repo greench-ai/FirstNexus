@@ -1,8 +1,8 @@
 import AppKit
 import Foundation
 import Observation
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 import OSLog
 
 @MainActor

@@ -1,6 +1,6 @@
 import Foundation
 import OpenClawDiscovery
-import OpenClawKit
+import FirstNexusKit
 
 @MainActor
 enum GatewayDiscoverySelectionSupport {

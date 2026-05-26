@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
 import OpenClawIPC
-import OpenClawKit
+import FirstNexusKit
 
 actor MacNodeRuntime {
     private let cameraCapture = CameraCaptureService()

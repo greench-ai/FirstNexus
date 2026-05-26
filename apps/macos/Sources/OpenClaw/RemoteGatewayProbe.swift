@@ -1,6 +1,6 @@
 import Foundation
 import OpenClawIPC
-import OpenClawKit
+import FirstNexusKit
 
 enum RemoteGatewayAuthIssue: Equatable {
     case tokenRequired

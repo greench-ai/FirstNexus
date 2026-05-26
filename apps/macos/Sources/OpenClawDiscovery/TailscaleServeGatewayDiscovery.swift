@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 struct TailscaleServeGatewayBeacon: Equatable {
     var displayName: String

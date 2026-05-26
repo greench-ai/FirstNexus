@@ -1,8 +1,8 @@
 import AVFoundation
 import Foundation
 import OpenClawChatUI
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 import OSLog
 import Speech
 

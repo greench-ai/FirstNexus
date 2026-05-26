@@ -3,8 +3,8 @@ import Foundation
 import Observation
 import OpenClawDiscovery
 import OpenClawIPC
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 import OSLog
 import UserNotifications
 

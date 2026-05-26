@@ -1,7 +1,7 @@
 import Foundation
 import OpenClawDiscovery
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 
 struct ConnectOptions {
     var url: String?

@@ -1,4 +1,4 @@
-import OpenClawKit
+import FirstNexusKit
 
 enum GatewayPushSubscription {
     @MainActor

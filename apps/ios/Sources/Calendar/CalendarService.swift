@@ -1,6 +1,6 @@
 import EventKit
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 final class CalendarService: CalendarServicing {
     func events(params: OpenClawCalendarEventsParams) async throws -> OpenClawCalendarEventsPayload {

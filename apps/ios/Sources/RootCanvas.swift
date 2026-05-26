@@ -1,5 +1,5 @@
-import OpenClawKit
-import OpenClawProtocol
+import FirstNexusKit
+import FirstNexusProtocol
 import SwiftUI
 import UIKit
 

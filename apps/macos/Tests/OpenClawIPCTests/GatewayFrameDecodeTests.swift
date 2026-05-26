@@ -1,5 +1,5 @@
 import Foundation
-import OpenClawProtocol
+import FirstNexusProtocol
 import Testing
 
 struct GatewayFrameDecodeTests {

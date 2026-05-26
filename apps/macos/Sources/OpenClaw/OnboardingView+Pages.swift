@@ -2,7 +2,7 @@ import AppKit
 import OpenClawChatUI
 import OpenClawDiscovery
 import OpenClawIPC
-import OpenClawKit
+import FirstNexusKit
 import SwiftUI
 
 extension OnboardingView {

@@ -2,7 +2,7 @@ import AVFoundation
 import CoreGraphics
 import Foundation
 import OpenClawIPC
-import OpenClawKit
+import FirstNexusKit
 import OSLog
 
 actor CameraCaptureService {

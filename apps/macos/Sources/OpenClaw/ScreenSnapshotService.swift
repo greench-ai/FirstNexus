@@ -1,6 +1,6 @@
 import AppKit
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 @preconcurrency import ScreenCaptureKit
 
 @MainActor

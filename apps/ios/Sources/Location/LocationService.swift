@@ -1,6 +1,6 @@
 import CoreLocation
 import Foundation
-import OpenClawKit
+import FirstNexusKit
 
 @MainActor
 final class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceCommon {

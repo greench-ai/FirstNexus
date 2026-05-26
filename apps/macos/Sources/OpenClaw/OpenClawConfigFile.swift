@@ -1,6 +1,6 @@
 import CryptoKit
 import Foundation
-import OpenClawProtocol
+import FirstNexusProtocol
 
 enum OpenClawConfigFile {
     private static let logger = Logger(subsystem: "ai.openclaw", category: "config")

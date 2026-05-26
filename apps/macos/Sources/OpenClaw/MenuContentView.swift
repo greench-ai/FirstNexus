@@ -2,7 +2,7 @@ import AppKit
 import AVFoundation
 import Foundation
 import Observation
-import OpenClawKit
+import FirstNexusKit
 import SwiftUI
 
 /// Menu contents for the OpenClaw menu bar extra.
